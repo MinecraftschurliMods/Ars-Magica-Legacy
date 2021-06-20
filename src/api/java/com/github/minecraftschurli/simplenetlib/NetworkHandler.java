@@ -11,7 +11,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -40,7 +39,7 @@ import java.util.function.Supplier;
 public class NetworkHandler {
     private static final Map<ResourceLocation, NetworkHandler> HANDLERS = new HashMap<>();
 
-    public final Lazy<SimpleChannel> channel;
+    public final SimpleChannel channel;
     private final AtomicInteger id = new AtomicInteger();
 
     /**
@@ -156,7 +155,7 @@ public class NetworkHandler {
                            Supplier<String> version,
                            Predicate<String> acceptVersionClient,
                            Predicate<String> acceptVersionServer) {
-        this.channel = Lazy.of(()->NetworkRegistry.newSimpleChannel(rl, version, acceptVersionClient, acceptVersionServer));
+        this.channel = NetworkRegistry.newSimpleChannel(rl, version, acceptVersionClient, acceptVersionServer);
     }
 
     private int nextID() {
@@ -205,7 +204,7 @@ public class NetworkHandler {
                                               Function<PacketBuffer, T> decoder,
                                               BiConsumer<T, Supplier<NetworkEvent.Context>> consumer,
                                               Optional<NetworkDirection> dir) {
-        this.channel.get().registerMessage(nextID(), clazz, encoder, decoder, consumer, dir);
+        this.channel.registerMessage(nextID(), clazz, encoder, decoder, consumer, dir);
     }
 
     /**
@@ -219,7 +218,7 @@ public class NetworkHandler {
         if (world.isClientSide()) {
             return;
         }
-        this.channel.get().send(PacketDistributor.DIMENSION.with(((World) world)::dimension), packet);
+        this.channel.send(PacketDistributor.DIMENSION.with(((World) world)::dimension), packet);
     }
 
     /**
@@ -235,7 +234,7 @@ public class NetworkHandler {
         if (world.isClientSide()) {
             return;
         }
-        this.channel.get().send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), radius, ((World) world).dimension())), packet);
+        this.channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), radius, ((World) world).dimension())), packet);
     }
 
     /**
@@ -273,7 +272,7 @@ public class NetworkHandler {
         if (chunk.getLevel().isClientSide()) {
             return;
         }
-        this.channel.get().send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), packet);
+        this.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), packet);
     }
 
     /**
@@ -287,7 +286,7 @@ public class NetworkHandler {
         if (entity.level.isClientSide()) {
             return;
         }
-        this.channel.get().send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), packet);
+        this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), packet);
     }
 
     /**
@@ -301,7 +300,7 @@ public class NetworkHandler {
         if (player.level.isClientSide() || !(player instanceof ServerPlayerEntity)) {
             return;
         }
-        this.channel.get().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), packet);
+        this.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), packet);
     }
 
     /**
@@ -311,7 +310,7 @@ public class NetworkHandler {
      * @param packet the Packet to send
      */
     public void sendToAll(IPacket packet) {
-        this.channel.get().send(PacketDistributor.ALL.noArg(), packet);
+        this.channel.send(PacketDistributor.ALL.noArg(), packet);
     }
 
     /**
@@ -321,7 +320,7 @@ public class NetworkHandler {
      * @param packet the Packet to send
      */
     public void sendToServer(IPacket packet) {
-        this.channel.get().sendToServer(packet);
+        this.channel.sendToServer(packet);
     }
 
     /**
@@ -332,6 +331,6 @@ public class NetworkHandler {
      * @param context the context of the received Packet
      */
     public void reply(IPacket packet, NetworkEvent.Context context) {
-        this.channel.get().reply(packet, context);
+        this.channel.reply(packet, context);
     }
 }
