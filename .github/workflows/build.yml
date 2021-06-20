@@ -2,7 +2,7 @@ name: 'Build Commit'
 on:
   push:
     branches:
-      - '[0-9]**'
+      - 'version/[0-9]**'
     paths-ignore:
       - '*.md'
       - 'LICENSE'
