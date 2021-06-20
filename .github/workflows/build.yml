@@ -22,15 +22,16 @@ jobs:
         run: 'chmod 777 gradlew'
       - name: 'Build with Gradle'
         id: build
-        env: { USE_ALPHAS: true }
+        env:
+          USE_ALPHAS: true
         run: './gradlew setupGithubActions build'
       - name: 'Create a Release'
         id: create_release
         uses: meeDamian/github-release@v1.0.1
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
-          tag: 'alpha-${{ steps.build.outputs.version }}'
-          name: '${{ steps.build.outputs.modid }}-alpha-${{ steps.build.outputs.version }}'
+          tag: '${{ steps.build.outputs.version }}-alpha'
+          name: '${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-alpha'
           draft: false
           prerelease: true
           commitish: '${{ github.sha }}'
