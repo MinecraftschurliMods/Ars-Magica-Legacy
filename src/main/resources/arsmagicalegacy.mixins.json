@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.minecraftschurli.arsmagicalegacy.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "arsmagicalegacy.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

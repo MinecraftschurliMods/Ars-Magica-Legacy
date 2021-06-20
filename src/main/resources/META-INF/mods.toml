@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "MIT"
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+displayURL="${mod_url}" #optional
+#logoFile="arsmagicalegacy.png" #optional
+#credits="Thanks for this example mod goes to Java" #optional
+authors = "${mod_author}"
+description = '''
+Continuation fo ArsMagica 2 by Mithion
+'''
+
+[[dependencies.${mod_id}]]
+modId = "forge"
+mandatory = true
+versionRange = "${forge_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+mandatory = true
+versionRange = "${mc_version_range}"
+ordering = "NONE"
+side = "BOTH"
