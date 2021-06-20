@@ -23,7 +23,7 @@ jobs:
       - name: 'Build with Gradle'
         id: build
         env: { USE_ALPHAS: true }
-        run: './gradlew setupGithubActions build' }
+        run: './gradlew setupGithubActions build'
       - name: 'Create a Release'
         id: create_release
         uses: meeDamian/github-release@v1.0.1

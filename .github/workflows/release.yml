@@ -41,4 +41,3 @@ jobs:
           project_id: "${{ steps.build.outputs.project_id }}"
           release_type: release
           token: "${{ secrets.CF_API_TOKEN }}"
-      - name: "Build Success"
