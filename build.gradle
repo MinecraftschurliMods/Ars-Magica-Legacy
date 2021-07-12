@@ -30,18 +30,24 @@ tasks.withType(JavaCompile) {
 }
 
 sourceSets {
-    api
+    api {
+        compileClasspath += configurations.getByName("minecraft")
+    }
     main {
         resources {
-            srcDir 'src/generated/resources'
+            srcDirs += 'src/generated/resources'
+            exclude '.cache'
         }
         compileClasspath += sourceSets.api.output
         runtimeClasspath += sourceSets.api.output
     }
     data {
-        resources.srcDirs = sourceSets.main.resources.srcDirs
+        compileClasspath += configurations.getByName("minecraft")
+        runtimeClasspath += configurations.getByName("minecraft")
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
     }
 }
 
@@ -85,6 +91,10 @@ dependencies {
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    apiCompile 'org.jetbrains:annotations:21.0.1'
+    dataCompile 'org.jetbrains:annotations:21.0.1'
+    compile 'org.jetbrains:annotations:21.0.1'
 }
 
 minecraft {
@@ -99,7 +109,10 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             arg "-mixin.config=arsmagicalegacy.mixins.json"
-            mods.create("${project.mod_id}").source(sourceSets.main)
+            mods.create("${project.mod_id}") {
+                source sourceSets.main
+                source sourceSets.api
+            }
         }
 
         server {
@@ -110,7 +123,10 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             arg "-mixin.config=arsmagicalegacy.mixins.json"
-            mods.create("${project.mod_id}").source(sourceSets.main)
+            mods.create("${project.mod_id}") {
+                source sourceSets.main
+                source sourceSets.api
+            }
         }
 
         data {
@@ -118,7 +134,11 @@ minecraft {
             ideaModule "${project.name}.data"
             property 'forge.logging.console.level', 'debug'
             args '--mod', project.mod_id.toString(), '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods.create("${project.mod_id}").source(sourceSets.data)
+            mods.create("${project.mod_id}") {
+                source sourceSets.main
+                source sourceSets.api
+                source sourceSets.data
+            }
         }
     }
 }
@@ -189,6 +209,26 @@ task apiJar(type: Jar, dependsOn: classes) {
     description = 'Creates a JAR containing the whole api code.'
     from sourceSets.api.allSource
     from sourceSets.api.output
+}
+
+task printSourceSetInformation(){
+    doLast{
+        sourceSets.each { srcSet ->
+            println "[${srcSet.name}]"
+            print "-->Source directories: ${srcSet.allJava.srcDirs}\n"
+            print "-->Output directories: ${srcSet.output.classesDirs.files}\n"
+            print "-->Compile classpath:\n"
+            srcSet.compileClasspath.files.each {
+                print "  "+it.path+"\n"
+            }
+            println ""
+            print "-->Runtime classpath:\n"
+            srcSet.runtimeClasspath.files.each {
+                print "  "+it.path+"\n"
+            }
+            println ""
+        }
+    }
 }
 
 tasks.withType(Jar).configureEach {

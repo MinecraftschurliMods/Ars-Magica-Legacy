@@ -1,10 +1,6 @@
 package com.github.minecraftschurli.easyimclib;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.EventBus;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +18,8 @@ import java.util.function.Supplier;
 public final class IMCHandler {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Map<String, IMCHandler> HANDLERS = new HashMap<>();
+    private static final String RECEIVED_IMC = "Received IMC message with method '{}' from '{}'";
+    private static final String NO_HANDLER = RECEIVED_IMC + ", but no handler for {0} is available!";
 
     private final Map<String, IIMCMethodHandler<?>> handlers = new HashMap<>();
     private final String modid;
@@ -32,9 +30,11 @@ public final class IMCHandler {
 
     /**
      * Registers this {@link IMCHandler} to the EventBus
+     *
+     * @param bus the eventbus to register the listener to
      */
-    public void init() {
-        MinecraftForge.EVENT_BUS.addListener(this::processIMC);
+    public void init(final IEventBus bus) {
+        bus.addListener(this::processIMC);
     }
 
     /**
@@ -44,7 +44,7 @@ public final class IMCHandler {
      * @param handler the handler for the method
      * @param <T> the type of the handler parameter
      */
-    public <T> void registerIMCHandler(final String method, final IIMCMethodHandler<T> handler) {
+    public <T> void registerIMCMethodHandler(final String method, final IIMCMethodHandler<T> handler) {
         this.handlers.put(method, handler);
     }
 
@@ -59,17 +59,50 @@ public final class IMCHandler {
     }
 
     private void processIMC(final InterModProcessEvent event) {
-        this.handlers.forEach((method, handler) -> event.getIMCStream(method::equals).forEach(imcMessage -> handleIMC(imcMessage, handler)));
+        event.getIMCStream().forEach(imcMessage -> {
+            if (this.handlers.containsKey(imcMessage.getMethod())) {
+                LOGGER.debug(RECEIVED_IMC, imcMessage.getMethod(), imcMessage.getSenderModId());
+                this.handlers.get(imcMessage.getMethod()).accept(imcMessage.getMessageSupplier());
+            } else {
+                LOGGER.warn(NO_HANDLER, imcMessage.getMethod(), imcMessage.getSenderModId());
+            }
+        });
     }
 
-    private <T> void handleIMC(final InterModComms.IMCMessage imcMessage, final IIMCMethodHandler<T> handler) {
-        LOGGER.debug("Received IMC message from {}", imcMessage.getSenderModId());
-        handler.accept(imcMessage.getMessageSupplier());
+    @Override
+    public String toString() {
+        return String.format("IMCHandler(modid='%s', methods=%s)", this.modid, this.handlers.keySet());
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final IMCHandler that = (IMCHandler) o;
+
+        return modid.equals(that.modid);
+    }
+
+    @Override
+    public int hashCode() {
+        return modid.hashCode();
     }
 
     /**
      * @param <T> the Type of the received IMCMessage
      */
-    public interface IIMCMethodHandler<T> extends Consumer<Supplier<T>> {
+    @FunctionalInterface
+    public interface IIMCMethodHandler<T> extends Consumer<T> {
+        /**
+         * @param supplier the {@link Supplier} of the transmitted value
+         */
+        default void accept(Supplier<T> supplier) {
+            accept(supplier.get());
+        }
     }
 }

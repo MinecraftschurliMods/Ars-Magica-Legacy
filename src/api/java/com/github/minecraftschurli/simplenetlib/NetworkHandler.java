@@ -18,10 +18,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Constructor;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -35,7 +33,6 @@ import java.util.function.Supplier;
  * @version 2021-06-15
  */
 @SuppressWarnings("unused")
-@ParametersAreNonnullByDefault
 public class NetworkHandler {
     private static final Map<ResourceLocation, NetworkHandler> HANDLERS = new HashMap<>();
 
@@ -175,31 +172,51 @@ public class NetworkHandler {
         this.register(clazz, Optional.ofNullable(dir));
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends IPacket> void register(Class<T> clazz, Optional<NetworkDirection> dir) {
         BiConsumer<T, PacketBuffer> encoder = IPacket::serialize;
-        Function<PacketBuffer, T> decoder = (buf) -> {
-            try {
-                T packet = clazz.getConstructor().newInstance();
-                packet.deserialize(buf);
-                return packet;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
+        Function<PacketBuffer, T> decoder = Arrays.stream(clazz.getConstructors())
+                .map(constructor -> (Constructor<T>)constructor)
+                .filter(constructor ->
+                        constructor.getParameterCount() == 0 ||
+                                (constructor.getParameterCount() == 1 &&
+                                        constructor.getParameterTypes()[0].equals(PacketBuffer.class)))
+                .max(Comparator.comparingInt(Constructor::getParameterCount))
+                .<ThrowingFunction<PacketBuffer, T>>map(constructor -> {
+                    if (constructor.getParameterCount() == 0) {
+                        return (buf) -> {
+                            T packet = constructor.newInstance();
+                            packet.deserialize(buf);
+                            return packet;
+                        };
+                    } else {
+                        return constructor::newInstance;
+                    }
+                }).orElseThrow(() -> new IllegalArgumentException(String.format("%s does not supply a deserialization mechanism", clazz)));
         BiConsumer<T, Supplier<NetworkEvent.Context>> consumer = (msg, supp) -> {
             NetworkEvent.Context context = supp.get();
             if (context == null) {
                 return;
             }
-            if (dir.filter(d -> context.getDirection() == d).isPresent()) {
+            if (!dir.filter(d -> d == context.getDirection()).isPresent()) {
                 return;
             }
-            context.setPacketHandled(msg.handleInt(context));
+            context.setPacketHandled(msg.handle_(context));
         };
         this.register(clazz, encoder, decoder, consumer, dir);
     }
 
-    private <T extends IPacket> void register(Class<T> clazz,
+    /**
+     * Register a Packet with defined encoder, decoder, consumer and direction
+     *
+     * @param clazz the class of the registered Packet
+     * @param encoder the encoder for the Packet
+     * @param decoder the decoder for the Packet
+     * @param consumer the consumer that handles the Packet
+     * @param dir the Optional NetworkDirection for the Packet
+     * @param <T> the Type of the Packet
+     */
+    public <T extends IPacket> void register(Class<T> clazz,
                                               BiConsumer<T, PacketBuffer> encoder,
                                               Function<PacketBuffer, T> decoder,
                                               BiConsumer<T, Supplier<NetworkEvent.Context>> consumer,
@@ -332,5 +349,18 @@ public class NetworkHandler {
      */
     public void reply(IPacket packet, NetworkEvent.Context context) {
         this.channel.reply(packet, context);
+    }
+
+    private interface ThrowingFunction<T, R> extends Function<T, R> {
+        R applyThrowing(T t) throws Exception;
+
+        @Override
+        default R apply(T t) {
+            try {
+                return this.applyThrowing(t);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

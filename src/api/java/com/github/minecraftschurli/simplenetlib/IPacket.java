@@ -4,12 +4,59 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 /**
- * The {@link IPacket} interface represents the base for all packets handled by simplenetlib.
- * All implementations need to have a default constructor
+ * The {@link IPacket} interface represents the base for all packets handled by simplenetlib.<br>
+ * All implementations either need to have a default constructor and implement the deserialize method or
+ * a constructor with a single {@link PacketBuffer} parameter
+ * <pre>{@code
+ * public class TestPacket implements IPacket {
+ *     private int i;
+ *
+ *     public TestPacket() {} // create empty instance for deserialization
+ *
+ *     public TestPacket(int i) { // create instance for sending
+ *         this.i = i;
+ *     }
+ *
+ *     @Override
+ *     public void deserialize(final PacketBuffer buf) {
+ *         // deserialize from PacketBuffer
+ *         this.i = buf.readInt();
+ *     }
+ *
+ *     @Override
+ *     public void serialize(final PacketBuffer buf) {
+ *         // serialize to PacketBuffer
+ *     }
+ *
+ *     @Override
+ *     public void handle(final NetworkEvent.Context ctx) {
+ *         // handle the received and deserialized Packet
+ *     }
+ * }
+ * }</pre>
+ * or
+ * <pre>{@code
+ * public record ExamplePacket(int i) implements IPacket {
+ *     public ExamplePacket(final PacketBuffer buf) {
+ *         this(buf.readInt()); // deserialize from PacketBuffer
+ *     }
+ *
+ *     @Override
+ *     public void serialize(final PacketBuffer buf) {
+ *         // serialize to PacketBuffer
+ *     }
+ *
+ *     @Override
+ *     public void handle(final NetworkEvent.Context ctx) {
+ *         // handle the received and deserialized Packet
+ *     }
+ * }
+ * }</pre>
  *
  * @author Minecraftschurli
  * @version 2021-06-15
  */
+@SuppressWarnings("unused")
 public interface IPacket {
     /**
      * @param buf the {@link PacketBuffer} to put the information into
@@ -19,7 +66,7 @@ public interface IPacket {
     /**
      * @param buf the {@link PacketBuffer} containing the information
      */
-    void deserialize(PacketBuffer buf);
+    default void deserialize(PacketBuffer buf) {throw new NotImplementedException();}
 
     /**
      * Handle the received message in this method
@@ -30,13 +77,16 @@ public interface IPacket {
     void handle(NetworkEvent.Context ctx);
 
     /**
-     * Internal version of {@link this#handle} Override when you want to return something else than true
+     * Internal version of {@link IPacket#handle} Override when you want to return something else than true
      *
      * @param ctx the {@link NetworkEvent.Context} of the received message
      * @return whether the packet was handled or not
      */
-    default boolean handleInt(NetworkEvent.Context ctx) {
+    default boolean handle_(NetworkEvent.Context ctx) {
         this.handle(ctx);
         return true;
     }
+
+    @SuppressWarnings("JavaDoc")
+    class NotImplementedException extends RuntimeException {}
 }

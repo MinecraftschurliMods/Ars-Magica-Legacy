@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
  * @version 2021-06-19
  */
 @Mod(Constants.MOD_ID)
-public class ArsMagicaLegacy {
+public final class ArsMagicaLegacy {
     private static final Logger LOGGER = LogManager.getLogger();
     private static ArsMagicaLegacy INSTANCE;
 
@@ -31,7 +31,7 @@ public class ArsMagicaLegacy {
     public ArsMagicaLegacy() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
-        IMC_HANDLER.init();
+        IMC_HANDLER.init(FMLJavaModLoadingContext.get().getModEventBus());
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         INSTANCE = this;
     }
