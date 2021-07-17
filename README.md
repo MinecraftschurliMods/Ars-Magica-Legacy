@@ -1,1 +1,1 @@
-# Ars Magica: Legacy
+# Ars Magica: Legacy [![Build Commit](https://github.com/Minecraftschurli/Ars-Magica-Legacy/actions/workflows/build.yml/badge.svg?branch=version%2F1.16.5)](https://github.com/Minecraftschurli/Ars-Magica-Legacy/actions/workflows/build.yml)
