@@ -104,7 +104,7 @@ minecraft {
         client {
             workingDirectory project.file('run/client')
             ideaModule "${project.name}.main"
-            property 'forge.logging.markers', 'REGISTRIES,EVENTBUS'
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
