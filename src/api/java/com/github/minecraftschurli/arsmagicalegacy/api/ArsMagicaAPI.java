@@ -23,8 +23,11 @@ public final class ArsMagicaAPI {
         }
     });
 
+    private ArsMagicaAPI() { }
+
     /**
      * Get the API Instance
+     *
      * @return the API Instance
      */
     public static IArsMagicaAPI get() {

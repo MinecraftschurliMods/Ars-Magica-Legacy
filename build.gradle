@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.ec4j.editorconfig' version '0.0.3'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 //=============================================
