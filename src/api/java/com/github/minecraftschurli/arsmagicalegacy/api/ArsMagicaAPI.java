@@ -1,5 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.api;
 
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
@@ -34,9 +36,32 @@ public final class ArsMagicaAPI {
      */
     @SuppressWarnings("unused")
     public interface IArsMagicaAPI {
+        /**
+         * Get the {@link ItemGroup} of the mod
+         *
+         * @return the {@link ItemGroup} of the mod
+         */
+        ItemGroup getItemGroup();
+
+        /**
+         * Get the Arcane Compendium {@link ItemStack}
+         *
+         * @return the {@link ItemStack} for the Arcane Compendium
+         */
+        ItemStack getBookStack();
     }
 
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
+
+        @Override
+        public ItemGroup getItemGroup() {
+            return ItemGroup.TAB_MISC;
+        }
+
+        @Override
+        public ItemStack getBookStack() {
+            return ItemStack.EMPTY;
+        }
     }
 }
