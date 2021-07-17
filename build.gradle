@@ -35,7 +35,7 @@ sourceSets {
     }
     main {
         resources {
-            srcDirs += 'src/generated/resources'
+            srcDirs += 'src/main/generated'
             exclude '.cache'
         }
         compileClasspath += sourceSets.api.output
@@ -133,7 +133,7 @@ minecraft {
             workingDirectory project.file('run/data')
             ideaModule "${project.name}.data"
             property 'forge.logging.console.level', 'debug'
-            args '--mod', project.mod_id.toString(), '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', project.mod_id.toString(), '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
                 source sourceSets.main
                 source sourceSets.api
@@ -155,6 +155,7 @@ processResources {
                 'mod_name': project.name,
                 'mod_url': project.url,
                 'mod_author': project.author,
+                'patchouli_version_range': project.patchouli_version_range,
                 'loader_version_range': project.loader_version_range,
                 'forge_version_range': project.forge_version_range,
                 'mc_version_range': project.mc_version_range/*,
@@ -163,26 +164,6 @@ processResources {
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
-    }
-}
-
-processDataResources {
-    from(sourceSets.data.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-        expand 'version': project.version,
-                'mod_id': project.mod_id,
-                'mod_name': project.name,
-                'mod_url': project.url,
-                'mod_author': project.author,
-                'loader_version_range': project.loader_version_range,
-                'forge_version_range': project.forge_version_range,
-                'mc_version_range': project.mc_version_range/*,
-                'mod_description': project.mod_description,
-                'mod_icon': mod_icon*/
-    }
-
-    from(sourceSets.data.resources.srcDirs) {
         exclude 'META-INF/mods.toml'
     }
 }
