@@ -1,4 +1,8 @@
 //file:noinspection GroovyAssignabilityCheck
+
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
@@ -7,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
-        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}"
+        //classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not on 1.17.1 yet
     }
 }
 
@@ -16,7 +20,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
+//apply plugin: 'org.spongepowered.mixin' // Mixin is not on 1.17.1 yet
 //=============================================
 
 apply plugin: 'maven-publish'
@@ -26,6 +30,10 @@ apply plugin: 'idea'
 group = "${project.mod_group}"
 version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
+
+if (System.getenv('USE_ALPHAS')) {
+    version = version + '+' + ('git rev-parse --verify --short HEAD'.execute().text.trim())
+}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(project.java_version)
 
@@ -84,17 +92,20 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.mc_version}-${project.forge_version}"
-    annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
+    //annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor" // Mixin is not on 1.17.1 yet
 
-    compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
+    // JEI is not on 1.17.1 yet
+    //compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
+    // curios is not on 1.17.1 yet
+    //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
+    //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+    // patchouli is not on 1.17.1 yet
+    //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
+    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
     apiCompile 'org.jetbrains:annotations:21.0.1'
     dataCompile 'org.jetbrains:annotations:21.0.1'
@@ -107,51 +118,56 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run/client')
-            ideaModule "${project.name}.main"
+            ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            arg "-mixin.config=arsmagicalegacy.mixins.json"
+            // Mixin is not on 1.17.1 yet
+            //property 'mixin.env.remapRefMap', 'true'
+            //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            //arg "-mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
-                source sourceSets.main
                 source sourceSets.api
+                source sourceSets.main
             }
         }
 
         server {
             workingDirectory project.file('run/server')
-            ideaModule "${project.name}.main"
+            ideaModule "${project.name.replace(' ', '_')}.main"
+            singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            arg "-mixin.config=arsmagicalegacy.mixins.json"
+            // Mixin is not on 1.17.1 yet
+            //property 'mixin.env.remapRefMap', 'true'
+            //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            //arg "-mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
-                source sourceSets.main
                 source sourceSets.api
+                source sourceSets.main
             }
         }
 
         data {
             workingDirectory project.file('run/data')
-            ideaModule "${project.name}.data"
+            ideaModule "${project.name.replace(' ', '_')}.data"
+            singleInstance true
             property 'forge.logging.console.level', 'debug'
             args '--mod', project.mod_id.toString(), '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
-                source sourceSets.main
                 source sourceSets.api
+                source sourceSets.main
                 source sourceSets.data
             }
         }
     }
 }
 
-mixin {
+/*mixin {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
-}
+}*/// Mixin is not on 1.17.1 yet
 
 processResources {
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
     from(sourceSets.main.resources.srcDirs) {
         include 'META-INF/mods.toml'
         expand 'version': project.version,
@@ -159,22 +175,29 @@ processResources {
                 'mod_name': project.name,
                 'mod_url': project.url,
                 'mod_author': project.author,
-                'patchouli_version_range': project.patchouli_version_range,
+                //'patchouli_version_range': project.patchouli_version_range,// patchouli is not on 1.17.1 yet
                 'loader_version_range': project.loader_version_range,
                 'forge_version_range': project.forge_version_range,
                 'mc_version_range': project.mc_version_range/*,
                 'mod_description': project.mod_description,
                 'mod_icon': mod_icon*/
     }
-
     from(sourceSets.main.resources.srcDirs) {
         exclude 'META-INF/mods.toml'
+    }
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
+        }
     }
 }
 
 javadoc {
     source = sourceSets.api.allJava
     options.tags = [ "side:a:Side:" ]
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }
 
 jar {
@@ -194,26 +217,6 @@ task apiJar(type: Jar, dependsOn: classes) {
     description = 'Creates a JAR containing the whole api code.'
     from sourceSets.api.allSource
     from sourceSets.api.output
-}
-
-task printSourceSetInformation(){
-    doLast{
-        sourceSets.each { srcSet ->
-            println "[${srcSet.name}]"
-            print "-->Source directories: ${srcSet.allJava.srcDirs}\n"
-            print "-->Output directories: ${srcSet.output.classesDirs.files}\n"
-            print "-->Compile classpath:\n"
-            srcSet.compileClasspath.files.each {
-                print "  "+it.path+"\n"
-            }
-            println ""
-            print "-->Runtime classpath:\n"
-            srcSet.runtimeClasspath.files.each {
-                print "  "+it.path+"\n"
-            }
-            println ""
-        }
-    }
 }
 
 tasks.withType(Jar).configureEach {
@@ -250,18 +253,18 @@ artifacts {
 
 task setupGithubActions() {
     doLast {
-        println("##[set-output name=modid;]${project.mod_id}")
+        println "##[set-output name=modid;]${project.mod_id}"
         if(project.hasProperty('curse_project_id')) {
-            println("##[set-output name=project_id;]${project.curse_project_id}")
+            println "##[set-output name=project_id;]${project.curse_project_id}"
             if(project.hasProperty('curse_title')) {
-                println("##[set-output name=curse_title;]${project.curse_title}")
+                println "##[set-output name=curse_title;]${project.curse_title}"
             }
-            println("##[set-output name=curse_versions;]${project.curse_versions}")
+            println "##[set-output name=curse_versions;]${project.curse_versions}"
             if(project.hasProperty('curse_relations')) {
-                println("##[set-output name=curse_relations;]${project.curse_relations}")
+                println "##[set-output name=curse_relations;]${project.curse_relations}"
             }
         }
-        println("##[set-output name=version;]${project.version}")
+        println "##[set-output name=version;]${project.version}"
     }
 }
 
@@ -295,6 +298,23 @@ publishing {
                     name = 'Minecraftschurli Mods'
                     url = 'https://github.com/Minecraftschurli'
                 }
+                developers {
+                    developer {
+                        id = 'minecraftschurli'
+                        name = 'Minecraftschurli'
+                        email = 'minecraftschurli@gmail.com'
+                        organization = 'Minecraftschurli Mods'
+                        organizationUrl = 'https://github.com/Minecraftschurli'
+                        timezone = 'Europe/Vienna'
+                    }
+                }
+                licenses {
+                    license {
+                        name = '"Don\'t Be a Jerk" License'
+                        url = 'https://github.com/Minecraftschurli/Ars-Magica-Legacy/blob/version/1.17.1/LICENSE.md'
+                        distribution = 'repo'
+                    }
+                }
             }
         }
     }
@@ -315,4 +335,8 @@ publishing {
             }
         }
     }
+}
+
+check {
+    dependsOn editorconfigCheck
 }

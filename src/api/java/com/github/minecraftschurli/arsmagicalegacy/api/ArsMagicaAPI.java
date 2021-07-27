@@ -1,11 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.api;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -13,15 +12,15 @@ import java.util.ServiceLoader;
  * @version 2021-06-18
  */
 public final class ArsMagicaAPI {
-    private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
-        final Iterator<IArsMagicaAPI> iterator = ServiceLoader.load(IArsMagicaAPI.class).iterator();
-        if (iterator.hasNext()) {
-            return iterator.next();
-        } else {
-            LogManager.getLogger().warn("Unable to find ArsMagicaAPIImpl, using a dummy");
-            return StubArsMagicaAPI.INSTANCE;
-        }
-    });
+    private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> ServiceLoader
+            .load(IArsMagicaAPI.class)
+            .stream()
+            .findFirst()
+            .map(ServiceLoader.Provider::get)
+            .orElseGet(() -> {
+                LogManager.getLogger().warn("Unable to find ArsMagicaAPIImpl, using a dummy");
+                return StubArsMagicaAPI.INSTANCE;
+            }));
 
     private ArsMagicaAPI() { }
 
@@ -40,11 +39,11 @@ public final class ArsMagicaAPI {
     @SuppressWarnings("unused")
     public interface IArsMagicaAPI {
         /**
-         * Get the {@link ItemGroup} of the mod
+         * Get the {@link CreativeModeTab} of the mod
          *
-         * @return the {@link ItemGroup} of the mod
+         * @return the {@link CreativeModeTab} of the mod
          */
-        ItemGroup getItemGroup();
+        CreativeModeTab getItemGroup();
 
         /**
          * Get the Arcane Compendium {@link ItemStack}
@@ -58,8 +57,8 @@ public final class ArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
         @Override
-        public ItemGroup getItemGroup() {
-            return ItemGroup.TAB_MISC;
+        public CreativeModeTab getItemGroup() {
+            return CreativeModeTab.TAB_MISC;
         }
 
         @Override

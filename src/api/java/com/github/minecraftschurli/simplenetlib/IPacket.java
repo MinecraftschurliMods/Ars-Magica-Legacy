@@ -1,12 +1,12 @@
 package com.github.minecraftschurli.simplenetlib;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 /**
  * The {@link IPacket} interface represents the base for all packets handled by simplenetlib.<br>
  * All implementations either need to have a default constructor and implement the deserialize method or
- * a constructor with a single {@link PacketBuffer} parameter
+ * a constructor with a single {@link FriendlyByteBuf} parameter
  * <pre>{@code
  * public class TestPacket implements IPacket {
  *     private int i;
@@ -59,14 +59,14 @@ import net.minecraftforge.fml.network.NetworkEvent;
 @SuppressWarnings("unused")
 public interface IPacket {
     /**
-     * @param buf the {@link PacketBuffer} to put the information into
+     * @param buf the {@link FriendlyByteBuf} to put the information into
      */
-    void serialize(PacketBuffer buf);
+    void serialize(FriendlyByteBuf buf);
 
     /**
-     * @param buf the {@link PacketBuffer} containing the information
+     * @param buf the {@link FriendlyByteBuf} containing the information
      */
-    default void deserialize(PacketBuffer buf) {throw new NotImplementedException();}
+    default void deserialize(FriendlyByteBuf buf) {throw new NotImplementedException();}
 
     /**
      * Handle the received message in this method
@@ -87,6 +87,8 @@ public interface IPacket {
         return true;
     }
 
-    @SuppressWarnings("JavaDoc")
+    /**
+     * Exception thrown when a method is not implemented.
+     */
     class NotImplementedException extends RuntimeException {}
 }

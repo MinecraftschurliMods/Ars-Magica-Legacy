@@ -6,6 +6,6 @@
 @ParametersAreNonnullByDefault
 package com.github.minecraftschurli.simplenetlib;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

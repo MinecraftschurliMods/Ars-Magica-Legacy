@@ -1,6 +1,8 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "MIT"
+services = [""]
+
 [[mods]]
 modId = "${mod_id}"
 version = "${version}"
@@ -13,12 +15,12 @@ description = '''
 Continuation fo ArsMagica 2 by Mithion
 '''
 
-[[dependencies.${mod_id}]]
-modId = "patchouli"
-mandatory = true
-versionRange = "${patchouli_version_range}"
-ordering = "BEFORE"
-side = "BOTH"
+#[[dependencies.${mod_id}]]
+#modId = "patchouli"
+#mandatory = true
+#versionRange = "\${patchouli_version_range}"
+#ordering = "BEFORE"
+#side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "forge"

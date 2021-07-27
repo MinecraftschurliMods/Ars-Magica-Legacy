@@ -1,21 +1,21 @@
 package com.github.minecraftschurli.simplenetlib;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -36,7 +36,7 @@ import java.util.function.Supplier;
 public class NetworkHandler {
     private static final Map<ResourceLocation, NetworkHandler> HANDLERS = new HashMap<>();
 
-    public final SimpleChannel channel;
+    private final SimpleChannel channel;
     private final AtomicInteger id = new AtomicInteger();
 
     /**
@@ -174,15 +174,15 @@ public class NetworkHandler {
 
     @SuppressWarnings("unchecked")
     private <T extends IPacket> void register(Class<T> clazz, Optional<NetworkDirection> dir) {
-        BiConsumer<T, PacketBuffer> encoder = IPacket::serialize;
-        Function<PacketBuffer, T> decoder = Arrays.stream(clazz.getConstructors())
+        BiConsumer<T, FriendlyByteBuf> encoder = IPacket::serialize;
+        Function<FriendlyByteBuf, T> decoder = Arrays.stream(clazz.getConstructors())
                 .map(constructor -> (Constructor<T>)constructor)
                 .filter(constructor ->
                         constructor.getParameterCount() == 0 ||
                                 (constructor.getParameterCount() == 1 &&
-                                        constructor.getParameterTypes()[0].equals(PacketBuffer.class)))
+                                        constructor.getParameterTypes()[0].equals(FriendlyByteBuf.class)))
                 .max(Comparator.comparingInt(Constructor::getParameterCount))
-                .<ThrowingFunction<PacketBuffer, T>>map(constructor -> {
+                .<ThrowingFunction<FriendlyByteBuf, T>>map(constructor -> {
                     if (constructor.getParameterCount() == 0) {
                         return (buf) -> {
                             T packet = constructor.newInstance();
@@ -198,7 +198,7 @@ public class NetworkHandler {
             if (context == null) {
                 return;
             }
-            if (!dir.filter(d -> d == context.getDirection()).isPresent()) {
+            if (dir.filter(d -> d == context.getDirection()).isEmpty()) {
                 return;
             }
             context.setPacketHandled(msg.handle_(context));
@@ -217,8 +217,8 @@ public class NetworkHandler {
      * @param <T> the Type of the Packet
      */
     public <T extends IPacket> void register(Class<T> clazz,
-                                              BiConsumer<T, PacketBuffer> encoder,
-                                              Function<PacketBuffer, T> decoder,
+                                              BiConsumer<T, FriendlyByteBuf> encoder,
+                                              Function<FriendlyByteBuf, T> decoder,
                                               BiConsumer<T, Supplier<NetworkEvent.Context>> consumer,
                                               Optional<NetworkDirection> dir) {
         this.channel.registerMessage(nextID(), clazz, encoder, decoder, consumer, dir);
@@ -231,11 +231,11 @@ public class NetworkHandler {
      * @param packet the Packet to send
      * @param world  the World to send to
      */
-    public void sendToWorld(IPacket packet, IWorld world) {
+    public void sendToWorld(IPacket packet, LevelAccessor world) {
         if (world.isClientSide()) {
             return;
         }
-        this.channel.send(PacketDistributor.DIMENSION.with(((World) world)::dimension), packet);
+        this.channel.send(PacketDistributor.DIMENSION.with(((Level) world)::dimension), packet);
     }
 
     /**
@@ -247,11 +247,11 @@ public class NetworkHandler {
      * @param pos    the center position around which the radius is calculated
      * @param radius the radius in which players receive the packet
      */
-    public void sendToAllAround(IPacket packet, IWorld world, BlockPos pos, float radius) {
+    public void sendToAllAround(IPacket packet, LevelAccessor world, BlockPos pos, float radius) {
         if (world.isClientSide()) {
             return;
         }
-        this.channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), radius, ((World) world).dimension())), packet);
+        this.channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), radius, ((Level) world).dimension())), packet);
     }
 
     /**
@@ -262,8 +262,8 @@ public class NetworkHandler {
      * @param world  the World to send to
      * @param pos    the position within the tracked chunk
      */
-    public void sendToAllTracking(IPacket packet, IWorld world, BlockPos pos) {
-        this.sendToAllTracking(packet, ((ServerWorld) world).getChunkAt(pos));
+    public void sendToAllTracking(IPacket packet, LevelAccessor world, BlockPos pos) {
+        this.sendToAllTracking(packet, ((ServerLevel) world).getChunkAt(pos));
     }
 
     /**
@@ -274,8 +274,8 @@ public class NetworkHandler {
      * @param world  the World to send to
      * @param pos    the position of the chunk
      */
-    public void sendToAllTracking(IPacket packet, IWorld world, ChunkPos pos) {
-        this.sendToAllTracking(packet, ((ServerWorld) world).getChunkAt(pos.getWorldPosition()));
+    public void sendToAllTracking(IPacket packet, LevelAccessor world, ChunkPos pos) {
+        this.sendToAllTracking(packet, ((ServerLevel) world).getChunkAt(pos.getWorldPosition()));
     }
 
     /**
@@ -285,7 +285,7 @@ public class NetworkHandler {
      * @param packet the Packet to send
      * @param chunk  the tracked Chunk
      */
-    public void sendToAllTracking(IPacket packet, Chunk chunk) {
+    public void sendToAllTracking(IPacket packet, LevelChunk chunk) {
         if (chunk.getLevel().isClientSide()) {
             return;
         }
@@ -313,11 +313,11 @@ public class NetworkHandler {
      * @param packet the Packet to send
      * @param player the Player to send to
      */
-    public void sendToPlayer(IPacket packet, PlayerEntity player) {
-        if (player.level.isClientSide() || !(player instanceof ServerPlayerEntity)) {
+    public void sendToPlayer(IPacket packet, Player player) {
+        if (player.level.isClientSide() || !(player instanceof ServerPlayer)) {
             return;
         }
-        this.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), packet);
+        this.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), packet);
     }
 
     /**
