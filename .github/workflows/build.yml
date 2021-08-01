@@ -23,7 +23,7 @@ jobs:
       - name: Build with Gradle
         id: build
         env:
-          USE_ALPHAS: true
+          RELEASE_TYPE: snapshot
         run: ./gradlew setupGithubActions build
       - name: Create a Release
         id: create_release

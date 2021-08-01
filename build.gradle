@@ -1,5 +1,3 @@
-//file:noinspection GroovyAssignabilityCheck
-
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -10,6 +8,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
+        classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         //classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not on 1.17.1 yet
     }
@@ -17,25 +17,36 @@ buildscript {
 
 plugins {
     id 'org.ec4j.editorconfig' version '0.0.3'
+    id "org.ajoberstar.grgit" version "4.1.0"
+    id 'maven-publish'
+    id 'eclipse'
+    id 'idea'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 //apply plugin: 'org.spongepowered.mixin' // Mixin is not on 1.17.1 yet
 //=============================================
 
-apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
 group = "${project.mod_group}"
 version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
 
-if (System.getenv('USE_ALPHAS')) {
-    version = version + '+' + ('git rev-parse --verify --short HEAD'.execute().text.trim())
+if (System.getenv('RELEASE_TYPE') != null) {
+    if (System.getenv('RELEASE_TYPE') == 'snapshot') {
+        version = "${version}+${grgit.head().abbreviatedId}"
+    }
+    status = System.getenv('RELEASE_TYPE')
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(project.java_version)
+java {
+    withSourcesJar()
+    withJavadocJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.java_version)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -107,9 +118,9 @@ dependencies {
     //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
-    apiCompile 'org.jetbrains:annotations:21.0.1'
-    dataCompile 'org.jetbrains:annotations:21.0.1'
-    compile 'org.jetbrains:annotations:21.0.1'
+    apiCompileOnly 'org.jetbrains:annotations:21.0.1'
+    dataCompileOnly 'org.jetbrains:annotations:21.0.1'
+    compileOnly 'org.jetbrains:annotations:21.0.1'
 }
 
 minecraft {
@@ -117,7 +128,7 @@ minecraft {
 
     runs {
         client {
-            workingDirectory project.file('run/client')
+            workingDirectory project.file('run/client') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
@@ -126,13 +137,13 @@ minecraft {
             //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             //arg "-mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
-                source sourceSets.api
-                source sourceSets.main
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
             }
         }
 
         server {
-            workingDirectory project.file('run/server')
+            workingDirectory project.file('run/server') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
             singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
@@ -142,21 +153,21 @@ minecraft {
             //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             //arg "-mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
-                source sourceSets.api
-                source sourceSets.main
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
             }
         }
 
         data {
-            workingDirectory project.file('run/data')
+            workingDirectory project.file('run/data') as File
             ideaModule "${project.name.replace(' ', '_')}.data"
             singleInstance true
             property 'forge.logging.console.level', 'debug'
-            args '--mod', project.mod_id.toString(), '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
+            args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
-                source sourceSets.api
-                source sourceSets.main
-                source sourceSets.data
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.data as SourceSet
             }
         }
     }
@@ -193,8 +204,14 @@ processResources {
 }
 
 javadoc {
-    source = sourceSets.api.allJava
-    options.tags = [ "side:a:Side:" ]
+    source sourceSets.api.allJava
+    options.encoding = 'UTF-8'
+    options.tags = [
+            'side:a:Side:',
+            'apiNote:a:API Note:',
+            'implSpec:a:Implementation Requirements:',
+            'implNote:a:Implementation Note:'
+    ]
     if(JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
@@ -203,20 +220,20 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
+    finalizedBy('reobfJar')
 }
 
-task sourceJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set('sources')
-    description = 'Creates a JAR containing the source code.'
+sourcesJar {
     from sourceSets.main.allSource
     from sourceSets.api.allSource
 }
 
-task apiJar(type: Jar, dependsOn: classes) {
+task apiJar(type: Jar, dependsOn: apiClasses) {
     archiveClassifier.set('api')
     description = 'Creates a JAR containing the whole api code.'
     from sourceSets.api.allSource
     from sourceSets.api.output
+    finalizedBy('reobfJar')
 }
 
 tasks.withType(Jar).configureEach {
@@ -229,26 +246,28 @@ tasks.withType(Jar).configureEach {
     }
     manifest {
         mainAttributes(
-                "Maven-Artifact": "${project.mod_group}:${project.archivesBaseName}:${project.version}",
-                "Specification-Title": archivesBaseName,
-                "Specification-Vendor": "${project.author}",
-                "Specification-Version": "1",
-                "Implementation-Title": "${archivesBaseName}${extension}",
-                "Implementation-Version": "${project.mod_version}",
-                "Implementation-Vendor": "${project.author}",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "Built-On-Java": "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                "Built-On": "${project.mc_version}-${project.forge_version}"
+                'Maven-Artifact': "${project.mod_group}:${project.archivesBaseName}:${project.version}",
+                'Specification-Title': archivesBaseName,
+                'Specification-Vendor': "${project.vendor}",
+                'Specification-Version': '1',
+                'Implementation-Title': "${archivesBaseName}${extension}",
+                'Implementation-Version': "${project.mod_version}",
+                'Implementation-Vendor': "${project.vendor}",
+                'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On': "${project.mc_version}-${project.forge_version}",
+                'Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Git-Commit': "${grgit.head().abbreviatedId}",
+                'Git-Branch': "${grgit.branch.current().fullName.split('/').drop(2).join('/')}",
+                'FMLModType': 'MOD'
         )
     }
 }
 
-jar.finalizedBy('reobfJar')
-
 artifacts {
     archives jar
     archives apiJar
-    archives sourceJar
+    archives sourcesJar
+    archives javadocJar
 }
 
 task setupGithubActions() {
@@ -269,50 +288,49 @@ task setupGithubActions() {
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-            artifact sourceJar {
-                classifier 'sources'
+    publications.create('mavenJava', MavenPublication) {
+        groupId = project.group
+        artifactId = project.archivesBaseName
+        version = project.version
+        from components.java
+        pom {
+            name = project.name
+            url = project.url
+            packaging = 'jar'
+            scm {
+                connection = "scm:git:git://github.com/${project.github}.git"
+                developerConnection = "scm:git:git@github.com:${project.github}.git"
+                url = "https://github.com/${project.github}"
             }
-            artifact apiJar {
-                classifier 'api'
+            issueManagement {
+                system = 'github'
+                url = "https://github.com/${project.github}.git/issues"
             }
-            pom {
-                name = project.name
-                url = project.url
-                packaging = 'jar'
-                scm {
-                    connection = "scm:git:git://github.com/${project.github}.git"
-                    developerConnection = "scm:git:git@github.com:${project.github}.git"
-                    url = "https://github.com/${project.github}"
+            organization {
+                name = 'Minecraftschurli Mods'
+                url = 'https://github.com/Minecraftschurli'
+            }
+            developers {
+                developer {
+                    id = 'minecraftschurli'
+                    name = 'Minecraftschurli'
+                    email = 'minecraftschurli@gmail.com'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/Minecraftschurli'
+                    timezone = 'Europe/Vienna'
                 }
-                issueManagement {
-                    system = 'github'
-                    url = "https://github.com/${project.github}.git/issues"
+            }
+            licenses {
+                license {
+                    name = '"Don\'t Be a Jerk" License'
+                    url = 'https://github.com/Minecraftschurli/Ars-Magica-Legacy/blob/version/1.17.1/LICENSE.md'
+                    distribution = 'repo'
                 }
-                organization {
-                    name = 'Minecraftschurli Mods'
-                    url = 'https://github.com/Minecraftschurli'
-                }
-                developers {
-                    developer {
-                        id = 'minecraftschurli'
-                        name = 'Minecraftschurli'
-                        email = 'minecraftschurli@gmail.com'
-                        organization = 'Minecraftschurli Mods'
-                        organizationUrl = 'https://github.com/Minecraftschurli'
-                        timezone = 'Europe/Vienna'
-                    }
-                }
-                licenses {
-                    license {
-                        name = '"Don\'t Be a Jerk" License'
-                        url = 'https://github.com/Minecraftschurli/Ars-Magica-Legacy/blob/version/1.17.1/LICENSE.md'
-                        distribution = 'repo'
+            }
+            withXml {
+                asNode().dependencies.dependency.each { dep ->
+                    if(dep.groupId.last().value().last() == 'net.minecraftforge' && dep.artifactId.last().value().last() == 'forge') {
+                        assert dep.parent().remove(dep)
                     }
                 }
             }
@@ -339,4 +357,8 @@ publishing {
 
 check {
     dependsOn editorconfigCheck
+}
+
+publish {
+    dependsOn check
 }

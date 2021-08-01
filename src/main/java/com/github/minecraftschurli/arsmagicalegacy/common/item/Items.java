@@ -7,18 +7,20 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Minecraftschurli
  * @version 2021-07-12
  */
 public final class Items {
-    public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final CreativeModeTab GROUP = new CreativeModeTab(Constants.MOD_ID) {
-        //@NotNull
+        @NotNull
         @Override
         public ItemStack makeIcon() {
             return ArsMagicaAPI.get().getBookStack();
         }
     };
+    private Items() {}
 }

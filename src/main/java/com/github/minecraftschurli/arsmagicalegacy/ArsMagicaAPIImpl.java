@@ -4,8 +4,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.Items;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
+//import net.minecraft.resources.ResourceLocation;
+//import net.minecraftforge.fml.ModList;
 //import vazkii.patchouli.api.PatchouliAPI;
 
 /**
