@@ -141,7 +141,6 @@ minecraft {
                 source sourceSets.main as SourceSet
             }
         }
-
         server {
             workingDirectory project.file('run/server') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
@@ -157,7 +156,6 @@ minecraft {
                 source sourceSets.main as SourceSet
             }
         }
-
         data {
             workingDirectory project.file('run/data') as File
             ideaModule "${project.name.replace(' ', '_')}.data"
