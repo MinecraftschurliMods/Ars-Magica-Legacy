@@ -24,19 +24,4 @@ jobs:
         id: build
         env:
           RELEASE_TYPE: snapshot
-        run: ./gradlew setupGithubActions build
-      - name: Create a Release
-        id: create_release
-        uses: meeDamian/github-release@v1.0.1
-        with:
-          draft: false
-          prerelease: true
-          gzip: false
-          commitish: ${{ github.sha }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.build.outputs.version }}
-          name: ${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}
-          files: >
-            build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}.jar
-            build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-api.jar
-            build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-sources.jar
+        run: ./gradlew setupGithubActions build publish
