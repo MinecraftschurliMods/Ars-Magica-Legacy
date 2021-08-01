@@ -60,11 +60,11 @@ public final class IMCHandler {
 
     private void processIMC(final InterModProcessEvent event) {
         event.getIMCStream().forEach(imcMessage -> {
-            if (this.handlers.containsKey(imcMessage.getMethod())) {
-                LOGGER.debug(RECEIVED_IMC, imcMessage.getMethod(), imcMessage.getSenderModId());
-                this.handlers.get(imcMessage.getMethod()).accept(imcMessage.getMessageSupplier());
+            if (this.handlers.containsKey(imcMessage.method())) {
+                LOGGER.debug(RECEIVED_IMC, imcMessage.method(), imcMessage.senderModId());
+                this.handlers.get(imcMessage.method()).accept(imcMessage.messageSupplier());
             } else {
-                LOGGER.warn(NO_HANDLER, imcMessage.getMethod(), imcMessage.getSenderModId());
+                LOGGER.warn(NO_HANDLER, imcMessage.method(), imcMessage.senderModId());
             }
         });
     }
@@ -101,8 +101,9 @@ public final class IMCHandler {
         /**
          * @param supplier the {@link Supplier} of the transmitted value
          */
-        default void accept(Supplier<T> supplier) {
-            accept(supplier.get());
+        @SuppressWarnings("unchecked")
+        default void accept(Supplier<?> supplier) {
+            accept((T) supplier.get());
         }
     }
 }
