@@ -80,6 +80,7 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     maven {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
@@ -106,9 +107,9 @@ dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
     //annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor" // Mixin is not on 1.17.1 yet
 
-    // JEI is not on 1.17.1 yet
-    //compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
+    // JEI is not on 1.17.1 yet (using self published to mavenLocal)
+    compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
     // curios is not on 1.17.1 yet
     //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
@@ -228,10 +229,14 @@ sourcesJar {
 
 task apiJar(type: Jar, dependsOn: apiClasses) {
     archiveClassifier.set('api')
-    description = 'Creates a JAR containing the whole api code.'
     from sourceSets.api.allSource
     from sourceSets.api.output
-    finalizedBy('reobfJar')
+}
+
+task deobfJar(type: Jar) {
+    archiveClassifier.set('deobf')
+    from sourceSets.main.output
+    from sourceSets.api.output
 }
 
 tasks.withType(Jar).configureEach {
@@ -266,6 +271,17 @@ artifacts {
     archives apiJar
     archives sourcesJar
     archives javadocJar
+    archives deobfJar
+}
+
+reobf {
+    apiJar { classpath.from(sourceSets.api.compileClasspath) }
+    jar { classpath.from(sourceSets.main.compileClasspath) }
+}
+
+task reobf {
+    dependsOn reobfJar
+    dependsOn reobfApiJar
 }
 
 task setupGithubActions() {
@@ -285,8 +301,17 @@ task setupGithubActions() {
     }
 }
 
+idea {
+    module {
+        for (String exclude in ['run', 'out', 'logs']) {
+            excludeDirs += file(exclude)
+        }
+    }
+}
+
 publishing {
     publications.create('mavenJava', MavenPublication) {
+        artifacts = [apiJar, jar, javadocJar, deobfJar, sourcesJar]
         groupId = project.group
         artifactId = project.archivesBaseName
         version = project.version
