@@ -3,6 +3,7 @@ import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
+        maven { url = 'https://sizableshrimp.me/maven' }
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
@@ -10,7 +11,7 @@ buildscript {
     dependencies {
         classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         //classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not on 1.17.1 yet
     }
 }
