@@ -78,6 +78,10 @@ sourceSets {
 configurations {
     apiCompile.extendsFrom(compile)
     dataCompile.extendsFrom(compile)
+    include {
+        transitive false
+    }
+    implementation.extendsFrom(include)
 }
 
 repositories {
@@ -106,10 +110,6 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
     }
-    flatDir {
-        name = 'libs'
-        dir 'libs'
-    }
     mavenLocal()
 }
 
@@ -134,6 +134,10 @@ dependencies {
 
     // ftb library for in-game config gui
     compileOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
+
+    // add internal libraries
+    include project(':projects:easyimclib')
+    include project(':projects:simplenetlib')
 
     apiCompileOnly 'org.jetbrains:annotations:21.0.1'
     dataCompileOnly 'org.jetbrains:annotations:21.0.1'
@@ -235,6 +239,9 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
+    from {
+        configurations.include.collect { it.isDirectory() ? it : zipTree(it) }
+    }
     finalizedBy('reobfJar')
 }
 
@@ -247,6 +254,7 @@ task apiJar(type: Jar, dependsOn: apiClasses) {
     archiveClassifier.set('api')
     from sourceSets.api.allSource
     from sourceSets.api.output
+    finalizedBy('reobfJar')
 }
 
 task deobfJar(type: Jar) {
@@ -326,7 +334,8 @@ idea {
 }
 
 publishing {
-    publications.create(project.archivesBaseName+'-maven', MavenPublication) {
+    publications.create(project.archivesBaseName+'ToMaven', MavenPublication) {
+        artifacts = [apiJar, deobfJar]
         groupId = project.group
         artifactId = project.archivesBaseName
         version = project.version
@@ -351,17 +360,24 @@ publishing {
             developers {
                 developer {
                     id = 'minecraftschurli'
+                    url = 'https://github.com/Minecraftschurli'
                     name = 'Minecraftschurli'
                     email = 'minecraftschurli@gmail.com'
                     organization = 'Minecraftschurli Mods'
                     organizationUrl = 'https://github.com/Minecraftschurli'
                     timezone = 'Europe/Vienna'
                 }
+                developer {
+                    id = 'ichhabehunger54'
+                    name = 'IchHabeHunger54'
+                    url = 'https://github.com/IchHabeHunger54'
+                    timezone = 'Europe/Vienna'
+                }
             }
             licenses {
                 license {
                     name = '"Don\'t Be a Jerk" License'
-                    url = 'https://github.com/Minecraftschurli/Ars-Magica-Legacy/blob/version/1.17.1/LICENSE.md'
+                    url = "https://github.com/${rootProject.github}/blob/version/${project.mc_version}/LICENSE.md"
                     distribution = 'repo'
                 }
             }

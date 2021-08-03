@@ -16,16 +16,18 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unused")
 public final class IMCHandler {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final Map<String, IMCHandler> HANDLERS = new HashMap<>();
     private static final String RECEIVED_IMC = "Received IMC message with method '{}' from '{}'";
     private static final String NO_HANDLER = RECEIVED_IMC + ", but no handler for {0} is available!";
 
     private final Map<String, IIMCMethodHandler<?>> handlers = new HashMap<>();
+    private final Logger logger;
+
     private final String modid;
 
     private IMCHandler(final String modid) {
         this.modid = modid;
+        this.logger = LogManager.getLogger("IMCHandler(%s)".formatted(modid));
     }
 
     /**
@@ -34,6 +36,7 @@ public final class IMCHandler {
      * @param bus the eventbus to register the listener to
      */
     public void init(final IEventBus bus) {
+        this.logger.debug("Initializing IMCHandler({})", this.modid);
         bus.addListener(this::processIMC);
     }
 
@@ -45,6 +48,7 @@ public final class IMCHandler {
      * @param <T> the type of the handler parameter
      */
     public <T> void registerIMCMethodHandler(final String method, final IIMCMethodHandler<T> handler) {
+        this.logger.debug("Registering method {} for IMCHandler({})", method, this.modid);
         this.handlers.put(method, handler);
     }
 
@@ -61,10 +65,10 @@ public final class IMCHandler {
     private void processIMC(final InterModProcessEvent event) {
         event.getIMCStream().forEach(imcMessage -> {
             if (this.handlers.containsKey(imcMessage.method())) {
-                LOGGER.debug(RECEIVED_IMC, imcMessage.method(), imcMessage.senderModId());
+                this.logger.debug(RECEIVED_IMC, imcMessage.method(), imcMessage.senderModId());
                 this.handlers.get(imcMessage.method()).accept(imcMessage.messageSupplier());
             } else {
-                LOGGER.warn(NO_HANDLER, imcMessage.method(), imcMessage.senderModId());
+                this.logger.warn(NO_HANDLER, imcMessage.method(), imcMessage.senderModId());
             }
         });
     }

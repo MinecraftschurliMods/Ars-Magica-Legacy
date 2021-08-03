@@ -1,0 +1,144 @@
+buildscript {
+    repositories {
+        maven { url = 'https://sizableshrimp.me/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: "${rootProject.forgegradle_version}", changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+
+
+group = "${project.lib_group}"
+version = "${rootProject.mc_version}-${project.lib_version}"
+archivesBaseName = "${project.lib_name}"
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(rootProject.java_version)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['resources']
+        }
+    }
+}
+
+dependencies {
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${rootProject.mc_version}-${rootProject.forge_version}"
+    compileOnly 'org.jetbrains:annotations:21.0.1'
+}
+
+minecraft {
+    mappings channel: "${rootProject.mappings_channel}", version: "${rootProject.mappings_version}"
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.tags = [
+            'side:a:Side:',
+            'apiNote:a:API Note:',
+            'implSpec:a:Implementation Requirements:',
+            'implNote:a:Implementation Note:'
+    ]
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title': archivesBaseName,
+                'Specification-Vendor': "${project.lib_vendor}",
+                'Specification-Version': '1',
+                'Implementation-Title': archivesBaseName,
+                'Implementation-Version': "${project.lib_version}",
+                'Implementation-Vendor': "${project.lib_vendor}",
+                'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On': "${rootProject.mc_version}-${rootProject.forge_version}",
+                'Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLModType': 'LIBRARY'
+        ])
+    }
+    finalizedBy('reobfJar')
+}
+
+task deobfJar(type: Jar) {
+    archiveClassifier.set('deobf')
+}
+
+artifacts {
+    archives jar
+    archives deobfJar
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications.create(project.archivesBaseName+'ToMaven', MavenPublication) {
+        artifacts = [deobfJar]
+        groupId = project.group
+        artifactId = project.archivesBaseName
+        version = project.version
+        from components.java
+        pom {
+            name = project.name
+            url = project.url
+            packaging = 'jar'
+            scm {
+                connection = "scm:git:git://github.com/${rootProject.github}.git"
+                developerConnection = "scm:git:git@github.com:${rootProject.github}.git"
+                url = "https://github.com/${rootProject.github}"
+            }
+            issueManagement {
+                system = 'github'
+                url = "https://github.com/${rootProject.github}.git/issues"
+            }
+            organization {
+                name = 'Minecraftschurli Mods'
+                url = 'https://github.com/Minecraftschurli'
+            }
+            developers {
+                developer {
+                    id = 'minecraftschurli'
+                    name = 'Minecraftschurli'
+                    email = 'minecraftschurli@gmail.com'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/Minecraftschurli'
+                    timezone = 'Europe/Vienna'
+                }
+            }
+            licenses {
+                license {
+                    name = 'MIT'
+                    url = "https://github.com/${rootProject.github}/blob/version/${rootProject.mc_version}/projects/${project.lib_name}/LICENSE"
+                    distribution = 'repo'
+                }
+            }
+            withXml {
+                asNode().dependencies.dependency.each { dep ->
+                    if(dep.version.last().value().last().contains('_mapped_')) {
+                        assert dep.parent().remove(dep)
+                    }
+                }
+            }
+        }
+    }
+}
