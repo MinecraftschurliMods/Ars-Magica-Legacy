@@ -80,44 +80,59 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
+    mavenCentral()
     maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+        name = 'saps maven'
+        url = 'https://maven.saps.dev/minecraft/'
     }
     maven {
-        name = "theillusivec4 Maven"
-        url = "https://maven.theillusivec4.top/"
+        name = 'Progwml6 maven'
+        url = 'https://dvs1.progwml6.com/files/maven/'
+    }
+    maven {
+        name = 'theillusivec4 Maven'
+        url = 'https://maven.theillusivec4.top/'
     }
     maven {
         name = 'blamejared Maven'
         url = 'https://maven.blamejared.com'
     }
     maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven/'
     }
     maven {
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
+        name = 'ModMaven'
+        url = 'https://modmaven.k-4u.nl'
     }
+    flatDir {
+        name = 'libs'
+        dir 'libs'
+    }
+    mavenLocal()
 }
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
     //annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor" // Mixin is not on 1.17.1 yet
 
-    // JEI is not on 1.17.1 yet (using self published to mavenLocal)
+    // jei for integration
+    // jei is not on 1.17.1 yet (using self published to mavenLocal)
     compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
+    // curios for additional inventory slots
     // curios is not on 1.17.1 yet
     //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
     //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
 
+    // patchouli for the guide book (arcane compendium)
     // patchouli is not on 1.17.1 yet
     //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    // ftb library for in-game config gui
+    compileOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
 
     apiCompileOnly 'org.jetbrains:annotations:21.0.1'
     dataCompileOnly 'org.jetbrains:annotations:21.0.1'
@@ -303,15 +318,14 @@ task setupGithubActions() {
 
 idea {
     module {
-        for (String exclude in ['run', 'out', 'logs']) {
+        for (String exclude in ['run', 'out', 'libs']) {
             excludeDirs += file(exclude)
         }
     }
 }
 
 publishing {
-    publications.create('mavenJava', MavenPublication) {
-        artifacts = [apiJar, jar, javadocJar, deobfJar, sourcesJar]
+    publications.create(project.archivesBaseName+'-maven', MavenPublication) {
         groupId = project.group
         artifactId = project.archivesBaseName
         version = project.version
@@ -352,7 +366,7 @@ publishing {
             }
             withXml {
                 asNode().dependencies.dependency.each { dep ->
-                    if(dep.groupId.last().value().last() == 'net.minecraftforge' && dep.artifactId.last().value().last() == 'forge') {
+                    if(dep.version.last().value().last().contains('_mapped_')) {
                         assert dep.parent().remove(dep)
                     }
                 }

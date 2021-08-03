@@ -29,11 +29,13 @@ public final class ArsMagicaLegacy {
      * The Mod Constructor
      */
     public ArsMagicaLegacy() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::setup);
-        IMC_HANDLER.init(FMLJavaModLoadingContext.get().getModEventBus());
-        modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         INSTANCE = this;
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::setup);
+        IMC_HANDLER.init(bus);
+        final ModLoadingContext context = ModLoadingContext.get();
+        Config.init(context);
+        modInfo = context.getActiveContainer().getModInfo();
     }
 
     /**
