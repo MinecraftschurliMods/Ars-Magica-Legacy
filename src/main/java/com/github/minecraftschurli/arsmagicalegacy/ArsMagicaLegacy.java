@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,13 +16,13 @@ import org.apache.logging.log4j.Logger;
  * @author Minecraftschurli
  * @version 2021-06-19
  */
-@Mod(Constants.MOD_ID)
+@Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     private static final Logger LOGGER = LogManager.getLogger();
     private static ArsMagicaLegacy INSTANCE;
 
-    public static final IMCHandler IMC_HANDLER = IMCHandler.create(Constants.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(Constants.MOD_ID, "main", 0);
+    public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
 
     private final IModInfo modInfo;
 

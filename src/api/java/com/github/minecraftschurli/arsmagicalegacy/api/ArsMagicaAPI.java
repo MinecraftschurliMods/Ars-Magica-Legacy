@@ -12,6 +12,7 @@ import java.util.ServiceLoader;
  * @version 2021-06-18
  */
 public final class ArsMagicaAPI {
+    public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> ServiceLoader
             .load(IArsMagicaAPI.class)
             .stream()
