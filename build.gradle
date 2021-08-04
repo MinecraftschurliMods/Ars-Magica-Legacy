@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -18,7 +19,7 @@ buildscript {
 
 plugins {
     id 'org.ec4j.editorconfig' version '0.0.3'
-    id "org.ajoberstar.grgit" version "4.1.0"
+    id 'org.ajoberstar.grgit' version '4.1.0'
     id 'maven-publish'
     id 'eclipse'
     id 'idea'
@@ -85,13 +86,14 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
-        name = 'saps maven'
+        name = 'saps Maven'
         url = 'https://maven.saps.dev/minecraft/'
     }
     maven {
-        name = 'Progwml6 maven'
+        name = 'Progwml6 Maven'
         url = 'https://dvs1.progwml6.com/files/maven/'
     }
     maven {
@@ -110,7 +112,6 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
     }
-    mavenLocal()
 }
 
 dependencies {
@@ -118,7 +119,6 @@ dependencies {
     //annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor" // Mixin is not on 1.17.1 yet
 
     // jei for integration
-    // jei is not on 1.17.1 yet (using self published to mavenLocal)
     compileOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
@@ -132,8 +132,12 @@ dependencies {
     //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
     // ftb library for in-game config gui
-    compileOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
-    runtimeOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
+    //compileOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}"){
+    //    transitive false
+    //}
+    //runtimeOnly fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}"){
+    //    transitive false
+    //}
 
     // add internal libraries
     include project(':projects:easyimclib')
@@ -196,12 +200,14 @@ minecraft {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
 }*/// Mixin is not on 1.17.1 yet
 
+def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
         'version': project.version,
         'mod_id': project.mod_id,
-        'mod_name': project.name,
-        'mod_url': project.url,
-        'mod_author': project.author,
+        'mod_name': project.mod_name,
+        'mod_url': project.mod_url,
+        'mod_author': project.mod_author,
+        'mod_credits': project.mod_credits,
         //'patchouli_version_range': project.patchouli_version_range,// patchouli is not on 1.17.1 yet
         'loader_version_range': project.loader_version_range,
         'forge_version_range': project.forge_version_range,
@@ -213,11 +219,11 @@ def replaceProperties = [
 processResources {
     duplicatesStrategy DuplicatesStrategy.INCLUDE
     from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
+        include replaceIn
         expand replaceProperties
     }
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
+        exclude replaceIn
     }
     // minify json files
     doLast {
@@ -277,7 +283,7 @@ tasks.withType(Jar).configureEach {
         }
     }
     manifest {
-        mainAttributes(
+        mainAttributes([
                 'Maven-Artifact': "${project.mod_group}:${project.archivesBaseName}:${project.version}",
                 'Specification-Title': archivesBaseName,
                 'Specification-Vendor': "${project.vendor}",
@@ -291,7 +297,7 @@ tasks.withType(Jar).configureEach {
                 'Git-Commit': "${grgit.head().abbreviatedId}",
                 'Git-Branch': "${grgit.branch.current().fullName.split('/').drop(2).join('/')}",
                 'FMLModType': 'MOD'
-        )
+        ])
     }
 }
 
@@ -346,8 +352,8 @@ publishing {
         version = project.version
         from components.java
         pom {
-            name = project.name
-            url = project.url
+            name = project.mod_name
+            url = project.mod_url
             packaging = 'jar'
             scm {
                 connection = "scm:git:git://github.com/${project.github}.git"

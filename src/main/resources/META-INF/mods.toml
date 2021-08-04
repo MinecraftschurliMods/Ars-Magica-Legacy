@@ -1,15 +1,14 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "MIT"
-services = [""]
 
 [[mods]]
 modId = "${mod_id}"
 version = "${version}"
 displayName = "${mod_name}"
-displayURL="${mod_url}" #optional
+displayURL="${mod_url}"
 #logoFile="arsmagicalegacy.png" #optional
-#credits="Thanks for this example mod goes to Java" #optional
+credits="${mod_credits}"
 authors = "${mod_author}"
 description = '''
 Continuation fo ArsMagica 2 by Mithion
@@ -21,6 +20,13 @@ Continuation fo ArsMagica 2 by Mithion
 #versionRange = "\${patchouli_version_range}"
 #ordering = "BEFORE"
 #side = "BOTH"
+
+#[[dependencies.${mod_id}]]
+#modId = "ftblibrary"
+#mandatory = false
+#versionRange = "\${ftblibrary_version_range}"
+#ordering = "NONE"
+#side = "CLIENT"
 
 [[dependencies.${mod_id}]]
 modId = "forge"
