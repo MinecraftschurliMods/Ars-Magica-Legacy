@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.common.Registries;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.Logger;
  */
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     private static ArsMagicaLegacy INSTANCE;
 
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
@@ -34,6 +35,7 @@ public final class ArsMagicaLegacy {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
         IMC_HANDLER.init(bus);
+        Registries.init(bus);
         final ModLoadingContext context = ModLoadingContext.get();
         Config.init(context);
         modInfo = context.getActiveContainer().getModInfo();
@@ -54,5 +56,6 @@ public final class ArsMagicaLegacy {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        assert ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl;
     }
 }

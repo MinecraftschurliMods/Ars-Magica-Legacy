@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
  * @author Minecraftschurli
  * @version 2021-06-18
  */
-public class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
+public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public CreativeModeTab getItemGroup() {

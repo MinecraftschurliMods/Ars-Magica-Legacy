@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
  * @version 2021-06-19
  */
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.DEDICATED_SERVER, modid = ArsMagicaAPI.MOD_ID)
-public class ServerInit {
+public final class ServerInit {
     @SubscribeEvent
     static void registerCommands(final RegisterCommandsEvent event) {
     }

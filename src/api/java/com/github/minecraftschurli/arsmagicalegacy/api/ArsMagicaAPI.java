@@ -4,6 +4,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.util.ServiceLoader;
 
@@ -19,11 +20,11 @@ public final class ArsMagicaAPI {
             .findFirst()
             .map(ServiceLoader.Provider::get)
             .orElseGet(() -> {
-                LogManager.getLogger().warn("Unable to find ArsMagicaAPIImpl, using a dummy");
+                LogManager.getLogger().error("Unable to find ArsMagicaAPIImpl, using a dummy");
                 return StubArsMagicaAPI.INSTANCE;
             }));
 
-    private ArsMagicaAPI() { }
+    private ArsMagicaAPI() {}
 
     /**
      * Get the API Instance
@@ -38,6 +39,7 @@ public final class ArsMagicaAPI {
      * The Interface representing the API
      */
     @SuppressWarnings("unused")
+    @NonExtendable
     public interface IArsMagicaAPI {
         /**
          * Get the {@link CreativeModeTab} of the mod
