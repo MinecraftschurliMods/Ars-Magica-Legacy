@@ -32,4 +32,4 @@ Essentially, take this and learn from it! Create addon mods that depend on it! I
 
 Don't be a jerk.
 
-©2021 Minecraftschurli
+Copyright (c) 2021 Georg Burkl a.k.a. "Minecraftschurli"

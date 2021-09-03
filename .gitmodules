@@ -1,0 +1,6 @@
+[submodule "easyimclib"]
+    path = projects/easyimclib
+    url = https://github.com/Minecraftschurli/EasyIMCLib.git
+[submodule "simplenetlib"]
+    path = projects/simplenetlib
+    url = https://github.com/Minecraftschurli/SimpleNetLib.git
