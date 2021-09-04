@@ -1,4 +1,9 @@
 rootProject.name = 'Ars Magica Legacy'
 
-include('projects:easyimclib')
-include('projects:simplenetlib')
+file('projects').list().each {
+    var pDir = "projects/$it".toString()
+    if (file(pDir).isDirectory() && file("$pDir/build.gradle").exists()) {
+        include("projects:$it")
+        println "using $it"
+    }
+}

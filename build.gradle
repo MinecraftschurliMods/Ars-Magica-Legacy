@@ -120,7 +120,7 @@ repositories {
     //}
     maven {
         name = 'Minecraftschurli Maven'
-        url = 'https://minecraftschurli.ddns.net/repository/maven-public'
+        url = 'https://minecraftschurli.ddns.net/repository'
     }
     maven {
         name = 'saps Maven'
@@ -170,14 +170,23 @@ dependencies {
     //runtimeMod fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
 
     // add internal libraries
-    include project(':projects:easyimclib') ?: fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0')
-    include project(':projects:simplenetlib') ?: fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
+    var projects = subprojects.collect {it.path }
+    if (projects.contains(':projects:easyimclib')) {
+        include project(':projects:easyimclib')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0')
+    }
+    if (projects.contains(':projects:simplenetlib')) {
+        include project(':projects:simplenetlib')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
+    }
 
     library 'org.jetbrains:annotations:22.0.0'
 }
 
 minecraft {
-    mappings channel: "${project.mappings_channel}", version: "${project.mappings_version}"
+    mappings project.mappings_channel, project.mappings_version
     //accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
     runs {
         client {
@@ -394,7 +403,7 @@ publishing {
             }
             organization {
                 name = 'Minecraftschurli Mods'
-                url = 'https://github.com/Minecraftschurli'
+                url = 'https://github.com/MinecraftschurliMods'
             }
             developers {
                 developer {
@@ -403,7 +412,7 @@ publishing {
                     name = 'Minecraftschurli'
                     email = 'minecraftschurli@gmail.com'
                     organization = 'Minecraftschurli Mods'
-                    organizationUrl = 'https://github.com/Minecraftschurli'
+                    organizationUrl = 'https://github.com/MinecraftschurliMods'
                     timezone = 'Europe/Vienna'
                 }
                 developer {
