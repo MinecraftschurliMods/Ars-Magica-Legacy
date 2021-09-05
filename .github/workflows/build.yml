@@ -23,8 +23,8 @@ jobs:
       - name: Build with Gradle
         id: build
         env:
-          MAVEN_URL: https://minecraftschurli.ddns.net/repository
-          MAVEN_USER: Minecraftschurli
+          MAVEN_URL: ${{ secrets.MAVEN_URL }}
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           RELEASE_TYPE: snapshot
         run: ./gradlew setupGithubActions build publish
