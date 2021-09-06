@@ -1,10 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * @author Minecraftschurli
@@ -27,6 +27,7 @@ public final class Config {
 
     private static boolean init;
 
+    @Internal
     static synchronized void init(final ModLoadingContext context) {
         if (init) return;
         init = true;
