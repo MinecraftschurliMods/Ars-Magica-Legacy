@@ -169,6 +169,8 @@ dependencies {
     //modAPI fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
     //runtimeMod fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
 
+    runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
+
     // add internal libraries
     var projects = subprojects.collect {it.path }
     if (projects.contains(':projects:easyimclib')) {
@@ -379,6 +381,10 @@ idea {
             excludeDirs += file(exclude)
         }
     }
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
 }
 
 publishing {
