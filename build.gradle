@@ -31,6 +31,11 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 //apply plugin: 'org.spongepowered.mixin' // Mixin is not on 1.17.1 yet
 //=============================================
 
+//mixin {
+//    add sourceSets.main, "arsmagicalegacy.refmap.json"
+//}// Mixin is not on 1.17.1 yet
+
+
 group = "${project.mod_group}"
 version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
@@ -64,36 +69,13 @@ tasks.withType(JavaCompile) {
 }
 
 sourceSets {
-    api {
-        resources.srcDirs = []
-        compileClasspath += configurations.getByName("minecraft")
+    api.resources.srcDirs = []
+    main.resources {
+        srcDirs += 'src/main/generated'
+        exclude '.cache'
     }
-    main {
-        resources {
-            srcDirs += 'src/main/generated'
-            exclude '.cache'
-        }
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
-    data {
-        resources.srcDirs = []
-        compileClasspath += configurations.getByName("minecraft")
-        runtimeClasspath += configurations.getByName("minecraft")
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
-    test {
-        resources.srcDirs = []
-        compileClasspath += configurations.getByName("minecraft")
-        runtimeClasspath += configurations.getByName("minecraft")
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
+    data.resources.srcDirs = []
+    test.resources.srcDirs = []
 }
 
 configurations {
@@ -102,14 +84,28 @@ configurations {
     modAPI
     runtimeMod
     include { transitive false }
+
     apiCompileOnly.extendsFrom(library)
-    apiCompileOnly.extendsFrom(modAPI)
-    dataCompileOnly.extendsFrom(library)
-    dataCompileOnly.extendsFrom(modAPI)
     compileOnly.extendsFrom(library)
+    dataCompileOnly.extendsFrom(library)
+
+    apiCompileOnly.extendsFrom(modAPI)
     compileOnly.extendsFrom(modAPI)
+    dataCompileOnly.extendsFrom(modAPI)
+
     runtimeOnly.extendsFrom(runtimeMod)
+    dataRuntimeOnly.extendsFrom(runtimeMod)
+
     implementation.extendsFrom(include)
+    dataImplementation.extendsFrom(include)
+
+    dataImplementation.extendsFrom(datagenLibrary)
+
+    apiCompileClasspath.extendsFrom(minecraft)
+    dataCompileClasspath.extendsFrom(minecraft)
+    dataRuntimeClasspath.extendsFrom(minecraft)
+    testCompileClasspath.extendsFrom(minecraft)
+    testRuntimeClasspath.extendsFrom(minecraft)
 }
 
 repositories {
@@ -169,7 +165,7 @@ dependencies {
     //modAPI fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
     //runtimeMod fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
 
-    runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
+    //runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
 
     // add internal libraries
     var projects = subprojects.collect {it.path }
@@ -217,6 +213,9 @@ minecraft {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
+            lazyToken('minecraft_classpath') {
+                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
         }
         server {
             workingDirectory project.file('run/server') as File
@@ -247,10 +246,6 @@ minecraft {
         }
     }
 }
-
-//mixin {
-//    add sourceSets.main, "arsmagicalegacy.refmap.json"
-//}// Mixin is not on 1.17.1 yet
 
 def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
