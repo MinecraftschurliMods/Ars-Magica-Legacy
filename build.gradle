@@ -98,6 +98,7 @@ sourceSets {
 
 configurations {
     library
+    datagenLibrary
     modAPI
     runtimeMod
     include { transitive false }
@@ -161,9 +162,8 @@ dependencies {
     runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
 
     // patchouli for the guide book (arcane compendium)
-    // patchouli is not on 1.17.1 yet (needs mixin)
-    //modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
-    //runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+    modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
+    runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
     // ftb library for in-game config gui
     //modAPI fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
@@ -183,6 +183,19 @@ dependencies {
     } else {
         include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
     }
+    if (projects.contains(':projects:patchouli_datagen')) {
+        datagenLibrary project(':projects:patchouli_datagen')
+    } else {
+        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
+    }
+
+    implementation sourceSets.api.output
+
+    dataImplementation sourceSets.api.output
+    dataImplementation sourceSets.main.output
+
+    testImplementation sourceSets.api.output
+    testImplementation sourceSets.main.output
 
     library 'org.jetbrains:annotations:22.0.0'
 }
@@ -247,7 +260,7 @@ def replaceProperties = [
         'mod_url': project.mod_url,
         'mod_author': project.mod_author,
         'mod_credits': project.mod_credits,
-        //'patchouli_version_range': project.patchouli_version_range,// patchouli is not on 1.17.1 yet
+        'patchouli_version_range': project.patchouli_version_range,
         'loader_version_range': project.loader_version_range,
         'forge_version_range': project.forge_version_range,
         'mc_version_range': project.mc_version_range/*,

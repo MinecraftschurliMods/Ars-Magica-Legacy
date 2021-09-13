@@ -4,3 +4,5 @@
 [submodule "projects/simplenetlib"]
 	path = projects/simplenetlib
 	url = https://github.com/Minecraftschurli/SimpleNetLib.git
+[submodule "projects/patchouli_datagen"]
+	path = projects/patchouli_datagen
