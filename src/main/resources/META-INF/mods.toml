@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
-license = "MIT"
+license = "\"Don't Be a Jerk\" License"
 
 [[mods]]
 modId = "${mod_id}"
