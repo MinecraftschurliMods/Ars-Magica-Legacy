@@ -1,8 +1,9 @@
 [submodule "projects/easyimclib"]
 	path = projects/easyimclib
-	url = https://github.com/Minecraftschurli/EasyIMCLib.git
+	url = https://github.com/MinecraftschurliMods/EasyIMCLib.git
 [submodule "projects/simplenetlib"]
 	path = projects/simplenetlib
-	url = https://github.com/Minecraftschurli/SimpleNetLib.git
+	url = https://github.com/MinecraftschurliMods/SimpleNetLib.git
 [submodule "projects/patchouli_datagen"]
 	path = projects/patchouli_datagen
+	url = https://github.com/MinecraftschurliMods/PatchouliDatagen.git
