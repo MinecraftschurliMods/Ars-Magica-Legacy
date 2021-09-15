@@ -337,6 +337,8 @@ tasks.withType(Jar).configureEach {
                 'FMLModType': 'MOD'
         ])
     }
+
+    exclude '**/*.psd'
 }
 
 artifacts {
