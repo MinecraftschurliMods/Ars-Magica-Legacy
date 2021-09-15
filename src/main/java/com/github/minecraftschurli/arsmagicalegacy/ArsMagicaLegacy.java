@@ -22,8 +22,8 @@ public final class ArsMagicaLegacy {
     private static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     private static ArsMagicaLegacy INSTANCE;
 
-    public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
+    //public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
+    //public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
 
     private final IModInfo modInfo;
 
@@ -34,7 +34,7 @@ public final class ArsMagicaLegacy {
         INSTANCE = this;
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
-        IMC_HANDLER.init(bus);
+        //IMC_HANDLER.init(bus);
         Registries.init(bus);
         final ModLoadingContext context = ModLoadingContext.get();
         Config.init(context);
