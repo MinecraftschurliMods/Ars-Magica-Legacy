@@ -3,6 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.*;
+import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +28,10 @@ public class TagsProvider {
 
         @Override
         public void addTags() {
-
+            this.tag(BlockTags.MINEABLE_WITH_PICKAXE); // add blocks mineable with pickaxe
+            this.tag(BlockTags.MINEABLE_WITH_SHOVEL);  // add blocks mineable with shovel
+            this.tag(BlockTags.MINEABLE_WITH_AXE);     // add blocks mineable with axe
+            this.tag(BlockTags.MINEABLE_WITH_HOE);     // add blocks mineable with hoe
         }
     }
 
