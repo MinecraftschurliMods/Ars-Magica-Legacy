@@ -14,7 +14,7 @@ buildscript {
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         classpath group: 'org.parchmentmc', name: 'librarian', version: "${project.librarian_version}"
-//        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not on 1.17.1 yet
+//        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not needed atm
     }
 }
 
@@ -28,12 +28,12 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-//apply plugin: 'org.spongepowered.mixin' // Mixin is not on 1.17.1 yet
+//apply plugin: 'org.spongepowered.mixin' // Mixin is not needed atm
 //=============================================
 
 //mixin {
 //    add sourceSets.main, "arsmagicalegacy.refmap.json"
-//}// Mixin is not on 1.17.1 yet
+//}// Mixin is not needed atm
 
 
 group = "${project.mod_group}"
@@ -80,9 +80,9 @@ sourceSets {
 
 configurations {
     library
-    datagenLibrary
     modAPI
     runtimeMod
+    datagenLibrary { transitive false }
     include { transitive false }
 
     apiCompileOnly.extendsFrom(library)
@@ -147,7 +147,7 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor' // Mixin is not on 1.17.1 yet
+    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor' // Mixin is not needed atm
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
@@ -205,16 +205,13 @@ minecraft {
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            // Mixin is not on 1.17.1 yet
+            // Mixin is not needed atm
             //property 'mixin.env.remapRefMap', 'true'
             //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            //arg "-mixin.config=arsmagicalegacy.mixins.json"
+            //arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
-            }
-            lazyToken('minecraft_classpath') {
-                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
             }
         }
         server {
@@ -223,10 +220,10 @@ minecraft {
             singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            // Mixin is not on 1.17.1 yet
+            // Mixin is not needed atm
             //property 'mixin.env.remapRefMap', 'true'
             //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            //arg "-mixin.config=arsmagicalegacy.mixins.json"
+            //arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
@@ -264,13 +261,10 @@ def replaceProperties = [
 ]
 
 processResources {
-    duplicatesStrategy DuplicatesStrategy.INCLUDE
-    from(sourceSets.main.resources.srcDirs) {
-        include replaceIn
+    inputs.properties replaceProperties
+
+    filesMatching(replaceIn) {
         expand replaceProperties
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude replaceIn
     }
     // minify json files
     doLast {
@@ -297,9 +291,6 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
-    from {
-        configurations.include.collect { it.isDirectory() ? it : zipTree(it) }
-    }
     finalizedBy('reobfJar')
 }
 
