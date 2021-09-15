@@ -12,10 +12,10 @@ import net.minecraftforge.common.Tags.IOptionalNamedTag;
  * @author Minecraftschurli
  * @version 2021-08-04
  */
-public final class Tags {
+public final class AMTags {
     private static final String FORGE = "forge";
 
-    private Tags() {}
+    private AMTags() {}
 
     /**
      * Holder class for all {@link Item} {@link Tag Tags}
