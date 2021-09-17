@@ -8,10 +8,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @author Minecraftschurli
- * @version 2021-08-04
- */
 public class TagsProvider {
     static void setup(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
         TagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);

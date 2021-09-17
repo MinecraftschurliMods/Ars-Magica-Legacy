@@ -15,10 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.function.Consumer;
 
-/**
- * @author Minecraftschurli
- * @version 2021-06-20
- */
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public class ArsMagicaLegacyDatagen {
     private static final Logger LOGGER = LogManager.getLogger();

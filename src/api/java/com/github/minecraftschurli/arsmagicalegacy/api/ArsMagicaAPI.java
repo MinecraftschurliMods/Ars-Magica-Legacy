@@ -8,10 +8,6 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.util.ServiceLoader;
 
-/**
- * @author Minecraftschurli
- * @version 2021-06-18
- */
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> ServiceLoader

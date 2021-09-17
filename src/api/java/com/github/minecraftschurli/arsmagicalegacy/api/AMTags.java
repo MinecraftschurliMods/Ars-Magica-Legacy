@@ -8,10 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
-/**
- * @author Minecraftschurli
- * @version 2021-08-04
- */
 public final class AMTags {
     private static final String FORGE = "forge";
 
