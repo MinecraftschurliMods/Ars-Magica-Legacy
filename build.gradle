@@ -14,13 +14,13 @@ buildscript {
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         classpath group: 'org.parchmentmc', name: 'librarian', version: "${project.librarian_version}"
-//        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}" // Mixin is not needed atm
+        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}"
     }
 }
 
 plugins {
     id 'org.ec4j.editorconfig' version '0.0.3'
-    id 'org.ajoberstar.grgit' version '4.1.0'
+    id 'org.ajoberstar.grgit'
     id 'maven-publish'
     id 'eclipse'
     id 'idea'
@@ -28,12 +28,12 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-//apply plugin: 'org.spongepowered.mixin' // Mixin is not needed atm
+apply plugin: 'org.spongepowered.mixin'
 //=============================================
 
-//mixin {
-//    add sourceSets.main, "arsmagicalegacy.refmap.json"
-//}// Mixin is not needed atm
+mixin {
+    add sourceSets.main, "arsmagicalegacy.refmap.json"
+}
 
 
 group = "${project.mod_group}"
@@ -111,10 +111,10 @@ configurations {
 repositories {
     mavenLocal()
     mavenCentral()
-    //maven {
-    //    name = 'Sponge maven'
-    //    url = 'https://repo.spongepowered.org/repository/maven-public/'
-    //}
+    maven {
+        name = 'Sponge maven'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
     maven {
         name = 'Minecraftschurli Maven'
         url = 'https://minecraftschurli.ddns.net/repository'
@@ -147,7 +147,7 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor' // Mixin is not needed atm
+    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
@@ -198,17 +198,16 @@ dependencies {
 
 minecraft {
     mappings project.mappings_channel, project.mappings_version
-    //accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
     runs {
         client {
             workingDirectory project.file('run/client') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            // Mixin is not needed atm
-            //property 'mixin.env.remapRefMap', 'true'
-            //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            //arg "--mixin.config=arsmagicalegacy.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
@@ -220,10 +219,9 @@ minecraft {
             singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            // Mixin is not needed atm
-            //property 'mixin.env.remapRefMap', 'true'
-            //property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            //arg "--mixin.config=arsmagicalegacy.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
@@ -256,8 +254,7 @@ def replaceProperties = [
         'loader_version_range': project.loader_version_range,
         'forge_version_range': project.forge_version_range,
         'mc_version_range': project.mc_version_range/*,
-        'mod_description': project.mod_description,
-        'mod_icon': mod_icon*/
+        'mod_description': project.mod_description*/
 ]
 
 processResources {

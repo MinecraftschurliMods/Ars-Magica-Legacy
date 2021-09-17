@@ -54,5 +54,6 @@ public final class ArsMagicaLegacy {
 
     private void setup(final FMLCommonSetupEvent event) {
         assert ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl;
+        Items.setup();
     }
 }

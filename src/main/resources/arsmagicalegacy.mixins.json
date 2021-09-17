@@ -1,14 +1,13 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.8.4",
   "package": "com.github.minecraftschurli.arsmagicalegacy.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "refmap": "arsmagicalegacy.refmap.json",
   "mixins": [
-    "ShapedRecipeAccessor"
+    "MixinEnderMan"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
