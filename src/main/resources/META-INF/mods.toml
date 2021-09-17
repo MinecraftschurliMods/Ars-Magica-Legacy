@@ -11,7 +11,7 @@ logoFile="logo.png"
 credits="${mod_credits}"
 authors = "${mod_author}"
 description = '''
-Continuation fo ArsMagica 2 by Mithion
+Continuation of ArsMagica 2 by Mithion
 '''
 
 [[dependencies.${mod_id}]]
