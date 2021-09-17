@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.Registries;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.Items;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,10 +14,6 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * @author Minecraftschurli
- * @version 2021-06-19
- */
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     private static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);

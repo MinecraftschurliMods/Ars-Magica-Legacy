@@ -9,11 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-
-/**
- * @author Minecraftschurli
- * @version 2021-06-15
- */
 @JeiPlugin
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

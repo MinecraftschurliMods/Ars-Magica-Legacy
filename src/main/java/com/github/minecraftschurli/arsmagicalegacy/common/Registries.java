@@ -20,10 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
-/**
- * @author Minecraftschurli
- * @version 2021-08-05
- */
 @NonExtendable
 public interface Registries {
     DeferredRegister<Block>               BLOCKS             = DeferredRegister.create(ForgeRegistries.BLOCKS, ArsMagicaAPI.MOD_ID);

@@ -8,10 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 import vazkii.patchouli.api.PatchouliAPI;
 
-/**
- * @author Minecraftschurli
- * @version 2021-06-18
- */
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
