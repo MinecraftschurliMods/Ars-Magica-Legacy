@@ -83,8 +83,16 @@ configurations {
     library
     modAPI
     runtimeMod
-    datagenLibrary { transitive false }
-    include { transitive false }
+    datagenLibrary {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+    include {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
 
     apiCompileOnly.extendsFrom(library)
     compileOnly.extendsFrom(library)
@@ -171,17 +179,17 @@ dependencies {
     // add internal libraries
     var projects = subprojects.collect {it.path }
     if (projects.contains(':projects:easyimclib')) {
-        include project(':projects:easyimclib')
+        include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
         include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0')
     }
     if (projects.contains(':projects:simplenetlib')) {
-        include project(':projects:simplenetlib')
+        include project(path: ':projects:simplenetlib', configuration: 'deobfJar')
     } else {
         include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
     }
     if (projects.contains(':projects:patchouli_datagen')) {
-        datagenLibrary project(':projects:patchouli_datagen')
+        datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
         datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
     }
