@@ -1,6 +1,7 @@
 //file:noinspection GroovyAssignabilityCheck
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.ajoberstar.grgit.Grgit
 
 buildscript {
     repositories {
@@ -30,11 +31,11 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 //=============================================
+def grgit = Grgit.open(currentDir: project.projectDir)
 
 mixin {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
 }
-
 
 group = "${project.mod_group}"
 version = "${project.mc_version}-${project.mod_version}"
@@ -253,8 +254,7 @@ def replaceProperties = [
         'patchouli_version_range': project.patchouli_version_range,
         'loader_version_range': project.loader_version_range,
         'forge_version_range': project.forge_version_range,
-        'mc_version_range': project.mc_version_range/*,
-        'mod_description': project.mod_description*/
+        'mc_version_range': project.mc_version_range
 ]
 
 processResources {
