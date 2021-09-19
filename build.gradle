@@ -210,44 +210,52 @@ minecraft {
     accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
     runs {
         client {
-            workingDirectory project.file('run/client') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
+            }
+
+            lazyToken('minecraft_classpath') {
+                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
             }
         }
         server {
-            workingDirectory project.file('run/server') as File
             ideaModule "${project.name.replace(' ', '_')}.main"
             singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            arg "--mixin.config=arsmagicalegacy.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
+
+            lazyToken('minecraft_classpath') {
+                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
         }
         data {
-            workingDirectory project.file('run/data') as File
             ideaModule "${project.name.replace(' ', '_')}.data"
             singleInstance true
-            property 'forge.logging.console.level', 'debug'
             args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
             }
+
+            lazyToken('minecraft_classpath') {
+                configurations.datagenLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
         }
+    }
+    runs.configureEach {
+        workingDirectory project.file("run/${it.name}") as File
+        property 'forge.logging.console.level', 'debug'
+        property 'mixin.env.remapRefMap', 'true'
+        property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+        arg "--mixin.config=arsmagicalegacy.mixins.json"
     }
 }
 
