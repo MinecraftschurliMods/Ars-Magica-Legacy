@@ -1,7 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.Items;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +12,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public CreativeModeTab getItemGroup() {
-        return Items.GROUP;
+        return AMItems.GROUP;
     }
 
     @Override

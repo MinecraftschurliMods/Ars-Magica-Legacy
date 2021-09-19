@@ -1,8 +1,8 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.Registries;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.Items;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,7 +32,7 @@ public final class ArsMagicaLegacy {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
         IMC_HANDLER.init(bus);
-        Registries.init(bus);
+        AMRegistries.init(bus);
         final ModLoadingContext context = ModLoadingContext.get();
         Config.init(context);
         modInfo = context.getActiveContainer().getModInfo();
@@ -54,6 +54,6 @@ public final class ArsMagicaLegacy {
 
     private void setup(final FMLCommonSetupEvent event) {
         assert ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl;
-        Items.setup();
+        AMItems.setup();
     }
 }
