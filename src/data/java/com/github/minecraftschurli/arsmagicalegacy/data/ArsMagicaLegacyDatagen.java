@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -24,13 +25,20 @@ public class ArsMagicaLegacyDatagen {
         if (evt.includeServer()) {
             TagsProvider.setup(generator, existingFileHelper);
         }
+        LanguageProvider lang = new LanguageProvider(generator, ArsMagicaAPI.MOD_ID, "en_us") {
+            @Override
+            protected void addTranslations() {}
+        };
         generator.addProvider(new AMPatchouliBookProvider(
                 generator,
                 ArsMagicaAPI.MOD_ID,
-                "en_us",
+                lang,
                 evt.includeClient(),
                 evt.includeServer())
         );
+        if (evt.includeClient()) {
+            generator.addProvider(lang);
+        }
     }
 
 }
