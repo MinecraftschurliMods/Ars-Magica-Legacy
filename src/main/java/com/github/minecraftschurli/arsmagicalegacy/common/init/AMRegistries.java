@@ -23,17 +23,17 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 @NonExtendable
 public interface AMRegistries {
     DeferredRegister<Block>               BLOCKS             = DeferredRegister.create(ForgeRegistries.BLOCKS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Fluid>               FLUIDS             = DeferredRegister.create(ForgeRegistries.FLUIDS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<Item>                ITEMS              = DeferredRegister.create(ForgeRegistries.ITEMS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MobEffect>           MOB_EFFECTS        = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<SoundEvent>          SOUND_EVENTS       = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Potion>              POTIONS            = DeferredRegister.create(ForgeRegistries.POTIONS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Enchantment>         ENCHANTMENTS       = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityType<?>>       ENTITIES           = DeferredRegister.create(ForgeRegistries.ENTITIES, ArsMagicaAPI.MOD_ID);
     DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITIES     = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES     = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, ArsMagicaAPI.MOD_ID);
     DeferredRegister<MenuType<?>>         CONTAINERS         = DeferredRegister.create(ForgeRegistries.CONTAINERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityType<?>>       ENTITIES           = DeferredRegister.create(ForgeRegistries.ENTITIES, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Enchantment>         ENCHANTMENTS       = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Fluid>               FLUIDS             = DeferredRegister.create(ForgeRegistries.FLUIDS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MobEffect>           MOB_EFFECTS        = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES     = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Potion>              POTIONS            = DeferredRegister.create(ForgeRegistries.POTIONS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<SoundEvent>          SOUND_EVENTS       = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES         = DeferredRegister.create(ForgeRegistries.STAT_TYPES, ArsMagicaAPI.MOD_ID);
 
     /**
@@ -44,17 +44,17 @@ public interface AMRegistries {
         AMBlocks.init();
         AMItems.init();
         BLOCKS.register(bus);
-        FLUIDS.register(bus);
         ITEMS.register(bus);
-        MOB_EFFECTS.register(bus);
-        SOUND_EVENTS.register(bus);
-        POTIONS.register(bus);
+        BLOCK_ENTITIES.register(bus);
+        CONTAINERS.register(bus);
         ENCHANTMENTS.register(bus);
         ENTITIES.register(bus);
-        BLOCK_ENTITIES.register(bus);
+        FLUIDS.register(bus);
+        MOB_EFFECTS.register(bus);
         PARTICLE_TYPES.register(bus);
-        CONTAINERS.register(bus);
+        POTIONS.register(bus);
         RECIPE_SERIALIZERS.register(bus);
+        SOUND_EVENTS.register(bus);
         STAT_TYPES.register(bus);
     }
 }
