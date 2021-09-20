@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.LanguageProvider;
 
 import java.util.function.Consumer;
 
-public class AMPatchouliBookProvider extends PatchouliBookProvider {
+class AMPatchouliBookProvider extends PatchouliBookProvider {
     private final LanguageProvider lang;
 
     public AMPatchouliBookProvider(DataGenerator generator, String modid, final LanguageProvider lang, boolean includeClient, boolean includeServer) {
@@ -20,15 +20,15 @@ public class AMPatchouliBookProvider extends PatchouliBookProvider {
     }
 
     @Override
-    protected void addBooks(final Consumer<BookBuilder<?,?,?>> consumer) {
+    protected void addBooks(final Consumer<BookBuilder<?, ?, ?>> consumer) {
         createBookBuilder("arcane_compendium", "Arcane Compendium", "Landing Text", lang)
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
                 .setCreativeTab(ArsMagicaAPI.get().getItemGroup().getRecipeFolderName())
                 .setUseResourcepack()
                 .addCategory("test", "TestCategory", "This is a test", new ItemStack(Items.BARRIER))
-                    .addEntry("test", "TestEntry", new ItemStack(Items.GLOW_BERRIES))
-                        .addSimpleTextPage("Lorem ipsum dolor sit")
-                    .build()
+                .addEntry("test", "TestEntry", new ItemStack(Items.GLOW_BERRIES))
+                .addSimpleTextPage("Lorem ipsum dolor sit")
+                .build()
                 .build()
                 .build(consumer);
     }

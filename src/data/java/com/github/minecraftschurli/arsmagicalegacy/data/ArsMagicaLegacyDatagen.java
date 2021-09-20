@@ -25,19 +25,12 @@ public class ArsMagicaLegacyDatagen {
         if (evt.includeServer()) {
             TagsProvider.setup(generator, existingFileHelper);
         }
-        LanguageProvider lang = new LanguageProvider(generator, ArsMagicaAPI.MOD_ID, "en_us") {
-            @Override
-            protected void addTranslations() {}
-        };
-        generator.addProvider(new AMPatchouliBookProvider(
-                generator,
-                ArsMagicaAPI.MOD_ID,
-                lang,
-                evt.includeClient(),
-                evt.includeServer())
-        );
+        LanguageProvider lang = new AMEnglishLanguageProvider(generator);
+        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));
         if (evt.includeClient()) {
             generator.addProvider(lang);
+            generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
+            generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
         }
     }
 
