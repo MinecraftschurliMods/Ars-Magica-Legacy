@@ -36,6 +36,12 @@ public interface AMItems {
     RegistryObject<Item> DEEPSLATE_VINTEUM_ORE = ITEMS.register("deepslate_vinteum_ore", () -> new BlockItem(AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), ITEM_64));
     RegistryObject<Item> VINTEUM_DUST = ITEMS.register("vinteum_dust", () -> new Item(ITEM_64));
     RegistryObject<Item> VINTEUM_BLOCK = ITEMS.register("vinteum_block", () -> new BlockItem(AMBlocks.VINTEUM_BLOCK.get(), ITEM_64));
+    RegistryObject<Item> MOONSTONE_ORE = ITEMS.register("moonstone_ore", () -> new BlockItem(AMBlocks.MOONSTONE_ORE.get(), ITEM_64));
+    RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone_dust", () -> new Item(ITEM_64));
+    RegistryObject<Item> MOONSTONE_BLOCK = ITEMS.register("moonstone_block", () -> new BlockItem(AMBlocks.MOONSTONE_BLOCK.get(), ITEM_64));
+    RegistryObject<Item> SUNSTONE_ORE = ITEMS.register("sunstone_ore", () -> new BlockItem(AMBlocks.SUNSTONE_ORE.get(), ITEM_64));
+    RegistryObject<Item> SUNSTONE = ITEMS.register("sunstone_dust", () -> new Item(ITEM_64));
+    RegistryObject<Item> SUNSTONE_BLOCK = ITEMS.register("sunstone_block", () -> new BlockItem(AMBlocks.SUNSTONE_BLOCK.get(), ITEM_64));
 
     /**
      * Empty method that is required for classloading
