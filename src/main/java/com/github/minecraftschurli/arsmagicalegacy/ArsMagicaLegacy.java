@@ -53,6 +53,6 @@ public final class ArsMagicaLegacy {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        AMItems.setup();
+        AMItems.initSpawnEggs();
     }
 }

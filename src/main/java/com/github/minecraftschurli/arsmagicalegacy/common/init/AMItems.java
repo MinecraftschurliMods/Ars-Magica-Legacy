@@ -20,7 +20,15 @@ public interface AMItems {
         }
     };
 
-    static void setup() {
+    /**
+     * Empty method that is required for classloading
+     */
+    static void init() {}
+
+    /**
+     * Initializes the spawn eggs
+     */
+    static void initSpawnEggs() {
         ITEMS.getEntries()
                 .stream()
                 .flatMap(RegistryObject::stream)
