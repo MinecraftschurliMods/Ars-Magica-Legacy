@@ -6,19 +6,35 @@ import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
-import java.util.ServiceLoader;
+import java.lang.reflect.InvocationTargetException;
 
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
-    private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> ServiceLoader
-            .load(IArsMagicaAPI.class)
-            .stream()
-            .findFirst()
-            .map(ServiceLoader.Provider::get)
-            .orElseGet(() -> {
-                LogManager.getLogger().error("Unable to find ArsMagicaAPIImpl, using a dummy");
-                return StubArsMagicaAPI.INSTANCE;
-            }));
+    private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
+        try {
+            //noinspection unchecked
+            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(
+                    ArsMagicaAPI.class
+                            .getModule()
+                            .getDescriptor()
+                            .provides()
+                            .stream()
+                            .flatMap(provides -> provides.providers().stream())
+                            .findFirst().orElseThrow());
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
+            return StubArsMagicaAPI.INSTANCE;
+        }
+        /*var impl = ServiceLoader.load(FMLLoader.getGameLayer(), IArsMagicaAPI.class).findFirst();
+        if (!FMLEnvironment.production) {
+            return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI")));
+        }
+        return impl.orElseGet(() -> {
+            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
+            return StubArsMagicaAPI.INSTANCE;
+        });*/
+    });
 
     private ArsMagicaAPI() {}
 
