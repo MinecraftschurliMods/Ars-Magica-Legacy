@@ -1,0 +1,9 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.name",
+  "landing_text": "item.arsmagicalegacy.arcane_compendium.landing_text",
+  "model": "arsmagicalegacy:arcane_compendium",
+  "subtitle": "item.arsmagicalegacy.arcane_compendium.subtitle",
+  "creative_tab": "misc",
+  "i18n": true,
+  "use_resource_pack": true
+}
