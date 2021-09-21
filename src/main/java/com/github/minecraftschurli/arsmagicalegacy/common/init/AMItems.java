@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.AMSpawnEggItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -42,6 +43,21 @@ public interface AMItems {
     RegistryObject<Item> SUNSTONE_ORE = ITEMS.register("sunstone_ore", () -> new BlockItem(AMBlocks.SUNSTONE_ORE.get(), ITEM_64));
     RegistryObject<Item> SUNSTONE = ITEMS.register("sunstone_dust", () -> new Item(ITEM_64));
     RegistryObject<Item> SUNSTONE_BLOCK = ITEMS.register("sunstone_block", () -> new BlockItem(AMBlocks.SUNSTONE_BLOCK.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_LOG = ITEMS.register("witchwood_log", () -> new BlockItem(AMBlocks.WITCHWOOD_LOG.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD = ITEMS.register("witchwood", () -> new BlockItem(AMBlocks.WITCHWOOD.get(), ITEM_64));
+    RegistryObject<Item> STRIPPED_WITCHWOOD_LOG = ITEMS.register("stripped_witchwood_log", () -> new BlockItem(AMBlocks.STRIPPED_WITCHWOOD_LOG.get(), ITEM_64));
+    RegistryObject<Item> STRIPPED_WITCHWOOD = ITEMS.register("stripped_witchwood", () -> new BlockItem(AMBlocks.STRIPPED_WITCHWOOD.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_LEAVES = ITEMS.register("witchwood_leaves", () -> new BlockItem(AMBlocks.WITCHWOOD_LEAVES.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_SAPLING = ITEMS.register("witchwood_sapling", () -> new BlockItem(AMBlocks.WITCHWOOD_SAPLING.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_PLANKS = ITEMS.register("witchwood_planks", () -> new BlockItem(AMBlocks.WITCHWOOD_PLANKS.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_SLAB = ITEMS.register("witchwood_slab", () -> new BlockItem(AMBlocks.WITCHWOOD_SLAB.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_STAIRS = ITEMS.register("witchwood_stairs", () -> new BlockItem(AMBlocks.WITCHWOOD_STAIRS.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_FENCE = ITEMS.register("witchwood_fence", () -> new BlockItem(AMBlocks.WITCHWOOD_FENCE.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_FENCE_GATE = ITEMS.register("witchwood_fence_gate", () -> new BlockItem(AMBlocks.WITCHWOOD_FENCE_GATE.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_DOOR = ITEMS.register("witchwood_door", () -> new DoubleHighBlockItem(AMBlocks.WITCHWOOD_DOOR.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_TRAPDOOR = ITEMS.register("witchwood_trapdoor", () -> new BlockItem(AMBlocks.WITCHWOOD_TRAPDOOR.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_BUTTON = ITEMS.register("witchwood_button", () -> new BlockItem(AMBlocks.WITCHWOOD_BUTTON.get(), ITEM_64));
+    RegistryObject<Item> WITCHWOOD_PRESSURE_PLATE = ITEMS.register("witchwood_pressure_plate", () -> new BlockItem(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get(), ITEM_64));
 
     /**
      * Empty method that is required for classloading
