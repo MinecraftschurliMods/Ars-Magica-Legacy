@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -47,6 +46,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             String other = string.substring(1);
             result.append(first.toUpperCase()).append(other).append(" ");
         }
-        return result.toString();
+        return result.substring(0, result.length() - 1);
     }
 }
