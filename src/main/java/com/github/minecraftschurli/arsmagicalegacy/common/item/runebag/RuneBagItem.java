@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.common.item;
+package com.github.minecraftschurli.arsmagicalegacy.common.item.runebag;
 
 import net.minecraft.world.item.Item;
 

@@ -3,7 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.AMSpawnEggItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.RuneBagItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
