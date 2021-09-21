@@ -2,6 +2,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.AMSpawnEggItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -58,6 +60,24 @@ public interface AMItems {
     RegistryObject<Item> WITCHWOOD_TRAPDOOR = ITEMS.register("witchwood_trapdoor", () -> new BlockItem(AMBlocks.WITCHWOOD_TRAPDOOR.get(), ITEM_64));
     RegistryObject<Item> WITCHWOOD_BUTTON = ITEMS.register("witchwood_button", () -> new BlockItem(AMBlocks.WITCHWOOD_BUTTON.get(), ITEM_64));
     RegistryObject<Item> WITCHWOOD_PRESSURE_PLATE = ITEMS.register("witchwood_pressure_plate", () -> new BlockItem(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get(), ITEM_64));
+    RegistryObject<Item> BLANK_RUNE = ITEMS.register("blank_rune", () -> new Item(ITEM_64));
+    RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> ORANGE_RUNE = ITEMS.register("orange_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> MAGENTA_RUNE = ITEMS.register("magenta_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> LIGHT_BLUE_RUNE = ITEMS.register("light_blue_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> LIME_RUNE = ITEMS.register("lime_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> PINK_RUNE = ITEMS.register("pink_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> GRAY_RUNE = ITEMS.register("gray_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> LIGHT_GRAY_RUNE = ITEMS.register("light_gray_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> CYAN_RUNE = ITEMS.register("cyan_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> BROWN_RUNE = ITEMS.register("brown_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_64));
 
     /**
      * Empty method that is required for classloading
