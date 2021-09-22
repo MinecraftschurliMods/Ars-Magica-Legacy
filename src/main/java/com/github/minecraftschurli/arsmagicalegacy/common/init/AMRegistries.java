@@ -43,6 +43,7 @@ public interface AMRegistries {
     static void init(IEventBus bus) {
         AMBlocks.init();
         AMItems.init();
+        AMContainers.init();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);

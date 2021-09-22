@@ -47,7 +47,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     
     private static String idToTranslation(String id) {
         StringBuilder result = new StringBuilder();
-        for (String string : id.split(" ")) {
+        for (String string : id.split("_")) {
             String first = string.substring(0, 1);
             String other = string.substring(1);
             result.append(first.toUpperCase()).append(other).append(" ");

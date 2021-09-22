@@ -13,6 +13,7 @@ public class ColoredRuneItem extends Item {
     public ColoredRuneItem(Properties pProperties, DyeColor dyeColor) {
         super(pProperties);
         this.dyeColor = dyeColor;
+        ITEM_BY_COLOR.put(dyeColor, this);
     }
 
     public DyeColor getDyeColor() {

@@ -78,7 +78,7 @@ public interface AMItems {
     RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.GREEN));
     RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.RED));
     RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BLACK));
-    RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_64));
+    RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_1));
 
     /**
      * Empty method that is required for classloading
