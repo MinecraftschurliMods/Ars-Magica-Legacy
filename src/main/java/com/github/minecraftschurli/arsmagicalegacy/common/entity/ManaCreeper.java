@@ -17,6 +17,10 @@ public class ManaCreeper extends Monster {
         super(type, level);
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
+    }
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
