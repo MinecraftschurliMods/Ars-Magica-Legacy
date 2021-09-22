@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagIt
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -61,22 +62,22 @@ public interface AMItems {
     RegistryObject<Item> WITCHWOOD_BUTTON = ITEMS.register("witchwood_button", () -> new BlockItem(AMBlocks.WITCHWOOD_BUTTON.get(), ITEM_64));
     RegistryObject<Item> WITCHWOOD_PRESSURE_PLATE = ITEMS.register("witchwood_pressure_plate", () -> new BlockItem(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get(), ITEM_64));
     RegistryObject<Item> BLANK_RUNE = ITEMS.register("blank_rune", () -> new Item(ITEM_64));
-    RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> ORANGE_RUNE = ITEMS.register("orange_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> MAGENTA_RUNE = ITEMS.register("magenta_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> LIGHT_BLUE_RUNE = ITEMS.register("light_blue_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> LIME_RUNE = ITEMS.register("lime_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> PINK_RUNE = ITEMS.register("pink_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> GRAY_RUNE = ITEMS.register("gray_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> LIGHT_GRAY_RUNE = ITEMS.register("light_gray_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> CYAN_RUNE = ITEMS.register("cyan_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> BROWN_RUNE = ITEMS.register("brown_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64));
-    RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64));
+    RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.WHITE));
+    RegistryObject<Item> ORANGE_RUNE = ITEMS.register("orange_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.ORANGE));
+    RegistryObject<Item> MAGENTA_RUNE = ITEMS.register("magenta_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.MAGENTA));
+    RegistryObject<Item> LIGHT_BLUE_RUNE = ITEMS.register("light_blue_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.LIGHT_BLUE));
+    RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.YELLOW));
+    RegistryObject<Item> LIME_RUNE = ITEMS.register("lime_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.LIME));
+    RegistryObject<Item> PINK_RUNE = ITEMS.register("pink_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.PINK));
+    RegistryObject<Item> GRAY_RUNE = ITEMS.register("gray_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.GRAY));
+    RegistryObject<Item> LIGHT_GRAY_RUNE = ITEMS.register("light_gray_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.LIGHT_GRAY));
+    RegistryObject<Item> CYAN_RUNE = ITEMS.register("cyan_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.CYAN));
+    RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.PURPLE));
+    RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BLUE));
+    RegistryObject<Item> BROWN_RUNE = ITEMS.register("brown_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BROWN));
+    RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.GREEN));
+    RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.RED));
+    RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BLACK));
     RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_64));
 
     /**
