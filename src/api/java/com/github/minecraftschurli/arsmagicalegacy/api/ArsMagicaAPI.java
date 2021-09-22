@@ -1,12 +1,22 @@
 package com.github.minecraftschurli.arsmagicalegacy.api;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import net.minecraft.world.Snooper;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.function.BiFunction;
 
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
@@ -66,6 +76,39 @@ public final class ArsMagicaAPI {
          * @return the {@link ItemStack} for the Arcane Compendium
          */
         ItemStack getBookStack();
+
+        /**
+         * Get the registry for occulus tabs.
+         *
+         * @return the registry for occulus tabs
+         */
+        IForgeRegistry<IOcculusTab> getOcculusTabRegistry();
+
+        /**
+         * Get the registry for skill points.
+         *
+         * @return the registry for skill points
+         */
+        IForgeRegistry<ISkillPoint> getSkillPointRegistry();
+
+        /**
+         * Get the registry for affinities.
+         *
+         * @return the registry for affinities
+         */
+        IForgeRegistry<IAffinity> getAffinityRegistry();
+
+        ISkillManager getSkillManager();
+
+        IKnowledgeHelper getKnowledgeHelper();
+
+        IAffinityHelper getAffinityHelper();
+
+        Capability<IKnowledgeHolder> getKnowledgeCapability();
+
+        void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, OcculusTabRenderer> factory);
+
+        void openOcculusGui(Player pPlayer);
     }
 
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
@@ -79,6 +122,49 @@ public final class ArsMagicaAPI {
         @Override
         public ItemStack getBookStack() {
             return ItemStack.EMPTY;
+        }
+
+        @Override
+        public IForgeRegistry<IOcculusTab> getOcculusTabRegistry() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<ISkillPoint> getSkillPointRegistry() {
+            return null;
+        }
+
+        @Override
+        public ISkillManager getSkillManager() {
+            return null;
+        }
+
+        @Override
+        public IKnowledgeHelper getKnowledgeHelper() {
+            return null;
+        }
+
+        @Override
+        public void registerOcculusTabRenderer(final IOcculusTab tab, final BiFunction<IOcculusTab, Player, OcculusTabRenderer> factory) {
+        }
+
+        @Override
+        public void openOcculusGui(final Player pPlayer) {
+        }
+
+        @Override
+        public Capability<IKnowledgeHolder> getKnowledgeCapability() {
+            return null;
+        }
+
+        @Override
+        public IAffinityHelper getAffinityHelper() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<IAffinity> getAffinityRegistry() {
+            return null;
         }
     }
 }

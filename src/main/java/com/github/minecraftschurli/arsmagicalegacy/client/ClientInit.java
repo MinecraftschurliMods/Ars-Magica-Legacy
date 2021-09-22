@@ -1,6 +1,9 @@
 package com.github.minecraftschurli.arsmagicalegacy.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMOcculusTabs;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMContainers;
@@ -28,5 +31,10 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
+        ArsMagicaAPI.get().registerOcculusTabRenderer(AMOcculusTabs.OFFENSE.get(),  OcculusSkillTreeTabRenderer::new);
+        ArsMagicaAPI.get().registerOcculusTabRenderer(AMOcculusTabs.DEFENSE.get(),  OcculusSkillTreeTabRenderer::new);
+        ArsMagicaAPI.get().registerOcculusTabRenderer(AMOcculusTabs.UTILITY.get(),  OcculusSkillTreeTabRenderer::new);
+        ArsMagicaAPI.get().registerOcculusTabRenderer(AMOcculusTabs.AFFINITY.get(), OcculusAffinityTabRenderer::new);
+        ArsMagicaAPI.get().registerOcculusTabRenderer(AMOcculusTabs.TALENT.get(),   OcculusSkillTreeTabRenderer::new);
     }
 }

@@ -1,15 +1,25 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHolder;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.KnowledgeHelper;
+import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,11 +41,14 @@ public final class ArsMagicaLegacy {
         INSTANCE = this;
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
+        bus.addListener(this::registerCapabilities);
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         final ModLoadingContext context = ModLoadingContext.get();
         Config.init(context);
         modInfo = context.getActiveContainer().getModInfo();
+        NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, this::attachCapabilities);
     }
 
     /**
@@ -54,5 +67,15 @@ public final class ArsMagicaLegacy {
 
     private void setup(final FMLCommonSetupEvent event) {
         AMItems.initSpawnEggs();
+    }
+
+    private void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        event.register(IKnowledgeHolder.class);
+    }
+
+    private void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player) {
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"), new KnowledgeHelper.KnowledgeHolderProvider());
+        }
     }
 }

@@ -1,4 +1,4 @@
 @MethodsReturnNonnullByDefault
-package com.github.minecraftschurli.arsmagicalegacy.api;
+package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import net.minecraft.MethodsReturnNonnullByDefault;

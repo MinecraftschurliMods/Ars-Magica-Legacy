@@ -16,7 +16,7 @@ public abstract class EntryBuilder<B extends BookBuilder<B, C, E>, C extends Cat
 
     protected final C parent;
     private final ResourceLocation id;
-    private final String category;
+    private final ResourceLocation category;
     private final String icon;
     private final List<AbstractPageBuilder<?>> pages = new ArrayList<>();
     private String name;
@@ -32,7 +32,7 @@ public abstract class EntryBuilder<B extends BookBuilder<B, C, E>, C extends Cat
     protected EntryBuilder(String id, String name, String icon, C parent) {
         this.id = new ResourceLocation(parent.getId().getNamespace(), parent.getId().getPath()+'/'+id);
         this.name = name;
-        this.category = parent.getId().getPath();
+        this.category = parent.getId();
         this.icon = icon;
         this.parent = parent;
     }
@@ -44,7 +44,7 @@ public abstract class EntryBuilder<B extends BookBuilder<B, C, E>, C extends Cat
     JsonObject toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("name", name);
-        json.addProperty("category", category);
+        json.addProperty("category", category.toString());
         json.addProperty("icon", icon);
         JsonArray pages = new JsonArray();
         for (AbstractPageBuilder<?> page : this.pages) {
