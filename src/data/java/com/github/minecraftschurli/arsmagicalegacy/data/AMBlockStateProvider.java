@@ -42,6 +42,10 @@ class AMBlockStateProvider extends BlockStateProvider {
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
         doorBlock(WITCHWOOD_DOOR, "witchwood");
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
+        simpleBlock(CHIMERITE_ORE);
+        simpleBlock(CHIMERITE_BLOCK);
+        simpleBlock(TOPAZ_ORE);
+        simpleBlock(TOPAZ_BLOCK);
     }
 
     private void simpleBlock(Supplier<? extends Block> block) {

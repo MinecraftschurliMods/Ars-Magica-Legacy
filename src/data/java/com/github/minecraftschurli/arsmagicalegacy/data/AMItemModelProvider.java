@@ -33,6 +33,10 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_FENCE_GATE, AMBlocks.WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
+        blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
+        blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
+        blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
+        blockItem(TOPAZ_BLOCK, AMBlocks.TOPAZ_BLOCK);
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {

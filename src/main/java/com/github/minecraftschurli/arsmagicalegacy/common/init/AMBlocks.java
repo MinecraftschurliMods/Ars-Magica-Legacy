@@ -28,7 +28,7 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 @NonExtendable
 public interface AMBlocks {
     RegistryObject<Block> CHIMERITE_ORE = BLOCKS.register("chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
-    RegistryObject<Block> DEEPSLATE_CHIMERITE_ORE = BLOCKS.register("deepslate_chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE)));
+    RegistryObject<Block> DEEPSLATE_CHIMERITE_ORE = BLOCKS.register("deepslate_chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE))); //
     RegistryObject<Block> CHIMERITE_BLOCK = BLOCKS.register("chimerite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block> TOPAZ_ORE = BLOCKS.register("topaz_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block> DEEPSLATE_TOPAZ_ORE = BLOCKS.register("deepslate_topaz_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE)));
