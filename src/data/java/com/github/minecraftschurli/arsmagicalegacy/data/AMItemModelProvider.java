@@ -41,6 +41,8 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
         blockItem(MOONSTONE_ORE, AMBlocks.MOONSTONE_ORE);
         blockItem(MOONSTONE_BLOCK, AMBlocks.MOONSTONE_BLOCK);
+        blockItem(SUNSTONE_ORE, AMBlocks.SUNSTONE_ORE);
+        blockItem(SUNSTONE_BLOCK, AMBlocks.SUNSTONE_BLOCK);
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {
