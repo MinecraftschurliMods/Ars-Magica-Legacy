@@ -20,6 +20,24 @@ class AMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
+//        blockItem(DEEPSLATE_CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE);
+        itemGenerated(CHIMERITE);
+        blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
+        blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
+//        blockItem(DEEPSLATE_TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE);
+        itemGenerated(TOPAZ);
+        blockItem(TOPAZ_BLOCK, AMBlocks.TOPAZ_BLOCK);
+        blockItem(VINTEUM_ORE, AMBlocks.VINTEUM_ORE);
+//        blockItem(DEEPSLATE_VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE);
+        itemGenerated(VINTEUM_DUST);
+        blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
+        blockItem(MOONSTONE_ORE, AMBlocks.MOONSTONE_ORE);
+        itemGenerated(MOONSTONE);
+        blockItem(MOONSTONE_BLOCK, AMBlocks.MOONSTONE_BLOCK);
+        blockItem(SUNSTONE_ORE, AMBlocks.SUNSTONE_ORE);
+        itemGenerated(SUNSTONE);
+        blockItem(SUNSTONE_BLOCK, AMBlocks.SUNSTONE_BLOCK);
         blockItem(WITCHWOOD_LOG, AMBlocks.WITCHWOOD_LOG);
         blockItem(WITCHWOOD, AMBlocks.WITCHWOOD);
         blockItem(STRIPPED_WITCHWOOD_LOG, AMBlocks.STRIPPED_WITCHWOOD_LOG);
@@ -33,16 +51,6 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_FENCE_GATE, AMBlocks.WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
-        blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
-        blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
-        blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
-        blockItem(TOPAZ_BLOCK, AMBlocks.TOPAZ_BLOCK);
-        blockItem(VINTEUM_ORE, AMBlocks.VINTEUM_ORE);
-        blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
-        blockItem(MOONSTONE_ORE, AMBlocks.MOONSTONE_ORE);
-        blockItem(MOONSTONE_BLOCK, AMBlocks.MOONSTONE_BLOCK);
-        blockItem(SUNSTONE_ORE, AMBlocks.SUNSTONE_ORE);
-        blockItem(SUNSTONE_BLOCK, AMBlocks.SUNSTONE_BLOCK);
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {

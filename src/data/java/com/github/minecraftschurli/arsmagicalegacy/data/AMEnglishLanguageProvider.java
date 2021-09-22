@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +15,24 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
 
     @Override
     protected void addTranslations() {
+        idBlockTranslation(AMBlocks.CHIMERITE_ORE);
+        idBlockTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
+        idItemTranslation(AMItems.CHIMERITE);
+        idBlockTranslation(AMBlocks.CHIMERITE_BLOCK);
+        idBlockTranslation(AMBlocks.TOPAZ_ORE);
+        idBlockTranslation(AMBlocks.DEEPSLATE_TOPAZ_ORE);
+        idItemTranslation(AMItems.TOPAZ);
+        idBlockTranslation(AMBlocks.TOPAZ_BLOCK);
+        idBlockTranslation(AMBlocks.VINTEUM_ORE);
+        idBlockTranslation(AMBlocks.DEEPSLATE_VINTEUM_ORE);
+        idItemTranslation(AMItems.VINTEUM_DUST);
+        idBlockTranslation(AMBlocks.VINTEUM_BLOCK);
+        idBlockTranslation(AMBlocks.MOONSTONE_ORE);
+        idItemTranslation(AMItems.MOONSTONE);
+        idBlockTranslation(AMBlocks.MOONSTONE_BLOCK);
+        idBlockTranslation(AMBlocks.SUNSTONE_ORE);
+        idItemTranslation(AMItems.SUNSTONE);
+        idBlockTranslation(AMBlocks.SUNSTONE_BLOCK);
         idBlockTranslation(AMBlocks.WITCHWOOD_LOG);
         idBlockTranslation(AMBlocks.WITCHWOOD);
         idBlockTranslation(AMBlocks.STRIPPED_WITCHWOOD_LOG);
@@ -33,12 +52,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         idBlockTranslation(AMBlocks.CHIMERITE_BLOCK);
         idBlockTranslation(AMBlocks.TOPAZ_ORE);
         idBlockTranslation(AMBlocks.TOPAZ_BLOCK);
-        idBlockTranslation(AMBlocks.VINTEUM_ORE);
-        idBlockTranslation(AMBlocks.VINTEUM_BLOCK);
-        idBlockTranslation(AMBlocks.MOONSTONE_ORE);
-        idBlockTranslation(AMBlocks.MOONSTONE_BLOCK);
-        idBlockTranslation(AMBlocks.SUNSTONE_ORE);
-        idBlockTranslation(AMBlocks.SUNSTONE_BLOCK);
     }
 
     private void idBlockTranslation(Supplier<? extends Block> block) {
