@@ -35,6 +35,7 @@ class AMItemModelProvider extends ItemModelProvider {
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
         blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
         blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
+        blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {

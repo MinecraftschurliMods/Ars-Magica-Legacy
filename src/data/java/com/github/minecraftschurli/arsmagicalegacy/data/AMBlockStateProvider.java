@@ -44,6 +44,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(CHIMERITE_BLOCK);
+        simpleBlock(TOPAZ_ORE);
     }
 
     private void simpleBlock(Supplier<? extends Block> block) {
