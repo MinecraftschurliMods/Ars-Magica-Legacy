@@ -33,6 +33,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         idBlockTranslation(AMBlocks.CHIMERITE_BLOCK);
         idBlockTranslation(AMBlocks.TOPAZ_ORE);
         idBlockTranslation(AMBlocks.TOPAZ_BLOCK);
+        idBlockTranslation(AMBlocks.VINTEUM_ORE);
+        idBlockTranslation(AMBlocks.VINTEUM_BLOCK);
     }
 
     private void idBlockTranslation(Supplier<? extends Block> block) {

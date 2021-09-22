@@ -37,6 +37,8 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
         blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
         blockItem(TOPAZ_BLOCK, AMBlocks.TOPAZ_BLOCK);
+        blockItem(VINTEUM_ORE, AMBlocks.VINTEUM_ORE);
+        blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {
