@@ -29,6 +29,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         idBlockTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
         idBlockTranslation(AMBlocks.WITCHWOOD_BUTTON);
         idBlockTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
+        idBlockTranslation(AMBlocks.CHIMERITE_ORE);
+        idBlockTranslation(AMBlocks.CHIMERITE_BLOCK);
     }
 
     private void idBlockTranslation(Supplier<? extends Block> block) {
