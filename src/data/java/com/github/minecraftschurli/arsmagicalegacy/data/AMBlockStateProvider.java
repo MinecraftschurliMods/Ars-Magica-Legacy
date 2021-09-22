@@ -48,6 +48,8 @@ class AMBlockStateProvider extends BlockStateProvider {
         simpleBlock(TOPAZ_BLOCK);
         simpleBlock(VINTEUM_ORE);
         simpleBlock(VINTEUM_BLOCK);
+        simpleBlock(MOONSTONE_ORE);
+        simpleBlock(MOONSTONE_BLOCK);
     }
 
     private void simpleBlock(Supplier<? extends Block> block) {
