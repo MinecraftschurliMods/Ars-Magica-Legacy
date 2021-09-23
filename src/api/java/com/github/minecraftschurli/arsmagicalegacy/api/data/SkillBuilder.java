@@ -41,13 +41,20 @@ public class SkillBuilder {
     }
 
     public SkillBuilder addCost(ResourceLocation point, int amt) {
-        this.cost.put(point, amt);
+        this.cost.compute(point, (key, i) -> i != null ? i + amt : amt);
         return this;
     }
 
     public SkillBuilder addCost(ISkillPoint point, int amt) {
-        this.cost.put(point.getId(), amt);
-        return this;
+        return addCost(point.getId(), amt);
+    }
+
+    public SkillBuilder addCost(ResourceLocation point) {
+        return addCost(point, 1);
+    }
+
+    public SkillBuilder addCost(ISkillPoint point) {
+        return addCost(point, 1);
     }
 
     public SkillBuilder addParent(ResourceLocation parent) {
@@ -92,8 +99,9 @@ public class SkillBuilder {
         return setOcculusTab(occulusTab.getId());
     }
 
-    public void build(Consumer<SkillBuilder> consumer) {
+    public SkillBuilder build(Consumer<SkillBuilder> consumer) {
         consumer.accept(this);
+        return this;
     }
 
     JsonObject serialize() {

@@ -2,20 +2,26 @@ package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Interface representing a knowledge-holder
  */
 public interface IKnowledgeHolder {
-    boolean knows(ResourceLocation skill);
+    Set<ResourceLocation> skills();
+    Map<ResourceLocation, Integer> skillPoints();
+    int level();
+    float xp();
     boolean canLearn(ResourceLocation skill);
     void learn(ResourceLocation skill);
     void forget(ResourceLocation skill);
-    int level();
-    float xp();
-    int getSkillPoint(ResourceLocation skillPoint);
     void addSkillPoint(ResourceLocation skillPoint, int amount);
     boolean consumeSkillPoint(ResourceLocation skillPoint, int amount);
 
+    default boolean knows(ResourceLocation skill) {
+        return skills().contains(skill);
+    }
     default boolean knows(ISkill skill) {
         return knows(skill.getId());
     }
@@ -27,6 +33,9 @@ public interface IKnowledgeHolder {
     }
     default void forget(ISkill skill) {
         forget(skill.getId());
+    }
+    default int getSkillPoint(ResourceLocation skillPoint) {
+        return skillPoints().getOrDefault(skillPoint, 0);
     }
     default int getSkillPoint(ISkillPoint skillPoint) {
         return getSkillPoint(skillPoint.getId());
@@ -49,4 +58,5 @@ public interface IKnowledgeHolder {
     default boolean consumeSkillPoint(ResourceLocation skillPoint) {
         return consumeSkillPoint(skillPoint, 1);
     }
+
 }

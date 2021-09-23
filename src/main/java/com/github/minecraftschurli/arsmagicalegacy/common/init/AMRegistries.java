@@ -63,6 +63,8 @@ public interface AMRegistries {
         AMItems.register();
         AMContainers.register();
         AMOcculusTabs.register();
+        AMSkillPoints.register();
+        AMAffinities.register();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);

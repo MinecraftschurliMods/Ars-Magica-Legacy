@@ -6,6 +6,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -21,15 +23,15 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 
 @NonExtendable
 public interface AMItems {
-    CreativeModeTab GROUP = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
+    CreativeModeTab TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
         @NotNull
         @Override
         public ItemStack makeIcon() {
             return ArsMagicaAPI.get().getBookStack();
         }
     };
-    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(GROUP);
-    Item.Properties ITEM_1 = new Item.Properties().stacksTo(1).tab(GROUP);
+    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
+    Item.Properties ITEM_1 = new Item.Properties().stacksTo(1).tab(TAB);
 
     RegistryObject<BlockItem> CHIMERITE_ORE = ITEMS.register("chimerite_ore", () -> new BlockItem(AMBlocks.CHIMERITE_ORE.get(), ITEM_64));
     RegistryObject<BlockItem> DEEPSLATE_CHIMERITE_ORE = ITEMS.register("deepslate_chimerite_ore", () -> new BlockItem(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), ITEM_64));
@@ -93,6 +95,9 @@ public interface AMItems {
     RegistryObject<BlockItem> WAKEBLOOM = ITEMS.register("wakebloom", () -> new BlockItem(AMBlocks.WAKEBLOOM.get(), ITEM_64));
     RegistryObject<StandingAndWallBlockItem> VINTEUM_TORCH = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
     RegistryObject<WizardsChalkItem> WIZARDS_CHALK = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(ITEM_64.durability(100)));
+
+    RegistryObject<AffinityEssenceItem> AFFINITY_ESSENCE = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(new Item.Properties().tab(TAB)));
+    RegistryObject<AffinityTomeItem> AFFINITY_TOME = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(new Item.Properties().tab(TAB)));
 
     /**
      * Empty method that is required for classloading

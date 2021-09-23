@@ -17,12 +17,13 @@ public final class RenderUtil {
         stack.pushPose();
         RenderSystem.disableTexture();
         RenderSystem.lineWidth(width);
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder buf = tessellator.getBuilder();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buf = tesselator.getBuilder();
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR);
         buf.vertex(startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 0xFF).endVertex();
         buf.vertex(endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 0xFF).endVertex();
-        tessellator.end();
+        tesselator.end();
         RenderSystem.enableTexture();
         stack.popPose();
     }

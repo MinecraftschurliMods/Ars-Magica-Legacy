@@ -72,28 +72,25 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 Optional<ISkill> iSkill = skillManager.getOptional(resourceLocation);
                 if (iSkill.isEmpty()) continue;
                 ISkill skill = iSkill.get();
-                if (skills.contains(skill)) {
-                    if (!skill.isHidden() || knowledgeHelper.knows(player, skill)) {
-                        int offsetX = calcXOffset(posX, s) + 16;
-                        int offsetY = calcYOffset(posY, s) + 16;
-                        int offsetX2 = calcXOffset(posX, skill) + 16;
-                        int offsetY2 = calcYOffset(posY, skill) + 16;
-                        offsetX = Mth.clamp(offsetX, posX + 7, posX + 203);
-                        offsetY = Mth.clamp(offsetY, posY + 7, posY + 203);
-                        offsetX2 = Mth.clamp(offsetX2, posX + 7, posX + 203);
-                        offsetY2 = Mth.clamp(offsetY2, posY + 7, posY + 203);
-                        boolean hasPrereq = knowledgeHelper.canLearn(player, s) || knowledgeHelper.knows(player, s);
-                        int color = (!knowledgeHelper.knows(player, s) ? getColorForLine(skill, s) & 0x999999 : 0x00ff00);
-                        if (!hasPrereq) {
-                            color = 0x000000;
-                        }
-                        if (!(offsetX == posX + 7 || offsetX == posX + 203)) {
-                            RenderUtil.lineThick2d(pMatrixStack, offsetX, offsetY, offsetX, offsetY2, hasPrereq ? 0 : -1, color);
-                        }
-                        if (!(offsetY2 == posY + 7 || offsetY2 == posY + 203)) {
-                            RenderUtil.lineThick2d(pMatrixStack, offsetX, offsetY2, offsetX2, offsetY2, hasPrereq ? 0 : -1, color);
-                        }
-                    }
+                if (!skills.contains(skill) || skill.isHidden() && !knowledgeHelper.knows(player, skill)) continue;
+                int offsetX = calcXOffset(posX, s) + 16;
+                int offsetY = calcYOffset(posY, s) + 16;
+                int offsetX2 = calcXOffset(posX, skill) + 16;
+                int offsetY2 = calcYOffset(posY, skill) + 16;
+                offsetX = Mth.clamp(offsetX, posX + 7, posX + 203);
+                offsetY = Mth.clamp(offsetY, posY + 7, posY + 203);
+                offsetX2 = Mth.clamp(offsetX2, posX + 7, posX + 203);
+                offsetY2 = Mth.clamp(offsetY2, posY + 7, posY + 203);
+                boolean hasPrereq = knowledgeHelper.canLearn(player, s) || knowledgeHelper.knows(player, s);
+                int color = (!knowledgeHelper.knows(player, s) ? getColorForLine(skill, s) & 0x999999 : 0x00ff00);
+                if (!hasPrereq) {
+                    color = 0x000000;
+                }
+                if (!(offsetX == posX + 7 || offsetX == posX + 203)) {
+                    RenderUtil.lineThick2d(pMatrixStack, offsetX, offsetY, offsetX, offsetY2, hasPrereq ? 0 : -1, color);
+                }
+                if (!(offsetY2 == posY + 7 || offsetY2 == posY + 203)) {
+                    RenderUtil.lineThick2d(pMatrixStack, offsetX, offsetY2, offsetX2, offsetY2, hasPrereq ? 0 : -1, color);
                 }
             }
         }
@@ -163,7 +160,9 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 //RenderHelper.disableStandardItemLighting();
                 RenderSystem.setShaderFogColor(1, 1, 1);
             }
-            if (!flag) hoverItem = null;
+            if (!flag) {
+                hoverItem = null;
+            }
         }
     }
 

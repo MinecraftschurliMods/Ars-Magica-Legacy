@@ -68,7 +68,7 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link CreativeModeTab} of the mod
          */
-        CreativeModeTab getItemGroup();
+        CreativeModeTab getCreativeModeTab();
 
         /**
          * Get the Arcane Compendium {@link ItemStack}
@@ -115,7 +115,7 @@ public final class ArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
         @Override
-        public CreativeModeTab getItemGroup() {
+        public CreativeModeTab getCreativeModeTab() {
             return CreativeModeTab.TAB_MISC;
         }
 

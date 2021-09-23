@@ -330,6 +330,21 @@ public final class NetworkHandler {
     }
 
     /**
+     * Sends a Packet to the specified Player or all players if it is null
+     *
+     * @side server
+     * @param packet the Packet to send
+     * @param player the Player to send to or null
+     */
+    public void sendToPlayerOrAll(IPacket packet, @Nullable Player player) {
+        if (player == null) {
+            this.sendToAll(packet);
+        } else {
+            this.sendToPlayer(packet, player);
+        }
+    }
+
+    /**
      * Sends a Packet to the specified Player
      *
      * @side server

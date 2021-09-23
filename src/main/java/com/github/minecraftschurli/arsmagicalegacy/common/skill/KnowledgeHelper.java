@@ -1,10 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHolder;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.network.SyncKnowledgePacket;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -63,21 +65,25 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     @Override
     public void learn(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).learn(skill);
+        onChanged(player);
     }
 
     @Override
     public void learn(Player player, ISkill skill) {
         getKnowledgeHolder(player).learn(skill);
+        onChanged(player);
     }
 
     @Override
     public void forget(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).forget(skill);
+        onChanged(player);
     }
 
     @Override
     public void forget(Player player, ISkill skill) {
         getKnowledgeHolder(player).forget(skill);
+        onChanged(player);
     }
 
     @Override
@@ -98,41 +104,57 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
+        onChanged(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
+        onChanged(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint);
+        onChanged(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ISkillPoint skillPoint) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint);
+        onChanged(player);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        return getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        onChanged(player);
+        return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
-        return getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        onChanged(player);
+        return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint) {
-        return getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        onChanged(player);
+        return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint) {
-        return getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        onChanged(player);
+        return success;
+    }
+
+    private void onChanged(Player player) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncKnowledgePacket(getKnowledgeHolder(player)), player);
     }
 
     @Override
@@ -150,7 +172,7 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         @Nullable
         @Override
         public Tag serializeNBT() {
-            return lazy.lazyMap(knowledgeHolder -> KnowledgeHelper.KnowledgeHolder.CODEC.encodeStart(NbtOps.INSTANCE, ((KnowledgeHelper.KnowledgeHolder)knowledgeHolder)).result())
+            return lazy.lazyMap(knowledgeHolder -> KnowledgeHolder.CODEC.encodeStart(NbtOps.INSTANCE, knowledgeHolder).result())
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .orElse(null);
@@ -158,7 +180,7 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
 
         @Override
         public void deserializeNBT(final Tag nbt) {
-            lazy = KnowledgeHelper.KnowledgeHolder.CODEC
+            lazy = KnowledgeHolder.CODEC
                     .decode(NbtOps.INSTANCE, nbt)
                     .get()
                     .mapLeft(Pair::getFirst)
@@ -173,21 +195,28 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         }
     }
 
-    public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints, int level, float xp) implements IKnowledgeHolder {
-        public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ResourceLocation.CODEC.listOf().xmap((Function<List<ResourceLocation>, Set<ResourceLocation>>) HashSet::new, (Function<Set<ResourceLocation>, List<ResourceLocation>>) ArrayList::new).fieldOf("skills").forGetter(KnowledgeHolder::skills),
-                Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints),
-                Codec.INT.fieldOf("level").forGetter(KnowledgeHolder::level),
-                Codec.FLOAT.fieldOf("xp").forGetter(KnowledgeHolder::xp)
+    public static final class KnowledgeHolder implements IKnowledgeHolder {
+        public static final Codec<IKnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                ResourceLocation.CODEC.listOf().xmap((Function<List<ResourceLocation>, Set<ResourceLocation>>) HashSet::new, (Function<Set<ResourceLocation>, List<ResourceLocation>>) ArrayList::new).fieldOf("skills").forGetter(IKnowledgeHolder::skills),
+                Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("skill_points").forGetter(IKnowledgeHolder::skillPoints),
+                Codec.INT.fieldOf("level").forGetter(IKnowledgeHolder::level),
+                Codec.FLOAT.fieldOf("xp").forGetter(IKnowledgeHolder::xp)
         ).apply(inst, KnowledgeHolder::new));
+
+        private final Set<ResourceLocation> skills;
+        private final Map<ResourceLocation, Integer> skillPoints;
+        private int level;
+        private float xp;
+
+        public KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints, int level, float xp) {
+            this.skills = skills;
+            this.skillPoints = skillPoints;
+            this.level = level;
+            this.xp = xp;
+        }
 
         public static KnowledgeHolder empty() {
             return new KnowledgeHolder(new HashSet<>(), new HashMap<>(), -1, 0);
-        }
-
-        @Override
-        public synchronized boolean knows(ResourceLocation skill) {
-            return skills.contains(skill);
         }
 
         @Override
@@ -206,11 +235,6 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         }
 
         @Override
-        public synchronized int getSkillPoint(ResourceLocation skillPoint) {
-            return skillPoints().get(skillPoint);
-        }
-
-        @Override
         public synchronized void addSkillPoint(ResourceLocation skillPoint, int amount) {
             skillPoints.putIfAbsent(skillPoint, 0);
             int amt = skillPoints.get(skillPoint);
@@ -226,14 +250,29 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
             return true;
         }
 
-        @Override
         public synchronized Set<ResourceLocation> skills() {
             return Collections.unmodifiableSet(skills);
         }
 
-        @Override
         public synchronized Map<ResourceLocation, Integer> skillPoints() {
             return Collections.unmodifiableMap(skillPoints);
+        }
+
+        public int level() {
+            return level;
+        }
+
+        public float xp() {
+            return xp;
+        }
+
+        public void onSync(IKnowledgeHolder knowledgeHolder) {
+            this.skills.clear();
+            this.skills.addAll(knowledgeHolder.skills());
+            this.skillPoints.clear();
+            this.skillPoints.putAll(knowledgeHolder.skillPoints());
+            this.level = knowledgeHolder.level();
+            this.xp = knowledgeHolder.xp();
         }
     }
 }

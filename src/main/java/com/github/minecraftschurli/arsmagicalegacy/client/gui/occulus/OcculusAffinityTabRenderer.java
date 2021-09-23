@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
@@ -29,7 +30,6 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderFg(PoseStack pMatrixStack, int posX, int posY, int pMouseX, int pMouseY, float pPartialTicks) {
-        boolean isShiftDown = player.isShiftKeyDown();
         var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
         int affNum = affinityRegistry.getValues().size() - 1;
         int portion = 360 / affNum;
@@ -37,8 +37,8 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         int cX = posX + xSize / 2;
         int cY = posY + ySize / 2;
         List<Component> drawString = new ArrayList<>();
-        for (IAffinity aff : affinityRegistry.getValues()) {
-            //if (Objects.equals(aff.getRegistryName(), Affinity.NONE)) continue;
+        for (IAffinity aff : affinityRegistry) {
+            if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
             double depth = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
@@ -63,14 +63,14 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
                 RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
             }
-            drawString(pMatrixStack, font, "" + (float) Math.round(depth * 10000) / 100F, (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
+            drawString(pMatrixStack, font, "%.2f".formatted(depth*100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            itemRenderer.renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getItemStackForAffinity(aff), drawX, drawY);
+            itemRenderer.renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX, drawY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName());
 //                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
@@ -90,8 +90,9 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             }
         }
         if (!drawString.isEmpty()) {
-            if (!isShiftDown)
+            if (!player.isSecondaryUseActive()) {
                 drawString.add(new TranslatableComponent("tooltip.%s.shiftForDetails".formatted(ArsMagicaAPI.MOD_ID)).withStyle(ChatFormatting.GRAY));
+            }
             renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY);
         }
         RenderSystem.setShaderFogColor(1, 1, 1);

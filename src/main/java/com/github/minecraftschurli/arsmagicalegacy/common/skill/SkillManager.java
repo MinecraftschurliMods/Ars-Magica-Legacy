@@ -1,21 +1,28 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.network.SyncSkillsPacket;
 import com.google.gson.*;
-import com.mojang.serialization.Codec;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public final class SkillManager extends SimpleJsonResourceReloadListener implements ISkillManager {
-    private static final Codec<ISkill> CODEC = null;
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static final Lazy<SkillManager> INSTANCE = Lazy.concurrentOf(SkillManager::new);
     private final Map<ResourceLocation, ISkill> skills = new HashMap<>();
@@ -34,6 +41,11 @@ public final class SkillManager extends SimpleJsonResourceReloadListener impleme
         return Optional.ofNullable(skills.get(id));
     }
 
+    @Override
+    public Collection<ISkill> getSkills() {
+        return Collections.unmodifiableCollection(skills.values());
+    }
+
     public static SkillManager instance() {
         return INSTANCE.get();
     }
@@ -43,27 +55,20 @@ public final class SkillManager extends SimpleJsonResourceReloadListener impleme
         skills.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : data.entrySet()) {
             ResourceLocation key = entry.getKey();
-            JsonObject json = entry.getValue().getAsJsonObject();
-            if (json.entrySet().size() == 0) {
-                continue;
-            }
-            Set<ResourceLocation> parents = new HashSet<>();
-            var parentsJson = GsonHelper.getAsJsonArray(json, "parents", new JsonArray());
-            if (parentsJson != null) {
-                for (JsonElement parent : parentsJson) {
-                    parents.add(new ResourceLocation(parent.getAsString()));
-                }
-            }
-            Map<ResourceLocation, Integer> cost = new HashMap<>();
-            for (Map.Entry<String, JsonElement> costEntry : GsonHelper.getAsJsonObject(json, "cost", new JsonObject()).entrySet()) {
-                cost.put(new ResourceLocation(costEntry.getKey()), costEntry.getValue().getAsInt());
-            }
-            ResourceLocation occulus_tab = new ResourceLocation(GsonHelper.getAsString(json, "occulus_tab"));
-            ResourceLocation icon = new ResourceLocation(GsonHelper.getAsString(json, "icon"));
-            int x = GsonHelper.getAsInt(json, "x");
-            int y = GsonHelper.getAsInt(json, "y");
-            boolean hidden = GsonHelper.getAsBoolean(json, "hidden", false);
-            skills.put(key, new Skill(key, occulus_tab, icon, parents, x, y, cost, hidden));
+            skills.put(key, Skill.CODEC.decode(JsonOps.INSTANCE, entry.getValue())
+                    .map(Pair::getFirst)
+                    .map(Skill.class::cast)
+                    .getOrThrow(true, LOGGER::error).setId(key));
         }
+    }
+
+    @Internal
+    public void receiveSync(Collection<ISkill> values) {
+        this.skills.clear();
+        values.forEach(iSkill -> this.skills.put(iSkill.getId(), iSkill));
+    }
+
+    public void onSync(OnDatapackSyncEvent event) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayerOrAll(new SyncSkillsPacket(skills.values()), event.getPlayer());
     }
 }

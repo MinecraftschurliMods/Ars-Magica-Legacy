@@ -28,8 +28,8 @@ import java.util.function.BiFunction;
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
-    public CreativeModeTab getItemGroup() {
-        return AMItems.GROUP;
+    public CreativeModeTab getCreativeModeTab() {
+        return AMItems.TAB;
     }
 
     @Override

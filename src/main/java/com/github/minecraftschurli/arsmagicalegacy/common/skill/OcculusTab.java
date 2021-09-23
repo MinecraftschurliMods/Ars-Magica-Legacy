@@ -5,11 +5,16 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import java.util.*;
+
 public class OcculusTab extends ForgeRegistryEntry<IOcculusTab> implements IOcculusTab {
+    private static final Map<Integer, OcculusTab> _TAB_BY_INDEX = new HashMap<>();
+    public static final Map<Integer, OcculusTab> TAB_BY_INDEX = Collections.unmodifiableMap(_TAB_BY_INDEX);
     private final int occulusIndex;
 
     public OcculusTab(int occulusIndex) {
         this.occulusIndex = occulusIndex;
+        _TAB_BY_INDEX.put(occulusIndex, this);
     }
 
     @Override

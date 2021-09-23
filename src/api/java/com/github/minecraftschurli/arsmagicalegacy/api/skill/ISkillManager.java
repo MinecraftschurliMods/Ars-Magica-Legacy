@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,4 +24,6 @@ public interface ISkillManager {
     default ISkill get(ResourceLocation id) {
         return getOptional(id).orElseThrow();
     }
+
+    Collection<ISkill> getSkills();
 }

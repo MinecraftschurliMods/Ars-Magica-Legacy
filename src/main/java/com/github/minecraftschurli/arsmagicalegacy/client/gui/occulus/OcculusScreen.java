@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTab;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
@@ -26,7 +27,7 @@ public class OcculusScreen extends Screen {
     private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
 
     private static final Map<ResourceLocation, BiFunction<IOcculusTab, Player, OcculusTabRenderer>> RENDERERS = new HashMap<>();
-    private static final Component TITLE = new TranslatableComponent(ArsMagicaAPI.MOD_ID + ".gui.occulus");
+    private static final Component TITLE = new TranslatableComponent("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
 
     private final int xSize = 210;
     private final int ySize = 210;
@@ -50,13 +51,13 @@ public class OcculusScreen extends Screen {
         posY = height / 2 - ySize / 2;
         var registry = ArsMagicaAPI.get().getOcculusTabRegistry();
         for (IOcculusTab tab : registry) {
-            int tabId = tab.getOcculusIndex();
-            Button.OnPress onPress = pButton -> setActiveTab(tab);
+            int tabIndex = tab.getOcculusIndex();
+            Button.OnPress onPress = pButton -> setActiveTab(tabIndex);
             int tabSize = 22;
-            if (tabId % 16 < 8) {
-                addRenderableWidget(new OcculusTabButton(tabId, posX + 7 + ((tabId % 16) * (tabSize + 2)), posY - tabSize, false, tab, onPress));
+            if (tabIndex % 16 < 8) {
+                addRenderableWidget(new OcculusTabButton(tabIndex, posX + 7 + ((tabIndex % 16) * (tabSize + 2)), posY - tabSize, false, tab, onPress));
             } else {
-                addRenderableWidget(new OcculusTabButton(tabId, posX + 7 + (((tabId % 16) - 8) * (tabSize + 2)), posY + ySize, true, tab, onPress));
+                addRenderableWidget(new OcculusTabButton(tabIndex, posX + 7 + (((tabIndex % 16) - 8) * (tabSize + 2)), posY + ySize, true, tab, onPress));
             }
         }
 
@@ -68,22 +69,28 @@ public class OcculusScreen extends Screen {
         addRenderableWidget(nextPage);
         addRenderableWidget(prevPage);
 
-        setActiveTab(registry.getValues().stream().findFirst().orElseThrow());
-        if (activeTab != null)
-            activeTab.init(getMinecraft(), width, height);
+        setActiveTab(0);
     }
 
     private void prevPage(Button button) {
         page -= 1;
-        if (page <= 0) prevPage.active = false;
-        if (page < maxPage) nextPage.active = true;
+        if (page <= 0) {
+            prevPage.active = false;
+        }
+        if (page < maxPage) {
+            nextPage.active = true;
+        }
         onPageChanged();
     }
 
     private void nextPage(Button button) {
         page += 1;
-        if (page >= maxPage) nextPage.active = false;
-        if (page > 0) prevPage.active = true;
+        if (page >= maxPage) {
+            nextPage.active = false;
+        }
+        if (page > 0) {
+            prevPage.active = true;
+        }
         onPageChanged();
     }
 
@@ -95,13 +102,14 @@ public class OcculusScreen extends Screen {
         }
     }
 
-    private void setActiveTab(IOcculusTab tab) {
-        removeWidget(activeTab);
+    private void setActiveTab(int tabIndex) {
+        IOcculusTab tab = OcculusTab.TAB_BY_INDEX.get(tabIndex);
         Optional.ofNullable(RENDERERS.get(tab.getId()))
-                .map(factory -> factory.apply(tab, player))
-                .map(this::addRenderableWidget)
+                .map(factory -> factory.apply(tab, this.player))
                 .ifPresent(occulusTabRenderer -> {
-                    activeTab = occulusTabRenderer;
+                    removeWidget(this.activeTab);
+                    this.activeTab = occulusTabRenderer;
+                    addRenderableWidget(this.activeTab);
                 });
         activeTab.init(getMinecraft(), width, height);
     }
