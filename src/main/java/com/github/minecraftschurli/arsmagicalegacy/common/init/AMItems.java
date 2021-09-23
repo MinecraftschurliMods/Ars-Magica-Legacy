@@ -42,10 +42,10 @@ public interface AMItems {
     RegistryObject<Item> VINTEUM_DUST = ITEMS.register("vinteum_dust", () -> new Item(ITEM_64));
     RegistryObject<Item> VINTEUM_BLOCK = ITEMS.register("vinteum_block", () -> new BlockItem(AMBlocks.VINTEUM_BLOCK.get(), ITEM_64));
     RegistryObject<Item> MOONSTONE_ORE = ITEMS.register("moonstone_ore", () -> new BlockItem(AMBlocks.MOONSTONE_ORE.get(), ITEM_64));
-    RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone_dust", () -> new Item(ITEM_64));
+    RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone", () -> new Item(ITEM_64));
     RegistryObject<Item> MOONSTONE_BLOCK = ITEMS.register("moonstone_block", () -> new BlockItem(AMBlocks.MOONSTONE_BLOCK.get(), ITEM_64));
     RegistryObject<Item> SUNSTONE_ORE = ITEMS.register("sunstone_ore", () -> new BlockItem(AMBlocks.SUNSTONE_ORE.get(), ITEM_64));
-    RegistryObject<Item> SUNSTONE = ITEMS.register("sunstone_dust", () -> new Item(ITEM_64));
+    RegistryObject<Item> SUNSTONE = ITEMS.register("sunstone", () -> new Item(ITEM_64));
     RegistryObject<Item> SUNSTONE_BLOCK = ITEMS.register("sunstone_block", () -> new BlockItem(AMBlocks.SUNSTONE_BLOCK.get(), ITEM_64));
     RegistryObject<Item> WITCHWOOD_LOG = ITEMS.register("witchwood_log", () -> new BlockItem(AMBlocks.WITCHWOOD_LOG.get(), ITEM_64));
     RegistryObject<Item> WITCHWOOD = ITEMS.register("witchwood", () -> new BlockItem(AMBlocks.WITCHWOOD.get(), ITEM_64));

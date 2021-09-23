@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "arsmagicalegacy:block/vinteum_wall_torch"
+    },
+    "facing=south": {
+      "model": "arsmagicalegacy:block/vinteum_wall_torch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "arsmagicalegacy:block/vinteum_wall_torch",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "arsmagicalegacy:block/vinteum_wall_torch",
+      "y": 90
+    }
+  }
+}

@@ -11,7 +11,10 @@ import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -55,6 +58,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
         doorBlock(WITCHWOOD_DOOR, "witchwood");
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
+        torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
     }
 
     private void simpleBlock(Supplier<? extends Block> block) {
@@ -64,9 +68,10 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void logBlock(Supplier<? extends Block> block) {
         if (block.get() instanceof RotatedPillarBlock) logBlock((RotatedPillarBlock) block.get());
     }
-    
+
     private void woodBlock(Supplier<? extends Block> block, Supplier<? extends Block> log) {
-        if (block.get() instanceof RotatedPillarBlock) axisBlock((RotatedPillarBlock) block.get(), models().cubeColumn(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())), models().cubeColumnHorizontal(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())));
+        if (block.get() instanceof RotatedPillarBlock)
+            axisBlock((RotatedPillarBlock) block.get(), models().cubeColumn(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())), models().cubeColumnHorizontal(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())));
     }
 
     private void airBlock(Supplier<? extends Block> block) {
@@ -78,15 +83,18 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     private void doorBlock(Supplier<? extends Block> block, String name) {
-        if (block.get() instanceof DoorBlock) doorBlock((DoorBlock) block.get(), name, modLoc("block/" + name + "_door_bottom"), modLoc("block/" + name + "_door_top"));
+        if (block.get() instanceof DoorBlock)
+            doorBlock((DoorBlock) block.get(), name, modLoc("block/" + name + "_door_bottom"), modLoc("block/" + name + "_door_top"));
     }
 
     private void trapdoorBlock(Supplier<? extends Block> block) {
-        if (block.get() instanceof TrapDoorBlock) trapdoorBlock((TrapDoorBlock) block.get(), blockTexture(block.get()), true);
+        if (block.get() instanceof TrapDoorBlock)
+            trapdoorBlock((TrapDoorBlock) block.get(), blockTexture(block.get()), true);
     }
-    
+
     private void slabBlock(Supplier<? extends Block> slab, Supplier<? extends Block> block) {
-        if (slab.get() instanceof SlabBlock) slabBlock((SlabBlock) slab.get(), cubeAll(block.get()).getLocation(), blockTexture(block.get()));
+        if (slab.get() instanceof SlabBlock)
+            slabBlock((SlabBlock) slab.get(), cubeAll(block.get()).getLocation(), blockTexture(block.get()));
     }
 
     private void stairsBlock(Supplier<? extends Block> stairs, Supplier<? extends Block> block) {
@@ -99,7 +107,23 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     private void fenceGateBlock(Supplier<? extends Block> fenceGate, Supplier<? extends Block> block) {
-        if (fenceGate.get() instanceof FenceGateBlock) fenceGateBlock((FenceGateBlock) fenceGate.get(), blockTexture(block.get()));
+        if (fenceGate.get() instanceof FenceGateBlock)
+            fenceGateBlock((FenceGateBlock) fenceGate.get(), blockTexture(block.get()));
+    }
+
+    private void torchBlock(Supplier<? extends Block> torch, Supplier<? extends Block> wallTorch) {
+        if (torch.get() instanceof TorchBlock && wallTorch.get() instanceof WallTorchBlock) {
+            ModelFile file = models().withExistingParent(torch.get().getRegistryName().getPath(), "block/template_torch").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
+            getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
+            ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
+            getVariantBuilder(wallTorch.get()).forAllStates(blockState -> switch (blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                case NORTH -> ConfiguredModel.builder().modelFile(wallFile).build();
+                case EAST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
+                case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
+                case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
+                default -> new ConfiguredModel[0];
+            });
+        }
     }
 
     private void railBlock(Supplier<? extends RailBlock> block) {

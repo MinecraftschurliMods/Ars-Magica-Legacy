@@ -18,7 +18,7 @@ fullscreen:false
 bobView:false
 toggleCrouch:false
 toggleSprint:false
-darkMojangStudiosBackground:false
+darkMojangStudiosBackground:true
 mouseSensitivity:0.5
 fov:0.0
 screenEffectScale:1.0

@@ -51,6 +51,7 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_FENCE_GATE, AMBlocks.WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
+        itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
     }
 
     private void itemGenerated(Supplier<? extends Item> item) {
