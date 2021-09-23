@@ -10,6 +10,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Mostly taken from McJty's tutorials and the Botania mod.
+ * {@see https://github.com/McJty/YouTubeModding14/blob/1.17/src/main/java/com/mcjty/mytutorial/blocks/FirstBlockContainer.java}
+ * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/client/gui/bag/ContainerFlowerBag.java}
+ */
 public class RuneBagContainer extends AbstractContainerMenu {
     private final Container inventory;
 

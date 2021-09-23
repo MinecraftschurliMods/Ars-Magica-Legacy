@@ -21,6 +21,10 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Mostly taken from the Botania mod.
+ * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
+ */
 public class RuneBagItem extends Item {
     public RuneBagItem(Properties pProperties) {
         super(pProperties);
