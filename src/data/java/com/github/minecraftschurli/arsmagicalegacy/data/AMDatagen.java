@@ -11,23 +11,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
-public class ArsMagicaLegacyDatagen {
+public class AMDatagen {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * @param evt the event object of the {@link GatherDataEvent}
+     * @param e the event object of the {@link GatherDataEvent}
      */
     @SubscribeEvent
-    public static void gatherData(final GatherDataEvent evt) {
+    static void gatherData(GatherDataEvent e) {
         LOGGER.info("Running Datagens");
-        ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
-        DataGenerator generator = evt.getGenerator();
-        if (evt.includeServer()) {
+        ExistingFileHelper existingFileHelper = e.getExistingFileHelper();
+        DataGenerator generator = e.getGenerator();
+        if (e.includeServer()) {
             TagsProvider.setup(generator, existingFileHelper);
         }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));
-        if (evt.includeClient()) {
+        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, e.includeClient(), e.includeServer()));
+        if (e.includeClient()) {
             generator.addProvider(lang);
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));

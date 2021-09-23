@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks.*;
 
 class AMBlockStateProvider extends BlockStateProvider {
-    public AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+    AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
 
@@ -61,71 +61,136 @@ class AMBlockStateProvider extends BlockStateProvider {
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
     }
 
+    /**
+     * Adds a simple block model that uses its block id as the texture name on all six sides.
+     *
+     * @param block The block to generate the model for.
+     */
     private void simpleBlock(Supplier<? extends Block> block) {
         simpleBlock(block.get());
     }
 
-    private void logBlock(Supplier<? extends Block> block) {
-        if (block.get() instanceof RotatedPillarBlock) logBlock((RotatedPillarBlock) block.get());
+    /**
+     * Adds a rotated block model that uses the block id as the side texture, and block id + "_top" as the top texture. Rotates accordingly.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void logBlock(Supplier<? extends RotatedPillarBlock> block) {
+        logBlock(block.get());
     }
 
-    private void woodBlock(Supplier<? extends Block> block, Supplier<? extends Block> log) {
-        if (block.get() instanceof RotatedPillarBlock)
-            axisBlock((RotatedPillarBlock) block.get(), models().cubeColumn(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())), models().cubeColumnHorizontal(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())));
+    /**
+     * Adds a rotated block model that uses its block id as the texture name on all six sides. Rotates accordingly.
+     *
+     * @param block The block to generate the model for.
+     * @param log   The corresponding log block.
+     */
+    private void woodBlock(Supplier<? extends RotatedPillarBlock> block, Supplier<? extends Block> log) {
+        axisBlock(block.get(), models().cubeColumn(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())), models().cubeColumnHorizontal(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())));
     }
 
+    /**
+     * Adds a block model that uses block/air as the parent.
+     *
+     * @param block The block to generate the model for.
+     */
     private void airBlock(Supplier<? extends Block> block) {
         simpleBlock(block.get(), models().getExistingFile(mcLoc("block/air")));
     }
 
+    /**
+     * Adds a cross block model, as seen on flowers and saplings. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
     private void crossBlock(Supplier<? extends Block> block) {
         simpleBlock(block.get(), models().cross(block.get().getRegistryName().getPath(), blockTexture(block.get())));
     }
 
-    private void doorBlock(Supplier<? extends Block> block, String name) {
-        if (block.get() instanceof DoorBlock)
-            doorBlock((DoorBlock) block.get(), name, modLoc("block/" + name + "_door_bottom"), modLoc("block/" + name + "_door_top"));
+    /**
+     * Adds a door block model.
+     *
+     * @param block The block to generate the model for.
+     * @param name  The base name of the door texture, excluding "_door". E.g. "oak" or "acacia".
+     */
+    private void doorBlock(Supplier<? extends DoorBlock> block, String name) {
+        doorBlock(block.get(), name, modLoc("block/" + name + "_door_bottom"), modLoc("block/" + name + "_door_top"));
     }
 
-    private void trapdoorBlock(Supplier<? extends Block> block) {
-        if (block.get() instanceof TrapDoorBlock)
-            trapdoorBlock((TrapDoorBlock) block.get(), blockTexture(block.get()), true);
+    /**
+     * Adds a trapdoor block model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void trapdoorBlock(Supplier<? extends TrapDoorBlock> block) {
+        trapdoorBlock(block.get(), blockTexture(block.get()), true);
     }
 
-    private void slabBlock(Supplier<? extends Block> slab, Supplier<? extends Block> block) {
-        if (slab.get() instanceof SlabBlock)
-            slabBlock((SlabBlock) slab.get(), cubeAll(block.get()).getLocation(), blockTexture(block.get()));
+    /**
+     * Adds a slab model.
+     *
+     * @param slab  The block to generate the model for.
+     * @param block The block to take the texture from.
+     */
+    private void slabBlock(Supplier<? extends SlabBlock> slab, Supplier<? extends Block> block) {
+        slabBlock(slab.get(), cubeAll(block.get()).getLocation(), blockTexture(block.get()));
     }
 
-    private void stairsBlock(Supplier<? extends Block> stairs, Supplier<? extends Block> block) {
-        if (stairs.get() instanceof StairBlock) stairsBlock((StairBlock) stairs.get(), blockTexture(block.get()));
+    /**
+     * Adds a stair model.
+     *
+     * @param stairs The block to generate the model for.
+     * @param block  The block to take the texture from.
+     */
+    private void stairsBlock(Supplier<? extends StairBlock> stairs, Supplier<? extends Block> block) {
+        stairsBlock(stairs.get(), blockTexture(block.get()));
     }
 
-    private void fenceBlock(Supplier<? extends Block> fence, Supplier<? extends Block> block) {
-        if (fence.get() instanceof FenceBlock) fenceBlock((FenceBlock) fence.get(), blockTexture(block.get()));
+    /**
+     * Adds a fence model.
+     *
+     * @param fence The block to generate the model for.
+     * @param block The block to take the texture from.
+     */
+    private void fenceBlock(Supplier<? extends FenceBlock> fence, Supplier<? extends Block> block) {
+        fenceBlock(fence.get(), blockTexture(block.get()));
         models().fenceInventory(fence.get().getRegistryName().getPath() + "_inventory", blockTexture(block.get()));
     }
 
+    /**
+     * Adds a fence gate model.
+     *
+     * @param fenceGate The block to generate the model for.
+     * @param block     The block to take the texture from.
+     */
     private void fenceGateBlock(Supplier<? extends Block> fenceGate, Supplier<? extends Block> block) {
-        if (fenceGate.get() instanceof FenceGateBlock)
-            fenceGateBlock((FenceGateBlock) fenceGate.get(), blockTexture(block.get()));
+        fenceGateBlock((FenceGateBlock) fenceGate.get(), blockTexture(block.get()));
     }
 
-    private void torchBlock(Supplier<? extends Block> torch, Supplier<? extends Block> wallTorch) {
-        if (torch.get() instanceof TorchBlock && wallTorch.get() instanceof WallTorchBlock) {
-            ModelFile file = models().withExistingParent(torch.get().getRegistryName().getPath(), "block/template_torch").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
-            getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
-            ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
-            getVariantBuilder(wallTorch.get()).forAllStates(blockState -> switch (blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-                case NORTH -> ConfiguredModel.builder().modelFile(wallFile).build();
-                case EAST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
-                case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
-                case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
-                default -> new ConfiguredModel[0];
-            });
-        }
+    /**
+     * Adds a torch/wall torch model. Uses the normal torch block id as the texture name.
+     *
+     * @param torch     The TorchBlock to generate the model for.
+     * @param wallTorch The WallTorchBlock to generate the model for.
+     */
+    private void torchBlock(Supplier<? extends TorchBlock> torch, Supplier<? extends WallTorchBlock> wallTorch) {
+        ModelFile file = models().withExistingParent(torch.get().getRegistryName().getPath(), "block/template_torch").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
+        getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
+        ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
+        getVariantBuilder(wallTorch.get()).forAllStates(blockState -> switch (blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> ConfiguredModel.builder().modelFile(wallFile).build();
+            case EAST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
+            case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
+            case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
+            default -> new ConfiguredModel[0];
+        });
     }
 
+    /**
+     * Adds a rail model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
     private void railBlock(Supplier<? extends RailBlock> block) {
         VariantBlockStateBuilder builder = getVariantBuilder(block.get());
         ResourceLocation blockTex = blockTexture(block.get());

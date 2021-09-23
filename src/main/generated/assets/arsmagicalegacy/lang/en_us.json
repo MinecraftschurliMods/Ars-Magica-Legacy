@@ -29,11 +29,9 @@
   "block.arsmagicalegacy.witchwood_stairs": "Witchwood Stairs",
   "block.arsmagicalegacy.witchwood_trapdoor": "Witchwood Trapdoor",
   "item.arsmagicalegacy.arcane_ash": "Arcane Ash",
-  "item.arsmagicalegacy.arcane_compendium.landing_text": "Landing Text",
+  "item.arsmagicalegacy.arcane_compendium.landing_text": "A renewed look into Minecraft with a splash of magic...",
   "item.arsmagicalegacy.arcane_compendium.name": "Arcane Compendium",
-  "item.arsmagicalegacy.arcane_compendium.test.description": "This is a test",
-  "item.arsmagicalegacy.arcane_compendium.test.name": "TestCategory",
-  "item.arsmagicalegacy.arcane_compendium.test.test.name": "TestEntry",
+  "item.arsmagicalegacy.arcane_compound": "Arcane Compound",
   "item.arsmagicalegacy.black_rune": "Black Rune",
   "item.arsmagicalegacy.blank_rune": "Blank Rune",
   "item.arsmagicalegacy.blue_rune": "Blue Rune",
@@ -57,5 +55,6 @@
   "item.arsmagicalegacy.topaz": "Topaz",
   "item.arsmagicalegacy.vinteum_dust": "Vinteum Dust",
   "item.arsmagicalegacy.white_rune": "White Rune",
-  "item.arsmagicalegacy.yellow_rune": "Yellow Rune"
+  "item.arsmagicalegacy.yellow_rune": "Yellow Rune",
+  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy"
 }

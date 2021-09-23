@@ -14,12 +14,13 @@ import java.util.function.Supplier;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems.*;
 
 class AMItemModelProvider extends ItemModelProvider {
-    public AMItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+    AMItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
+        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
         blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
 //        blockItem(DEEPSLATE_CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);
@@ -69,31 +70,66 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(RED_RUNE);
         itemGenerated(BLACK_RUNE);
         itemGenerated(RUNE_BAG);
+        itemGenerated(ARCANE_COMPOUND);
         itemGenerated(ARCANE_ASH);
         itemGenerated(PURIFIED_VINTEUM_DUST);
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
     }
 
+    /**
+     * Adds a 2D flat item model. Uses the item id as the item texture.
+     *
+     * @param item The item to generate the model for.
+     */
     private void itemGenerated(Supplier<? extends Item> item) {
         itemGenerated(item, "item/" + item.get().getRegistryName().getPath());
     }
 
+    /**
+     * Adds a 2D flat item model.
+     *
+     * @param item The item to generate the model for.
+     * @param name The texture id to use.
+     */
     private void itemGenerated(Supplier<? extends Item> item, String name) {
         singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
     }
 
+    /**
+     * Adds a handheld item model, for tools and similar. Uses the item id as the item texture.
+     *
+     * @param item The item to generate the model for.
+     */
     private void itemHandheld(Supplier<? extends Item> item) {
         itemHandheld(item, "item/" + item.get().getRegistryName().getPath());
     }
 
+    /**
+     * Adds a handheld item model, for tools and similar.
+     *
+     * @param item The item to generate the model for.
+     * @param name The texture id to use.
+     */
     private void itemHandheld(Supplier<? extends Item> item, String name) {
         singleTexture(item.get().getRegistryName().getPath(), new ResourceLocation("item/handheld"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
     }
 
-    private void withExistingParent(Supplier<? extends Item> item, String name) {
-        withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + name));
+    /**
+     * Adds an item model that uses a parent model.
+     *
+     * @param item   The item to generate the model for.
+     * @param parent The parent model to use.
+     */
+    private void withExistingParent(Supplier<? extends Item> item, String parent) {
+        withExistingParent(item.get().getRegistryName().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
     }
 
+    /**
+     * Adds an item model that uses the corresponding block model as the parent model.
+     *
+     * @param item  The item to generate the model for.
+     * @param block The block model to use.
+     */
     private void blockItem(Supplier<? extends Item> item, Supplier<? extends Block> block) {
         withExistingParent(item, block.get().getRegistryName().getPath());
     }

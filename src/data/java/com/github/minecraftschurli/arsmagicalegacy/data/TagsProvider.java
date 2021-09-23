@@ -18,12 +18,12 @@ class TagsProvider {
     }
 
     private static class Blocks extends BlockTagsProvider {
-        public Blocks(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Blocks(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
         @Override
-        public void addTags() {
+        protected void addTags() {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE); // add blocks mineable with pickaxe
             this.tag(BlockTags.MINEABLE_WITH_SHOVEL);  // add blocks mineable with shovel
             this.tag(BlockTags.MINEABLE_WITH_AXE);     // add blocks mineable with axe
@@ -32,34 +32,34 @@ class TagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        public Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
         @Override
-        public void addTags() {
+        protected void addTags() {
 
         }
     }
 
     private static class Fluids extends FluidTagsProvider {
-        public Fluids(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Fluids(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
         @Override
-        public void addTags() {
+        protected void addTags() {
 
         }
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        public EntityTypes(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        EntityTypes(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
         @Override
-        public void addTags() {
+        protected void addTags() {
 
         }
     }
