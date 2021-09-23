@@ -51,6 +51,26 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_FENCE_GATE, AMBlocks.WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
+        itemGenerated(BLANK_RUNE);
+        itemGenerated(WHITE_RUNE);
+        itemGenerated(ORANGE_RUNE);
+        itemGenerated(MAGENTA_RUNE);
+        itemGenerated(LIGHT_BLUE_RUNE);
+        itemGenerated(YELLOW_RUNE);
+        itemGenerated(LIME_RUNE);
+        itemGenerated(PINK_RUNE);
+        itemGenerated(GRAY_RUNE);
+        itemGenerated(LIGHT_GRAY_RUNE);
+        itemGenerated(CYAN_RUNE);
+        itemGenerated(PURPLE_RUNE);
+        itemGenerated(BLUE_RUNE);
+        itemGenerated(BROWN_RUNE);
+        itemGenerated(GREEN_RUNE);
+        itemGenerated(RED_RUNE);
+        itemGenerated(BLACK_RUNE);
+        itemGenerated(RUNE_BAG);
+        itemGenerated(ARCANE_ASH);
+        itemGenerated(PURIFIED_VINTEUM_DUST);
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
     }
 

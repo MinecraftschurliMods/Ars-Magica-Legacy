@@ -48,6 +48,29 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         idBlockTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
         idBlockTranslation(AMBlocks.WITCHWOOD_BUTTON);
         idBlockTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
+        idItemTranslation(AMItems.BLANK_RUNE);
+        idItemTranslation(AMItems.WHITE_RUNE);
+        idItemTranslation(AMItems.ORANGE_RUNE);
+        idItemTranslation(AMItems.MAGENTA_RUNE);
+        idItemTranslation(AMItems.LIGHT_BLUE_RUNE);
+        idItemTranslation(AMItems.YELLOW_RUNE);
+        idItemTranslation(AMItems.LIME_RUNE);
+        idItemTranslation(AMItems.PINK_RUNE);
+        idItemTranslation(AMItems.GRAY_RUNE);
+        idItemTranslation(AMItems.LIGHT_GRAY_RUNE);
+        idItemTranslation(AMItems.CYAN_RUNE);
+        idItemTranslation(AMItems.PURPLE_RUNE);
+        idItemTranslation(AMItems.BLUE_RUNE);
+        idItemTranslation(AMItems.BROWN_RUNE);
+        idItemTranslation(AMItems.GREEN_RUNE);
+        idItemTranslation(AMItems.RED_RUNE);
+        idItemTranslation(AMItems.BLACK_RUNE);
+        idItemTranslation(AMItems.RUNE_BAG);
+        idItemTranslation(AMItems.ARCANE_ASH);
+        idItemTranslation(AMItems.PURIFIED_VINTEUM_DUST);
+        idItemTranslation(AMItems.VINTEUM_TORCH);
+
+
     }
 
     private void idBlockTranslation(Supplier<? extends Block> block) {
