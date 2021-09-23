@@ -10,6 +10,7 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.NotNull;
@@ -79,6 +80,7 @@ public interface AMItems {
     RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.RED));
     RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BLACK));
     RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_1));
+    RegistryObject<Item> VINTEUM_TORCH = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
 
     /**
      * Empty method that is required for classloading

@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +17,9 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -57,6 +60,8 @@ public interface AMBlocks {
     RegistryObject<Block> WITCHWOOD_TRAPDOOR = BLOCKS.register("witchwood_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noOcclusion().isValidSpawn((a, b, c, d) -> false)));
     RegistryObject<Block> WITCHWOOD_BUTTON = BLOCKS.register("witchwood_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<Block> WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
+    RegistryObject<Block> VINTEUM_TORCH = BLOCKS.register("vinteum_torch", () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
+    RegistryObject<Block> VINTEUM_WALL_TORCH = BLOCKS.register("vinteum_wall_torch", () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
 
     /**
      * Empty method that is required for classloading
