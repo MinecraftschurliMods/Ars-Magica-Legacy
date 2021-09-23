@@ -80,6 +80,8 @@ public interface AMItems {
     RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.RED));
     RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune", () -> new ColoredRuneItem(ITEM_64, DyeColor.BLACK));
     RegistryObject<Item> RUNE_BAG = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_1));
+    RegistryObject<Item> ARCANE_ASH = ITEMS.register("arcane_ash", () -> new Item(ITEM_64));
+    RegistryObject<Item> PURIFIED_VINTEUM_DUST = ITEMS.register("purified_vinteum_dust", () -> new Item(ITEM_64));
     RegistryObject<Item> VINTEUM_TORCH = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
 
     /**
