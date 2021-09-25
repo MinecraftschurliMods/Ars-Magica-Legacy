@@ -15,19 +15,20 @@ public class AMDatagen {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * @param e the event object of the {@link GatherDataEvent}
+     * @param evt the event object of the {@link GatherDataEvent}
      */
     @SubscribeEvent
-    static void gatherData(GatherDataEvent e) {
+    static void gatherData(GatherDataEvent evt) {
         LOGGER.info("Running Datagens");
-        ExistingFileHelper existingFileHelper = e.getExistingFileHelper();
-        DataGenerator generator = e.getGenerator();
-        if (e.includeServer()) {
+        ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
+        DataGenerator generator = evt.getGenerator();
+        if (evt.includeServer()) {
+            generator.addProvider(new AMLootTableProvider(generator));
             TagsProvider.setup(generator, existingFileHelper);
         }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, e.includeClient(), e.includeServer()));
-        if (e.includeClient()) {
+        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));
+        if (evt.includeClient()) {
             generator.addProvider(lang);
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
