@@ -34,6 +34,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(VINTEUM_DUST);
         blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
         blockItem(MOONSTONE_ORE, AMBlocks.MOONSTONE_ORE);
+//        blockItem(DEEPSLATE_MOONSTONE_ORE, AMBlocks.DEEPSLATE_MOONSTONE_ORE);
         itemGenerated(MOONSTONE);
         blockItem(MOONSTONE_BLOCK, AMBlocks.MOONSTONE_BLOCK);
         blockItem(SUNSTONE_ORE, AMBlocks.SUNSTONE_ORE);

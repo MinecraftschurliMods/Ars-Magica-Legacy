@@ -42,6 +42,7 @@ class AMBlockStateProvider extends BlockStateProvider {
 //        simpleBlock(DEEPSLATE_VINTEUM_ORE);
         simpleBlock(VINTEUM_BLOCK);
         simpleBlock(MOONSTONE_ORE);
+//        simpleBlock(DEEPSLATE_MOONSTONE_ORE);
         simpleBlock(MOONSTONE_BLOCK);
         simpleBlock(SUNSTONE_ORE);
         simpleBlock(SUNSTONE_BLOCK);

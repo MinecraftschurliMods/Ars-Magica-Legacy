@@ -35,6 +35,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.VINTEUM_DUST);
         blockIdTranslation(AMBlocks.VINTEUM_BLOCK);
         blockIdTranslation(AMBlocks.MOONSTONE_ORE);
+        blockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
         itemIdTranslation(AMItems.MOONSTONE);
         blockIdTranslation(AMBlocks.MOONSTONE_BLOCK);
         blockIdTranslation(AMBlocks.SUNSTONE_ORE);
