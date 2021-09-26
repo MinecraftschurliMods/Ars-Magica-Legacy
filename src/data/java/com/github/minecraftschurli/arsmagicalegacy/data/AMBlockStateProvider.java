@@ -164,8 +164,8 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param fenceGate The block to generate the model for.
      * @param block     The block to take the texture from.
      */
-    private void fenceGateBlock(Supplier<? extends Block> fenceGate, Supplier<? extends Block> block) {
-        fenceGateBlock((FenceGateBlock) fenceGate.get(), blockTexture(block.get()));
+    private void fenceGateBlock(Supplier<? extends FenceGateBlock> fenceGate, Supplier<? extends Block> block) {
+        fenceGateBlock(fenceGate.get(), blockTexture(block.get()));
     }
 
     /**
@@ -178,7 +178,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         ModelFile file = models().withExistingParent(torch.get().getRegistryName().getPath(), "block/template_torch").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
         getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
         ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
-        getVariantBuilder(wallTorch.get()).forAllStates(blockState -> switch (blockState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+        getVariantBuilder(wallTorch.get()).forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> ConfiguredModel.builder().modelFile(wallFile).build();
             case EAST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
             case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
@@ -194,11 +194,11 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void railBlock(Supplier<? extends RailBlock> block) {
         VariantBlockStateBuilder builder = getVariantBuilder(block.get());
-        ResourceLocation blockTex = blockTexture(block.get());
-        ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", blockTex);
-        ModelFile curved = models().withExistingParent(block.get().getRegistryName().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(blockTex.getNamespace(), blockTex.getPath() + "_corner"));
-        ModelFile raisedNE = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", blockTex);
-        ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", blockTex);
+        ResourceLocation texture = blockTexture(block.get());
+        ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", texture);
+        ModelFile curved = models().withExistingParent(block.get().getRegistryName().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
+        ModelFile raisedNE = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture);
+        ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
         builder.forAllStates(state -> switch (state.getValue(((RailBlock) block).getShapeProperty())) {
             case NORTH_SOUTH -> ConfiguredModel.builder().modelFile(straight).build();
             case EAST_WEST -> ConfiguredModel.builder().modelFile(straight).rotationY(90).build();
