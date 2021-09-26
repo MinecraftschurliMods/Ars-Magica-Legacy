@@ -13,18 +13,27 @@ import java.util.Random;
 public final class RenderUtil {
     private RenderUtil() {}
 
-    public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {
+    public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {// fixme
         stack.pushPose();
+        var pose = stack.last().pose();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         RenderSystem.disableTexture();
-        RenderSystem.lineWidth(width);
+        RenderSystem.depthMask(false);
+        RenderSystem.disableCull();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buf = tesselator.getBuilder();
+        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+        RenderSystem.lineWidth(width);
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR);
-        buf.vertex(startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 0xFF).endVertex();
-        buf.vertex(endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 0xFF).endVertex();
-        tesselator.end();
+        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1.0f).endVertex();
+        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1.0f).endVertex();
+        buf.end();
+        BufferUploader.end(buf);
+        RenderSystem.lineWidth(1);
+        RenderSystem.enableCull();
+        RenderSystem.depthMask(true);
         RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
         stack.popPose();
     }
 

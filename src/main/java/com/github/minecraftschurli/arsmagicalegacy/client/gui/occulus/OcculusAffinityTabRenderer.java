@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -15,27 +16,26 @@ import net.minecraft.world.entity.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
-    public OcculusAffinityTabRenderer(final IOcculusTab occulusTab, final Player player) {
+    public OcculusAffinityTabRenderer(IOcculusTab occulusTab, Player player) {
         super(occulusTab, player);
     }
 
     @Override
-    protected void renderBg(PoseStack pMatrixStack, int posX, int posY, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.getBackground());
-        RenderUtil.drawBox(pMatrixStack, posX + 7, posY + 7, 196, 196, getBlitOffset(), 0, 0, 1, 1);
+        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), 0, 0, 1, 1);
     }
 
     @Override
-    protected void renderFg(PoseStack pMatrixStack, int posX, int posY, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
         int affNum = affinityRegistry.getValues().size() - 1;
         int portion = 360 / affNum;
         int currentID = 0;
-        int cX = posX + xSize / 2;
-        int cY = posY + ySize / 2;
+        int cX = width / 2;
+        int cY = height / 2;
         List<Component> drawString = new ArrayList<>();
         for (IAffinity aff : affinityRegistry) {
             if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
@@ -70,7 +70,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            itemRenderer.renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX, drawY);
+            itemRenderer.renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX+posX, drawY+posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName());
 //                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
@@ -90,10 +90,10 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             }
         }
         if (!drawString.isEmpty()) {
-            if (!player.isSecondaryUseActive()) {
+            if (!Screen.hasShiftDown()) {
                 drawString.add(new TranslatableComponent("tooltip.%s.shiftForDetails".formatted(ArsMagicaAPI.MOD_ID)).withStyle(ChatFormatting.GRAY));
             }
-            renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY);
+            renderComponentTooltip(pMatrixStack, drawString, pMouseX, pMouseY);
         }
         RenderSystem.setShaderFogColor(1, 1, 1);
         //RenderHelper.disableStandardItemLighting();

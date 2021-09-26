@@ -5,14 +5,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public abstract class OcculusTabRenderer extends Screen implements NarratableEntry {
     protected final IOcculusTab occulusTab;
     protected final Player player;
-    protected final int xSize = 210;
-    protected final int ySize = 210;
+    protected int screenWidth;
+    protected int screenHeight;
+    protected int posX;
+    protected int posY;
 
     protected OcculusTabRenderer(IOcculusTab occulusTab, Player player) {
         super(occulusTab.getDisplayName());
@@ -21,16 +27,26 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
     }
 
     @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        int posX = width / 2 - xSize / 2;
-        int posY = height / 2 - ySize / 2;
-        renderBg(pMatrixStack, posX, posY, pMouseX, pMouseY, pPartialTicks);
-        renderFg(pMatrixStack, posX, posY, pMouseX, pMouseY, pPartialTicks);
+    public void render(@NotNull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        pMatrixStack.pushPose();
+        pMatrixStack.translate(7, 7, 0);
+        pMouseX -= posX;
+        pMouseY -= posY;
+        renderBg(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+        renderFg(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+        pMatrixStack.popPose();
     }
 
-    protected abstract void renderBg(PoseStack pMatrixStack, int posX, int posY, int pMouseX, int pMouseY, float pPartialTicks);
+    public void initValues(int screenWidth, int screenHeight, int posX, int posY) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.posX = posX;
+        this.posY = posY;
+    }
 
-    protected abstract void renderFg(PoseStack pMatrixStack, int posX, int posY, int pMouseX, int pMouseY, float pPartialTicks);
+    protected abstract void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks);
+
+    protected abstract void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks);
 
     @NotNull
     @Override
@@ -40,4 +56,8 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
 
     @Override
     public void updateNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {}
+
+    public void renderComponentTooltip(@NotNull PoseStack stack, @NotNull List<Component> tooltips, int mouseX, int mouseY) {
+        GuiUtils.drawHoveringText(stack, tooltips, mouseX, mouseY, screenWidth, screenHeight, -1, font);
+    }
 }
