@@ -23,6 +23,7 @@ public class AMDatagen {
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
         if (evt.includeServer()) {
+            generator.addProvider(new AMAdvancementProvider(generator));
             generator.addProvider(new AMLootTableProvider(generator));
             TagsProvider.setup(generator, existingFileHelper);
         }
@@ -34,5 +35,4 @@ public class AMDatagen {
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
         }
     }
-
 }
