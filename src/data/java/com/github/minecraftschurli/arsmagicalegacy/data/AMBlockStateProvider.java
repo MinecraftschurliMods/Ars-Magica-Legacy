@@ -33,16 +33,16 @@ class AMBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         simpleBlock(CHIMERITE_ORE);
-//        simpleBlock(DEEPSLATE_CHIMERITE_ORE);
+        simpleBlock(DEEPSLATE_CHIMERITE_ORE);
         simpleBlock(CHIMERITE_BLOCK);
         simpleBlock(TOPAZ_ORE);
-//        simpleBlock(DEEPSLATE_TOPAZ_ORE);
+        simpleBlock(DEEPSLATE_TOPAZ_ORE);
         simpleBlock(TOPAZ_BLOCK);
         simpleBlock(VINTEUM_ORE);
-//        simpleBlock(DEEPSLATE_VINTEUM_ORE);
+        simpleBlock(DEEPSLATE_VINTEUM_ORE);
         simpleBlock(VINTEUM_BLOCK);
         simpleBlock(MOONSTONE_ORE);
-//        simpleBlock(DEEPSLATE_MOONSTONE_ORE);
+        simpleBlock(DEEPSLATE_MOONSTONE_ORE);
         simpleBlock(MOONSTONE_BLOCK);
         simpleBlock(SUNSTONE_ORE);
         simpleBlock(SUNSTONE_BLOCK);

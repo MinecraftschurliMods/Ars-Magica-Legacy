@@ -22,19 +22,19 @@ class AMItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
         blockItem(CHIMERITE_ORE, AMBlocks.CHIMERITE_ORE);
-//        blockItem(DEEPSLATE_CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE);
+        blockItem(DEEPSLATE_CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);
         blockItem(CHIMERITE_BLOCK, AMBlocks.CHIMERITE_BLOCK);
         blockItem(TOPAZ_ORE, AMBlocks.TOPAZ_ORE);
-//        blockItem(DEEPSLATE_TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE);
+        blockItem(DEEPSLATE_TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE);
         itemGenerated(TOPAZ);
         blockItem(TOPAZ_BLOCK, AMBlocks.TOPAZ_BLOCK);
         blockItem(VINTEUM_ORE, AMBlocks.VINTEUM_ORE);
-//        blockItem(DEEPSLATE_VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE);
+        blockItem(DEEPSLATE_VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE);
         itemGenerated(VINTEUM_DUST);
         blockItem(VINTEUM_BLOCK, AMBlocks.VINTEUM_BLOCK);
         blockItem(MOONSTONE_ORE, AMBlocks.MOONSTONE_ORE);
-//        blockItem(DEEPSLATE_MOONSTONE_ORE, AMBlocks.DEEPSLATE_MOONSTONE_ORE);
+        blockItem(DEEPSLATE_MOONSTONE_ORE, AMBlocks.DEEPSLATE_MOONSTONE_ORE);
         itemGenerated(MOONSTONE);
         blockItem(MOONSTONE_BLOCK, AMBlocks.MOONSTONE_BLOCK);
         blockItem(SUNSTONE_ORE, AMBlocks.SUNSTONE_ORE);
