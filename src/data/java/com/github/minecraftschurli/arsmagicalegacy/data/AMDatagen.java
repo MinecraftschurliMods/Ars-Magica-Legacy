@@ -25,6 +25,7 @@ public class AMDatagen {
         if (evt.includeServer()) {
             generator.addProvider(new AMAdvancementProvider(generator));
             generator.addProvider(new AMLootTableProvider(generator));
+            generator.addProvider(new AMRecipeProvider(generator));
             TagsProvider.setup(generator, existingFileHelper);
         }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
