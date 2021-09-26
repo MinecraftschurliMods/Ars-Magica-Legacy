@@ -4,9 +4,11 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -59,6 +61,8 @@ class AMBlockStateProvider extends BlockStateProvider {
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
         doorBlock(WITCHWOOD_DOOR, "witchwood");
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
+        buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
+        pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
     }
 
@@ -166,6 +170,47 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void fenceGateBlock(Supplier<? extends FenceGateBlock> fenceGate, Supplier<? extends Block> block) {
         fenceGateBlock(fenceGate.get(), blockTexture(block.get()));
+    }
+
+    /**
+     * Adds a button model.
+     *
+     * @param button The block to generate the model for.
+     * @param block  The block to take the texture from.
+     */
+    private void buttonBlock(Supplier<? extends ButtonBlock> button, Supplier<? extends Block> block) {
+        VariantBlockStateBuilder builder = getVariantBuilder(button.get());
+        ResourceLocation texture = blockTexture(block.get());
+        ModelFile normal = models().withExistingParent(button.get().getRegistryName().getPath(), "block/button").texture("texture", texture);
+        ModelFile pressed = models().withExistingParent(button.get().getRegistryName().getPath() + "_pressed", "block/button_pressed").texture("texture", texture);
+        builder.forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).build();
+                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(180).build();
+                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).uvLock(true).build();
+            };
+            case EAST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(90).build();
+                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(270).build();
+                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(90).uvLock(true).build();
+            };
+            case SOUTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(180).build();
+                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).build();
+                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(180).uvLock(true).build();
+            };
+            case WEST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(270).build();
+                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(90).build();
+                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(270).uvLock(true).build();
+            };
+            default -> new ConfiguredModel[0];
+        });
+        models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", blockTexture(block.get()));
+    }
+
+    private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate, Supplier<? extends Block> block) {
+        getVariantBuilder(pressurePlate.get()).forAllStates(state -> state.getValue(BlockStateProperties.POWERED) ? ConfiguredModel.builder().modelFile(models().withExistingParent(pressurePlate.get().getRegistryName().getPath() + "_down", "block/pressure_plate_down").texture("texture", blockTexture(block.get()))).build() : ConfiguredModel.builder().modelFile(models().withExistingParent(pressurePlate.get().getRegistryName().getPath(), "block/pressure_plate_up").texture("texture", blockTexture(block.get()))).build());
     }
 
     /**

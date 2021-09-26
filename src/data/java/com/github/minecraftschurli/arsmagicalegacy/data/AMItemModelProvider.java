@@ -53,6 +53,8 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_FENCE_GATE, AMBlocks.WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
         withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
+        withExistingParent(WITCHWOOD_BUTTON, "witchwood_button_inventory");
+        blockItem(WITCHWOOD_PRESSURE_PLATE, AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
         itemGenerated(WHITE_RUNE);
         itemGenerated(ORANGE_RUNE);
