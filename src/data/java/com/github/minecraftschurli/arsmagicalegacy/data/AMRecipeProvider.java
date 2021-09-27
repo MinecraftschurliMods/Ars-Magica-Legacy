@@ -245,5 +245,27 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('W', ItemTags.WOOL)
                 .unlockedBy("has_leather", has(Tags.Items.LEATHER))
                 .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.ARCANE_COMPOUND.get())
+                .requires(Tags.Items.DUSTS_GLOWSTONE)
+                .requires(Tags.Items.DUSTS_GLOWSTONE)
+                .requires(Tags.Items.DUSTS_REDSTONE)
+                .requires(Tags.Items.DUSTS_REDSTONE)
+                .requires(Tags.Items.NETHERRACK)
+                .requires(Tags.Items.NETHERRACK)
+                .requires(Tags.Items.STONE)
+                .requires(Tags.Items.STONE)
+                .unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.PURIFIED_VINTEUM_DUST.get())
+                .requires(AMItems.VINTEUM_DUST.get())
+                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.VINTEUM_TORCH.get())
+                .pattern("V")
+                .pattern("S")
+                .define('V',AMItems.VINTEUM_DUST.get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
+                .save(consumer);
     }
 }
