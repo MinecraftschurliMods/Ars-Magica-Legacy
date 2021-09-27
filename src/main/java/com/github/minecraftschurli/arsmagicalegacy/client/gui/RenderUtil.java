@@ -13,7 +13,7 @@ import java.util.Random;
 public final class RenderUtil {
     private RenderUtil() {}
 
-    public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {// fixme
+    public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {
         stack.pushPose();
         var pose = stack.last().pose();
         RenderSystem.enableBlend();
