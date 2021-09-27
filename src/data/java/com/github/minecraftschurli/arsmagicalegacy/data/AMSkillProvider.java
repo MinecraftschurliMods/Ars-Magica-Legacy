@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMOcculusTabs;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -16,6 +17,7 @@ public class AMSkillProvider extends SkillProvider {
         super(generator, ArsMagicaAPI.MOD_ID);
     }
 
+    @NotNull
     @Override
     public String getName() {
         return "AMSkillProvider";
@@ -23,11 +25,11 @@ public class AMSkillProvider extends SkillProvider {
 
     @Override
     protected void createSkills(Consumer<SkillBuilder> consumer) {
-        var test = createSkill("test", AMOcculusTabs.OFFENSE.get(), new ResourceLocation("textures/item/golden_apple.png"))
+        var test = createSkill("test", AMOcculusTabs.OFFENSE.get(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/icon/skill/affinity_gains.png"))
                 .setPosition(275, 75)
                 .addCost(AMSkillPoints.BLUE.get())
                 .build(consumer);
-        createSkill("test2", AMOcculusTabs.OFFENSE.get(), new ResourceLocation("textures/item/nether_star.png"))
+        createSkill("test2", AMOcculusTabs.OFFENSE.get(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/icon/skill/augmented_casting.png"))
                 .setPosition(275, 120)
                 .addCost(AMSkillPoints.BLUE.get())
                 .addParent(test)

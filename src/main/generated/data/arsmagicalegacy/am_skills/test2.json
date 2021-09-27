@@ -1,6 +1,6 @@
 {
   "occulus_tab": "arsmagicalegacy:offense",
-  "icon": "minecraft:textures/item/nether_star.png",
+  "icon": "arsmagicalegacy:textures/icon/skill/augmented_casting.png",
   "x": 275,
   "y": 120,
   "parents": [

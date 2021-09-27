@@ -15,6 +15,8 @@ import java.util.List;
 public abstract class OcculusTabRenderer extends Screen implements NarratableEntry {
     protected final IOcculusTab occulusTab;
     protected final Player player;
+    protected final int textureHeight;
+    protected final int textureWidth;
     protected int screenWidth;
     protected int screenHeight;
     protected int posX;
@@ -24,6 +26,8 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
         super(occulusTab.getDisplayName());
         this.occulusTab = occulusTab;
         this.player = player;
+        this.textureHeight = occulusTab.getHeigth();
+        this.textureWidth = occulusTab.getWidth();
     }
 
     @Override

@@ -20,21 +20,18 @@ import java.util.*;
 
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     public static final String MISSING_REQUIREMENTS_KEY = "message.%s.occulus.missingRequirements".formatted(ArsMagicaAPI.MOD_ID);
+    public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(MISSING_REQUIREMENTS_KEY).withStyle(ChatFormatting.DARK_RED);
     public static final float SKILL_SIZE = 32f;
-    private final int textureHeight;
-    private final int textureWidth;
+
     private int lastMouseX = 0;
     private int lastMouseY = 0;
     private float offsetX = 0;
     private float offsetY = 0;
-    private float renderRatio;
+    private float scale = 1f;
     private ISkill hoverItem = null;
 
     public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab, Player player) {
         super(occulusTab, player);
-        renderRatio = 1f;
-        textureWidth = occulusTab.getWidth();
-        textureHeight = occulusTab.getHeigth();
     }
 
     @Override
@@ -45,10 +42,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.getBackground());
-        float scaledOffsetX = offsetX * renderRatio;
-        float scaledOffsetY = offsetY * renderRatio;
-        float scaledWidth = width * (1 / renderRatio);
-        float scaledHeight = height * (1 / renderRatio);
+        float scaledOffsetX = offsetX * scale;
+        float scaledOffsetY = offsetY * scale;
+        float scaledWidth = width * (1 / scale);
+        float scaledHeight = height * (1 / scale);
         float minU = Mth.clamp(scaledOffsetX, 0, textureWidth - scaledWidth) / textureWidth;
         float minV = Mth.clamp(scaledOffsetY, 0, textureHeight - scaledHeight) / textureHeight;
         float maxU = Mth.clamp(scaledOffsetX + scaledWidth, scaledWidth, textureWidth) / textureWidth;
@@ -70,12 +67,12 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         pMatrixStack.pushPose();
-        pMatrixStack.scale(renderRatio, renderRatio, 0);
+        pMatrixStack.scale(scale, scale, 0);
         pMatrixStack.translate(-offsetX, -offsetY, 0);
         pMouseX += offsetX;
         pMouseY += offsetY;
-        pMouseX *= renderRatio;
-        pMouseY *= renderRatio;
+        pMouseX *= scale;
+        pMouseY *= scale;
         boolean isHoveringSkill = false;
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
@@ -83,16 +80,16 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor(posY * guiScale), (int) (width * guiScale), (int) (height * guiScale));
         for (ISkill skill : skills) {
             boolean knows = knowledgeHelper.knows(player, skill);
-            float cX = skill.getX() + SKILL_SIZE / 2 + 1;
-            float cY = skill.getY() + SKILL_SIZE / 2 + 1;
+            float cX = skill.getX() + SKILL_SIZE / 2 + 2;
+            float cY = skill.getY() + SKILL_SIZE / 2 + 2;
             setBlitOffset(1);
             boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
             for (ResourceLocation parentId : skill.getParents()) {
                 Optional<ISkill> parent = skillManager.getOptional(parentId);
                 if (parent.isEmpty()) continue;
                 ISkill parentSkill = parent.get();
-                float parentCX = parentSkill.getX() + SKILL_SIZE / 2 + 1;
-                float parentCY = parentSkill.getY() + SKILL_SIZE / 2 + 1;
+                float parentCX = parentSkill.getX() + SKILL_SIZE / 2 + 2;
+                float parentCY = parentSkill.getY() + SKILL_SIZE / 2 + 2;
                 int color = (knows ? ColorUtil.KNOWS_COLOR : getColorForLine(parentSkill, skill) & ColorUtil.UNKNOWN_SKILL_LINE_COLOR_MASK);
                 if (!hasPrereq) {
                     color = ColorUtil.BLACK;
@@ -112,7 +109,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 RenderSystem.setShaderFogColor(0.5F, 0.5F, 0.5F);
             } else if (!knows) {
                 int c = getColorForSkill(skill);
-                RenderSystem.setShaderFogColor(Math.max(ColorUtil.getRed(c), 0.6F) * multiplier, Math.max(ColorUtil.getGreen(c), 0.6F) * multiplier, Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier);
+                float red = Math.max(ColorUtil.getRed(c), 0.6F) * multiplier;
+                float green = Math.max(ColorUtil.getGreen(c), 0.6F) * multiplier;
+                float blue = Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier;
+                RenderSystem.setShaderFogColor(red, green, blue);
             }
             setBlitOffset(16);
             RenderSystem.setShaderTexture(0, skill.getIcon());
@@ -123,15 +123,13 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         }
         RenderSystem.disableScissor();
         for (ISkill skill : skills) {
-            boolean knows = knowledgeHelper.knows(player, skill);
-            boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
-            if (pMouseX >= skill.getX() && pMouseX <= skill.getX()+ SKILL_SIZE && pMouseY >= skill.getY() && pMouseY <= skill.getY()+ SKILL_SIZE) {
+            if (pMouseX >= skill.getX() && pMouseX <= skill.getX() + SKILL_SIZE && pMouseY >= skill.getY() && pMouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
                 list.add(skill.getDisplayName().copy().withStyle(getChatColorForSkill(skill)));
-                if (hasPrereq) {
+                if (knowledgeHelper.canLearn(player, skill) || knowledgeHelper.knows(player, skill)) {
                     list.add(skill.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY));
                 } else {
-                    list.add(new TranslatableComponent(MISSING_REQUIREMENTS_KEY).withStyle(ChatFormatting.DARK_RED));
+                    list.add(MISSING_REQUIREMENTS);
                 }
                 renderComponentTooltip(pMatrixStack, list, pMouseX, pMouseY);
                 hoverItem = skill;
@@ -162,7 +160,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        this.renderRatio = (float) Mth.clamp(this.renderRatio+pDelta/100, 0.19, 1);
+        //this.renderRatio = (float) Mth.clamp(this.renderRatio+pDelta/100, width/(float)textureWidth, 1);
         return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
@@ -185,7 +183,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .map(ISkillPoint::getColor)
-                .orElse(0);
+                .orElse(ColorUtil.BLACK);
     }
 
     private int getColorForLine(ISkill parent, ISkill child) {
