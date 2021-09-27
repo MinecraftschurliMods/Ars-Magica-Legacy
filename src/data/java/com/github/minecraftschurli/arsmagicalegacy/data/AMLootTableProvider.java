@@ -47,6 +47,17 @@ class AMLootTableProvider extends LootTableProvider {
             add(AMBlocks.CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             add(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             dropSelf(AMBlocks.CHIMERITE_BLOCK.get());
+            add(AMBlocks.TOPAZ_ORE.get(), p -> createOreDrop(p, AMItems.TOPAZ.get()));
+            add(AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), p -> createOreDrop(p, AMItems.TOPAZ.get()));
+            dropSelf(AMBlocks.TOPAZ_BLOCK.get());
+            add(AMBlocks.VINTEUM_ORE.get(), p -> createOreDrop(p, AMItems.VINTEUM_DUST.get()));
+            add(AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), p -> createOreDrop(p, AMItems.VINTEUM_DUST.get()));
+            dropSelf(AMBlocks.VINTEUM_BLOCK.get());
+            add(AMBlocks.MOONSTONE_ORE.get(), p -> createOreDrop(p, AMItems.MOONSTONE.get()));
+            add(AMBlocks.DEEPSLATE_MOONSTONE_ORE.get(), p -> createOreDrop(p, AMItems.MOONSTONE.get()));
+            dropSelf(AMBlocks.MOONSTONE_BLOCK.get());
+            add(AMBlocks.SUNSTONE_ORE.get(), p -> createOreDrop(p, AMItems.SUNSTONE.get()));
+            dropSelf(AMBlocks.SUNSTONE_BLOCK.get());
             dropSelf(AMBlocks.WITCHWOOD_LOG.get());
             dropSelf(AMBlocks.WITCHWOOD.get());
             dropSelf(AMBlocks.STRIPPED_WITCHWOOD_LOG.get());
@@ -62,6 +73,8 @@ class AMLootTableProvider extends LootTableProvider {
             dropSelf(AMBlocks.WITCHWOOD_TRAPDOOR.get());
             dropSelf(AMBlocks.WITCHWOOD_BUTTON.get());
             dropSelf(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
+            dropSelf(AMBlocks.VINTEUM_TORCH.get());
+            dropSelf(AMBlocks.VINTEUM_WALL_TORCH.get());
         }
 
         @Override
