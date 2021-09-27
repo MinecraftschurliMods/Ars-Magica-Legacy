@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
@@ -10,7 +11,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
 
     @Override
     protected void addTranslations() {
-        creativeTab(AMItems.GROUP, ArsMagicaLegacy.getModName());
+        creativeTabTranslation(AMItems.GROUP, ArsMagicaLegacy.getModName());
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
@@ -78,6 +78,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.ARCANE_ASH);
         itemIdTranslation(AMItems.PURIFIED_VINTEUM_DUST);
         itemIdTranslation(AMItems.VINTEUM_TORCH);
+        advancementTranslation("root", ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
     }
 
     /**
@@ -150,8 +151,20 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param translation The creative tab to generate the translation for.
      */
-    private void creativeTab(CreativeModeTab tab, String translation) {
+    private void creativeTabTranslation(CreativeModeTab tab, String translation) {
         add("itemGroup." + tab.getRecipeFolderName(), translation);
+    }
+
+    /**
+     * Adds an advancement translation.
+     *
+     * @param advancement The advancement id.
+     * @param title       The advancement title.
+     * @param description The advancement description.
+     */
+    private void advancementTranslation(String advancement, String title, String description) {
+        add("advancements." + ArsMagicaAPI.MOD_ID + "." + advancement + ".title", title);
+        add("advancements." + ArsMagicaAPI.MOD_ID + "." + advancement + ".description", description);
     }
 
     /**
