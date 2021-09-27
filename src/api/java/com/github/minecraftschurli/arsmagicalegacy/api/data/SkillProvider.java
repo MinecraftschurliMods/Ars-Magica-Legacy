@@ -11,6 +11,7 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
@@ -25,7 +26,7 @@ import java.util.function.Consumer;
  * Data provider for skill jsons
  */
 @SuppressWarnings("UnstableApiUsage")
-public abstract class SkillProvider implements DataProvider {
+public abstract class SkillProvider implements DataProvider {// TODO @IHH document
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final DataGenerator generator;
@@ -36,8 +37,9 @@ public abstract class SkillProvider implements DataProvider {
         this.modid = modid;
     }
 
+    @Internal
     @Override
-    public void run(@NotNull HashCache pCache) {
+    public final void run(@NotNull HashCache pCache) {
         Path path = this.generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
         createSkills((p_125991_) -> {

@@ -2,16 +2,22 @@ package com.github.minecraftschurli.arsmagicalegacy.api.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Base class for all occulus tab renderers<br>
+ * <p>To register a tab renderer you need to call <br>
+ * {@code ArsMagicaAPI.get().registerOcculusTabRenderer(<registered occulus tab>, (occulusTab, player) -> <create your tab renderer>)}</p>
+ */
 public abstract class OcculusTabRenderer extends Screen implements NarratableEntry {
     protected final IOcculusTab occulusTab;
     protected final Player player;
@@ -22,6 +28,12 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
     protected int posX;
     protected int posY;
 
+    /**
+     * Constructor for a {@link OcculusTabRenderer}.
+     *
+     * @param occulusTab the occulus tab of this renderer
+     * @param player the player that has the gui open
+     */
     protected OcculusTabRenderer(IOcculusTab occulusTab, Player player) {
         super(occulusTab.getDisplayName());
         this.occulusTab = occulusTab;
@@ -30,6 +42,11 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
         this.textureWidth = occulusTab.getWidth();
     }
 
+    /**
+     * Don't call or override this method use {@link OcculusTabRenderer#renderBg(PoseStack, int, int, float)}
+     * and {@link OcculusTabRenderer#renderFg(PoseStack, int, int, float)} for rendering instead.
+     */
+    @Internal
     @Override
     public void render(@NotNull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         pMatrixStack.pushPose();
@@ -41,27 +58,43 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
         pMatrixStack.popPose();
     }
 
-    public void initValues(int screenWidth, int screenHeight, int posX, int posY) {
+    /**
+     * Never call this method yourself it is used to initialize the values from the parent gui.
+     */
+    @Internal
+    public final void initValues(int screenWidth, int screenHeight, int posX, int posY) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.posX = posX;
         this.posY = posY;
     }
 
-    protected abstract void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks);
+    /**
+     * Render your background in this method.
+     */
+    protected abstract void renderBg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
 
-    protected abstract void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks);
+    /**
+     * Render your foreground in this method.
+     */
+    protected abstract void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
 
+    /**
+     * @see NarratableEntry#narrationPriority()
+     */
     @NotNull
     @Override
     public NarrationPriority narrationPriority() {
         return NarrationPriority.NONE;
     }
 
+    /**
+     * Override this method if you want to provide narrations.
+     */
     @Override
     public void updateNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {}
 
-    public void renderComponentTooltip(@NotNull PoseStack stack, @NotNull List<Component> tooltips, int mouseX, int mouseY) {
+    public void renderComponentToolTip(@NotNull PoseStack stack, @NotNull List<? extends net.minecraft.network.chat.FormattedText> tooltips, int mouseX, int mouseY, @NotNull Font font) {
         GuiUtils.drawHoveringText(stack, tooltips, mouseX, mouseY, screenWidth, screenHeight, -1, font);
     }
 }

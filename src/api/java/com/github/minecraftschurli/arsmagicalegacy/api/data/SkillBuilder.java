@@ -7,6 +7,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.SerializationException;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +16,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+/**
+ * Builder for skills. Used in SkillProviders for data generation.
+ */
 public class SkillBuilder {
     private final Set<ResourceLocation> parents = new HashSet<>();
     private final Map<ResourceLocation, Integer> cost = new HashMap<>();
@@ -24,82 +29,206 @@ public class SkillBuilder {
     private Integer x;
     private Integer y;
 
+    /**
+     * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
+     *
+     * @param id the id for the skill
+     * @param occulusTab the occulus tab this skill belongs to
+     * @param icon the icon for the skill
+     * @return the new {@link SkillBuilder} for the skill
+     */
+    @Contract("_, _, _ -> new")
     public static SkillBuilder create(ResourceLocation id, ResourceLocation occulusTab, ResourceLocation icon) {
         return new SkillBuilder(id).setOcculusTab(occulusTab).setIcon(icon);
     }
 
+    /**
+     * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
+     *
+     * @param id the id for the skill
+     * @param occulusTab the occulus tab this skill belongs to
+     * @param icon the icon for the skill
+     * @return the new {@link SkillBuilder} for the skill
+     */
+    @Contract("_, _, _ -> new")
     public static SkillBuilder create(ResourceLocation id, IOcculusTab occulusTab, ResourceLocation icon) {
         return new SkillBuilder(id).setOcculusTab(occulusTab).setIcon(icon);
     }
 
-    private SkillBuilder(final ResourceLocation id) {
+    protected SkillBuilder(ResourceLocation id) {
         this.id = id;
     }
 
+    /**
+     * Get the id of this skill.
+     *
+     * @return the id of this skill
+     */
     public ResourceLocation getId() {
         return this.id;
     }
 
+    /**
+     * Add learning cost to this skill.
+     *
+     * @param point the point it should cost
+     * @param amt the amount of points it should cost
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_, _ -> this")
     public SkillBuilder addCost(ResourceLocation point, int amt) {
         this.cost.compute(point, (key, i) -> i != null ? i + amt : amt);
         return this;
     }
 
+    /**
+     * Add learning cost to this skill.
+     *
+     * @param point the point it should cost
+     * @param amt the amount of points it should cost
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_, _ -> this")
     public SkillBuilder addCost(ISkillPoint point, int amt) {
         return addCost(point.getId(), amt);
     }
 
+    /**
+     * Add learning cost to this skill.
+     *
+     * @param point the point it should cost
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder addCost(ResourceLocation point) {
         return addCost(point, 1);
     }
 
+    /**
+     * Add learning cost to this skill.
+     *
+     * @param point the point it should cost
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder addCost(ISkillPoint point) {
         return addCost(point, 1);
     }
 
+    /**
+     * Add a parent to this skill that is required to learn first.
+     *
+     * @param parent the parent to add to this skill
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder addParent(ResourceLocation parent) {
         this.parents.add(parent);
         return this;
     }
 
+    /**
+     * Add a parent to this skill that is required to learn first.
+     *
+     * @param parent the parent to add to this skill
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder addParent(ISkill parent) {
         return addParent(parent.getId());
     }
 
+    /**
+     * Add a parent to this skill that is required to learn first.
+     *
+     * @param parent the parent to add to this skill
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder addParent(SkillBuilder parent) {
         return addParent(parent.getId());
     }
 
+    /**
+     * Set the position this skill should be displayed at in the gui of the defined occulus tab.
+     *
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_, _ -> this")
     public SkillBuilder setPosition(int x, int y) {
         this.x = x;
         this.y = y;
         return this;
     }
 
+    /**
+     * Set if this skill should be hidden.
+     *
+     * @param hidden the hidden state to set
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     public SkillBuilder setHidden(boolean hidden) {
         this.hidden = hidden;
         return this;
     }
 
+    /**
+     * Set that this skill should be hidden.
+     *
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("-> this")
     public SkillBuilder hidden() {
         return setHidden(true);
     }
 
+    /**
+     * Set the icon for this skill.
+     *
+     * @param icon the icon for this skill
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     protected SkillBuilder setIcon(ResourceLocation icon) {
         this.icon = icon;
         return this;
     }
 
+    /**
+     * Set the occulus tab this skill should belong to.
+     *
+     * @param occulusTab the occulus tab this skill should belong to
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
     protected SkillBuilder setOcculusTab(ResourceLocation occulusTab) {
         this.occulusTab = occulusTab;
         return this;
     }
 
-    protected SkillBuilder setOcculusTab(IOcculusTab occulusTab) {
+    /**
+     * Set the occulus tab this skill should belong to.
+     *
+     * @param occulusTab the occulus tab this skill should belong to
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
+    protected SkillBuilder setOcculusTab(@NotNull IOcculusTab occulusTab) {
         return setOcculusTab(occulusTab.getId());
     }
 
-    public SkillBuilder build(Consumer<SkillBuilder> consumer) {
+    /**
+     * Build this {@link SkillBuilder}.<br>
+     * This method accepts this builder to the provided consumer
+     *
+     * @param consumer the consumer that will consume this builder
+     * @return the {@link SkillBuilder}
+     */
+    @Contract("_ -> this")
+    public SkillBuilder build(@NotNull Consumer<SkillBuilder> consumer) {
         consumer.accept(this);
         return this;
     }

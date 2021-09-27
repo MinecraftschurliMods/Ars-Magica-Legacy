@@ -43,28 +43,28 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public ItemStack getEssenceForAffinity(ResourceLocation aff) {
-        return getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), aff);
+    public ItemStack getEssenceForAffinity(ResourceLocation affinity) {
+        return getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), affinity);
     }
 
     @Override
-    public ItemStack getTomeForAffinity(ResourceLocation aff) {
-        return getStackForAffinity(AMItems.AFFINITY_TOME.get(), aff);
+    public ItemStack getTomeForAffinity(ResourceLocation affinity) {
+        return getStackForAffinity(AMItems.AFFINITY_TOME.get(), affinity);
     }
 
     @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation aff) {
-        var stack = new ItemStack(item);
-        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(), aff.toString());
+        ItemStack stack = new ItemStack(item);
+        Optional.ofNullable(ArsMagicaAPI.get().getAffinityRegistry().getValue(aff)).ifPresent(affinity -> item.setAffinity(stack, affinity));
         return stack;
     }
 
     @Override
     public IAffinity getAffinityForStack(ItemStack stack) {
-        var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
-        var key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(affinityRegistry.getRegistryName().toString()));
-        if (key == null) key = IAffinity.NONE;
-        return Objects.requireNonNull(affinityRegistry.getValue(key));
+        if (stack.getItem() instanceof IAffinityItem item) {
+            return item.getAffinity(stack);
+        }
+        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(IAffinity.NONE));
     }
 
     @Override
