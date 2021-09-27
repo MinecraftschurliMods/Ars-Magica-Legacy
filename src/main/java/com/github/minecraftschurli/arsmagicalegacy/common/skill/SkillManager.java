@@ -1,6 +1,8 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.SyncSkillsPacket;
@@ -16,6 +18,7 @@ import net.minecraftforge.event.OnDatapackSyncEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,7 +54,7 @@ public final class SkillManager extends SimpleJsonResourceReloadListener impleme
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> data, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> data, @NotNull ResourceManager pResourceManager, @NotNull ProfilerFiller pProfiler) {
         skills.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : data.entrySet()) {
             ResourceLocation key = entry.getKey();
@@ -60,6 +63,28 @@ public final class SkillManager extends SimpleJsonResourceReloadListener impleme
                     .map(Skill.class::cast)
                     .getOrThrow(true, LOGGER::error).setId(key));
         }
+        validateSkills();
+    }
+
+    private void validateSkills() {
+        skills.values().removeIf(skill -> {
+            boolean err = false;
+            if (!skills.keySet().containsAll(skill.getParents())) {
+                LOGGER.warn("Skill {} is missing parents {}. It will be removed!", skill.getId(), new HashSet<>(skill.getParents()).removeAll(skills.keySet()));
+                err = true;
+            }
+            var tabOpt = Optional.ofNullable(ArsMagicaAPI.get().getOcculusTabRegistry().getValue(skill.getOcculusTab()));
+            if (tabOpt.isEmpty()) {
+                LOGGER.warn("The occulus tab {} for skill {} is not registered. The skill will be removed!", skill.getOcculusTab(), skill.getId());
+                return true;
+            }
+            var tab = tabOpt.get();
+            if (skill.getY() < 0 || skill.getY() > (tab.getHeigth()-32) || skill.getX() < 0 || skill.getX() > (tab.getWidth()-32)) {
+                LOGGER.warn("Skill {} is outside the bounds of the skill tree. It will be removed!", skill.getId());
+                err = true;
+            }
+            return err;
+        });
     }
 
     @Internal

@@ -11,6 +11,8 @@ import java.util.Optional;
  */
 public interface IOcculusTab extends IForgeRegistryEntry<IOcculusTab>, ITranslatable {
     String OCCULUS_TAB = "occulus_tab";
+    int TEXTURE_WIDTH = 1024;
+    int TEXTURE_HEIGHT = 1024;
 
     /**
      * Get the {@link ResourceLocation} of the background texture for this skill tree
@@ -41,6 +43,14 @@ public interface IOcculusTab extends IForgeRegistryEntry<IOcculusTab>, ITranslat
     @Override
     default String getType() {
         return OCCULUS_TAB;
+    }
+
+    default int getWidth() {
+        return TEXTURE_WIDTH;
+    }
+
+    default int getHeigth() {
+        return TEXTURE_HEIGHT;
     }
 
     interface Reference<T> {

@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
-    private static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
+    public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     private static ArsMagicaLegacy INSTANCE;
 
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
