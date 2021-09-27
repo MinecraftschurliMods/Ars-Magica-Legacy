@@ -76,5 +76,12 @@ public final class ClientInit {
             ModelLoader.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "affinity_essence_"+affinity.getId().getPath()));
             ModelLoader.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "affinity_tome_"+affinity.getId().getPath()));
         }
+    static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
     }
+
+//    @SubscribeEvent
+//    public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
+//        ModSpawnEggItem.initSpawnEggs();
+//    }
 }
