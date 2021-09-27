@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
@@ -179,34 +178,36 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block  The block to take the texture from.
      */
     private void buttonBlock(Supplier<? extends ButtonBlock> button, Supplier<? extends Block> block) {
-        VariantBlockStateBuilder builder = getVariantBuilder(button.get());
         ResourceLocation texture = blockTexture(block.get());
         ModelFile normal = models().withExistingParent(button.get().getRegistryName().getPath(), "block/button").texture("texture", texture);
         ModelFile pressed = models().withExistingParent(button.get().getRegistryName().getPath() + "_pressed", "block/button_pressed").texture("texture", texture);
-        builder.forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-            case NORTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).build();
-                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(180).build();
-                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).uvLock(true).build();
+        getVariantBuilder(button.get()).forAllStates(state -> {
+            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal);
+            return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                case NORTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                    case FLOOR -> builder.build();
+                    case CEILING -> builder.rotationX(180).rotationY(180).build();
+                    case WALL -> builder.rotationX(90).uvLock(true).build();
+                };
+                case EAST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                    case FLOOR -> builder.rotationY(90).build();
+                    case CEILING -> builder.rotationX(180).rotationY(270).build();
+                    case WALL -> builder.rotationX(90).rotationY(90).uvLock(true).build();
+                };
+                case SOUTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                    case FLOOR -> builder.rotationY(180).build();
+                    case CEILING -> builder.rotationX(180).build();
+                    case WALL -> builder.rotationX(90).rotationY(180).uvLock(true).build();
+                };
+                case WEST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
+                    case FLOOR -> builder.rotationY(270).build();
+                    case CEILING -> builder.rotationX(180).rotationY(90).build();
+                    case WALL -> builder.rotationX(90).rotationY(270).uvLock(true).build();
+                };
+                default -> new ConfiguredModel[0];
             };
-            case EAST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(90).build();
-                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(270).build();
-                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(90).uvLock(true).build();
-            };
-            case SOUTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(180).build();
-                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).build();
-                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(180).uvLock(true).build();
-            };
-            case WEST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                case FLOOR -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationY(270).build();
-                case CEILING -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(180).rotationY(90).build();
-                case WALL -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal).rotationX(90).rotationY(270).uvLock(true).build();
-            };
-            default -> new ConfiguredModel[0];
         });
-        models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", blockTexture(block.get()));
+        models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", texture);
     }
 
     private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate, Supplier<? extends Block> block) {
@@ -224,10 +225,10 @@ class AMBlockStateProvider extends BlockStateProvider {
         getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
         ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath()));
         getVariantBuilder(wallTorch.get()).forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-            case NORTH -> ConfiguredModel.builder().modelFile(wallFile).build();
-            case EAST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
-            case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
-            case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
+            case EAST -> ConfiguredModel.builder().modelFile(wallFile).build();
+            case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
+            case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
+            case NORTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
             default -> new ConfiguredModel[0];
         });
     }
@@ -238,23 +239,25 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block The block to generate the model for.
      */
     private void railBlock(Supplier<? extends RailBlock> block) {
-        VariantBlockStateBuilder builder = getVariantBuilder(block.get());
         ResourceLocation texture = blockTexture(block.get());
         ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", texture);
         ModelFile curved = models().withExistingParent(block.get().getRegistryName().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
         ModelFile raisedNE = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture);
         ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
-        builder.forAllStates(state -> switch (state.getValue(((RailBlock) block).getShapeProperty())) {
-            case NORTH_SOUTH -> ConfiguredModel.builder().modelFile(straight).build();
-            case EAST_WEST -> ConfiguredModel.builder().modelFile(straight).rotationY(90).build();
-            case SOUTH_EAST -> ConfiguredModel.builder().modelFile(curved).build();
-            case SOUTH_WEST -> ConfiguredModel.builder().modelFile(curved).rotationY(90).build();
-            case NORTH_WEST -> ConfiguredModel.builder().modelFile(curved).rotationY(180).build();
-            case NORTH_EAST -> ConfiguredModel.builder().modelFile(curved).rotationY(270).build();
-            case ASCENDING_NORTH -> ConfiguredModel.builder().modelFile(raisedNE).build();
-            case ASCENDING_EAST -> ConfiguredModel.builder().modelFile(raisedNE).rotationY(90).build();
-            case ASCENDING_SOUTH -> ConfiguredModel.builder().modelFile(raisedSW).build();
-            case ASCENDING_WEST -> ConfiguredModel.builder().modelFile(raisedSW).rotationY(90).build();
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+            return switch (state.getValue(((RailBlock) block).getShapeProperty())) {
+                case NORTH_SOUTH -> builder.modelFile(straight).build();
+                case EAST_WEST -> builder.modelFile(straight).rotationY(90).build();
+                case SOUTH_EAST -> builder.modelFile(curved).build();
+                case SOUTH_WEST -> builder.modelFile(curved).rotationY(90).build();
+                case NORTH_WEST -> builder.modelFile(curved).rotationY(180).build();
+                case NORTH_EAST -> builder.modelFile(curved).rotationY(270).build();
+                case ASCENDING_NORTH -> builder.modelFile(raisedNE).build();
+                case ASCENDING_EAST -> builder.modelFile(raisedNE).rotationY(90).build();
+                case ASCENDING_SOUTH -> builder.modelFile(raisedSW).build();
+                case ASCENDING_WEST -> builder.modelFile(raisedSW).rotationY(90).build();
+            };
         });
     }
 }
