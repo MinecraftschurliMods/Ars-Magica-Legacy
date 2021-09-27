@@ -63,6 +63,7 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
         modEventBus.addListener(ClientInit::modelRegister);
         modEventBus.addListener(ClientInit::modelBake);
+        modEventBus.addListener(ClientInit::registerLayerDefinitions);
         modEventBus.addListener(ClientInit::registerRenderers);
     }
 
@@ -115,7 +116,7 @@ public final class ClientInit {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
                 ModelLoader.addSpecialModel(
                         new ResourceLocation(affinity.getId().getNamespace(),
-                                             "item/" + itemId.getPath() + "_" + affinity.getId().getPath()
+                                "item/" + itemId.getPath() + "_" + affinity.getId().getPath()
                         )
                 );
             }
@@ -129,20 +130,24 @@ public final class ClientInit {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
             modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"),
-                                           (rl, model) -> new AffinityOverrideModel(model));
+                    (rl, model) -> new AffinityOverrideModel(model));
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"),
-                                       (rl, model) -> new SpellItemModel(model));
+                (rl, model) -> new SpellItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(
                 AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)
         ), (rl, model) -> new AltarCoreModel(model));
 
         AMBlocks.SPELL_RUNE.get()
-                           .getStateDefinition()
-                           .getPossibleStates()
-                           .stream()
-                           .map(BlockModelShaper::stateToModelLocation)
-                           .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
+                .getStateDefinition()
+                .getPossibleStates()
+                .stream()
+                .map(BlockModelShaper::stateToModelLocation)
+                .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
+    }
+
+    private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
     }
 
     private static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
