@@ -103,7 +103,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     /**
      * Contains all normal advancements.
      */
-    public static final class AMAdvancements implements Consumer<Consumer<Advancement>> {
+    private static final class AMAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
             Advancement root = Advancement.Builder.advancement().display(ArsMagicaAPI.get().getBookStack(), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/description"))), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/advancements/backgrounds/arsmagicalegacy.png"), FrameType.TASK, false, false, false).addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":root");
@@ -113,7 +113,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     /**
      * Contains all advancements that are relevant for book locking. Should be hidden.
      */
-    public static final class AMBookAdvancements implements Consumer<Consumer<Advancement>> {
+    private static final class AMBookAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
             Advancement root = Advancement.Builder.advancement().addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":book/root");
