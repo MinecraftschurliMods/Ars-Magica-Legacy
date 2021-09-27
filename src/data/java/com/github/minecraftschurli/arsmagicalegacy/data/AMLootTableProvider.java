@@ -73,6 +73,11 @@ class AMLootTableProvider extends LootTableProvider {
                 }
             }
         }
+
+        @Override
+        protected void add(Block pBlock, LootTable.Builder pLootTableBuilder) {
+            lootTables.put(pBlock.getLootTable(), pLootTableBuilder);
+        }
     }
 
     public static final class EntityLootTableProvider extends EntityLoot {
