@@ -2,16 +2,17 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.WaterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMContainers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -38,6 +39,16 @@ public final class ClientInit {
     }
 
     @SubscribeEvent
+    static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
+    }
+
+//    @SubscribeEvent
+//    public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
+//        ModSpawnEggItem.initSpawnEggs();
+//    }
+
+    @SubscribeEvent
     static void preStitch(TextureStitchEvent.Pre event) {
         if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
         //event.addSprite(CraftingAltarModel.OVERLAY_LOC);
@@ -56,10 +67,5 @@ public final class ClientInit {
             ModelLoader.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "affinity_essence_"+affinity.getId().getPath()));
             ModelLoader.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "affinity_tome_"+affinity.getId().getPath()));
         }
-    }
-
-    @SubscribeEvent
-    static void modelBake(ModelBakeEvent event) {
-
     }
 }
