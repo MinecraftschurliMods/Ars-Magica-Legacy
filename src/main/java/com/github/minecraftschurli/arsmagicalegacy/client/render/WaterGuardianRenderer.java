@@ -18,5 +18,4 @@ public class WaterGuardianRenderer extends MobRenderer<WaterGuardian, WaterGuard
     public ResourceLocation getTextureLocation(final WaterGuardian pEntity) {
         return TEXTURE;
     }
-
 }
