@@ -26,7 +26,7 @@ public class AMDatagen {
             generator.addProvider(new AMAdvancementProvider(generator));
             generator.addProvider(new AMLootTableProvider(generator));
             generator.addProvider(new AMRecipeProvider(generator));
-            TagsProvider.setup(generator, existingFileHelper);
+            AMTagsProvider.setup(generator, existingFileHelper);
         }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));

@@ -4,13 +4,12 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.*;
 import net.minecraft.tags.BlockTags;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-class TagsProvider {
+class AMTagsProvider {
     static void setup(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
-        TagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
+        AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
         generator.addProvider(blocks);
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
         generator.addProvider(new Fluids(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
