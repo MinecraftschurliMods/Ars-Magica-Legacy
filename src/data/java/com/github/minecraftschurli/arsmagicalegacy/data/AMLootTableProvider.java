@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
@@ -43,6 +44,9 @@ class AMLootTableProvider extends LootTableProvider {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
         @Override
         protected void addTables() {
+            add(AMBlocks.CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
+            add(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
+            dropSelf(AMBlocks.CHIMERITE_BLOCK.get());
             dropSelf(AMBlocks.WITCHWOOD_LOG.get());
             dropSelf(AMBlocks.WITCHWOOD.get());
             dropSelf(AMBlocks.STRIPPED_WITCHWOOD_LOG.get());
