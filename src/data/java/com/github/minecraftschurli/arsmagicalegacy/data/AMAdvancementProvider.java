@@ -6,9 +6,11 @@ import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -54,46 +56,6 @@ class AMAdvancementProvider extends AdvancementProvider {
             }
         };
         for (Consumer<Consumer<Advancement>> c : ImmutableList.of(new AMAdvancements(), new AMBookAdvancements())) c.accept(consumer);
-    }
-
-    /**
-     * Adds a root advancement.
-     *
-     * @param consumer       The advancement consumer provided by the data generator.
-     * @param folder         The folder name of this advancement's tab.
-     * @param item           The item to display.
-     * @param makeBackground true = make a background (uses the folder name). false = make no background (effectively hides the advancement tab).
-     * @param type           The frame type of this advancement.
-     * @param toast          Whether to show a toast in the top right corner or not.
-     * @param chat           Whether to announce the advancement to chat or not.
-     * @param hide           Whether the advancement should be visible before unlocking or not.
-     * @param criteria       Optional advancement criteria. Should be made through Pair.of("id", criterion);
-     */
-    static Advancement addRootAdvancement(Consumer<Advancement> consumer, String folder, ItemLike item, boolean makeBackground, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
-        Advancement.Builder builder = Advancement.Builder.advancement().display(item, new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + folder + ".root.title"), new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + folder + ".root.description"), makeBackground ? null : new ResourceLocation("arsmagicalegacy:textures/gui/advancements/backgrounds/" + folder + ".png"), type, toast, chat, hide);
-        for (Pair<String, CriterionTriggerInstance> criterion : criteria)
-            builder.addCriterion(criterion.getFirst(), criterion.getSecond());
-        return builder.save(consumer, ArsMagicaAPI.MOD_ID + ":" + folder + "/root");
-    }
-
-    /**
-     * Adds a root advancement.
-     *
-     * @param consumer       The advancement consumer provided by the data generator.
-     * @param folder         The folder name of this advancement's tab.
-     * @param item           The ItemStack to display.
-     * @param makeBackground true = make a background (uses the folder name). false = make no background (effectively hides the advancement tab).
-     * @param type           The frame type of this advancement.
-     * @param toast          Whether to show a toast in the top right corner or not.
-     * @param chat           Whether to announce the advancement to chat or not.
-     * @param hide           Whether the advancement should be visible before unlocking or not.
-     * @param criteria       Optional advancement criteria. Should be made through Pair.of("id", criterion);
-     */
-    static Advancement addRootAdvancement(Consumer<Advancement> consumer, String folder, ItemStack item, boolean makeBackground, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
-        Advancement.Builder builder = Advancement.Builder.advancement().display(item, new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + folder + ".root.title"), new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + folder + ".root.description"), makeBackground ? new ResourceLocation("arsmagicalegacy:textures/gui/advancements/backgrounds/" + folder + ".png") : null, type, toast, chat, hide);
-        for (Pair<String, CriterionTriggerInstance> criterion : criteria)
-            builder.addCriterion(criterion.getFirst(), criterion.getSecond());
-        return builder.save(consumer, ArsMagicaAPI.MOD_ID + ":" + folder + "/root");
     }
 
     /**
@@ -144,7 +106,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     public static final class AMAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
-            Advancement root = addRootAdvancement(consumer, "normal", ArsMagicaAPI.get().getBookStack(), true, FrameType.TASK, false, false, false, Pair.of("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())));
+            Advancement root = Advancement.Builder.advancement().display(ArsMagicaAPI.get().getBookStack(), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/description"))), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/advancements/backgrounds/arsmagicalegacy.png"), FrameType.TASK, false, false, false).addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":root");
         }
     }
 
@@ -154,7 +116,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     public static final class AMBookAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
-            Advancement root = addRootAdvancement(consumer, "book", ArsMagicaAPI.get().getBookStack(), false, FrameType.TASK, false, false, false, Pair.of("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())));
+            Advancement root = Advancement.Builder.advancement().addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":book/root");
         }
     }
 }
