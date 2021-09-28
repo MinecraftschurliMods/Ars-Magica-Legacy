@@ -33,16 +33,14 @@ public final class ArsMagicaLegacy {
         if (INSTANCE != null) throw new IllegalStateException("Tried to create mod %s more than once!".formatted(ArsMagicaAPI.MOD_ID));
         INSTANCE = this;
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::setup);
+        bus.addListener(this::createEntityAttributes);
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
-
         Config.init();
-
         registerNetworkPackets();
-
         CodecPacket.register(NETWORK_HANDLER);
-
         OcculusTabManager.instance();
         SkillManager.instance();
     }
