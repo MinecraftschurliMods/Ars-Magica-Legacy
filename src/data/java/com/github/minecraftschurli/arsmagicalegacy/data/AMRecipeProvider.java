@@ -6,7 +6,9 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -266,6 +268,9 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('V',AMItems.VINTEUM_DUST.get())
                 .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
+                .save(consumer);
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(AMItems.ARCANE_COMPOUND.get()), AMItems.ARCANE_ASH.get(), 0.2F, 200)
+                .unlockedBy("has_arcane_compound", has(AMItems.ARCANE_COMPOUND.get()))
                 .save(consumer);
     }
 }
