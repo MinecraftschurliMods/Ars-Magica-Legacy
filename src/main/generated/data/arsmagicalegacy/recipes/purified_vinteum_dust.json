@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:vinteum_dust"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:purified_vinteum_dust"
+  }
+}
