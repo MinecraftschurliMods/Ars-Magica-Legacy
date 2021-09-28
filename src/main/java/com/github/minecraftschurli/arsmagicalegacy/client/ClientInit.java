@@ -8,6 +8,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMContainers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import com.github.minecraftschurli.arsmagicalegacy.client.render.WaterGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,6 +37,11 @@ public final class ClientInit {
     @SubscribeEvent
     static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
     }
 
 //    @SubscribeEvent
