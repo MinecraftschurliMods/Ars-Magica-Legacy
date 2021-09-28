@@ -1,15 +1,20 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -21,8 +26,10 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -60,6 +67,16 @@ public interface AMBlocks {
     RegistryObject<TrapDoorBlock> WITCHWOOD_TRAPDOOR = BLOCKS.register("witchwood_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noOcclusion().isValidSpawn((a, b, c, d) -> false)));
     RegistryObject<WoodButtonBlock> WITCHWOOD_BUTTON = BLOCKS.register("witchwood_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<PressurePlateBlock> WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
+    RegistryObject<FlowerBlock> AUM = BLOCKS.register("aum", () -> new FlowerBlock(/*AMEffects.MANA_REGENERATION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
+    RegistryObject<FlowerBlock> CERUBLOSSOM = BLOCKS.register("cerublossom", () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
+    RegistryObject<FlowerBlock> DESERT_NOVA = BLOCKS.register("desert_nova", () -> new FlowerBlock(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)) {
+        @Override
+        public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+            return Tags.Blocks.SAND.contains(pState.getBlock());
+        }
+    });
+    RegistryObject<FlowerBlock> TARMA_ROOT = BLOCKS.register("tarma_root", () -> new FlowerBlock(MobEffects.DIG_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
+    RegistryObject<FlowerBlock> WAKEBLOOM = BLOCKS.register("wakebloom", () -> new FlowerBlock(/*AMEffects.BURNOUT_REDUCTION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<TorchBlock> VINTEUM_TORCH = BLOCKS.register("vinteum_torch", () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock> VINTEUM_WALL_TORCH = BLOCKS.register("vinteum_wall_torch", () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WizardsChalkBlock> WIZARDS_CHALK = BLOCKS.register("wizards_chalk", () -> new WizardsChalkBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL)));

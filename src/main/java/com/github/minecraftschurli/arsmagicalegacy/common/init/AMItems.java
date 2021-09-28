@@ -85,6 +85,11 @@ public interface AMItems {
     RegistryObject<Item> ARCANE_COMPOUND = ITEMS.register("arcane_compound", () -> new Item(ITEM_64));
     RegistryObject<Item> ARCANE_ASH = ITEMS.register("arcane_ash", () -> new Item(ITEM_64));
     RegistryObject<Item> PURIFIED_VINTEUM_DUST = ITEMS.register("purified_vinteum_dust", () -> new Item(ITEM_64));
+    RegistryObject<BlockItem> AUM = ITEMS.register("aum", () -> new BlockItem(AMBlocks.AUM.get(), ITEM_64));
+    RegistryObject<BlockItem> CERUBLOSSOM = ITEMS.register("cerublossom", () -> new BlockItem(AMBlocks.CERUBLOSSOM.get(), ITEM_64));
+    RegistryObject<BlockItem> DESERT_NOVA = ITEMS.register("desert_nova", () -> new BlockItem(AMBlocks.DESERT_NOVA.get(), ITEM_64));
+    RegistryObject<BlockItem> TARMA_ROOT = ITEMS.register("tarma_root", () -> new BlockItem(AMBlocks.TARMA_ROOT.get(), ITEM_64));
+    RegistryObject<BlockItem> WAKEBLOOM = ITEMS.register("wakebloom", () -> new BlockItem(AMBlocks.WAKEBLOOM.get(), ITEM_64));
     RegistryObject<StandingAndWallBlockItem> VINTEUM_TORCH = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
     RegistryObject<WizardsChalkItem> WIZARDS_CHALK = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(ITEM_64.durability(100)));
 
