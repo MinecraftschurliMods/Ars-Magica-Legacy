@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -63,6 +64,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
+        wizardsChalkBlock(WIZARDS_CHALK);
     }
 
     /**
@@ -257,6 +259,26 @@ class AMBlockStateProvider extends BlockStateProvider {
                 case ASCENDING_EAST -> builder.modelFile(raisedNE).rotationY(90).build();
                 case ASCENDING_SOUTH -> builder.modelFile(raisedSW).build();
                 case ASCENDING_WEST -> builder.modelFile(raisedSW).rotationY(90).build();
+            };
+        });
+    }
+
+    /**
+     * Adds a wizard's chalk model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void wizardsChalkBlock(Supplier<? extends WizardsChalkBlock> block) {
+        ModelFile[] models = new ModelFile[16];
+        for (int i = 0; i < models.length; i++) models[i] = models().withExistingParent(block.get().getRegistryName().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.get().getRegistryName().getNamespace(), "block/" + block.get().getRegistryName().getPath() + "_" + i));
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+            return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                case NORTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]).build();
+                case EAST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]).rotationY(90).build();
+                case SOUTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]).rotationY(180).build();
+                case WEST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]).rotationY(270).build();
+                default -> new ConfiguredModel[0];
             };
         });
     }

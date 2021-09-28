@@ -77,6 +77,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(ARCANE_ASH);
         itemGenerated(PURIFIED_VINTEUM_DUST);
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
+        itemGenerated(WIZARDS_CHALK);
     }
 
     /**
