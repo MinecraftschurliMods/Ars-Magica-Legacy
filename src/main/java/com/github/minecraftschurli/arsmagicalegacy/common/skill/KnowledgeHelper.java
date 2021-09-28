@@ -3,7 +3,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHolder;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.network.SyncKnowledgePacket;
@@ -34,11 +33,10 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         return INSTANCE.get();
     }
 
-    @CapabilityInject(IKnowledgeHolder.class)
-    private static Capability<IKnowledgeHolder> KNOWLEDGE;
+    @CapabilityInject(KnowledgeHolder.class)
+    private static Capability<KnowledgeHolder> KNOWLEDGE;
 
-    @Override
-    public IKnowledgeHolder getKnowledgeHolder(Player player) {
+    public KnowledgeHolder getKnowledgeHolder(Player player) {
         return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s".formatted(player.getUUID())));
     }
 
@@ -83,6 +81,12 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     @Override
     public void forget(Player player, ISkill skill) {
         getKnowledgeHolder(player).forget(skill);
+        onChanged(player);
+    }
+
+    @Override
+    public void forgetAll(Player player) {
+        getKnowledgeHolder(player).forgetAll();
         onChanged(player);
     }
 
@@ -162,12 +166,17 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         return getKnowledgeHolder(player).xp();
     }
 
-    public static Capability<IKnowledgeHolder> getCapability() {
+    @Override
+    public Collection<ResourceLocation> getKnownSkills(Player player) {
+        return getKnowledgeHolder(player).skills();
+    }
+
+    public static Capability<KnowledgeHolder> getCapability() {
         return KNOWLEDGE;
     }
 
     public static class KnowledgeHolderProvider implements ICapabilitySerializable<Tag> {
-        private LazyOptional<IKnowledgeHolder> lazy = LazyOptional.of(KnowledgeHelper.KnowledgeHolder::empty);
+        private LazyOptional<KnowledgeHolder> lazy = LazyOptional.of(KnowledgeHelper.KnowledgeHolder::empty);
 
         @Nullable
         @Override
@@ -184,7 +193,7 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
                     .decode(NbtOps.INSTANCE, nbt)
                     .get()
                     .mapLeft(Pair::getFirst)
-                    .mapLeft(knowledgeHolder -> (NonNullSupplier<IKnowledgeHolder>)(() -> knowledgeHolder))
+                    .mapLeft(knowledgeHolder -> (NonNullSupplier<KnowledgeHolder>)(() -> knowledgeHolder))
                     .map(LazyOptional::of, pairPartialResult -> LazyOptional.empty());
         }
 
@@ -195,12 +204,12 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         }
     }
 
-    public static final class KnowledgeHolder implements IKnowledgeHolder {
-        public static final Codec<IKnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ResourceLocation.CODEC.listOf().xmap((Function<List<ResourceLocation>, Set<ResourceLocation>>) HashSet::new, (Function<Set<ResourceLocation>, List<ResourceLocation>>) ArrayList::new).fieldOf("skills").forGetter(IKnowledgeHolder::skills),
-                Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("skill_points").forGetter(IKnowledgeHolder::skillPoints),
-                Codec.INT.fieldOf("level").forGetter(IKnowledgeHolder::level),
-                Codec.FLOAT.fieldOf("xp").forGetter(IKnowledgeHolder::xp)
+    public static final class KnowledgeHolder {
+        public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                ResourceLocation.CODEC.listOf().xmap((Function<List<ResourceLocation>, Set<ResourceLocation>>) HashSet::new, (Function<Set<ResourceLocation>, List<ResourceLocation>>) ArrayList::new).fieldOf("skills").forGetter(KnowledgeHolder::skills),
+                Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints),
+                Codec.INT.fieldOf("level").forGetter(KnowledgeHolder::level),
+                Codec.FLOAT.fieldOf("xp").forGetter(KnowledgeHolder::xp)
         ).apply(inst, KnowledgeHolder::new));
 
         private final Set<ResourceLocation> skills;
@@ -219,35 +228,34 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
             return new KnowledgeHolder(new HashSet<>(), new HashMap<>(), -1, 0);
         }
 
-        @Override
         public synchronized boolean canLearn(ResourceLocation skill) {
             return skills.containsAll(ArsMagicaAPI.get().getSkillManager().get(skill).getParents());
         }
 
-        @Override
         public synchronized void learn(ResourceLocation skill) {
             skills.add(skill);
         }
 
-        @Override
         public synchronized void forget(ResourceLocation skill) {
             skills.remove(skill);
         }
 
-        @Override
         public synchronized void addSkillPoint(ResourceLocation skillPoint, int amount) {
             skillPoints.putIfAbsent(skillPoint, 0);
             int amt = skillPoints.get(skillPoint);
             skillPoints.put(skillPoint, amt + amount);
         }
 
-        @Override
         public synchronized boolean consumeSkillPoint(ResourceLocation skillPoint, int amount) {
             if (!skillPoints.containsKey(skillPoint)) return false;
             int amt = skillPoints.get(skillPoint);
             if (amt < amount) return false;
             skillPoints.put(skillPoint, amt - amount);
             return true;
+        }
+
+        public void forgetAll() {
+            skills.clear();
         }
 
         public synchronized Set<ResourceLocation> skills() {
@@ -266,13 +274,65 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
             return xp;
         }
 
-        public void onSync(IKnowledgeHolder knowledgeHolder) {
+        public void onSync(KnowledgeHolder knowledgeHolder) {
             this.skills.clear();
             this.skills.addAll(knowledgeHolder.skills());
             this.skillPoints.clear();
             this.skillPoints.putAll(knowledgeHolder.skillPoints());
             this.level = knowledgeHolder.level();
             this.xp = knowledgeHolder.xp();
+        }
+
+        public boolean knows(ResourceLocation skill) {
+            return skills().contains(skill);
+        }
+
+        public boolean knows(ISkill skill) {
+            return knows(skill.getId());
+        }
+
+        public boolean canLearn(ISkill skill) {
+            return canLearn(skill.getId());
+        }
+
+        public void learn(ISkill skill) {
+            learn(skill.getId());
+        }
+
+        public void forget(ISkill skill) {
+            forget(skill.getId());
+        }
+
+        public int getSkillPoint(ResourceLocation skillPoint) {
+            return skillPoints().getOrDefault(skillPoint, 0);
+        }
+
+        public int getSkillPoint(ISkillPoint skillPoint) {
+            return getSkillPoint(skillPoint.getId());
+        }
+
+        public void addSkillPoint(ISkillPoint skillPoint, int amount) {
+            addSkillPoint(skillPoint.getId(), amount);
+        }
+
+        public boolean consumeSkillPoint(ISkillPoint skillPoint, int amount) {
+            return consumeSkillPoint(skillPoint.getId(), amount);
+        }
+
+        public void addSkillPoint(ISkillPoint skillPoint) {
+            addSkillPoint(skillPoint, 1);
+        }
+
+        public boolean consumeSkillPoint(ISkillPoint skillPoint) {
+            return consumeSkillPoint(skillPoint, 1);
+        }
+
+        public void addSkillPoint(ResourceLocation skillPoint) {
+            addSkillPoint(skillPoint, 1);
+        }
+
+        public boolean consumeSkillPoint(ResourceLocation skillPoint) {
+            return consumeSkillPoint(skillPoint, 1);
         }
     }
 }

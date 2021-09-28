@@ -3,7 +3,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.affinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHolder;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.mojang.datafixers.util.Pair;
@@ -34,11 +33,10 @@ public final class AffinityHelper implements IAffinityHelper {
         return INSTANCE.get();
     }
 
-    @CapabilityInject(IAffinityHolder.class)
-    private static Capability<IAffinityHolder> AFFINITY;
+    @CapabilityInject(AffinityHolder.class)
+    private static Capability<AffinityHolder> AFFINITY;
 
-    @Override
-    public IAffinityHolder getAffinityHolder(Player player) {
+    public AffinityHolder getAffinityHolder(Player player) {
         return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
     }
 
@@ -72,12 +70,12 @@ public final class AffinityHelper implements IAffinityHelper {
         return getAffinityHolder(player).getAffinityDepth(affinity);
     }
 
-    public static Capability<IAffinityHolder> getCapability() {
+    public static Capability<AffinityHolder> getCapability() {
         return AFFINITY;
     }
 
     public static class AffinityHolderProvider implements ICapabilitySerializable<Tag> {
-        private LazyOptional<IAffinityHolder> lazy = LazyOptional.of(AffinityHelper.AffinityHolder::empty);
+        private LazyOptional<AffinityHolder> lazy = LazyOptional.of(AffinityHelper.AffinityHolder::empty);
 
         @Nullable
         @Override
@@ -94,7 +92,7 @@ public final class AffinityHelper implements IAffinityHelper {
                     .decode(NbtOps.INSTANCE, nbt)
                     .get()
                     .mapLeft(Pair::getFirst)
-                    .mapLeft(affinityHolder -> (NonNullSupplier<IAffinityHolder>)(() -> affinityHolder))
+                    .mapLeft(affinityHolder -> (NonNullSupplier<AffinityHolder>)(() -> affinityHolder))
                     .map(LazyOptional::of, pairPartialResult -> LazyOptional.empty());
         }
 
@@ -105,23 +103,47 @@ public final class AffinityHelper implements IAffinityHelper {
         }
     }
 
-    public record AffinityHolder(Map<ResourceLocation, Double> depths) implements IAffinityHolder {
-        public static final Codec<IAffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.compoundList(ResourceLocation.CODEC, Codec.DOUBLE).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("depths").forGetter(IAffinityHolder::depths)
+    public record AffinityHolder(Map<ResourceLocation, Double> depths) {
+        public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                Codec.compoundList(ResourceLocation.CODEC, Codec.DOUBLE).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("depths").forGetter(AffinityHolder::depths)
         ).apply(inst, AffinityHolder::new));
 
         public static AffinityHolder empty() {
             return new AffinityHolder(new HashMap<>());
         }
 
-        @Override
+        /**
+             * Get the depths map for this affinity holder.
+             *
+             * @return the unmodifiable view of the affinity depths map
+             */
         public Map<ResourceLocation, Double> depths() {
             return Collections.unmodifiableMap(depths);
         }
 
-        public void onSync(IAffinityHolder affinityHolder) {
+        public void onSync(AffinityHolder affinityHolder) {
             depths.clear();
             depths.putAll(affinityHolder.depths());
+        }
+
+        /**
+         * Get the depth for a given affinity.
+         *
+         * @param affinity the affinity to get the depth for
+         * @return the depth of the requested affinity or 0 if not available
+         */
+        public double getAffinityDepth(ResourceLocation affinity) {
+            return depths().getOrDefault(affinity, 0d);
+        }
+
+        /**
+         * Get the depth for a given affinity.
+         *
+         * @param affinity the affinity to get the depth for
+         * @return the depth of the requested affinity or 0 if not available
+         */
+        public double getAffinityDepth(IAffinity affinity) {
+            return getAffinityDepth(affinity.getRegistryName());
         }
     }
 }

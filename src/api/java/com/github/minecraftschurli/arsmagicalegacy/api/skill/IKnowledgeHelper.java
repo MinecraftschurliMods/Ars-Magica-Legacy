@@ -1,13 +1,15 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.Collection;
 
 /**
  * TODO
  */
 public interface IKnowledgeHelper {
-    IKnowledgeHolder getKnowledgeHolder(Player player);
 
     boolean knows(Player player, ResourceLocation skill);
 
@@ -19,15 +21,17 @@ public interface IKnowledgeHelper {
 
     void learn(Player player, ISkill id);
 
+    void learn(Player player, ResourceLocation id);
+
     void forget(Player player, ResourceLocation skill);
 
     void forget(Player player, ISkill skill);
 
+    void forgetAll(Player player);
+
     int getSkillPoint(Player player, ResourceLocation point);
 
     int getSkillPoint(Player player, ISkillPoint point);
-
-    void learn(Player player, ResourceLocation id);
 
     int getCurrentLevel(Player player);
 
@@ -48,4 +52,6 @@ public interface IKnowledgeHelper {
     boolean consumeSkillPoint(Player player, ISkillPoint skillPoint);
 
     float getXp(Player player);
+
+    Collection<ResourceLocation> getKnownSkills(Player player);
 }

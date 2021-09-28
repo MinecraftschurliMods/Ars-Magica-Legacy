@@ -3,19 +3,19 @@ package com.github.minecraftschurli.arsmagicalegacy.api;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
-import net.minecraft.world.Snooper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 public final class ArsMagicaAPI {
@@ -104,13 +104,12 @@ public final class ArsMagicaAPI {
 
         IAffinityHelper getAffinityHelper();
 
-        Capability<IKnowledgeHolder> getKnowledgeCapability();
-
         void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, OcculusTabRenderer> factory);
 
         void openOcculusGui(Player pPlayer);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
@@ -150,11 +149,6 @@ public final class ArsMagicaAPI {
 
         @Override
         public void openOcculusGui(final Player pPlayer) {
-        }
-
-        @Override
-        public Capability<IKnowledgeHolder> getKnowledgeCapability() {
-            return null;
         }
 
         @Override

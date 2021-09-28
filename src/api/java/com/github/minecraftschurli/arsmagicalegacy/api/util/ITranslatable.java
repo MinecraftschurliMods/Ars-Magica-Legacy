@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.util;
 
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -38,7 +39,7 @@ public interface ITranslatable {
      *
      * @return the {@link Component} containing the display name of this object
      */
-    default Component getDisplayName() {
+    default MutableComponent getDisplayName() {
         return new TranslatableComponent(getTranslationKey());
     }
 
@@ -47,7 +48,7 @@ public interface ITranslatable {
      */
     interface WithDescription extends ITranslatable {
         @Override
-        default Component getDisplayName() {
+        default MutableComponent getDisplayName() {
             return new TranslatableComponent(getTranslationKey()+".name");
         }
 
@@ -56,7 +57,7 @@ public interface ITranslatable {
          *
          * @return the {@link Component} containing the description of this object
          */
-        default Component getDescription() {
+        default MutableComponent getDescription() {
             return new TranslatableComponent(getTranslationKey()+".description");
         }
     }

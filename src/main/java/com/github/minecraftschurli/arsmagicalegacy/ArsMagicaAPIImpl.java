@@ -79,9 +79,4 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     public void openOcculusGui(Player player) {
         ClientHelper.openOcculusGui(player);
     }
-
-    @Override
-    public Capability<IKnowledgeHolder> getKnowledgeCapability() {
-        return KnowledgeHelper.getCapability();
-    }
 }

@@ -10,14 +10,6 @@ import org.jetbrains.annotations.NotNull;
  * Interface representing an affinity helper
  */
 public interface IAffinityHelper {
-    /**
-     * Get the {@link IAffinityHolder} for a given player.
-     * <p>Warning! Do not modify this on the client.</p>
-     *
-     * @param player the player to get the affinity holder for
-     * @return the affinity holder of the player
-     */
-    IAffinityHolder getAffinityHolder(Player player);
 
     /**
      * Get the {@link ItemStack} of the given {@link Item} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.

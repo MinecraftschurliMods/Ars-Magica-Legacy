@@ -1,8 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHolder;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHolder;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
@@ -80,8 +78,8 @@ public final class ArsMagicaLegacy {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IKnowledgeHolder.class);
-        event.register(IAffinityHolder.class);
+        event.register(KnowledgeHelper.KnowledgeHolder.class);
+        event.register(AffinityHelper.AffinityHolder.class);
     }
 
     private void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {

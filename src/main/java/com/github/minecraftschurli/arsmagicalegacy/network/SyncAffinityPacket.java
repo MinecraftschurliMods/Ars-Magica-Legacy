@@ -1,7 +1,5 @@
 package com.github.minecraftschurli.arsmagicalegacy.network;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHolder;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHolder;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.KnowledgeHelper;
 import com.github.minecraftschurli.simplenetlib.IPacket;
@@ -11,9 +9,9 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncAffinityPacket implements IPacket {
 
-    private final IAffinityHolder affinityHolder;
+    private final AffinityHelper.AffinityHolder affinityHolder;
 
-    public SyncAffinityPacket(IAffinityHolder affinityHolder) {
+    public SyncAffinityPacket(AffinityHelper.AffinityHolder affinityHolder) {
         this.affinityHolder = affinityHolder;
     }
 
