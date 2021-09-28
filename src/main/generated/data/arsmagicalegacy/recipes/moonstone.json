@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:moonstone_block"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:moonstone",
+    "count": 9
+  }
+}

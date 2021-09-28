@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:sunstone_block"
+    ]
+  },
+  "criteria": {
+    "has_sunstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:sunstone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:sunstone_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sunstone",
+      "has_the_recipe"
+    ]
+  ]
+}
