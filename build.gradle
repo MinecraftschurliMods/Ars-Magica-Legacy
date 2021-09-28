@@ -38,7 +38,8 @@ mixin {
 }
 
 editorconfig {
-    excludes = ['run']
+    excludes = ['run/**', '**/*.psd', 'out']
+    excludeNonSourceFiles = true
 }
 
 group = "${project.mod_group}"
