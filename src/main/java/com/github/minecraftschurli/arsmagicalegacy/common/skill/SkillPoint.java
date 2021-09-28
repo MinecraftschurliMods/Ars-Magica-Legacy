@@ -23,11 +23,6 @@ public class SkillPoint extends ForgeRegistryEntry<ISkillPoint> implements ISkil
     }
 
     @Override
-    public boolean canRenderInGui() {
-        return false;
-    }
-
-    @Override
     public int getColor() {
         return color;
     }

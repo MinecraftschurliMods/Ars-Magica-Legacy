@@ -98,15 +98,41 @@ public final class ArsMagicaAPI {
          */
         IForgeRegistry<IAffinity> getAffinityRegistry();
 
+        /**
+         * Get the {@link ISkillManager} instance.
+         *
+         * @return the {@link ISkillManager} instance
+         */
         ISkillManager getSkillManager();
 
+        /**
+         * Get the {@link IKnowledgeHelper} instance.
+         *
+         * @return the {@link IKnowledgeHelper} instance
+         */
         IKnowledgeHelper getKnowledgeHelper();
 
+        /**
+         * Get the {@link IAffinityHelper} instance.
+         *
+         * @return the {@link IAffinityHelper} instance
+         */
         IAffinityHelper getAffinityHelper();
 
-        void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, OcculusTabRenderer> factory);
+        /**
+         * Register a renderer for a occulus tab.
+         *
+         * @param tab the tab to register the renderer for
+         * @param factory the factory for the renderer
+         */
+        void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory);
 
-        void openOcculusGui(Player pPlayer);
+        /**
+         * Open the occulus gui for the given player.
+         *
+         * @param player the player to open the gui for
+         */
+        void openOcculusGui(Player player);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -144,16 +170,16 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public void registerOcculusTabRenderer(final IOcculusTab tab, final BiFunction<IOcculusTab, Player, OcculusTabRenderer> factory) {
-        }
-
-        @Override
         public void openOcculusGui(final Player pPlayer) {
         }
 
         @Override
         public IAffinityHelper getAffinityHelper() {
             return null;
+        }
+
+        @Override
+        public void registerOcculusTabRenderer(final IOcculusTab tab, final BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory) {
         }
 
         @Override

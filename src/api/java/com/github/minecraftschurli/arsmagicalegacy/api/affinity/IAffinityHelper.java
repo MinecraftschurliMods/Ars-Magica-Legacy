@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface representing an affinity helper
@@ -29,9 +28,7 @@ public interface IAffinityHelper {
      * @param <T> the {@link Item} implementing {@link IAffinityItem}
      * @return the {@link ItemStack} of the given item with the given {@link IAffinity} stored in it
      */
-    default <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, @NotNull IAffinity affinity) {
-        return getStackForAffinity(item, affinity.getRegistryName());
-    }
+    <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity);
 
     /**
      * Get the {@link IAffinity} from a {@link ItemStack} returns the NONE affinity if the stack does not contain an affinity.
@@ -55,9 +52,7 @@ public interface IAffinityHelper {
      * @param affinity the {@link IAffinity affinity} to get the essence stack for
      * @return the {@link ItemStack} containing the affinity essence
      */
-    default ItemStack getEssenceForAffinity(@NotNull IAffinity affinity) {
-        return getEssenceForAffinity(affinity.getRegistryName());
-    }
+    ItemStack getEssenceForAffinity(IAffinity affinity);
 
     /**
      * Get the affinity tome {@link ItemStack} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.
@@ -73,9 +68,7 @@ public interface IAffinityHelper {
      * @param affinity the {@link IAffinity affinity} to get the tome stack for
      * @return the {@link ItemStack} containing the affinity tome
      */
-    default ItemStack getTomeForAffinity(@NotNull IAffinity affinity) {
-        return getTomeForAffinity(affinity.getRegistryName());
-    }
+    ItemStack getTomeForAffinity(IAffinity affinity);
 
     /**
      * Get the affinity depth for a given player and affinity.
@@ -93,7 +86,5 @@ public interface IAffinityHelper {
      * @param affinity the affinity to get the depth for
      * @return the depth of the given player in the given affinity
      */
-    default double getAffinityDepth(Player player, @NotNull IAffinity affinity) {
-        return getAffinityDepth(player, affinity.getRegistryName());
-    }
+    double getAffinityDepth(Player player, IAffinity affinity);
 }

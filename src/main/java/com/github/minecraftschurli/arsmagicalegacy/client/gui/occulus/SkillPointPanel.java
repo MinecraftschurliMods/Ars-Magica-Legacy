@@ -27,7 +27,6 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         int maxSize = api.getSkillPointRegistry()
                 .getValues()
                 .stream()
-                .filter(ISkillPoint::canRenderInGui)
                 .map(point -> point.getDisplayName().copy().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(getMinecraft().player, point))))
                 .mapToInt(font::width)
                 .max()

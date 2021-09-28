@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Interface representing an affinity
  */
-public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IAffinity>, ITranslatable {
+public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IAffinity>, ITranslatable.OfRegistryEntry<IAffinity> {
     String AFFINITY = "affinity";
     ResourceLocation NONE      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "none");
     ResourceLocation ARCANE    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane");

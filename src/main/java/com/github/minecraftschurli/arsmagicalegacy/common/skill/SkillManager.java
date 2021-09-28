@@ -2,11 +2,12 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.SyncSkillsPacket;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,6 +44,17 @@ public final class SkillManager extends SimpleJsonResourceReloadListener impleme
     @Override
     public Optional<ISkill> getOptional(ResourceLocation id) {
         return Optional.ofNullable(skills.get(id));
+    }
+
+    @Nullable
+    @Override
+    public ISkill getNullable(ResourceLocation id) {
+        return skills.get(id);
+    }
+
+    @Override
+    public ISkill get(ResourceLocation id) {
+        return getOptional(id).orElseThrow();
     }
 
     @Override

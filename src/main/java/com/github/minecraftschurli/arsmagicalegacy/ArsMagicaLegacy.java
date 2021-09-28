@@ -5,10 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelpe
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.KnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
-import com.github.minecraftschurli.arsmagicalegacy.network.SyncAffinityPacket;
-import com.github.minecraftschurli.arsmagicalegacy.network.SyncKnowledgePacket;
-import com.github.minecraftschurli.arsmagicalegacy.network.SyncSkillsPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.*;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +52,7 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(SyncSkillsPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SyncKnowledgePacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SyncAffinityPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, this::attachCapabilities);
         MinecraftForge.EVENT_BUS.addListener(this::playerJoinWorld);
     }

@@ -46,8 +46,18 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public ItemStack getEssenceForAffinity(IAffinity affinity) {
+        return getEssenceForAffinity(affinity.getId());
+    }
+
+    @Override
     public ItemStack getTomeForAffinity(ResourceLocation affinity) {
         return getStackForAffinity(AMItems.AFFINITY_TOME.get(), affinity);
+    }
+
+    @Override
+    public ItemStack getTomeForAffinity(IAffinity affinity) {
+        return getTomeForAffinity(affinity.getId());
     }
 
     @Override
@@ -55,6 +65,11 @@ public final class AffinityHelper implements IAffinityHelper {
         ItemStack stack = new ItemStack(item);
         Optional.ofNullable(ArsMagicaAPI.get().getAffinityRegistry().getValue(aff)).ifPresent(affinity -> item.setAffinity(stack, affinity));
         return stack;
+    }
+
+    @Override
+    public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity) {
+        return getStackForAffinity(item, affinity.getId());
     }
 
     @Override
@@ -68,6 +83,11 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public double getAffinityDepth(Player player, ResourceLocation affinity) {
         return getAffinityHolder(player).getAffinityDepth(affinity);
+    }
+
+    @Override
+    public double getAffinityDepth(final Player player, final IAffinity affinity) {
+        return 0;
     }
 
     public static Capability<AffinityHolder> getCapability() {
@@ -143,7 +163,7 @@ public final class AffinityHelper implements IAffinityHelper {
          * @return the depth of the requested affinity or 0 if not available
          */
         public double getAffinityDepth(IAffinity affinity) {
-            return getAffinityDepth(affinity.getRegistryName());
+            return getAffinityDepth(affinity.getId());
         }
     }
 }

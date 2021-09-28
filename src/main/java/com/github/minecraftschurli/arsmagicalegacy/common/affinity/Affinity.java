@@ -56,11 +56,6 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         return directOpposite;
     }
 
-    @Override
-    public ResourceLocation getId() {
-        return Objects.requireNonNull(getRegistryName());
-    }
-
     public static Builder builder() {
         return new Builder();
     }

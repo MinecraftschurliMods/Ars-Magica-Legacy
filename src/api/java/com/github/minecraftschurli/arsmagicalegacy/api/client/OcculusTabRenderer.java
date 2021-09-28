@@ -48,7 +48,7 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      */
     @Internal
     @Override
-    public void render(@NotNull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         pMatrixStack.pushPose();
         pMatrixStack.translate(7, 7, 0);
         pMouseX -= posX;
@@ -92,9 +92,9 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      * Override this method if you want to provide narrations.
      */
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {}
+    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
 
-    public void renderComponentToolTip(@NotNull PoseStack stack, @NotNull List<? extends net.minecraft.network.chat.FormattedText> tooltips, int mouseX, int mouseY, @NotNull Font font) {
+    public void renderComponentToolTip(PoseStack stack, List<? extends net.minecraft.network.chat.FormattedText> tooltips, int mouseX, int mouseY, Font font) {
         GuiUtils.drawHoveringText(stack, tooltips, mouseX, mouseY, screenWidth, screenHeight, -1, font);
     }
 }

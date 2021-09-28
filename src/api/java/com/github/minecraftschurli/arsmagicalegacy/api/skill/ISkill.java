@@ -73,5 +73,4 @@ public interface ISkill extends ITranslatable.WithDescription {
     default String getType() {
         return SKILL;
     }
-
 }
