@@ -53,6 +53,7 @@ public interface AMRegistries {
         BLOCK_ENTITIES.register(bus);
         PARTICLE_TYPES.register(bus);
         CONTAINERS.register(bus);
+
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
     }
