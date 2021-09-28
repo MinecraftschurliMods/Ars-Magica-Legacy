@@ -41,6 +41,7 @@ public interface AMRegistries {
      */
     @Internal
     static void init(IEventBus bus) {
+        AMEntities.init();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);
