@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -59,6 +58,7 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMContainers.register();
+        AMEntities.init();
         AMSkillPoints.register();
         AMAffinities.register();
         BLOCKS.register(bus);
