@@ -1,15 +1,18 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.stream.Collectors;
 
 public class SkillPointPanel extends Screen implements NarratableEntry {
     private static final ResourceLocation SKILL_POINT_BG = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/skill_points.png");
@@ -20,17 +23,18 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
 
     @Override
     public void render(@NotNull PoseStack stack, int pMouseX, int pMouseY, float pPartialTicks) {
+        var player = getMinecraft().player;
+        if (player == null) return;
         stack.pushPose();
         stack.translate(width, 0, 0);
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getKnowledgeHelper();
-        int maxSize = api.getSkillPointRegistry()
+        var skillPoints = api.getSkillPointRegistry()
                 .getValues()
                 .stream()
-                .map(point -> point.getDisplayName().copy().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(getMinecraft().player, point))))
-                .mapToInt(font::width)
-                .max()
-                .orElse(0) + 6;
+                .map(point -> Pair.of(point.getDisplayName().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(player, point))), point.getColor()))
+                .collect(Collectors.toList());
+        int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
         setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);
         blit(stack, maxSize, 0, 252, 0, 4, 4);
@@ -58,6 +62,11 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
             int y = Math.min(h, 248);
             blit(stack, maxSize, 4 + h - y, 252, 4, 4, y);
             h -= y;
+        }
+        int pointOffsetY = 5;
+        for (Pair<MutableComponent, Integer> point : skillPoints) {
+            drawString(stack, font, point.getFirst(), 4, pointOffsetY, point.getSecond());
+            pointOffsetY += 10;
         }
         stack.popPose();
     }

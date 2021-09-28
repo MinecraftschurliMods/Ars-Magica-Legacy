@@ -3,7 +3,11 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
@@ -16,7 +20,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     public static final String MISSING_REQUIREMENTS_KEY = "message.%s.occulus.missingRequirements".formatted(ArsMagicaAPI.MOD_ID);
@@ -30,12 +38,13 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     private float scale = 1f;
     private ISkill hoverItem = null;
 
-    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab, Player player) {
-        super(occulusTab, player);
+    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab) {
+        super(occulusTab);
     }
 
     @Override
     protected void init() {
+        super.init();
         if (offsetX == 0) offsetX = textureWidth / 2f - width / 2f;
     }
 
@@ -62,6 +71,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        Player player = getMinecraft().player;
+        if (player == null) return;
         ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
         IKnowledgeHelper knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
@@ -80,16 +91,16 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor(posY * guiScale), (int) (width * guiScale), (int) (height * guiScale));
         for (ISkill skill : skills) {
             boolean knows = knowledgeHelper.knows(player, skill);
-            float cX = skill.getX() + SKILL_SIZE / 2 + 2;
-            float cY = skill.getY() + SKILL_SIZE / 2 + 2;
+            float cX = skill.getX() + SKILL_SIZE / 2 + 1;
+            float cY = skill.getY() + SKILL_SIZE / 2 + 1;
             setBlitOffset(1);
             boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
             for (ResourceLocation parentId : skill.getParents()) {
                 Optional<ISkill> parent = skillManager.getOptional(parentId);
                 if (parent.isEmpty()) continue;
                 ISkill parentSkill = parent.get();
-                float parentCX = parentSkill.getX() + SKILL_SIZE / 2 + 2;
-                float parentCY = parentSkill.getY() + SKILL_SIZE / 2 + 2;
+                float parentCX = parentSkill.getX() + SKILL_SIZE / 2 + 1;
+                float parentCY = parentSkill.getY() + SKILL_SIZE / 2 + 1;
                 int color = (knows ? ColorUtil.KNOWS_COLOR : getColorForLine(parentSkill, skill) & ColorUtil.UNKNOWN_SKILL_LINE_COLOR_MASK);
                 if (!hasPrereq) {
                     color = ColorUtil.BLACK;
@@ -125,7 +136,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         for (ISkill skill : skills) {
             if (pMouseX >= skill.getX() && pMouseX <= skill.getX() + SKILL_SIZE && pMouseY >= skill.getY() && pMouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
-                list.add(skill.getDisplayName().copy().withStyle(getChatColorForSkill(skill)));
+                list.add(skill.getDisplayName().copy().withStyle(style -> style.withColor(getColorForSkill(skill))));
                 if (knowledgeHelper.canLearn(player, skill) || knowledgeHelper.knows(player, skill)) {
                     list.add(skill.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY));
                 } else {
@@ -146,7 +157,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton == 0 && mouseX > 7 && mouseX < width && mouseY > 7 && mouseX < height) {
             var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
-            if (hoverItem != null && !knowledgeHelper.knows(player, hoverItem)) {
+            Player player = getMinecraft().player;
+            if (player != null && hoverItem != null && !knowledgeHelper.knows(player, hoverItem)) {
                 if (knowledgeHelper.canLearn(player, hoverItem) || player.isCreative()) {
                     ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new LearnSkillPacket(hoverItem.getId()));
                 }
@@ -164,17 +176,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
-    private ChatFormatting getChatColorForSkill(ISkill skill) {
-        return skill.getCost()
-                .keySet()
-                .stream()
-                .map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .map(ISkillPoint::getChatColor)
-                .orElse(ChatFormatting.RESET);
-    }
-
     private int getColorForSkill(ISkill skill) {
         return skill.getCost()
                 .keySet()
@@ -183,10 +184,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .map(ISkillPoint::getColor)
-                .orElse(ColorUtil.BLACK);
+                .orElse(ColorUtil.GRAY);
     }
 
     private int getColorForLine(ISkill parent, ISkill child) {
-        return getColorForSkill(child);
+        return ColorUtil.calculateAverage(getColorForSkill(parent), getColorForSkill(child));
     }
 }

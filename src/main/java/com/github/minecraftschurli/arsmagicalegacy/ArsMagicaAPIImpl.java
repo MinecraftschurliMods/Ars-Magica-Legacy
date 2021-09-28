@@ -25,7 +25,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.patchouli.api.PatchouliAPI;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
@@ -73,7 +73,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     }
 
     @Override
-    public void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory) {
+    public void registerOcculusTabRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory) {
         OcculusScreen.registerRenderer(tab, factory);
     }
 

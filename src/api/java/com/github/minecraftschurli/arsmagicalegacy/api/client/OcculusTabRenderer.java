@@ -6,7 +6,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 public abstract class OcculusTabRenderer extends Screen implements NarratableEntry {
     protected final IOcculusTab occulusTab;
-    protected final Player player;
     protected final int textureHeight;
     protected final int textureWidth;
     protected int screenWidth;
@@ -34,10 +32,9 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      * @param occulusTab the occulus tab of this renderer
      * @param player the player that has the gui open
      */
-    protected OcculusTabRenderer(IOcculusTab occulusTab, Player player) {
+    protected OcculusTabRenderer(IOcculusTab occulusTab) {
         super(occulusTab.getDisplayName());
         this.occulusTab = occulusTab;
-        this.player = player;
         this.textureHeight = occulusTab.getHeigth();
         this.textureWidth = occulusTab.getWidth();
     }

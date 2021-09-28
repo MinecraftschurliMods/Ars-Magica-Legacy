@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
@@ -125,7 +125,7 @@ public final class ArsMagicaAPI {
          * @param tab the tab to register the renderer for
          * @param factory the factory for the renderer
          */
-        void registerOcculusTabRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory);
+        void registerOcculusTabRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory);
 
         /**
          * Open the occulus gui for the given player.
@@ -179,7 +179,7 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public void registerOcculusTabRenderer(final IOcculusTab tab, final BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory) {
+        public void registerOcculusTabRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory) {
         }
 
         @Override

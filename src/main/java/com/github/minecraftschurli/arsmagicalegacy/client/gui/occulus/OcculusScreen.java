@@ -13,25 +13,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class OcculusScreen extends Screen {
     private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
 
-    private static final Map<ResourceLocation, BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer>> RENDERERS = new HashMap<>();
+    private static final Map<ResourceLocation, Function<IOcculusTab, ? extends OcculusTabRenderer>> RENDERERS = new HashMap<>();
     private static final Component TITLE = new TranslatableComponent("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
 
     private final int guiWidth;
     private final int guiHeight;
     private final int tabWidth;
     private final int tabHeight;
-    private Player player;
     private int maxPage;
     private int page;
     private Button prevPage;
@@ -51,7 +49,6 @@ public class OcculusScreen extends Screen {
 
     @Override
     protected void init() {
-        player = getMinecraft().player;
         posX = width / 2 - guiWidth / 2;
         posY = height / 2 - guiHeight / 2;
         var registry = ArsMagicaAPI.get().getOcculusTabRegistry();
@@ -108,7 +105,7 @@ public class OcculusScreen extends Screen {
     private void setActiveTab(int tabIndex) {
         IOcculusTab tab = OcculusTab.TAB_BY_INDEX.get(tabIndex);
         Optional.ofNullable(RENDERERS.get(tab.getId()))
-                .map(factory -> factory.apply(tab, this.player))
+                .map(factory -> factory.apply(tab))
                 .ifPresent(occulusTabRenderer -> {
                     this.removeWidget(this.activeTab);
                     this.activeTab = occulusTabRenderer;
@@ -142,7 +139,7 @@ public class OcculusScreen extends Screen {
         return super.mouseReleased(pMouseX-posX, pMouseY-posY, pButton);
     }
 
-    public static void registerRenderer(IOcculusTab tab, BiFunction<IOcculusTab, Player, ? extends OcculusTabRenderer> factory) {
+    public static void registerRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory) {
         RENDERERS.put(tab.getId(), factory);
     }
 }

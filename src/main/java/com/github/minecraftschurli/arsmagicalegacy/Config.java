@@ -6,10 +6,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
-/**
- * @author Minecraftschurli
- * @version 2021-08-02
- */
 public final class Config {
     public static final Client CLIENT;
     public static final Server SERVER;

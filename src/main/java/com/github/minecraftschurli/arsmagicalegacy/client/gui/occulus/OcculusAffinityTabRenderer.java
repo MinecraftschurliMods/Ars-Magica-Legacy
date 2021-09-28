@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
-    public OcculusAffinityTabRenderer(IOcculusTab occulusTab, Player player) {
-        super(occulusTab, player);
+    public OcculusAffinityTabRenderer(IOcculusTab occulusTab) {
+        super(occulusTab);
     }
 
     @Override
@@ -30,6 +30,8 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        Player player = getMinecraft().player;
+        if (player == null) return;
         var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
         int affNum = affinityRegistry.getValues().size() - 1;
         int portion = 360 / affNum;
