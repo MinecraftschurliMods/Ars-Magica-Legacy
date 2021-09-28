@@ -1,24 +1,14 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -28,6 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Attr;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
@@ -69,22 +60,10 @@ public final class ArsMagicaLegacy {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        AMItems.initSpawnEggs();
+        AMItems.setup();
     }
 
     private void createEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
-        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
-        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
-        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
-        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
-        event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
-        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
-        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
-        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
-        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
-        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
-        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
-        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
+        event.put(AMEntities.WATER_GUARDIAN.get(), LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 75).add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).build());
     }
 }
