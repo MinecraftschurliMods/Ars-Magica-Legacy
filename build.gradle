@@ -241,7 +241,6 @@ minecraft {
         }
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
-            property 'forge.logging.markers', 'CORE,LOADING,SCAN'
             singleInstance true
             args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
@@ -254,7 +253,7 @@ minecraft {
                 [
                         configurations.datagenLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator),
                         configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-                ].join(File.pathSeparator)
+                ].join(File.pathSeparator).strip()
             }
         }
     }
