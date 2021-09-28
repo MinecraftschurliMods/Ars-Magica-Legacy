@@ -30,7 +30,6 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      * Constructor for a {@link OcculusTabRenderer}.
      *
      * @param occulusTab the occulus tab of this renderer
-     * @param player the player that has the gui open
      */
     protected OcculusTabRenderer(IOcculusTab occulusTab) {
         super(occulusTab.getDisplayName());
