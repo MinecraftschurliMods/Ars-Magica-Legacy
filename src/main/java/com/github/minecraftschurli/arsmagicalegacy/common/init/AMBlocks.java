@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -61,6 +62,7 @@ public interface AMBlocks {
     RegistryObject<PressurePlateBlock> WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<TorchBlock> VINTEUM_TORCH = BLOCKS.register("vinteum_torch", () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock> VINTEUM_WALL_TORCH = BLOCKS.register("vinteum_wall_torch", () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
+    RegistryObject<WizardsChalkBlock> WIZARDS_CHALK = BLOCKS.register("wizards_chalk", () -> new WizardsChalkBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL)));
 
     /**
      * Empty method that is required for classloading

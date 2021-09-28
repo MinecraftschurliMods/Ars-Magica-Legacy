@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.AMSpawnEggItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -85,6 +86,7 @@ public interface AMItems {
     RegistryObject<Item> ARCANE_ASH = ITEMS.register("arcane_ash", () -> new Item(ITEM_64));
     RegistryObject<Item> PURIFIED_VINTEUM_DUST = ITEMS.register("purified_vinteum_dust", () -> new Item(ITEM_64));
     RegistryObject<StandingAndWallBlockItem> VINTEUM_TORCH = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
+    RegistryObject<WizardsChalkItem> WIZARDS_CHALK = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(ITEM_64.durability(100)));
 
     /**
      * Empty method that is required for classloading
