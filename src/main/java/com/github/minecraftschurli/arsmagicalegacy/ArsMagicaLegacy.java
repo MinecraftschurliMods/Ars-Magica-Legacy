@@ -20,13 +20,15 @@ import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket
 import com.github.minecraftschurli.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +52,9 @@ public final class ArsMagicaLegacy {
         }
 
         INSTANCE = this;
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::setup);
+        bus.addListener(this::createEntityAttributes);
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -72,6 +77,9 @@ public final class ArsMagicaLegacy {
         AltarMaterialManager.instance();
     }
 
+    /**
+     * @return the mod name
+     */
     public static String getModName() {
         return INSTANCE.modInfo.getDisplayName();
     }
@@ -85,5 +93,9 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class,       NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class,     NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    private void createEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(AMEntities.WATER_GUARDIAN.get(), LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 75).add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).build());
     }
 }
