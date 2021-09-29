@@ -72,7 +72,7 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock> DESERT_NOVA = BLOCKS.register("desert_nova", () -> new FlowerBlock(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)) {
         @Override
         public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-            return Tags.Blocks.SAND.contains(pState.getBlock());
+            return Tags.Blocks.SAND.contains(pLevel.getBlockState(pPos.below()).getBlock());
         }
     });
     RegistryObject<FlowerBlock> TARMA_ROOT = BLOCKS.register("tarma_root", () -> new FlowerBlock(MobEffects.DIG_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
