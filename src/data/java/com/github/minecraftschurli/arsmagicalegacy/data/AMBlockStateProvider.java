@@ -63,6 +63,11 @@ class AMBlockStateProvider extends BlockStateProvider {
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
+        crossBlock(AUM);
+        crossBlock(CERUBLOSSOM);
+        crossBlock(DESERT_NOVA);
+        crossBlock(TARMA_ROOT);
+        crossBlock(WAKEBLOOM);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
         wizardsChalkBlock(WIZARDS_CHALK);
     }
