@@ -259,6 +259,9 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(Tags.Items.STONE)
                 .unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))
                 .save(consumer);
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(AMItems.ARCANE_COMPOUND.get()), AMItems.ARCANE_ASH.get(), 0.2F, 200)
+                .unlockedBy("has_arcane_compound", has(AMItems.ARCANE_COMPOUND.get()))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.PURIFIED_VINTEUM_DUST.get())
                 .requires(AMItems.ARCANE_ASH.get())
                 .requires(AMItems.CERUBLOSSOM.get())
@@ -272,9 +275,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('V',AMItems.VINTEUM_DUST.get())
                 .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
-                .save(consumer);
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(AMItems.ARCANE_COMPOUND.get()), AMItems.ARCANE_ASH.get(), 0.2F, 200)
-                .unlockedBy("has_arcane_compound", has(AMItems.ARCANE_COMPOUND.get()))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.WIZARDS_CHALK.get())
                 .requires(AMItems.VINTEUM_DUST.get())

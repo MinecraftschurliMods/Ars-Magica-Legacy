@@ -76,11 +76,11 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(ARCANE_COMPOUND);
         itemGenerated(ARCANE_ASH);
         itemGenerated(PURIFIED_VINTEUM_DUST);
-        withExistingParent(AUM, "block/aum");
-        withExistingParent(CERUBLOSSOM, "block/CERUBLOSSOM");
-        withExistingParent(DESERT_NOVA, "block/DESERT_NOVA");
-        withExistingParent(TARMA_ROOT, "block/TARMA_ROOT");
-        withExistingParent(WAKEBLOOM, "block/WAKEBLOOM");
+        itemGenerated(AUM, "block/aum");
+        itemGenerated(CERUBLOSSOM, "block/cerublossom");
+        itemGenerated(DESERT_NOVA, "block/desert_nova");
+        itemGenerated(TARMA_ROOT, "block/tarma_root");
+        itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
         itemGenerated(WIZARDS_CHALK);
     }
