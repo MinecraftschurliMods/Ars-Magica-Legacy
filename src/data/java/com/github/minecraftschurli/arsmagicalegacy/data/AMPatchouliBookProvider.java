@@ -21,7 +21,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 
     @Override
     protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
-        createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(ArsMagicaAPI.get().getItemGroup().getRecipeFolderName()).setUseResourcepack()
+        createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setSubtitle("1st Edition").setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(ArsMagicaAPI.get().getItemGroup().getRecipeFolderName()).setUseResourcepack()
 //                .addCategory("test", "TestCategory", "This is a test", new ItemStack(Items.BARRIER)).addEntry("test", "TestEntry", new ItemStack(Items.GLOW_BERRIES)).addSimpleTextPage("Lorem ipsum dolor sit").build().build()
                 .build(consumer);
     }

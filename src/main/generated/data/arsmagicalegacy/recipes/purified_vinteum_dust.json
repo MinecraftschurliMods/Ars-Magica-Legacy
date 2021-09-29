@@ -2,6 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
+      "item": "arsmagicalegacy:arcane_ash"
+    },
+    {
+      "item": "arsmagicalegacy:cerublossom"
+    },
+    {
+      "item": "arsmagicalegacy:desert_nova"
+    },
+    {
       "item": "arsmagicalegacy:vinteum_dust"
     }
   ],

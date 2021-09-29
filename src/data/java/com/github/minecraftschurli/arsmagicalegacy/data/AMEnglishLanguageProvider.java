@@ -56,12 +56,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
-        blockIdTranslation(AMBlocks.AUM);
-        blockIdTranslation(AMBlocks.CERUBLOSSOM);
-        blockIdTranslation(AMBlocks.DESERT_NOVA);
-        blockIdTranslation(AMBlocks.TARMA_ROOT);
-        blockIdTranslation(AMBlocks.WAKEBLOOM);
-        blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         itemIdTranslation(AMItems.BLANK_RUNE);
         itemIdTranslation(AMItems.WHITE_RUNE);
         itemIdTranslation(AMItems.ORANGE_RUNE);
@@ -83,7 +77,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.ARCANE_COMPOUND);
         itemIdTranslation(AMItems.ARCANE_ASH);
         itemIdTranslation(AMItems.PURIFIED_VINTEUM_DUST);
-
+        blockIdTranslation(AMBlocks.AUM);
+        blockIdTranslation(AMBlocks.CERUBLOSSOM);
+        blockIdTranslation(AMBlocks.DESERT_NOVA);
+        blockIdTranslation(AMBlocks.TARMA_ROOT);
+        blockIdTranslation(AMBlocks.WAKEBLOOM);
+        blockIdTranslation(AMBlocks.VINTEUM_TORCH);
+        blockTranslation(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         advancementTranslation("root", ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
     }
 
