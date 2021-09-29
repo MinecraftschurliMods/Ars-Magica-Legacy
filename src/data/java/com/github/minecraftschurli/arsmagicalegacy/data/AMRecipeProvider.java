@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
@@ -259,6 +260,9 @@ class AMRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.PURIFIED_VINTEUM_DUST.get())
+                .requires(AMItems.ARCANE_ASH.get())
+                .requires(AMItems.CERUBLOSSOM.get())
+                .requires(AMItems.DESERT_NOVA.get())
                 .requires(AMItems.VINTEUM_DUST.get())
                 .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
                 .save(consumer);
@@ -271,6 +275,14 @@ class AMRecipeProvider extends RecipeProvider {
                 .save(consumer);
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(AMItems.ARCANE_COMPOUND.get()), AMItems.ARCANE_ASH.get(), 0.2F, 200)
                 .unlockedBy("has_arcane_compound", has(AMItems.ARCANE_COMPOUND.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.WIZARDS_CHALK.get())
+                .requires(AMItems.VINTEUM_DUST.get())
+                .requires(Items.BONE_MEAL)
+                .requires(Items.CLAY_BALL)
+                .requires(Items.FLINT)
+                .requires(Items.PAPER)
+                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
                 .save(consumer);
     }
 }
