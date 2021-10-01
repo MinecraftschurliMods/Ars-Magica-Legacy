@@ -14,9 +14,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
@@ -33,8 +31,7 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         return INSTANCE.get();
     }
 
-    @CapabilityInject(KnowledgeHolder.class)
-    private static Capability<KnowledgeHolder> KNOWLEDGE;
+    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public KnowledgeHolder getKnowledgeHolder(Player player) {
         return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s".formatted(player.getUUID())));
