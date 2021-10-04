@@ -183,7 +183,7 @@ dependencies {
     //runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
 
     // add internal libraries
-    /*var projects = subprojects.collect {it.path }
+    var projects = subprojects.collect {it.path }
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
@@ -198,7 +198,7 @@ dependencies {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
         datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
-    }*/
+    }
 
     implementation sourceSets.api.output
 
