@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public class ManaCreeper extends Monster {
     public ManaCreeper(EntityType<? extends Monster> type, Level level) {
-        super((EntityType<? extends Creeper>) type, level);
+        super(type, level);
     }
 
     @Override
