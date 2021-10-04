@@ -1,6 +1,6 @@
 {
-  "advancements.arsmagicalegacy.root.description": "A renewed look into Minecraft with a splash of magic...",
-  "advancements.arsmagicalegacy.root.title": "Ars Magica: Legacy",
+  "advancement.arsmagicalegacy.root.description": "A renewed look into Minecraft with a splash of magic...",
+  "advancement.arsmagicalegacy.root.title": "Minecraft",
   "block.arsmagicalegacy.aum": "Aum",
   "block.arsmagicalegacy.cerublossom": "Cerublossom",
   "block.arsmagicalegacy.chimerite_block": "Chimerite Block",
@@ -81,5 +81,5 @@
   "item.arsmagicalegacy.vinteum_dust": "Vinteum Dust",
   "item.arsmagicalegacy.white_rune": "White Rune",
   "item.arsmagicalegacy.yellow_rune": "Yellow Rune",
-  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy"
+  "itemGroup.arsmagicalegacy": "Minecraft"
 }

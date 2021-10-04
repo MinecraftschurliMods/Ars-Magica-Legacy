@@ -33,11 +33,14 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.BLOCKS;
 
 @NonExtendable
 public interface AMBlocks {
+    RegistryObject<OcculusBlock> OCCULUS = BLOCKS.register("occulus", OcculusBlock::new);
     RegistryObject<Block> CHIMERITE_ORE = BLOCKS.register("chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block> DEEPSLATE_CHIMERITE_ORE = BLOCKS.register("deepslate_chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE))); //
     RegistryObject<Block> CHIMERITE_BLOCK = BLOCKS.register("chimerite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));

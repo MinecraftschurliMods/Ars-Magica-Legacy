@@ -1,6 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "\"Don't Be a Jerk\" License"
+# services = [ "com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI.IArsMagicaAPI" ]
 
 [[mods]]
 modId = "${mod_id}"

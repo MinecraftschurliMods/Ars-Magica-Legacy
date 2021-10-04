@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
+/**
+ * Class holding the reference classes for all non forge/vanilla tags used by this mod
+ */
 public final class AMTags {
     private static final String FORGE = "forge";
 

@@ -24,7 +24,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang)
                 .setVersion("1")
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
-                .setCreativeTab(ArsMagicaAPI.get().getItemGroup().getRecipeFolderName())
+                .setCreativeTab(ArsMagicaAPI.get().getCreativeModeTab().getRecipeFolderName())
                 .setUseResourcepack()
                 .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) //TODO: magitech goggles here instead
                 .setSortnum(0).build()

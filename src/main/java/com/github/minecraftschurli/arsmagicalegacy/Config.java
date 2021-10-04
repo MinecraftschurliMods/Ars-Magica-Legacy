@@ -6,10 +6,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
-/**
- * @author Minecraftschurli
- * @version 2021-08-02
- */
 public final class Config {
     public static final Client CLIENT;
     public static final Server SERVER;
@@ -28,9 +24,10 @@ public final class Config {
     private static boolean init;
 
     @Internal
-    static synchronized void init(final ModLoadingContext context) {
+    static synchronized void init() {
         if (init) return;
         init = true;
+        var context = ModLoadingContext.get();
         context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
         context.registerConfig(ModConfig.Type.SERVER, serverSpec);
     }

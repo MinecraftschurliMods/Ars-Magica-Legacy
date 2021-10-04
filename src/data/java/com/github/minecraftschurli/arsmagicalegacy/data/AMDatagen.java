@@ -23,6 +23,7 @@ public class AMDatagen {
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
         if (evt.includeServer()) {
+            generator.addProvider(new AMSkillProvider(generator));
             generator.addProvider(new AMAdvancementProvider(generator));
             generator.addProvider(new AMLootTableProvider(generator));
             generator.addProvider(new AMRecipeProvider(generator));

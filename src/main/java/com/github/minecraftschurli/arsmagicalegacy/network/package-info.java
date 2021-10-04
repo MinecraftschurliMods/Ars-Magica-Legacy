@@ -1,1 +1,7 @@
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurli.arsmagicalegacy.network;
+
+import net.minecraft.MethodsReturnNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;
