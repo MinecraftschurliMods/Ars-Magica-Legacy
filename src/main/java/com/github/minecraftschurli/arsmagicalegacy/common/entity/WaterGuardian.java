@@ -1,17 +1,20 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import net.minecraft.core.BlockPos;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,107 +23,54 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class WaterGuardian extends Monster {
-//    protected static final int ATTACK_TIME = 80;
-//    private static final EntityDataAccessor<Boolean> DATA_ID_MOVING = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
-//    private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.INT);
-//    protected RandomStrollGoal randomStrollGoal;
-
-    public WaterGuardian(EntityType<? extends Monster> type, Level level) {
-        super(type, level);
-        this.xpReward = 10;
+public class WaterGuardian extends AbstractBoss {
+    public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
+        super(type, level, BossEvent.BossBarColor.BLUE);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 75D).add(Attributes.ARMOR, 10);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        //this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, new ExecuteSpellGoal(this)));
-
-    }
-
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 75.0D);
-    }
-
-//    @Override
-//    protected void defineSynchedData() {
-//        super.defineSynchedData();
-//        this.entityData.define(DATA_ID_MOVING, false);
-//        this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
-//    }
-
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
-    @Override
-    @NotNull
-    public MobType getMobType() { return MobType.WATER; }
-
-//    public boolean isMoving() {
-//        return this.entityData.get(DATA_ID_MOVING);
-//    }
-//
-//    void setMoving(boolean pMoving) {
-//        this.entityData.set(DATA_ID_MOVING, pMoving);
-//    }
-//
-//    public int getAttackDuration() {
-//        return 80;
-//    }
-//
-//    void setActiveAttackTarget(int pEntityId) {
-//        this.entityData.set(DATA_ID_ATTACK_TARGET, pEntityId);
-//    }
-//
-//    public boolean hasActiveAttackTarget() {
-//        return this.entityData.get(DATA_ID_ATTACK_TARGET) != 0;
-//    }
-
-//    @Override
-//    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-//        super.onSyncedDataUpdated(pKey);
-//        if (DATA_ID_ATTACK_TARGET.equals(pKey)) {
-//            this.clientSideAttackTime = 0;
-//            this.clientSideCachedAttackTarget = null;
-//        }
-//
-//    }
-
-
-    @Override
-    public int getAmbientSoundInterval() {
-        return 160;
+        super.registerGoals();
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isInWaterOrBubble() ? SoundEvents.GUARDIAN_AMBIENT : SoundEvents.GUARDIAN_AMBIENT_LAND;
+        return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return this.isInWaterOrBubble() ? SoundEvents.GUARDIAN_HURT : SoundEvents.GUARDIAN_HURT_LAND;
+        return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return this.isInWaterOrBubble() ? SoundEvents.GUARDIAN_DEATH : SoundEvents.GUARDIAN_DEATH_LAND;
+        return null;
     }
 
     @Override
-    protected Entity.@NotNull MovementEmission getMovementEmission() {
-        return Entity.MovementEmission.EVENTS;
+    protected SoundEvent getAttackSound() {
+        return null;
     }
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.5F;
+    public void aiStep() {
+        super.aiStep();
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+        return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
     @Override
@@ -134,13 +84,8 @@ public class WaterGuardian extends Monster {
             this.moveRelative(0.1F, pTravelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-//            if (!this.isMoving() && this.getTarget() == null) {
-//                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
-//            }
         } else {
             super.travel(pTravelVector);
         }
-
     }
-
 }
