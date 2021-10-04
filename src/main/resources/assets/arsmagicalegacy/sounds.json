@@ -1,0 +1,26 @@
+{
+  "entity.water_guardian.ambient": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/water_guardian/ambient"
+    ]
+  },
+  "entity.water_guardian.attack": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/water_guardian/attack"
+    ]
+  },
+  "entity.water_guardian.death": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/water_guardian/death"
+    ]
+  },
+  "entity.water_guardian.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/water_guardian/hurt"
+    ]
+  }
+}
