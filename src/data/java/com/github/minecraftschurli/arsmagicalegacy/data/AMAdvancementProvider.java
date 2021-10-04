@@ -73,10 +73,10 @@ class AMAdvancementProvider extends AdvancementProvider {
      * @param hide     Whether the advancement should be visible before unlocking or not.
      * @param criteria Optional advancement criteria. Should be made through Pair.of("id", criterion);
      */
-    static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, String id, Advancement parent, ItemLike item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
+    static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, ResourceLocation id, Advancement parent, ItemLike item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
         Advancement.Builder builder = Advancement.Builder.advancement()
                 .parent(parent)
-                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation( ArsMagicaAPI.MOD_ID, id + ".title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation( ArsMagicaAPI.MOD_ID, id + ".description"))), null, type, toast, chat, hide);
+                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", id) + ".title"), new TranslatableComponent(Util.makeDescriptionId("advancements", id) + ".description"), null, type, toast, chat, hide);
         for (Pair<String, CriterionTriggerInstance> criterion : criteria) {
             builder.addCriterion(criterion.getFirst(), criterion.getSecond());
         }
@@ -97,10 +97,10 @@ class AMAdvancementProvider extends AdvancementProvider {
      * @param hide     Whether the advancement should be visible before unlocking or not.
      * @param criteria Optional advancement criteria. Should be made through Pair.of("id", criterion);
      */
-    static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, String id, Advancement parent, ItemStack item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
+    static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, ResourceLocation id, Advancement parent, ItemStack item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
         Advancement.Builder builder = Advancement.Builder.advancement()
                 .parent(parent)
-                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, id + ".title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, id + ".description"))), null, type, toast, chat, hide);
+                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", id) + ".title"), new TranslatableComponent(Util.makeDescriptionId("advancements", id) + ".description"), null, type, toast, chat, hide);
         for (Pair<String, CriterionTriggerInstance> criterion : criteria) {
             builder.addCriterion(criterion.getFirst(), criterion.getSecond());
         }
