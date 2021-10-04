@@ -44,7 +44,8 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMContainers.register();
-        AMEntities.init();
+        AMEntities.register();
+        AMSounds.register();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);
