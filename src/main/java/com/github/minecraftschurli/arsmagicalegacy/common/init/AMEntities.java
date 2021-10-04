@@ -24,6 +24,6 @@ public interface AMEntities {
     RegistryObject<EntityType<ManaCreeper>> MANA_CREEPER = ENTITIES.register("mana_creeper", () -> EntityType.Builder.of(ManaCreeper::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("mana_creeper"));
 
     @Internal
-    static void init() {
+    static void register() {
     }
 }
