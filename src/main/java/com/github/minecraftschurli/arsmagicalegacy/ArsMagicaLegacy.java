@@ -87,4 +87,20 @@ public final class ArsMagicaLegacy {
         event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
         event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
+
+    private void createEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
+        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
+        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
+        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
+        event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
+        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
+        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
+        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
+        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
+        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
+        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
+    }
 }
