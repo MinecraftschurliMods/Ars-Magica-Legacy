@@ -9,7 +9,7 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
 
 public interface AMEntities {
-    RegistryObject<EntityType<WaterGuardian>> WATER_GUARDIAN = ENTITIES.register("water_guardian", () -> EntityType.Builder.of(WaterGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("water_guardian"));
+    RegistryObject<EntityType<WaterGuardian>> WATER_GUARDIAN = ENTITIES.register("water_guardian", () -> EntityType.Builder.of(WaterGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(1, 2).build("water_guardian"));
     RegistryObject<EntityType<FireGuardian>> FIRE_GUARDIAN = ENTITIES.register("fire_guardian", () -> EntityType.Builder.of(FireGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("fire_guardian"));
     RegistryObject<EntityType<EarthGuardian>> EARTH_GUARDIAN = ENTITIES.register("earth_guardian", () -> EntityType.Builder.of(EarthGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("earth_guardian"));
     RegistryObject<EntityType<AirGuardian>> AIR_GUARDIAN = ENTITIES.register("air_guardian", () -> EntityType.Builder.of(AirGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("air_guardian"));
