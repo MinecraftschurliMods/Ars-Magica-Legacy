@@ -34,7 +34,7 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
     protected OcculusTabRenderer(IOcculusTab occulusTab) {
         super(occulusTab.getDisplayName());
         this.occulusTab = occulusTab;
-        this.textureHeight = occulusTab.getHeigth();
+        this.textureHeight = occulusTab.getHeight();
         this.textureWidth = occulusTab.getWidth();
     }
 

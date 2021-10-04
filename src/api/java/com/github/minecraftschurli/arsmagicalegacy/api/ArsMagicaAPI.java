@@ -3,19 +3,19 @@ package com.github.minecraftschurli.arsmagicalegacy.api;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 
 public final class ArsMagicaAPI {
@@ -78,13 +78,6 @@ public final class ArsMagicaAPI {
         ItemStack getBookStack();
 
         /**
-         * Get the registry for occulus tabs.
-         *
-         * @return the registry for occulus tabs
-         */
-        IForgeRegistry<IOcculusTab> getOcculusTabRegistry();
-
-        /**
          * Get the registry for skill points.
          *
          * @return the registry for skill points
@@ -106,6 +99,13 @@ public final class ArsMagicaAPI {
         ISkillManager getSkillManager();
 
         /**
+         * Get the {@link IOcculusTabManager} instance.
+         *
+         * @return the {@link IOcculusTabManager} instance
+         */
+        IOcculusTabManager getOcculusTabManager();
+
+        /**
          * Get the {@link IKnowledgeHelper} instance.
          *
          * @return the {@link IKnowledgeHelper} instance
@@ -118,14 +118,6 @@ public final class ArsMagicaAPI {
          * @return the {@link IAffinityHelper} instance
          */
         IAffinityHelper getAffinityHelper();
-
-        /**
-         * Register a renderer for a occulus tab.
-         *
-         * @param tab the tab to register the renderer for
-         * @param factory the factory for the renderer
-         */
-        void registerOcculusTabRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory);
 
         /**
          * Open the occulus gui for the given player.
@@ -150,17 +142,17 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public IForgeRegistry<IOcculusTab> getOcculusTabRegistry() {
-            return null;
-        }
-
-        @Override
         public IForgeRegistry<ISkillPoint> getSkillPointRegistry() {
             return null;
         }
 
         @Override
         public ISkillManager getSkillManager() {
+            return null;
+        }
+
+        @Override
+        public IOcculusTabManager getOcculusTabManager() {
             return null;
         }
 
@@ -176,10 +168,6 @@ public final class ArsMagicaAPI {
         @Override
         public IAffinityHelper getAffinityHelper() {
             return null;
-        }
-
-        @Override
-        public void registerOcculusTabRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory) {
         }
 
         @Override

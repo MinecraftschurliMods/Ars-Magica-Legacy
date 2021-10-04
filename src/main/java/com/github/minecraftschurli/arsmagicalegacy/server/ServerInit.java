@@ -21,17 +21,7 @@ import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = ArsMagicaAPI.MOD_ID)
 public final class ServerInit {
     @SubscribeEvent
-    static void serverAboutToStart(FMLServerAboutToStartEvent event) {
-        MinecraftForge.EVENT_BUS.addListener(SkillManager.instance()::onSync);
-    }
-
-    @SubscribeEvent
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
-    }
-
-    @SubscribeEvent
-    static void registerResourceManagerListener(AddReloadListenerEvent event) {
-        event.addListener(SkillManager.instance());
     }
 }

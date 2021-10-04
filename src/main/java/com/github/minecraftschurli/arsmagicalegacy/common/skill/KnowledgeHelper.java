@@ -5,27 +5,25 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurli.arsmagicalegacy.network.SyncKnowledgePacket;
+import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullSupplier;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.*;
 import java.util.function.Function;
 
 public final class KnowledgeHelper implements IKnowledgeHelper {
     private static final Lazy<KnowledgeHelper> INSTANCE = Lazy.concurrentOf(KnowledgeHelper::new);
+    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(KnowledgeHolder.CODEC, KnowledgeHelper::handleSync);
 
     public static KnowledgeHelper instance() {
         return INSTANCE.get();
@@ -60,31 +58,31 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     @Override
     public void learn(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).learn(skill);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, ISkill skill) {
         getKnowledgeHolder(player).learn(skill);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void forget(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).forget(skill);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void forget(Player player, ISkill skill) {
         getKnowledgeHolder(player).forget(skill);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void forgetAll(Player player) {
         getKnowledgeHolder(player).forgetAll();
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
@@ -105,57 +103,53 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public void addSkillPoint(Player player, ISkillPoint skillPoint) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint);
-        onChanged(player);
+        syncToPlayer(player);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
         var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
-        onChanged(player);
+        syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
         var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
-        onChanged(player);
+        syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint) {
         var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
-        onChanged(player);
+        syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint) {
         var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
-        onChanged(player);
+        syncToPlayer(player);
         return success;
-    }
-
-    private void onChanged(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncKnowledgePacket(getKnowledgeHolder(player)), player);
     }
 
     @Override
@@ -172,33 +166,12 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         return KNOWLEDGE;
     }
 
-    public static class KnowledgeHolderProvider implements ICapabilitySerializable<Tag> {
-        private LazyOptional<KnowledgeHolder> lazy = LazyOptional.of(KnowledgeHelper.KnowledgeHolder::empty);
+    public void syncToPlayer(Player player) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_PACKET.create(getKnowledgeHolder(player)), player);
+    }
 
-        @Nullable
-        @Override
-        public Tag serializeNBT() {
-            return lazy.lazyMap(knowledgeHolder -> KnowledgeHolder.CODEC.encodeStart(NbtOps.INSTANCE, knowledgeHolder).result())
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .orElse(null);
-        }
-
-        @Override
-        public void deserializeNBT(final Tag nbt) {
-            lazy = KnowledgeHolder.CODEC
-                    .decode(NbtOps.INSTANCE, nbt)
-                    .get()
-                    .mapLeft(Pair::getFirst)
-                    .mapLeft(knowledgeHolder -> (NonNullSupplier<KnowledgeHolder>)(() -> knowledgeHolder))
-                    .map(LazyOptional::of, pairPartialResult -> LazyOptional.empty());
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap, @Nullable final Direction side) {
-            return KnowledgeHelper.getCapability().orEmpty(cap, lazy);
-        }
+    private static void handleSync(KnowledgeHolder knowledgeHolder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
     }
 
     public static final class KnowledgeHolder {

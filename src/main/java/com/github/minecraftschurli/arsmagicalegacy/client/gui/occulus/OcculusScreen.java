@@ -3,7 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
-import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
@@ -15,15 +15,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
 public class OcculusScreen extends Screen {
     private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
-
-    private static final Map<ResourceLocation, Function<IOcculusTab, ? extends OcculusTabRenderer>> RENDERERS = new HashMap<>();
     private static final Component TITLE = new TranslatableComponent("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
 
     private final int guiWidth;
@@ -51,14 +44,14 @@ public class OcculusScreen extends Screen {
     protected void init() {
         posX = width / 2 - guiWidth / 2;
         posY = height / 2 - guiHeight / 2;
-        var registry = ArsMagicaAPI.get().getOcculusTabRegistry();
+        var registry = ArsMagicaAPI.get().getOcculusTabManager();
         int tabSize = 22;
-        for (IOcculusTab tab : registry) {
+        for (IOcculusTab tab : registry.getTabs()) {
             int tabIndex = tab.getOcculusIndex();
             addRenderableWidget(new OcculusTabButton(tabIndex, 7 + ((tabIndex % 8) * (tabSize + 2)), -tabSize, tab, pButton -> setActiveTab(tabIndex)));
         }
 
-        maxPage = (int) Math.floor((float) (registry.getValues().size() - 1) / 16F);
+        maxPage = (int) Math.floor((float) (registry.getTabs().size() - 1) / 16F);
         nextPage = new Button(guiWidth + 2, -21, 20, 20, new TextComponent(">"), this::nextPage);
         prevPage = new Button(-15, -21, 20, 20, new TextComponent("<"), this::prevPage);
         nextPage.active = page < maxPage;
@@ -103,17 +96,13 @@ public class OcculusScreen extends Screen {
     }
 
     private void setActiveTab(int tabIndex) {
-        IOcculusTab tab = OcculusTab.TAB_BY_INDEX.get(tabIndex);
-        Optional.ofNullable(RENDERERS.get(tab.getId()))
-                .map(factory -> factory.apply(tab))
-                .ifPresent(occulusTabRenderer -> {
-                    this.removeWidget(this.activeTab);
-                    this.activeTab = occulusTabRenderer;
-                    this.addRenderableWidget(this.activeTab);
-                });
-        if (minecraft != null) {
-            activeTab.init(getMinecraft(), tabWidth, tabHeight);
-            activeTab.initValues(width, height, posX+7, posY+7);
+        IOcculusTab tab = OcculusTabManager.instance().getByIndex(tabIndex);
+        this.removeWidget(this.activeTab);
+        this.activeTab = tab.getRendererFactory().get().create(tab);
+        this.addRenderableWidget(this.activeTab);
+        if (this.minecraft != null) {
+            this.activeTab.init(getMinecraft(), this.tabWidth, this.tabHeight);
+            this.activeTab.initValues(this.width, this.height, this.posX+7, this.posY+7);
         }
     }
 
@@ -137,9 +126,5 @@ public class OcculusScreen extends Screen {
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         activeTab.setDragging(false);
         return super.mouseReleased(pMouseX-posX, pMouseY-posY, pButton);
-    }
-
-    public static void registerRenderer(IOcculusTab tab, Function<IOcculusTab, ? extends OcculusTabRenderer> factory) {
-        RENDERERS.put(tab.getId(), factory);
     }
 }

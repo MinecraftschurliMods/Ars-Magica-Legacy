@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Interface representing a skill manager
+ * Interface representing a skill manager.
  */
 public interface ISkillManager {
 

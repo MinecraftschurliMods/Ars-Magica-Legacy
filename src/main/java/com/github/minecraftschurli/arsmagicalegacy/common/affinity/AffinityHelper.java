@@ -1,31 +1,31 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.affinity;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import com.mojang.datafixers.util.Pair;
+import com.github.minecraftschurli.codeclib.CodecHelper;
+import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullSupplier;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.*;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
+    private static final CodecPacket.CodecPacketFactory<AffinityHolder> SYNC_PACKET = CodecPacket.create(AffinityHolder.CODEC, AffinityHelper::handleSync);
 
     public static AffinityHelper instance() {
         return INSTANCE.get();
@@ -83,46 +83,25 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public double getAffinityDepth(final Player player, final IAffinity affinity) {
-        return 0;
+    public double getAffinityDepth(Player player, IAffinity affinity) {
+        return getAffinityDepth(player, affinity.getId());
     }
 
     public static Capability<AffinityHolder> getCapability() {
         return AFFINITY;
     }
 
-    public static class AffinityHolderProvider implements ICapabilitySerializable<Tag> {
-        private LazyOptional<AffinityHolder> lazy = LazyOptional.of(AffinityHelper.AffinityHolder::empty);
+    public void syncToPlayer(Player player) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_PACKET.create(getAffinityHolder(player)), player);
+    }
 
-        @Nullable
-        @Override
-        public Tag serializeNBT() {
-            return lazy.lazyMap(affinityHolder -> AffinityHolder.CODEC.encodeStart(NbtOps.INSTANCE, affinityHolder).result())
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .orElse(null);
-        }
-
-        @Override
-        public void deserializeNBT(final Tag nbt) {
-            lazy = AffinityHolder.CODEC
-                    .decode(NbtOps.INSTANCE, nbt)
-                    .get()
-                    .mapLeft(Pair::getFirst)
-                    .mapLeft(affinityHolder -> (NonNullSupplier<AffinityHolder>)(() -> affinityHolder))
-                    .map(LazyOptional::of, pairPartialResult -> LazyOptional.empty());
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-            return AffinityHelper.getCapability().orEmpty(cap, lazy);
-        }
+    private static void handleSync(AffinityHolder affinityHolder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
     }
 
     public record AffinityHolder(Map<ResourceLocation, Double> depths) {
         public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.compoundList(ResourceLocation.CODEC, Codec.DOUBLE).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("depths").forGetter(AffinityHolder::depths)
+                CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths)
         ).apply(inst, AffinityHolder::new));
 
         public static AffinityHolder empty() {

@@ -44,9 +44,6 @@ public interface AMRegistries {
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES, ArsMagicaAPI.MOD_ID);
 
-    DeferredRegister<IOcculusTab>         OCCULUS_TABS         = DeferredRegister.create(IOcculusTab.class, ArsMagicaAPI.MOD_ID);
-    Supplier<IForgeRegistry<IOcculusTab>> OCCULUS_TAB_REGISTRY = OCCULUS_TABS.makeRegistry("occulus_tab", () -> new RegistryBuilder<IOcculusTab>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
-
     DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class, ArsMagicaAPI.MOD_ID);
     Supplier<IForgeRegistry<ISkillPoint>> SKILL_POINT_REGISTRY = SKILL_POINTS.makeRegistry("skill_point", () -> new RegistryBuilder<ISkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
 
@@ -62,7 +59,6 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMContainers.register();
-        AMOcculusTabs.register();
         AMSkillPoints.register();
         AMAffinities.register();
         BLOCKS.register(bus);
@@ -78,7 +74,6 @@ public interface AMRegistries {
         CONTAINERS.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
-        OCCULUS_TABS.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
     }

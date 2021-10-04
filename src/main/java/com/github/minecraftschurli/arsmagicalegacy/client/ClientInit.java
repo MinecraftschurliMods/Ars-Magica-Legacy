@@ -2,9 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMOcculusTabs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
@@ -26,12 +23,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public final class ClientInit {
     @SubscribeEvent
     static void clientSetup(FMLClientSetupEvent event) {
-        var api = ArsMagicaAPI.get();
-        api.registerOcculusTabRenderer(AMOcculusTabs.OFFENSE.get(),  OcculusSkillTreeTabRenderer::new);
-        api.registerOcculusTabRenderer(AMOcculusTabs.DEFENSE.get(),  OcculusSkillTreeTabRenderer::new);
-        api.registerOcculusTabRenderer(AMOcculusTabs.UTILITY.get(),  OcculusSkillTreeTabRenderer::new);
-        api.registerOcculusTabRenderer(AMOcculusTabs.AFFINITY.get(), OcculusAffinityTabRenderer::new);
-        api.registerOcculusTabRenderer(AMOcculusTabs.TALENT.get(),   OcculusSkillTreeTabRenderer::new);
         MenuScreens.register(AMContainers.RUNE_BAG.get(), RuneBagScreen::new);
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());

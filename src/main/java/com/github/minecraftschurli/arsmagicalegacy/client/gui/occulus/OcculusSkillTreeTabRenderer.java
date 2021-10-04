@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     public static final String MISSING_REQUIREMENTS_KEY = "message.%s.occulus.missingRequirements".formatted(ArsMagicaAPI.MOD_ID);
     public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(MISSING_REQUIREMENTS_KEY).withStyle(ChatFormatting.DARK_RED);

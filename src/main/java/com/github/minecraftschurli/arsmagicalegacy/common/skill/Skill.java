@@ -1,10 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,7 @@ public final class Skill implements ISkill {
     public static final Codec<ISkill> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(ISkill::getId),
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList()).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
@@ -30,7 +30,7 @@ public final class Skill implements ISkill {
     @Internal
     public static final Codec<ISkill> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList()).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
@@ -62,80 +62,47 @@ public final class Skill implements ISkill {
         setId(id);
     }
 
-    Skill setId(ResourceLocation id) {
+    void setId(ResourceLocation id) {
         this.id = id;
-        return this;
     }
 
     @Override
     public ResourceLocation getId() {
-        return id();
+        return id;
     }
 
     @Override
     public ResourceLocation getOcculusTab() {
-        return occulusTab();
+        return occulusTab;
     }
 
     @Override
     public ResourceLocation getIcon() {
-        return icon();
+        return icon;
     }
 
     @Override
     public Set<ResourceLocation> getParents() {
-        return Collections.unmodifiableSet(parents());
+        return Collections.unmodifiableSet(parents);
     }
 
     @Override
     public int getX() {
-        return x();
+        return x;
     }
 
     @Override
     public int getY() {
-        return y();
+        return y;
     }
 
     @Override
     public Map<ResourceLocation, Integer> getCost() {
-        return Collections.unmodifiableMap(cost());
+        return Collections.unmodifiableMap(cost);
     }
 
     @Override
     public boolean isHidden() {
-        return hidden();
-    }
-
-    public ResourceLocation id() {
-        return id;
-    }
-
-    public ResourceLocation occulusTab() {
-        return occulusTab;
-    }
-
-    public ResourceLocation icon() {
-        return icon;
-    }
-
-    public Set<ResourceLocation> parents() {
-        return parents;
-    }
-
-    public int x() {
-        return x;
-    }
-
-    public int y() {
-        return y;
-    }
-
-    public Map<ResourceLocation, Integer> cost() {
-        return cost;
-    }
-
-    public boolean hidden() {
         return hidden;
     }
 

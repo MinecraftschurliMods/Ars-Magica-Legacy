@@ -24,9 +24,10 @@ public final class Config {
     private static boolean init;
 
     @Internal
-    static synchronized void init(final ModLoadingContext context) {
+    static synchronized void init() {
         if (init) return;
         init = true;
+        var context = ModLoadingContext.get();
         context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
         context.registerConfig(ModConfig.Type.SERVER, serverSpec);
     }
