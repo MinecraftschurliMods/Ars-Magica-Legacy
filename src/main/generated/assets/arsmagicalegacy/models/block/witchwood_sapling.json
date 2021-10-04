@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "arsmagicalegacy:block/witchwood_sapling"
+  }
+}

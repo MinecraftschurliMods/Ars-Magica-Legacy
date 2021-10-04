@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:topaz_block"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:topaz",
+    "count": 9
+  }
+}

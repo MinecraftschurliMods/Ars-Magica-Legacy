@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "arcane_compendium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "patchouli:guide_book"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "arcane_compendium"
+    ]
+  ]
+}

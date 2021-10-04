@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "arsmagicalegacy:block/wizards_chalk_15"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "patchouli:guide_book",
+      "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
+    },
+    "title": {
+      "translate": "advancements.arsmagicalegacy.root.title"
+    },
+    "description": {
+      "translate": "advancements.arsmagicalegacy.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "arsmagicalegacy:textures/gui/advancements/backgrounds/arsmagicalegacy.png"
+  },
+  "criteria": {
+    "arcane_compendium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "patchouli:guide_book"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "arcane_compendium"
+    ]
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:chimerite_block"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:chimerite",
+    "count": 9
+  }
+}

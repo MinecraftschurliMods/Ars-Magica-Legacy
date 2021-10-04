@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:vinteum_torch"
+    ]
+  },
+  "criteria": {
+    "has_vinteum_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:vinteum_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:vinteum_torch"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vinteum_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

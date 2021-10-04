@@ -1,0 +1,38 @@
+package com.github.minecraftschurli.arsmagicalegacy.client.gui;
+
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagMenu;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Mostly taken from McJty's tutorials and the Botania mod.
+ * {@see https://github.com/McJty/YouTubeModding14/blob/1.17/src/main/java/com/mcjty/mytutorial/blocks/FirstBlockScreen.java}
+ * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/client/gui/bag/GuiFlowerBag.java}
+ */
+public class RuneBagScreen extends AbstractContainerScreen<RuneBagMenu> {
+    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/rune_bag.png");
+
+    public RuneBagScreen(RuneBagMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+        super(pMenu, pPlayerInventory, pTitle);
+        inventoryLabelY = inventoryLabelY - 16;
+    }
+
+    @Override
+    public void render(@NotNull PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(pMatrixStack);
+        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+        renderTooltip(pMatrixStack, pMouseX, pMouseY);
+    }
+
+    @Override
+    protected void renderBg(@NotNull PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+        RenderSystem.setShaderTexture(0, GUI);
+        blit(pPoseStack, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight);
+    }
+}
