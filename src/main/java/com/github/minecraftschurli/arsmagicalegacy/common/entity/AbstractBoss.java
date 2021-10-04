@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -101,15 +100,6 @@ public abstract class AbstractBoss extends Monster {
             return false;
         }
         return super.hurt(pSource, pAmount);
-    }
-
-    @Override
-    public void kill() {
-        remove(Entity.RemovalReason.KILLED);
-        bossEvent.setProgress(0);
-        bossEvent.setVisible(false);
-        bossEvent.removeAllPlayers();
-        updatePlayers();
     }
 
     protected SoundEvent getAttackSound() {
