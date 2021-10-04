@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -40,22 +41,22 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return null;
+        return AMSounds.WATER_GUARDIAN_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return null;
+        return AMSounds.WATER_GUARDIAN_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return null;
+        return AMSounds.WATER_GUARDIAN_DEATH.get();
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return null;
+        return AMSounds.WATER_GUARDIAN_ATTACK.get();
     }
 
     @Override
