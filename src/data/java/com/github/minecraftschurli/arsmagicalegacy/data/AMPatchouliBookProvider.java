@@ -7,7 +7,6 @@ import com.github.minecraftschurli.patchouli_datagen.PatchouliBookProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.LanguageProvider;
 
 import java.util.function.Consumer;
@@ -23,7 +22,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
     @Override
     protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
         createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setSubtitle("1st Edition").setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(ArsMagicaAPI.get().getItemGroup().getRecipeFolderName()).setUseResourcepack()
-//                .addCategory("test", "TestCategory", "This is a test", new ItemStack(Items.BARRIER)).addEntry("test", "TestEntry", new ItemStack(Items.GLOW_BERRIES)).addSimpleTextPage("Lorem ipsum dolor sit").build().build()
                 .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) //TODO: magitech goggles here instead
                 .setSortnum(0).build()
                 .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) //TODO: crystal wrench here instead
