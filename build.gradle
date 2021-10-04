@@ -15,7 +15,7 @@ buildscript {
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         classpath group: 'org.parchmentmc', name: 'librarian', version: "${project.librarian_version}"
-        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}"
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: "${project.mixingradle_version}"
     }
 }
 
