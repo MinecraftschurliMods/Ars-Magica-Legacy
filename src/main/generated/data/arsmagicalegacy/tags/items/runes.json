@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "#arsmagicalegacy:runes/colorless",
+    "#arsmagicalegacy:runes/black",
+    "#arsmagicalegacy:runes/blue",
+    "#arsmagicalegacy:runes/brown",
+    "#arsmagicalegacy:runes/cyan",
+    "#arsmagicalegacy:runes/gray",
+    "#arsmagicalegacy:runes/green",
+    "#arsmagicalegacy:runes/light_blue",
+    "#arsmagicalegacy:runes/light_gray",
+    "#arsmagicalegacy:runes/lime",
+    "#arsmagicalegacy:runes/magenta",
+    "#arsmagicalegacy:runes/orange",
+    "#arsmagicalegacy:runes/pink",
+    "#arsmagicalegacy:runes/purple",
+    "#arsmagicalegacy:runes/red",
+    "#arsmagicalegacy:runes/white",
+    "#arsmagicalegacy:runes/yellow"
+  ]
+}
