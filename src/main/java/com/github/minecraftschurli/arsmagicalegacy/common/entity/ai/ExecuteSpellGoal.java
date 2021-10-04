@@ -1,17 +1,11 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity.ai;
 
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
 
-public class ExecuteSpellGoal extends Goal {
-    private final Mob guardian;
+public class ExecuteSpellGoal {
+    private WaterGuardian guardian;
 
-    public ExecuteSpellGoal(Mob guardian) {
+    public ExecuteSpellGoal(WaterGuardian guardian) {
         this.guardian = guardian;
-    }
-
-    @Override
-    public boolean canUse() {
-        return false;
     }
 }

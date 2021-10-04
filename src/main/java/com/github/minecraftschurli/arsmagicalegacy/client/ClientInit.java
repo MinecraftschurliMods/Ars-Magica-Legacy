@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,6 +49,7 @@ public final class ClientInit {
     @SubscribeEvent
     static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), CreeperRenderer::new);
     }
 
 //    @SubscribeEvent
