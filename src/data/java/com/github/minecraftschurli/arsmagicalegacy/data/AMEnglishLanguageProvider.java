@@ -24,7 +24,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
 
     @Override
     protected void addTranslations() {
-        creativeTabTranslation(AMItems.GROUP, ArsMagicaLegacy.getModName());
+        creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
@@ -152,8 +152,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param description The advancement description.
      */
     private void advancementTranslation(ResourceLocation advancement, String title, String description) {
-        add(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, advancement + ".title")), title);
-        add(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, advancement + ".description")), description);
+        add(Util.makeDescriptionId("advancement", advancement) + ".title", title);
+        add(Util.makeDescriptionId("advancement", advancement) + ".description", description);
     }
 
     /**

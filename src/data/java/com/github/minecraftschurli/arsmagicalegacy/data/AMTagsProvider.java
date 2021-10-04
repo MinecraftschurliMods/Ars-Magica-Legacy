@@ -56,10 +56,11 @@ class AMTagsProvider {
             tag(BlockTags.WOODEN_BUTTONS).add(AMBlocks.WITCHWOOD_BUTTON.get());
             tag(BlockTags.WOODEN_PRESSURE_PLATES).add(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get()).add(AMBlocks.CERUBLOSSOM.get()).add(AMBlocks.DESERT_NOVA.get()).add(AMBlocks.TARMA_ROOT.get()).add(AMBlocks.WAKEBLOOM.get());
-            tag(BlockTags.MINEABLE_WITH_PICKAXE);
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get());
             tag(BlockTags.MINEABLE_WITH_SHOVEL);
             tag(BlockTags.MINEABLE_WITH_AXE);
             tag(BlockTags.MINEABLE_WITH_HOE);
+            tag(BlockTags.NEEDS_STONE_TOOL).add(AMBlocks.OCCULUS.get());
         }
     }
 

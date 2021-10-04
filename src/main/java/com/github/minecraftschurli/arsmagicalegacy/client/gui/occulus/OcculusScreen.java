@@ -61,8 +61,7 @@ public class OcculusScreen extends Screen {
 
         addRenderableWidget(activeTab);
         addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), guiWidth, guiHeight);
-        activeTab.init(getMinecraft(), tabWidth, tabHeight);
-        activeTab.initValues(width, height, posX+7, posY+7);
+        activeTab.init(tabWidth, tabHeight, width, height, posX+7, posY+7);
     }
 
     private void prevPage(Button button) {
@@ -101,8 +100,7 @@ public class OcculusScreen extends Screen {
         this.activeTab = tab.getRendererFactory().get().create(tab);
         this.addRenderableWidget(this.activeTab);
         if (this.minecraft != null) {
-            this.activeTab.init(getMinecraft(), this.tabWidth, this.tabHeight);
-            this.activeTab.initValues(this.width, this.height, this.posX+7, this.posY+7);
+            this.activeTab.init(this.tabWidth, this.tabHeight, this.width, this.height, this.posX+7, this.posY+7);
         }
     }
 

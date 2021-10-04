@@ -19,6 +19,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void init() {
-        super.init();
         if (offsetX == 0) offsetX = textureWidth / 2f - width / 2f;
     }
 
@@ -71,20 +71,20 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     }
 
     @Override
-    protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         Player player = getMinecraft().player;
         if (player == null) return;
         ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
         IKnowledgeHelper knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
-        pMatrixStack.pushPose();
-        pMatrixStack.scale(scale, scale, 0);
-        pMatrixStack.translate(-offsetX, -offsetY, 0);
-        pMouseX += offsetX;
-        pMouseY += offsetY;
-        pMouseX *= scale;
-        pMouseY *= scale;
+        stack.pushPose();
+        stack.scale(scale, scale, 0);
+        stack.translate(-offsetX, -offsetY, 0);
+        mouseX += offsetX;
+        mouseY += offsetY;
+        mouseX *= scale;
+        mouseY *= scale;
         boolean isHoveringSkill = false;
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
@@ -107,10 +107,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                     color = ColorUtil.BLACK;
                 }
                 if (cX != parentCX) {
-                    RenderUtil.lineThick2d(pMatrixStack, parentCX, cY, cX, cY, getBlitOffset(), color);
+                    RenderUtil.lineThick2d(stack, parentCX, cY, cX, cY, getBlitOffset(), color);
                 }
                 if (cY != parentCY) {
-                    RenderUtil.lineThick2d(pMatrixStack, parentCX, parentCY, parentCX, cY, getBlitOffset(), color);
+                    RenderUtil.lineThick2d(stack, parentCX, parentCY, parentCX, cY, getBlitOffset(), color);
                 }
             }
         }
@@ -129,13 +129,13 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             setBlitOffset(16);
             RenderSystem.setShaderTexture(0, skill.getIcon());
             RenderSystem.enableBlend();
-            RenderUtil.drawBox(pMatrixStack, skill.getX(), skill.getY(), SKILL_SIZE, SKILL_SIZE, getBlitOffset(), 0, 0, 1, 1);
+            RenderUtil.drawBox(stack, skill.getX(), skill.getY(), SKILL_SIZE, SKILL_SIZE, getBlitOffset(), 0, 0, 1, 1);
             RenderSystem.disableBlend();
             RenderSystem.setShaderFogColor(1, 1, 1);
         }
         RenderSystem.disableScissor();
         for (ISkill skill : skills) {
-            if (pMouseX >= skill.getX() && pMouseX <= skill.getX() + SKILL_SIZE && pMouseY >= skill.getY() && pMouseY <= skill.getY() + SKILL_SIZE) {
+            if (mouseX >= skill.getX() && mouseX <= skill.getX() + SKILL_SIZE && mouseY >= skill.getY() && mouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
                 list.add(skill.getDisplayName().copy().withStyle(style -> style.withColor(getColorForSkill(skill))));
                 if (knowledgeHelper.canLearn(player, skill) || knowledgeHelper.knows(player, skill)) {
@@ -143,7 +143,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 } else {
                     list.add(MISSING_REQUIREMENTS);
                 }
-                renderComponentTooltip(pMatrixStack, list, pMouseX, pMouseY);
+                GuiUtils.drawHoveringText(stack, list, mouseX, mouseY, screenWidth, screenHeight, -1, getFont());
                 hoverItem = skill;
                 isHoveringSkill = true;
             }
@@ -151,7 +151,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         if (!isHoveringSkill) {
             hoverItem = null;
         }
-        pMatrixStack.popPose();
+        stack.popPose();
     }
 
     @Override

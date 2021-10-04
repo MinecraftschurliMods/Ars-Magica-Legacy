@@ -2,11 +2,15 @@ package com.github.minecraftschurli.arsmagicalegacy.api.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,12 +21,14 @@ import java.util.List;
  * <p>To register a tab renderer you need to call <br>
  * {@code ArsMagicaAPI.get().registerOcculusTabRenderer(<registered occulus tab>, (occulusTab, player) -> <create your tab renderer>)}</p>
  */
-public abstract class OcculusTabRenderer extends Screen implements NarratableEntry {
+public abstract class OcculusTabRenderer extends AbstractContainerEventHandler implements Widget, NarratableEntry {
     protected final IOcculusTab occulusTab;
     protected final int textureHeight;
     protected final int textureWidth;
     protected int screenWidth;
     protected int screenHeight;
+    protected int width;
+    protected int height;
     protected int posX;
     protected int posY;
 
@@ -32,7 +38,6 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      * @param occulusTab the occulus tab of this renderer
      */
     protected OcculusTabRenderer(IOcculusTab occulusTab) {
-        super(occulusTab.getDisplayName());
         this.occulusTab = occulusTab;
         this.textureHeight = occulusTab.getHeight();
         this.textureWidth = occulusTab.getWidth();
@@ -58,12 +63,20 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
      * Never call this method yourself it is used to initialize the values from the parent gui.
      */
     @Internal
-    public final void initValues(int screenWidth, int screenHeight, int posX, int posY) {
+    public final void init(int tabWidth, int tabHeight, int screenWidth, int screenHeight, int posX, int posY) {
+        this.width = tabWidth;
+        this.height = tabHeight;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.posX = posX;
         this.posY = posY;
+        init();
     }
+
+    /**
+     * Override to do your own initialisation.
+     */
+    protected void init() {}
 
     /**
      * Render your background in this method.
@@ -85,12 +98,49 @@ public abstract class OcculusTabRenderer extends Screen implements NarratableEnt
     }
 
     /**
+     * Get the current player.
+     *
+     * @return the current player
+     */
+    protected Player getPlayer() {
+        return getMinecraft().player;
+    }
+
+    /**
+     * Get the current font.
+     *
+     * @return the current font
+     */
+    protected Font getFont() {
+        return getMinecraft().font;
+    }
+
+    /**
+     * Get the minecraft instance.
+     *
+     * @return the minecraft instance
+     */
+    protected Minecraft getMinecraft() {
+        return Minecraft.getInstance();
+    }
+
+    /**
+     * Get the current item renderer.
+     *
+     * @return the current item renderer
+     */
+    protected ItemRenderer getItemRenderer() {
+        return Minecraft.getInstance().getItemRenderer();
+    }
+
+    @Override
+    public List<? extends GuiEventListener> children() {
+        return List.of();
+    }
+
+    /**
      * Override this method if you want to provide narrations.
      */
     @Override
     public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
-
-    public void renderComponentToolTip(PoseStack stack, List<? extends net.minecraft.network.chat.FormattedText> tooltips, int mouseX, int mouseY, Font font) {
-        GuiUtils.drawHoveringText(stack, tooltips, mouseX, mouseY, screenWidth, screenHeight, -1, font);
-    }
 }
