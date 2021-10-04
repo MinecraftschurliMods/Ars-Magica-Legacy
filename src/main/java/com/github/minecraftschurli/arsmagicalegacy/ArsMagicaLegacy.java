@@ -60,6 +60,9 @@ public final class ArsMagicaLegacy {
         SkillManager.instance();
     }
 
+    /**
+     * @return the mod name
+     */
     public static String getModName() {
         return ModLoadingContext.get().getActiveContainer().getModInfo().getDisplayName();
     }
