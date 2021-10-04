@@ -40,7 +40,7 @@ public class RuneBagItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
         if (pLevel.isClientSide) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         if (pPlayer instanceof ServerPlayer sp)
-            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagContainer(id, inv, player.getItemInHand(pUsedHand)), TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
+            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 
@@ -48,7 +48,7 @@ public class RuneBagItem extends Item {
         private final LazyOptional<IItemHandler> lazy;
 
         public InvProvider(ItemStack stack) {
-            this.lazy = LazyOptional.of(() -> new InvWrapper(new RuneBagInventory(stack)));
+            this.lazy = LazyOptional.of(() -> new InvWrapper(new RuneBagContainer(stack)));
         }
 
         @NotNull

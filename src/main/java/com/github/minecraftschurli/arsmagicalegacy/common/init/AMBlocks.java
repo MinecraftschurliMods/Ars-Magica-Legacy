@@ -31,6 +31,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.BLOCKS;
@@ -84,5 +85,6 @@ public interface AMBlocks {
     /**
      * Empty method that is required for classloading
      */
-    static void init() {}
+    @Internal
+    static void register() {}
 }

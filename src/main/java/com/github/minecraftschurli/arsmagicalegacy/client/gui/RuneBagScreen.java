@@ -1,7 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagContainer;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -15,10 +15,10 @@ import org.jetbrains.annotations.NotNull;
  * {@see https://github.com/McJty/YouTubeModding14/blob/1.17/src/main/java/com/mcjty/mytutorial/blocks/FirstBlockScreen.java}
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/client/gui/bag/GuiFlowerBag.java}
  */
-public class RuneBagScreen extends AbstractContainerScreen<RuneBagContainer> {
+public class RuneBagScreen extends AbstractContainerScreen<RuneBagMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/rune_bag.png");
 
-    public RuneBagScreen(RuneBagContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public RuneBagScreen(RuneBagMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         inventoryLabelY = inventoryLabelY - 16;
     }

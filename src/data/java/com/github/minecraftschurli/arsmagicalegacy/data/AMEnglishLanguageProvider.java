@@ -4,13 +4,16 @@ import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -83,8 +86,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
-        blockTranslation(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
-        advancementTranslation("root", ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+        addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
     }
 
     /**
@@ -92,18 +95,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param block The block to generate the translation for.
      */
-    private void blockIdTranslation(Supplier<? extends Block> block) {
-        addBlock(block, idToTranslation(block.get().getRegistryName().getPath()));
-    }
-
-    /**
-     * Adds a block translation.
-     *
-     * @param block       The block to generate the translation for.
-     * @param translation The translation to apply.
-     */
-    private void blockTranslation(Supplier<? extends Block> block, String translation) {
-        addBlock(block, translation);
+    private void blockIdTranslation(RegistryObject<? extends Block> block) {
+        addBlock(block, idToTranslation(block.getId().getPath()));
     }
 
     /**
@@ -111,18 +104,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param item The item to generate the translation for.
      */
-    private void itemIdTranslation(Supplier<? extends Item> item) {
-        addItem(item, idToTranslation(item.get().getRegistryName().getPath()));
-    }
-
-    /**
-     * Adds an item translation.
-     *
-     * @param item        The item to generate the translation for.
-     * @param translation The translation to apply.
-     */
-    private void itemTranslation(Supplier<? extends Item> item, String translation) {
-        addItem(item, translation);
+    private void itemIdTranslation(RegistryObject<? extends Item> item) {
+        addItem(item, idToTranslation(item.getId().getPath()));
     }
 
     /**
@@ -130,8 +113,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param effect The effect to generate the translation for.
      */
-    private void effectIdTranslation(Supplier<? extends MobEffect> effect) {
-        addEffect(effect, effect.get().getRegistryName().getPath());
+    private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
+        addEffect(effect, idToTranslation(effect.getId().getPath()));
     }
 
     /**
@@ -139,8 +122,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param enchantment The enchantment to generate the translation for.
      */
-    private void enchantmentIdTranslation(Supplier<? extends Enchantment> enchantment) {
-        addEnchantment(enchantment, enchantment.get().getRegistryName().getPath());
+    private void enchantmentIdTranslation(RegistryObject<? extends Enchantment> enchantment) {
+        addEnchantment(enchantment, idToTranslation(enchantment.getId().getPath()));
     }
 
     /**
@@ -148,8 +131,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param entity The entity to generate the translation for.
      */
-    private void entityIdTranslation(Supplier<? extends EntityType<?>> entity) {
-        addEntityType(entity, entity.get().getRegistryName().getPath());
+    private void entityIdTranslation(RegistryObject<? extends EntityType<?>> entity) {
+        addEntityType(entity, idToTranslation(entity.getId().getPath()));
     }
 
     /**
@@ -168,19 +151,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param title       The advancement title.
      * @param description The advancement description.
      */
-    private void advancementTranslation(String advancement, String title, String description) {
-        add("advancements." + ArsMagicaAPI.MOD_ID + "." + advancement + ".title", title);
-        add("advancements." + ArsMagicaAPI.MOD_ID + "." + advancement + ".description", description);
-    }
-
-    /**
-     * Adds a translation.
-     *
-     * @param key         The translation key to use.
-     * @param translation The translation to apply.
-     */
-    private void translate(String key, String translation) {
-        add(key, translation);
+    private void advancementTranslation(ResourceLocation advancement, String title, String description) {
+        add(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, advancement + ".title")), title);
+        add(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, advancement + ".description")), description);
     }
 
     /**

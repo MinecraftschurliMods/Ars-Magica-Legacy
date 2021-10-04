@@ -55,7 +55,8 @@ class AMAdvancementProvider extends AdvancementProvider {
                 }
             }
         };
-        for (Consumer<Consumer<Advancement>> c : ImmutableList.of(new AMAdvancements(), new AMBookAdvancements())) c.accept(consumer);
+        for (Consumer<Consumer<Advancement>> c : ImmutableList.of(new AMAdvancements(), new AMBookAdvancements()))
+            c.accept(consumer);
     }
 
     /**
@@ -73,9 +74,12 @@ class AMAdvancementProvider extends AdvancementProvider {
      * @param criteria Optional advancement criteria. Should be made through Pair.of("id", criterion);
      */
     static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, String id, Advancement parent, ItemLike item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
-        Advancement.Builder builder = Advancement.Builder.advancement().parent(parent).display(item, new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + id + ".title"), new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + id + ".description"), null, type, toast, chat, hide);
-        for (Pair<String, CriterionTriggerInstance> criterion : criteria)
+        Advancement.Builder builder = Advancement.Builder.advancement()
+                .parent(parent)
+                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation( ArsMagicaAPI.MOD_ID, id + ".title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation( ArsMagicaAPI.MOD_ID, id + ".description"))), null, type, toast, chat, hide);
+        for (Pair<String, CriterionTriggerInstance> criterion : criteria) {
             builder.addCriterion(criterion.getFirst(), criterion.getSecond());
+        }
         return builder.save(consumer, ArsMagicaAPI.MOD_ID + ":" + folder + "/" + id);
     }
 
@@ -94,9 +98,12 @@ class AMAdvancementProvider extends AdvancementProvider {
      * @param criteria Optional advancement criteria. Should be made through Pair.of("id", criterion);
      */
     static Advancement addAdvancement(Consumer<Advancement> consumer, String folder, String id, Advancement parent, ItemStack item, FrameType type, boolean toast, boolean chat, boolean hide, Pair<String, CriterionTriggerInstance>... criteria) {
-        Advancement.Builder builder = Advancement.Builder.advancement().parent(parent).display(item, new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + id + ".title"), new TranslatableComponent("advancements." + ArsMagicaAPI.MOD_ID + "." + id + ".description"), null, type, toast, chat, hide);
-        for (Pair<String, CriterionTriggerInstance> criterion : criteria)
+        Advancement.Builder builder = Advancement.Builder.advancement()
+                .parent(parent)
+                .display(item, new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, id + ".title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, id + ".description"))), null, type, toast, chat, hide);
+        for (Pair<String, CriterionTriggerInstance> criterion : criteria) {
             builder.addCriterion(criterion.getFirst(), criterion.getSecond());
+        }
         return builder.save(consumer, ArsMagicaAPI.MOD_ID + ":" + folder + "/" + id);
     }
 
@@ -106,7 +113,10 @@ class AMAdvancementProvider extends AdvancementProvider {
     private static final class AMAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
-            Advancement root = Advancement.Builder.advancement().display(ArsMagicaAPI.get().getBookStack(), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/description"))), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/advancements/backgrounds/arsmagicalegacy.png"), FrameType.TASK, false, false, false).addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":root");
+            Advancement root = Advancement.Builder.advancement()
+                    .display(ArsMagicaAPI.get().getBookStack(), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/title"))), new TranslatableComponent(Util.makeDescriptionId("advancements", new ResourceLocation(ArsMagicaAPI.MOD_ID, "root/description"))), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/advancements/backgrounds/arsmagicalegacy.png"), FrameType.TASK, false, false, false)
+                    .addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem()))
+                    .save(consumer, ArsMagicaAPI.MOD_ID + ":root");
         }
     }
 
@@ -116,7 +126,9 @@ class AMAdvancementProvider extends AdvancementProvider {
     private static final class AMBookAdvancements implements Consumer<Consumer<Advancement>> {
         @Override
         public void accept(Consumer<Advancement> consumer) {
-            Advancement root = Advancement.Builder.advancement().addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem())).save(consumer, ArsMagicaAPI.MOD_ID + ":book/root");
+            Advancement root = Advancement.Builder.advancement()
+                    .addCriterion("arcane_compendium", InventoryChangeTrigger.TriggerInstance.hasItems(ArsMagicaAPI.get().getBookStack().getItem()))
+                    .save(consumer, ArsMagicaAPI.MOD_ID + ":book/root");
         }
     }
 }

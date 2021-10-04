@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,7 +97,8 @@ public interface AMItems {
     /**
      * Empty method that is required for classloading
      */
-    static void init() {}
+    @Internal
+    static void register() {}
 
     /**
      * Initializes the spawn eggs
