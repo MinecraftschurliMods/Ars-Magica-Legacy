@@ -2,6 +2,9 @@ package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
@@ -10,6 +13,7 @@ import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -47,6 +51,11 @@ public final class ArsMagicaLegacy {
 
     public static String getModName() {
         return ModLoadingContext.get().getActiveContainer().getModInfo().getDisplayName();
+    }
+
+    private void createEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
 
     private void registerNetworkPackets() {
