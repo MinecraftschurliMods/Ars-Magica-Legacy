@@ -2,12 +2,12 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.AMSpawnEggItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;

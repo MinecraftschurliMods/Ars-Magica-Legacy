@@ -5,7 +5,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;

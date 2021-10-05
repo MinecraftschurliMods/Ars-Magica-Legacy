@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.compat.jei;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.MethodsReturnNonnullByDefault;

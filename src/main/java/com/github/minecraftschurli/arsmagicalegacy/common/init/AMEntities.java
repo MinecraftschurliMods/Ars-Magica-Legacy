@@ -1,6 +1,18 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.*;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -23,7 +35,9 @@ public interface AMEntities {
     RegistryObject<EntityType<Mage>> MAGE = ENTITIES.register("mage", () -> EntityType.Builder.of(Mage::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("mage"));
     RegistryObject<EntityType<ManaCreeper>> MANA_CREEPER = ENTITIES.register("mana_creeper", () -> EntityType.Builder.of(ManaCreeper::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("mana_creeper"));
 
+    /**
+     * Empty method that is required for classloading
+     */
     @Internal
-    static void register() {
-    }
+    static void register() {}
 }

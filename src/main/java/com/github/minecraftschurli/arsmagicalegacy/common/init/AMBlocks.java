@@ -1,10 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.LevelReader;
@@ -33,8 +33,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
-import net.minecraftforge.fmllegacy.RegistryObject;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.BLOCKS;
 
