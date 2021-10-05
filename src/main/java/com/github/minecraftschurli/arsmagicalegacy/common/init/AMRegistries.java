@@ -58,7 +58,7 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMContainers.register();
-        AMEntities.init();
+        AMEntities.register();
         AMSkillPoints.register();
         AMAffinities.register();
         BLOCKS.register(bus);
