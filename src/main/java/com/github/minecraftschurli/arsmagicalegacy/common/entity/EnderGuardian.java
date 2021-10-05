@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,22 +34,22 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return null;
+        return AMSounds.ENDER_GUARDIAN_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return null;
+        return AMSounds.ENDER_GUARDIAN_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return null;
+        return AMSounds.ENDER_GUARDIAN_DEATH.get();
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return null;
+        return AMSounds.ENDER_GUARDIAN_ATTACK.get();
     }
 
     @Override
