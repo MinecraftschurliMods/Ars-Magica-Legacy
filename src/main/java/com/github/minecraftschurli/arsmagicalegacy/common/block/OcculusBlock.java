@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,8 +16,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings("deprecation")
 public class OcculusBlock extends Block {
@@ -36,7 +33,7 @@ public class OcculusBlock extends Block {
         }
         if (pLevel.isClientSide) {
             var api = ArsMagicaAPI.get();
-            if (api.getKnowledgeHelper().getCurrentLevel(pPlayer) <= 0 && !pPlayer.isCreative()) {
+            if (api.getMagicHelper().getLevel(pPlayer) <= 0 && !pPlayer.isCreative()) {
                 pPlayer.sendMessage(new TranslatableComponent("message.%s.occulus.prevent".formatted(ArsMagicaAPI.MOD_ID)), Util.NIL_UUID);
                 return InteractionResult.FAIL;
             } else {

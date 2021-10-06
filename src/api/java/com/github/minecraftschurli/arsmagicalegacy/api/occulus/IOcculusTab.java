@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.api.skill;
+package com.github.minecraftschurli.arsmagicalegacy.api.occulus;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;

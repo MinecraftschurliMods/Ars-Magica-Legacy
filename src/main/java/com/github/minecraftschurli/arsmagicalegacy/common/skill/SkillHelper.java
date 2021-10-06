@@ -2,9 +2,10 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -21,18 +22,18 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import java.util.*;
 import java.util.function.Function;
 
-public final class KnowledgeHelper implements IKnowledgeHelper {
-    private static final Lazy<KnowledgeHelper> INSTANCE = Lazy.concurrentOf(KnowledgeHelper::new);
-    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(KnowledgeHolder.CODEC, KnowledgeHelper::handleSync);
+public final class SkillHelper implements ISkillHelper {
+    private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
+    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(KnowledgeHolder.CODEC, SkillHelper::handleSync);
 
-    public static KnowledgeHelper instance() {
+    public static SkillHelper instance() {
         return INSTANCE.get();
     }
 
     private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public KnowledgeHolder getKnowledgeHolder(Player player) {
-        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s".formatted(player.getUUID())));
+        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
     }
 
     @Override
@@ -96,11 +97,6 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     }
 
     @Override
-    public int getCurrentLevel(Player player) {
-        return getKnowledgeHolder(player).level();
-    }
-
-    @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
         syncToPlayer(player);
@@ -153,11 +149,6 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
     }
 
     @Override
-    public float getXp(Player player) {
-        return getKnowledgeHolder(player).xp();
-    }
-
-    @Override
     public Collection<ResourceLocation> getKnownSkills(Player player) {
         return getKnowledgeHolder(player).skills();
     }
@@ -174,32 +165,26 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
     }
 
-    public static final class KnowledgeHolder {
+    public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints) {
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ResourceLocation.CODEC.listOf().xmap((Function<List<ResourceLocation>, Set<ResourceLocation>>) HashSet::new, (Function<Set<ResourceLocation>, List<ResourceLocation>>) ArrayList::new).fieldOf("skills").forGetter(KnowledgeHolder::skills),
-                Codec.compoundList(ResourceLocation.CODEC, Codec.INT).xmap(pairs -> pairs.stream().collect(Pair.toMap()), map -> map.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue())).toList()).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints),
-                Codec.INT.fieldOf("level").forGetter(KnowledgeHolder::level),
-                Codec.FLOAT.fieldOf("xp").forGetter(KnowledgeHolder::xp)
-        ).apply(inst, KnowledgeHolder::new));
-
-        private final Set<ResourceLocation> skills;
-        private final Map<ResourceLocation, Integer> skillPoints;
-        private int level;
-        private float xp;
-
-        public KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints, int level, float xp) {
-            this.skills = skills;
-            this.skillPoints = skillPoints;
-            this.level = level;
-            this.xp = xp;
-        }
+                        CodecHelper.setOf(ResourceLocation.CODEC)
+                                .fieldOf("skills")
+                                .forGetter(KnowledgeHolder::skills),
+                        CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT)
+                                .fieldOf("skill_points")
+                                .forGetter(KnowledgeHolder::skillPoints)
+                )
+                .apply(inst, KnowledgeHolder::new));
 
         public static KnowledgeHolder empty() {
-            return new KnowledgeHolder(new HashSet<>(), new HashMap<>(), -1, 0);
+            return new KnowledgeHolder(new HashSet<>(), new HashMap<>());
         }
 
         public synchronized boolean canLearn(ResourceLocation skill) {
-            return skills.containsAll(ArsMagicaAPI.get().getSkillManager().get(skill).getParents());
+            return skills.containsAll(ArsMagicaAPI.get()
+                    .getSkillManager()
+                    .get(skill)
+                    .getParents());
         }
 
         public synchronized void learn(ResourceLocation skill) {
@@ -217,9 +202,13 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
         }
 
         public synchronized boolean consumeSkillPoint(ResourceLocation skillPoint, int amount) {
-            if (!skillPoints.containsKey(skillPoint)) return false;
+            if (!skillPoints.containsKey(skillPoint)) {
+                return false;
+            }
             int amt = skillPoints.get(skillPoint);
-            if (amt < amount) return false;
+            if (amt < amount) {
+                return false;
+            }
             skillPoints.put(skillPoint, amt - amount);
             return true;
         }
@@ -228,20 +217,14 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
             skills.clear();
         }
 
+        @Override
         public synchronized Set<ResourceLocation> skills() {
             return Collections.unmodifiableSet(skills);
         }
 
+        @Override
         public synchronized Map<ResourceLocation, Integer> skillPoints() {
             return Collections.unmodifiableMap(skillPoints);
-        }
-
-        public int level() {
-            return level;
-        }
-
-        public float xp() {
-            return xp;
         }
 
         public void onSync(KnowledgeHolder knowledgeHolder) {
@@ -249,8 +232,6 @@ public final class KnowledgeHelper implements IKnowledgeHelper {
             this.skills.addAll(knowledgeHolder.skills());
             this.skillPoints.clear();
             this.skillPoints.putAll(knowledgeHolder.skillPoints());
-            this.level = knowledgeHolder.level();
-            this.xp = knowledgeHolder.xp();
         }
 
         public boolean knows(ResourceLocation skill) {

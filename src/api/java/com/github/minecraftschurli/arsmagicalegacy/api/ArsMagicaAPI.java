@@ -2,21 +2,18 @@ package com.github.minecraftschurli.arsmagicalegacy.api;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ServiceLoader;
-import java.util.function.Function;
 
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
@@ -106,11 +103,11 @@ public final class ArsMagicaAPI {
         IOcculusTabManager getOcculusTabManager();
 
         /**
-         * Get the {@link IKnowledgeHelper} instance.
+         * Get the {@link ISkillHelper} instance.
          *
-         * @return the {@link IKnowledgeHelper} instance
+         * @return the {@link ISkillHelper} instance
          */
-        IKnowledgeHelper getKnowledgeHelper();
+        ISkillHelper getSkillHelper();
 
         /**
          * Get the {@link IAffinityHelper} instance.
@@ -118,6 +115,13 @@ public final class ArsMagicaAPI {
          * @return the {@link IAffinityHelper} instance
          */
         IAffinityHelper getAffinityHelper();
+
+        /**
+         * Get the magic helper instance.
+         *
+         * @return the magic helper instance
+         */
+        IMagicHelper getMagicHelper();
 
         /**
          * Open the occulus gui for the given player.
@@ -157,7 +161,7 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public IKnowledgeHelper getKnowledgeHelper() {
+        public ISkillHelper getSkillHelper() {
             return null;
         }
 
@@ -167,6 +171,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public IAffinityHelper getAffinityHelper() {
+            return null;
+        }
+
+        @Override
+        public IMagicHelper getMagicHelper() {
             return null;
         }
 

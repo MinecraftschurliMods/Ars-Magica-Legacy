@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -106,6 +106,7 @@ public class OcculusScreen extends Screen {
 
     @Override
     public void render(@NotNull PoseStack stack, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(stack);
         stack.pushPose();
         stack.translate(posX, posY, 0);
         setBlitOffset(-5);

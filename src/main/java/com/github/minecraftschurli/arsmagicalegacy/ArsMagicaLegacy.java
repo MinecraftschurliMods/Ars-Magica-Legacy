@@ -15,6 +15,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +26,7 @@ public final class ArsMagicaLegacy {
 
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
+    private IModInfo modInfo;
 
     /**
      * The Mod Constructor
@@ -32,6 +34,7 @@ public final class ArsMagicaLegacy {
     public ArsMagicaLegacy() {
         if (INSTANCE != null) throw new IllegalStateException("Tried to create mod %s more than once!".formatted(ArsMagicaAPI.MOD_ID));
         INSTANCE = this;
+        modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
@@ -48,7 +51,7 @@ public final class ArsMagicaLegacy {
     }
 
     public static String getModName() {
-        return ModLoadingContext.get().getActiveContainer().getModInfo().getDisplayName();
+        return INSTANCE.modInfo.getDisplayName();
     }
 
     private void registerNetworkPackets() {

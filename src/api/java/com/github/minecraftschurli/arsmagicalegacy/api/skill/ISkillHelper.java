@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Interface representing a knowledge helper
  */
-public interface IKnowledgeHelper {
+public interface ISkillHelper {
 
     /**
      * Check if the given player knows the given skill.
@@ -175,22 +175,6 @@ public interface IKnowledgeHelper {
      * @return whether the consuming was successful
      */
     boolean consumeSkillPoint(Player player, ISkillPoint skillPoint);
-
-    /**
-     * Get the current magic level for the given player.
-     *
-     * @param player the player to get the level for
-     * @return the level of the player
-     */
-    int getCurrentLevel(Player player);
-
-    /**
-     * Get the current magic xp for the given player.
-     *
-     * @param player the player to get the xp for
-     * @return the xp of the player
-     */
-    float getXp(Player player);
 
     /**
      * Get all known skills for the given player.

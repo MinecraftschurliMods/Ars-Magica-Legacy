@@ -28,7 +28,7 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         stack.pushPose();
         stack.translate(width, 0, 0);
         var api = ArsMagicaAPI.get();
-        var knowledgeHelper = api.getKnowledgeHelper();
+        var knowledgeHelper = api.getSkillHelper();
         var skillPoints = api.getSkillPointRegistry()
                 .getValues()
                 .stream()

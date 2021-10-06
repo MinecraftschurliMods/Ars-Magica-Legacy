@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.client;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

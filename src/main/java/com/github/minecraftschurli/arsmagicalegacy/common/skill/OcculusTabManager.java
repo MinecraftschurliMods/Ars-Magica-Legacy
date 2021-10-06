@@ -1,16 +1,14 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;

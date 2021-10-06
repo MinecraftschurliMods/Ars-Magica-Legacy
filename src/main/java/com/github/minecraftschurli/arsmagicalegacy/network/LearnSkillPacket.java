@@ -19,6 +19,6 @@ public record LearnSkillPacket(ResourceLocation id) implements IPacket {
 
     @Override
     public void handle(NetworkEvent.Context ctx) {
-        ArsMagicaAPI.get().getKnowledgeHelper().learn(ctx.getSender(), id());
+        ArsMagicaAPI.get().getSkillHelper().learn(ctx.getSender(), id());
     }
 }

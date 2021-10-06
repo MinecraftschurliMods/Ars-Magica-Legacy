@@ -3,8 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
@@ -75,7 +75,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         Player player = getMinecraft().player;
         if (player == null) return;
         ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
-        IKnowledgeHelper knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+        ISkillHelper knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         stack.pushPose();
@@ -157,7 +157,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton == 0 && mouseX > 7 && mouseX < width && mouseY > 7 && mouseX < height) {
-            var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+            var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
             Player player = getMinecraft().player;
             if (player != null && hoverItem != null && !knowledgeHelper.knows(player, hoverItem)) {
                 if (knowledgeHelper.canLearn(player, hoverItem) || player.isCreative()) {

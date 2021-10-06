@@ -3,15 +3,17 @@ package com.github.minecraftschurli.arsmagicalegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
-import com.github.minecraftschurli.arsmagicalegacy.common.skill.KnowledgeHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
@@ -60,13 +62,18 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     }
 
     @Override
-    public IKnowledgeHelper getKnowledgeHelper() {
-        return KnowledgeHelper.instance();
+    public ISkillHelper getSkillHelper() {
+        return SkillHelper.instance();
     }
 
     @Override
     public IAffinityHelper getAffinityHelper() {
         return AffinityHelper.instance();
+    }
+
+    @Override
+    public IMagicHelper getMagicHelper() {
+        return MagicHelper.instance();
     }
 
     @Override

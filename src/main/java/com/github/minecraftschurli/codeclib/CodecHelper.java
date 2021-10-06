@@ -2,13 +2,19 @@ package com.github.minecraftschurli.codeclib;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.Decoder;
+import net.minecraft.resources.ResourceLocation;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 public final class CodecHelper {
-    public static <K,V> Codec<Map<K,V>> mapOf(Codec<K> keyCodec, final Codec<V> valueCodec) {
+    public static <K,V> Codec<Map<K,V>> mapOf(Codec<K> keyCodec, Codec<V> valueCodec) {
         return Codec.compoundList(keyCodec, valueCodec).xmap(CodecHelper::pairListToMap, CodecHelper::mapToPairList);
+    }
+
+    public static <T> Codec<Set<T>> setOf(Codec<T> codec) {
+        return codec.listOf().xmap((Function<List<T>, Set<T>>) HashSet::new, (Function<Set<T>, List<T>>) ArrayList::new);
     }
 
     private static <K, V> Map<K, V> pairListToMap(List<Pair<K, V>> pairs) {

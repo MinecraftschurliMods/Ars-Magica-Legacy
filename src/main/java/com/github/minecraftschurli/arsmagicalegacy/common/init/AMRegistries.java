@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.StatType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
@@ -43,6 +43,7 @@ public interface AMRegistries {
     DeferredRegister<MenuType<?>>         CONTAINERS           = DeferredRegister.create(ForgeRegistries.CONTAINERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Attribute>           ATTRIBUTES           = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ArsMagicaAPI.MOD_ID);
 
     DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class, ArsMagicaAPI.MOD_ID);
     Supplier<IForgeRegistry<ISkillPoint>> SKILL_POINT_REGISTRY = SKILL_POINTS.makeRegistry("skill_point", () -> new RegistryBuilder<ISkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
@@ -59,6 +60,7 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMContainers.register();
+        AMAttributes.register();
         AMSkillPoints.register();
         AMAffinities.register();
         BLOCKS.register(bus);
@@ -74,6 +76,7 @@ public interface AMRegistries {
         CONTAINERS.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
+        ATTRIBUTES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
     }

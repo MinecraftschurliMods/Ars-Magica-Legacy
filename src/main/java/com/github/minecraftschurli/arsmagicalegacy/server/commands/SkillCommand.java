@@ -83,14 +83,14 @@ public class SkillCommand {
     private static int listKnown(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         var skillManager = api.getSkillManager();
-        var knowledgeHelper = api.getKnowledgeHelper();
+        var knowledgeHelper = api.getSkillHelper();
         context.getSource().sendSuccess(createListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(location -> skillManager.getOptional(location).stream())), false);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int listUnknown(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
-        var knowledgeHelper = api.getKnowledgeHelper();
+        var knowledgeHelper = api.getSkillHelper();
         var skillManager = api.getSkillManager();
         context.getSource().sendSuccess(createListComponent(skillManager.getSkills().stream().filter(iSkill -> knowledgeHelper.knows(player, iSkill))), false);
         return Command.SINGLE_SUCCESS;
@@ -109,7 +109,7 @@ public class SkillCommand {
     }
 
     private static int forgetAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
-        ArsMagicaAPI.get().getKnowledgeHelper().forgetAll(player);
+        ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
         context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX+".forgetAll.success", player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }
@@ -132,7 +132,7 @@ public class SkillCommand {
     }
 
     private static int forget(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
-        var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+        var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         if (!knowledgeHelper.knows(player, skill)) {
             context.getSource().sendFailure(new TranslatableComponent(LANG_KEY_PREFIX+".skillNotKnown", skill.getDisplayName(), player.getDisplayName()));
             return 0;
@@ -155,7 +155,7 @@ public class SkillCommand {
     }
 
     private static int learnAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
-        var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+        var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         ArsMagicaAPI.get().getSkillManager().getSkills().forEach(iSkill -> knowledgeHelper.learn(player, iSkill));
         context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX+".learnAll.success", player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
@@ -179,7 +179,7 @@ public class SkillCommand {
     }
 
     private static int learn(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
-        var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+        var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         if (knowledgeHelper.knows(player, skill)) {
             context.getSource().sendFailure(new TranslatableComponent(LANG_KEY_PREFIX+".skillAlreadyKnown", skill.getDisplayName(), player.getDisplayName()));
             return 0;

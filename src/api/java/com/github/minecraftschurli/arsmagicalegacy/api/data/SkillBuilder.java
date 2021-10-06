@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.google.gson.JsonArray;
