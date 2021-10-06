@@ -57,8 +57,9 @@ public interface AMRegistries {
     static void init(IEventBus bus) {
         AMBlocks.register();
         AMItems.register();
-        AMContainers.register();
+        AMSounds.register();
         AMEntities.register();
+        AMContainers.register();
         AMSkillPoints.register();
         AMAffinities.register();
         BLOCKS.register(bus);
