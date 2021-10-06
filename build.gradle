@@ -15,7 +15,7 @@ buildscript {
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
         classpath group: 'org.parchmentmc', name: 'librarian', version: "${project.librarian_version}"
-        classpath "org.spongepowered:mixingradle:${project.mixingradle_version}"
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: "${project.mixingradle_version}"
     }
 }
 
@@ -38,7 +38,8 @@ mixin {
 }
 
 editorconfig {
-    excludes = ['run']
+    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**']
+    excludeNonSourceFiles = true
 }
 
 group = "${project.mod_group}"
@@ -179,10 +180,10 @@ dependencies {
     //modAPI fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
     //runtimeMod fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
 
-    //runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
+    runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
 
     // add internal libraries
-    /*var projects = subprojects.collect {it.path }
+    var projects = subprojects.collect {it.path }
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
@@ -197,7 +198,7 @@ dependencies {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
         datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
-    }*/
+    }
 
     implementation sourceSets.api.output
 
@@ -216,15 +217,15 @@ minecraft {
     runs {
         client {
             ideaModule "${project.name.replace(' ', '_')}.main"
-            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.markers', 'SCAN,REGISTRIES'
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
 
-            lazyToken('minecraft_classpath') {
+            /*lazyToken('minecraft_classpath') {
                 configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }
+            }*/
         }
         server {
             ideaModule "${project.name.replace(' ', '_')}.main"
@@ -235,13 +236,12 @@ minecraft {
                 source sourceSets.main as SourceSet
             }
 
-            lazyToken('minecraft_classpath') {
+            /*lazyToken('minecraft_classpath') {
                 configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }
+            }*/
         }
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
-            property 'forge.logging.markers', 'CORE,LOADING,SCAN'
             singleInstance true
             args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
             mods.create("${project.mod_id}") {
@@ -250,12 +250,12 @@ minecraft {
                 source sourceSets.data as SourceSet
             }
 
-            lazyToken('minecraft_classpath') {
+            /*lazyToken('minecraft_classpath') {
                 [
                         configurations.datagenLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator),
                         configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-                ].join(File.pathSeparator)
-            }
+                ].join(File.pathSeparator).strip()
+            }*/
         }
     }
     runs.configureEach {

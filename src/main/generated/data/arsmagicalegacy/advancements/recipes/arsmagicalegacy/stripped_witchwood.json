@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:stripped_witchwood"
+    ]
+  },
+  "criteria": {
+    "has_stripped_witchwood_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:stripped_witchwood_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:stripped_witchwood"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stripped_witchwood_log",
+      "has_the_recipe"
+    ]
+  ]
+}

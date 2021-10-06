@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("ConstantConditions")
 public class AMSpawnEggItem extends SpawnEggItem {
     private final Lazy<EntityType<? extends Mob>> defaultType;
 

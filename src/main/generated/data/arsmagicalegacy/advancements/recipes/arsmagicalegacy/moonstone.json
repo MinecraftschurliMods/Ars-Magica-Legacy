@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:moonstone"
+    ]
+  },
+  "criteria": {
+    "has_moonstone_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:moonstone_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:moonstone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_moonstone_block",
+      "has_the_recipe"
+    ]
+  ]
+}

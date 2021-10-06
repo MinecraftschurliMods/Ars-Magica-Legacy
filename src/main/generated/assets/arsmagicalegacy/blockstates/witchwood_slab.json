@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "arsmagicalegacy:block/witchwood_slab_top"
+    },
+    "type=bottom": {
+      "model": "arsmagicalegacy:block/witchwood_slab"
+    },
+    "type=double": {
+      "model": "arsmagicalegacy:block/witchwood_planks"
+    }
+  }
+}
