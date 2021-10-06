@@ -2,6 +2,20 @@ package com.github.minecraftschurli.arsmagicalegacy.common;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.KnowledgeHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
@@ -14,6 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -27,6 +42,7 @@ public final class EventHandler {
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
+        modBus.addListener(EventHandler::createEntityAttributes);
 
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::playerJoinWorld);
@@ -59,5 +75,21 @@ public final class EventHandler {
     private static void registerDataManager(AddReloadListenerEvent event) {
         event.addListener(OcculusTabManager.instance());
         event.addListener(SkillManager.instance());
+    }
+
+    private static void createEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
+        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
+        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
+        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
+        event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
+        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
+        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
+        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
+        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
+        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
+        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
 }
