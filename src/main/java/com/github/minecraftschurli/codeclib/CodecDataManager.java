@@ -19,9 +19,14 @@ import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
 public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
     private static final BiMap<Integer, CodecDataManager<?>> DATA_MANAGER = HashBiMap.create();
