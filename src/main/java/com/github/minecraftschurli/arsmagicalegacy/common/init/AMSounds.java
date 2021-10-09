@@ -50,6 +50,45 @@ public interface AMSounds {
     RegistryObject<SoundEvent> WINTER_GUARDIAN_ATTACK = register("entity.winter_guardian.attack");
     RegistryObject<SoundEvent> WINTER_GUARDIAN_DEATH = register("entity.winter_guardian.death");
     RegistryObject<SoundEvent> WINTER_GUARDIAN_HURT = register("entity.winter_guardian.hurt");
+    RegistryObject<SoundEvent> ENDER_GUARDIAN_FLAP = register("entity.ender_guardian.flap");
+    RegistryObject<SoundEvent> ENDER_GUARDIAN_ROAR = register("entity.ender_guardian.roar");
+    RegistryObject<SoundEvent> FIRE_GUARDIAN_FLAMETHROWER = register("entity.fire_guardian.flamethrower");
+    RegistryObject<SoundEvent> FIRE_GUARDIAN_NOVA = register("entity.fire_guardian.nova");
+    RegistryObject<SoundEvent> LIFE_GUARDIAN_HEAL = register("entity.life_guardian.heal");
+    RegistryObject<SoundEvent> LIGHTNING_GUARDIAN_LIGHTNING_ROD = register("entity.lightning_guardian.lightning_rod");
+    RegistryObject<SoundEvent> LIGHTNING_GUARDIAN_STATIC = register("entity.lightning_guardian.static");
+    RegistryObject<SoundEvent> WINTER_GUARDIAN_LAUNCH_ARM = register("entity.winter_guardian.launch_arm");
+    RegistryObject<SoundEvent> CAST_AIR = register("spell.cast.air");
+    RegistryObject<SoundEvent> CAST_ARCANE = register("spell.cast.arcane");
+    RegistryObject<SoundEvent> CAST_EARTH = register("spell.cast.earth");
+    RegistryObject<SoundEvent> CAST_ENDER = register("spell.cast.ender");
+    RegistryObject<SoundEvent> CAST_FIRE = register("spell.cast.fire");
+    RegistryObject<SoundEvent> CAST_LIFE = register("spell.cast.life");
+    RegistryObject<SoundEvent> CAST_LIGHTNING = register("spell.cast.lightning");
+    RegistryObject<SoundEvent> CAST_NATURE = register("spell.cast.nature");
+    RegistryObject<SoundEvent> CAST_NONE = register("spell.cast.none");
+    RegistryObject<SoundEvent> CAST_WATER = register("spell.cast.water");
+    RegistryObject<SoundEvent> CAST_WINTER = register("spell.cast.winter");
+    RegistryObject<SoundEvent> LOOP_AIR = register("spell.loop.air");
+    RegistryObject<SoundEvent> LOOP_ARCANE = register("spell.loop.arcane");
+    RegistryObject<SoundEvent> LOOP_EARTH = register("spell.loop.earth");
+    RegistryObject<SoundEvent> LOOP_ENDER = register("spell.loop.ender");
+    RegistryObject<SoundEvent> LOOP_FIRE = register("spell.loop.fire");
+    RegistryObject<SoundEvent> LOOP_LIFE = register("spell.loop.life");
+    RegistryObject<SoundEvent> LOOP_LIGHTNING = register("spell.loop.lightning");
+    RegistryObject<SoundEvent> LOOP_NATURE = register("spell.loop.nature");
+    RegistryObject<SoundEvent> LOOP_NONE = register("spell.loop.none");
+    RegistryObject<SoundEvent> LOOP_WATER = register("spell.loop.water");
+    RegistryObject<SoundEvent> LOOP_WINTER = register("spell.loop.winter");
+    RegistryObject<SoundEvent> CONTINGENCY = register("spell.contingency");
+    RegistryObject<SoundEvent> MANA_SHIELD = register("spell.mana_shield");
+    RegistryObject<SoundEvent> RUNE = register("spell.rune");
+    RegistryObject<SoundEvent> STARSTRIKE = register("spell.starstrike");
+    RegistryObject<SoundEvent> CRAFTING_ALTAR_ADD_INGREDIENT = register("block.crafting_altar.add_ingredient");
+    RegistryObject<SoundEvent> CRAFTING_ALTAR_FINISH = register("block.crafting_altar.finish");
+    RegistryObject<SoundEvent> INSCRIPTION_TABLE_TAKE_BOOK = register("block.inscription_table.take_book");
+    RegistryObject<SoundEvent> GET_KNOWLEDGE_POINT = register("misc.get_knowledge_point");
+    RegistryObject<SoundEvent> MAGIC_LEVEL_UP = register("misc.magic_level_up");
 
     static void register() {
     }
