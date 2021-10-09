@@ -10,10 +10,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAffinity {
-    private final int color;
+    private final int                   color;
     private final Set<ResourceLocation> minorOpposites;
     private final Set<ResourceLocation> majorOpposites;
-    private final ResourceLocation directOpposite;
+    private final ResourceLocation      directOpposite;
 
     public Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite) {
         this.color = color;
@@ -40,15 +40,12 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
     @Override
     public Set<ResourceLocation> getAdjacentAffinities() {
         return ArsMagicaAPI.get()
-                .getAffinityRegistry()
-                .getValues()
-                .stream()
-                .filter(iAffinity ->
-                        !getMinorOpposingAffinities().contains(iAffinity.getRegistryName()) &&
-                        !getMajorOpposingAffinities().contains(iAffinity.getRegistryName()) &&
-                        !getDirectOpposingAffinity().equals(iAffinity.getRegistryName()))
-                .map(IForgeRegistryEntry::getRegistryName)
-                .collect(Collectors.toSet());
+                           .getAffinityRegistry()
+                           .getValues()
+                           .stream()
+                           .filter(iAffinity -> !getMinorOpposingAffinities().contains(iAffinity.getRegistryName()) && !getMajorOpposingAffinities().contains(iAffinity.getRegistryName()) && !getDirectOpposingAffinity().equals(iAffinity.getRegistryName()))
+                           .map(IForgeRegistryEntry::getRegistryName)
+                           .collect(Collectors.toSet());
     }
 
     @Override
@@ -61,10 +58,10 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
     }
 
     public static class Builder {
-        private Integer color;
+        private       Integer               color;
         private final Set<ResourceLocation> minorOpposites = new HashSet<>();
         private final Set<ResourceLocation> majorOpposites = new HashSet<>();
-        private ResourceLocation directOpposite;
+        private       ResourceLocation      directOpposite;
 
         public Builder setColor(int color) {
             this.color = color;
@@ -97,10 +94,12 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         }
 
         public Affinity build() {
-            if (color == null)
+            if (color == null) {
                 throw new IllegalStateException("color is required");
-            if (directOpposite == null)
+            }
+            if (directOpposite == null) {
                 throw new IllegalStateException("directOpposite is required");
+            }
             return new Affinity(color, minorOpposites, majorOpposites, directOpposite);
         }
     }

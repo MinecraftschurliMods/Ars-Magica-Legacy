@@ -22,17 +22,21 @@ import org.apache.logging.log4j.Logger;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
+
     private static ArsMagicaLegacy INSTANCE;
 
-    public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
+    public static final IMCHandler     IMC_HANDLER     = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
-    private IModInfo modInfo;
+
+    private final IModInfo modInfo;
 
     /**
      * The Mod Constructor
      */
     public ArsMagicaLegacy() {
-        if (INSTANCE != null) throw new IllegalStateException("Tried to create mod %s more than once!".formatted(ArsMagicaAPI.MOD_ID));
+        if (INSTANCE != null) {
+            throw new IllegalStateException("Tried to create mod %s more than once!".formatted(ArsMagicaAPI.MOD_ID));
+        }
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

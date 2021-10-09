@@ -18,12 +18,16 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     private static final Supplier<OcculusTabManager> INSTANCE = Lazy.concurrentOf(OcculusTabManager::new);
 
     private OcculusTabManager() {
-        super("occulus_tabs", OcculusTab.CODEC, OcculusTab.NETWORK_CODEC, OcculusTabManager::validate, LogManager.getLogger());
+        super("occulus_tabs",
+              OcculusTab.CODEC,
+              OcculusTab.NETWORK_CODEC,
+              OcculusTabManager::validate,
+              LogManager.getLogger());
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
     private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
-        data.forEach((id, tab) -> ((OcculusTab)tab).setId(id));
+        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
     }
 
     public static OcculusTabManager instance() {
@@ -37,6 +41,8 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
 
     @Override
     public IOcculusTab getByIndex(int index) {
-        return getValues().stream().sorted(Comparator.comparing(IOcculusTab::getOcculusIndex)).toArray(IOcculusTab[]::new)[index];
+        return getValues().stream()
+                          .sorted(Comparator.comparing(IOcculusTab::getOcculusIndex))
+                          .toArray(IOcculusTab[]::new)[index];
     }
 }

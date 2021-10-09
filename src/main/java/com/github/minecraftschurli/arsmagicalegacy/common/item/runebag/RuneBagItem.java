@@ -23,7 +23,10 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Mostly taken from the Botania mod.
- * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
+ * @see
+ * <a href="https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java">
+ *     https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java
+ * </a>
  */
 public class RuneBagItem extends Item {
     public RuneBagItem(Properties pProperties) {
@@ -39,8 +42,11 @@ public class RuneBagItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
         if (pLevel.isClientSide) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
-        if (pPlayer instanceof ServerPlayer sp)
-            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
+        if (pPlayer instanceof ServerPlayer sp) {
+            NetworkHooks.openGui(sp, new SimpleMenuProvider(
+                    (id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)),
+                    TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
+        }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 

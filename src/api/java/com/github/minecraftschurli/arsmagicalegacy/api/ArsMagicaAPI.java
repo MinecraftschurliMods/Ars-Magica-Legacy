@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -87,6 +88,13 @@ public final class ArsMagicaAPI {
          * @return the registry for affinities
          */
         IForgeRegistry<IAffinity> getAffinityRegistry();
+
+        /**
+         * Get the registry for spell parts.
+         *
+         * @return the registry for spell parts
+         */
+        IForgeRegistry<ISpellPart> getSpellPartRegistry();
 
         /**
          * Get the {@link ISkillManager} instance.
@@ -181,6 +189,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public IForgeRegistry<IAffinity> getAffinityRegistry() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
             return null;
         }
     }

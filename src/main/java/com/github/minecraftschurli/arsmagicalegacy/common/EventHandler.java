@@ -49,7 +49,6 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
-        AMItems.initSpawnEggs();
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -63,11 +62,26 @@ public final class EventHandler {
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (!(event.getObject() instanceof Player)) return;
 
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"), new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC, SkillHelper.getCapability(), SkillHelper.KnowledgeHolder::empty));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"), new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"), new CodecCapabilityProvider<>(MagicHelper.ManaHolder.CODEC, MagicHelper.getManaCapability(), MagicHelper.ManaHolder::new));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"), new CodecCapabilityProvider<>(MagicHelper.BurnoutHolder.CODEC, MagicHelper.getBurnoutCapability(), MagicHelper.BurnoutHolder::new));
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"),
+                            new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC,
+                                                          SkillHelper.getCapability(),
+                                                          SkillHelper.KnowledgeHolder::empty));
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),
+                            new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC,
+                                                          AffinityHelper.getCapability(),
+                                                          AffinityHelper.AffinityHolder::empty));
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),
+                            new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC,
+                                                          MagicHelper.getMagicCapability(),
+                                                          MagicHelper.MagicHolder::new));
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"),
+                            new CodecCapabilityProvider<>(MagicHelper.ManaHolder.CODEC,
+                                                          MagicHelper.getManaCapability(),
+                                                          MagicHelper.ManaHolder::new));
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"),
+                            new CodecCapabilityProvider<>(MagicHelper.BurnoutHolder.CODEC,
+                                                          MagicHelper.getBurnoutCapability(),
+                                                          MagicHelper.BurnoutHolder::new));
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {

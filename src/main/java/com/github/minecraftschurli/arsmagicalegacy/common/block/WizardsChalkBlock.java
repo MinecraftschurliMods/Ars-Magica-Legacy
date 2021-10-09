@@ -20,12 +20,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 public class WizardsChalkBlock extends Block {
-    public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
-    private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 0.5, 14);
+    public static final  IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
+    private static final VoxelShape      SHAPE   = Block.box(2, 0, 2, 14, 0.5, 14);
 
     public WizardsChalkBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(getStateDefinition().any().setValue(VARIANT, 0).setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
+        registerDefaultState(getStateDefinition()
+                                     .any()
+                                     .setValue(VARIANT, 0)
+                                     .setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
     }
 
     @Override
@@ -51,12 +54,18 @@ public class WizardsChalkBlock extends Block {
 
     @NotNull
     @Override
-    public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(
+            @NotNull BlockState pState,
+            @NotNull BlockGetter pLevel,
+            @NotNull BlockPos pPos,
+            @NotNull CollisionContext pContext) {
         return SHAPE;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return defaultBlockState().setValue(VARIANT, pContext.getLevel().random.nextInt(16)).setValue(BlockStateProperties.HORIZONTAL_FACING, pContext.getHorizontalDirection());
+        return defaultBlockState()
+                .setValue(VARIANT, pContext.getLevel().random.nextInt(16))
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, pContext.getHorizontalDirection());
     }
 }

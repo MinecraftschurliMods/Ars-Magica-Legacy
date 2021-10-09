@@ -16,11 +16,14 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class Skill implements ISkill {
+    //@formatter:off
     @Internal
     public static final Codec<ISkill> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(ISkill::getId),
-            ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents")
+                                  .orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
+            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap)
+                       .forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
@@ -29,25 +32,29 @@ public final class Skill implements ISkill {
     ).apply(inst, Skill::new));
     @Internal
     public static final Codec<ISkill> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents")
+                                  .orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
+            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap)
+                       .forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
             Codec.INT.fieldOf("y").forGetter(ISkill::getY),
             Codec.BOOL.fieldOf("hidden").orElse(false).forGetter(ISkill::isHidden)
     ).apply(inst, Skill::new));
+    //@formatter:on
 
-    private ResourceLocation id;
-    private final ResourceLocation occulusTab;
-    private final ResourceLocation icon;
-    private final Set<ResourceLocation> parents;
-    private final int x;
-    private final int y;
+    private       ResourceLocation               id;
+    private final ResourceLocation               occulusTab;
+    private final ResourceLocation               icon;
+    private final Set<ResourceLocation>          parents;
+    private final int                            x;
+    private final int                            y;
     private final Map<ResourceLocation, Integer> cost;
-    private final boolean hidden;
+    private final boolean                        hidden;
 
-    public Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, ResourceLocation icon, int x, int y, boolean hidden) {
+    public Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab,
+                 ResourceLocation icon, int x, int y, boolean hidden) {
         this.occulusTab = occulusTab;
         this.icon = icon;
         this.parents = parents;
@@ -57,7 +64,8 @@ public final class Skill implements ISkill {
         this.hidden = hidden;
     }
 
-    public Skill(ResourceLocation id, Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, ResourceLocation icon, Integer x, Integer y, Boolean hidden) {
+    public Skill(ResourceLocation id, Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost,
+                 ResourceLocation occulusTab, ResourceLocation icon, Integer x, Integer y, Boolean hidden) {
         this(parents, cost, occulusTab, icon, x, y, hidden);
         setId(id);
     }
@@ -108,8 +116,12 @@ public final class Skill implements ISkill {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
         var that = (Skill) obj;
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.occulusTab, that.occulusTab) &&
@@ -128,14 +140,31 @@ public final class Skill implements ISkill {
 
     @Override
     public String toString() {
-        return "Skill[" +
-                "id=" + id + ", " +
-                "occulusTab=" + occulusTab + ", " +
-                "icon=" + icon + ", " +
-                "parents=" + parents + ", " +
-                "x=" + x + ", " +
-                "y=" + y + ", " +
-                "cost=" + cost + ", " +
-                "hidden=" + hidden + ']';
+        return new StringBuilder().append("Skill[")
+                                  .append("id=")
+                                  .append(id)
+                                  .append(", ")
+                                  .append("occulusTab=")
+                                  .append(occulusTab)
+                                  .append(", ")
+                                  .append("icon=")
+                                  .append(icon)
+                                  .append(", ")
+                                  .append("parents=")
+                                  .append(parents)
+                                  .append(", ")
+                                  .append("x=")
+                                  .append(x)
+                                  .append(", ")
+                                  .append("y=")
+                                  .append(y)
+                                  .append(", ")
+                                  .append("cost=")
+                                  .append(cost)
+                                  .append(", ")
+                                  .append("hidden=")
+                                  .append(hidden)
+                                  .append(']')
+                                  .toString();
     }
 }

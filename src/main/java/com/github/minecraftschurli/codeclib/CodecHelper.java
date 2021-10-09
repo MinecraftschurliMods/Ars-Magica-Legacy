@@ -2,8 +2,9 @@ package com.github.minecraftschurli.codeclib;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Decoder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.*;
 import java.util.function.Function;
@@ -15,6 +16,10 @@ public final class CodecHelper {
 
     public static <T> Codec<Set<T>> setOf(Codec<T> codec) {
         return codec.listOf().xmap((Function<List<T>, Set<T>>) HashSet::new, (Function<Set<T>, List<T>>) ArrayList::new);
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> Codec<T> forRegistry(IForgeRegistry<T> registry) {
+        return ResourceLocation.CODEC.xmap(registry::getValue, registry::getKey);
     }
 
     private static <K, V> Map<K, V> pairListToMap(List<Pair<K, V>> pairs) {

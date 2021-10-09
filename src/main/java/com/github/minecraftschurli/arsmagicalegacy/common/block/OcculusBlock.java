@@ -27,14 +27,17 @@ public class OcculusBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer,
+                                 InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) {
             return InteractionResult.PASS;
         }
         if (pLevel.isClientSide) {
             var api = ArsMagicaAPI.get();
-            if (api.getMagicHelper().getLevel(pPlayer) <= 0 && !pPlayer.isCreative()) {
-                pPlayer.sendMessage(new TranslatableComponent("message.%s.occulus.prevent".formatted(ArsMagicaAPI.MOD_ID)), Util.NIL_UUID);
+            if (api.getMagicHelper()
+                   .getLevel(pPlayer) <= 0 && !pPlayer.isCreative()) {
+                pPlayer.sendMessage(new TranslatableComponent("message.%s.occulus.prevent".formatted(ArsMagicaAPI.MOD_ID)),
+                                    Util.NIL_UUID);
                 return InteractionResult.FAIL;
             } else {
                 api.openOcculusGui(pPlayer);

@@ -31,7 +31,10 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
     @Override
     public String getDescriptionId(@NotNull ItemStack pStack) {
         ResourceLocation affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(pStack).getRegistryName();
-        if (affinity == null) affinity = IAffinity.NONE;
-        return Util.makeDescriptionId("item", getRegistryName())+(".%s.%s".formatted(affinity.getNamespace(), affinity.getPath()));
+        if (affinity == null) {
+            affinity = IAffinity.NONE;
+        }
+        return Util.makeDescriptionId("item", getRegistryName()) +
+                (".%s.%s".formatted(affinity.getNamespace(), affinity.getPath()));
     }
 }

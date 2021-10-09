@@ -37,15 +37,24 @@ public class SkillCommand {
         var skill = dispatcher.register(Commands.literal("skill")
                 .then(Commands.literal("learn").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("target", EntityArgument.players())
-                                .then(Commands.argument("skill", ResourceLocationArgument.id()).suggests(SUGGEST_SKILLS).executes(SkillCommand::learn))
+                                .then(Commands.argument("skill", ResourceLocationArgument.id())
+                                              .suggests(SUGGEST_SKILLS)
+                                              .executes(SkillCommand::learn))
                                 .then(Commands.literal("*").executes(SkillCommand::learnAll))
-                        ).then(Commands.argument("skill", ResourceLocationArgument.id()).suggests(SUGGEST_SKILLS).executes(SkillCommand::learnSelf))
+                        ).then(Commands.argument("skill", ResourceLocationArgument.id())
+                                       .suggests(SUGGEST_SKILLS)
+                                       .executes(SkillCommand::learnSelf))
                         .then(Commands.literal("*").executes(SkillCommand::learnAllSelf))
                 ).then(Commands.literal("forget").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("target", EntityArgument.players())
-                                .then(Commands.argument("skill", ResourceLocationArgument.id()).suggests(SUGGEST_SKILLS).executes(SkillCommand::forget))
-                                .then(Commands.literal("*").executes(SkillCommand::forgetAll))
-                        ).then(Commands.argument("skill", ResourceLocationArgument.id()).suggests(SUGGEST_SKILLS).executes(SkillCommand::forgetSelf))
+                                .then(Commands.argument("skill", ResourceLocationArgument.id())
+                                              .suggests(SUGGEST_SKILLS)
+                                              .executes(SkillCommand::forget))
+                                .then(Commands.literal("*")
+                                              .executes(SkillCommand::forgetAll))
+                        ).then(Commands.argument("skill", ResourceLocationArgument.id())
+                                       .suggests(SUGGEST_SKILLS)
+                                       .executes(SkillCommand::forgetSelf))
                         .then(Commands.literal("*").executes(SkillCommand::forgetAllSelf))
                 ).then(Commands.literal("list")
                         .then(Commands.argument("target", EntityArgument.player())
@@ -206,6 +215,11 @@ public class SkillCommand {
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillManager().getSkills().stream().map(ISkill::getId), builder);
+        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get()
+                                                                    .getSkillManager()
+                                                                    .getSkills()
+                                                                    .stream()
+                                                                    .map(ISkill::getId),
+                                                        builder);
     }
 }

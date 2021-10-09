@@ -18,19 +18,21 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
-    private MagicHelper() {}
+
+    private MagicHelper() {
+    }
 
     public static MagicHelper instance() {
         return INSTANCE.get();
     }
 
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final CodecPacket.CodecPacketFactory<MagicHolder> SYNC_MAGIC_PACKET = CodecPacket.create(MagicHolder.CODEC, MagicHelper::handleMagicSync);
+    private static final Capability<MagicHolder>                       MAGIC               = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final CodecPacket.CodecPacketFactory<MagicHolder>   SYNC_MAGIC_PACKET   = CodecPacket.create(MagicHolder.CODEC, MagicHelper::handleMagicSync);
 
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final CodecPacket.CodecPacketFactory<ManaHolder> SYNC_MANA_PACKET = CodecPacket.create(ManaHolder.CODEC, MagicHelper::handleManaSync);
+    private static final Capability<ManaHolder>                        MANA                = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final CodecPacket.CodecPacketFactory<ManaHolder>    SYNC_MANA_PACKET    = CodecPacket.create(ManaHolder.CODEC, MagicHelper::handleManaSync);
 
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<BurnoutHolder>                     BURNOUT             = CapabilityManager.get(new CapabilityToken<>() {});
     private static final CodecPacket.CodecPacketFactory<BurnoutHolder> SYNC_BURNOUT_PACKET = CodecPacket.create(BurnoutHolder.CODEC, MagicHelper::handleBurnoutSync);
 
     public static Capability<MagicHolder> getMagicCapability() {
@@ -46,15 +48,24 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private MagicHolder getMagicHolder(Player player) {
-        return player.getCapability(MAGIC).orElseThrow(() -> new RuntimeException("Could not retrieve magic capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+        return player.getCapability(MAGIC)
+                     .orElseThrow(() -> new RuntimeException("Could not retrieve magic capability for player %s{%s}".formatted(
+                             player.getDisplayName().getString(),
+                             player.getUUID())));
     }
 
     private ManaHolder getManaHolder(Player player) {
-        return player.getCapability(MANA).orElseThrow(() -> new RuntimeException("Could not retrieve mana capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+        return player.getCapability(MANA).orElseThrow(
+                () -> new RuntimeException("Could not retrieve mana capability for player %s{%s}".formatted(
+                        player.getDisplayName().getString(),
+                        player.getUUID())));
     }
 
     private BurnoutHolder getBurnoutHolder(Player player) {
-        return player.getCapability(BURNOUT).orElseThrow(() -> new RuntimeException("Could not retrieve burnout capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+        return player.getCapability(BURNOUT).orElseThrow(
+                () -> new RuntimeException(("Could not retrieve burnout capability for player %s{%s}").formatted(
+                        player.getDisplayName().getString(),
+                        player.getUUID())));
     }
 
     @Override
@@ -74,7 +85,9 @@ public final class MagicHelper implements IMagicHelper {
         var l = magicHolder.getLevel();
         while (true) {
             var xpForNextLevel = getXpForNextLevel(l);
-            if (n < xpForNextLevel) break;
+            if (n < xpForNextLevel) {
+                break;
+            }
             n -= xpForNextLevel;
             l++;
             MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, l));
@@ -100,7 +113,9 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean increaseMana(Player player, float amount) {
-        if (amount < 0) return false;
+        if (amount < 0) {
+            return false;
+        }
         var max = getMaxMana(player);
         var magicHolder = getManaHolder(player);
         var current = magicHolder.getMana();
@@ -111,10 +126,14 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean decreaseMana(Player player, float amount) {
-        if (amount < 0) return false;
+        if (amount < 0) {
+            return false;
+        }
         var magicHolder = getManaHolder(player);
         var current = magicHolder.getMana();
-        if (current - amount < 0) return false;
+        if (current - amount < 0) {
+            return false;
+        }
         magicHolder.setMana(current - amount);
         syncMana(player);
         return true;
@@ -132,7 +151,9 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean increaseBurnout(Player player, float amount) {
-        if (amount < 0) return false;
+        if (amount < 0) {
+            return false;
+        }
         var max = getMaxBurnout(player);
         var magicHolder = getBurnoutHolder(player);
         var current = magicHolder.getBurnout();
@@ -143,10 +164,14 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean decreaseBurnout(Player player, float amount) {
-        if (amount < 0) return false;
+        if (amount < 0) {
+            return false;
+        }
         var magicHolder = getBurnoutHolder(player);
         var current = magicHolder.getBurnout();
-        if (current - amount < 0) return false;
+        if (current - amount < 0) {
+            return false;
+        }
         magicHolder.setBurnout(current - amount);
         syncBurnout(player);
         return true;
@@ -157,7 +182,8 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(data)));
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT)
+                                                                .ifPresent(holder -> holder.onSync(data)));
     }
 
     private void syncMana(Player player) {
@@ -165,7 +191,8 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(holder -> holder.onSync(data)));
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA)
+                                                                .ifPresent(holder -> holder.onSync(data)));
     }
 
     private void syncMagic(Player player) {
@@ -173,7 +200,8 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC)
+                                                                .ifPresent(holder -> holder.onSync(data)));
     }
 
     public void syncAllToPlayer(Player player) {
@@ -232,8 +260,10 @@ public final class MagicHelper implements IMagicHelper {
 
     public static class MagicHolder {
         public static final Codec<MagicHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.FLOAT.fieldOf("xp").forGetter(MagicHolder::getXp),
-                Codec.INT.fieldOf("level").forGetter(MagicHolder::getLevel)
+                Codec.FLOAT.fieldOf("xp")
+                           .forGetter(MagicHolder::getXp),
+                Codec.INT.fieldOf("level")
+                         .forGetter(MagicHolder::getLevel)
         ).apply(inst, (xp, level) -> {
             var magicHolder = new MagicHolder();
             magicHolder.setXp(xp);
@@ -242,7 +272,7 @@ public final class MagicHelper implements IMagicHelper {
         }));
 
         private float xp;
-        private int level;
+        private int   level;
 
         public float getXp() {
             return xp;

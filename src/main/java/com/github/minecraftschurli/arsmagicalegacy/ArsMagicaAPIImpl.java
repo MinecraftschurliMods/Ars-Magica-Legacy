@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
@@ -49,6 +50,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public IForgeRegistry<IAffinity> getAffinityRegistry() {
         return AMRegistries.AFFINITY_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
+        return AMRegistries.SPELL_PART_REGISTRY.get();
     }
 
     @Override

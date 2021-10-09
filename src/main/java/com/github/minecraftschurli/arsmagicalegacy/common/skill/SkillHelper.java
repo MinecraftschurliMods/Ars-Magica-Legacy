@@ -24,7 +24,10 @@ import java.util.function.Function;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
-    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(KnowledgeHolder.CODEC, SkillHelper::handleSync);
+
+    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(
+            KnowledgeHolder.CODEC,
+            SkillHelper::handleSync);
 
     public static SkillHelper instance() {
         return INSTANCE.get();
@@ -33,7 +36,11 @@ public final class SkillHelper implements ISkillHelper {
     private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public KnowledgeHolder getKnowledgeHolder(Player player) {
-        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+        return player.getCapability(KNOWLEDGE)
+                     .orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(
+                             player.getDisplayName()
+                                   .getString(),
+                             player.getUUID())));
     }
 
     @Override
@@ -162,10 +169,12 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     private static void handleSync(KnowledgeHolder knowledgeHolder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE)
+                                                                .ifPresent(holder -> holder.onSync(knowledgeHolder)));
     }
 
     public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints) {
+        //@formatter:off
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                         CodecHelper.setOf(ResourceLocation.CODEC)
                                 .fieldOf("skills")
@@ -173,8 +182,8 @@ public final class SkillHelper implements ISkillHelper {
                         CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT)
                                 .fieldOf("skill_points")
                                 .forGetter(KnowledgeHolder::skillPoints)
-                )
-                .apply(inst, KnowledgeHolder::new));
+                ).apply(inst, KnowledgeHolder::new));
+        //@formatter:on
 
         public static KnowledgeHolder empty() {
             return new KnowledgeHolder(new HashSet<>(), new HashMap<>());
@@ -182,9 +191,9 @@ public final class SkillHelper implements ISkillHelper {
 
         public synchronized boolean canLearn(ResourceLocation skill) {
             return skills.containsAll(ArsMagicaAPI.get()
-                    .getSkillManager()
-                    .get(skill)
-                    .getParents());
+                                                  .getSkillManager()
+                                                  .get(skill)
+                                                  .getParents());
         }
 
         public synchronized void learn(ResourceLocation skill) {

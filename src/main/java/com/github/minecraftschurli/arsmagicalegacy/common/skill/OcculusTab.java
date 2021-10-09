@@ -12,13 +12,20 @@ import java.util.function.Supplier;
 
 public final class OcculusTab implements IOcculusTab {
     private static final String DEFAULT_RENDERER = "com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer";
+
+    //@formatter:off
     public static final Codec<IOcculusTab> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Codec.STRING.fieldOf("renderer").orElse(DEFAULT_RENDERER).forGetter(IOcculusTab::getRenderer),
-            ResourceLocation.CODEC.optionalFieldOf("background_texture").forGetter((IOcculusTab occulusTab) -> ((OcculusTab) occulusTab).getBackgroundOpt()),
-            ResourceLocation.CODEC.optionalFieldOf("icon_texture").forGetter((IOcculusTab occulusTab) -> ((OcculusTab) occulusTab).getIconOpt()),
-            Codec.INT.fieldOf("texture_width").orElse(IOcculusTab.TEXTURE_WIDTH).forGetter(IOcculusTab::getWidth),
-            Codec.INT.fieldOf("texture_height").orElse(IOcculusTab.TEXTURE_HEIGHT).forGetter(IOcculusTab::getHeight),
-            Codec.BYTE.fieldOf("index").xmap(Number::intValue, Number::byteValue).forGetter(IOcculusTab::getOcculusIndex)
+            ResourceLocation.CODEC.optionalFieldOf("background_texture")
+                                  .forGetter((IOcculusTab occulusTab) -> ((OcculusTab) occulusTab).getBackgroundOpt()),
+            ResourceLocation.CODEC.optionalFieldOf("icon_texture")
+                                  .forGetter((IOcculusTab occulusTab) -> ((OcculusTab) occulusTab).getIconOpt()),
+            Codec.INT.fieldOf("texture_width").orElse(IOcculusTab.TEXTURE_WIDTH)
+                     .forGetter(IOcculusTab::getWidth),
+            Codec.INT.fieldOf("texture_height").orElse(IOcculusTab.TEXTURE_HEIGHT)
+                     .forGetter(IOcculusTab::getHeight),
+            Codec.BYTE.fieldOf("index").xmap(Number::intValue, Number::byteValue)
+                      .forGetter(IOcculusTab::getOcculusIndex)
     ).apply(inst, OcculusTab::new));
 
     public static final Codec<IOcculusTab> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
@@ -26,21 +33,26 @@ public final class OcculusTab implements IOcculusTab {
             Codec.STRING.fieldOf("renderer").orElse(DEFAULT_RENDERER).forGetter(IOcculusTab::getRenderer),
             ResourceLocation.CODEC.fieldOf("background_texture").forGetter(IOcculusTab::getBackground),
             ResourceLocation.CODEC.fieldOf("icon_texture").forGetter(IOcculusTab::getIcon),
-            Codec.INT.fieldOf("texture_width").orElse(IOcculusTab.TEXTURE_WIDTH).forGetter(IOcculusTab::getWidth),
-            Codec.INT.fieldOf("texture_height").orElse(IOcculusTab.TEXTURE_HEIGHT).forGetter(IOcculusTab::getHeight),
-            Codec.BYTE.fieldOf("index").xmap(Number::intValue, Number::byteValue).forGetter(IOcculusTab::getOcculusIndex)
+            Codec.INT.fieldOf("texture_width").orElse(IOcculusTab.TEXTURE_WIDTH)
+                     .forGetter(IOcculusTab::getWidth),
+            Codec.INT.fieldOf("texture_height").orElse(IOcculusTab.TEXTURE_HEIGHT)
+                     .forGetter(IOcculusTab::getHeight),
+            Codec.BYTE.fieldOf("index").xmap(Number::intValue, Number::byteValue)
+                      .forGetter(IOcculusTab::getOcculusIndex)
     ).apply(inst, OcculusTab::new));
+    //@formatter:on
 
     private final Lazy<OcculusTabRendererFactory> rendererFactory;
-    private final String rendererClass;
-    private final ResourceLocation background;
-    private final ResourceLocation icon;
-    private final int width;
-    private final int height;
-    private final int index;
-    private ResourceLocation id;
+    private final String                          rendererClass;
+    private final ResourceLocation                background;
+    private final ResourceLocation                icon;
+    private final int                             width;
+    private final int                             height;
+    private final int                             index;
+    private       ResourceLocation                id;
 
-    public OcculusTab(String rendererClass, @Nullable ResourceLocation background, @Nullable ResourceLocation icon, int width, int height, int index) {
+    public OcculusTab(String rendererClass, @Nullable ResourceLocation background, @Nullable ResourceLocation icon,
+                      int width, int height, int index) {
         this.rendererClass = rendererClass;
         this.background = background;
         this.icon = icon;
@@ -50,11 +62,13 @@ public final class OcculusTab implements IOcculusTab {
         this.rendererFactory = Lazy.concurrentOf(OcculusTabRendererFactory.of(getRenderer()));
     }
 
-    private OcculusTab(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon, int width, int height, int index) {
+    private OcculusTab(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon,
+                       int width, int height, int index) {
         this(rendererClass, background.orElse(null), icon.orElse(null), width, height, index);
     }
 
-    public OcculusTab(ResourceLocation id, String rendererClass, ResourceLocation background, ResourceLocation icon, int width, int height, int index) {
+    public OcculusTab(ResourceLocation id, String rendererClass, ResourceLocation background, ResourceLocation icon,
+                      int width, int height, int index) {
         this(rendererClass, background, icon, width, height, index);
         setId(id);
     }
@@ -73,13 +87,17 @@ public final class OcculusTab implements IOcculusTab {
 
     @Override
     public ResourceLocation getBackground() {
-        if (this.background != null) return this.background;
+        if (this.background != null) {
+            return this.background;
+        }
         return new ResourceLocation(getId().getNamespace(), "textures/gui/occulus/" + getId().getPath() + ".png");
     }
 
     @Override
     public ResourceLocation getIcon() {
-        if (this.icon != null) return this.icon;
+        if (this.icon != null) {
+            return this.icon;
+        }
         return new ResourceLocation(getId().getNamespace(), "textures/icon/" + getId().getPath() + ".png");
     }
 

@@ -35,7 +35,12 @@ public class CodecCapabilityProvider<C> implements ICapabilitySerializable<Tag> 
     @Nullable
     @Override
     public Tag serializeNBT() {
-        return lazy.lazyMap(c -> codec.encodeStart(NbtOps.INSTANCE, c).get().mapRight(DataResult.PartialResult::message).orThrow()).resolve().orElse(null);
+        return lazy.lazyMap(c -> codec.encodeStart(NbtOps.INSTANCE, c)
+                                      .get()
+                                      .mapRight(DataResult.PartialResult::message)
+                                      .orThrow())
+                   .resolve()
+                   .orElse(null);
     }
 
     @Override

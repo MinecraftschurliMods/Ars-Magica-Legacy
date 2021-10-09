@@ -492,3 +492,5 @@ check {
 publish {
     dependsOn check
 }
+
+evaluationDependsOnChildren()

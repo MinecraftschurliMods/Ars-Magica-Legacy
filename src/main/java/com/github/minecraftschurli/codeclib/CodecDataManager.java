@@ -33,51 +33,19 @@ public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
     private Map<ResourceLocation, T> data;
     protected final Logger logger;
 
-    public static <T> CodecDataManager<T> create(String folderName, Codec<T> codec, Logger logger) {
-        return new CodecDataManager<>(folderName, codec, logger);
-    }
-
-    public static <T> CodecDataManager<T> create(String folderName, Codec<T> codec, Codec<T> networkCodec, Logger logger) {
-        return new CodecDataManager<>(folderName, codec, networkCodec, logger);
-    }
-
-    public static <T> CodecDataManager<T> create(String folderName, Codec<T> codec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
-        return new CodecDataManager<>(folderName, codec, validator, logger);
-    }
-
-    public static <T> CodecDataManager<T> create(String folderName, Codec<T> codec, Codec<T> networkCodec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
-        return new CodecDataManager<>(folderName, codec, networkCodec, validator, logger);
-    }
-
-    public static <T> CodecDataManager<T> createSynced(String folderName, Codec<T> codec, Logger logger, NetworkHandler networkHandler) {
-        return new CodecDataManager<>(folderName, codec, logger).subscribeAsSyncable(networkHandler);
-    }
-
-    public static <T> CodecDataManager<T> createSynced(String folderName, Codec<T> codec, Codec<T> networkCodec, Logger logger, NetworkHandler networkHandler) {
-        return new CodecDataManager<>(folderName, codec, networkCodec, logger).subscribeAsSyncable(networkHandler);
-    }
-
-    public static <T> CodecDataManager<T> createSynced(String folderName, Codec<T> codec, Validator<Map<ResourceLocation, T>> validator, Logger logger, NetworkHandler networkHandler) {
-        return new CodecDataManager<>(folderName, codec, validator, logger).subscribeAsSyncable(networkHandler);
-    }
-
-    public static <T> CodecDataManager<T> createSynced(String folderName, Codec<T> codec, Codec<T> networkCodec, Validator<Map<ResourceLocation, T>> validator, Logger logger, NetworkHandler networkHandler) {
-        return new CodecDataManager<>(folderName, codec, networkCodec, validator, logger).subscribeAsSyncable(networkHandler);
-    }
-
-    protected CodecDataManager(String folderName, Codec<T> codec, Logger logger) {
+    public CodecDataManager(String folderName, Codec<T> codec, Logger logger) {
         this(folderName, codec, codec, (m, l) -> {}, logger);
     }
 
-    protected CodecDataManager(String folderName, Codec<T> codec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
+    public CodecDataManager(String folderName, Codec<T> codec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
         this(folderName, codec, codec, validator, logger);
     }
 
-    protected CodecDataManager(String folderName, Codec<T> codec, Codec<T> networkCodec, Logger logger) {
+    public CodecDataManager(String folderName, Codec<T> codec, Codec<T> networkCodec, Logger logger) {
         this(folderName, codec, networkCodec, (m, l) -> {}, logger);
     }
 
-    protected CodecDataManager(String folderName, Codec<T> codec, Codec<T> networkCodec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
+    public CodecDataManager(String folderName, Codec<T> codec, Codec<T> networkCodec, Validator<Map<ResourceLocation, T>> validator, Logger logger) {
         super(GSON, folderName);
         this.folderName = folderName;
         this.codec = codec;
@@ -117,14 +85,18 @@ public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
         return data;
     }
 
-    protected final CodecDataManager<T> subscribeAsSyncable(NetworkHandler networkHandler) {
+    public final CodecDataManager<T> subscribeAsSyncable(NetworkHandler networkHandler) {
         networkHandler.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        MinecraftForge.EVENT_BUS.addListener((OnDatapackSyncEvent event) -> networkHandler.sendToPlayerOrAll(new SyncPacket<>(DATA_MANAGER.inverse().get(this), this.data), event.getPlayer()));
+        MinecraftForge.EVENT_BUS.addListener((OnDatapackSyncEvent event) -> networkHandler.sendToPlayerOrAll(
+                new SyncPacket<>(DATA_MANAGER.inverse().get(this), this.data), event.getPlayer()
+        ));
         return this;
     }
 
     public T get(ResourceLocation id) {
-        if (this.data == null) throw this.logger.throwing(new IllegalStateException("CodecDataManager(%s) not loaded yet!".formatted(this.folderName)));
+        if (this.data == null) {
+            throw this.logger.throwing(new IllegalStateException("CodecDataManager(%s) not loaded yet!".formatted(this.folderName)));
+        }
         return this.getOptional(id).orElseThrow();
     }
 
