@@ -124,7 +124,7 @@ public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
 
     protected final CodecDataManager<T> subscribeAsSyncable(NetworkHandler networkHandler) {
         networkHandler.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        MinecraftForge.EVENT_BUS.addListener((OnDatapackSyncEvent event) -> networkHandler.sendToPlayerOrAll(new SyncPacket<>(DATA_MANAGER.inverse().get(this), this.data), event.getPlayer()));
+        MinecraftForge.EVENT_BUS.addListener((OnDatapackSyncEvent event) -> networkHandler.sendToPlayer(new SyncPacket<>(DATA_MANAGER.inverse().get(this), this.data), event.getPlayer()));
         return this;
     }
 

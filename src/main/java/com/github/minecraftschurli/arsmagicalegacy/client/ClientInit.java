@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.WaterGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.render.ManaCreeperRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.WaterGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMContainers;
@@ -11,7 +12,6 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,7 +49,7 @@ public final class ClientInit {
     @SubscribeEvent
     static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), CreeperRenderer::new);
+        event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
     }
 
 //    @SubscribeEvent
