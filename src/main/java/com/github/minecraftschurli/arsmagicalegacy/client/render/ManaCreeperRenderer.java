@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Creeper;
+import org.jetbrains.annotations.NotNull;
 
 public class ManaCreeperRenderer extends CreeperRenderer {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/mana_creeper.png");
@@ -14,7 +15,9 @@ public class ManaCreeperRenderer extends CreeperRenderer {
         super(p_173958_);
     }
 
-    public ResourceLocation getTextureLocation(final ManaCreeper pEntity) {
+    @NotNull
+    @Override
+    public ResourceLocation getTextureLocation(@NotNull final Creeper pEntity) {
         return TEXTURE;
     }
 }
