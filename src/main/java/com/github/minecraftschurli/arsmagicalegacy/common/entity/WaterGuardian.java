@@ -28,88 +28,22 @@ import net.minecraftforge.registries.DataSerializerEntry;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardian extends AbstractBoss {
-    private WaterGuardian master;
-    private WaterGuardian clone1;
-    private WaterGuardian clone2;
+    private WaterGuardian master = null;
+    private WaterGuardian clone1 = null;
+    private WaterGuardian clone2 = null;
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
     //private float spinRotation = 0;
     //private unerSpinAvailable = false;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         //currentAction = BossAction.IDLE;
-        this.master = null;
-        this.clone1 = null;
-        this.clone2 = null;
         //EntityExtension.For(this).setMagicLevelWithMana(10);
-
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 75D).add(Attributes.ARMOR, 10);
-    }
-
-    @Override
-    public int getMaxFallDistance() {
-        return this.getTarget() == null ? 3 : 3 + (int)(this.getHealth() - 1.0F);
-    }
-
-    public void setClones(WaterGuardian clone1, WaterGuardian clone2){
-        this.clone1 = clone1;
-        this.clone2 = clone2;
-    }
-
-    private boolean hasClones(){
-        return this.clone1 != null || this.clone2 != null;
-    }
-
-    public void clearClones(){
-        if (this.clone1 != null){
-            this.clone1.setRemoved(RemovalReason.DISCARDED);
-            this.clone1 = null;
-        }
-        if (this.clone2 != null){
-            this.clone2.setRemoved(RemovalReason.DISCARDED);
-            this.clone2 = null;
-        }
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(IS_CLONE, false);
-    }
-
-    public boolean isClone(){
-        return this.entityData.get(IS_CLONE);
-    }
-
-    public void setMaster(WaterGuardian master){
-        this.entityData.set(IS_CLONE, true);
-        this.master = master;
-    }
-
-    public void clearMaster(){
-        this.master = null;
-    }
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("isClone", isClone());
-    }
-
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.entityData.set(IS_CLONE, pCompound.getBoolean("isClone"));
     }
 
     @Override
@@ -139,28 +73,46 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (!(pSource.getEntity() instanceof WaterGuardian)) {
-            return false;
-        }
-
+        if (!(pSource.getEntity() instanceof WaterGuardian)) return false;
         if (isClone() && master != null) {
             //master.enableUberAttack();
-            this.master.clearClones();
-        } else if (this.hasClones()) {
-            this.clearClones();
+            master.clearClones();
+        } else if (hasClones()) {
+            clearClones();
         }
-
-        if (!isClone() && pSource != DamageSource.OUT_OF_WORLD && random.nextInt(10) < 6) {
-            this.level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
+        if (!isClone() && random.nextInt(10) < 6) {
+            level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
             return false;
         }
-
         return super.hurt(pSource, pAmount);
     }
 
     @Override
-    public boolean canBreatheUnderwater() {
-        return true;
+    protected void registerGoals() {
+        super.registerGoals();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("isClone", isClone());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        entityData.set(IS_CLONE, pCompound.getBoolean("isClone"));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(IS_CLONE, false);
+    }
+
+    @Override
+    public int getMaxFallDistance() {
+        return getTarget() == null ? 3 : 3 + (int)(getHealth() - 1.0F);
     }
 
     @Override
@@ -170,12 +122,45 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void travel(@NotNull Vec3 pTravelVector) {
-        if (this.isEffectiveAi() && this.isInWater()) {
-            this.moveRelative(0.1F, pTravelVector);
-            this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+        if (isEffectiveAi() && isInWater()) {
+            moveRelative(0.1F, pTravelVector);
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.9D));
         } else {
             super.travel(pTravelVector);
         }
+    }
+
+    public void setClones(WaterGuardian clone1, WaterGuardian clone2){
+        this.clone1 = clone1;
+        this.clone2 = clone2;
+    }
+
+    private boolean hasClones(){
+        return clone1 != null || clone2 != null;
+    }
+
+    public void clearClones(){
+        if (clone1 != null){
+            clone1.setRemoved(RemovalReason.DISCARDED);
+            clone1 = null;
+        }
+        if (clone2 != null){
+            clone2.setRemoved(RemovalReason.DISCARDED);
+            clone2 = null;
+        }
+    }
+
+    public boolean isClone(){
+        return entityData.get(IS_CLONE);
+    }
+
+    public void setMaster(WaterGuardian master){
+        entityData.set(IS_CLONE, true);
+        this.master = master;
+    }
+
+    public void clearMaster(){
+        master = null;
     }
 }
