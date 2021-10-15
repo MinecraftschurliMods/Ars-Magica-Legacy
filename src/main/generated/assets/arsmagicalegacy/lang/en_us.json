@@ -12,6 +12,7 @@
   "block.arsmagicalegacy.desert_nova": "Desert Nova",
   "block.arsmagicalegacy.moonstone_block": "Moonstone Block",
   "block.arsmagicalegacy.moonstone_ore": "Moonstone Ore",
+  "block.arsmagicalegacy.occulus": "Occulus",
   "block.arsmagicalegacy.stripped_witchwood": "Stripped Witchwood",
   "block.arsmagicalegacy.stripped_witchwood_log": "Stripped Witchwood Log",
   "block.arsmagicalegacy.sunstone_block": "Sunstone Block",
@@ -81,5 +82,6 @@
   "item.arsmagicalegacy.vinteum_dust": "Vinteum Dust",
   "item.arsmagicalegacy.white_rune": "White Rune",
   "item.arsmagicalegacy.yellow_rune": "Yellow Rune",
-  "itemGroup.arsmagicalegacy": "Minecraft"
+  "itemGroup.arsmagicalegacy": "Minecraft",
+  "skill_point.arsmagicalegacy.blue": "Blue"
 }

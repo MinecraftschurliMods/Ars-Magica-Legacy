@@ -33,12 +33,12 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.NotNull;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.BLOCKS;
 
 @NonExtendable
 public interface AMBlocks {
-    RegistryObject<OcculusBlock> OCCULUS = BLOCKS.register("occulus", OcculusBlock::new);
     RegistryObject<Block> CHIMERITE_ORE = BLOCKS.register("chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block> DEEPSLATE_CHIMERITE_ORE = BLOCKS.register("deepslate_chimerite_ore", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE))); //
     RegistryObject<Block> CHIMERITE_BLOCK = BLOCKS.register("chimerite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
@@ -73,7 +73,7 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock> CERUBLOSSOM = BLOCKS.register("cerublossom", () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock> DESERT_NOVA = BLOCKS.register("desert_nova", () -> new FlowerBlock(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)) {
         @Override
-        public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        public boolean canSurvive(@NotNull BlockState pState, @NotNull LevelReader pLevel, @NotNull BlockPos pPos) {
             return Tags.Blocks.SAND.contains(pLevel.getBlockState(pPos.below()).getBlock());
         }
     });
@@ -82,6 +82,7 @@ public interface AMBlocks {
     RegistryObject<TorchBlock> VINTEUM_TORCH = BLOCKS.register("vinteum_torch", () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock> VINTEUM_WALL_TORCH = BLOCKS.register("vinteum_wall_torch", () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WizardsChalkBlock> WIZARDS_CHALK = BLOCKS.register("wizards_chalk", () -> new WizardsChalkBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL)));
+    RegistryObject<OcculusBlock> OCCULUS = BLOCKS.register("occulus", OcculusBlock::new);
 
     /**
      * Empty method that is required for classloading
