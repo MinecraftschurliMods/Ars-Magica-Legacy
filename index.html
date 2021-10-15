@@ -1,20 +1,37 @@
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="shortcut icon" type="image/x-icon" href="imgLayout/favicon.ico"/>
     <title>Ars Magica Legacy</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 <body>
+<!-- Header -->
 <header>
-    <a href="."><img src="images/logo.png" alt="Logo"/></a>
+    <div id="logo"> <a href="#"><svg width="150" height="100%" viewBox="100 -15 150 150"><use href="imgLayout/tgm_logo.svg#g10"></use></svg></a> </div>
+    <nav id="main-nav">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#milestones">Milestones</a></li>
+        </ul>
+    </nav>
 </header>
+
 <main>
-    <h1>Minecraft Mod - Ars Magica Legacy</h1>
-    <article>
-        <h2>The Team</h2>
+    <!-- Home -->
+    <section id="home">
+        <img src="imgLayout/logo.png" alt="Ars Magica - Legacy"/>
+        <p>"Ars Magica: Legacy" is a project to revive the Minecraft Mod Ars Magica 2 by Mition.</p>
+        <p>It aims to keep as much of the content equal to the original while making it more performant, extensible and customizable.</p>
+    </section>
+
+    <!-- About -->
+    <section id="team">
+        <h3>The Team</h3>
+        <hr/>
         <ul>
             <li>Georg Burkl (a.k.a. Minecraftschurli)</li>
             <li>Peter Mrkonjic</li>
@@ -22,30 +39,26 @@
             <li>Luka Prskalo</li>
             <li>Arjun Singh</li>
         </ul>
-    </article>
-    <article>
-        <h2>The Original (<a href="https://www.curseforge.com/minecraft/mc-mods/ars-magica-2" target="_blank">Ars Magica 2 by Mition</a>)</h2>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur odit quo sequi temporibus, totam ullam voluptates. Blanditiis consequatur corporis delectus, deleniti deserunt earum esse, illo itaque odio quae repellendus voluptatum.
-    </article>
-    <article>
-        <h2>The Goal</h2>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci eaque exercitationem odio omnis pariatur perferendis.
-    </article>
-    <article>
-        <h2>Development progress</h2>
-        <section>
-            <h3>Milestones</h3>
-            <ul id="milestones">
-                <li>22.10.2021 Basic project structure created</li>
-                <li>26.11.2021 API freeze</li>
-                <li>24.12.2021 First alpha release</li>
-                <li>04.02.2022 First beta release</li>
-                <li>11.03.2022 Second beta release</li>
-                <li>25.03.2022 Release</li>
-            </ul>
-        </section>
-    </article>
+    </section>
+
+    <!-- Milestones -->
+    <section id="milestones">
+        <h3>Milestones</h3>
+        <hr/>
+        <ul>
+            <li class="done">22.10.2021 Basic project structure created</li>
+            <li>26.11.2021 API freeze</li>
+            <li>24.12.2021 First alpha release</li>
+            <li>04.02.2022 First beta release</li>
+            <li>11.03.2022 Second beta release</li>
+            <li>25.03.2022 Release</li>
+        </ul>
+    </section>
 </main>
-<footer></footer>
+
+<!-- Footer -->
+<footer>
+    <p> &copy; 2021 Georg Burkl (a.k.a. Minecraftschurli) </p>
+</footer>
 </body>
 </html>
