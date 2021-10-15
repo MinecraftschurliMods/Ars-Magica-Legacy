@@ -2,24 +2,14 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
@@ -35,11 +25,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        blockIdTranslation(AMBlocks.OCCULUS);
-        blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
-        blockIdTranslation(AMBlocks.ALTAR_CORE);
-        blockIdTranslation(AMBlocks.MAGIC_WALL);
-        addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
@@ -75,9 +60,22 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         itemIdTranslation(AMItems.BLANK_RUNE);
-        for (DyeColor color : DyeColor.values()) {
-            itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));
-        }
+        itemIdTranslation(AMItems.WHITE_RUNE);
+        itemIdTranslation(AMItems.ORANGE_RUNE);
+        itemIdTranslation(AMItems.MAGENTA_RUNE);
+        itemIdTranslation(AMItems.LIGHT_BLUE_RUNE);
+        itemIdTranslation(AMItems.YELLOW_RUNE);
+        itemIdTranslation(AMItems.LIME_RUNE);
+        itemIdTranslation(AMItems.PINK_RUNE);
+        itemIdTranslation(AMItems.GRAY_RUNE);
+        itemIdTranslation(AMItems.LIGHT_GRAY_RUNE);
+        itemIdTranslation(AMItems.CYAN_RUNE);
+        itemIdTranslation(AMItems.PURPLE_RUNE);
+        itemIdTranslation(AMItems.BLUE_RUNE);
+        itemIdTranslation(AMItems.BROWN_RUNE);
+        itemIdTranslation(AMItems.GREEN_RUNE);
+        itemIdTranslation(AMItems.RED_RUNE);
+        itemIdTranslation(AMItems.BLACK_RUNE);
         itemIdTranslation(AMItems.RUNE_BAG);
         itemIdTranslation(AMItems.ARCANE_COMPOUND);
         itemIdTranslation(AMItems.ARCANE_ASH);
@@ -88,66 +86,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
-        for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
-            affinityIdTranslation(affinity);
-            affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
-            affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
-        }
-        itemIdTranslation(AMItems.SPELL);
-        entityIdTranslation(AMEntities.PROJECTILE);
-        entityIdTranslation(AMEntities.WAVE);
-        entityIdTranslation(AMEntities.WALL);
-        entityIdTranslation(AMEntities.ZONE);
-        effectIdTranslation(AMMobEffects.AGILITY);
-        effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
-        effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
-        effectIdTranslation(AMMobEffects.CLARITY);
-        effectIdTranslation(AMMobEffects.ENTANGLE);
-        effectIdTranslation(AMMobEffects.FLIGHT);
-        effectIdTranslation(AMMobEffects.FROST);
-        effectIdTranslation(AMMobEffects.FURY);
-        effectIdTranslation(AMMobEffects.GRAVITY_WELL);
-        effectIdTranslation(AMMobEffects.ILLUMINATION);
-        effectIdTranslation(AMMobEffects.INSTANT_MANA);
-        effectIdTranslation(AMMobEffects.MAGIC_SHIELD);
-        effectIdTranslation(AMMobEffects.MANA_BOOST);
-        effectIdTranslation(AMMobEffects.MANA_REGEN);
-        effectIdTranslation(AMMobEffects.REFLECT);
-        effectIdTranslation(AMMobEffects.SCRAMBLE_SYNAPSES);
-        effectIdTranslation(AMMobEffects.SHIELD);
-        effectIdTranslation(AMMobEffects.SHRINK);
-        effectIdTranslation(AMMobEffects.SILENCE);
-        effectIdTranslation(AMMobEffects.SWIFT_SWIM);
-        effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
-        effectIdTranslation(AMMobEffects.TRUE_SIGHT);
-        effectIdTranslation(AMMobEffects.WATERY_GRAVE);
-        skillPointIdTranslation(AMSkillPoints.BLUE);
-        skillPointIdTranslation(AMSkillPoints.GREEN);
-        skillPointIdTranslation(AMSkillPoints.RED);
+        addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        blockIdTranslation(AMBlocks.OCCULUS);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
-        add(SkillCommand.LANG_KEY_PREFIX + ".empty", "");
-        add(SkillCommand.LANG_KEY_PREFIX + ".forgetAll.success", "Forgot all skills");
-        add(SkillCommand.LANG_KEY_PREFIX + ".forget.success", "Forgot skill %s");
-        add(SkillCommand.LANG_KEY_PREFIX + ".learnAll.success", "Learned all skills");
-        add(SkillCommand.LANG_KEY_PREFIX + ".learn.success", "Learned skill %s");
-        add(SkillCommand.LANG_KEY_PREFIX + ".skillNotKnown", "Skill %s must be learned first");
-        add(SkillCommand.LANG_KEY_PREFIX + ".skillAlreadyKnown", "Skill %s has already been learned");
-        add(SpellItem.BURNOUT, "Burnout: %d");
-        add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
-        add(SpellItem.INVALID_SPELL, "[Invalid Spell]");
-        add(SpellItem.INVALID_SPELL_DESC, "Something is wrong with this spell, please check the log for warnings or errors!");
-        add(SpellItem.MANA_COST, "Mana cost: %d");
-        add(SpellItem.REAGENTS, "Reagents:");
-        add(SpellItem.SPELL_CAST_RESULT + "burned_out", "Burned out!");
-        add(SpellItem.SPELL_CAST_RESULT + "cancelled", "Spell cast failed!");
-        add(SpellItem.SPELL_CAST_RESULT + "fail", "Spell cast failed!");
-        add(SpellItem.SPELL_CAST_RESULT + "missing_reagents", "Missing reagents!");
-        add(SpellItem.SPELL_CAST_RESULT + "not_enough_mana", "Not enough mana!");
-        add(SpellItem.SPELL_CAST_RESULT + "silenced", "Silence!");
-        add(SpellItem.UNKNOWN_ITEM, "Unknown Item");
-        add(SpellItem.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
-        add(SpellItem.UNNAMED_SPELL, "Unnamed Spell");
-        add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this block!");
+        add("skill_point." + ArsMagicaAPI.MOD_ID + ".blue", "Blue");
     }
 
     /**
@@ -175,24 +117,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
         addEffect(effect, idToTranslation(effect.getId().getPath()));
-    }
-
-    /**
-     * Adds an affinity translation that matches the affinity id.
-     *
-     * @param affinity The affinity to generate the translation for.
-     */
-    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
-        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
-    }
-
-    /**
-     * Adds an skillPoint translation that matches the skillPoint id.
-     *
-     * @param skillPoint The skillPoint to generate the translation for.
-     */
-    private void skillPointIdTranslation(RegistryObject<? extends ISkillPoint> skillPoint) {
-        addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
     }
 
     /**
@@ -243,88 +167,5 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         for (String string : id.split("_"))
             result.append(string.substring(0, 1).toUpperCase()).append(string.substring(1)).append(" ");
         return result.substring(0, result.length() - 1);
-    }
-
-    /**
-     * Adds an affinity translation.
-     *
-     * @param affinity    The affinity to add the translation for.
-     * @param translation The translation for the affinity.
-     */
-    private void addAffinity(Supplier<? extends IAffinity> affinity, String translation) {
-        addAffinity(affinity.get(), translation);
-    }
-
-    /**
-     * Adds an affinity translation.
-     *
-     * @param affinity    The affinity to add the translation for.
-     * @param translation The translation for the affinity.
-     */
-    private void addAffinity(IAffinity affinity, String translation) {
-        add(affinity.getTranslationKey(), translation);
-    }
-
-    /**
-     * Adds an affinity item translation.
-     *
-     * @param affinityItem The affinity item to add the translation for.
-     * @param affinity     The affinity to generate the translation from.
-     */
-    private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity) {
-        affinityItemIdTranslation(affinityItem.getId(), affinity.getId());
-    }
-
-    /**
-     * Adds an affinity item translation.
-     *
-     * @param affinityItemId The affinity item to add the translation for.
-     * @param affinityId     The affinity to generate the translation from.
-     */
-    private void affinityItemIdTranslation(ResourceLocation affinityItemId, ResourceLocation affinityId) {
-        String translation = idToTranslation(affinityId.getPath()) + " " + idToTranslation(affinityItemId.getPath());
-        affinityItemTranslation(affinityItemId, affinityId, translation);
-    }
-
-    /**
-     * Adds an affinity item translation.
-     *
-     * @param affinityItem The affinity item to add the translation for.
-     * @param affinity     The affinity to generate the translation from.
-     * @param translation  The custom translation to use.
-     */
-    private void affinityItemTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity, String translation) {
-        affinityItemTranslation(affinityItem.getId(), affinity.getId(), translation);
-    }
-
-    /**
-     * Adds an affinity item translation.
-     *
-     * @param affinityItemId The affinity item to add the translation for.
-     * @param affinityId     The affinity to generate the translation from.
-     * @param translation    The custom translation to use.
-     */
-    private void affinityItemTranslation(ResourceLocation affinityItemId, ResourceLocation affinityId, String translation) {
-        add(Util.makeDescriptionId(Util.makeDescriptionId("item", affinityItemId), affinityId), translation);
-    }
-
-    /**
-     * Adds a skill point translation.
-     *
-     * @param skillPoint  The skill point to add the translation for.
-     * @param translation The translation for the skill point.
-     */
-    private void addSkillPoint(Supplier<? extends ISkillPoint> skillPoint, String translation) {
-        addSkillPoint(skillPoint.get(), translation);
-    }
-
-    /**
-     * Adds a skill point translation.
-     *
-     * @param skillPoint  The skill point to add the translation for.
-     * @param translation The translation for the skill point.
-     */
-    private void addSkillPoint(ISkillPoint skillPoint, String translation) {
-        add(skillPoint.getTranslationKey(), translation);
     }
 }
