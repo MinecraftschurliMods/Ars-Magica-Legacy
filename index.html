@@ -1,60 +1,54 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
+    <base href="/"/>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ars Magica Legacy">
+    <meta property="og:title" content="Minecraft Mod - Ars Magica: Legacy">
+    <meta property="og:description" content="'Ars Magica: Legacy' is a project to revive the Minecraft Mod Ars Magica 2 by Mition">
+    <meta property="og:image" content="./imgLayout/logo.png">
     <link rel="shortcut icon" type="image/x-icon" href="imgLayout/favicon.ico"/>
     <title>Ars Magica Legacy</title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script type="application/javascript" src="js/content-loading.js"></script>
+    <script type="application/javascript">loadContent('./sections.json', './sections/', '#main', 'section', '#main-nav>ul')</script>
 </head>
 <body>
 <!-- Header -->
 <header>
-    <div id="logo"> <a href="#"><svg width="150" height="100%" viewBox="100 -15 150 150"><use href="imgLayout/tgm_logo.svg#g10"></use></svg></a> </div>
+    <div id="logo">
+        <a href="#">
+            <svg width="150" height="100%" viewBox="0 10 400 100">
+                <title>TGM</title>
+                <use href="imgLayout/tgm_logo.svg#g10"></use>
+            </svg>
+        </a>
+    </div>
     <nav id="main-nav">
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#milestones">Milestones</a></li>
-        </ul>
+        <ul><li><a href="#home">Home</a></li></ul>
     </nav>
 </header>
 
-<main>
+<!-- Main -->
+<main id="main">
     <!-- Home -->
     <section id="home">
         <img src="imgLayout/logo.png" alt="Ars Magica - Legacy"/>
         <p>"Ars Magica: Legacy" is a project to revive the Minecraft Mod Ars Magica 2 by Mition.</p>
         <p>It aims to keep as much of the content equal to the original while making it more performant, extensible and customizable.</p>
     </section>
-
-    <!-- About -->
-    <section id="team">
-        <h3>The Team</h3>
-        <hr/>
-        <ul>
-            <li>Georg Burkl (a.k.a. Minecraftschurli)</li>
-            <li>Peter Mrkonjic</li>
-            <li>David Neustifter (a.k.a. IchHabeHunger54)</li>
-            <li>Luka Prskalo</li>
-            <li>Arjun Singh</li>
-        </ul>
-    </section>
-
-    <!-- Milestones -->
-    <section id="milestones">
-        <h3>Milestones</h3>
-        <hr/>
-        <ul>
-            <li class="done">22.10.2021 Basic project structure created</li>
-            <li>26.11.2021 API freeze</li>
-            <li>24.12.2021 First alpha release</li>
-            <li>04.02.2022 First beta release</li>
-            <li>11.03.2022 Second beta release</li>
-            <li>25.03.2022 Release</li>
-        </ul>
-    </section>
 </main>
+
+<!-- Section template -->
+<template id="section">
+    <section>
+        <h3 class="heading"></h3>
+        <hr/>
+        <template class="body"></template>
+    </section>
+</template>
 
 <!-- Footer -->
 <footer>
