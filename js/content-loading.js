@@ -24,6 +24,7 @@ async function loadContent(content_json_url, content_folder, target_container_se
     element.querySelector('.body').replaceWith(...(await fetch(content_folder+section.id+'.html').then(value => value.text()).then(value => parseToNodeList(value))));
     target.appendChild(document.createComment(' '+section.name+' '));
     target.appendChild(element);
+    element.querySelectorAll('script').forEach(value => eval(value.text));
 
     if (nav_list) {
       const item = document.createElement('li');

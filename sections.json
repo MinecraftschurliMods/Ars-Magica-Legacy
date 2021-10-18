@@ -9,6 +9,10 @@
     "title": "The Team"
   },
   {
+    "id": "preview",
+    "name": "Preview"
+  },
+  {
     "id": "milestones",
     "name": "Milestones"
   }

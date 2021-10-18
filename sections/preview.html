@@ -1,0 +1,36 @@
+<div class="carousel">
+    <button id="prevPreview">&lt;</button>
+    <div class="images">
+        <figure>
+            <img src="img/mana_creeper.png" alt="Mana Creeper">
+            <figcaption>A Mana Creeper</figcaption>
+        </figure>
+        <figure>
+            <img src="img/mana_creeper.png" alt="Mana Creeper">
+            <figcaption>A Mana Creeper 2</figcaption>
+        </figure>
+    </div>
+    <button id="nextPreview">&gt;</button>
+</div>
+<script type="application/javascript">
+  const carouselImages = document.querySelectorAll('.carousel .images figure');
+  carouselImages.forEach(value => value.style.display = 'none');
+  carouselImages.item(0).style.removeProperty('display');
+  let index = 0;
+
+  document.getElementById('prevPreview').onclick = () => {
+    const carouselImages = document.querySelectorAll('.carousel .images figure');
+    index--;
+    if (index < 0) index = carouselImages.length - 1;
+    carouselImages.forEach(value => value.style.display = 'none');
+    carouselImages.item(index).style.removeProperty('display');
+  }
+
+  document.getElementById('nextPreview').onclick = () => {
+    const carouselImages = document.querySelectorAll('.carousel .images figure');
+    index++;
+    if (index >= carouselImages.length) index = 0;
+    carouselImages.forEach(value => value.style.display = 'none');
+    carouselImages.item(index).style.removeProperty('display');
+  }
+</script>

@@ -13,6 +13,15 @@
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <script type="application/javascript" src="js/content-loading.js"></script>
     <script type="application/javascript">loadContent('./sections.json', './sections/', '#main', 'section', '#main-nav>ul')</script>
+
+    <!-- Section template -->
+    <template id="section">
+        <section>
+            <h3 class="heading"></h3>
+            <hr/>
+            <template class="body"></template>
+        </section>
+    </template>
 </head>
 <body>
 <!-- Header -->
@@ -26,7 +35,7 @@
         </a>
     </div>
     <label for="burger" class="burger">&#9776;</label>
-    <input type="checkbox" id="burger" style="display: none"/>
+    <input type="checkbox" id="burger" style="display: none" checked/>
     <nav id="main-nav">
         <ul><li><a href="#home">Home</a></li></ul>
     </nav>
@@ -37,15 +46,6 @@
     <!-- Home -->
     <section id="home"></section>
 </main>
-
-<!-- Section template -->
-<template id="section">
-    <section>
-        <h3 class="heading"></h3>
-        <hr/>
-        <template class="body"></template>
-    </section>
-</template>
 
 <!-- Footer -->
 <footer>

@@ -90,7 +90,7 @@ h2 {
 
 h3 {
   font-size: 40px;
-  padding-top: 8%;
+  padding-top: 5%;
   margin-bottom: 5px;
   margin-top: 0;
   color: var(--h3-color);
@@ -110,7 +110,7 @@ hr {
 }
 
 figure img {
-  max-width: 100%;
+  max-width: 60vmin;
 }
 
 #logo, li, img {
@@ -124,7 +124,7 @@ figure img {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 0 4rem;
+  margin: 0 3rem;
   flex-direction: row;
   align-content: flex-end;
   align-items: stretch;
@@ -156,6 +156,36 @@ figure img {
 
 .burger {
   display: none;
+}
+
+#preview {
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: center;
+}
+.carousel .images {
+  display: flex;
+  margin: 2rem;
+}
+.carousel button {
+  border: none;
+  color: var(--body-fg);
+  background-color: var(--card-bg);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+.carousel figure {
+  flex-grow: 1;
+  margin: 0;
 }
 
 /* Header ***************************/
@@ -265,7 +295,7 @@ footer p {
     display: block;
     position: absolute;
     top: 0.75rem;
-    right: 1rem;
+    right: 1.1rem;
   }
   header nav {
     margin-top: 0;
@@ -315,6 +345,10 @@ footer p {
   }
   header nav ul li:hover {
     background-color: #eee;
+  }
+
+  .carousel .images {
+    margin: 0.9rem;
   }
 }
 @media screen and (prefers-color-scheme: dark) {
