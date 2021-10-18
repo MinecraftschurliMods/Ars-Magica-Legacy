@@ -11,8 +11,9 @@
   --footer-bg: #3f3f3f;
   --footer-fg: #f0f0f0;
   --header-bg: #fff;
-  --body-bg: #ffffff;
+  --body-bg: rgba(255, 255, 255, 200);
   --body-fg: #000;
+  --card-bg: #858585;
 }
 
 html, body {
@@ -38,9 +39,14 @@ main {
   flex-direction: column;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  /*background-image: url('./imgLayout/Logo1600x400web.png');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;*/
 }
 main section {
   background-color: var(--body-bg);
+  display: table;
 }
 main section:nth-child(even) {
   filter: brightness(90%);
@@ -103,11 +109,53 @@ hr {
   margin: 0 auto 40px auto;
 }
 
+figure img {
+  max-width: 100%;
+}
+
 #logo, li, img {
   transition: all 300ms;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -o-transition: all 300ms;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 4rem;
+  flex-direction: row;
+  align-content: flex-end;
+  align-items: stretch;
+}
+.card-container .card {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 10rem;
+  background-color: var(--card-bg);
+  padding: 1rem 1rem 4rem;
+  margin: 1rem;
+  position: relative;
+}
+.card-container .card img {
+  width: 60%;
+  max-width: 6rem;
+}
+.card-container .card .title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  padding: 1rem;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.burger {
+  display: none;
 }
 
 /* Header ***************************/
@@ -155,24 +203,14 @@ header nav ul li:hover {
 }
 
 /* Home ***************************/
-/*#home {
-  !*background-size: contain;
+#home {
+  background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../imgLayout/logo.png");
-  background-attachment: fixed;*!
-}*/
-#home > img {
-  width: 100%;
+  background-image: url("../imgLayout/logo1600x800.png");
+  background-attachment: fixed;
+  background-position-x: center;
 }
 
-/*#home #about img {
-  width: 32px;
-  margin-top: 200px;
-  opacity: 0.7;
-}
-#home #about img:hover {
-  opacity: 1;
-}*/
 /* About ***************************/
 #about h4 {
   font-size: 25px;
@@ -195,6 +233,10 @@ header nav ul li:hover {
   content: "✔";
 }
 
+#team {
+  padding-bottom: 2rem;
+}
+
 /* Footer ***************************/
 footer {
   width: 100%;
@@ -214,12 +256,27 @@ footer p {
 
   header {
     height: auto;
+    flex-direction: column;
+  }
+  header input:checked ~ nav > ul {
+    display: none;
+  }
+  header .burger {
+    display: block;
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
   }
   header nav {
     margin-top: 0;
+    margin-right: 0;
+  }
+  header nav ul {
+    flex-direction: column;
   }
   header nav ul li a {
     font-size: 1rem;
+    line-height: 2rem;
   }
 
   h1 {
@@ -271,8 +328,9 @@ footer p {
     --footer-bg: #3b3b3b;
     --footer-fg: #c7c7c7;
     --header-bg: #3b3b3b;
-    --body-bg: #2a2a2a;
+    --body-bg: rgba(42, 42, 42, 200);
     --body-fg: #fff;
+    --card-bg: #525252;
   }
 
   main::-webkit-scrollbar {

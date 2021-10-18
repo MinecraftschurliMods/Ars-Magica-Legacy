@@ -12,8 +12,9 @@
   --footer-bg: #3f3f3f;
   --footer-fg: #f0f0f0;
   --header-bg: #fff;
-  --body-bg: #ffffff;
+  --body-bg: rgba(255, 255, 255, 200);
   --body-fg: #000;
+  --card-bg: #858585;
 }
 
 html, body {
@@ -40,8 +41,14 @@ main {
   overflow-y: scroll;
   scroll-behavior: smooth;
 
+  /*background-image: url('./imgLayout/Logo1600x400web.png');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;*/
+
   section {
     background-color: var(--body-bg);
+    display: table;
 
     &:nth-child(even) {
       filter: brightness(90%);
@@ -99,11 +106,57 @@ hr {
   border: 0;
   margin: 0 auto 40px auto;
 }
+figure {
+  img {
+    max-width: 100%;
+  }
+}
 #logo, li, img  {
   transition: all 300ms;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -o-transition: all 300ms;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 4rem;
+  flex-direction: row;
+  align-content: flex-end;
+  align-items: stretch;
+
+  .card {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 10rem;
+    background-color: var(--card-bg);
+    padding: 1rem 1rem 4rem;
+    margin: 1rem;
+    position: relative;
+
+    img {
+      width: 60%;
+      max-width: 6rem;
+    }
+
+    .title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: -webkit-fill-available;
+      padding: 1rem;
+    }
+  }
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.burger {
+  display: none;
 }
 
 /* Header ***************************/
@@ -160,23 +213,13 @@ header {
 
 /* Home ***************************/
 
-/*#home {
-  !*background-size: contain;
+#home {
+  background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../imgLayout/logo.png");
-  background-attachment: fixed;*!
-}*/
-#home>img {
-  width: 100%;
+  background-image: url("../imgLayout/logo1600x800.png");
+  background-attachment: fixed;
+  background-position-x: center;
 }
-/*#home #about img {
-  width: 32px;
-  margin-top: 200px;
-  opacity: 0.7;
-}
-#home #about img:hover {
-  opacity: 1;
-}*/
 
 /* About ***************************/
 
@@ -206,6 +249,10 @@ header {
   }
 }
 
+#team {
+  padding-bottom: 2rem;
+}
+
 
 /* Footer ***************************/
 
@@ -229,12 +276,30 @@ footer {
   }
   header {
     height: auto;
+    flex-direction: column;
+
+    input:checked ~ nav>ul {
+      display: none;
+    }
+
+    .burger {
+      display: block;
+      position: absolute;
+      top: .75rem;
+      right: 1rem;
+    }
 
     nav {
       margin-top: 0;
+      margin-right: 0;
 
-      ul li a {
-        font-size: 1rem;
+      ul {
+        flex-direction: column;
+
+        li a {
+          font-size: 1rem;
+          line-height: 2rem;
+        }
       }
     }
   }
@@ -291,8 +356,9 @@ footer {
     --footer-bg: #3b3b3b;
     --footer-fg: #c7c7c7;
     --header-bg: #3b3b3b;
-    --body-bg: #2a2a2a;
+    --body-bg: rgba(42, 42, 42, 200);
     --body-fg: #fff;
+    --card-bg: #525252;
   }
 
   main::-webkit-scrollbar {
