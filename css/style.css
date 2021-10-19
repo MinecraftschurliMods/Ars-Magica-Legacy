@@ -218,7 +218,7 @@ header nav ul li:hover {
 }
 
 #logo {
-  width: 110px;
+  width: auto;
   margin: 0 0 0 50px;
   --text-color: var(--body-fg);
 }
@@ -226,7 +226,7 @@ header nav ul li:hover {
   opacity: 0.5;
 }
 #logo img {
-  width: 100%;
+  height: 100%;
 }
 
 /* Home ***************************/
@@ -236,13 +236,16 @@ header nav ul li:hover {
   background-image: url("../imgLayout/home-bg1600x800.png");
   background-attachment: fixed;
   background-position-x: center;
+  height: 100%;
 }
-#home img {
-  width: 90%;
-  margin: 0 5%;
-  position: fixed;
-  top: 4rem;
-  left: 0;
+#home div {
+  background-image: url("../imgLayout/home-text.png");
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-attachment: fixed;
 }
 
 /* About ***************************/
@@ -330,6 +333,7 @@ footer p {
 @media screen and (max-width: 480px) {
   #logo {
     width: 90px;
+    height: 2.5rem;
     margin-left: 30px;
   }
 
