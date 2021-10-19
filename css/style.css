@@ -39,14 +39,11 @@ main {
   flex-direction: column;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  /*background-image: url('./imgLayout/Logo1600x400web.png');
-  background-repeat: no-repeat;
-  background-position: top;
-  background-size: cover;*/
 }
 main section {
   background-color: var(--body-bg);
   display: table;
+  z-index: 2;
 }
 main section:nth-child(even) {
   filter: brightness(90%);
@@ -236,9 +233,16 @@ header nav ul li:hover {
 #home {
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../imgLayout/logo1600x800.png");
+  background-image: url("../imgLayout/home-bg1600x800.png");
   background-attachment: fixed;
   background-position-x: center;
+}
+#home img {
+  width: 90%;
+  margin: 0 5%;
+  position: fixed;
+  top: 4rem;
+  left: 0;
 }
 
 /* About ***************************/

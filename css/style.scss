@@ -41,14 +41,10 @@ main {
   overflow-y: scroll;
   scroll-behavior: smooth;
 
-  /*background-image: url('./imgLayout/Logo1600x400web.png');
-  background-repeat: no-repeat;
-  background-position: top;
-  background-size: cover;*/
-
   section {
     background-color: var(--body-bg);
     display: table;
+    z-index: 2;
 
     &:nth-child(even) {
       filter: brightness(90%);
@@ -145,6 +141,7 @@ figure {
       position: absolute;
       bottom: 0;
       left: 0;
+      //noinspection CssInvalidPropertyValue
       width: -webkit-fill-available;
       padding: 1rem;
     }
@@ -248,9 +245,17 @@ header {
 #home {
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../imgLayout/logo1600x800.png");
+  background-image: url("../imgLayout/home-bg1600x800.png");
   background-attachment: fixed;
   background-position-x: center;
+
+  img {
+    width: 90%;
+    margin: 0 5%;
+    position: fixed;
+    top: 4rem;
+    left: 0;
+  }
 }
 
 /* About ***************************/
