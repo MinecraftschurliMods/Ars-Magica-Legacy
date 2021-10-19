@@ -73,7 +73,9 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (!(pSource.getEntity() instanceof WaterGuardian)) return false;
+        if (!(pSource.getEntity() instanceof WaterGuardian)) {
+            return false;
+        }
         if (isClone() && master != null) {
             //master.enableUberAttack();
             master.clearClones();
@@ -83,6 +85,17 @@ public class WaterGuardian extends AbstractBoss {
         if (!isClone() && random.nextInt(10) < 6) {
             level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
             return false;
+        }
+
+        //modifyDamageAmount
+        if(pSource == DamageSource.LIGHTNING_BOLT) {
+            pAmount *= 2.0f;
+        }
+        if(pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
+            pAmount = 0;
+        }
+        if(pSource == DamageSource.FREEZE) {
+            pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
     }
