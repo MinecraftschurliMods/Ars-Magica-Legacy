@@ -288,6 +288,7 @@ footer p {
 @media screen and (max-width: 1024px) {
   #logo {
     width: 100px;
+    height: 2.5rem;
     margin-top: 5px;
   }
 
@@ -333,7 +334,6 @@ footer p {
 @media screen and (max-width: 480px) {
   #logo {
     width: 90px;
-    height: 2.5rem;
     margin-left: 30px;
   }
 
