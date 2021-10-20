@@ -1,12 +1,9 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.*;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import net.minecraft.world.item.BlockItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -100,6 +97,7 @@ public interface AMItems {
     RegistryObject<WizardsChalkItem>         WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<AffinityEssenceItem>      AFFINITY_ESSENCE         = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>         AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
+    RegistryObject<SpellItem>                SPELL                    = ITEMS.register("spell", () -> new SpellItem(ITEM_1));
 
     /**
      * Empty method that is required for classloading

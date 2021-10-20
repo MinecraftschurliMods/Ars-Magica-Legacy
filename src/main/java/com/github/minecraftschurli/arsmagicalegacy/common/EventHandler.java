@@ -2,19 +2,17 @@ package com.github.minecraftschurli.arsmagicalegacy.common;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
-import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
-import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -101,11 +99,13 @@ public final class EventHandler {
     private static void registerDataManager(AddReloadListenerEvent event) {
         event.addListener(OcculusTabManager.instance());
         event.addListener(SkillManager.instance());
+        event.addListener(SpellDataManager.instance());
     }
 
     private static void onTick(TickEvent.PlayerTickEvent event) {
         if (event.side != LogicalSide.SERVER) return;
         if (event.phase != TickEvent.Phase.START) return;
+        if (event.player.isDeadOrDying()) return;
 
         ArsMagicaAPI.get().getMagicHelper().increaseMana(event.player, 0.1f /*+ 0.3f * CapabilityHelper.getManaRegenLevel(event.player)*/);
         ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(event.player, 0.4f);

@@ -5,6 +5,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -111,6 +113,13 @@ public final class ArsMagicaAPI {
         IOcculusTabManager getOcculusTabManager();
 
         /**
+         * Get the {@link ISpellDataManager} instance.
+         *
+         * @return the {@link ISpellDataManager} instance
+         */
+        ISpellDataManager getSpellDataManager();
+
+        /**
          * Get the {@link ISkillHelper} instance.
          *
          * @return the {@link ISkillHelper} instance
@@ -137,6 +146,8 @@ public final class ArsMagicaAPI {
          * @param player the player to open the gui for
          */
         void openOcculusGui(Player player);
+
+        ISpellHelper getSpellHelper();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -169,12 +180,22 @@ public final class ArsMagicaAPI {
         }
 
         @Override
+        public ISpellDataManager getSpellDataManager() {
+            return null;
+        }
+
+        @Override
         public ISkillHelper getSkillHelper() {
             return null;
         }
 
         @Override
         public void openOcculusGui(final Player pPlayer) {
+        }
+
+        @Override
+        public ISpellHelper getSpellHelper() {
+            return null;
         }
 
         @Override

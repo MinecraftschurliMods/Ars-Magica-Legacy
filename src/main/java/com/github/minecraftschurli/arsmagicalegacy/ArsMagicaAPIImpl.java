@@ -8,6 +8,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
@@ -18,6 +20,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -68,6 +72,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     }
 
     @Override
+    public ISpellDataManager getSpellDataManager() {
+        return SpellDataManager.instance();
+    }
+
+    @Override
     public ISkillHelper getSkillHelper() {
         return SkillHelper.instance();
     }
@@ -80,6 +89,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public IMagicHelper getMagicHelper() {
         return MagicHelper.instance();
+    }
+
+    @Override
+    public ISpellHelper getSpellHelper() {
+        return SpellHelper.instance();
     }
 
     @Override

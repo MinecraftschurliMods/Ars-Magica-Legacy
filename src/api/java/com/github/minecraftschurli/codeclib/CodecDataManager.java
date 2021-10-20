@@ -93,7 +93,7 @@ public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
         return this;
     }
 
-    public T get(ResourceLocation id) {
+    public T get(@Nullable ResourceLocation id) {
         if (this.data == null) {
             throw this.logger.throwing(new IllegalStateException("CodecDataManager(%s) not loaded yet!".formatted(this.folderName)));
         }
@@ -101,16 +101,17 @@ public class CodecDataManager<T> extends SimpleJsonResourceReloadListener {
     }
 
     @Nullable
-    public T getNullable(ResourceLocation id) {
+    public T getNullable(@Nullable ResourceLocation id) {
+        if (id == null) return null;
         if (this.data == null) return null;
         return this.data.get(id);
     }
 
-    public T getOrDefault(ResourceLocation id, Supplier<T> defaultSupplier) {
+    public T getOrDefault(@Nullable ResourceLocation id, Supplier<T> defaultSupplier) {
         return this.getOptional(id).orElseGet(defaultSupplier);
     }
 
-    public Optional<T> getOptional(ResourceLocation id) {
+    public Optional<T> getOptional(@Nullable ResourceLocation id) {
         return Optional.ofNullable(this.getNullable(id));
     }
 

@@ -13,9 +13,13 @@ public final class BurnoutHUD extends AbstractHUD {
         int xStart = width / 2 + 121;
         int yStart = height - 13;
         final Player player = Minecraft.getInstance().player;
-        var magicHelper = ArsMagicaAPI.get().getMagicHelper();
-        double burnout = magicHelper.getBurnout(player);
-        double maxBurnout = magicHelper.getMaxBurnout(player);
+        double burnout = 0;
+        double maxBurnout = 0;
+        if (!player.isDeadOrDying()) {
+            var magicHelper = ArsMagicaAPI.get().getMagicHelper();
+            burnout = magicHelper.getBurnout(player);
+            maxBurnout = magicHelper.getMaxBurnout(player);
+        }
         renderBar(mStack, xStart, yStart, 80, 10, burnout, maxBurnout, 0x880000);
     }
 }

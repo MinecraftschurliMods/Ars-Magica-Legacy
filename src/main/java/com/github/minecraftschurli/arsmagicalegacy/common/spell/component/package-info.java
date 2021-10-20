@@ -1,6 +1,6 @@
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.minecraftschurli.arsmagicalegacy.api.spell;
+@ParametersAreNonnullByDefault
+package com.github.minecraftschurli.arsmagicalegacy.common.spell.component;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

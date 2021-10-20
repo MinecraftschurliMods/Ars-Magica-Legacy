@@ -3,7 +3,10 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellComponent;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -27,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 @NonExtendable
@@ -54,7 +56,7 @@ public interface AMRegistries {
     Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry("affinity", () -> new RegistryBuilder<IAffinity>().setDefaultKey(IAffinity.NONE));
 
     DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(ISpellPart.class, ArsMagicaAPI.MOD_ID);
-    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part", () -> new RegistryBuilder<ISpellPart>().addCallback(new SpellPartCallback()));
+    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part", RegistryBuilder::new);
 
 
     /**
@@ -68,6 +70,7 @@ public interface AMRegistries {
         AMAttributes.register();
         AMSkillPoints.register();
         AMAffinities.register();
+        AMSpellParts.register();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);
@@ -84,39 +87,6 @@ public interface AMRegistries {
         ATTRIBUTES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
-    }
-
-    class SpellPartCallback implements IForgeRegistry.AddCallback<ISpellPart>, IForgeRegistry.ClearCallback<ISpellPart>, IForgeRegistry.CreateCallback<ISpellPart> {
-        private static final ResourceLocation SPELL_COMPONENTS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_components");
-        private static final ResourceLocation SPELL_MODIFIERS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_modifiers");
-        private static final ResourceLocation SPELL_SHAPES = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_shapes");
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void onAdd(IForgeRegistryInternal<ISpellPart> owner, RegistryManager stage, int id, ISpellPart obj, @Nullable ISpellPart oldObj) {
-            if (obj instanceof ISpellPart.ISpellComponent component) {
-                ((List<ISpellPart.ISpellComponent>) owner.getSlaveMap(SPELL_COMPONENTS, List.class)).add(component);
-            }
-            if (obj instanceof ISpellPart.ISpellModifier modifier) {
-                ((List<ISpellPart.ISpellModifier>) owner.getSlaveMap(SPELL_MODIFIERS, List.class)).add(modifier);
-            }
-            if (obj instanceof ISpellPart.ISpellShape shape) {
-                ((List<ISpellPart.ISpellShape>) owner.getSlaveMap(SPELL_SHAPES, List.class)).add(shape);
-            }
-        }
-
-        @Override
-        public void onClear(IForgeRegistryInternal<ISpellPart> owner, RegistryManager stage) {
-            owner.getSlaveMap(SPELL_COMPONENTS, List.class).clear();
-            owner.getSlaveMap(SPELL_MODIFIERS, List.class).clear();
-            owner.getSlaveMap(SPELL_SHAPES, List.class).clear();
-        }
-
-        @Override
-        public void onCreate(IForgeRegistryInternal<ISpellPart> owner, RegistryManager stage) {
-            owner.setSlaveMap(SPELL_COMPONENTS, new ArrayList<>());
-            owner.setSlaveMap(SPELL_MODIFIERS, new ArrayList<>());
-            owner.setSlaveMap(SPELL_SHAPES, new ArrayList<>());
-        }
+        SPELL_PARTS.register(bus);
     }
 }

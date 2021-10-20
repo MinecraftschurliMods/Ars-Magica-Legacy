@@ -1,6 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.magic;
 
+import com.mojang.datafixers.util.Either;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.Collection;
 
 /**
  * A magic helper handles the level/mana/burnout data
@@ -35,64 +41,64 @@ public interface IMagicHelper {
     /**
      * Get the mana value of the given player.
      *
-     * @param player the player to get the mana value for
+     * @param entity the player to get the mana value for
      * @return the mana value of the player
      */
-    float getMana(Player player);
+    float getMana(LivingEntity entity);
 
     /**
      * Get the maximum mana value of the given player.
      *
-     * @param player the player to get the maximum mana value for
+     * @param entity the player to get the maximum mana value for
      * @return the maximum mana value of the player
      */
-    float getMaxMana(Player player);
+    float getMaxMana(LivingEntity entity);
 
     /**
      * Increase the mana value of the given player.
      *
-     * @param player the player to increase the mana value for
+     * @param entity the player to increase the mana value for
      * @return true if it succeeded, false otherwise
      */
-    boolean increaseMana(Player player, float amount);
+    boolean increaseMana(LivingEntity entity, float amount);
 
     /**
      * Decrease the mana value of the given player.
      *
-     * @param player the player to decrease the mana value for
+     * @param entity the player to decrease the mana value for
      * @return true if it succeeded, false otherwise
      */
-    boolean decreaseMana(Player player, float amount);
+    boolean decreaseMana(LivingEntity entity, float amount);
 
     /**
      * Get the burnout value of the given player.
      *
-     * @param player the player to get the burnout value for
+     * @param entity the player to get the burnout value for
      * @return the burnout value of the player
      */
-    float getBurnout(Player player);
+    float getBurnout(LivingEntity entity);
 
     /**
      * Get the maximum burnout value of the given player.
      *
-     * @param player the player to get the maximum burnout value for
+     * @param entity the player to get the maximum burnout value for
      * @return the maximum burnout value of the player
      */
-    float getMaxBurnout(Player player);
+    float getMaxBurnout(LivingEntity entity);
 
     /**
      * Increase the burnout value of the given player.
      *
-     * @param player the player to increase the burnout value for
+     * @param entity the player to increase the burnout value for
      * @return true if it succeeded, false otherwise
      */
-    boolean increaseBurnout(Player player, float amount);
+    boolean increaseBurnout(LivingEntity entity, float amount);
 
     /**
      * Decrease the burnout value of the given player.
      *
-     * @param player the player to decrease the burnout value for
+     * @param entity the player to decrease the burnout value for
      * @return true if it succeeded, false otherwise
      */
-    boolean decreaseBurnout(Player player, float amount);
+    boolean decreaseBurnout(LivingEntity entity, float amount);
 }

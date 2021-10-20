@@ -8,6 +8,7 @@ import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -54,18 +55,18 @@ public final class MagicHelper implements IMagicHelper {
                              player.getUUID())));
     }
 
-    private ManaHolder getManaHolder(Player player) {
-        return player.getCapability(MANA).orElseThrow(
-                () -> new RuntimeException("Could not retrieve mana capability for player %s{%s}".formatted(
-                        player.getDisplayName().getString(),
-                        player.getUUID())));
+    private ManaHolder getManaHolder(LivingEntity livingEntity) {
+        return livingEntity.getCapability(MANA).orElseThrow(
+                () -> new RuntimeException("Could not retrieve mana capability for LivingEntity %s{%s}".formatted(
+                        livingEntity.getDisplayName().getString(),
+                        livingEntity.getUUID())));
     }
 
-    private BurnoutHolder getBurnoutHolder(Player player) {
-        return player.getCapability(BURNOUT).orElseThrow(
-                () -> new RuntimeException(("Could not retrieve burnout capability for player %s{%s}").formatted(
-                        player.getDisplayName().getString(),
-                        player.getUUID())));
+    private BurnoutHolder getBurnoutHolder(LivingEntity livingEntity) {
+        return livingEntity.getCapability(BURNOUT).orElseThrow(
+                () -> new RuntimeException(("Could not retrieve burnout capability for LivingEntity %s{%s}").formatted(
+                        livingEntity.getDisplayName().getString(),
+                        livingEntity.getUUID())));
     }
 
     @Override
@@ -102,78 +103,86 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     @Override
-    public float getMana(Player player) {
-        return getManaHolder(player).getMana();
+    public float getMana(LivingEntity livingEntity) {
+        return getManaHolder(livingEntity).getMana();
     }
 
     @Override
-    public float getMaxMana(Player player) {
-        return (float) player.getAttributeValue(AMAttributes.MAX_MANA.get());
+    public float getMaxMana(LivingEntity livingEntity) {
+        return (float) livingEntity.getAttributeValue(AMAttributes.MAX_MANA.get());
     }
 
     @Override
-    public boolean increaseMana(Player player, float amount) {
+    public boolean increaseMana(LivingEntity livingEntity, float amount) {
         if (amount < 0) {
             return false;
         }
-        var max = getMaxMana(player);
-        var magicHolder = getManaHolder(player);
+        var max = getMaxMana(livingEntity);
+        var magicHolder = getManaHolder(livingEntity);
         var current = magicHolder.getMana();
         magicHolder.setMana(Math.min(current + amount, max));
-        syncMana(player);
+        if (livingEntity instanceof Player player) {
+            syncMana(player);
+        }
         return true;
     }
 
     @Override
-    public boolean decreaseMana(Player player, float amount) {
+    public boolean decreaseMana(LivingEntity livingEntity, float amount) {
         if (amount < 0) {
             return false;
         }
-        var magicHolder = getManaHolder(player);
+        var magicHolder = getManaHolder(livingEntity);
         var current = magicHolder.getMana();
         if (current - amount < 0) {
             return false;
         }
         magicHolder.setMana(current - amount);
-        syncMana(player);
+        if (livingEntity instanceof Player player) {
+            syncMana(player);
+        }
         return true;
     }
 
     @Override
-    public float getBurnout(Player player) {
-        return getBurnoutHolder(player).getBurnout();
+    public float getBurnout(LivingEntity livingEntity) {
+        return getBurnoutHolder(livingEntity).getBurnout();
     }
 
     @Override
-    public float getMaxBurnout(Player player) {
-        return (float) player.getAttributeValue(AMAttributes.MAX_BURNOUT.get());
+    public float getMaxBurnout(LivingEntity livingEntity) {
+        return (float) livingEntity.getAttributeValue(AMAttributes.MAX_BURNOUT.get());
     }
 
     @Override
-    public boolean increaseBurnout(Player player, float amount) {
+    public boolean increaseBurnout(LivingEntity livingEntity, float amount) {
         if (amount < 0) {
             return false;
         }
-        var max = getMaxBurnout(player);
-        var magicHolder = getBurnoutHolder(player);
+        var max = getMaxBurnout(livingEntity);
+        var magicHolder = getBurnoutHolder(livingEntity);
         var current = magicHolder.getBurnout();
         magicHolder.setBurnout(Math.min(current + amount, max));
-        syncBurnout(player);
+        if (livingEntity instanceof Player player){
+            syncBurnout(player);
+        }
         return true;
     }
 
     @Override
-    public boolean decreaseBurnout(Player player, float amount) {
+    public boolean decreaseBurnout(LivingEntity livingEntity, float amount) {
         if (amount < 0) {
             return false;
         }
-        var magicHolder = getBurnoutHolder(player);
+        var magicHolder = getBurnoutHolder(livingEntity);
         var current = magicHolder.getBurnout();
         if (current - amount < 0) {
             return false;
         }
         magicHolder.setBurnout(current - amount);
-        syncBurnout(player);
+        if (livingEntity instanceof Player player){
+            syncBurnout(player);
+        }
         return true;
     }
 

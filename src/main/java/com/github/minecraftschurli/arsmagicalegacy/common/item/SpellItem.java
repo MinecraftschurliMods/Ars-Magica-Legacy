@@ -2,9 +2,10 @@ package com.github.minecraftschurli.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -21,18 +22,33 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SpellItem extends Item implements ISpellItem {
-    private static final Logger LOGGER                  = LogManager.getLogger();
-    private static final String SPELL_KEY               = "Spell";
-    private static final String CURRENT_SHAPE_GROUP_KEY = "CurrentShapeGroup";
-    private static final String SPELL_CAST_FAIL         = "message.%s.spell_cast.fail".formatted(ArsMagicaAPI.MOD_ID)
-                                                                                      .intern();
+    private static final Logger LOGGER          = LogManager.getLogger();
+    private static final String SPELL_KEY       = "%s:spell".formatted(ArsMagicaAPI.MOD_ID).intern();
+    private static final String SPELL_ICON_KEY  = "%s:spell_icon".formatted(ArsMagicaAPI.MOD_ID).intern();
+    private static final String SPELL_CAST_FAIL = "message.%s.spell_cast.fail".formatted(ArsMagicaAPI.MOD_ID).intern();
 
     public SpellItem(Properties pProperties) {
         super(pProperties);
     }
 
     private void openIconPickGui(Level level, Player player, ItemStack heldItem) {
+        // TODO display gui
+    }
 
+    private void castSpell(Level level,
+                           Player player,
+                           InteractionHand hand,
+                           ItemStack stack) {
+        Spell spell = getSpell(stack);
+        if (spell.isContinuous()){
+            player.startUsingItem(hand);
+        } else {
+            var result = spell.cast(player, level, 0, true, true);
+            if (result.isFail()) {
+                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+            }
+        }
+        saveSpell(stack, spell);
     }
 
     @Override
@@ -44,11 +60,12 @@ public class SpellItem extends Item implements ISpellItem {
             return InteractionResultHolder.fail(heldItem);
         }
         if (heldItem.hasTag()) {
-            String icon = heldItem.getTag().getString("Icon");
+            assert heldItem.getTag() != null;
+            String icon = heldItem.getTag().getString(SPELL_ICON_KEY);
             if (!icon.isEmpty()) {
                 ResourceLocation iconLoc = ResourceLocation.tryParse(icon);
                 if (iconLoc != null) {
-                    player.startUsingItem(hand);
+                    castSpell(level, player, hand, heldItem);
                     return InteractionResultHolder.success(heldItem);
                 }
             }
@@ -66,7 +83,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (ArsMagicaAPI.get().getMagicHelper().getLevel(player) < 0 && !player.isCreative()) {
             return InteractionResult.FAIL;
         }
-        player.startUsingItem(context.getHand());
+        castSpell(context.getLevel(), context.getPlayer(), context.getHand(), context.getItemInHand());
         return InteractionResult.SUCCESS;
     }
 
@@ -76,36 +93,24 @@ public class SpellItem extends Item implements ISpellItem {
             return;
         }
         Spell spell = getSpell(stack);
-        byte currentGroup = stack.getOrCreateTag()
-                                 .getByte(CURRENT_SHAPE_GROUP_KEY);
-        if (spell.isContinuous(currentGroup)) {
-            var result = spell.cast(stack, entity, entity.level, true, true, count - 1);
+        if (spell.isContinuous()) {
+            var result = spell.cast(entity, entity.level, count - 1, true, true);
             if (result.isFail() && entity instanceof Player player) {
                 player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
             }
+            saveSpell(stack, spell);
             //SpellUtil.applyStage(stack, player, null, player.getPosX(), player.getPosY(), player.getPosZ(),
             // Direction.UP, player.world, true, true, count - 1);
         }
     }
 
-    @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        if (level.isClientSide()) {
-            return stack;
-        }
-        if (!stack.hasTag()) {
-            return stack;
-        }
-        Spell spell = getSpell(stack);
-        byte currentGroup = stack.getOrCreateTag()
-                                 .getByte(CURRENT_SHAPE_GROUP_KEY);
-        if (!spell.isContinuous(currentGroup)) {
-            var result = spell.cast(stack, entity, entity.level, true, true, 0);
-            if (result.isFail() && entity instanceof Player player) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
-            }
-        }
-        return stack;
+    public static void saveSpell(ItemStack stack, Spell spell) {
+        stack.getOrCreateTag().put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spell)
+                                                         .get()
+                                                         .mapRight(DataResult.PartialResult::message)
+                                                         .ifRight(LOGGER::warn)
+                                                         .left()
+                                                         .orElse(new CompoundTag()));
     }
 
     @Override
@@ -113,7 +118,7 @@ public class SpellItem extends Item implements ISpellItem {
         return 72000;
     }
 
-    private Spell getSpell(ItemStack stack) {
+    public static Spell getSpell(ItemStack stack) {
         return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY))
                           .get()
                           .mapLeft(Pair::getFirst)

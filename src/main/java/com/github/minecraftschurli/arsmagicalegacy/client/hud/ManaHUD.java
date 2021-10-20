@@ -11,9 +11,13 @@ public final class ManaHUD extends AbstractHUD {
         int xStart = width / 2 + 121;
         int yStart = height - 23;
         final Player player = Minecraft.getInstance().player;
-        var magicHelper = ArsMagicaAPI.get().getMagicHelper();
-        double mana = magicHelper.getMana(player);
-        double maxMana = magicHelper.getMaxMana(player);
+        double mana = 0;
+        double maxMana = 0;
+        if (!player.isDeadOrDying()) {
+            var magicHelper = ArsMagicaAPI.get().getMagicHelper();
+            mana = magicHelper.getMana(player);
+            maxMana = magicHelper.getMaxMana(player);
+        }
         renderBar(mStack, xStart, yStart, 80, 10, mana, maxMana, 0x99FFFF);
     }
 }
