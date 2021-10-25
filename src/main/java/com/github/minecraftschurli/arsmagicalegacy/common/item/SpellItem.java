@@ -65,7 +65,6 @@ public class SpellItem extends Item implements ISpellItem {
         if (level.isClientSide()) {
             Minecraft.getInstance().setScreen(new SpellIconPickScreen(stack));
         }
-        // TODO display gui
     }
 
     private void castSpell(Level level,

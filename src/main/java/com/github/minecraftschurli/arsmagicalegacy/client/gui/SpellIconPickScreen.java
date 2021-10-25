@@ -46,6 +46,8 @@ public class SpellIconPickScreen extends Screen {
         super(TextComponent.EMPTY);
         this.editBox = new EditBox(this.font, 0, 0, 0, 0, new TranslatableComponent(NAME_FIELD_MESSAGE));
         SpellItem.getSpellName(stack).ifPresent(this.editBox::setValue);
+        this.spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
+        SpellItem.getSpellIcon(stack).ifPresent(this.spellIconSelector::setSelected);
     }
 
     @Override
@@ -74,9 +76,9 @@ public class SpellIconPickScreen extends Screen {
     public void onClose() {
         super.onClose();
         String name = this.editBox.getValue();
-        SpellIconSelector.Icon icon = this.spellIconSelector.selected;
+        ResourceLocation icon = this.spellIconSelector.getSelected();
         if (!name.isBlank() && icon != null) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellIconSelectPacket(name, icon.icon()));
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellIconSelectPacket(name, icon));
         }
     }
 
@@ -102,7 +104,7 @@ public class SpellIconPickScreen extends Screen {
             this.elementsY = (height+2) / (ICON_SIZE + 2);
             if (spellIconSelector != null) {
                 this.page = spellIconSelector.page;
-                this.selected = spellIconSelector.selected;
+                setSelected(spellIconSelector.getSelected());
             }
             SpellIconAtlas.instance()
                           .getRegisteredIcons()
@@ -141,6 +143,25 @@ public class SpellIconPickScreen extends Screen {
             } else {
                 prev.active = true;
             }
+        }
+
+        public void setSelected(@Nullable ResourceLocation id) {
+            if (id == null) {
+                this.selected = null;
+            } else {
+                this.icons.stream()
+                          .filter(icon -> icon.icon.equals(id))
+                          .findFirst()
+                          .ifPresent(icon -> this.selected = icon);
+            }
+        }
+
+        @Nullable
+        public ResourceLocation getSelected() {
+            if (this.selected != null) {
+                return this.selected.icon();
+            }
+            return null;
         }
 
         @Nullable
