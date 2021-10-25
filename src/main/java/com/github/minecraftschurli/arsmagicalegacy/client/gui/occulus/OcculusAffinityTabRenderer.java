@@ -14,6 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,9 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         int cX = width / 2;
         int cY = height / 2;
         List<Component> drawString = new ArrayList<>();
-        for (IAffinity aff : affinityRegistry) {
+        List<IAffinity> affinities = new ArrayList<>(affinityRegistry.getValues());
+        affinities.sort(null);
+        for (IAffinity aff : affinities) {
             if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
             double depth = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(getPlayer(), aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));

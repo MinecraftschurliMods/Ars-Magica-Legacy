@@ -11,6 +11,7 @@ public final class ManaHUD extends AbstractHUD {
         int xStart = width / 2 + 121;
         int yStart = height - 23;
         final Player player = Minecraft.getInstance().player;
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
         double mana = 0;
         double maxMana = 0;
         if (!player.isDeadOrDying()) {

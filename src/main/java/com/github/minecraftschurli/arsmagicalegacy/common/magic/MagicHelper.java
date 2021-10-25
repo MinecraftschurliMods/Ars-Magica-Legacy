@@ -186,6 +186,11 @@ public final class MagicHelper implements IMagicHelper {
         return true;
     }
 
+    @Override
+    public boolean knowsMagic(Player player) {
+        return getLevel(player) > 0 || player.isCreative() || player.isSpectator();
+    }
+
     private void syncBurnout(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_BURNOUT_PACKET.create(getBurnoutHolder(player)), player);
     }

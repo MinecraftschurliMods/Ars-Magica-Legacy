@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
@@ -60,22 +61,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         itemIdTranslation(AMItems.BLANK_RUNE);
-        itemIdTranslation(AMItems.WHITE_RUNE);
-        itemIdTranslation(AMItems.ORANGE_RUNE);
-        itemIdTranslation(AMItems.MAGENTA_RUNE);
-        itemIdTranslation(AMItems.LIGHT_BLUE_RUNE);
-        itemIdTranslation(AMItems.YELLOW_RUNE);
-        itemIdTranslation(AMItems.LIME_RUNE);
-        itemIdTranslation(AMItems.PINK_RUNE);
-        itemIdTranslation(AMItems.GRAY_RUNE);
-        itemIdTranslation(AMItems.LIGHT_GRAY_RUNE);
-        itemIdTranslation(AMItems.CYAN_RUNE);
-        itemIdTranslation(AMItems.PURPLE_RUNE);
-        itemIdTranslation(AMItems.BLUE_RUNE);
-        itemIdTranslation(AMItems.BROWN_RUNE);
-        itemIdTranslation(AMItems.GREEN_RUNE);
-        itemIdTranslation(AMItems.RED_RUNE);
-        itemIdTranslation(AMItems.BLACK_RUNE);
+        for (DyeColor color : DyeColor.values()) {
+            itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));
+        }
         itemIdTranslation(AMItems.RUNE_BAG);
         itemIdTranslation(AMItems.ARCANE_COMPOUND);
         itemIdTranslation(AMItems.ARCANE_ASH);

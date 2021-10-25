@@ -52,16 +52,13 @@ public class OcculusScreen extends Screen {
         }
 
         maxPage = (int) Math.floor((float) (registry.getTabs().size() - 1) / 16F);
-        nextPage = new Button(guiWidth + 2, -21, 20, 20, new TextComponent(">"), this::nextPage);
-        prevPage = new Button(-15, -21, 20, 20, new TextComponent("<"), this::prevPage);
+        nextPage = addRenderableWidget(new Button(guiWidth + 2, -21, 20, 20, new TextComponent(">"), this::nextPage));
+        prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, new TextComponent("<"), this::prevPage));
         nextPage.active = page < maxPage;
         prevPage.active = false;
-        addRenderableWidget(nextPage);
-        addRenderableWidget(prevPage);
 
-        addRenderableWidget(activeTab);
         addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), guiWidth, guiHeight);
-        activeTab.init(tabWidth, tabHeight, width, height, posX+7, posY+7);
+        addRenderableWidget(activeTab).init(tabWidth, tabHeight, width, height, posX+7, posY+7);
     }
 
     private void prevPage(Button button) {

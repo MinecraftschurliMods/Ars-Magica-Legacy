@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +30,8 @@ public final class ServerInit {
                                 new Spell(List.of(ShapeGroup.of(List.of(AMSpellParts.SELF.get()))),
                                           SpellStack.of(List.of(AMSpellParts.FIRE_DAMAGE.get())),
                                           new CompoundTag()));
+            //SpellItem.setSpellIcon(stack, new ResourceLocation(ArsMagicaAPI.MOD_ID, "air-burst-air-1"));
+            //SpellItem.setSpellName(stack, "Test Spell");
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;
         }));

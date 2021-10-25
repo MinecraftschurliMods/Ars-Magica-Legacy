@@ -30,13 +30,14 @@ public final class ColorUtil {
         int cmin = Math.min(Math.min(r, g), b);
 
         brightness = ((float) cmax) / 255.0f;
-        if (cmax != 0)
+        if (cmax != 0) {
             saturation = ((float) (cmax - cmin)) / ((float) cmax);
-        else
+        } else {
             saturation = 0;
-        if (saturation == 0)
+        }
+        if (saturation == 0) {
             hue = 0;
-        else {
+        } else {
             float redc = ((float) (cmax - r)) / ((float) (cmax - cmin));
             float greenc = ((float) (cmax - g)) / ((float) (cmax - cmin));
             float bluec = ((float) (cmax - b)) / ((float) (cmax - cmin));

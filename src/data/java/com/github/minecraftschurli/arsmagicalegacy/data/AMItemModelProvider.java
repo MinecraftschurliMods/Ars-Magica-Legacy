@@ -6,6 +6,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -57,22 +58,9 @@ class AMItemModelProvider extends ItemModelProvider {
         withExistingParent(WITCHWOOD_BUTTON, "witchwood_button_inventory");
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
-        itemGenerated(WHITE_RUNE);
-        itemGenerated(ORANGE_RUNE);
-        itemGenerated(MAGENTA_RUNE);
-        itemGenerated(LIGHT_BLUE_RUNE);
-        itemGenerated(YELLOW_RUNE);
-        itemGenerated(LIME_RUNE);
-        itemGenerated(PINK_RUNE);
-        itemGenerated(GRAY_RUNE);
-        itemGenerated(LIGHT_GRAY_RUNE);
-        itemGenerated(CYAN_RUNE);
-        itemGenerated(PURPLE_RUNE);
-        itemGenerated(BLUE_RUNE);
-        itemGenerated(BROWN_RUNE);
-        itemGenerated(GREEN_RUNE);
-        itemGenerated(RED_RUNE);
-        itemGenerated(BLACK_RUNE);
+        for (DyeColor color : DyeColor.values()) {
+            itemGenerated(COLORED_RUNE.registryObject(color));
+        }
         itemGenerated(RUNE_BAG);
         itemGenerated(ARCANE_COMPOUND);
         itemGenerated(ARCANE_ASH);

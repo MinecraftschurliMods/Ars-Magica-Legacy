@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collection;
@@ -101,4 +102,12 @@ public interface IMagicHelper {
      * @return true if it succeeded, false otherwise
      */
     boolean decreaseBurnout(LivingEntity entity, float amount);
+
+    /**
+     * Check if the given player knows what magic is.
+     *
+     * @param player the player to check
+     * @return true if the player knows magic, false otherwise
+     */
+    boolean knowsMagic(Player player);
 }

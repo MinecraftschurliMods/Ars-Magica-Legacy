@@ -35,6 +35,8 @@ def grgit = Grgit.open(currentDir: project.projectDir)
 
 mixin {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
+    config 'arsmagicalegacy.mixins.json'
+    dumpTargetOnFailure true
 }
 
 editorconfig {
@@ -162,7 +164,9 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    if (!Boolean.getBoolean('idea.sync.active')) {
+        annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    }
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
@@ -194,6 +198,16 @@ dependencies {
     } else {
         include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
     }
+    if (projects.contains(':projects:codeclib')) {
+        include project(path: ':projects:codeclib', configuration: 'deobfJar')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0')
+    }
+    if (projects.contains(':projects:betterkeybindlib')) {
+        include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0')
+    }
     if (projects.contains(':projects:patchouli_datagen')) {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
@@ -222,10 +236,6 @@ minecraft {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }*/
         }
         server {
             ideaModule "${project.name.replace(' ', '_')}.main"
@@ -235,10 +245,6 @@ minecraft {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }*/
         }
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
@@ -249,21 +255,11 @@ minecraft {
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                [
-                        configurations.datagenLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator),
-                        configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-                ].join(File.pathSeparator).strip()
-            }*/
         }
     }
     runs.configureEach {
         workingDirectory project.file("run/${it.name}") as File
         property 'forge.logging.console.level', 'debug'
-        property 'mixin.env.remapRefMap', 'true'
-        property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-        arg "--mixin.config=arsmagicalegacy.mixins.json"
     }
 }
 

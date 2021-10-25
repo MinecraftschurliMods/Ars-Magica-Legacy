@@ -1,12 +1,13 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.item.runebag;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMContainers;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,25 +26,30 @@ public class RuneBagMenu extends AbstractContainerMenu {
     private final Container inventory;
 
     public RuneBagMenu(int pContainerId, Inventory playerInventory, ItemStack stack) {
-        super(AMContainers.RUNE_BAG.get(), pContainerId);
+        super(AMMenuTypes.RUNE_BAG.get(), pContainerId);
         this.inventory = new RuneBagContainer(stack);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 8; j++) {
-                int k = i * 8 + j;
-                addSlot(new Slot(inventory, k, 8 + j * 18, 8 + i * 18) {
-                    @Override
-                    public boolean mayPlace(@NotNull ItemStack pStack) {
-                        return pStack.getItem() instanceof ColoredRuneItem &&
-                                k == ((ColoredRuneItem) pStack.getItem()).getDyeColor().getId();
-                    }
-                });
+        {
+            int i = 0;
+            for (DyeColor color : DyeColor.values()) {
+                int x = i % 8;
+                int y = i / 8;
+                addSlot(new RuneSlot(this.inventory, i, 8 + x * 18, 8 + y * 18, color));
+                i++;
             }
         }
+        /*for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 8; j++) {
+                int k = i * 8 + j;
+                addSlot(new RuneSlot(this.inventory, k, 8 + j * 18, 8 + i * 18));
+            }
+        }*/
+        // player inv
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new Slot(playerInventory, i * 9 + j + 9, 8 + j * 18, 68 + i * 18));
             }
         }
+        // player hotbar
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(playerInventory, i, 8 + i * 18, 126));
         }
@@ -84,5 +90,19 @@ public class RuneBagMenu extends AbstractContainerMenu {
             slot.onTake(pPlayer, stack);
         }
         return is;
+    }
+
+    private static class RuneSlot extends Slot {
+        private final DyeColor color;
+
+        public RuneSlot(Container container, int index, int x, int y, DyeColor color) {
+            super(container, index, x, y);
+            this.color = color;
+        }
+
+        @Override
+        public boolean mayPlace(@NotNull ItemStack pStack) {
+            return pStack.getItem() instanceof ColoredRuneItem item && this.color == item.getDyeColor();
+        }
     }
 }

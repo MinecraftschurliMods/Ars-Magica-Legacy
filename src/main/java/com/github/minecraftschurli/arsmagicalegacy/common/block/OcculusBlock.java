@@ -34,8 +34,7 @@ public class OcculusBlock extends Block {
         }
         if (pLevel.isClientSide) {
             var api = ArsMagicaAPI.get();
-            if (api.getMagicHelper()
-                   .getLevel(pPlayer) <= 0 && !pPlayer.isCreative()) {
+            if (!api.getMagicHelper().knowsMagic(pPlayer)) {
                 pPlayer.sendMessage(new TranslatableComponent("message.%s.occulus.prevent".formatted(ArsMagicaAPI.MOD_ID)),
                                     Util.NIL_UUID);
                 return InteractionResult.FAIL;

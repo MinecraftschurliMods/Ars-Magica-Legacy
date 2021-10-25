@@ -114,7 +114,7 @@ public final class EventHandler {
     private static void compendiumPickup(PlayerEvent.ItemPickupEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
-        if (ArsMagicaAPI.get().getMagicHelper().getLevel(event.getPlayer()) >= 0) return;
+        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getStack())) return;
 
         ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);

@@ -3,12 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellComponent;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.StatType;
 import net.minecraft.world.effect.MobEffect;
@@ -23,13 +19,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 @NonExtendable
@@ -44,7 +40,7 @@ public interface AMRegistries {
     DeferredRegister<EntityType<?>>       ENTITIES             = DeferredRegister.create(ForgeRegistries.ENTITIES, ArsMagicaAPI.MOD_ID);
     DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITIES       = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, ArsMagicaAPI.MOD_ID);
     DeferredRegister<ParticleType<?>>     PARTICLE_TYPES       = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MenuType<?>>         CONTAINERS           = DeferredRegister.create(ForgeRegistries.CONTAINERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MenuType<?>>         MENU_TYPES           = DeferredRegister.create(ForgeRegistries.CONTAINERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES, ArsMagicaAPI.MOD_ID);
     DeferredRegister<Attribute>           ATTRIBUTES           = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ArsMagicaAPI.MOD_ID);
@@ -66,8 +62,9 @@ public interface AMRegistries {
     static void init(IEventBus bus) {
         AMBlocks.register();
         AMItems.register();
-        AMContainers.register();
+        AMMenuTypes.register();
         AMAttributes.register();
+        AMStats.register();
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
@@ -81,7 +78,7 @@ public interface AMRegistries {
         ENTITIES.register(bus);
         BLOCK_ENTITIES.register(bus);
         PARTICLE_TYPES.register(bus);
-        CONTAINERS.register(bus);
+        MENU_TYPES.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
         ATTRIBUTES.register(bus);

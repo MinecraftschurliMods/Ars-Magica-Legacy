@@ -23,7 +23,7 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
     protected abstract void render(PoseStack mStack, int width, int height, float partialTicks);
 
     protected void renderBar(PoseStack mStack, int x, int y, int width, int height, double value, double maxValue, int color) {
-        int relWidth = width;
+        int relWidth = 0;
         if (maxValue != 0) {
             relWidth = (int) Math.ceil(Math.max(width * (value / maxValue), 0));
         }
@@ -34,9 +34,11 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
         float r = ColorUtil.getRed(color);
         float g = ColorUtil.getGreen(color);
         float b = ColorUtil.getBlue(color);
+        RenderSystem.setShaderColor(r, g, b, 1);
         RenderSystem.setShaderFogColor(r, g, b);
         blit(mStack, x + 2, y + 2, 2, height + 1, relWidth - 1, height - 3);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
+        RenderSystem.setShaderColor(1,1,1,1);
         RenderSystem.disableBlend();
         mStack.popPose();
     }
