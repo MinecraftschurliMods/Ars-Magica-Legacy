@@ -42,9 +42,15 @@ public class SpellDataManager extends CodecDataManager<ISpellPartData> implement
         return get(part.getRegistryName());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec) {
         CODECS.putIfAbsent(type, (Codec<ISpellIngredient>) codec);
+    }
+
+    @Override
+    public Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type) {
+        return CODECS.get(type);
     }
 
     public static SpellDataManager instance() {
@@ -61,7 +67,7 @@ public class SpellDataManager extends CodecDataManager<ISpellPartData> implement
                     var type = tag.getString("type");
                     tag.remove("type");
                     return CODECS.get(ResourceLocation.tryParse(type)).decode(NbtOps.INSTANCE, tag).map(Pair::getFirst);
-                }, ingredient -> CODECS.get(ingredient.getId())
+                }, ingredient -> CODECS.get(ingredient.getType())
                                        .encodeStart(NbtOps.INSTANCE, ingredient)
                                        .map(CompoundTag.class::cast))
                                  .listOf()

@@ -75,7 +75,7 @@ public abstract class SkillProvider implements DataProvider {// TODO @IHH docume
 
             pCache.putNew(pPath, s1);
         } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save recipe {}", pPath, ioexception);
+            LOGGER.error("Couldn't save skill {}", pPath, ioexception);
         }
     }
 }

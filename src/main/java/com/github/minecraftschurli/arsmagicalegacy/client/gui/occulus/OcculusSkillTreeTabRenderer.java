@@ -118,20 +118,20 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             boolean knows = knowledgeHelper.knows(player, skill);
             boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
             if (!hasPrereq) {
-                RenderSystem.setShaderFogColor(0.5F, 0.5F, 0.5F);
+                RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1);
             } else if (!knows) {
                 int c = getColorForSkill(skill);
                 float red = Math.max(ColorUtil.getRed(c), 0.6F) * multiplier;
                 float green = Math.max(ColorUtil.getGreen(c), 0.6F) * multiplier;
                 float blue = Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier;
-                RenderSystem.setShaderFogColor(red, green, blue);
+                RenderSystem.setShaderColor(red, green, blue, 1);
             }
             setBlitOffset(16);
             RenderSystem.setShaderTexture(0, skill.getIcon());
             RenderSystem.enableBlend();
             RenderUtil.drawBox(stack, skill.getX(), skill.getY(), SKILL_SIZE, SKILL_SIZE, getBlitOffset(), 0, 0, 1, 1);
             RenderSystem.disableBlend();
-            RenderSystem.setShaderFogColor(1, 1, 1);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableScissor();
         for (ISkill skill : skills) {
