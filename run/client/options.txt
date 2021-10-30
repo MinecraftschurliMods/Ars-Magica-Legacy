@@ -36,7 +36,7 @@ biomeBlendRadius:2
 renderClouds:false
 resourcePacks:["vanilla","mod_resources"]
 incompatibleResourcePacks:[]
-lastServer:
+lastServer:localhost
 lang:en_us
 chatVisibility:0
 chatOpacity:1.0
@@ -63,7 +63,7 @@ tutorialStep:none
 mouseWheelSensitivity:1.0
 rawMouseInput:true
 glDebugVerbosity:1
-skipMultiplayerWarning:false
+skipMultiplayerWarning:true
 hideMatchedNames:true
 joinedFirstServer:false
 hideBundleTutorial:false

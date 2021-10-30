@@ -7,19 +7,17 @@ import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
-import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.List;
 public class SpellIconPickScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
     private static final String NAME_FIELD_MESSAGE = "gui_components." + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.name_box";
-    private static final int ICON_SIZE   = 16;
+    private static final int ICON_SIZE   = 15;
     private static final int ICON_MARGIN = 1;
 
     private final int imageWidth = 176;
@@ -38,14 +36,13 @@ public class SpellIconPickScreen extends Screen {
     private EditBox editBox;
     private int xStart;
     private int yStart;
-    private ExtendedButton btnPrev;
-    private ExtendedButton btnNext;
 
     public SpellIconPickScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
         this.editBox = new EditBox(this.font, 0, 0, 0, 0, new TranslatableComponent(NAME_FIELD_MESSAGE));
-        SpellItem.getSpellName(stack).ifPresent(this.editBox::setValue);
         this.spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
+
+        SpellItem.getSpellName(stack).ifPresent(this.editBox::setValue);
         SpellItem.getSpellIcon(stack).ifPresent(this.spellIconSelector::setSelected);
     }
 
@@ -54,13 +51,8 @@ public class SpellIconPickScreen extends Screen {
         super.init();
         this.xStart = (this.width - this.imageWidth) / 2;
         this.yStart = (this.height - this.imageHeight) / 2;
-        this.editBox = new EditBox(this.font, this.xStart + 8, this.yStart + 6, 100, 16, this.editBox, new TranslatableComponent(NAME_FIELD_MESSAGE));
-        this.addRenderableWidget(this.editBox);
-        this.spellIconSelector = new SpellIconSelector(this.xStart + 8, this.yStart + 52, this.imageWidth - 16, this.imageHeight - 60, this.spellIconSelector);
-        this.addRenderableWidget(this.spellIconSelector);
-        this.btnPrev = addRenderableWidget(new ExtendedButton(this.xStart + 8, this.yStart + 26, 48, 20, new TranslatableComponent("gui_components." + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.prev"), button -> this.spellIconSelector.changePage(button, this.btnNext, this.btnPrev)));
-        this.btnPrev.active = false;
-        this.btnNext = addRenderableWidget(new ExtendedButton(this.xStart + this.imageWidth - 56, this.yStart + 26, 48, 20, new TranslatableComponent("gui_components." + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.next"), button -> this.spellIconSelector.changePage(button, this.btnNext, this.btnPrev)));
+        this.editBox = this.addRenderableWidget(new EditBox(this.font, this.xStart + 8, this.yStart + 8, 100, 16, this.editBox, new TranslatableComponent(NAME_FIELD_MESSAGE)));
+        this.spellIconSelector = this.addRenderableWidget(new SpellIconSelector(this.xStart + 7, this.yStart + 30, this.imageWidth - 13, this.imageHeight - 38, this.spellIconSelector));
     }
 
     @Override
@@ -81,28 +73,16 @@ public class SpellIconPickScreen extends Screen {
         }
     }
 
-    private static class SpellIconSelector implements Widget, GuiEventListener, NarratableEntry {
+    private static class SpellIconSelector extends ScrollPanel {
         private final List<ResourceLocation> icons = new ArrayList<>();
-        private final int x;
-        private final int y;
-        private final int width;
-        private final int height;
         private final int elementsX;
-        private final int elementsY;
-        private final int maxPage;
 
         private ResourceLocation selected = null;
-        private int              page     = 0;
 
         public SpellIconSelector(int x, int y, int width, int height, @Nullable SpellIconSelector spellIconSelector) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.elementsX = (width+2) / (ICON_SIZE + 2);
-            this.elementsY = (height+2) / (ICON_SIZE + 2);
+            super(Minecraft.getInstance(), width, height, y, x);
+            this.elementsX = (width - this.border + 2) / (ICON_SIZE + 2 * ICON_MARGIN);
             if (spellIconSelector != null) {
-                this.page = spellIconSelector.page;
                 setSelected(spellIconSelector.getSelected());
             }
             SpellIconAtlas.instance()
@@ -110,37 +90,81 @@ public class SpellIconPickScreen extends Screen {
                           .stream()
                           .sorted()
                           .forEachOrdered(this.icons::add);
-            this.maxPage = this.icons.size() / (this.elementsX * this.elementsY);
         }
 
         @Override
-        public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-            var hovered = getHovered(pMouseX, pMouseY);
+        protected int getContentHeight() {
+            return (this.icons.size() / this.elementsX + ((this.icons.size() % this.elementsX > 0) ? 1 : 0)) * (ICON_SIZE + ICON_MARGIN * 2) - this.border + 2 * ICON_MARGIN;
+        }
+
+        @Override
+        protected int getScrollAmount() {
+            return ICON_SIZE + ICON_MARGIN * 2;
+        }
+
+        @Override
+        public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
+            drawGradientRect(matrix,
+                             this.left,
+                             this.top,
+                             this.right,
+                             this.bottom,
+                             0x80000000,
+                             0x80000000);
+            super.render(matrix, mouseX, mouseY, partialTicks);
+        }
+
+        @Override
+        protected void drawPanel(PoseStack mStack,
+                                 int entryRight,
+                                 int relativeY,
+                                 Tesselator tess,
+                                 int mouseX,
+                                 int mouseY) {
+            int i = 0;
+            var hovered = getHovered(mouseX - this.left - 2 * ICON_MARGIN, mouseY - this.top + (int)this.scrollDistance - 2 * ICON_MARGIN);
+            RenderSystem.setShaderTexture(0, SpellItem.SPELL_ICON_ATLAS);
+            for (ResourceLocation icon : this.icons) {
+                int x = i % this.elementsX;
+                int y = i / this.elementsX;
+                x *= ICON_SIZE + 2 * ICON_MARGIN;
+                y *= ICON_SIZE + 2 * ICON_MARGIN;
+                x += this.left + 2 * ICON_MARGIN;
+                y += relativeY - this.border + 2 * ICON_MARGIN;
+                if (y > 0 && y < this.bottom) {
+                    if (icon.equals(this.selected)) {
+                        GuiUtils.drawGradientRect(mStack.last().pose(),
+                                         1,
+                                         x - ICON_MARGIN,
+                                         y - ICON_MARGIN,
+                                         x + ICON_SIZE + ICON_MARGIN,
+                                         y + ICON_SIZE + ICON_MARGIN,
+                                         0xffffff00,
+                                         0xffffff00);
+                    } else if (icon.equals(hovered)) {
+                        GuiUtils.drawGradientRect(mStack.last().pose(),
+                                         1,
+                                         x - ICON_MARGIN,
+                                         y - ICON_MARGIN,
+                                         x + ICON_SIZE + ICON_MARGIN,
+                                         y + ICON_SIZE + ICON_MARGIN,
+                                         0xffffffff,
+                                         0xffffffff);
+                    }
+                    blit(mStack, x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
+                }
+                i++;
+            }
+        }
+
+        @Override
+        protected boolean clickPanel(double mouseX, double mouseY, int button) {
+            var hovered = getHovered(mouseX - 2 * ICON_MARGIN, mouseY + this.border - 2 * ICON_MARGIN);
             if (hovered != null) {
                 this.selected = hovered;
                 return true;
             }
             return false;
-        }
-
-        public void changePage(Button button, Button next, Button prev) {
-            if (next == button) {
-                page++;
-            } else if (prev == button) {
-                page--;
-            }
-            if (page >= maxPage) {
-                page = maxPage;
-                next.active = false;
-            } else {
-                next.active = true;
-            }
-            if (page <= 0) {
-                page = 0;
-                prev.active = false;
-            } else {
-                prev.active = true;
-            }
         }
 
         public void setSelected(@Nullable ResourceLocation id) {
@@ -154,57 +178,18 @@ public class SpellIconPickScreen extends Screen {
 
         @Nullable
         private ResourceLocation getHovered(double pMouseX, double pMouseY) {
-            int x = (int) Math.floor((pMouseX - this.x + ICON_MARGIN) / (ICON_SIZE + (2 * ICON_MARGIN)));
-            int y = (int) Math.floor((pMouseY - this.y + ICON_MARGIN) / (ICON_SIZE + (2 * ICON_MARGIN)));
+            if (pMouseY - this.scrollDistance + this.border - (2 * ICON_MARGIN) < 0) return null;
+            if (pMouseY - this.scrollDistance + this.border - (2 * ICON_MARGIN) > this.height) return null;
+            int x = (int) Math.floor((pMouseX + ICON_MARGIN) / (ICON_SIZE + (2 * ICON_MARGIN)));
+            int y = (int) Math.floor((pMouseY + ICON_MARGIN) / (ICON_SIZE + (2 * ICON_MARGIN)));
             if (x >= this.elementsX || x < 0) return null;
-            if (y >= this.elementsY || y < 0) return null;
-            int i = x + y * this.elementsX + this.page * this.elementsX * this.elementsY;
+            if (y < 0) return null;
+            int i = x + y * this.elementsX;
             if (i < this.icons.size() && i >= 0) {
                 return this.icons.get(i);
             } else {
                 return null;
             }
-        }
-
-        @Override
-        public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            pPoseStack.pushPose();
-            pPoseStack.translate(this.x, this.y, 0);
-            GuiUtils.drawGradientRect(pPoseStack.last().pose(), -2, -ICON_MARGIN, -ICON_MARGIN, this.width+ICON_MARGIN, this.height+ICON_MARGIN, 0x80000000, 0x80000000);
-            int i = 0;
-            var hovered = getHovered(pMouseX, pMouseY);
-            RenderSystem.setShaderTexture(0, SpellItem.SPELL_ICON_ATLAS);
-            for (ResourceLocation icon : this.icons) {
-                int x = i % this.elementsX;
-                int y = i / this.elementsX % this.elementsY;
-                int p = i / this.elementsX / this.elementsY;
-                x = (ICON_SIZE + (2 * ICON_MARGIN)) * x;
-                y = (ICON_SIZE + (2 * ICON_MARGIN)) * y;
-                if (p == page) {
-                    if (icon == this.selected) {
-                        GuiUtils.drawGradientRect(pPoseStack.last().pose(),
-                                                  -1,
-                                                  x - ICON_MARGIN,
-                                                  y - ICON_MARGIN,
-                                                  x + ICON_SIZE + ICON_MARGIN,
-                                                  y + ICON_SIZE + ICON_MARGIN,
-                                                  0xffffff00,
-                                                  0xffffff00);
-                    } else if (icon == hovered) {
-                        GuiUtils.drawGradientRect(pPoseStack.last().pose(),
-                                                  -1,
-                                                  x - ICON_MARGIN,
-                                                  y - ICON_MARGIN,
-                                                  x + ICON_SIZE + ICON_MARGIN,
-                                                  y + ICON_SIZE + ICON_MARGIN,
-                                                  0xffffffff,
-                                                  0xffffffff);
-                    }
-                    blit(pPoseStack, x, y, 0, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
-                }
-                i++;
-            }
-            pPoseStack.popPose();
         }
 
         @Override
