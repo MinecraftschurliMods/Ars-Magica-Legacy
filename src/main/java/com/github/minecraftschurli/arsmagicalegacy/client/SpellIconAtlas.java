@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 public class SpellIconAtlas extends TextureAtlasHolder {
     private static final Lazy<SpellIconAtlas> INSTANCE           = Lazy.of(SpellIconAtlas::new);
     private static final Predicate<String>    RESOURCE_PREDICATE = s -> s.endsWith(".png");
+    private static final String PREFIX                           = "icon/spell";
 
     public static SpellIconAtlas instance() {
         return INSTANCE.get();
@@ -28,15 +29,15 @@ public class SpellIconAtlas extends TextureAtlasHolder {
     private Collection<ResourceLocation> resourceLocations;
 
     public SpellIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SpellItem.SPELL_ICON_ATLAS, "spell_icon");
+        super(Minecraft.getInstance().textureManager, SpellItem.SPELL_ICON_ATLAS, PREFIX);
     }
 
     @Override
     protected TextureAtlas.Preparations prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         HashMap<String, ResourceLocation> acc = new HashMap<>();
-        var length = "textures/spell_icon/".length();
+        var length = ("textures/"+PREFIX+"/").length();
         for (ResourceLocation resourceLocation :
-                resourceManager.listResources("textures/spell_icon", RESOURCE_PREDICATE)) {
+                resourceManager.listResources("textures/"+PREFIX, RESOURCE_PREDICATE)) {
             var path = resourceLocation.getPath();
             path = path.substring(length, path.length() - 4);
             acc.putIfAbsent(path, new ResourceLocation(resourceLocation.getNamespace(), path));
