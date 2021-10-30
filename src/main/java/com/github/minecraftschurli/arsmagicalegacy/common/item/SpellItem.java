@@ -3,11 +3,10 @@ package com.github.minecraftschurli.arsmagicalegacy.common.item;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
-import com.github.minecraftschurli.arsmagicalegacy.client.gui.SpellIconPickScreen;
+import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemRenderProperties;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -63,14 +62,11 @@ public class SpellItem extends Item implements ISpellItem {
 
     public static void openIconPickGui(Level level, Player player, ItemStack stack) {
         if (level.isClientSide()) {
-            Minecraft.getInstance().setScreen(new SpellIconPickScreen(stack));
+            ClientHelper.openSpellCustomizationGui(stack);
         }
     }
 
-    private void castSpell(Level level,
-                           LivingEntity entity,
-                           InteractionHand hand,
-                           ItemStack stack) {
+    private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         Spell spell = getSpell(stack);
         if (spell.isContinuous()){
@@ -106,10 +102,7 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack pStack,
-                             Level pLevel,
-                             LivingEntity pLivingEntity,
-                             int pTimeCharged) {
+    public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player) {
             if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
             var spellIcon = getSpellIcon(pStack);
@@ -149,14 +142,9 @@ public class SpellItem extends Item implements ISpellItem {
         }
         Spell spell = getSpell(stack);
         if (spell.isContinuous()) {
-            var result = spell.cast(entity,
-                                                  entity.level,
-                                                  count - 1,
-                                                  true,
-                                                  true);
+            var result = spell.cast(entity, entity.level, count - 1, true, true);
             if (result.isFail() && entity instanceof Player player) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()),
-                                            true);
+                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
             }
             saveSpell(stack, spell);
         }
@@ -175,7 +163,7 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public Component getName(ItemStack pStack) {
         if (EffectiveSide.get().isClient()) {
-            var player = Minecraft.getInstance().player;
+            Player player = ClientHelper.getLocalPlayer();
             assert player != null;
             if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
                 return new TranslatableComponent(UNKNOWN_ITEM);
@@ -184,8 +172,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (getSpell(pStack).isEmpty()) {
             return new TranslatableComponent(INVALID_SPELL);
         }
-        return getSpellName(pStack).<Component>map(TextComponent::new)
-                                   .orElse(new TranslatableComponent(UNNAMED_SPELL));
+        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(UNNAMED_SPELL));
     }
 
     @Override
@@ -194,7 +181,7 @@ public class SpellItem extends Item implements ISpellItem {
                                 List<Component> pTooltipComponents,
                                 TooltipFlag pIsAdvanced) {
         if (EffectiveSide.get().isClient()) {
-            var player = Minecraft.getInstance().player;
+            Player player = ClientHelper.getLocalPlayer();
             assert player != null;
             if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
                 pTooltipComponents.add(new TranslatableComponent(UNKNOWN_ITEM_DESC));

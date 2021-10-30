@@ -102,9 +102,9 @@ public interface AMItems {
     RegistryObject<StandingAndWallBlockItem> VINTEUM_TORCH    = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
     RegistryObject<WizardsChalkItem>         WIZARDS_CHALK    = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<AffinityEssenceItem>      AFFINITY_ESSENCE = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
-    RegistryObject<AffinityTomeItem> AFFINITY_TOME = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
-    RegistryObject<SpellItem>        SPELL         = ITEMS.register("spell", SpellItem::new);
-    RegistryObject<BlockItem>        OCCULUS       = ITEMS.register("occulus", () -> new BlockItem(AMBlocks.OCCULUS.get(), ITEM_1));
+    RegistryObject<AffinityTomeItem>         AFFINITY_TOME    = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
+    RegistryObject<SpellItem>                SPELL            = ITEMS.register("spell", SpellItem::new);
+    RegistryObject<BlockItem>                OCCULUS          = ITEMS.register("occulus", () -> new BlockItem(AMBlocks.OCCULUS.get(), ITEM_1));
     // endregion
     // region helpers
     @SuppressWarnings("SameParameterValue")
