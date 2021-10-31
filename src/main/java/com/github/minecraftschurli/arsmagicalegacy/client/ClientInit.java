@@ -11,12 +11,6 @@ import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.betterkeybindlib.CompoundKeyConflictContext;
-import com.github.minecraftschurlimods.betterkeybindlib.ItemInHandKeyConflictContext;
-import com.github.minecraftschurlimods.betterkeybindlib.KeybindManager;
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -31,8 +25,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -40,7 +32,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public final class ClientInit {
-    public static KeybindManager KEYBIND_MANAGER = KeybindManager.get(ArsMagicaAPI.MOD_ID);
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
 
@@ -63,28 +54,7 @@ public final class ClientInit {
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
 
-        KEYBIND_MANAGER.keybind("configure_spell", InputConstants.KEY_M)
-                       .withModifier(KeyModifier.CONTROL)
-                       .withContext(CompoundKeyConflictContext.from(
-                               ItemInHandKeyConflictContext.from(AMItems.SPELL.get()),
-                               KeyConflictContext.IN_GAME))
-                       .withCallback(() -> {
-                           var mc = Minecraft.getInstance();
-                           var player = mc.player;
-                           var level = mc.level;
-                           assert player != null;
-                           assert level != null;
-                           var item = player.getMainHandItem();
-                           if (item.isEmpty() || !item.is(AMItems.SPELL.get())) {
-                               item = player.getOffhandItem();
-                           }
-                           if (item.is(AMItems.SPELL.get())) {
-                               SpellItem.openIconPickGui(level, player, item);
-                               return true;
-                           }
-                           return false;
-                       })
-                       .build();
+        Keybinds.init();
     }
 
     @SubscribeEvent
