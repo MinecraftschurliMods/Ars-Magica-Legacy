@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -147,7 +148,19 @@ public final class ArsMagicaAPI {
          */
         void openOcculusGui(Player player);
 
+        /**
+         * Get the spell helper instance.
+         * @return the spell helper instance
+         */
         ISpellHelper getSpellHelper();
+
+        /**
+         * Open the spell customization gui for the given spell (the given stack).<br>
+         * Only works on the client.
+         *
+         * @side client
+         */
+        void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -196,6 +209,10 @@ public final class ArsMagicaAPI {
         @Override
         public ISpellHelper getSpellHelper() {
             return null;
+        }
+
+        @Override
+        public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
         }
 
         @Override

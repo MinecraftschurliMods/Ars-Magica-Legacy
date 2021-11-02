@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemRenderProperties;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
@@ -60,12 +61,6 @@ public class SpellItem extends Item implements ISpellItem {
         super(new Item.Properties().stacksTo(1));
     }
 
-    public static void openIconPickGui(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide()) {
-            ClientHelper.openSpellCustomizationGui(stack);
-        }
-    }
-
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         Spell spell = getSpell(stack);
@@ -73,8 +68,13 @@ public class SpellItem extends Item implements ISpellItem {
             entity.startUsingItem(hand);
         } else {
             var result = spell.cast(entity, level, 0, true, true);
-            if (result.isFail() && entity instanceof Player player) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+            if (entity instanceof Player player) {
+                if (result.isConsume()) {
+                    player.awardStat(AMStats.SPELL_CAST);
+                }
+                if (result.isFail()) {
+                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+                }
             }
         }
         saveSpell(stack, spell);
@@ -97,7 +97,7 @@ public class SpellItem extends Item implements ISpellItem {
                 }
             }
         }
-        openIconPickGui(level, player, heldItem);
+        ArsMagicaAPI.get().openSpellCustomizationGui(level, player, heldItem);
         return InteractionResultHolder.success(heldItem);
     }
 
@@ -109,7 +109,7 @@ public class SpellItem extends Item implements ISpellItem {
             if (spellIcon.isPresent()) {
                 castSpell(pLevel, player, player.getUsedItemHand(), pStack);
             } else {
-                openIconPickGui(pLevel, player, pStack);
+                ArsMagicaAPI.get().openSpellCustomizationGui(pLevel, player, pStack);
             }
         } else {
             castSpell(pLevel, pLivingEntity, pLivingEntity.getUsedItemHand(), pStack);
@@ -130,7 +130,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
         } else {
-            openIconPickGui(context.getLevel(), player, item);
+            ArsMagicaAPI.get().openSpellCustomizationGui(context.getLevel(), player, item);
         }
         return InteractionResult.SUCCESS;
     }
@@ -143,8 +143,14 @@ public class SpellItem extends Item implements ISpellItem {
         Spell spell = getSpell(stack);
         if (spell.isContinuous()) {
             var result = spell.cast(entity, entity.level, count - 1, true, true);
-            if (result.isFail() && entity instanceof Player player) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+            if (entity instanceof Player player) {
+                if (result.isConsume()) {
+                    player.awardStat(AMStats.SPELL_CAST);
+                }
+                if (result.isFail()) {
+                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()),
+                                                true);
+                }
             }
             saveSpell(stack, spell);
         }

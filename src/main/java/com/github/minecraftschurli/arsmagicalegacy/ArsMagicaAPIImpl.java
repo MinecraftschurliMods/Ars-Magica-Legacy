@@ -27,6 +27,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.patchouli.api.PatchouliAPI;
@@ -100,8 +101,15 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     public void openOcculusGui(Player player) {
         if (player instanceof ServerPlayer) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenOcculusGuiPacket(), player);
-        } else {
+        } else if (player.isLocalPlayer()) {
             ClientHelper.openOcculusGui();
+        }
+    }
+
+    @Override
+    public void openSpellCustomizationGui(Level level, Player player, ItemStack stack) {
+        if (level.isClientSide()) {
+            ClientHelper.openSpellCustomizationGui(stack);
         }
     }
 }

@@ -81,7 +81,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         var event = new SpellCastEvent(caster, this);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCanceled()) {
-            return SpellCastResult.FAIL;
+            return SpellCastResult.CANCELLED;
         }
         float mana = event.mana;
         float burnout = event.burnout;
