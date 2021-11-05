@@ -201,12 +201,12 @@ dependencies {
     if (projects.contains(':projects:codeclib')) {
         include project(path: ':projects:codeclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0+b5fcd00')
     }
     if (projects.contains(':projects:betterkeybindlib')) {
         include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0+5d6e4f5')
     }
     if (projects.contains(':projects:patchouli_datagen')) {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
