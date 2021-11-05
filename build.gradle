@@ -187,8 +187,8 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-1.18:${project.jei_version}:api")
-    runtimeMod fg.deobf("mezz.jei:jei-1.18:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
+    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}:api")
