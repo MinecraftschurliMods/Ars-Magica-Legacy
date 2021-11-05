@@ -1,0 +1,155 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "book_5": "arsmagicalegacy:block/inscription_table_book_5",
+    "candle": "arsmagicalegacy:block/inscription_table_candle"
+  },
+  "elements": [
+    {
+      "from": [
+        10,
+        18,
+        9
+      ],
+      "to": [
+        14,
+        20,
+        15
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          20,
+          9
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": false
+      },
+      "faces": {
+        "down": {
+          "texture": "#book_5",
+          "uv": [
+            4,
+            0,
+            8,
+            6
+          ]
+        },
+        "up": {
+          "texture": "#book_5",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "north": {
+          "texture": "#book_5",
+          "uv": [
+            0,
+            6,
+            4,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#book_5",
+          "uv": [
+            4,
+            6,
+            8,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#book_5",
+          "uv": [
+            8,
+            0,
+            14,
+            2
+          ]
+        },
+        "east": {
+          "texture": "#book_5",
+          "uv": [
+            8,
+            2,
+            14,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        16,
+        6
+      ],
+      "to": [
+        12,
+        19,
+        7
+      ],
+      "faces": {
+        "down": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "up": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "north": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            4
+          ]
+        },
+        "south": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            4
+          ]
+        },
+        "west": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            4
+          ]
+        },
+        "east": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            4
+          ]
+        }
+      }
+    }
+  ]
+}

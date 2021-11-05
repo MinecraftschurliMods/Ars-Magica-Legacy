@@ -16,7 +16,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +41,7 @@ public interface AMItems {
     Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
 
     RegistryObject<BlockItem>                    OCCULUS                  = ITEMS.register("occulus", () -> new BlockItem(AMBlocks.OCCULUS.get(), ITEM_1));
+    RegistryObject<BlockItem>                    INSCRIPTION_TABLE        = ITEMS.register("inscription_table", () -> new BlockItem(AMBlocks.INSCRIPTION_TABLE.get(), ITEM_64));
     RegistryObject<BlockItem>                    CHIMERITE_ORE            = registerBlockItem64(AMBlocks.CHIMERITE_ORE);
     RegistryObject<BlockItem>                    DEEPSLATE_CHIMERITE_ORE  = registerBlockItem64(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
     RegistryObject<Item>                         CHIMERITE                = registerItem64("chimerite");
@@ -57,9 +61,9 @@ public interface AMItems {
     RegistryObject<BlockItem>                    SUNSTONE_ORE             = registerBlockItem64(AMBlocks.SUNSTONE_ORE);
     RegistryObject<Item>                         SUNSTONE                 = registerItem64("sunstone");
     RegistryObject<BlockItem>                    SUNSTONE_BLOCK           = registerBlockItem64(AMBlocks.SUNSTONE_BLOCK);
-    RegistryObject<BlockItem> WITCHWOOD_LOG          = registerBlockItem64(AMBlocks.WITCHWOOD_LOG);
-    RegistryObject<BlockItem> WITCHWOOD              = registerBlockItem64(AMBlocks.WITCHWOOD);
-    RegistryObject<BlockItem> STRIPPED_WITCHWOOD_LOG = registerBlockItem64(AMBlocks.STRIPPED_WITCHWOOD_LOG);
+    RegistryObject<BlockItem>                    WITCHWOOD_LOG            = registerBlockItem64(AMBlocks.WITCHWOOD_LOG);
+    RegistryObject<BlockItem>                    WITCHWOOD                = registerBlockItem64(AMBlocks.WITCHWOOD);
+    RegistryObject<BlockItem>                    STRIPPED_WITCHWOOD_LOG   = registerBlockItem64(AMBlocks.STRIPPED_WITCHWOOD_LOG);
     RegistryObject<BlockItem>                    STRIPPED_WITCHWOOD       = registerBlockItem64(AMBlocks.STRIPPED_WITCHWOOD);
     RegistryObject<BlockItem>                    WITCHWOOD_LEAVES         = registerBlockItem64(AMBlocks.WITCHWOOD_LEAVES);
     RegistryObject<BlockItem>                    WITCHWOOD_SAPLING        = registerBlockItem64(AMBlocks.WITCHWOOD_SAPLING);
