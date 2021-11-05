@@ -1,0 +1,76 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "candle": "arsmagicalegacy:block/inscription_table_candle"
+  },
+  "elements": [
+    {
+      "from": [
+        12,
+        16,
+        13
+      ],
+      "to": [
+        13,
+        20,
+        14
+      ],
+      "faces": {
+        "down": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "up": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "north": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#candle",
+          "uv": [
+            0,
+            1,
+            1,
+            5
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "cloth": "arsmagicalegacy:block/inscription_table_cloth"
+  },
+  "elements": [
+    {
+      "from": [
+        11,
+        4,
+        16
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "down": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#cloth",
+          "uv": [
+            5,
+            0,
+            10,
+            9
+          ]
+        },
+        "south": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            0,
+            5,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        4,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        0
+      ],
+      "faces": {
+        "down": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#cloth",
+          "uv": [
+            5,
+            0,
+            10,
+            9
+          ]
+        },
+        "south": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            0,
+            5,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        }
+      }
+    }
+  ]
+}
