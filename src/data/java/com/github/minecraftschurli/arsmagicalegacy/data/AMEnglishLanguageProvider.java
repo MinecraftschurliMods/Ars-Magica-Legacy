@@ -75,6 +75,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
     }
 
