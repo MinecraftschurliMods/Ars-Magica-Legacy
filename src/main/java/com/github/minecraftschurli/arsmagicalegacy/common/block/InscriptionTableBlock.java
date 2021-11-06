@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable;
+package com.github.minecraftschurli.arsmagicalegacy.common.block;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
 import net.minecraft.core.BlockPos;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class InscriptionTableBlock extends Block implements EntityBlock {
+public class InscriptionTableBlock extends Block {
     public static final IntegerProperty TIER = IntegerProperty.create("tier", 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = EnumProperty.create("half", Half.class);
@@ -87,7 +87,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
+    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, Blocks.AIR.defaultBlockState(), pBlockEntity, pTool);
     }
 
@@ -101,20 +101,11 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
             pLevel.levelEvent(pPlayer, 2001, pos, Block.getId(state));
             ItemStack stack = pPlayer.getMainHandItem();
             if (!pLevel.isClientSide && !pPlayer.isCreative()) {
-/*
-                BlockPos bePos = pState.getValue(HALF) == Half.LEFT ? pPos.relative(pState.getValue(FACING)) : pPos;
-                InscriptionTableTileEntity be = (InscriptionTableTileEntity) pLevel.getTileEntity(bePos);
-*/
-                Block.dropResources(pState, pLevel, pPos, null/*be*/, pPlayer, stack);
-                Block.dropResources(state, pLevel, pos, null/*be*/, pPlayer, stack);
+                Block.dropResources(pState, pLevel, pPos, null, pPlayer, stack);
+                Block.dropResources(state, pLevel, pos, null, pPlayer, stack);
             }
         }
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
-    }
-
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return null;
     }
 
     public enum Half implements StringRepresentable {
