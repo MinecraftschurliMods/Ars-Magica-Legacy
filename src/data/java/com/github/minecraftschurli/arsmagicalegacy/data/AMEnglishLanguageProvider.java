@@ -3,8 +3,6 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
@@ -21,8 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fmllegacy.RegistryObject;
-
-import java.util.function.Supplier;
 
 class AMEnglishLanguageProvider extends AMLanguageProvider {
     AMEnglishLanguageProvider(DataGenerator generator) {
@@ -83,21 +79,17 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL);
-
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
-
         skillPointIdTranslation(AMSkillPoints.BLUE);
-
         add(SpellItem.SPELL_CAST_RESULT+"fail", "Spell cast failed!");
         add(SpellItem.SPELL_CAST_RESULT+"not_enough_mana", "Not enough mana!");
         add(SpellItem.SPELL_CAST_RESULT+"burned_out", "Burned out!");
         add(SpellItem.SPELL_CAST_RESULT+"missing_reagents", "Missing reagents!");
         add(SpellItem.SPELL_CAST_RESULT+"cancelled", "Spell cast failed!");
-
         add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(SpellItem.MANA_COST, "Mana cost: %d");
         add(SpellItem.BURNOUT, "Burnout: %d");
