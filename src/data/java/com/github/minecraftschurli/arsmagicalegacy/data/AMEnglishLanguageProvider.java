@@ -77,6 +77,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+        add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this device!");
     }
 
     /**
