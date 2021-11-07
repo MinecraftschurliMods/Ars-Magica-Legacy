@@ -101,6 +101,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(SpellItem.INVALID_SPELL_DESC, "Something is wrong with this Spell, check the log for warnings or errors!");
 
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+        add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this device!");
     }
 
     private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity) {
