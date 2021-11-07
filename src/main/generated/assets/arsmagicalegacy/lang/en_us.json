@@ -83,5 +83,6 @@
   "item.arsmagicalegacy.vinteum_dust": "Vinteum Dust",
   "item.arsmagicalegacy.white_rune": "White Rune",
   "item.arsmagicalegacy.yellow_rune": "Yellow Rune",
-  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy"
+  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy",
+  "message.arsmagicalegacy.prevent": "Mythical forces prevent you from using this device!"
 }

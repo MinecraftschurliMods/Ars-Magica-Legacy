@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.InscriptionTableBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;

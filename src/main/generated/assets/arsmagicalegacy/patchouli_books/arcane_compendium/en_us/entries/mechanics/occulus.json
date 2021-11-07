@@ -1,0 +1,20 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.occulus.name",
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "arsmagicalegacy:occulus",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Example page."
+    },
+    {
+      "type": "text",
+      "text": "Example page.",
+      "title": "Example title"
+    },
+    {
+      "type": "text",
+      "text": "Example page."
+    }
+  ]
+}
