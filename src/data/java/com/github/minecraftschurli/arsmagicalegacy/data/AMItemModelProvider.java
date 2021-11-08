@@ -23,6 +23,8 @@ class AMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
+        blockItem(ALTAR_CORE);
+        blockItem(MAGIC_WALL);
         blockItem(CHIMERITE_ORE);
         blockItem(DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);

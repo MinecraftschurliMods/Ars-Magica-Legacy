@@ -28,6 +28,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
+        blockIdTranslation(AMBlocks.OCCULUS);
+        blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
+        blockIdTranslation(AMBlocks.ALTAR_CORE);
+        blockIdTranslation(AMBlocks.MAGIC_WALL);
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
