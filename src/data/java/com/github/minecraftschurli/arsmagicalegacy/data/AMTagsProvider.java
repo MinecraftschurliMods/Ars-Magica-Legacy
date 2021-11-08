@@ -59,11 +59,14 @@ class AMTagsProvider {
             tag(BlockTags.WOODEN_BUTTONS).add(AMBlocks.WITCHWOOD_BUTTON.get());
             tag(BlockTags.WOODEN_PRESSURE_PLATES).add(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get()).add(AMBlocks.CERUBLOSSOM.get()).add(AMBlocks.DESERT_NOVA.get()).add(AMBlocks.TARMA_ROOT.get()).add(AMBlocks.WAKEBLOOM.get());
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get());
+
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.MAGIC_WALL.get());
             tag(BlockTags.MINEABLE_WITH_SHOVEL);
-            tag(BlockTags.MINEABLE_WITH_AXE);
+            tag(BlockTags.MINEABLE_WITH_AXE).add(AMBlocks.INSCRIPTION_TABLE.get());
             tag(BlockTags.MINEABLE_WITH_HOE);
-            tag(BlockTags.NEEDS_STONE_TOOL).add(AMBlocks.OCCULUS.get());
+            tag(BlockTags.NEEDS_STONE_TOOL).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.SUNSTONE_BLOCK.get());
+            tag(BlockTags.NEEDS_IRON_TOOL).add(AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get());
+            tag(BlockTags.NEEDS_DIAMOND_TOOL).add(AMBlocks.SUNSTONE_ORE.get());
         }
     }
 

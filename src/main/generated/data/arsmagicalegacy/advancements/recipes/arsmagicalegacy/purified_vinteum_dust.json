@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "arsmagicalegacy:vinteum_dust"
-            ]
+            "tag": "forge:dusts/vinteum"
           }
         ]
       }
