@@ -7,8 +7,7 @@ import net.minecraft.data.DataGenerator;
 
 import java.util.function.Consumer;
 
-public class AMSkillProvider extends SkillProvider {
-
+class AMSkillProvider extends SkillProvider {
     protected AMSkillProvider(DataGenerator generator) {
         super(generator, ArsMagicaAPI.MOD_ID);
     }
