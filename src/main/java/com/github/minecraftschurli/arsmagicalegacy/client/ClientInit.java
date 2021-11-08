@@ -3,7 +3,9 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.EarthGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.WaterGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.render.EarthGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.ManaCreeperRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.WaterGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
@@ -44,11 +46,13 @@ public final class ClientInit {
     @SubscribeEvent
     static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
     }
 
     @SubscribeEvent
     static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
     }
 
