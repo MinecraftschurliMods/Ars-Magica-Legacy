@@ -52,15 +52,11 @@ public class RuneBagMenu extends AbstractContainerMenu {
             ItemStack stack = slot.getItem();
             is = stack.copy();
             if (pIndex < 16) {
-                if (!moveItemStackTo(stack, 16, 52, true)) {
-                    return ItemStack.EMPTY;
-                }
+                if (!moveItemStackTo(stack, 16, 52, true)) return ItemStack.EMPTY;
             } else if (stack.getItem() instanceof ColoredRuneItem) {
                 int color = ((ColoredRuneItem) stack.getItem()).getDyeColor().getId();
                 Slot invSlot = slots.get(color);
-                if (invSlot.mayPlace(is) && !moveItemStackTo(stack, color, color + 1, true)) {
-                    return ItemStack.EMPTY;
-                }
+                if (invSlot.mayPlace(is) && !moveItemStackTo(stack, color, color + 1, true)) return ItemStack.EMPTY;
             }
             if (stack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
