@@ -8,6 +8,7 @@ import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public final class MagicHelper implements IMagicHelper {
@@ -27,14 +29,15 @@ public final class MagicHelper implements IMagicHelper {
         return INSTANCE.get();
     }
 
-    private static final Capability<MagicHolder>                       MAGIC               = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final CodecPacket.CodecPacketFactory<MagicHolder>   SYNC_MAGIC_PACKET   = CodecPacket.create(MagicHolder.CODEC, MagicHelper::handleMagicSync);
+    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private static final Capability<ManaHolder>                        MANA                = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final CodecPacket.CodecPacketFactory<ManaHolder>    SYNC_MANA_PACKET    = CodecPacket.create(ManaHolder.CODEC, MagicHelper::handleManaSync);
-
-    private static final Capability<BurnoutHolder>                     BURNOUT             = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final CodecPacket.CodecPacketFactory<BurnoutHolder> SYNC_BURNOUT_PACKET = CodecPacket.create(BurnoutHolder.CODEC, MagicHelper::handleBurnoutSync);
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        ArsMagicaLegacy.NETWORK_HANDLER.register(BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        ArsMagicaLegacy.NETWORK_HANDLER.register(MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
 
     public static Capability<MagicHolder> getMagicCapability() {
         return MAGIC;
@@ -99,6 +102,8 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private float getXpForNextLevel(int level) {
+        if (level == 0) return 0;
+        // TODO change
         return Byte.MAX_VALUE;
     }
 
@@ -188,11 +193,40 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean knowsMagic(Player player) {
-        return getLevel(player) > 0 || player.isCreative() || player.isSpectator();
+        boolean b = player.isCreative() || player.isSpectator();
+        if (player.isDeadOrDying()) return b;
+        return b || getLevel(player) > 0;
+    }
+
+    public void syncOnDeath(Player original, Player player) {
+        original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
+        original.getCapability(BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
+        original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
     }
 
     private void syncBurnout(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_BURNOUT_PACKET.create(getBurnoutHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutSyncPacket(getBurnoutHolder(player)), player);
+    }
+
+    public static final class BurnoutSyncPacket extends CodecPacket<BurnoutHolder> {
+
+        public BurnoutSyncPacket(BurnoutHolder data) {
+            super(data);
+        }
+
+        public BurnoutSyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            MagicHelper.handleBurnoutSync(this.data, context);
+        }
+
+        @Override
+        protected Codec<BurnoutHolder> getCodec() {
+            return BurnoutHolder.CODEC;
+        }
     }
 
     private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
@@ -201,7 +235,28 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private void syncMana(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_MANA_PACKET.create(getManaHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
+    }
+
+    public static final class ManaSyncPacket extends CodecPacket<ManaHolder> {
+
+        public ManaSyncPacket(ManaHolder data) {
+            super(data);
+        }
+
+        public ManaSyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            MagicHelper.handleManaSync(this.data, context);
+        }
+
+        @Override
+        protected Codec<ManaHolder> getCodec() {
+            return ManaHolder.CODEC;
+        }
     }
 
     private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
@@ -210,7 +265,28 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     private void syncMagic(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_MAGIC_PACKET.create(getMagicHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
+    }
+
+    public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
+
+        public MagicSyncPacket(MagicHolder data) {
+            super(data);
+        }
+
+        public MagicSyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            MagicHelper.handleMagicSync(this.data, context);
+        }
+
+        @Override
+        protected Codec<MagicHolder> getCodec() {
+            return MagicHolder.CODEC;
+        }
     }
 
     private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {

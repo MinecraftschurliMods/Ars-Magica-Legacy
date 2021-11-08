@@ -2,32 +2,53 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.codeclib.CodecPacket;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.*;
-import java.util.function.Function;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
 
-    private static final CodecPacket.CodecPacketFactory<KnowledgeHolder> SYNC_PACKET = CodecPacket.create(
-            KnowledgeHolder.CODEC,
-            SkillHelper::handleSync);
+    public static final class SyncPacket extends CodecPacket<KnowledgeHolder> {
+
+        public SyncPacket(KnowledgeHolder data) {
+            super(data);
+        }
+
+        public SyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            SkillHelper.handleSync(this.data, context);
+        }
+
+        @Override
+        protected Codec<KnowledgeHolder> getCodec() {
+            return KnowledgeHolder.CODEC;
+        }
+    }
+
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
 
     public static SkillHelper instance() {
         return INSTANCE.get();
@@ -164,8 +185,12 @@ public final class SkillHelper implements ISkillHelper {
         return KNOWLEDGE;
     }
 
+    public void syncOnDeath(Player original, Player player) {
+        original.getCapability(KNOWLEDGE).ifPresent(knowledgeHolder -> player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
+    }
+
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_PACKET.create(getKnowledgeHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getKnowledgeHolder(player)), player);
     }
 
     private static void handleSync(KnowledgeHolder knowledgeHolder, NetworkEvent.Context context) {

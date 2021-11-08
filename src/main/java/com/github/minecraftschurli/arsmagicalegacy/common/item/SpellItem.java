@@ -3,17 +3,16 @@ package com.github.minecraftschurli.arsmagicalegacy.common.item;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemRenderProperties;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -43,18 +42,21 @@ public class SpellItem extends Item implements ISpellItem {
 
     public static final BiConsumer<MutableComponent, MutableComponent> COMPONENT_OR_JOINER = (component, component2) -> component.append(new TextComponent(" | ")).append(component2);
 
-    public static final String SPELL_CAST_FAIL   = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.fail";
-    public static final String UNNAMED_SPELL     = "item." + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
-    public static final String UNKNOWN_ITEM      = "item." + ArsMagicaAPI.MOD_ID + ".spell.unknown";
-    public static final String UNKNOWN_ITEM_DESC = "item." + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
-    public static final String INVALID_SPELL     = "item." + ArsMagicaAPI.MOD_ID + ".spell.invalid";
-    public static final String MANA_COST         = "item." + ArsMagicaAPI.MOD_ID + ".spell.mana_cost";
-    public static final String BURNOUT           = "item." + ArsMagicaAPI.MOD_ID + ".spell.burnout";
-    public static final String REAGENTS          = "item." + ArsMagicaAPI.MOD_ID + ".spell.reagents";
+    public static final String SPELL_CAST_FAIL        = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.fail";
+    public static final String UNNAMED_SPELL          = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
+    public static final String UNKNOWN_ITEM           = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown";
+    public static final String UNKNOWN_ITEM_DESC      = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
+    public static final String INVALID_SPELL          = "item."    + ArsMagicaAPI.MOD_ID + ".spell.invalid";
+    public static final String INVALID_SPELL_DESC     = "item."    + ArsMagicaAPI.MOD_ID + ".spell.invalid.description";
+    public static final String MANA_COST              = "item."    + ArsMagicaAPI.MOD_ID + ".spell.mana_cost";
+    public static final String BURNOUT                = "item."    + ArsMagicaAPI.MOD_ID + ".spell.burnout";
+    public static final String REAGENTS               = "item."    + ArsMagicaAPI.MOD_ID + ".spell.reagents";
+    public static final String HOLD_SHIFT_FOR_DETAILS = "tooltip." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
 
     private static final String SPELL_KEY      = ArsMagicaAPI.MOD_ID + ":spell";
     private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
     private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     public SpellItem() {
@@ -65,9 +67,12 @@ public class SpellItem extends Item implements ISpellItem {
         if (level.isClientSide()) return;
         Spell spell = getSpell(stack);
         if (spell.isContinuous()){
+            LOGGER.trace("{} starts casting continuous spell {}", entity, getSpellName(stack));
             entity.startUsingItem(hand);
         } else {
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
             var result = spell.cast(entity, level, 0, true, true);
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
                     player.awardStat(AMStats.SPELL_CAST);
@@ -83,9 +88,8 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack heldItem = player.getItemInHand(hand);
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
             return InteractionResultHolder.fail(heldItem);
-        }
         if (heldItem.hasTag()) {
             assert heldItem.getTag() != null;
             String icon = heldItem.getTag().getString(SPELL_ICON_KEY);
@@ -105,7 +109,7 @@ public class SpellItem extends Item implements ISpellItem {
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player) {
             if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
-            var spellIcon = getSpellIcon(pStack);
+            Optional<ResourceLocation> spellIcon = getSpellIcon(pStack);
             if (spellIcon.isPresent()) {
                 castSpell(pLevel, player, player.getUsedItemHand(), pStack);
             } else {
@@ -118,15 +122,11 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        var player = context.getPlayer();
-        if (player == null) {
-            return InteractionResult.FAIL;
-        }
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
-            return InteractionResult.FAIL;
-        }
-        var item = context.getItemInHand();
-        var spellIcon = getSpellIcon(item);
+        Player player = context.getPlayer();
+        if (player == null) return InteractionResult.FAIL;
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return InteractionResult.FAIL;
+        ItemStack item = context.getItemInHand();
+        Optional<ResourceLocation> spellIcon = getSpellIcon(item);
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
         } else {
@@ -137,23 +137,19 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
-        if (entity.level.isClientSide()) {
-            return;
-        }
+        if (entity.level.isClientSide()) return;
         Spell spell = getSpell(stack);
-        if (spell.isContinuous()) {
-            var result = spell.cast(entity, entity.level, count - 1, true, true);
-            if (entity instanceof Player player) {
-                if (result.isConsume()) {
-                    player.awardStat(AMStats.SPELL_CAST);
-                }
-                if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()),
-                                                true);
-                }
+        if (!spell.isContinuous()) return;
+        SpellCastResult result = spell.cast(entity, entity.level, count - 1, true, true);
+        if (entity instanceof Player player) {
+            if (result.isConsume()) {
+                player.awardStat(AMStats.SPELL_CAST);
             }
-            saveSpell(stack, spell);
+            if (result.isFail()) {
+                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+            }
         }
+        saveSpell(stack, spell);
     }
 
     @Override
@@ -171,13 +167,11 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
             assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
+            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
                 return new TranslatableComponent(UNKNOWN_ITEM);
-            }
         }
-        if (getSpell(pStack).isEmpty()) {
+        if (getSpell(pStack).isEmpty())
             return new TranslatableComponent(INVALID_SPELL);
-        }
         return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(UNNAMED_SPELL));
     }
 
@@ -186,30 +180,33 @@ public class SpellItem extends Item implements ISpellItem {
                                 @Nullable Level pLevel,
                                 List<Component> pTooltipComponents,
                                 TooltipFlag pIsAdvanced) {
+        Player player = null;
         if (EffectiveSide.get().isClient()) {
-            Player player = ClientHelper.getLocalPlayer();
-            assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
-                pTooltipComponents.add(new TranslatableComponent(UNKNOWN_ITEM_DESC));
-                return;
-            }
-            var spell = getSpell(pStack);
-            if (spell.isEmpty()) return;
-            pTooltipComponents.add(new TranslatableComponent(MANA_COST, spell.manaCost(player)));
-            pTooltipComponents.add(new TranslatableComponent(BURNOUT, spell.burnout()));
-            if (player.isShiftKeyDown()) {
-                var reagents = spell.reagents();
-                if (!reagents.isEmpty()) {
-                    pTooltipComponents.add(new TranslatableComponent(REAGENTS));
-                    reagents.forEach(e -> pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems,
-                                                                                     stack -> new ItemStack[]{stack}))
-                                                                       .map(ItemStack::getHoverName)
-                                                                       .map(Component::copy)
-                                                                       .collect(TextComponent.EMPTY::copy,
-                                                                                COMPONENT_OR_JOINER,
-                                                                                COMPONENT_OR_JOINER)));
-                }
-            }
+            player = ClientHelper.getLocalPlayer();
+        }
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
+            pTooltipComponents.add(new TranslatableComponent(UNKNOWN_ITEM_DESC));
+            return;
+        }
+        Spell spell = getSpell(pStack);
+        if (spell.isEmpty()) {
+            pTooltipComponents.add(new TranslatableComponent(INVALID_SPELL_DESC));
+            return;
+        }
+        pTooltipComponents.add(new TranslatableComponent(MANA_COST, spell.manaCost(player)));
+        pTooltipComponents.add(new TranslatableComponent(BURNOUT, spell.burnout()));
+        if (player == null) return;
+        if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
+            List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
+            if (reagents.isEmpty()) return;
+            pTooltipComponents.add(new TranslatableComponent(REAGENTS));
+            reagents.forEach(e -> pTooltipComponents.add(
+                    Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
+                          .map(ItemStack::getHoverName)
+                          .map(Component::copy)
+                          .collect(TextComponent.EMPTY::copy, COMPONENT_OR_JOINER, COMPONENT_OR_JOINER)));
+        } else {
+            pTooltipComponents.add(new TranslatableComponent(HOLD_SHIFT_FOR_DETAILS));
         }
     }
 

@@ -30,11 +30,17 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public final class ClientInit {
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
+
+    @Internal
+    public static void init() {
+        Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
+    }
 
     @SubscribeEvent
     static void clientSetup(FMLClientSetupEvent event) {
@@ -54,8 +60,6 @@ public final class ClientInit {
 
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
-
-        Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent

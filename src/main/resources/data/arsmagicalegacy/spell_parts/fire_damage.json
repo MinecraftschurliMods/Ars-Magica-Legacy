@@ -2,6 +2,6 @@
   "recipe": [],
   "affinities": [],
   "reagents": [],
-  "manaCost": 0,
+  "manaCost": 10,
   "burnout": 0
 }

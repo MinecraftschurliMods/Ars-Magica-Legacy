@@ -1,18 +1,23 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.client.ClientInit;
 import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
+import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
-import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -46,11 +51,14 @@ public final class ArsMagicaLegacy {
         AMRegistries.init(bus);
         EventHandler.register(bus);
 
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInit::init);
+
         Config.init();
 
         registerNetworkPackets();
-
-        CodecPacket.register(NETWORK_HANDLER);
+        SkillHelper.init();
+        MagicHelper.init();
+        AffinityHelper.init();
 
         OcculusTabManager.instance();
         SkillManager.instance();

@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.*;
@@ -48,8 +49,9 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
             return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
                                                                     .filter(parts -> !parts.isEmpty())
                                                                     .orElse(spellStack().parts())
-                                                                    .get(0)).filter(ISpellShape.class::isInstance).map(
-                    ISpellShape.class::cast);
+                                                                    .get(0))
+                           .filter(ISpellShape.class::isInstance)
+                           .map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
             return Optional.empty();
         }
@@ -138,7 +140,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         return Collections.unmodifiableList(shapesWithModifiers);
     }
 
-    public float manaCost(LivingEntity caster) {
+    public float manaCost(@Nullable LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
         var api = ArsMagicaAPI.get();
@@ -166,6 +168,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
                 }
             }
         }
+        if (multiplier == 0) multiplier = 1;
         cost *= multiplier;
 
         if (caster instanceof Player player && affinityHelper.getAffinityDepth(player, IAffinity.ARCANE) > 0.5f) {

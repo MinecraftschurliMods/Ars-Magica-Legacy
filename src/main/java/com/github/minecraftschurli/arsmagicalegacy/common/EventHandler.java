@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
@@ -13,6 +14,10 @@ import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +44,7 @@ public final class EventHandler {
         modBus.addListener(EventHandler::entityAttributeModification);
 
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
+        forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerJoinWorld);
         forgeBus.addListener(EventHandler::registerDataManager);
         forgeBus.addListener(EventHandler::levelUp);
@@ -58,33 +64,43 @@ public final class EventHandler {
     }
 
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof Player)) return;
-
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"),
-                            new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC,
-                                                          SkillHelper.getCapability(),
-                                                          SkillHelper.KnowledgeHolder::empty));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),
-                            new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC,
-                                                          AffinityHelper.getCapability(),
-                                                          AffinityHelper.AffinityHolder::empty));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),
-                            new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC,
-                                                          MagicHelper.getMagicCapability(),
-                                                          MagicHelper.MagicHolder::new));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"),
-                            new CodecCapabilityProvider<>(MagicHelper.ManaHolder.CODEC,
-                                                          MagicHelper.getManaCapability(),
-                                                          MagicHelper.ManaHolder::new));
-        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"),
-                            new CodecCapabilityProvider<>(MagicHelper.BurnoutHolder.CODEC,
-                                                          MagicHelper.getBurnoutCapability(),
-                                                          MagicHelper.BurnoutHolder::new));
+        if (event.getObject() instanceof LivingEntity livingEntity) {
+            @SuppressWarnings("unchecked")
+            AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());
+            if (attributes.hasAttribute(AMAttributes.MAX_MANA.get())) {
+                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"),
+                                    new CodecCapabilityProvider<>(MagicHelper.ManaHolder.CODEC,
+                                                                  MagicHelper.getManaCapability(),
+                                                                  MagicHelper.ManaHolder::new));
+            }
+            if (attributes.hasAttribute(AMAttributes.MAX_BURNOUT.get())) {
+                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"),
+                                    new CodecCapabilityProvider<>(MagicHelper.BurnoutHolder.CODEC,
+                                                                  MagicHelper.getBurnoutCapability(),
+                                                                  MagicHelper.BurnoutHolder::new));
+            }
+        }
+        if (event.getObject() instanceof Player) {
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"),
+                                new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC,
+                                                              SkillHelper.getCapability(),
+                                                              SkillHelper.KnowledgeHolder::empty));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),
+                                new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC,
+                                                              AffinityHelper.getCapability(),
+                                                              AffinityHelper.AffinityHolder::empty));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),
+                                new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC,
+                                                              MagicHelper.getMagicCapability(),
+                                                              MagicHelper.MagicHolder::new));
+        }
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {
         event.add(EntityType.PLAYER, AMAttributes.MAX_MANA.get());
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
+        event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
+        event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
     }
 
     private static void playerJoinWorld(EntityJoinWorldEvent event) {
@@ -96,6 +112,12 @@ public final class EventHandler {
         MagicHelper.instance().syncAllToPlayer(player);
     }
 
+    private static void playerClone(PlayerEvent.Clone event) {//fixme
+        SkillHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        AffinityHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        MagicHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+    }
+
     private static void registerDataManager(AddReloadListenerEvent event) {
         event.addListener(OcculusTabManager.instance());
         event.addListener(SkillManager.instance());
@@ -105,10 +127,11 @@ public final class EventHandler {
     private static void onTick(TickEvent.PlayerTickEvent event) {
         if (event.side != LogicalSide.SERVER) return;
         if (event.phase != TickEvent.Phase.START) return;
-        if (event.player.isDeadOrDying()) return;
+        Player player = event.player;
+        if (player.isDeadOrDying()) return;
 
-        ArsMagicaAPI.get().getMagicHelper().increaseMana(event.player, 0.1f /*+ 0.3f * CapabilityHelper.getManaRegenLevel(event.player)*/);
-        ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(event.player, 0.4f);
+        ArsMagicaAPI.get().getMagicHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.MAX_BURNOUT.get()));
     }
 
     private static void compendiumPickup(PlayerEvent.ItemPickupEvent event) {
@@ -126,13 +149,13 @@ public final class EventHandler {
         // TODO change
         float newMaxMana = 10 * level;
         float newMaxBurnout = 10 * level;
-        var magicHelper = ArsMagicaAPI.get().getMagicHelper();
-        var maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
+        IMagicHelper magicHelper = ArsMagicaAPI.get().getMagicHelper();
+        AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
             maxManaAttr.setBaseValue(newMaxMana);
             magicHelper.increaseMana(player, (newMaxMana-magicHelper.getMana(player))/2);
         }
-        var maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
+        AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             magicHelper.decreaseBurnout(player, magicHelper.getBurnout(player)/2);

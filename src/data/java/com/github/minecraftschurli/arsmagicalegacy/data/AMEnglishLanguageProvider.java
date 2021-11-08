@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -15,8 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fmllegacy.RegistryObject;
-
-import java.util.function.Supplier;
 
 class AMEnglishLanguageProvider extends AMLanguageProvider {
     AMEnglishLanguageProvider(DataGenerator generator) {
@@ -75,6 +74,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL);
+        add(SpellItem.SPELL_CAST_FAIL, "Spell cast failed!");
+        add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
+        add(SpellItem.MANA_COST, "Mana cost: %d");
+        add(SpellItem.BURNOUT, "Burnout: %d");
+        add(SpellItem.REAGENTS, "Reagents:");
+        add(SpellItem.UNNAMED_SPELL, "Unnamed Spell");
+        add(SpellItem.UNKNOWN_ITEM, "Unknown Item");
+        add(SpellItem.UNKNOWN_ITEM_DESC, "You dont understand what this item is, but you can feel it is special.");
+        add(SpellItem.INVALID_SPELL, "[Invalid Spell]");
+        add(SpellItem.INVALID_SPELL_DESC, "Something is wrong with this Spell, check the log for warnings or errors!");
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
     }
 

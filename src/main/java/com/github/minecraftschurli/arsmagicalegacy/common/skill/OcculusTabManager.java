@@ -8,10 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class OcculusTabManager extends CodecDataManager<IOcculusTab> implements IOcculusTabManager {
@@ -35,14 +37,30 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     }
 
     @Override
+    public Optional<IOcculusTab> getOptional(ResourceLocation id) {
+        return getOptional((Object) id);
+    }
+
+    @Nullable
+    @Override
+    public IOcculusTab getNullable(ResourceLocation id) {
+        return get((Object) id);
+    }
+
+    @Override
+    public IOcculusTab get(ResourceLocation id) {
+        return getOrThrow(id);
+    }
+
+    @Override
     public Collection<IOcculusTab> getTabs() {
-        return getValues();
+        return values();
     }
 
     @Override
     public IOcculusTab getByIndex(int index) {
-        return getValues().stream()
-                          .sorted(Comparator.comparing(IOcculusTab::getOcculusIndex))
-                          .toArray(IOcculusTab[]::new)[index];
+        return values().stream()
+                       .sorted(Comparator.comparing(IOcculusTab::getOcculusIndex))
+                       .toArray(IOcculusTab[]::new)[index];
     }
 }

@@ -76,10 +76,22 @@
   "item.arsmagicalegacy.purple_rune": "Purple Rune",
   "item.arsmagicalegacy.red_rune": "Red Rune",
   "item.arsmagicalegacy.rune_bag": "Rune Bag",
+  "item.arsmagicalegacy.spell": "Spell",
+  "item.arsmagicalegacy.spell.burnout": "Burnout: %d",
+  "item.arsmagicalegacy.spell.invalid": "[Invalid Spell]",
+  "item.arsmagicalegacy.spell.invalid.description": "Something is wrong with this Spell, check the log for warnings or errors!",
+  "item.arsmagicalegacy.spell.mana_cost": "Mana cost: %d",
+  "item.arsmagicalegacy.spell.reagents": "Reagents:",
+  "item.arsmagicalegacy.spell.unknown": "Unknown Item",
+  "item.arsmagicalegacy.spell.unknown.description": "You dont understand what this item is, but you can feel it is special.",
+  "item.arsmagicalegacy.spell.unnamed": "Unnamed Spell",
+  "item.arsmagicalegacy.spell_parchment": "Spell Parchment",
   "item.arsmagicalegacy.sunstone": "Sunstone",
   "item.arsmagicalegacy.topaz": "Topaz",
   "item.arsmagicalegacy.vinteum_dust": "Vinteum Dust",
   "item.arsmagicalegacy.white_rune": "White Rune",
   "item.arsmagicalegacy.yellow_rune": "Yellow Rune",
-  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy"
+  "itemGroup.arsmagicalegacy": "Ars Magica: Legacy",
+  "message.arsmagicalegacy.spell_cast.fail": "Spell cast failed!",
+  "tooltip.arsmagicalegacy.hold_for_details": "Hold [%s] for details"
 }

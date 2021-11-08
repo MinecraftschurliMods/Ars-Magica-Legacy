@@ -72,6 +72,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
         itemGenerated(WIZARDS_CHALK);
+        itemGenerated(SPELL_PARCHMENT);
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
     }

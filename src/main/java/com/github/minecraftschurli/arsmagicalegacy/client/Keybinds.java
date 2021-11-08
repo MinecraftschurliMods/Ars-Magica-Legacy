@@ -9,13 +9,17 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.CallbackI;
+
+import java.applet.Applet;
 
 public final class Keybinds {
     public static final KeybindManager KEYBIND_MANAGER = KeybindManager.get(ArsMagicaAPI.MOD_ID);
 
     public static final Keybind CONFIGURE_SPELL = KEYBIND_MANAGER.keybind("configure_spell", InputConstants.KEY_M)
                                                                  .withModifier(KeyModifier.CONTROL)
-                                                                 .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.get()))
+                                                                 .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
                                                                  .withContext(KeyConflictContext.IN_GAME)
                                                                  .withCallback(ctx -> {
                                                                      ArsMagicaAPI.get().openSpellCustomizationGui(

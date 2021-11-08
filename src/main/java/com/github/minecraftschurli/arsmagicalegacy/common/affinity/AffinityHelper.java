@@ -11,6 +11,7 @@ import com.github.minecraftschurli.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,13 +20,38 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.*;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final CodecPacket.CodecPacketFactory<AffinityHolder> SYNC_PACKET = CodecPacket.create(AffinityHolder.CODEC, AffinityHelper::handleSync);
+
+    public static final class SyncPacket extends CodecPacket<AffinityHolder> {
+
+        public SyncPacket(AffinityHolder data) {
+            super(data);
+        }
+
+        public SyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            AffinityHelper.handleSync(this.data, context);
+        }
+
+        @Override
+        protected Codec<AffinityHolder> getCodec() {
+            return AffinityHolder.CODEC;
+        }
+    }
+
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
 
     public static AffinityHelper instance() {
         return INSTANCE.get();
@@ -91,8 +117,12 @@ public final class AffinityHelper implements IAffinityHelper {
         return AFFINITY;
     }
 
+    public void syncOnDeath(Player original, Player player) {
+        original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+    }
+
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_PACKET.create(getAffinityHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
     }
 
     private static void handleSync(AffinityHolder affinityHolder, NetworkEvent.Context context) {

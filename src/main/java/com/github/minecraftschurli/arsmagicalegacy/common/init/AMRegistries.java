@@ -62,6 +62,7 @@ public interface AMRegistries {
     static void init(IEventBus bus) {
         AMBlocks.register();
         AMItems.register();
+        AMMobEffects.register();
         AMMenuTypes.register();
         AMAttributes.register();
         AMStats.register();
