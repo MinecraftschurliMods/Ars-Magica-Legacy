@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "arsmagicalegacy:topaz_block"
+      "tag": "forge:storage_blocks/topaz"
     }
   ],
   "result": {

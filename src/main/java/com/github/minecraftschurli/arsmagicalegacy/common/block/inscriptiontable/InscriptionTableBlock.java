@@ -15,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class InscriptionTableBlock extends Block {
+public class InscriptionTableBlock extends Block implements EntityBlock {
     public static final IntegerProperty TIER = IntegerProperty.create("tier", 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = EnumProperty.create("half", Half.class);
@@ -51,15 +52,13 @@ public class InscriptionTableBlock extends Block {
         pBuilder.add(TIER, FACING, HALF);
     }
 
-    @NotNull
     @Override
-    public PushReaction getPistonPushReaction(@NotNull BlockState pState) {
+    public PushReaction getPistonPushReaction(BlockState pState) {
         return PushReaction.BLOCK;
     }
 
-    @NotNull
     @Override
-    public VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         switch (pState.getValue(FACING)) {
             case NORTH -> {
                 return pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
@@ -85,19 +84,19 @@ public class InscriptionTableBlock extends Block {
     }
 
     @Override
-    public void onPlace(BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pOldState, boolean pIsMoving) {
+    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
         if (pState.getValue(HALF) != Half.LEFT) {
             pLevel.setBlock(pPos.relative(pState.getValue(FACING).getClockWise()), pState.setValue(HALF, Half.LEFT), Constants.BlockFlags.DEFAULT);
         }
     }
 
     @Override
-    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
+    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, Blocks.AIR.defaultBlockState(), pBlockEntity, pTool);
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, @NotNull BlockPos pPos, BlockState pState, @NotNull Player pPlayer) {
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         boolean left = pState.getValue(HALF) == Half.LEFT;
         BlockPos pos = left ? pPos.relative(pState.getValue(FACING).getCounterClockWise()) : pPos.relative(pState.getValue(FACING).getClockWise());
         BlockState state = pLevel.getBlockState(pos);
@@ -113,7 +112,6 @@ public class InscriptionTableBlock extends Block {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
-    @NotNull
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
@@ -131,10 +129,14 @@ public class InscriptionTableBlock extends Block {
         }
     }
 
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return null;
+    }
+
     public enum Half implements StringRepresentable {
         LEFT, RIGHT;
 
-        @NotNull
         @Override
         public String getSerializedName() {
             return name().toLowerCase();
