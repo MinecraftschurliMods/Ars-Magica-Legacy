@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "arsmagicalegacy:sunstone_block"
+      "tag": "forge:storage_blocks/sunstone"
     }
   ],
   "result": {
