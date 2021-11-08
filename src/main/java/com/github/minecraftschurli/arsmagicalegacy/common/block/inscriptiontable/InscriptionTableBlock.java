@@ -128,7 +128,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
             return InteractionResult.SUCCESS;
         }
         if (pLevel.isClientSide) return InteractionResult.SUCCESS;
-        pPlayer.openMenu(new SimpleMenuProvider((id, inv, player) -> new InscriptionTableMenu(id), CONTAINER_TITLE));
+        pPlayer.openMenu(new SimpleMenuProvider((id, inv, player) -> new InscriptionTableMenu(id, inv), CONTAINER_TITLE));
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;
     }
