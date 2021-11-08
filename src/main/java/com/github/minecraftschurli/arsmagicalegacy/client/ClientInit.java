@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.ManaHUD;
@@ -38,6 +39,7 @@ public final class ClientInit {
 
     @SubscribeEvent
     static void clientSetup(FMLClientSetupEvent event) {
+        MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
 
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
