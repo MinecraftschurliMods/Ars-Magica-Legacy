@@ -26,6 +26,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
+        blockIdTranslation(AMBlocks.OCCULUS);
+        blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
+        blockIdTranslation(AMBlocks.ALTAR_CORE);
+        blockIdTranslation(AMBlocks.MAGIC_WALL);
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
@@ -75,7 +79,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
-        blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this device!");
     }

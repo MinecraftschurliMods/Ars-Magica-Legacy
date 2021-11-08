@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems.*;
 
@@ -23,7 +23,6 @@ class AMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
-        blockItem(OCCULUS);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(CHIMERITE_ORE);
@@ -75,10 +74,8 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
         itemGenerated(WIZARDS_CHALK);
-        itemGenerated(SPELL_PARCHMENT);
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
-        getBuilder(SPELL.getId().getPath());
     }
 
     /**
