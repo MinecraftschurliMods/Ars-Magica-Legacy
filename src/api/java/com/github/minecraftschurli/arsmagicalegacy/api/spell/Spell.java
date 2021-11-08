@@ -2,7 +2,9 @@ package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -58,9 +60,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
     }
 
     public Optional<ShapeGroup> shapeGroup(byte shapeGroup) {
-        if (shapeGroup > shapeGroups().size() - 1) {
-            return Optional.empty();
-        }
+        if (shapeGroup > shapeGroups().size() - 1) return Optional.empty();
         return Optional.of(shapeGroups().get(shapeGroup));
     }
 
@@ -73,44 +73,26 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
     }
 
     public void currentShapeGroupIndex(byte shapeGroup) {
-        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) {
-            throw new IllegalArgumentException();
-        }
+        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) throw new IllegalArgumentException();
         additionalData().putByte(CURRENT_SHAPE_GROUP_KEY, shapeGroup);
     }
 
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
-        var event = new SpellCastEvent(caster, this);
+        SpellCastEvent event = new SpellCastEvent(caster, this);
         MinecraftForge.EVENT_BUS.post(event);
-        if (event.isCanceled()) {
-            return SpellCastResult.CANCELLED;
-        }
+        if (event.isCanceled()) return SpellCastResult.CANCELLED;
         float mana = event.mana;
         float burnout = event.burnout;
         Collection<Either<Ingredient, ItemStack>> reagents = event.reagents;
-        var api = ArsMagicaAPI.get();
-        var magicHelper = api.getMagicHelper();
-        var spellHelper = api.getSpellHelper();
+        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        IMagicHelper magicHelper = api.getMagicHelper();
+        ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
-            if (magicHelper.getMana(caster) < mana) {
-                return SpellCastResult.NOT_ENOUGH_MANA;
-            }
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) {
-                return SpellCastResult.BURNED_OUT;
-            }
-            if (!spellHelper.hasReagents(caster, reagents)) {
-                return SpellCastResult.MISSING_REAGENTS;
-            }
+            if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
-        SpellCastResult result = spellHelper.invoke(this,
-                                                    caster,
-                                                    level,
-                                                    null,
-                                                    null,
-                                                    caster.position(),
-                                                    castingTicks,
-                                                    0,
-                                                    awardXp);
+        SpellCastResult result = spellHelper.invoke(this, caster, level, null, null, caster.position(), castingTicks, 0, awardXp);
         if (consume) {
             magicHelper.decreaseMana(caster, mana);
             magicHelper.increaseBurnout(caster, burnout);
@@ -124,13 +106,13 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
 
     @UnmodifiableView
     public List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers() {
-        var shapeGroup = shapeGroup(currentShapeGroupIndex());
-        var pwm = new ArrayList<>(spellStack().partsWithModifiers());
+        Optional<ShapeGroup> shapeGroup = shapeGroup(currentShapeGroupIndex());
+        ArrayList<Pair<ISpellPart, List<ISpellModifier>>> pwm = new ArrayList<>(spellStack().partsWithModifiers());
         LinkedList<Pair<? extends ISpellPart, List<ISpellModifier>>> shapesWithModifiers = new LinkedList<>();
         shapeGroup.ifPresent(group -> {
             shapesWithModifiers.addAll(group.shapesWithModifiers());
             Pair<? extends ISpellPart, List<ISpellModifier>> last = shapesWithModifiers.getLast();
-            var tmp = new ArrayList<ISpellModifier>();
+            ArrayList<ISpellModifier> tmp = new ArrayList<>();
             shapesWithModifiers.set(shapesWithModifiers.size() - 1,
                                     Pair.of(last.getFirst(), Collections.unmodifiableList(tmp)));
             tmp.addAll(last.getSecond());
@@ -143,26 +125,22 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
     public float manaCost(@Nullable LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
-        var api = ArsMagicaAPI.get();
-        var spellDataManager = api.getSpellDataManager();
-        var affinityHelper = api.getAffinityHelper();
+        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        ISpellDataManager spellDataManager = api.getSpellDataManager();
+        IAffinityHelper affinityHelper = api.getAffinityHelper();
         for (ISpellPart part : parts()) {
             switch (part.getType()) {
                 case SHAPE, MODIFIER -> multiplier *= spellDataManager.getDataForPart(part).manaCost();
                 case COMPONENT -> {
-                    var data = spellDataManager.getDataForPart(part);
+                    ISpellPartData data = spellDataManager.getDataForPart(part);
                     cost += data.manaCost();
                     if (caster instanceof Player player) {
-                        for (IAffinity aff : api.getAffinityRegistry()) {
-                            for (IAffinity aff2 : data.affinities()) {
-                                if (aff == aff2 && affinityHelper.getAffinityDepth(player, aff) > 0) {
-                                    cost -= (float) (cost * (0.5f * affinityHelper.getAffinityDepth(player, aff) /
-                                                             100f));
-                                    break;
-                                } else {
-                                    cost = cost + (cost * (0.10f));
-                                }
-                            }
+                        for (IAffinity aff : data.affinities()) {
+                            if (affinityHelper.getAffinityDepth(player, aff) > 0) {
+                                cost -= (float) (cost * (0.5f * affinityHelper.getAffinityDepth(player, aff) / 100f));
+                            }// else {
+                                //cost = cost + (cost * (0.10f));
+                            //}
                         }
                     }
                 }
@@ -189,7 +167,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
     }
 
     public List<Either<Ingredient, ItemStack>> reagents() {
-        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+        ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         return parts().stream().filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT).map(
                 spellDataManager::getDataForPart).flatMap(data -> data.reagents().stream()).toList();
     }
@@ -210,20 +188,14 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
 
     @Override
     public CompoundTag additionalData() {
-        if (isEmpty()) {
-            return new CompoundTag();
-        }
+        if (isEmpty()) return new CompoundTag();
         return additionalData;
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Spell spell = (Spell) o;
         return shapeGroups().equals(spell.shapeGroups()) &&

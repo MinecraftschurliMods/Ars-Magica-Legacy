@@ -4,7 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurli.codeclib.CodecPacket;
+import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
@@ -22,16 +22,16 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
 
+    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
+
     private MagicHelper() {
     }
 
     public static MagicHelper instance() {
         return INSTANCE.get();
     }
-
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static void init() {
         ArsMagicaLegacy.NETWORK_HANDLER.register(ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
@@ -49,27 +49,6 @@ public final class MagicHelper implements IMagicHelper {
 
     public static Capability<BurnoutHolder> getBurnoutCapability() {
         return BURNOUT;
-    }
-
-    private MagicHolder getMagicHolder(Player player) {
-        return player.getCapability(MAGIC)
-                     .orElseThrow(() -> new RuntimeException("Could not retrieve magic capability for player %s{%s}".formatted(
-                             player.getDisplayName().getString(),
-                             player.getUUID())));
-    }
-
-    private ManaHolder getManaHolder(LivingEntity livingEntity) {
-        return livingEntity.getCapability(MANA).orElseThrow(
-                () -> new RuntimeException("Could not retrieve mana capability for LivingEntity %s{%s}".formatted(
-                        livingEntity.getDisplayName().getString(),
-                        livingEntity.getUUID())));
-    }
-
-    private BurnoutHolder getBurnoutHolder(LivingEntity livingEntity) {
-        return livingEntity.getCapability(BURNOUT).orElseThrow(
-                () -> new RuntimeException(("Could not retrieve burnout capability for LivingEntity %s{%s}").formatted(
-                        livingEntity.getDisplayName().getString(),
-                        livingEntity.getUUID())));
     }
 
     @Override
@@ -101,12 +80,6 @@ public final class MagicHelper implements IMagicHelper {
         syncMagic(player);
     }
 
-    private float getXpForNextLevel(int level) {
-        if (level == 0) return 0;
-        // TODO change
-        return Byte.MAX_VALUE;
-    }
-
     @Override
     public float getMana(LivingEntity livingEntity) {
         return getManaHolder(livingEntity).getMana();
@@ -119,9 +92,7 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean increaseMana(LivingEntity livingEntity, float amount) {
-        if (amount < 0) {
-            return false;
-        }
+        if (amount < 0) return false;
         var max = getMaxMana(livingEntity);
         var magicHolder = getManaHolder(livingEntity);
         var current = magicHolder.getMana();
@@ -134,14 +105,10 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean decreaseMana(LivingEntity livingEntity, float amount) {
-        if (amount < 0) {
-            return false;
-        }
+        if (amount < 0) return false;
         var magicHolder = getManaHolder(livingEntity);
         var current = magicHolder.getMana();
-        if (current - amount < 0) {
-            return false;
-        }
+        if (current - amount < 0) return false;
         magicHolder.setMana(current - amount);
         if (livingEntity instanceof Player player) {
             syncMana(player);
@@ -161,9 +128,7 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean increaseBurnout(LivingEntity livingEntity, float amount) {
-        if (amount < 0) {
-            return false;
-        }
+        if (amount < 0) return false;
         var max = getMaxBurnout(livingEntity);
         var magicHolder = getBurnoutHolder(livingEntity);
         var current = magicHolder.getBurnout();
@@ -176,13 +141,11 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean decreaseBurnout(LivingEntity livingEntity, float amount) {
-        if (amount < 0) {
-            return false;
-        }
+        if (amount < 0) return false;
         var magicHolder = getBurnoutHolder(livingEntity);
         var current = magicHolder.getBurnout();
         if (current - amount < 0) {
-            return false;
+            amount = current;
         }
         magicHolder.setBurnout(current - amount);
         if (livingEntity instanceof Player player){
@@ -193,19 +156,96 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean knowsMagic(Player player) {
-        boolean b = player.isCreative() || player.isSpectator();
-        if (player.isDeadOrDying()) return b;
-        return b || getLevel(player) > 0;
+        return player.isCreative() || player.isSpectator() || getLevel(player) > 0;
     }
 
     public void syncOnDeath(Player original, Player player) {
+        player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
+        player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
         original.getCapability(BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
     }
 
+    public void syncAllToPlayer(Player player) {
+        syncMagic(player);
+        syncMana(player);
+        syncBurnout(player);
+    }
+
+    private MagicHolder getMagicHolder(Player player) {
+        if (player.isDeadOrDying()) {
+            player.reviveCaps();
+        }
+        MagicHolder magicHolder = player.getCapability(MAGIC).orElseThrow(() -> new RuntimeException(
+                "Could not retrieve magic capability for player %s{%s}".formatted(
+                        player.getDisplayName().getString(),
+                        player.getUUID())));
+        if (player.isDeadOrDying()) {
+            player.invalidateCaps();
+        }
+        return magicHolder;
+    }
+
+    private ManaHolder getManaHolder(LivingEntity livingEntity) {
+        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
+            livingEntity.reviveCaps();
+        }
+        ManaHolder manaHolder = livingEntity.getCapability(MANA).orElseThrow(() -> new RuntimeException(
+                "Could not retrieve mana capability for LivingEntity %s{%s}".formatted(
+                        livingEntity.getDisplayName().getString(),
+                        livingEntity.getUUID())));
+        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
+            livingEntity.invalidateCaps();
+        }
+        return manaHolder;
+    }
+
+    private BurnoutHolder getBurnoutHolder(LivingEntity livingEntity) {
+        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
+            livingEntity.reviveCaps();
+        }
+        BurnoutHolder burnoutHolder = livingEntity.getCapability(BURNOUT).orElseThrow(() -> new RuntimeException(
+                "Could not retrieve burnout capability for LivingEntity %s{%s}".formatted(
+                        livingEntity.getDisplayName().getString(),
+                        livingEntity.getUUID())));
+        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
+            livingEntity.invalidateCaps();
+        }
+        return burnoutHolder;
+    }
+
+    private float getXpForNextLevel(int level) {
+        if (level == 0) return 0;
+        // TODO change
+        return Byte.MAX_VALUE;
+    }
+
     private void syncBurnout(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutSyncPacket(getBurnoutHolder(player)), player);
+    }
+
+    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT)
+                                                                .ifPresent(holder -> holder.onSync(data)));
+    }
+
+    private void syncMana(Player player) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
+    }
+
+    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA)
+                                                                .ifPresent(holder -> holder.onSync(data)));
+    }
+
+    private void syncMagic(Player player) {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
+    }
+
+    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC)
+                                                                .ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class BurnoutSyncPacket extends CodecPacket<BurnoutHolder> {
@@ -229,15 +269,6 @@ public final class MagicHelper implements IMagicHelper {
         }
     }
 
-    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT)
-                                                                .ifPresent(holder -> holder.onSync(data)));
-    }
-
-    private void syncMana(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
-    }
-
     public static final class ManaSyncPacket extends CodecPacket<ManaHolder> {
 
         public ManaSyncPacket(ManaHolder data) {
@@ -259,15 +290,6 @@ public final class MagicHelper implements IMagicHelper {
         }
     }
 
-    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA)
-                                                                .ifPresent(holder -> holder.onSync(data)));
-    }
-
-    private void syncMagic(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
-    }
-
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
 
         public MagicSyncPacket(MagicHolder data) {
@@ -287,17 +309,6 @@ public final class MagicHelper implements IMagicHelper {
         protected Codec<MagicHolder> getCodec() {
             return MagicHolder.CODEC;
         }
-    }
-
-    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC)
-                                                                .ifPresent(holder -> holder.onSync(data)));
-    }
-
-    public void syncAllToPlayer(Player player) {
-        syncMagic(player);
-        syncMana(player);
-        syncBurnout(player);
     }
 
     public static final class ManaHolder {

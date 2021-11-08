@@ -75,6 +75,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(SPELL_PARCHMENT);
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
+        getBuilder(SPELL.getId().getPath());
     }
 
     /**

@@ -17,9 +17,11 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
@@ -60,10 +62,13 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     @Override
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
-        var player = Minecraft.getInstance().player;
+        Player player = Minecraft.getInstance().player;
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() ||
             cameraTransformType == ItemTransforms.TransformType.GROUND || this.icon.isEmpty()) {
-            return Minecraft.getInstance().getModelManager().getModel(AMItems.SPELL_PARCHMENT.getId());
+            return Minecraft.getInstance()
+                            .getModelManager()
+                            .getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"))
+                            .handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return this;
@@ -94,20 +99,11 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
         if (this.cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
-            var key = icon.get();
+            ResourceLocation key = icon.get();
             try {
                 return CACHE.get(key, () -> {
                     TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(key);
-                    return List.of(ItemTextureQuadConverter.genQuad(Transformation.identity(),
-                                                                    0,
-                                                                    0,
-                                                                    16,
-                                                                    16,
-                                                                    8.504f / 16f,
-                                                                    sprite,
-                                                                    Direction.SOUTH,
-                                                                    -1,
-                                                                    2));
+                    return List.of(ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 8.504f / 16f, sprite, Direction.SOUTH, -1, 2));
                 });
             } catch (ExecutionException ignored) {}
         }

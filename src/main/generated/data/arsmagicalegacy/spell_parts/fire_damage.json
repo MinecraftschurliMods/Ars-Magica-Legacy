@@ -1,0 +1,9 @@
+{
+  "manaCost": 8.0,
+  "burnout": 3.0,
+  "reagents": [],
+  "affinities": [
+    "arsmagicalegacy:fire"
+  ],
+  "recipe": []
+}

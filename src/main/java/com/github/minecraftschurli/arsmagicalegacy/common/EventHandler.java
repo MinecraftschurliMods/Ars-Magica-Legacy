@@ -38,11 +38,11 @@ public final class EventHandler {
 
     @Internal
     public static void register(final IEventBus modBus) {
-        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeModification);
 
+        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerJoinWorld);
@@ -112,10 +112,12 @@ public final class EventHandler {
         MagicHelper.instance().syncAllToPlayer(player);
     }
 
-    private static void playerClone(PlayerEvent.Clone event) {//fixme
+    private static void playerClone(PlayerEvent.Clone event) {
+        event.getOriginal().reviveCaps();
         SkillHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         AffinityHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         MagicHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        event.getOriginal().invalidateCaps();
     }
 
     private static void registerDataManager(AddReloadListenerEvent event) {
@@ -131,7 +133,7 @@ public final class EventHandler {
         if (player.isDeadOrDying()) return;
 
         ArsMagicaAPI.get().getMagicHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.MAX_BURNOUT.get()));
+        ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
     private static void compendiumPickup(PlayerEvent.ItemPickupEvent event) {

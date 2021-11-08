@@ -24,6 +24,7 @@ public class AMSkillProvider extends SkillProvider {
 
     @Override
     protected void createSkills(Consumer<SkillBuilder> consumer) {
+        /*
         var test = createSkill("test", new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense"), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/icon/skill/affinity_gains.png"))
                 .setPosition(275, 75)
                 .addCost(AMSkillPoints.BLUE.get())
@@ -33,5 +34,6 @@ public class AMSkillProvider extends SkillProvider {
                 .addCost(AMSkillPoints.BLUE.get())
                 .addParent(test)
                 .build(consumer);
+        */
     }
 }

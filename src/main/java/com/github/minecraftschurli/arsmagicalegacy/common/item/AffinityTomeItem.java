@@ -19,7 +19,7 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
     @Override
     public void fillItemCategory(@NotNull CreativeModeTab pCategory, @NotNull NonNullList<ItemStack> pItems) {
         if (this.allowdedIn(pCategory)) {
-            var api = ArsMagicaAPI.get();
+            ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
             for (IAffinity affinity : api.getAffinityRegistry()) {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
                 pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getRegistryName()));
@@ -34,7 +34,6 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
         if (affinity == null) {
             affinity = IAffinity.NONE;
         }
-        return Util.makeDescriptionId("item", getRegistryName()) +
-                (".%s.%s".formatted(affinity.getNamespace(), affinity.getPath()));
+        return Util.makeDescriptionId(super.getDescriptionId(pStack), affinity);
     }
 }

@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.google.gson.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
@@ -12,6 +13,7 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Data provider for spell part data jsons
@@ -48,6 +51,18 @@ public abstract class SpellPartDataProvider implements DataProvider { // TODO @I
 
     public SpellPartDataBuilder createSpellPartData(ResourceLocation id, float manaCost, float burnout) {
         return new SpellPartDataBuilder(id, manaCost, burnout);
+    }
+
+    public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost, float burnout) {
+        return createSpellPartData(spellPart.getRegistryName(), manaCost, burnout);
+    }
+
+    public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+        return createSpellPartData(spellPart.get(), manaCost, burnout);
+    }
+
+    public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+        return createSpellPartData(spellPart.getId(), manaCost, burnout);
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
@@ -95,6 +110,10 @@ public abstract class SpellPartDataProvider implements DataProvider { // TODO @I
         public SpellPartDataBuilder withIngredient(ISpellIngredient ingredient) {
             this.recipe.add(ingredient);
             return this;
+        }
+
+        public SpellPartDataBuilder withAffinity(Supplier<IAffinity> affinity) {
+            return this.withAffinity(affinity.get());
         }
 
         public SpellPartDataBuilder withAffinity(IAffinity affinity) {

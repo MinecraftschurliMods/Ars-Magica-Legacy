@@ -12,7 +12,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +45,7 @@ public class SpellItem extends Item implements ISpellItem {
 
     public static final BiConsumer<MutableComponent, MutableComponent> COMPONENT_OR_JOINER = (component, component2) -> component.append(new TextComponent(" | ")).append(component2);
 
-    public static final String SPELL_CAST_FAIL        = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.fail";
+    public static final String SPELL_CAST_RESULT      = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     public static final String UNNAMED_SPELL          = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
     public static final String UNKNOWN_ITEM           = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown";
     public static final String UNKNOWN_ITEM_DESC      = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
@@ -71,14 +74,14 @@ public class SpellItem extends Item implements ISpellItem {
             entity.startUsingItem(hand);
         } else {
             LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
-            var result = spell.cast(entity, level, 0, true, true);
+            SpellCastResult result = spell.cast(entity, level, 0, true, true);
             LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
                     player.awardStat(AMStats.SPELL_CAST);
                 }
                 if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT+result.name().toLowerCase(), stack.getDisplayName()), true);
                 }
             }
         }
@@ -146,7 +149,7 @@ public class SpellItem extends Item implements ISpellItem {
                 player.awardStat(AMStats.SPELL_CAST);
             }
             if (result.isFail()) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_FAIL, stack.getDisplayName()), true);
+                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT+result.name().toLowerCase(), stack.getDisplayName()), true);
             }
         }
         saveSpell(stack, spell);
