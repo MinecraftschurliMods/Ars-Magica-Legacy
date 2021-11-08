@@ -40,6 +40,7 @@ public final class ClientInit {
     static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
 
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());

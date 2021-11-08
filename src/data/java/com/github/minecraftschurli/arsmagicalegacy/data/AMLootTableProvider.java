@@ -44,6 +44,10 @@ class AMLootTableProvider extends LootTableProvider {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
         @Override
         protected void addTables() {
+            dropSelf(AMBlocks.OCCULUS.get());
+            dropSelf(AMBlocks.INSCRIPTION_TABLE.get());
+            dropSelf(AMBlocks.ALTAR_CORE.get());
+            dropSelf(AMBlocks.MAGIC_WALL.get());
             add(AMBlocks.CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             add(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             dropSelf(AMBlocks.CHIMERITE_BLOCK.get());

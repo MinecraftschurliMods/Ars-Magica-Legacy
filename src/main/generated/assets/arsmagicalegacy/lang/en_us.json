@@ -1,6 +1,7 @@
 {
   "advancement.arsmagicalegacy.root.description": "A renewed look into Minecraft with a splash of magic...",
   "advancement.arsmagicalegacy.root.title": "Ars Magica: Legacy",
+  "block.arsmagicalegacy.altar_core": "Altar Core",
   "block.arsmagicalegacy.aum": "Aum",
   "block.arsmagicalegacy.cerublossom": "Cerublossom",
   "block.arsmagicalegacy.chimerite_block": "Chimerite Block",
@@ -11,8 +12,10 @@
   "block.arsmagicalegacy.deepslate_vinteum_ore": "Deepslate Vinteum Ore",
   "block.arsmagicalegacy.desert_nova": "Desert Nova",
   "block.arsmagicalegacy.inscription_table": "Inscription Table",
+  "block.arsmagicalegacy.magic_wall": "Magic Wall",
   "block.arsmagicalegacy.moonstone_block": "Moonstone Block",
   "block.arsmagicalegacy.moonstone_ore": "Moonstone Ore",
+  "block.arsmagicalegacy.occulus": "Occulus",
   "block.arsmagicalegacy.stripped_witchwood": "Stripped Witchwood",
   "block.arsmagicalegacy.stripped_witchwood_log": "Stripped Witchwood Log",
   "block.arsmagicalegacy.sunstone_block": "Sunstone Block",

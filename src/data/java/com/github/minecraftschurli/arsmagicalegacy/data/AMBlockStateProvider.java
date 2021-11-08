@@ -34,6 +34,8 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        simpleBlock(ALTAR_CORE);
+        simpleBlock(MAGIC_WALL);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(DEEPSLATE_CHIMERITE_ORE);
         simpleBlock(CHIMERITE_BLOCK);
