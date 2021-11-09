@@ -11,8 +11,8 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.MENU_TYPES;
 
 public interface AMMenuTypes {
-    RegistryObject<MenuType<InscriptionTableMenu>> INSCRIPTION_TABLE = MENU_TYPES.register("inscription_table", () -> IForgeContainerType.create((windowId, inv, data) -> new InscriptionTableMenu(windowId, inv)));
-    RegistryObject<MenuType<RuneBagMenu>> RUNE_BAG = MENU_TYPES.register("rune_bag", () -> IForgeContainerType.create((windowId, inv, data) -> new RuneBagMenu(windowId, inv, inv.player.getItemInHand(data.readEnum(InteractionHand.class)))));
+    RegistryObject<MenuType<InscriptionTableMenu>> INSCRIPTION_TABLE = MENU_TYPES.register("inscription_table", () -> IForgeContainerType.create((id, inv, data) -> new InscriptionTableMenu(id, inv)));
+    RegistryObject<MenuType<RuneBagMenu>>          RUNE_BAG          = MENU_TYPES.register("rune_bag",          () -> IForgeContainerType.create((id, inv, data) -> new RuneBagMenu(id, inv, inv.player.getItemInHand(data.readEnum(InteractionHand.class)))));
 
     /**
      * Empty method that is required for classloading
