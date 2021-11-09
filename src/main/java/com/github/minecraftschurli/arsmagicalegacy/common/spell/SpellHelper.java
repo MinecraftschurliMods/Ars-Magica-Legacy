@@ -1,12 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellComponent;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -27,13 +21,8 @@ import java.util.List;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
+    private SpellHelper() {}
 
-    private SpellHelper() {
-    }
-
-    /**
-     * @return The only instance of this class.
-     */
     public static SpellHelper instance() {
         return INSTANCE.get();
     }
@@ -83,12 +72,12 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player) {
+    public float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, Spell spell, Player player) {
         return 0;
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPosition, int castingTicks, int index, boolean awardXp) {
+    public SpellCastResult invoke(Spell spell, LivingEntity caster, Level level, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPosition, int castingTicks, int index, boolean awardXp) {
         Pair<? extends ISpellPart, List<ISpellModifier>> part = spell.partsWithModifiers().get(index);
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
