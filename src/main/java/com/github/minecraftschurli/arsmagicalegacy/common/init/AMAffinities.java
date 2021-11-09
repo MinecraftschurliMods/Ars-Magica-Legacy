@@ -22,6 +22,9 @@ public interface AMAffinities {
     RegistryObject<IAffinity> ARCANE    = AFFINITIES.register("arcane",    () -> Affinity.builder().setColor(0xb935cd).setDirectOpposite(IAffinity.NATURE).addMajorOpposites(IAffinity.LIFE, IAffinity.EARTH, IAffinity.WATER, IAffinity.ICE).addMinorOpposites(IAffinity.AIR, IAffinity.ENDER).build());
     RegistryObject<IAffinity> ENDER     = AFFINITIES.register("ender",     () -> Affinity.builder().setColor(0x3f043d).setDirectOpposite(IAffinity.LIFE).addMajorOpposites(IAffinity.NATURE, IAffinity.LIGHTNING, IAffinity.WATER, IAffinity.AIR).addMinorOpposites(IAffinity.ARCANE, IAffinity.ICE).build());
 
+    /**
+     * Empty method that is required for classloading
+     */
     @Internal
     static void register() {}
 }

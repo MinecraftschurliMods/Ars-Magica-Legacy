@@ -21,6 +21,9 @@ public interface AMAttributes {
         return ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
     }
 
+    /**
+     * Empty method that is required for classloading
+     */
     @Internal
     static void register() {
     }
