@@ -183,27 +183,27 @@ dependencies {
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:simplenetlib')) {
         include project(path: ':projects:simplenetlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:codeclib')) {
         include project(path: ':projects:codeclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:betterkeybindlib')) {
         include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:patchouli_datagen')) {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
-        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
+        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0-SNAPSHOT')
     }
 
     implementation sourceSets.api.output
