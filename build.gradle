@@ -1,7 +1,6 @@
 //file:noinspection GroovyAssignabilityCheck
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.ajoberstar.grgit.Grgit
 
 buildscript {
     repositories {
