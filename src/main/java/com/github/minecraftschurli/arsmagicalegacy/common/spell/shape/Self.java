@@ -15,16 +15,7 @@ import java.util.List;
 
 public class Self extends AbstractShape {
     @Override
-    public SpellCastResult invoke(Spell spell,
-                                  LivingEntity caster,
-                                  Level level,
-                                  List<ISpellModifier> modifiers,
-                                  @Nullable Entity targetEntity,
-                                  @Nullable BlockPos targetBlock,
-                                  Vec3 targetPos,
-                                  int ticksUsed,
-                                  int index,
-                                  boolean awardXp) {
+    public SpellCastResult invoke(Spell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPos, int ticksUsed, int index, boolean awardXp) {
         return ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, caster, null, targetPos, ticksUsed, index, awardXp);
     }
 }
