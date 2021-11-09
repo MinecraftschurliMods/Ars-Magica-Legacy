@@ -1,7 +1,8 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell.component;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,7 +24,7 @@ public class Damage extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(Spell spell,
+    public SpellCastResult invoke(ISpell spell,
                                   LivingEntity caster,
                                   Level level,
                                   List<ISpellModifier> modifiers,
@@ -40,7 +41,7 @@ public class Damage extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(Spell spell,
+    public SpellCastResult invoke(ISpell spell,
                                   LivingEntity caster,
                                   Level level,
                                   List<ISpellModifier> modifiers,

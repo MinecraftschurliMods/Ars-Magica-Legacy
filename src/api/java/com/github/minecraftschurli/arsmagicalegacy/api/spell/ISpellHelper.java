@@ -16,6 +16,6 @@ import java.util.Collection;
 public interface ISpellHelper {
     boolean hasReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
     void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
-    float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, Spell spell, Player player);
-    SpellCastResult invoke(Spell spell, LivingEntity caster, Level level, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPosition, int castingTicks, int index, boolean awardXp);
+    float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player);
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPosition, int castingTicks, int index, boolean awardXp);
 }

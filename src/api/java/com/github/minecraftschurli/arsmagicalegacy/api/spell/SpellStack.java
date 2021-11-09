@@ -14,9 +14,16 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
                                                              .listOf()
                                                              .xmap(SpellStack::of, SpellStack::parts);
 
-    public static final SpellStack EMPTY = SpellStack.of(List.of());
+    public static final SpellStack EMPTY = of(List.of());
 
-    public static SpellStack of(List<ISpellPart> parts) {
+    /**
+     * Create a spell stack from alist of parts.
+     *
+     * @param parts the list of parts to construct the spell stack with
+     * @return the created spell stack
+     * @throws MalformedSpellStackException when a modifier is the first element of the parts list
+     */
+    public static SpellStack of(List<ISpellPart> parts) throws MalformedSpellStackException {
         List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers = new ArrayList<>();
         List<ISpellModifier> globalMods = new ArrayList<>();
         List<ISpellModifier> currentMods = null;
@@ -40,6 +47,11 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         return new SpellStack(parts, partsWithModifiers);
     }
 
+    /**
+     * Get the unmodifiable list of parts in this spell stack.
+     *
+     * @return the unmodifiable list of parts in this spell stack
+     */
     @UnmodifiableView
     @Contract(pure = true)
     @Override
@@ -47,6 +59,11 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         return Collections.unmodifiableList(this.parts);
     }
 
+    /**
+     * Get the unmodifiable list of parts with modifiers in this spell stack.
+     *
+     * @return the unmodifiable list of parts with modifiers in this spell stack
+     */
     @UnmodifiableView
     @Contract(pure = true)
     @Override
@@ -54,6 +71,11 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         return Collections.unmodifiableList(this.partsWithModifiers);
     }
 
+    /**
+     * Check if this shape group is empty.
+     *
+     * @return true, if this shape group is empty
+     */
     public boolean isEmpty() {
         return parts().isEmpty();
     }
@@ -76,6 +98,9 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         return parts().hashCode();
     }
 
+    /**
+     * Exception thrown when the spell stack is malformed.
+     */
     public static class MalformedSpellStackException extends RuntimeException {
         private final List<ISpellPart> parts;
 
@@ -84,6 +109,11 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
             this.parts = parts;
         }
 
+        /**
+         * Get the list of parts that caused the exception.
+         *
+         * @return the list of parts that caused the exception
+         */
         public List<ISpellPart> getParts() {
             return this.parts;
         }

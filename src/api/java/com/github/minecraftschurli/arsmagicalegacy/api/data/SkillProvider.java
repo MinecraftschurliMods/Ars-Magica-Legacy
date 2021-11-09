@@ -30,11 +30,17 @@ public abstract class SkillProvider implements DataProvider {// TODO @IHH docume
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final DataGenerator generator;
-    private final String modid;
+    private final String namespace;
 
-    protected SkillProvider(DataGenerator generator, String modid) {
+    /**
+     * Create a skill provider for the given namespace
+     *
+     * @param generator the data generator
+     * @param namespace the namespace to use in data generation
+     */
+    protected SkillProvider(DataGenerator generator, String namespace) {
         this.generator = generator;
-        this.modid = modid;
+        this.namespace = namespace;
     }
 
     @Internal
@@ -54,11 +60,11 @@ public abstract class SkillProvider implements DataProvider {// TODO @IHH docume
     protected abstract void createSkills(Consumer<SkillBuilder> consumer);
 
     protected SkillBuilder createSkill(String name, ResourceLocation occulusTab, ResourceLocation icon) {
-        return SkillBuilder.create(new ResourceLocation(modid, name), occulusTab, icon);
+        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
     }
 
     protected SkillBuilder createSkill(String name, IOcculusTab occulusTab, ResourceLocation icon) {
-        return SkillBuilder.create(new ResourceLocation(modid, name), occulusTab, icon);
+        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
     }
 
     private static void saveSkill(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

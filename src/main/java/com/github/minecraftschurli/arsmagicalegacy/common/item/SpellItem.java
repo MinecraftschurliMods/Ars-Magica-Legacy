@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemRenderProperties;
@@ -170,11 +170,10 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
             assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
-                return new TranslatableComponent(UNKNOWN_ITEM);
+            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return new TranslatableComponent(UNKNOWN_ITEM);
         }
-        if (getSpell(pStack).isEmpty())
-            return new TranslatableComponent(INVALID_SPELL);
+        Spell spell = getSpell(pStack);
+        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(INVALID_SPELL);
         return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(UNNAMED_SPELL));
     }
 
@@ -192,7 +191,7 @@ public class SpellItem extends Item implements ISpellItem {
             return;
         }
         Spell spell = getSpell(pStack);
-        if (spell.isEmpty()) {
+        if (spell.isEmpty() || !spell.isValid()) {
             pTooltipComponents.add(new TranslatableComponent(INVALID_SPELL_DESC));
             return;
         }

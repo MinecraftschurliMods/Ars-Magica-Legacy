@@ -1,10 +1,11 @@
-package com.github.minecraftschurli.arsmagicalegacy.api.spell;
+package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -16,17 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.*;
+import java.util.stream.Stream;
 
-public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
-    public static final String SHAPE_GROUPS_KEY        = "shape_groups";
-    public static final String CURRENT_SHAPE_GROUP_KEY = "current_shape_group";
-    public static final String SPELL_STACK_KEY         = "spell_stack";
-    public static final String DATA_KEY                = "data";
+public final class Spell implements ISpell {
 
     //@formatter:off
     public static final Codec<Spell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
@@ -38,45 +37,78 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
 
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
 
+    private final List<ShapeGroup> shapeGroups;
+    private final SpellStack       spellStack;
+    private final CompoundTag      additionalData;
+    private final Lazy<Boolean>    continuous;
+    private final Lazy<Boolean>    empty;
+    private final Lazy<Boolean>    valid;
+
+    public Spell(List<ShapeGroup> shapeGroups,
+                 SpellStack spellStack,
+                 CompoundTag additionalData) {
+        this.shapeGroups = shapeGroups;
+        this.spellStack = spellStack;
+        this.additionalData = additionalData;
+        this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
+        this.empty = Lazy.concurrentOf(() -> this.shapeGroups().isEmpty() && spellStack().isEmpty());
+        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream),
+                                                           this.spellStack().parts().stream())
+                                                   .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
+                                                   .allMatch(Objects::nonNull));
+    }
+
+    @Override
     public boolean isContinuous() {
-        return firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent();
+        return continuous.get();
     }
 
+    @Override
     public boolean isEmpty() {
-        return this.shapeGroups().isEmpty() && spellStack().isEmpty();
+        return empty.get();
     }
 
+    @Override
+    public boolean isValid() {
+        return valid.get();
+    }
+
+    @Override
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
             return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
                                                                     .filter(parts -> !parts.isEmpty())
                                                                     .orElse(spellStack().parts())
-                                                                    .get(0))
-                           .filter(ISpellShape.class::isInstance)
-                           .map(ISpellShape.class::cast);
+                                                                    .get(0)).filter(ISpellShape.class::isInstance).map(
+                    ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
             return Optional.empty();
         }
     }
 
+    @Override
     public Optional<ShapeGroup> shapeGroup(byte shapeGroup) {
         if (shapeGroup > shapeGroups().size() - 1) return Optional.empty();
         return Optional.of(shapeGroups().get(shapeGroup));
     }
 
+    @Override
     public ShapeGroup currentShapeGroup() {
         return shapeGroups().get(currentShapeGroupIndex());
     }
 
+    @Override
     public byte currentShapeGroupIndex() {
         return additionalData().getByte(CURRENT_SHAPE_GROUP_KEY);
     }
 
+    @Override
     public void currentShapeGroupIndex(byte shapeGroup) {
         if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) throw new IllegalArgumentException();
         additionalData().putByte(CURRENT_SHAPE_GROUP_KEY, shapeGroup);
     }
 
+    @Override
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
         SpellCastEvent event = new SpellCastEvent(caster, this);
         MinecraftForge.EVENT_BUS.post(event);
@@ -89,7 +121,8 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, null, caster.position(), castingTicks, 0, awardXp);
@@ -104,6 +137,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         return result;
     }
 
+    @Override
     @UnmodifiableView
     public List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers() {
         Optional<ShapeGroup> shapeGroup = shapeGroup(currentShapeGroupIndex());
@@ -122,6 +156,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         return Collections.unmodifiableList(shapesWithModifiers);
     }
 
+    @Override
     public float manaCost(@Nullable LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
@@ -139,7 +174,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
                             if (affinityHelper.getAffinityDepth(player, aff) > 0) {
                                 cost -= (float) (cost * (0.5f * affinityHelper.getAffinityDepth(player, aff) / 100f));
                             }// else {
-                                //cost = cost + (cost * (0.10f));
+                            //cost = cost + (cost * (0.10f));
                             //}
                         }
                     }
@@ -156,6 +191,7 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         return cost;
     }
 
+    @Override
     public float burnout() {
         float cost = 0;
         for (ISpellPart part : parts()) {
@@ -166,22 +202,16 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         return cost;
     }
 
+    @Override
     public List<Either<Ingredient, ItemStack>> reagents() {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         return parts().stream().filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT).map(
                 spellDataManager::getDataForPart).flatMap(data -> data.reagents().stream()).toList();
     }
 
-    private List<ISpellPart> parts() {
-        List<ISpellPart> list = new ArrayList<>();
-        list.addAll(currentShapeGroup().parts());
-        list.addAll(spellStack().parts());
-        return Collections.unmodifiableList(list);
-    }
-
+    @Override
     @UnmodifiableView
     @Contract(pure = true)
-    @Override
     public List<ShapeGroup> shapeGroups() {
         return Collections.unmodifiableList(shapeGroups);
     }
@@ -209,4 +239,24 @@ public record Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, Compoun
         result = 31 * result + spellStack().hashCode();
         return result;
     }
+
+    @Override
+    public SpellStack spellStack() {
+        return spellStack;
+    }
+
+    @Override
+    public String toString() {
+        return "Spell[" +
+               "shapeGroups=" +
+               shapeGroups +
+               ", " +
+               "spellStack=" +
+               spellStack +
+               ", " +
+               "additionalData=" +
+               additionalData +
+               ']';
+    }
+
 }

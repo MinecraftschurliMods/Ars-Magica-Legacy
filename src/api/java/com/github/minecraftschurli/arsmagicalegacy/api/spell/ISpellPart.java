@@ -3,11 +3,19 @@ package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * TODO
+ * Base interface for a spell part. A spell part can be a component ({@link ISpellComponent}), a modifier ({@link ISpellModifier}) or a shape ({@link ISpellShape})
  */
 public interface ISpellPart extends IForgeRegistryEntry<ISpellPart> {
+    /**
+     * Get the type for this spell part.
+     *
+     * @return the {@link SpellPartType} for this spell part
+     */
     SpellPartType getType();
 
+    /**
+     * The type of the spell part
+     */
     enum SpellPartType {
         COMPONENT, MODIFIER, SHAPE
     }

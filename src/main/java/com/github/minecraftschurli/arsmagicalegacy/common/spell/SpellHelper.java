@@ -75,13 +75,13 @@ public final class SpellHelper implements ISpellHelper {
     public float getXpForSpellCast(float mana,
                                    float burnout,
                                    Collection<Either<Ingredient, ItemStack>> reagents,
-                                   Spell spell,
+                                   ISpell spell,
                                    Player player) {
         return 0;
     }
 
     @Override
-    public SpellCastResult invoke(Spell spell,
+    public SpellCastResult invoke(ISpell spell,
                                   LivingEntity caster,
                                   Level level,
                                   @Nullable Entity targetEntity,

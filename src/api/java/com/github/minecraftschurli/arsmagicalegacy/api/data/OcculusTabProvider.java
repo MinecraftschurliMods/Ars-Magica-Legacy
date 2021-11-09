@@ -10,6 +10,7 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,21 +21,28 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *
+ * Abstract base for occulus tab data generators
  */
-public abstract class OcculusTabProvider implements DataProvider { // TODO @IHH document
+public abstract class OcculusTabProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson   GSON   = (new GsonBuilder()).setPrettyPrinting().create();
 
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final DataGenerator generator;
-    private final String modid;
+    private final String namespace;
 
-    public OcculusTabProvider(DataGenerator generator, String modid) {
+    /**
+     * Create an occulus tab provider for the given namespace
+     *
+     * @param generator the data generator
+     * @param namespace the namespace to use in data generation
+     */
+    protected OcculusTabProvider(DataGenerator generator, String namespace) {
         this.generator = generator;
-        this.modid = modid;
+        this.namespace = namespace;
     }
 
+    @Internal
     @Override
     public void run(HashCache pCache) throws IOException {
         Path path = this.generator.getOutputFolder();
@@ -46,6 +54,9 @@ public abstract class OcculusTabProvider implements DataProvider { // TODO @IHH 
         }
     }
 
+    /**
+     * Implement to add your own occulus tabs
+     */
     protected abstract void createOcculusTabs();
 
     /**
@@ -55,7 +66,7 @@ public abstract class OcculusTabProvider implements DataProvider { // TODO @IHH 
      * @param index the index to place the tab at
      */
     protected void add(String name, int index) {
-        add(new ResourceLocation(this.modid, name), index);
+        add(new ResourceLocation(this.namespace, name), index);
     }
 
     /**
@@ -77,7 +88,7 @@ public abstract class OcculusTabProvider implements DataProvider { // TODO @IHH 
      * @param renderer the class of the renderer to use
      */
     protected void add(String name, int index, String renderer) {
-        add(new ResourceLocation(this.modid, name), index, renderer);
+        add(new ResourceLocation(this.namespace, name), index, renderer);
     }
 
     /**

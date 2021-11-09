@@ -12,7 +12,7 @@ import java.util.List;
 public interface ISpellShape extends ISpellPart {
     default boolean isContinuous() { return false; }
 
-    SpellCastResult invoke(Spell spell,
+    SpellCastResult invoke(ISpell spell,
                            LivingEntity caster,
                            Level level,
                            List<ISpellModifier> modifiers,

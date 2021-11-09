@@ -9,12 +9,24 @@ import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.*;
 
+/**
+ * A shape group is the part of a spell that can be exchanged to change the casting but not the effect of a spell.
+ */
 public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers) {
     public static final Codec<ShapeGroup> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry)
                                                              .listOf()
                                                              .xmap(ShapeGroup::of, ShapeGroup::parts);
 
-    public static ShapeGroup of(List<ISpellPart> parts) {
+    public static final ShapeGroup EMPTY = of(List.of());
+
+    /**
+     * Create a shape group from alist of parts.
+     *
+     * @param parts the list of parts to construct the shape group with
+     * @return the created shape group
+     * @throws MalformedShapeGroupException when there are components present in the parts list or a modifier is the first element of the parts list
+     */
+    public static ShapeGroup of(List<ISpellPart> parts) throws MalformedShapeGroupException {
         List<Pair<ISpellShape, List<ISpellModifier>>> map = new ArrayList<>();
         List<ISpellModifier> currentMods = null;
         for (ISpellPart part : parts) {
@@ -35,6 +47,11 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
         return new ShapeGroup(parts, map);
     }
 
+    /**
+     * Get the unmodifiable list of parts in this shape group.
+     *
+     * @return the unmodifiable list of parts in this shape group
+     */
     @UnmodifiableView
     @Contract(pure = true)
     @Override
@@ -42,6 +59,11 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
         return Collections.unmodifiableList(this.parts);
     }
 
+    /**
+     * Get the unmodifiable list of shapes with modifiers in this shape group.
+     *
+     * @return the unmodifiable list of shapes with modifiers in this shape group
+     */
     @UnmodifiableView
     @Contract(pure = true)
     @Override
@@ -49,6 +71,36 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
         return Collections.unmodifiableList(this.shapesWithModifiers);
     }
 
+    /**
+     * Check if this shape group is empty.
+     *
+     * @return true, if this shape group is empty
+     */
+    public boolean isEmpty() {
+        return parts().isEmpty();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final SpellStack that = (SpellStack) o;
+        return (this.isEmpty() && that.isEmpty()) || this.parts().equals(that.parts());
+    }
+
+    @Override
+    public int hashCode() {
+        return parts().hashCode();
+    }
+
+    /**
+     * Exception thrown when the shape group is malformed.
+     */
     public static class MalformedShapeGroupException extends RuntimeException {
         private final List<ISpellPart> parts;
 
@@ -57,6 +109,11 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
             this.parts = parts;
         }
 
+        /**
+         * Get the list of parts that caused the exception.
+         *
+         * @return the list of parts that caused the exception
+         */
         public List<ISpellPart> getParts() {
             return this.parts;
         }
