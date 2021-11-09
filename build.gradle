@@ -49,17 +49,9 @@ version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
 
 if (System.getenv('RELEASE_TYPE') != null) {
-    status = System.getenv('RELEASE_TYPE')
-    switch (status) {
-        case 'snapshot':
-            version = "${version}+${grgit.head().abbreviatedId}"
-            break
-        case 'alpha':
-        case 'beta':
-        case 'final':
-            version = "${version}-${status}"
-            break
-    }
+    status = System.getenv('RELEASE_TYPE').toLowerCase()
+    if (status == 'snapshot') status = status.toUpperCase()
+    version = "${version}-${status}"
 }
 
 java {
