@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.compat.jei;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.MethodsReturnNonnullByDefault;
@@ -14,14 +13,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @JeiPlugin
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class JEICompat implements IModPlugin {
-    @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(ArsMagicaAPI.MOD_ID, ArsMagicaAPI.MOD_ID);
@@ -39,7 +36,8 @@ public class JEICompat implements IModPlugin {
     public static class AffinitySubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {
         public static final AffinitySubtypeInterpreter INSTANCE = new AffinitySubtypeInterpreter();
 
-        private AffinitySubtypeInterpreter() {}
+        private AffinitySubtypeInterpreter() {
+        }
 
         @Override
         public String apply(ItemStack ingredient, UidContext context) {

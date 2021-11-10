@@ -5,7 +5,16 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -22,11 +31,16 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public final class Spell implements ISpell {
-
     //@formatter:off
     public static final Codec<Spell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ShapeGroup.CODEC.listOf().fieldOf(SHAPE_GROUPS_KEY).forGetter(Spell::shapeGroups),
@@ -34,28 +48,21 @@ public final class Spell implements ISpell {
             CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(Spell::additionalData)
     ).apply(inst, Spell::new));
     //@formatter:on
-
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
-
     private final List<ShapeGroup> shapeGroups;
-    private final SpellStack       spellStack;
-    private final CompoundTag      additionalData;
-    private final Lazy<Boolean>    continuous;
-    private final Lazy<Boolean>    empty;
-    private final Lazy<Boolean>    valid;
+    private final SpellStack spellStack;
+    private final CompoundTag additionalData;
+    private final Lazy<Boolean> continuous;
+    private final Lazy<Boolean> empty;
+    private final Lazy<Boolean> valid;
 
-    public Spell(List<ShapeGroup> shapeGroups,
-                 SpellStack spellStack,
-                 CompoundTag additionalData) {
+    public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         this.shapeGroups = shapeGroups;
         this.spellStack = spellStack;
         this.additionalData = additionalData;
         this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
         this.empty = Lazy.concurrentOf(() -> this.shapeGroups().isEmpty() && spellStack().isEmpty());
-        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream),
-                                                           this.spellStack().parts().stream())
-                                                   .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
-                                                   .allMatch(Objects::nonNull));
+        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), this.spellStack().parts().stream()).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).allMatch(Objects::nonNull));
     }
 
     @Override
@@ -76,11 +83,7 @@ public final class Spell implements ISpell {
     @Override
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
-            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
-                                                                    .filter(parts -> !parts.isEmpty())
-                                                                    .orElse(spellStack().parts())
-                                                                    .get(0)).filter(ISpellShape.class::isInstance).map(
-                    ISpellShape.class::cast);
+            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts).filter(parts -> !parts.isEmpty()).orElse(spellStack().parts()).get(0)).filter(ISpellShape.class::isInstance).map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
             return Optional.empty();
         }
@@ -121,8 +124,7 @@ public final class Spell implements ISpell {
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
-                return SpellCastResult.BURNED_OUT;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, null, caster.position(), castingTicks, 0, awardXp);
@@ -147,8 +149,7 @@ public final class Spell implements ISpell {
             shapesWithModifiers.addAll(group.shapesWithModifiers());
             Pair<? extends ISpellPart, List<ISpellModifier>> last = shapesWithModifiers.getLast();
             ArrayList<ISpellModifier> tmp = new ArrayList<>();
-            shapesWithModifiers.set(shapesWithModifiers.size() - 1,
-                                    Pair.of(last.getFirst(), Collections.unmodifiableList(tmp)));
+            shapesWithModifiers.set(shapesWithModifiers.size() - 1, Pair.of(last.getFirst(), Collections.unmodifiableList(tmp)));
             tmp.addAll(last.getSecond());
             tmp.addAll(pwm.remove(0).getSecond());
         });
@@ -183,7 +184,6 @@ public final class Spell implements ISpell {
         }
         if (multiplier == 0) multiplier = 1;
         cost *= multiplier;
-
         if (caster instanceof Player player && affinityHelper.getAffinityDepth(player, IAffinity.ARCANE) > 0.5f) {
             float reduction = (float) (1 - (0.5 * affinityHelper.getAffinityDepth(player, IAffinity.ARCANE)));
             cost *= reduction;
@@ -205,8 +205,7 @@ public final class Spell implements ISpell {
     @Override
     public List<Either<Ingredient, ItemStack>> reagents() {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
-        return parts().stream().filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT).map(
-                spellDataManager::getDataForPart).flatMap(data -> data.reagents().stream()).toList();
+        return parts().stream().filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT).map(spellDataManager::getDataForPart).flatMap(data -> data.reagents().stream()).toList();
     }
 
     @Override
@@ -214,6 +213,11 @@ public final class Spell implements ISpell {
     @Contract(pure = true)
     public List<ShapeGroup> shapeGroups() {
         return Collections.unmodifiableList(shapeGroups);
+    }
+
+    @Override
+    public SpellStack spellStack() {
+        return spellStack;
     }
 
     @Override
@@ -226,11 +230,8 @@ public final class Spell implements ISpell {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         final Spell spell = (Spell) o;
-        return shapeGroups().equals(spell.shapeGroups()) &&
-               spellStack().equals(spell.spellStack()) &&
-               additionalData().equals(spell.additionalData());
+        return shapeGroups().equals(spell.shapeGroups()) && spellStack().equals(spell.spellStack()) && additionalData().equals(spell.additionalData());
     }
 
     @Override
@@ -241,22 +242,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public SpellStack spellStack() {
-        return spellStack;
-    }
-
-    @Override
     public String toString() {
-        return "Spell[" +
-               "shapeGroups=" +
-               shapeGroups +
-               ", " +
-               "spellStack=" +
-               spellStack +
-               ", " +
-               "additionalData=" +
-               additionalData +
-               ']';
+        return "Spell[shapeGroups=" + shapeGroups + ", spellStack=" + spellStack + ", additionalData=" + additionalData + ']';
     }
-
 }

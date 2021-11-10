@@ -6,8 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.ATTRIBUTES;
 
@@ -23,6 +23,9 @@ public interface AMAttributes {
         return ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
     }
 
+    /**
+     * Empty method that is required for classloading
+     */
     @Internal
     static void register() {
     }

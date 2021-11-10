@@ -18,27 +18,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class WizardsChalkItem extends BlockItem {
     public WizardsChalkItem(Properties pProperties) {
         super(AMBlocks.WIZARDS_CHALK.get(), pProperties);
     }
 
-    @NotNull
     @Override
     public InteractionResult place(BlockPlaceContext pContext) {
-        if (!pContext.canPlace()) {
-            return InteractionResult.FAIL;
-        }
+        if (!pContext.canPlace()) return InteractionResult.FAIL;
         BlockPlaceContext context = updatePlacementContext(pContext);
-        if (context == null) {
-            return InteractionResult.FAIL;
-        }
+        if (context == null) return InteractionResult.FAIL;
         BlockState placement = getPlacementState(context);
-        if (placement == null || !placeBlock(context, placement)) {
-            return InteractionResult.FAIL;
-        }
+        if (placement == null || !placeBlock(context, placement)) return InteractionResult.FAIL;
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
         Player player = context.getPlayer();
@@ -47,8 +39,7 @@ public class WizardsChalkItem extends BlockItem {
         if (state.is(placement.getBlock())) {
             state = updateBlockStateFromTag(blockpos, level, itemstack, state);
             updateCustomBlockEntityTag(blockpos, level, player, itemstack, state);
-            state.getBlock()
-                 .setPlacedBy(level, blockpos, state, player, itemstack);
+            state.getBlock().setPlacedBy(level, blockpos, state, player, itemstack);
             level.gameEvent(player, GameEvent.BLOCK_PLACE, blockpos);
             if (player != null) {
                 if (player instanceof ServerPlayer) {
@@ -58,12 +49,7 @@ public class WizardsChalkItem extends BlockItem {
                     }
                 }
                 SoundType soundtype = state.getSoundType(level, blockpos, pContext.getPlayer());
-                level.playSound(player,
-                                blockpos,
-                                getPlaceSound(state, level, blockpos, player),
-                                SoundSource.BLOCKS,
-                                (soundtype.getVolume() + 1F) / 2F,
-                                soundtype.getPitch() * 0.8F);
+                level.playSound(player, blockpos, getPlaceSound(state, level, blockpos, player), SoundSource.BLOCKS, (soundtype.getVolume() + 1F) / 2F, soundtype.getPitch() * 0.8F);
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -90,8 +76,6 @@ public class WizardsChalkItem extends BlockItem {
     }
 
     private static <T extends Comparable<T>> BlockState updateState(BlockState pState, Property<T> pProperty, String pValueIdentifier) {
-        return pProperty.getValue(pValueIdentifier)
-                        .map((p_40592_) -> pState.setValue(pProperty, p_40592_))
-                        .orElse(pState);
+        return pProperty.getValue(pValueIdentifier).map(property -> pState.setValue(pProperty, property)).orElse(pState);
     }
 }

@@ -9,9 +9,9 @@ import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
@@ -29,37 +29,29 @@ import org.apache.logging.log4j.Logger;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
-
-    private static ArsMagicaLegacy INSTANCE;
-
-    public static final IMCHandler     IMC_HANDLER     = IMCHandler.create(ArsMagicaAPI.MOD_ID);
+    public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
-
+    private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
     /**
-     * The Mod Constructor
+     * The mod constructor
      */
     public ArsMagicaLegacy() {
-        if (INSTANCE != null) {
+        if (INSTANCE != null)
             throw new IllegalStateException("Tried to create mod %s more than once!".formatted(ArsMagicaAPI.MOD_ID));
-        }
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
-        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
-
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInit::init);
-
         Config.init();
-
         registerNetworkPackets();
         SkillHelper.init();
         MagicHelper.init();
         AffinityHelper.init();
-
         OcculusTabManager.instance();
         SkillManager.instance();
         SpellDataManager.instance();

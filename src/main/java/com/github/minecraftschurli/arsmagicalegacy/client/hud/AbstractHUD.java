@@ -16,7 +16,7 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
     @Override
     public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {
         if (!Minecraft.getInstance().options.hideGui && gui.shouldDrawSurvivalElements()) {
-            this.render(mStack, width, height, partialTicks);
+            render(mStack, width, height, partialTicks);
         }
     }
 

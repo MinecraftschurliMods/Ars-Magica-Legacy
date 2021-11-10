@@ -4,8 +4,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
 
 public final class BurnoutHUD extends AbstractHUD {
     @Override

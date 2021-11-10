@@ -15,7 +15,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,14 +67,14 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
                 RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
             }
-            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth*100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
+            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth * 100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX+posX, drawY+posY);
+            getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().withStyle(style -> style.withColor(aff.getColor())));
 //                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());

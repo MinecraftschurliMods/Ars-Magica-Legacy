@@ -8,21 +8,19 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Mostly taken from the Botania mod.
- *
- * @see
- * <a href="https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemBackedInventory.java">
- *     https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemBackedInventory.java
- * </a>
+ * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemBackedInventory.java}
  */
 public class RuneBagContainer extends SimpleContainer {
     private final ItemStack stack;
 
+    /**
+     * Creates a new RuneBagContainer.
+     * @param stack The ItemStack to create the container for.
+     */
     public RuneBagContainer(ItemStack stack) {
         super(DyeColor.values().length);
         this.stack = stack;
-        ListTag tag = !stack.isEmpty() && stack.getOrCreateTag().contains("Items")
-                ? stack.getOrCreateTag().getList("Items", 10)
-                : new ListTag();
+        ListTag tag = !stack.isEmpty() && stack.getOrCreateTag().contains("Items") ? stack.getOrCreateTag().getList("Items", 10) : new ListTag();
         for (int i = 0; i < DyeColor.values().length && i < tag.size(); i++) {
             setItem(i, ItemStack.of(tag.getCompound(i)));
         }

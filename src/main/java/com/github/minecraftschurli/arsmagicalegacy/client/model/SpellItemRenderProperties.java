@@ -8,11 +8,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderProperties;
 
-/**
- *
- */
 public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer implements IItemRenderProperties {
-
     public SpellItemRenderProperties() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
@@ -23,12 +19,7 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
     }
 
     @Override
-    public void renderByItem(ItemStack stack,
-                             ItemTransforms.TransformType transformType,
-                             PoseStack poseStack,
-                             MultiBufferSource buffer,
-                             int packedLight,
-                             int packedOverlay) {
+    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         // TODO render spell effect in hand
     }
 }

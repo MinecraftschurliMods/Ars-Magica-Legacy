@@ -45,7 +45,6 @@ public final class ClientInit {
     @SubscribeEvent
     static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
-
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());
@@ -57,7 +56,6 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
-
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
     }
@@ -99,11 +97,7 @@ public final class ClientInit {
             if (!(item instanceof IAffinityItem)) continue;
             var itemId = item.getRegistryName();
             if (itemId == null) continue;
-
-            modelRegistry.computeIfPresent(
-                    new ModelResourceLocation(itemId, "inventory"),
-                    (rl, model) -> new AffinityOverrideModel(model)
-            );
+            modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
     }

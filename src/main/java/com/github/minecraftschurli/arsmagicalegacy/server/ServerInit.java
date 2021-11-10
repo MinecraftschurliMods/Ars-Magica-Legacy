@@ -2,11 +2,11 @@ package com.github.minecraftschurli.arsmagicalegacy.server;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
@@ -25,10 +25,7 @@ public final class ServerInit {
         SkillCommand.register(event.getDispatcher());
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
             var stack = new ItemStack(AMItems.SPELL.get());
-            SpellItem.saveSpell(stack,
-                                new Spell(List.of(ShapeGroup.of(List.of(AMSpellParts.SELF.get()))),
-                                          SpellStack.of(List.of(AMSpellParts.FIRE_DAMAGE.get())),
-                                          new CompoundTag()));
+            SpellItem.saveSpell(stack, new Spell(List.of(ShapeGroup.of(List.of(AMSpellParts.SELF.get()))), SpellStack.of(List.of(AMSpellParts.FIRE_DAMAGE.get())), new CompoundTag()));
             //SpellItem.setSpellIcon(stack, new ResourceLocation(ArsMagicaAPI.MOD_ID, "air-burst-air-1"));
             //SpellItem.setSpellName(stack, "Test Spell");
             context.getSource().getPlayerOrException().addItem(stack);

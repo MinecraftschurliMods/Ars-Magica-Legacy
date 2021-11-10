@@ -9,9 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +43,6 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
         return getOrThrow(id);
     }
 
-    @Nullable
     @Override
     public ISkill getNullable(ResourceLocation id) {
         return get((Object) id);

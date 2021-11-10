@@ -23,10 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Mostly taken from the Botania mod.
- * @see
- * <a href="https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java">
- *     https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java
- * </a>
+ * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
  */
 public class RuneBagItem extends Item {
     public RuneBagItem(Properties pProperties) {
@@ -34,32 +31,29 @@ public class RuneBagItem extends Item {
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new InvProvider(stack);
     }
 
-    @NotNull
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         if (pPlayer instanceof ServerPlayer sp) {
-            NetworkHooks.openGui(sp, new SimpleMenuProvider(
-                    (id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)),
-                    TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
+            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), TextComponent.EMPTY), buf -> buf.writeBoolean(pUsedHand == InteractionHand.MAIN_HAND));
         }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 
-    public static final class InvProvider implements ICapabilityProvider {
+    private static final class InvProvider implements ICapabilityProvider {
         private final LazyOptional<IItemHandler> lazy;
 
         public InvProvider(ItemStack stack) {
-            this.lazy = LazyOptional.of(() -> new InvWrapper(new RuneBagContainer(stack)));
+            lazy = LazyOptional.of(() -> new InvWrapper(new RuneBagContainer(stack)));
         }
 
         @NotNull
         @Override
-        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, lazy);
         }
     }

@@ -9,19 +9,32 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class ClientHelper {
-    public static void openOcculusGui() {
-        Minecraft.getInstance().setScreen(new OcculusScreen());
-    }
-
-    public static void openSpellCustomizationGui(ItemStack stack) {
-        Minecraft.getInstance().setScreen(new SpellIconPickScreen(stack));
-    }
-
+    /**
+     * @return The player of the current Minecraft instance.
+     */
     @Nullable
     public static Player getLocalPlayer() {
         return Minecraft.getInstance().player;
     }
 
+    /**
+     * Opens a new OcculusScreen.
+     */
+    public static void openOcculusGui() {
+        Minecraft.getInstance().setScreen(new OcculusScreen());
+    }
+
+    /**
+     * Opens a new SpellIconPickScreen.
+     * @param stack The icon to pass in the SpellIconPickScreen constructor.
+     */
+    public static void openSpellCustomizationGui(ItemStack stack) {
+        Minecraft.getInstance().setScreen(new SpellIconPickScreen(stack));
+    }
+
+    /**
+     * @return Whether to show advanced spell tooltips or not.
+     */
     public static boolean showAdvancedTooltips() {
         return Screen.hasShiftDown();
     }

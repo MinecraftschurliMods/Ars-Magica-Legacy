@@ -24,14 +24,7 @@ public final class ArsMagicaAPI {
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
         try {
             //noinspection unchecked
-            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(
-                    ArsMagicaAPI.class
-                            .getModule()
-                            .getDescriptor()
-                            .provides()
-                            .stream()
-                            .flatMap(provides -> provides.providers().stream())
-                            .findFirst().orElseThrow());
+            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
             return clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
@@ -47,7 +40,8 @@ public final class ArsMagicaAPI {
         });*/
     });
 
-    private ArsMagicaAPI() {}
+    private ArsMagicaAPI() {
+    }
 
     /**
      * Get the API Instance
@@ -135,9 +129,9 @@ public final class ArsMagicaAPI {
         IAffinityHelper getAffinityHelper();
 
         /**
-         * Get the magic helper instance.
+         * Get the {@link IMagicHelper} instance.
          *
-         * @return the magic helper instance
+         * @return the {@link IMagicHelper} instance
          */
         IMagicHelper getMagicHelper();
 
@@ -149,16 +143,15 @@ public final class ArsMagicaAPI {
         void openOcculusGui(Player player);
 
         /**
-         * Get the spell helper instance.
-         * @return the spell helper instance
+         * Get the {@link ISpellHelper} instance.
+         *
+         * @return the {@link ISpellHelper} instance
          */
         ISpellHelper getSpellHelper();
 
         /**
          * Open the spell customization gui for the given spell (the given stack).<br>
          * Only works on the client.
-         *
-         * @side client
          */
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
