@@ -14,17 +14,18 @@ import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Entity;
 
 public class FireGuardian extends AbstractBoss {
+    private boolean isUnderground;
+    private int hitCount = 0;
+
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
+        this.isUnderground = false;
+        this.hitCount = 0;
+        this.fireImmune();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
-    }
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
     }
 
     @Override
@@ -54,6 +55,30 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+        if (pSource == DamageSource.DROWN) {
+            pAmount *= 2f;
+        } else if (pSource == DamageSource.FREEZE) {
+            pAmount /= 3f;
+//        } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
+//            pAmount = 0;
+        }
         return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+    }
+
+    public boolean getIsUnderground() {
+        return this.isUnderground;
+    }
+
+    public boolean isBurning() {
+        return !this.isUnderground;
+    }
+
+    public int getHitCount() {
+        return this.hitCount;
     }
 }
