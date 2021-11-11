@@ -221,7 +221,6 @@ minecraft {
         client {
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
-            //property 'log4j.configuration', file('src/main/resources/log4j.xml')
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
@@ -231,7 +230,6 @@ minecraft {
             ideaModule "${project.name.replace(' ', '_')}.main"
             singleInstance true
             property 'forge.logging.markers', 'REGISTRIES'
-            //property 'log4j.configuration', file('src/main/resources/log4j.xml')
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet

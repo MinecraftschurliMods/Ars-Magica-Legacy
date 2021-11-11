@@ -12,10 +12,17 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public final class Keybinds {
     public static final KeybindManager KEYBIND_MANAGER = KeybindManager.get(ArsMagicaAPI.MOD_ID);
-    public static final Keybind CONFIGURE_SPELL = KEYBIND_MANAGER.keybind("configure_spell", InputConstants.KEY_M).withModifier(KeyModifier.CONTROL).withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId())).withContext(KeyConflictContext.IN_GAME).withCallback(ctx -> {
-        ArsMagicaAPI.get().openSpellCustomizationGui(ctx.get("level"), ctx.get("player"), ctx.get("stack"));
-        return true;
-    }).build();
+    public static final Keybind CONFIGURE_SPELL = KEYBIND_MANAGER.keybind("configure_spell", InputConstants.KEY_M)
+                                                                 .withModifier(KeyModifier.CONTROL)
+                                                                 .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
+                                                                 .withContext(KeyConflictContext.IN_GAME)
+                                                                 .withCallback(ctx -> {
+                                                                     ArsMagicaAPI.get().openSpellCustomizationGui(
+                                                                             ctx.get("level"),
+                                                                             ctx.get("player"),
+                                                                             ctx.get("stack"));
+                                                                     return true;
+                                                                 }).build();
 
     static void init(IEventBus modBus) {
         KEYBIND_MANAGER.register(modBus);
