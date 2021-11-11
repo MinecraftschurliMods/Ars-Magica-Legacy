@@ -23,31 +23,16 @@ public class Damage extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell,
-                                  LivingEntity caster,
-                                  Level level,
-                                  List<ISpellModifier> modifiers,
-                                  Entity target,
-                                  Vec3 targetPosition,
-                                  int index,
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, Entity target, Vec3 targetPosition, int index,
                                   int ticksUsed) {
         float damage = this.baseDamage;
         // TODO modifier
-        if (target.hurt(this.damageSourceFunction.apply(caster), damage)) {
-            return SpellCastResult.SUCCESS;
-        }
+        if (target.hurt(this.damageSourceFunction.apply(caster), damage)) return SpellCastResult.SUCCESS;
         return SpellCastResult.FAIL;
     }
 
     @Override
-    public SpellCastResult invoke(ISpell spell,
-                                  LivingEntity caster,
-                                  Level level,
-                                  List<ISpellModifier> modifiers,
-                                  BlockPos target,
-                                  Vec3 targetPosition,
-                                  int index,
-                                  int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockPos target, Vec3 targetPosition, int index, int ticksUsed) {
         return SpellCastResult.FAIL;
     }
 }

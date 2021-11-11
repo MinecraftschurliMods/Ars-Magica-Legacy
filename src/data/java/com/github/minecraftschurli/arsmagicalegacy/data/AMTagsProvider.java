@@ -5,13 +5,15 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.*;
+import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 
 class AMTagsProvider {
     static void setup(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
@@ -23,7 +25,7 @@ class AMTagsProvider {
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Blocks(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -66,7 +68,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -133,7 +135,7 @@ class AMTagsProvider {
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Fluids(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -144,7 +146,7 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        EntityTypes(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 

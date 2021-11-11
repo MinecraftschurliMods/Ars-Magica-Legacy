@@ -4,7 +4,6 @@ import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.EmptyCapabilityToken;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,15 +14,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new EmptyCapabilityToken<>());
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new EmptyCapabilityToken<>());
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new EmptyCapabilityToken<>());
+    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
 
     private MagicHelper() {
     }
@@ -173,6 +173,7 @@ public final class MagicHelper implements IMagicHelper {
 
     /**
      * Called on player death, syncs the capabilites.
+     *
      * @param original The old player from the event.
      * @param player   The new player from the event.
      */
@@ -186,6 +187,7 @@ public final class MagicHelper implements IMagicHelper {
 
     /**
      * Called on player join, syncs the capablities.
+     *
      * @param player The player from the event.
      */
     public void syncAllToPlayer(Player player) {

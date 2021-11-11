@@ -12,7 +12,6 @@ import java.util.Set;
  * Interface representing spell part data
  */
 public interface ISpellPartData {
-
     /**
      * Get the recipe for the associated spell part.
      *

@@ -4,7 +4,10 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.data.DataGenerator;
@@ -14,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +24,13 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -30,7 +38,7 @@ import java.util.function.Supplier;
  */
 public abstract class SpellPartDataProvider implements DataProvider { // TODO @IHH document
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson   GSON   = (new GsonBuilder()).setPrettyPrinting().create();
+    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final DataGenerator generator;
 
@@ -40,11 +48,9 @@ public abstract class SpellPartDataProvider implements DataProvider { // TODO @I
 
     @Override
     public void run(HashCache pCache) {
-        Path path = this.generator.getOutputFolder();
+        Path path = generator.getOutputFolder();
         createSpellPartData();
-        data.forEach((resourceLocation, jsonObject) -> {
-            save(pCache, jsonObject, path.resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json"));
-        });
+        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, path.resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json")));
     }
 
     protected abstract void createSpellPartData();
@@ -71,12 +77,10 @@ public abstract class SpellPartDataProvider implements DataProvider { // TODO @I
             String s1 = SHA1.hashUnencodedChars(s).toString();
             if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
                 Files.createDirectories(pPath.getParent());
-
                 try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
                     bufferedwriter.write(s);
                 }
             }
-
             pCache.putNew(pPath, s1);
         } catch (IOException ioexception) {
             LOGGER.error("Couldn't save spell part data {}", pPath, ioexception);
@@ -98,50 +102,52 @@ public abstract class SpellPartDataProvider implements DataProvider { // TODO @I
         }
 
         public SpellPartDataBuilder withReagent(Ingredient ingredient) {
-            this.reagents.add(Either.left(ingredient));
+            reagents.add(Either.left(ingredient));
             return this;
         }
 
         public SpellPartDataBuilder withReagent(ItemStack stack) {
-            this.reagents.add(Either.right(stack));
+            reagents.add(Either.right(stack));
             return this;
         }
 
         public SpellPartDataBuilder withIngredient(ISpellIngredient ingredient) {
-            this.recipe.add(ingredient);
+            recipe.add(ingredient);
             return this;
         }
 
         public SpellPartDataBuilder withAffinity(Supplier<IAffinity> affinity) {
-            return this.withAffinity(affinity.get());
+            return withAffinity(affinity.get());
         }
 
         public SpellPartDataBuilder withAffinity(IAffinity affinity) {
-            this.affinities.add(affinity.getId());
+            affinities.add(affinity.getId());
             return this;
         }
 
         public SpellPartDataBuilder withAffinity(ResourceLocation affinity) {
-            this.affinities.add(affinity);
+            affinities.add(affinity);
             return this;
         }
 
         public void build() {
-            data.put(this.id, serialize());
+            data.put(id, serialize());
         }
 
         protected JsonObject serialize() {
             var out = new JsonObject();
-            out.addProperty("manaCost", this.manaCost);
-            out.addProperty("burnout", this.burnout);
+            out.addProperty("manaCost", manaCost);
+            out.addProperty("burnout", burnout);
             var arr = new JsonArray();
-            this.reagents.forEach(either -> arr.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
+            reagents.forEach(either -> arr.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {
+            }))));
             out.add("reagents", arr);
             var arr2 = new JsonArray();
-            this.affinities.forEach(resourceLocation -> arr2.add(resourceLocation.toString()));
+            affinities.forEach(resourceLocation -> arr2.add(resourceLocation.toString()));
             out.add("affinities", arr2);
             var arr3 = new JsonArray();
-            this.recipe.forEach(ingredient -> arr3.add(ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
+            recipe.forEach(ingredient -> arr3.add(ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {
+            })));
             out.add("recipe", arr3);
             return out;
         }

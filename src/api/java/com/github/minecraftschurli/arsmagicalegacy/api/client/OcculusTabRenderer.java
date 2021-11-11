@@ -12,7 +12,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -39,8 +39,8 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
      */
     protected OcculusTabRenderer(IOcculusTab occulusTab) {
         this.occulusTab = occulusTab;
-        this.textureHeight = occulusTab.getHeight();
-        this.textureWidth = occulusTab.getWidth();
+        textureHeight = occulusTab.getHeight();
+        textureWidth = occulusTab.getWidth();
     }
 
     /**
@@ -63,9 +63,9 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
      * Never call this method yourself it is used to initialize the values from the parent gui.
      */
     @Internal
-    public final void init(int tabWidth, int tabHeight, int screenWidth, int screenHeight, int posX, int posY) {
-        this.width = tabWidth;
-        this.height = tabHeight;
+    public final void init(int width, int height, int screenWidth, int screenHeight, int posX, int posY) {
+        this.width = width;
+        this.height = height;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.posX = posX;
@@ -76,7 +76,8 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     /**
      * Override to do your own initialisation.
      */
-    protected void init() {}
+    protected void init() {
+    }
 
     /**
      * Render your background in this method.
@@ -91,7 +92,6 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     /**
      * @see NarratableEntry#narrationPriority()
      */
-    @NotNull
     @Override
     public NarrationPriority narrationPriority() {
         return NarrationPriority.NONE;
@@ -102,6 +102,7 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
      *
      * @return the current player
      */
+    @Nullable
     protected Player getPlayer() {
         return getMinecraft().player;
     }
@@ -142,5 +143,6 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
      * Override this method if you want to provide narrations.
      */
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
+    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    }
 }

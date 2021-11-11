@@ -1,19 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.magic;
 
-import com.mojang.datafixers.util.Either;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
-
-import java.util.Collection;
 
 /**
  * A magic helper handles the level/mana/burnout data
  */
 public interface IMagicHelper {
-
     /**
      * Get the current magic level for the given player.
      *

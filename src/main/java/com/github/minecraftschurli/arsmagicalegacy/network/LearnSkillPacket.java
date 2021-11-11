@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public record LearnSkillPacket(ResourceLocation id) implements IPacket {
-    @SuppressWarnings("unused")
     public LearnSkillPacket(FriendlyByteBuf buf) {
         this(buf.readResourceLocation());
     }

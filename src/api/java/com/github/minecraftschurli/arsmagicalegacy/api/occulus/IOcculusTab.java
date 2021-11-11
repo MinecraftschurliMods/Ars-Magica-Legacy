@@ -62,7 +62,6 @@ public interface IOcculusTab extends ITranslatable {
      * Get the lazy renderer factory.
      * <p>WARNING! only call on client</p>
      *
-     * @side client
      * @return the lazy renderer factory
      */
     Supplier<OcculusTabRendererFactory> getRendererFactory();
@@ -72,7 +71,6 @@ public interface IOcculusTab extends ITranslatable {
         return OCCULUS_TAB;
     }
 
-    @SuppressWarnings("unchecked")
     interface OcculusTabRendererFactory {
         static Supplier<OcculusTabRendererFactory> of(String clazz) {
             return () -> {

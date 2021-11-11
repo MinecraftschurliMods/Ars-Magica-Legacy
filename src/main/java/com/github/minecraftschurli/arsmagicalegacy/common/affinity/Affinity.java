@@ -62,6 +62,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Sets the color for this builder.
+         *
          * @param color The color to set.
          * @return This builder, for chaining.
          */
@@ -72,6 +73,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Adds a minor opposite to this builder.
+         *
          * @param minorOpposite The minor opposite to add.
          * @return This builder, for chaining.
          */
@@ -82,6 +84,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Adds a minor opposite to this builder.
+         *
          * @param majorOpposite The major opposite to add.
          * @return This builder, for chaining.
          */
@@ -92,6 +95,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Adds minor opposites to this builder.
+         *
          * @param minorOpposite The minor opposites to add.
          * @return This builder, for chaining.
          */
@@ -102,6 +106,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Adds major opposites to this builder.
+         *
          * @param majorOpposite The major opposites to add.
          * @return This builder, for chaining.
          */
@@ -112,6 +117,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Sets the direct opposite for this builder.
+         *
          * @param directOpposite The direct opposite to set.
          * @return This builder, for chaining.
          */
@@ -122,6 +128,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
         /**
          * Builds the affinity.
+         *
          * @return The affinity from this builder.
          * @throws IllegalStateException If the color or direct opposite is not set.
          */

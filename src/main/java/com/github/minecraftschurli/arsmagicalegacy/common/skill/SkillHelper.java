@@ -5,7 +5,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.EmptyCapabilityToken;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -16,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -29,7 +29,7 @@ import java.util.Set;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
-    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new EmptyCapabilityToken<>());
+    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final class SyncPacket extends CodecPacket<KnowledgeHolder> {
 
@@ -45,6 +45,7 @@ public final class SkillHelper implements ISkillHelper {
         public void handle(NetworkEvent.Context context) {
             SkillHelper.handleSync(this.data, context);
         }
+
         @Override
         protected Codec<KnowledgeHolder> getCodec() {
             return KnowledgeHolder.CODEC;
@@ -68,6 +69,7 @@ public final class SkillHelper implements ISkillHelper {
 
     /**
      * Returns the knowledge capability for the given player.
+     *
      * @param player The player to get the player capability for.
      * @return The knowledge capability for the given player.
      */
@@ -201,6 +203,7 @@ public final class SkillHelper implements ISkillHelper {
 
     /**
      * Called on player death, syncs the capabilites.
+     *
      * @param original The old player from the event.
      * @param player   The new player from the event.
      */
@@ -210,6 +213,7 @@ public final class SkillHelper implements ISkillHelper {
 
     /**
      * Called on player join, syncs the capablities.
+     *
      * @param player The player from the event.
      */
     public void syncToPlayer(Player player) {
@@ -246,6 +250,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill to the known skills list.
+         *
          * @param skill The skill to add.
          */
         public synchronized void learn(ResourceLocation skill) {
@@ -254,6 +259,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Removes a skill from the known skills list.
+         *
          * @param skill The skill to remove.
          */
         public synchronized void forget(ResourceLocation skill) {
@@ -262,8 +268,9 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill point to the known skill points list.
+         *
          * @param skillPoint The skill point to add.
-         * @param amount The amount of skill points to add.
+         * @param amount     The amount of skill points to add.
          */
         public synchronized void addSkillPoint(ResourceLocation skillPoint, int amount) {
             skillPoints.putIfAbsent(skillPoint, 0);
@@ -273,8 +280,9 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill point to the known skill points list. Returns whether this worked or not.
+         *
          * @param skillPoint The skill point to add.
-         * @param amount The amount of skill points to add.
+         * @param amount     The amount of skill points to add.
          */
         public synchronized boolean consumeSkillPoint(ResourceLocation skillPoint, int amount) {
             if (!skillPoints.containsKey(skillPoint)) return false;
@@ -303,6 +311,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Handles synchronization.
+         *
          * @param knowledgeHolder The received KnowledgeHolder.
          */
         public void onSync(KnowledgeHolder knowledgeHolder) {
@@ -338,6 +347,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill to the known skills list.
+         *
          * @param skill The skill to add.
          */
         public void learn(ISkill skill) {
@@ -346,6 +356,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Removes a skill from the known skills list.
+         *
          * @param skill The skill to remove.
          */
         public void forget(ISkill skill) {
@@ -370,8 +381,9 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill point to the known skill points list.
+         *
          * @param skillPoint The skill point to add.
-         * @param amount The amount of skill points to add.
+         * @param amount     The amount of skill points to add.
          */
         public void addSkillPoint(ISkillPoint skillPoint, int amount) {
             addSkillPoint(skillPoint.getId(), amount);
@@ -379,8 +391,9 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds a skill point to the known skill points list. Returns whether this worked or not.
+         *
          * @param skillPoint The skill point to add.
-         * @param amount The amount of skill points to add.
+         * @param amount     The amount of skill points to add.
          */
         public boolean consumeSkillPoint(ISkillPoint skillPoint, int amount) {
             return consumeSkillPoint(skillPoint.getId(), amount);
@@ -388,6 +401,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds 1 skill point to the known skill points list.
+         *
          * @param skillPoint The skill point to add.
          */
         public void addSkillPoint(ISkillPoint skillPoint) {
@@ -396,6 +410,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds 1 skill point to the known skill points list. Returns whether this worked or not.
+         *
          * @param skillPoint The skill point to add.
          */
         public boolean consumeSkillPoint(ISkillPoint skillPoint) {
@@ -404,6 +419,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds 1 skill point to the known skill points list.
+         *
          * @param skillPoint The skill point to add.
          */
         public void addSkillPoint(ResourceLocation skillPoint) {
@@ -412,6 +428,7 @@ public final class SkillHelper implements ISkillHelper {
 
         /**
          * Adds 1 skill point to the known skill points list. Returns whether this worked or not.
+         *
          * @param skillPoint The skill point to add.
          */
         public boolean consumeSkillPoint(ResourceLocation skillPoint) {

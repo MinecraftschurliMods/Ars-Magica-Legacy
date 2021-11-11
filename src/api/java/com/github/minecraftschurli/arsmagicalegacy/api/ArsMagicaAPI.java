@@ -4,7 +4,9 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
@@ -23,7 +25,6 @@ public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
         try {
-            //noinspection unchecked
             Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
             return clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -55,7 +56,6 @@ public final class ArsMagicaAPI {
     /**
      * The Interface representing the API
      */
-    @SuppressWarnings("unused")
     @NonExtendable
     public interface IArsMagicaAPI {
         /**
@@ -156,7 +156,6 @@ public final class ArsMagicaAPI {
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 

@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.api.occulus;
 
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ public interface IOcculusTabManager {
      * @param id the id of the requested {@link IOcculusTab}
      * @return the requested {@link IOcculusTab} or null if it is not loaded
      */
-    @Nullable
     IOcculusTab getNullable(ResourceLocation id);
 
     /**

@@ -7,15 +7,15 @@ import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A shape group is the part of a spell that can be exchanged to change the casting but not the effect of a spell.
  */
 public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers) {
-    public static final Codec<ShapeGroup> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry)
-                                                             .listOf()
-                                                             .xmap(ShapeGroup::of, ShapeGroup::parts);
+    public static final Codec<ShapeGroup> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
 
     public static final ShapeGroup EMPTY = of(List.of());
 
@@ -30,17 +30,15 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
         List<Pair<ISpellShape, List<ISpellModifier>>> map = new ArrayList<>();
         List<ISpellModifier> currentMods = null;
         for (ISpellPart part : parts) {
-            if (part instanceof ISpellComponent) {
+            if (part instanceof ISpellComponent)
                 throw new MalformedShapeGroupException("Shape groups can not contain components!", parts);
-            }
             if (part instanceof ISpellShape shape) {
                 currentMods = new ArrayList<>();
                 map.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
             }
             if (part instanceof ISpellModifier modifier) {
-                if (currentMods == null) {
+                if (currentMods == null)
                     throw new MalformedShapeGroupException("A Modifier can not come before a shape in a shape group!", parts);
-                }
                 currentMods.add(modifier);
             }
         }
@@ -56,7 +54,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
     @Contract(pure = true)
     @Override
     public List<ISpellPart> parts() {
-        return Collections.unmodifiableList(this.parts);
+        return Collections.unmodifiableList(parts);
     }
 
     /**
@@ -68,7 +66,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
     @Contract(pure = true)
     @Override
     public List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers() {
-        return Collections.unmodifiableList(this.shapesWithModifiers);
+        return Collections.unmodifiableList(shapesWithModifiers);
     }
 
     /**
@@ -82,15 +80,10 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final SpellStack that = (SpellStack) o;
-        return (this.isEmpty() && that.isEmpty()) || this.parts().equals(that.parts());
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final ShapeGroup that = (ShapeGroup) o;
+        return (isEmpty() && that.isEmpty()) || parts().equals(that.parts());
     }
 
     @Override
@@ -115,7 +108,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
          * @return the list of parts that caused the exception
          */
         public List<ISpellPart> getParts() {
-            return this.parts;
+            return parts;
         }
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
@@ -20,10 +19,10 @@ import java.util.Optional;
  *
  */
 public interface ISpell { // TODO doc
-    String SHAPE_GROUPS_KEY        = "shape_groups";
+    String SHAPE_GROUPS_KEY = "shape_groups";
     String CURRENT_SHAPE_GROUP_KEY = "current_shape_group";
-    String SPELL_STACK_KEY         = "spell_stack";
-    String DATA_KEY                = "data";
+    String SPELL_STACK_KEY = "spell_stack";
+    String DATA_KEY = "data";
 
     boolean isContinuous();
 
@@ -45,7 +44,7 @@ public interface ISpell { // TODO doc
 
     @UnmodifiableView List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers();
 
-    float manaCost(@Nullable LivingEntity caster);
+    float manaCost(LivingEntity caster);
 
     float burnout();
 

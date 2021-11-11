@@ -12,16 +12,7 @@ import java.util.List;
 public interface ISpellShape extends ISpellPart {
     default boolean isContinuous() { return false; }
 
-    SpellCastResult invoke(ISpell spell,
-                           LivingEntity caster,
-                           Level level,
-                           List<ISpellModifier> modifiers,
-                           @Nullable Entity targetEntity,
-                           @Nullable BlockPos targetBlock,
-                           Vec3 targetPos,
-                           int ticksUsed,
-                           int index,
-                           boolean awardXp);
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPos, int ticksUsed, int index, boolean awardXp);
 
     @Override
     default SpellPartType getType() {

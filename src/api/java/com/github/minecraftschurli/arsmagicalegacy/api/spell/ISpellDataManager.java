@@ -2,20 +2,17 @@ package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Interface representing a spell data manager
  */
 public interface ISpellDataManager {
-
     /**
      * Get the data for the given spell part.
      *
      * @param part the part to get the data for
      * @return the spell part data for the part or null if it is not available
      */
-    @Nullable
     ISpellPartData getDataForPart(ISpellPart part);
 
     /**

@@ -39,7 +39,6 @@ public class SpellDataManager extends CodecDataManager<ISpellPartData> implement
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec) {
         CODECS.putIfAbsent(type, (Codec<ISpellIngredient>) codec);
     }

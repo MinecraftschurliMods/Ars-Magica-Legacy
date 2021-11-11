@@ -44,8 +44,8 @@ public final class SpellCastEvent extends Event {
     public SpellCastEvent(LivingEntity caster, ISpell spell) {
         this.caster = caster;
         this.spell = spell;
-        this.mana = spell.manaCost(caster);
-        this.burnout = spell.burnout();
-        this.reagents = new ArrayList<>(spell.reagents());
+        mana = spell.manaCost(caster);
+        burnout = spell.burnout();
+        reagents = new ArrayList<>(spell.reagents());
     }
 }

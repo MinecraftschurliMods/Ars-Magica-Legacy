@@ -15,9 +15,10 @@ public class ColoredRegistryObject<B extends IForgeRegistryEntry<B>, T extends B
 
     /**
      * Creates a new colored registry object group.
+     *
      * @param register The registry to use.
-     * @param suffix The suffix of the items, without the underscore.
-     * @param creator The item creator.
+     * @param suffix   The suffix of the items, without the underscore.
+     * @param creator  The item creator.
      */
     public ColoredRegistryObject(DeferredRegister<B> register, String suffix, Function<DyeColor, ? extends T> creator) {
         for (DyeColor color : DyeColor.values()) {
@@ -27,6 +28,7 @@ public class ColoredRegistryObject<B extends IForgeRegistryEntry<B>, T extends B
 
     /**
      * Returns the registry object for the given color.
+     *
      * @param color The color to get the registry object for.
      * @return The registry object for the given color.
      */
@@ -36,6 +38,7 @@ public class ColoredRegistryObject<B extends IForgeRegistryEntry<B>, T extends B
 
     /**
      * Returns the registry object content for the given color.
+     *
      * @param color The color to get the registry object content for.
      * @return The registry object content for the given color.
      */
@@ -45,6 +48,7 @@ public class ColoredRegistryObject<B extends IForgeRegistryEntry<B>, T extends B
 
     /**
      * Returns the registry object id for the given color.
+     *
      * @param color The color to get the registry object id for.
      * @return The registry object id for the given color.
      */

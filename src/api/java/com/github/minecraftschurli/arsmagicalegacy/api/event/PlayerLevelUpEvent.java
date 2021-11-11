@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.api.event;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.Event;
 
 /**
  * Event that fires when the player levels up its magic.

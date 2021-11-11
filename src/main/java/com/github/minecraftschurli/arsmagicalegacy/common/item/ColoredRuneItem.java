@@ -15,6 +15,7 @@ public class ColoredRuneItem extends Item {
 
     /**
      * Creates a rune with the given color.
+     *
      * @param pProperties The item properties.
      * @param dyeColor    The color of the rune.
      */
@@ -33,6 +34,7 @@ public class ColoredRuneItem extends Item {
 
     /**
      * Gets a rune by color.
+     *
      * @param pColor The color to get the rune for.
      * @return The rune for the given color.
      */

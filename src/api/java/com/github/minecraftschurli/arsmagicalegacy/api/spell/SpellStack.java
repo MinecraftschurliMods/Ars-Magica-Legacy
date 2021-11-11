@@ -7,12 +7,13 @@ import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers) {
-    public static final Codec<SpellStack> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry)
-                                                             .listOf()
-                                                             .xmap(SpellStack::of, SpellStack::parts);
+    public static final Codec<SpellStack> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry).listOf().xmap(SpellStack::of, SpellStack::parts);
 
     public static final SpellStack EMPTY = of(List.of());
 
@@ -34,9 +35,8 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
                 partsWithModifiers.add(Pair.of(component, Collections.unmodifiableList(currentMods)));
             }
             if (part instanceof ISpellShape shape) {
-                if (currentMods != null) {
+                if (currentMods != null)
                     throw new MalformedSpellStackException("A shape can not come after the first component!", parts);
-                }
                 currentMods = new ArrayList<>();
                 partsWithModifiers.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
             }
@@ -56,7 +56,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     @Contract(pure = true)
     @Override
     public List<ISpellPart> parts() {
-        return Collections.unmodifiableList(this.parts);
+        return Collections.unmodifiableList(parts);
     }
 
     /**
@@ -68,7 +68,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     @Contract(pure = true)
     @Override
     public List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers() {
-        return Collections.unmodifiableList(this.partsWithModifiers);
+        return Collections.unmodifiableList(partsWithModifiers);
     }
 
     /**
@@ -82,15 +82,10 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         final SpellStack that = (SpellStack) o;
-        return (this.isEmpty() && that.isEmpty()) || this.parts().equals(that.parts());
+        return (isEmpty() && that.isEmpty()) || parts().equals(that.parts());
     }
 
     @Override
@@ -115,7 +110,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
          * @return the list of parts that caused the exception
          */
         public List<ISpellPart> getParts() {
-            return this.parts;
+            return parts;
         }
     }
 }

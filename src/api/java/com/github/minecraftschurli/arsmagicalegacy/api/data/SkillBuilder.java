@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.SerializationException;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,9 +31,9 @@ public class SkillBuilder {
     /**
      * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
      *
-     * @param id the id for the skill
+     * @param id         the id for the skill
      * @param occulusTab the occulus tab this skill belongs to
-     * @param icon the icon for the skill
+     * @param icon       the icon for the skill
      * @return the new {@link SkillBuilder} for the skill
      */
     @Contract("_, _, _ -> new")
@@ -45,9 +44,9 @@ public class SkillBuilder {
     /**
      * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
      *
-     * @param id the id for the skill
+     * @param id         the id for the skill
      * @param occulusTab the occulus tab this skill belongs to
-     * @param icon the icon for the skill
+     * @param icon       the icon for the skill
      * @return the new {@link SkillBuilder} for the skill
      */
     @Contract("_, _, _ -> new")
@@ -65,19 +64,19 @@ public class SkillBuilder {
      * @return the id of this skill
      */
     public ResourceLocation getId() {
-        return this.id;
+        return id;
     }
 
     /**
      * Add learning cost to this skill.
      *
      * @param point the point it should cost
-     * @param amt the amount of points it should cost
+     * @param amt   the amount of points it should cost
      * @return the {@link SkillBuilder}
      */
     @Contract("_, _ -> this")
     public SkillBuilder addCost(ResourceLocation point, int amt) {
-        this.cost.compute(point, (key, i) -> i != null ? i + amt : amt);
+        cost.compute(point, (key, i) -> i != null ? i + amt : amt);
         return this;
     }
 
@@ -85,7 +84,7 @@ public class SkillBuilder {
      * Add learning cost to this skill.
      *
      * @param point the point it should cost
-     * @param amt the amount of points it should cost
+     * @param amt   the amount of points it should cost
      * @return the {@link SkillBuilder}
      */
     @Contract("_, _ -> this")
@@ -123,7 +122,7 @@ public class SkillBuilder {
      */
     @Contract("_ -> this")
     public SkillBuilder addParent(ResourceLocation parent) {
-        this.parents.add(parent);
+        parents.add(parent);
         return this;
     }
 
@@ -216,7 +215,7 @@ public class SkillBuilder {
      * @return the {@link SkillBuilder}
      */
     @Contract("_ -> this")
-    protected SkillBuilder setOcculusTab(@NotNull IOcculusTab occulusTab) {
+    protected SkillBuilder setOcculusTab(IOcculusTab occulusTab) {
         return setOcculusTab(occulusTab.getId());
     }
 
@@ -228,25 +227,27 @@ public class SkillBuilder {
      * @return the {@link SkillBuilder}
      */
     @Contract("_ -> this")
-    public SkillBuilder build(@NotNull Consumer<SkillBuilder> consumer) {
+    public SkillBuilder build(Consumer<SkillBuilder> consumer) {
         consumer.accept(this);
         return this;
     }
 
     JsonObject serialize() {
         JsonObject json = new JsonObject();
-        json.addProperty("occulus_tab", this.occulusTab.toString());
-        json.addProperty("icon", this.icon.toString());
-        if (this.x == null || this.y == null)
-            throw new SerializationException("A skill needs a position!");
-        json.addProperty("x", this.x);
-        json.addProperty("y", this.y);
-        if (this.hidden != null)
-            json.addProperty("hidden", this.hidden);
-        if (!this.parents.isEmpty())
+        json.addProperty("occulus_tab", occulusTab.toString());
+        json.addProperty("icon", icon.toString());
+        if (x == null || y == null) throw new SerializationException("A skill needs a position!");
+        json.addProperty("x", x);
+        json.addProperty("y", y);
+        if (hidden != null) {
+            json.addProperty("hidden", hidden);
+        }
+        if (!parents.isEmpty()) {
             json.add("parents", serializeParents());
-        if (!this.cost.isEmpty())
+        }
+        if (!cost.isEmpty()) {
             json.add("cost", serializeCost());
+        }
         return json;
     }
 

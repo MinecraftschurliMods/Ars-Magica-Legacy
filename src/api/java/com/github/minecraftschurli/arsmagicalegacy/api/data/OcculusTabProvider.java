@@ -25,8 +25,7 @@ import java.util.Objects;
  */
 public abstract class OcculusTabProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson   GSON   = (new GsonBuilder()).setPrettyPrinting().create();
-
+    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final DataGenerator generator;
     private final String namespace;
@@ -44,8 +43,8 @@ public abstract class OcculusTabProvider implements DataProvider {
 
     @Internal
     @Override
-    public void run(HashCache pCache) throws IOException {
-        Path path = this.generator.getOutputFolder();
+    public void run(HashCache pCache) {
+        Path path = generator.getOutputFolder();
         createOcculusTabs();
         for (Map.Entry<ResourceLocation, JsonObject> entry : data.entrySet()) {
             ResourceLocation resourceLocation = entry.getKey();
@@ -62,18 +61,18 @@ public abstract class OcculusTabProvider implements DataProvider {
     /**
      * Create an occulus tab with the given name, index and the default renderer.
      *
-     * @param name the name of the occulus tab
+     * @param name  the name of the occulus tab
      * @param index the index to place the tab at
      */
     protected void add(String name, int index) {
-        add(new ResourceLocation(this.namespace, name), index);
+        add(new ResourceLocation(namespace, name), index);
     }
 
     /**
      * Create an occulus tab with the given name, index and renderer.
      *
-     * @param name the name of the occulus tab
-     * @param index the index to place the tab at
+     * @param name     the name of the occulus tab
+     * @param index    the index to place the tab at
      * @param renderer the class of the renderer to use
      */
     protected void add(String name, int index, Class<? extends OcculusTabRenderer> renderer) {
@@ -83,18 +82,18 @@ public abstract class OcculusTabProvider implements DataProvider {
     /**
      * Create an occulus tab with the given name, index and renderer.
      *
-     * @param name the name of the occulus tab
-     * @param index the index to place the tab at
+     * @param name     the name of the occulus tab
+     * @param index    the index to place the tab at
      * @param renderer the class of the renderer to use
      */
     protected void add(String name, int index, String renderer) {
-        add(new ResourceLocation(this.namespace, name), index, renderer);
+        add(new ResourceLocation(namespace, name), index, renderer);
     }
 
     /**
      * Create an occulus tab with the given name, index and the default renderer.
      *
-     * @param name the resource location of the occulus tab
+     * @param name  the resource location of the occulus tab
      * @param index the index to place the tab at
      */
     protected void add(ResourceLocation name, int index) {
@@ -106,8 +105,8 @@ public abstract class OcculusTabProvider implements DataProvider {
     /**
      * Create an occulus tab with the given name, index and renderer.
      *
-     * @param name the resource location of the occulus tab
-     * @param index the index to place the tab at
+     * @param name     the resource location of the occulus tab
+     * @param index    the index to place the tab at
      * @param renderer the class of the renderer to use
      */
     protected void add(ResourceLocation name, int index, Class<? extends OcculusTabRenderer> renderer) {
@@ -117,8 +116,8 @@ public abstract class OcculusTabProvider implements DataProvider {
     /**
      * Create an occulus tab with the given name, index and renderer.
      *
-     * @param name the resource location of the occulus tab
-     * @param index the index to place the tab at
+     * @param name     the resource location of the occulus tab
+     * @param index    the index to place the tab at
      * @param renderer the class of the renderer to use
      */
     protected void add(ResourceLocation name, int index, String renderer) {
@@ -134,12 +133,10 @@ public abstract class OcculusTabProvider implements DataProvider {
             String s1 = SHA1.hashUnencodedChars(s).toString();
             if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
                 Files.createDirectories(pPath.getParent());
-
                 try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
                     bufferedwriter.write(s);
                 }
             }
-
             pCache.putNew(pPath, s1);
         } catch (IOException ioexception) {
             LOGGER.error("Couldn't save spell part data {}", pPath, ioexception);

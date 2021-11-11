@@ -6,7 +6,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.EmptyCapabilityToken;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -19,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -31,7 +31,8 @@ import java.util.Optional;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new EmptyCapabilityToken<>());
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     public static final class SyncPacket extends CodecPacket<AffinityHolder> {
         public SyncPacket(AffinityHolder data) {
@@ -51,8 +52,8 @@ public final class AffinityHelper implements IAffinityHelper {
         protected Codec<AffinityHolder> getCodec() {
             return AffinityHolder.CODEC;
         }
-
     }
+
     /**
      * Registers the network packet to the network handler.
      */
@@ -134,8 +135,9 @@ public final class AffinityHelper implements IAffinityHelper {
 
     /**
      * Called upon player death, syncs the capabilites.
+     *
      * @param original The old player entity from the event.
-     * @param player The new player entity from the event.
+     * @param player   The new player entity from the event.
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
@@ -143,6 +145,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     /**
      * Called upon player join, syncs the capabilites.
+     *
      * @param player The player entity from the event.
      */
     public void syncToPlayer(Player player) {
@@ -174,6 +177,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
         /**
          * Runs the synchronization logic.
+         *
          * @param affinityHolder The affinity capability to sync.
          */
         public void onSync(AffinityHolder affinityHolder) {

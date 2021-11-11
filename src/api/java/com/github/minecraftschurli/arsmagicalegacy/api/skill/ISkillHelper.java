@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Collection;
@@ -10,12 +9,11 @@ import java.util.Collection;
  * Interface representing a knowledge helper
  */
 public interface ISkillHelper {
-
     /**
      * Check if the given player knows the given skill.
      *
      * @param player the player to check
-     * @param skill the skill to check for
+     * @param skill  the skill to check for
      * @return true if the player knows the skill, otherwise false
      */
     boolean knows(Player player, ResourceLocation skill);
@@ -24,7 +22,7 @@ public interface ISkillHelper {
      * Check if the given player knows the given skill.
      *
      * @param player the player to check
-     * @param skill the skill to check for
+     * @param skill  the skill to check for
      * @return true if the player knows the skill, otherwise false
      */
     boolean knows(Player player, ISkill skill);
@@ -33,7 +31,7 @@ public interface ISkillHelper {
      * Check if the given player can learn the given skill.
      *
      * @param player the player to check
-     * @param skill the skill to check for
+     * @param skill  the skill to check for
      * @return true if the player can learn the skill, otherwise false
      */
     boolean canLearn(Player player, ResourceLocation skill);
@@ -42,7 +40,7 @@ public interface ISkillHelper {
      * Check if the given player can learn the given skill.
      *
      * @param player the player to check
-     * @param skill the skill to check for
+     * @param skill  the skill to check for
      * @return true if the player can learn the skill, otherwise false
      */
     boolean canLearn(Player player, ISkill skill);
@@ -51,7 +49,7 @@ public interface ISkillHelper {
      * Let the given player learn the given skill.
      *
      * @param player the player that should learn the skill
-     * @param skill the skill to learn
+     * @param skill  the skill to learn
      */
     void learn(Player player, ResourceLocation skill);
 
@@ -59,7 +57,7 @@ public interface ISkillHelper {
      * Let the given player learn the given skill.
      *
      * @param player the player that should learn the skill
-     * @param skill the skill to learn
+     * @param skill  the skill to learn
      */
     void learn(Player player, ISkill skill);
 
@@ -67,7 +65,7 @@ public interface ISkillHelper {
      * Let the given player forget the given skill.
      *
      * @param player the player that should forget the skill
-     * @param skill the skill to forget
+     * @param skill  the skill to forget
      */
     void forget(Player player, ResourceLocation skill);
 
@@ -75,7 +73,7 @@ public interface ISkillHelper {
      * Let the given player forget the given skill.
      *
      * @param player the player that should forget the skill
-     * @param skill the skill to forget
+     * @param skill  the skill to forget
      */
     void forget(Player player, ISkill skill);
 
@@ -90,7 +88,7 @@ public interface ISkillHelper {
      * Get the number of skill points of the given type the given player has.
      *
      * @param player the player to get the skill points for
-     * @param point the skill point to get the count for
+     * @param point  the skill point to get the count for
      * @return the number of skill points of the given type the given player has
      */
     int getSkillPoint(Player player, ResourceLocation point);
@@ -99,7 +97,7 @@ public interface ISkillHelper {
      * Get the number of skill points of the given type the given player has.
      *
      * @param player the player to get the skill points for
-     * @param point the skill point to get the count for
+     * @param point  the skill point to get the count for
      * @return the number of skill points of the given type the given player has
      */
     int getSkillPoint(Player player, ISkillPoint point);
@@ -107,25 +105,25 @@ public interface ISkillHelper {
     /**
      * Add skill points of a given type for a given player.
      *
-     * @param player the player to add the skill points for
+     * @param player     the player to add the skill points for
      * @param skillPoint the skill point to add
-     * @param amount the amount of skill points to add
+     * @param amount     the amount of skill points to add
      */
     void addSkillPoint(Player player, ResourceLocation skillPoint, int amount);
 
     /**
      * Add skill points of a given type for a given player.
      *
-     * @param player the player to add the skill points for
+     * @param player     the player to add the skill points for
      * @param skillPoint the skill point to add
-     * @param amount the amount of skill points to add
+     * @param amount     the amount of skill points to add
      */
     void addSkillPoint(Player player, ISkillPoint skillPoint, int amount);
 
     /**
      * Add skill points of a given type for a given player.
      *
-     * @param player the player to add the skill points for
+     * @param player     the player to add the skill points for
      * @param skillPoint the skill point to add
      */
     void addSkillPoint(Player player, ResourceLocation skillPoint);
@@ -133,7 +131,7 @@ public interface ISkillHelper {
     /**
      * Add skill points of a given type for a given player.
      *
-     * @param player the player to add the skill points for
+     * @param player     the player to add the skill points for
      * @param skillPoint the skill point to add
      */
     void addSkillPoint(Player player, ISkillPoint skillPoint);
@@ -141,9 +139,9 @@ public interface ISkillHelper {
     /**
      * Consume skill points of a given type for a given player.
      *
-     * @param player the player to consume the skill points from
+     * @param player     the player to consume the skill points from
      * @param skillPoint the skill point to consume
-     * @param amount the amount of skill points to consume
+     * @param amount     the amount of skill points to consume
      * @return whether the consuming was successful
      */
     boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount);
@@ -151,9 +149,9 @@ public interface ISkillHelper {
     /**
      * Consume skill points of a given type for a given player.
      *
-     * @param player the player to consume the skill points from
+     * @param player     the player to consume the skill points from
      * @param skillPoint the skill point to consume
-     * @param amount the amount of skill points to consume
+     * @param amount     the amount of skill points to consume
      * @return whether the consuming was successful
      */
     boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount);
@@ -161,7 +159,7 @@ public interface ISkillHelper {
     /**
      * Consume skill points of a given type for a given player.
      *
-     * @param player the player to consume the skill points from
+     * @param player     the player to consume the skill points from
      * @param skillPoint the skill point to consume
      * @return whether the consuming was successful
      */
@@ -170,7 +168,7 @@ public interface ISkillHelper {
     /**
      * Consume skill points of a given type for a given player.
      *
-     * @param player the player to consume the skill points from
+     * @param player     the player to consume the skill points from
      * @param skillPoint the skill point to consume
      * @return whether the consuming was successful
      */

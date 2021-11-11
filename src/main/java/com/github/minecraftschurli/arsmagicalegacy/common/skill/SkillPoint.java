@@ -10,6 +10,7 @@ public class SkillPoint extends ForgeRegistryEntry<ISkillPoint> implements ISkil
 
     /**
      * Creates a new SkillPoint.
+     *
      * @param color          The color for this skill point.
      * @param minEarnLevel   The minimum amount of levels needed to get this skill point.
      * @param levelsForPoint The amount of levels needed to get the next skill point.

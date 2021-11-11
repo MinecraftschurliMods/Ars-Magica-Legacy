@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;

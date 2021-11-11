@@ -50,6 +50,7 @@ public final class Skill implements ISkill {
 
     /**
      * Creates a new skill.
+     *
      * @param parents    The skill's parent set.
      * @param cost       The skill cost.
      * @param occulusTab The occulus tab to display the skill in.
@@ -70,6 +71,7 @@ public final class Skill implements ISkill {
 
     /**
      * Creates a new skill. Also sets the id.
+     *
      * @param id         The skill's id.
      * @param parents    The skill's parent set.
      * @param cost       The skill cost.

@@ -3,10 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.data.SkillBuilder;
 import com.github.minecraftschurli.arsmagicalegacy.api.data.SkillProvider;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -16,7 +13,6 @@ public class AMSkillProvider extends SkillProvider {
         super(generator, ArsMagicaAPI.MOD_ID);
     }
 
-    @NotNull
     @Override
     public String getName() {
         return "AMSkillProvider";

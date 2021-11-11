@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -11,7 +10,6 @@ import java.util.Set;
  * Interface representing a skill manager.
  */
 public interface ISkillManager {
-
     /**
      * Get the skills for a given occulus tab.
      *
@@ -42,7 +40,6 @@ public interface ISkillManager {
      * @param id the id of the requested {@link ISkill}
      * @return the requested {@link ISkill} or null if it is not loaded
      */
-    @Nullable
     ISkill getNullable(ResourceLocation id);
 
     /**

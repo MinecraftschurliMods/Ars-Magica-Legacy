@@ -1,9 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.api;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.*;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -111,7 +114,6 @@ public final class AMTags {
      * Holder class for all {@link EntityType} {@link Tag Tags}
      */
     public static final class EntityTypes {
-
         private static IOptionalNamedTag<EntityType<?>> forgeTag(String name) {
             return EntityTypeTags.createOptional(new ResourceLocation(FORGE, name));
         }

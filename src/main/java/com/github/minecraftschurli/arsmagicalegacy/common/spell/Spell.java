@@ -124,7 +124,8 @@ public final class Spell implements ISpell {
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, null, caster.position(), castingTicks, 0, awardXp);

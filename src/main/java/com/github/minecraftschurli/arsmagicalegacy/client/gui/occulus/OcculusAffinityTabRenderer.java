@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
     public OcculusAffinityTabRenderer(IOcculusTab occulusTab) {
         super(occulusTab);
@@ -77,20 +76,22 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().withStyle(style -> style.withColor(aff.getColor())));
-//                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
-//                    abilites.sort(new Comparator<AbstractAffinityAbility>() {
-//                        @Override
-//                        public int compare(AbstractAffinityAbility o1, AbstractAffinityAbility o2) {
-//                            return (int) ((o1.getMinimumDepth() * 100) - (o2.getMinimumDepth() * 100));
-//                        }
-//                    });
-//                    for (AbstractAffinityAbility ability : abilites) {
-//                        if (ability.getAffinity() == aff) {
-//                            String advancedTooltip = "";
-//                            if (isShiftDown) advancedTooltip = " (Min. : " + Math.round(ability.getMinimumDepth() * 100) + "%" + (ability.hasMax() ?(", Max. : " + Math.round(ability.getMaximumDepth() * 100) + "%")  : "") + ")";
-//                            drawString.add(TextFormatting.RESET.toString() + (ability.isEligible(player) ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + I18n.translateToLocal("affinityability." + ability.getRegistryName().toString().replaceAll("arsmagica2:", "") + ".name") + advancedTooltip);
-//                        }
-//                    }
+/*
+                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
+                    abilites.sort(new Comparator<AbstractAffinityAbility>() {
+                        @Override
+                        public int compare(AbstractAffinityAbility o1, AbstractAffinityAbility o2) {
+                            return (int) ((o1.getMinimumDepth() * 100) - (o2.getMinimumDepth() * 100));
+                        }
+                    });
+                    for (AbstractAffinityAbility ability : abilites) {
+                        if (ability.getAffinity() == aff) {
+                            String advancedTooltip = "";
+                            if (isShiftDown) advancedTooltip = " (Min. : " + Math.round(ability.getMinimumDepth() * 100) + "%" + (ability.hasMax() ?(", Max. : " + Math.round(ability.getMaximumDepth() * 100) + "%")  : "") + ")";
+                            drawString.add(TextFormatting.RESET.toString() + (ability.isEligible(player) ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + I18n.translateToLocal("affinityability." + ability.getRegistryName().toString().replaceAll("arsmagica2:", "") + ".name") + advancedTooltip);
+                        }
+                    }
+*/
             }
         }
         if (!drawString.isEmpty()) {

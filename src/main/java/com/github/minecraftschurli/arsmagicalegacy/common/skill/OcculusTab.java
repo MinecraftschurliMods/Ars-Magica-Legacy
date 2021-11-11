@@ -41,6 +41,7 @@ public final class OcculusTab implements IOcculusTab {
 
     /**
      * Creates a new OcculusTab.
+     *
      * @param rendererClass The renderer class name.
      * @param background    The background resource location.
      * @param icon          The tab icon.
@@ -60,6 +61,7 @@ public final class OcculusTab implements IOcculusTab {
 
     /**
      * Creates a new OcculusTab.
+     *
      * @param rendererClass The renderer class name.
      * @param background    The background resource location.
      * @param icon          The tab icon.
@@ -73,6 +75,7 @@ public final class OcculusTab implements IOcculusTab {
 
     /**
      * Creates a new OcculusTab. Also sets the tab id.
+     *
      * @param id            The tab id.
      * @param rendererClass The renderer class name.
      * @param background    The background resource location.
