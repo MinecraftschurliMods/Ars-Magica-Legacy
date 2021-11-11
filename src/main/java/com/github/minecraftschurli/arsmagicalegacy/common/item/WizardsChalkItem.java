@@ -18,14 +18,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class WizardsChalkItem extends BlockItem {
     public WizardsChalkItem(Properties pProperties) {
         super(AMBlocks.WIZARDS_CHALK.get(), pProperties);
     }
 
-    @NotNull
     @Override
     public InteractionResult place(BlockPlaceContext pContext) {
         if (!pContext.canPlace()) return InteractionResult.FAIL;
@@ -46,7 +44,9 @@ public class WizardsChalkItem extends BlockItem {
             if (player != null) {
                 if (player instanceof ServerPlayer) {
                     CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
-                    if (!player.getAbilities().instabuild) itemstack.hurt(1, level.random, (ServerPlayer) player);
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.hurt(1, level.random, (ServerPlayer) player);
+                    }
                 }
                 SoundType soundtype = state.getSoundType(level, blockpos, pContext.getPlayer());
                 level.playSound(player, blockpos, getPlaceSound(state, level, blockpos, player), SoundSource.BLOCKS, (soundtype.getVolume() + 1F) / 2F, soundtype.getPitch() * 0.8F);
@@ -69,11 +69,13 @@ public class WizardsChalkItem extends BlockItem {
                 }
             }
         }
-        if (blockstate != pState) pLevel.setBlock(pPos, blockstate, 2);
+        if (blockstate != pState) {
+            pLevel.setBlock(pPos, blockstate, 2);
+        }
         return blockstate;
     }
 
     private static <T extends Comparable<T>> BlockState updateState(BlockState pState, Property<T> pProperty, String pValueIdentifier) {
-        return pProperty.getValue(pValueIdentifier).map((p_40592_) -> pState.setValue(pProperty, p_40592_)).orElse(pState);
+        return pProperty.getValue(pValueIdentifier).map(property -> pState.setValue(pProperty, property)).orElse(pState);
     }
 }

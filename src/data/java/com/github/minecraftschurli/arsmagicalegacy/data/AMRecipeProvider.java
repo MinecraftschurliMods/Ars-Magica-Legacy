@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
@@ -160,86 +161,14 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('#',Tags.Items.COBBLESTONE)
                 .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
                 .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.WHITE_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_WHITE)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.ORANGE_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_ORANGE)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.MAGENTA_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_MAGENTA)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.LIGHT_BLUE_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_LIGHT_BLUE)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.YELLOW_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_YELLOW)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.LIME_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_LIME)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.PINK_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_PINK)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.GRAY_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_GRAY)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.LIGHT_GRAY_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_LIGHT_GRAY)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.CYAN_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_CYAN)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.PURPLE_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_PURPLE)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.BLUE_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_BLUE)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.BROWN_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_BROWN)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.GREEN_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_GREEN)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.RED_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_RED)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.BLACK_RUNE.get())
-                .requires(AMItems.BLANK_RUNE.get())
-                .requires(Tags.Items.DYES_BLACK)
-                .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
-                .save(consumer);
+        var hasBlankRune = has(AMItems.BLANK_RUNE.get());
+        for (DyeColor color : DyeColor.values()) {
+            ShapelessRecipeBuilder.shapeless(AMItems.COLORED_RUNE.get(color))
+                                  .requires(AMItems.BLANK_RUNE.get())
+                                  .requires(color.getTag())
+                                  .unlockedBy("has_blank_rune", hasBlankRune)
+                                  .save(consumer);
+        }
         ShapedRecipeBuilder.shaped(AMItems.RUNE_BAG.get())
                 .pattern("LLL")
                 .pattern("W W")

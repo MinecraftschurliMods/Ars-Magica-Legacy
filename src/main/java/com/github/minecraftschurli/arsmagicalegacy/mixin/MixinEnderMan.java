@@ -18,7 +18,7 @@ public abstract class MixinEnderMan extends Monster {
     }
 
     @Inject(at = @At("HEAD"), method = "isLookingAtMe", cancellable = true)
-    public void doesEndermanGetAngryAt(Player pPlayer, CallbackInfoReturnable<Boolean> cir) {
+    public void isLookingAtMeMixin(Player pPlayer, CallbackInfoReturnable<Boolean> cir) {
         if (!AffinityUtil.canEndermanGetAngryAt(pPlayer)) {
             cir.setReturnValue(false);
         }

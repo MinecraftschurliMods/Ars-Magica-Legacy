@@ -3,9 +3,9 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IKnowledgeHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.ColorUtil;
@@ -27,17 +27,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-@SuppressWarnings("unused")
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     public static final String MISSING_REQUIREMENTS_KEY = "message.%s.occulus.missingRequirements".formatted(ArsMagicaAPI.MOD_ID);
     public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(MISSING_REQUIREMENTS_KEY).withStyle(ChatFormatting.DARK_RED);
-    public static final float SKILL_SIZE = 32f;
-
+    private static final float SKILL_SIZE = 32f;
+    private static final float SCALE = 1f;
     private int lastMouseX = 0;
     private int lastMouseY = 0;
     private float offsetX = 0;
     private float offsetY = 0;
-    private float scale = 1f;
     private ISkill hoverItem = null;
 
     public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab) {
@@ -52,16 +50,15 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.getBackground());
-        float scaledOffsetX = offsetX * scale;
-        float scaledOffsetY = offsetY * scale;
-        float scaledWidth = width * (1 / scale);
-        float scaledHeight = height * (1 / scale);
+        float scaledOffsetX = offsetX * SCALE;
+        float scaledOffsetY = offsetY * SCALE;
+        float scaledWidth = width * (1 / SCALE);
+        float scaledHeight = height * (1 / SCALE);
         float minU = Mth.clamp(scaledOffsetX, 0, textureWidth - scaledWidth) / textureWidth;
         float minV = Mth.clamp(scaledOffsetY, 0, textureHeight - scaledHeight) / textureHeight;
         float maxU = Mth.clamp(scaledOffsetX + scaledWidth, scaledWidth, textureWidth) / textureWidth;
         float maxV = Mth.clamp(scaledOffsetY + scaledHeight, scaledHeight, textureHeight) / textureHeight;
         RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), minU, minV, maxU, maxV);
-
         if (isDragging()) {
             offsetX = Mth.clamp(offsetX - (pMouseX - lastMouseX), 0, textureWidth - scaledWidth);
             offsetY = Mth.clamp(offsetY - (pMouseY - lastMouseY), 0, textureHeight - scaledHeight);
@@ -75,16 +72,16 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         Player player = getMinecraft().player;
         if (player == null) return;
         ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
-        IKnowledgeHelper knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+        ISkillHelper knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         stack.pushPose();
-        stack.scale(scale, scale, 0);
+        stack.scale(SCALE, SCALE, 0);
         stack.translate(-offsetX, -offsetY, 0);
         mouseX += offsetX;
         mouseY += offsetY;
-        mouseX *= scale;
-        mouseY *= scale;
+        mouseX *= SCALE;
+        mouseY *= SCALE;
         boolean isHoveringSkill = false;
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
@@ -118,20 +115,20 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             boolean knows = knowledgeHelper.knows(player, skill);
             boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
             if (!hasPrereq) {
-                RenderSystem.setShaderFogColor(0.5F, 0.5F, 0.5F);
+                RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1);
             } else if (!knows) {
                 int c = getColorForSkill(skill);
                 float red = Math.max(ColorUtil.getRed(c), 0.6F) * multiplier;
                 float green = Math.max(ColorUtil.getGreen(c), 0.6F) * multiplier;
                 float blue = Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier;
-                RenderSystem.setShaderFogColor(red, green, blue);
+                RenderSystem.setShaderColor(red, green, blue, 1);
             }
             setBlitOffset(16);
             RenderSystem.setShaderTexture(0, skill.getIcon());
             RenderSystem.enableBlend();
             RenderUtil.drawBox(stack, skill.getX(), skill.getY(), SKILL_SIZE, SKILL_SIZE, getBlitOffset(), 0, 0, 1, 1);
             RenderSystem.disableBlend();
-            RenderSystem.setShaderFogColor(1, 1, 1);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableScissor();
         for (ISkill skill : skills) {
@@ -157,7 +154,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton == 0 && mouseX > 7 && mouseX < width && mouseY > 7 && mouseX < height) {
-            var knowledgeHelper = ArsMagicaAPI.get().getKnowledgeHelper();
+            var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
             Player player = getMinecraft().player;
             if (player != null && hoverItem != null && !knowledgeHelper.knows(player, hoverItem)) {
                 if (knowledgeHelper.canLearn(player, hoverItem) || player.isCreative()) {
@@ -173,22 +170,15 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        //this.renderRatio = (float) Mth.clamp(this.renderRatio+pDelta/100, width/(float)textureWidth, 1);
+        //renderRatio = (float) Mth.clamp(renderRatio + pDelta / 100, width / (float) textureWidth, 1);
         return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
-    private int getColorForSkill(ISkill skill) {
-        return skill.getCost()
-                .keySet()
-                .stream()
-                .map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .map(ISkillPoint::getColor)
-                .orElse(ColorUtil.GRAY);
+    private static int getColorForSkill(ISkill skill) {
+        return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::getColor).orElse(ColorUtil.GRAY);
     }
 
-    private int getColorForLine(ISkill parent, ISkill child) {
+    private static int getColorForLine(ISkill parent, ISkill child) {
         return ColorUtil.calculateAverage(getColorForSkill(parent), getColorForSkill(child));
     }
 }

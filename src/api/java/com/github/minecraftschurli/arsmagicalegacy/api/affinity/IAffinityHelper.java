@@ -9,13 +9,12 @@ import net.minecraft.world.item.ItemStack;
  * Interface representing an affinity helper
  */
 public interface IAffinityHelper {
-
     /**
      * Get the {@link ItemStack} of the given {@link Item} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.
      *
-     * @param item the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
+     * @param item     the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
      * @param affinity the {@link ResourceLocation} of the {@link IAffinity affinity} to set
-     * @param <T> the {@link Item} implementing {@link IAffinityItem}
+     * @param <T>      the {@link Item} implementing {@link IAffinityItem}
      * @return the {@link ItemStack} of the given item with the given {@link IAffinity} stored in it
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation affinity);
@@ -23,9 +22,9 @@ public interface IAffinityHelper {
     /**
      * Get the {@link ItemStack} of the given {@link Item} for the given {@link IAffinity affinity}.
      *
-     * @param item the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
+     * @param item     the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
      * @param affinity the {@link IAffinity affinity} to set
-     * @param <T> the {@link Item} implementing {@link IAffinityItem}
+     * @param <T>      the {@link Item} implementing {@link IAffinityItem}
      * @return the {@link ItemStack} of the given item with the given {@link IAffinity} stored in it
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity);
@@ -73,7 +72,7 @@ public interface IAffinityHelper {
     /**
      * Get the affinity depth for a given player and affinity.
      *
-     * @param player the player to get the affinity depth for
+     * @param player   the player to get the affinity depth for
      * @param affinity the affinity to get the depth for
      * @return the depth of the given player in the given affinity
      */
@@ -82,7 +81,7 @@ public interface IAffinityHelper {
     /**
      * Get the affinity depth for a given player and affinity.
      *
-     * @param player the player to get the affinity depth for
+     * @param player   the player to get the affinity depth for
      * @param affinity the affinity to get the depth for
      * @return the depth of the given player in the given affinity
      */

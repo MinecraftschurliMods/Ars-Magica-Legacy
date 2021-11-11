@@ -26,15 +26,12 @@ public interface IAffinityItem {
     /**
      * Set the {@link IAffinity} stored in the {@link ItemStack}
      *
-     * @param stack the {@link ItemStack} to set the {@link IAffinity} for
+     * @param stack    the {@link ItemStack} to set the {@link IAffinity} for
      * @param affinity the {@link IAffinity} to set
      * @return the {@link ItemStack} with the {@link IAffinity} stored in it
      */
     default ItemStack setAffinity(ItemStack stack, IAffinity affinity) {
-        stack.getOrCreateTag().putString(
-                ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(),
-                Objects.requireNonNull(affinity.getRegistryName()).toString()
-        );
+        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(), Objects.requireNonNull(affinity.getRegistryName()).toString());
         return stack;
     }
 }

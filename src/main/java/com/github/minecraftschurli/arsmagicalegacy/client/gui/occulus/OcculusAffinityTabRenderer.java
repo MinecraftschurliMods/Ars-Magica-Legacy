@@ -3,8 +3,9 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.IOcculusTab;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
     public OcculusAffinityTabRenderer(IOcculusTab occulusTab) {
         super(occulusTab);
@@ -38,7 +38,9 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         int cX = width / 2;
         int cY = height / 2;
         List<Component> drawString = new ArrayList<>();
-        for (IAffinity aff : affinityRegistry) {
+        List<IAffinity> affinities = new ArrayList<>(affinityRegistry.getValues());
+        affinities.sort(null);
+        for (IAffinity aff : affinities) {
             if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
             double depth = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(getPlayer(), aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
@@ -64,35 +66,37 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
                 RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
             }
-            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth*100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
+            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth * 100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX+posX, drawY+posY);
+            getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
-                drawString.add(aff.getDisplayName());
-//                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
-//                    abilites.sort(new Comparator<AbstractAffinityAbility>() {
-//                        @Override
-//                        public int compare(AbstractAffinityAbility o1, AbstractAffinityAbility o2) {
-//                            return (int) ((o1.getMinimumDepth() * 100) - (o2.getMinimumDepth() * 100));
-//                        }
-//                    });
-//                    for (AbstractAffinityAbility ability : abilites) {
-//                        if (ability.getAffinity() == aff) {
-//                            String advancedTooltip = "";
-//                            if (isShiftDown) advancedTooltip = " (Min. : " + Math.round(ability.getMinimumDepth() * 100) + "%" + (ability.hasMax() ?(", Max. : " + Math.round(ability.getMaximumDepth() * 100) + "%")  : "") + ")";
-//                            drawString.add(TextFormatting.RESET.toString() + (ability.isEligible(player) ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + I18n.translateToLocal("affinityability." + ability.getRegistryName().toString().replaceAll("arsmagica2:", "") + ".name") + advancedTooltip);
-//                        }
-//                    }
+                drawString.add(aff.getDisplayName().withStyle(style -> style.withColor(aff.getColor())));
+/*
+                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
+                    abilites.sort(new Comparator<AbstractAffinityAbility>() {
+                        @Override
+                        public int compare(AbstractAffinityAbility o1, AbstractAffinityAbility o2) {
+                            return (int) ((o1.getMinimumDepth() * 100) - (o2.getMinimumDepth() * 100));
+                        }
+                    });
+                    for (AbstractAffinityAbility ability : abilites) {
+                        if (ability.getAffinity() == aff) {
+                            String advancedTooltip = "";
+                            if (isShiftDown) advancedTooltip = " (Min. : " + Math.round(ability.getMinimumDepth() * 100) + "%" + (ability.hasMax() ?(", Max. : " + Math.round(ability.getMaximumDepth() * 100) + "%")  : "") + ")";
+                            drawString.add(TextFormatting.RESET.toString() + (ability.isEligible(player) ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + I18n.translateToLocal("affinityability." + ability.getRegistryName().toString().replaceAll("arsmagica2:", "") + ".name") + advancedTooltip);
+                        }
+                    }
+*/
             }
         }
         if (!drawString.isEmpty()) {
             if (!Screen.hasShiftDown()) {
-                drawString.add(new TranslatableComponent("tooltip.%s.shiftForDetails".formatted(ArsMagicaAPI.MOD_ID)).withStyle(ChatFormatting.GRAY));
+                drawString.add(new TranslatableComponent(SpellItem.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             GuiUtils.drawHoveringText(pMatrixStack, drawString, pMouseX, pMouseY, screenWidth, screenHeight, -1, getFont());
         }

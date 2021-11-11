@@ -1,9 +1,15 @@
 [submodule "projects/easyimclib"]
 	path = projects/easyimclib
-	url = https://github.com/MinecraftschurliMods/EasyIMCLib.git
+	url = git@github.com:MinecraftschurliMods/EasyIMCLib.git
 [submodule "projects/simplenetlib"]
 	path = projects/simplenetlib
-	url = https://github.com/MinecraftschurliMods/SimpleNetLib.git
+	url = git@github.com:MinecraftschurliMods/SimpleNetLib.git
 [submodule "projects/patchouli_datagen"]
 	path = projects/patchouli_datagen
-	url = https://github.com/MinecraftschurliMods/PatchouliDatagen.git
+	url = git@github.com:MinecraftschurliMods/PatchouliDatagen.git
+[submodule "projects/codeclib"]
+	path = projects/codeclib
+	url = git@github.com:MinecraftschurliMods/CodecLib.git
+[submodule "projects/betterkeybindlib"]
+	path = projects/betterkeybindlib
+	url = git@github.com:MinecraftschurliMods/BetterKeybindLib.git

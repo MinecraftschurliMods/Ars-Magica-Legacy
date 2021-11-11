@@ -1,9 +1,0 @@
-{
-  "occulus_tab": "arsmagicalegacy:offense",
-  "icon": "arsmagicalegacy:textures/icon/skill/affinity_gains.png",
-  "x": 275,
-  "y": 75,
-  "cost": {
-    "arsmagicalegacy:blue": 1
-  }
-}

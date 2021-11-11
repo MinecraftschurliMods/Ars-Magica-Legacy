@@ -13,6 +13,10 @@ import net.minecraft.world.item.ItemStack;
 public class RuneBagContainer extends SimpleContainer {
     private final ItemStack stack;
 
+    /**
+     * Creates a new RuneBagContainer.
+     * @param stack The ItemStack to create the container for.
+     */
     public RuneBagContainer(ItemStack stack) {
         super(DyeColor.values().length);
         this.stack = stack;

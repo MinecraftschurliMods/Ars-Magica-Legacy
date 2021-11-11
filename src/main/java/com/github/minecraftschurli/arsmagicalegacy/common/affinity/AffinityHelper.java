@@ -7,10 +7,11 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.codeclib.CodecHelper;
-import com.github.minecraftschurli.codeclib.CodecPacket;
+import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,22 +20,59 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final CodecPacket.CodecPacketFactory<AffinityHolder> SYNC_PACKET = CodecPacket.create(AffinityHolder.CODEC, AffinityHelper::handleSync);
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
+    public static final class SyncPacket extends CodecPacket<AffinityHolder> {
+        public SyncPacket(AffinityHolder data) {
+            super(data);
+        }
+
+        public SyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            AffinityHelper.handleSync(data, context);
+        }
+
+        @Override
+        protected Codec<AffinityHolder> getCodec() {
+            return AffinityHolder.CODEC;
+        }
+    }
+
+    /**
+     * Registers the network packet to the network handler.
+     */
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    /**
+     * @return The only instance of this class.
+     */
     public static AffinityHelper instance() {
         return INSTANCE.get();
     }
 
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
-
-    public AffinityHolder getAffinityHolder(Player player) {
-        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
+    /**
+     * @return The default capability
+     */
+    public static Capability<AffinityHolder> getCapability() {
+        return AFFINITY;
     }
 
     @Override
@@ -71,9 +109,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public IAffinity getAffinityForStack(ItemStack stack) {
-        if (stack.getItem() instanceof IAffinityItem item) {
-            return item.getAffinity(stack);
-        }
+        if (stack.getItem() instanceof IAffinityItem item) return item.getAffinity(stack);
         return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(IAffinity.NONE));
     }
 
@@ -82,17 +118,38 @@ public final class AffinityHelper implements IAffinityHelper {
         return getAffinityHolder(player).getAffinityDepth(affinity);
     }
 
+    /**
+     * Gets the affinity capability for the given player.
+     *
+     * @param player The player to get the affinity capability for.
+     * @return The affinity capability for the given player.
+     */
+    public AffinityHolder getAffinityHolder(Player player) {
+        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
+    }
+
     @Override
     public double getAffinityDepth(Player player, IAffinity affinity) {
         return getAffinityDepth(player, affinity.getId());
     }
 
-    public static Capability<AffinityHolder> getCapability() {
-        return AFFINITY;
+    /**
+     * Called upon player death, syncs the capabilites.
+     *
+     * @param original The old player entity from the event.
+     * @param player   The new player entity from the event.
+     */
+    public void syncOnDeath(Player original, Player player) {
+        original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
     }
 
+    /**
+     * Called upon player join, syncs the capabilites.
+     *
+     * @param player The player entity from the event.
+     */
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(SYNC_PACKET.create(getAffinityHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
     }
 
     private static void handleSync(AffinityHolder affinityHolder, NetworkEvent.Context context) {
@@ -100,23 +157,29 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     public record AffinityHolder(Map<ResourceLocation, Double> depths) {
-        public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths)
-        ).apply(inst, AffinityHolder::new));
+        public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths)).apply(inst, AffinityHolder::new));
 
+        /**
+         * @return A new empty AffinityHolder.
+         */
         public static AffinityHolder empty() {
             return new AffinityHolder(new HashMap<>());
         }
 
         /**
-             * Get the depths map for this affinity holder.
-             *
-             * @return the unmodifiable view of the affinity depths map
-             */
+         * Get the depths map for this affinity holder.
+         *
+         * @return the unmodifiable view of the affinity depths map
+         */
         public Map<ResourceLocation, Double> depths() {
             return Collections.unmodifiableMap(depths);
         }
 
+        /**
+         * Runs the synchronization logic.
+         *
+         * @param affinityHolder The affinity capability to sync.
+         */
         public void onSync(AffinityHolder affinityHolder) {
             depths.clear();
             depths.putAll(affinityHolder.depths());

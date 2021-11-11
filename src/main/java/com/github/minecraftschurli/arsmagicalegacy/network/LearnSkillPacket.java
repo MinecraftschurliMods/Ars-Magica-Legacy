@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public record LearnSkillPacket(ResourceLocation id) implements IPacket {
-    @SuppressWarnings("unused")
     public LearnSkillPacket(FriendlyByteBuf buf) {
         this(buf.readResourceLocation());
     }
@@ -19,6 +18,6 @@ public record LearnSkillPacket(ResourceLocation id) implements IPacket {
 
     @Override
     public void handle(NetworkEvent.Context ctx) {
-        ArsMagicaAPI.get().getKnowledgeHelper().learn(ctx.getSender(), id());
+        ArsMagicaAPI.get().getSkillHelper().learn(ctx.getSender(), id());
     }
 }

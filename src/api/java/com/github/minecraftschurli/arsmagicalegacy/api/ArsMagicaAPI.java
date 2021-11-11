@@ -2,35 +2,30 @@ package com.github.minecraftschurli.arsmagicalegacy.api;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ServiceLoader;
-import java.util.function.Function;
 
 public final class ArsMagicaAPI {
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
         try {
-            //noinspection unchecked
-            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(
-                    ArsMagicaAPI.class
-                            .getModule()
-                            .getDescriptor()
-                            .provides()
-                            .stream()
-                            .flatMap(provides -> provides.providers().stream())
-                            .findFirst().orElseThrow());
+            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
             return clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
@@ -46,7 +41,8 @@ public final class ArsMagicaAPI {
         });*/
     });
 
-    private ArsMagicaAPI() {}
+    private ArsMagicaAPI() {
+    }
 
     /**
      * Get the API Instance
@@ -60,7 +56,6 @@ public final class ArsMagicaAPI {
     /**
      * The Interface representing the API
      */
-    @SuppressWarnings("unused")
     @NonExtendable
     public interface IArsMagicaAPI {
         /**
@@ -92,6 +87,13 @@ public final class ArsMagicaAPI {
         IForgeRegistry<IAffinity> getAffinityRegistry();
 
         /**
+         * Get the registry for spell parts.
+         *
+         * @return the registry for spell parts
+         */
+        IForgeRegistry<ISpellPart> getSpellPartRegistry();
+
+        /**
          * Get the {@link ISkillManager} instance.
          *
          * @return the {@link ISkillManager} instance
@@ -106,11 +108,18 @@ public final class ArsMagicaAPI {
         IOcculusTabManager getOcculusTabManager();
 
         /**
-         * Get the {@link IKnowledgeHelper} instance.
+         * Get the {@link ISpellDataManager} instance.
          *
-         * @return the {@link IKnowledgeHelper} instance
+         * @return the {@link ISpellDataManager} instance
          */
-        IKnowledgeHelper getKnowledgeHelper();
+        ISpellDataManager getSpellDataManager();
+
+        /**
+         * Get the {@link ISkillHelper} instance.
+         *
+         * @return the {@link ISkillHelper} instance
+         */
+        ISkillHelper getSkillHelper();
 
         /**
          * Get the {@link IAffinityHelper} instance.
@@ -120,14 +129,33 @@ public final class ArsMagicaAPI {
         IAffinityHelper getAffinityHelper();
 
         /**
+         * Get the {@link IMagicHelper} instance.
+         *
+         * @return the {@link IMagicHelper} instance
+         */
+        IMagicHelper getMagicHelper();
+
+        /**
          * Open the occulus gui for the given player.
          *
          * @param player the player to open the gui for
          */
         void openOcculusGui(Player player);
+
+        /**
+         * Get the {@link ISpellHelper} instance.
+         *
+         * @return the {@link ISpellHelper} instance
+         */
+        ISpellHelper getSpellHelper();
+
+        /**
+         * Open the spell customization gui for the given spell (the given stack).<br>
+         * Only works on the client.
+         */
+        void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
@@ -157,7 +185,12 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public IKnowledgeHelper getKnowledgeHelper() {
+        public ISpellDataManager getSpellDataManager() {
+            return null;
+        }
+
+        @Override
+        public ISkillHelper getSkillHelper() {
             return null;
         }
 
@@ -166,12 +199,31 @@ public final class ArsMagicaAPI {
         }
 
         @Override
+        public ISpellHelper getSpellHelper() {
+            return null;
+        }
+
+        @Override
+        public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
+        }
+
+        @Override
         public IAffinityHelper getAffinityHelper() {
             return null;
         }
 
         @Override
+        public IMagicHelper getMagicHelper() {
+            return null;
+        }
+
+        @Override
         public IForgeRegistry<IAffinity> getAffinityRegistry() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
             return null;
         }
     }

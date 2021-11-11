@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class AffinityTomeItem extends Item implements IAffinityItem {
     public AffinityTomeItem(Properties properties) {
@@ -17,9 +16,9 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
     }
 
     @Override
-    public void fillItemCategory(@NotNull CreativeModeTab pCategory, @NotNull NonNullList<ItemStack> pItems) {
-        if (this.allowdedIn(pCategory)) {
-            var api = ArsMagicaAPI.get();
+    public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
+        if (allowdedIn(pCategory)) {
+            ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
             for (IAffinity affinity : api.getAffinityRegistry()) {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
                 pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getRegistryName()));
@@ -27,11 +26,12 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
         }
     }
 
-    @NotNull
     @Override
-    public String getDescriptionId(@NotNull ItemStack pStack) {
+    public String getDescriptionId(ItemStack pStack) {
         ResourceLocation affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(pStack).getRegistryName();
-        if (affinity == null) affinity = IAffinity.NONE;
-        return Util.makeDescriptionId("item", getRegistryName())+(".%s.%s".formatted(affinity.getNamespace(), affinity.getPath()));
+        if (affinity == null) {
+            affinity = IAffinity.NONE;
+        }
+        return Util.makeDescriptionId(super.getDescriptionId(pStack), affinity);
     }
 }

@@ -2,14 +2,21 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
@@ -60,22 +67,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         itemIdTranslation(AMItems.BLANK_RUNE);
-        itemIdTranslation(AMItems.WHITE_RUNE);
-        itemIdTranslation(AMItems.ORANGE_RUNE);
-        itemIdTranslation(AMItems.MAGENTA_RUNE);
-        itemIdTranslation(AMItems.LIGHT_BLUE_RUNE);
-        itemIdTranslation(AMItems.YELLOW_RUNE);
-        itemIdTranslation(AMItems.LIME_RUNE);
-        itemIdTranslation(AMItems.PINK_RUNE);
-        itemIdTranslation(AMItems.GRAY_RUNE);
-        itemIdTranslation(AMItems.LIGHT_GRAY_RUNE);
-        itemIdTranslation(AMItems.CYAN_RUNE);
-        itemIdTranslation(AMItems.PURPLE_RUNE);
-        itemIdTranslation(AMItems.BLUE_RUNE);
-        itemIdTranslation(AMItems.BROWN_RUNE);
-        itemIdTranslation(AMItems.GREEN_RUNE);
-        itemIdTranslation(AMItems.RED_RUNE);
-        itemIdTranslation(AMItems.BLACK_RUNE);
+        for (DyeColor color : DyeColor.values()) {
+            itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));
+        }
         itemIdTranslation(AMItems.RUNE_BAG);
         itemIdTranslation(AMItems.ARCANE_COMPOUND);
         itemIdTranslation(AMItems.ARCANE_ASH);
@@ -87,7 +81,51 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL);
+
+        for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
+            affinityIdTranslation(affinity);
+            affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
+            affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
+        }
+
+        skillPointIdTranslation(AMSkillPoints.BLUE);
+
+        add(SpellItem.SPELL_CAST_RESULT+"fail", "Spell cast failed!");
+        add(SpellItem.SPELL_CAST_RESULT+"not_enough_mana", "Not enough mana!");
+        add(SpellItem.SPELL_CAST_RESULT+"burned_out", "Burned out!");
+        add(SpellItem.SPELL_CAST_RESULT+"missing_reagents", "Missing reagents!");
+        add(SpellItem.SPELL_CAST_RESULT+"cancelled", "Spell cast failed!");
+
+        add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
+        add(SpellItem.MANA_COST, "Mana cost: %d");
+        add(SpellItem.BURNOUT, "Burnout: %d");
+        add(SpellItem.REAGENTS, "Reagents:");
+        add(SpellItem.UNNAMED_SPELL, "Unnamed Spell");
+        add(SpellItem.UNKNOWN_ITEM, "Unknown Item");
+        add(SpellItem.UNKNOWN_ITEM_DESC, "You dont understand what this item is, but you can feel it is special.");
+        add(SpellItem.INVALID_SPELL, "[Invalid Spell]");
+        add(SpellItem.INVALID_SPELL_DESC, "Something is wrong with this Spell, check the log for warnings or errors!");
+
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+    }
+
+    private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity) {
+        affinityItemIdTranslation(affinityItem.getId(), affinity.getId());
+    }
+
+    private void affinityItemIdTranslation(ResourceLocation affinityItemId, ResourceLocation affinityId) {
+        String translation = idToTranslation(affinityId.getPath()) + " " + idToTranslation(affinityItemId.getPath());
+        affinityItemTranslation(affinityItemId, affinityId, translation);
+    }
+
+    private void affinityItemTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity, String translation) {
+        affinityItemTranslation(affinityItem.getId(), affinity.getId(), translation);
+    }
+
+    private void affinityItemTranslation(ResourceLocation affinityItemId, ResourceLocation affinityId, String translation) {
+        add(Util.makeDescriptionId(Util.makeDescriptionId("item", affinityItemId), affinityId), translation);
     }
 
     /**
@@ -115,6 +153,24 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
         addEffect(effect, idToTranslation(effect.getId().getPath()));
+    }
+
+    /**
+     * Adds an affinity translation that matches the affinity id.
+     *
+     * @param affinity The affinity to generate the translation for.
+     */
+    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
+        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
+    }
+
+    /**
+     * Adds an skillPoint translation that matches the skillPoint id.
+     *
+     * @param skillPoint The skillPoint to generate the translation for.
+     */
+    private void skillPointIdTranslation(RegistryObject<? extends ISkillPoint> skillPoint) {
+        addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
     }
 
     /**
@@ -165,5 +221,21 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         for (String string : id.split("_"))
             result.append(string.substring(0, 1).toUpperCase()).append(string.substring(1)).append(" ");
         return result.substring(0, result.length() - 1);
+    }
+
+    private void addAffinity(Supplier<? extends IAffinity> affinity, String translation) {
+        addAffinity(affinity.get(), translation);
+    }
+
+    private void addAffinity(IAffinity affinity, String translation) {
+        add(affinity.getTranslationKey(), translation);
+    }
+
+    private void addSkillPoint(Supplier<? extends ISkillPoint> skillPoint, String translation) {
+        addSkillPoint(skillPoint.get(), translation);
+    }
+
+    private void addSkillPoint(ISkillPoint skillpoint, String translation) {
+        add(skillpoint.getTranslationKey(), translation);
     }
 }

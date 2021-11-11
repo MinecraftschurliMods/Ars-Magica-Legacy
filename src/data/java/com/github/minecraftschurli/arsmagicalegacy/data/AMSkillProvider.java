@@ -3,10 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.data.SkillBuilder;
 import com.github.minecraftschurli.arsmagicalegacy.api.data.SkillProvider;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -16,7 +13,6 @@ public class AMSkillProvider extends SkillProvider {
         super(generator, ArsMagicaAPI.MOD_ID);
     }
 
-    @NotNull
     @Override
     public String getName() {
         return "AMSkillProvider";
@@ -24,6 +20,7 @@ public class AMSkillProvider extends SkillProvider {
 
     @Override
     protected void createSkills(Consumer<SkillBuilder> consumer) {
+        /*
         var test = createSkill("test", new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense"), new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/icon/skill/affinity_gains.png"))
                 .setPosition(275, 75)
                 .addCost(AMSkillPoints.BLUE.get())
@@ -33,5 +30,6 @@ public class AMSkillProvider extends SkillProvider {
                 .addCost(AMSkillPoints.BLUE.get())
                 .addParent(test)
                 .build(consumer);
+        */
     }
 }

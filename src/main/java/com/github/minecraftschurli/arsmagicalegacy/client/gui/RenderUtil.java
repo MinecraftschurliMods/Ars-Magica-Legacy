@@ -1,7 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -11,7 +16,8 @@ import java.util.Optional;
 import java.util.Random;
 
 public final class RenderUtil {
-    private RenderUtil() {}
+    private RenderUtil() {
+    }
 
     public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {
         stack.pushPose();
@@ -25,8 +31,8 @@ public final class RenderUtil {
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         RenderSystem.lineWidth(width);
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1.0f).normal(0, 1, 0).endVertex();
-        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1.0f).normal(0, 1, 0).endVertex();
+        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1f).normal(0, 1, 0).endVertex();
+        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1f).normal(0, 1, 0).endVertex();
         buf.end();
         BufferUploader.end(buf);
         RenderSystem.lineWidth(1);

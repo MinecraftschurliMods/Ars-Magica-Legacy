@@ -1,7 +1,6 @@
 //file:noinspection GroovyAssignabilityCheck
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.ajoberstar.grgit.Grgit
 
 buildscript {
     repositories {
@@ -21,7 +20,6 @@ buildscript {
 
 plugins {
     id 'org.ec4j.editorconfig' version '0.0.3'
-    id 'org.ajoberstar.grgit'
     id 'maven-publish'
     id 'eclipse'
     id 'idea'
@@ -31,10 +29,11 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 //=============================================
-def grgit = Grgit.open(currentDir: project.projectDir)
 
 mixin {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
+    config 'arsmagicalegacy.mixins.json'
+    dumpTargetOnFailure true
 }
 
 editorconfig {
@@ -47,17 +46,9 @@ version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
 
 if (System.getenv('RELEASE_TYPE') != null) {
-    status = System.getenv('RELEASE_TYPE')
-    switch (status) {
-        case 'snapshot':
-            version = "${version}+${grgit.head().abbreviatedId}"
-            break
-        case 'alpha':
-        case 'beta':
-        case 'final':
-            version = "${version}-${status}"
-            break
-    }
+    status = System.getenv('RELEASE_TYPE').toLowerCase()
+    if (status == 'snapshot') status = status.toUpperCase()
+    version = "${version}-${status}"
 }
 
 java {
@@ -162,7 +153,9 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    if (!Boolean.getBoolean('idea.sync.active')) {
+        annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    }
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
@@ -187,17 +180,27 @@ dependencies {
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:simplenetlib')) {
         include project(path: ':projects:simplenetlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0')
+        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0-SNAPSHOT')
+    }
+    if (projects.contains(':projects:codeclib')) {
+        include project(path: ':projects:codeclib', configuration: 'deobfJar')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0-SNAPSHOT')
+    }
+    if (projects.contains(':projects:betterkeybindlib')) {
+        include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
+    } else {
+        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:patchouli_datagen')) {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
-        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0')
+        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0-SNAPSHOT')
     }
 
     implementation sourceSets.api.output
@@ -217,15 +220,11 @@ minecraft {
     runs {
         client {
             ideaModule "${project.name.replace(' ', '_')}.main"
-            property 'forge.logging.markers', 'SCAN,REGISTRIES'
+            property 'forge.logging.markers', 'REGISTRIES'
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }*/
         }
         server {
             ideaModule "${project.name.replace(' ', '_')}.main"
@@ -235,10 +234,6 @@ minecraft {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }*/
         }
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
@@ -249,21 +244,11 @@ minecraft {
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
             }
-
-            /*lazyToken('minecraft_classpath') {
-                [
-                        configurations.datagenLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator),
-                        configurations.include.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-                ].join(File.pathSeparator).strip()
-            }*/
         }
     }
     runs.configureEach {
         workingDirectory project.file("run/${it.name}") as File
         property 'forge.logging.console.level', 'debug'
-        property 'mixin.env.remapRefMap', 'true'
-        property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-        arg "--mixin.config=arsmagicalegacy.mixins.json"
     }
 }
 
@@ -353,8 +338,6 @@ tasks.withType(Jar).configureEach {
                 'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
                 'Built-On': "${project.mc_version}-${project.forge_version}",
                 'Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Git-Commit': "${grgit.head().abbreviatedId}",
-                'Git-Branch': "${grgit.branch.current().fullName.split('/').drop(2).join('/')}",
                 'FMLModType': 'MOD'
         ])
     }
@@ -492,3 +475,5 @@ check {
 publish {
     dependsOn check
 }
+
+evaluationDependsOnChildren()

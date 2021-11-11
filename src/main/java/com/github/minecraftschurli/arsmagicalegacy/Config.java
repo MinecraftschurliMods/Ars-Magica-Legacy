@@ -32,7 +32,8 @@ public final class Config {
         context.registerConfig(ModConfig.Type.SERVER, serverSpec);
     }
 
-    private Config() {}
+    private Config() {
+    }
 
     /**
      * Class holding the client config values

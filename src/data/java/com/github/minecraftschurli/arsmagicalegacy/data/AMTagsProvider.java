@@ -5,12 +5,15 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.*;
+import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 
 class AMTagsProvider {
     static void setup(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
@@ -22,7 +25,7 @@ class AMTagsProvider {
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Blocks(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -65,7 +68,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -94,23 +97,24 @@ class AMTagsProvider {
             tag(AMTags.Items.DUSTS_PURIFIED_VINTEUM).add(AMItems.PURIFIED_VINTEUM_DUST.get());
             tag(Tags.Items.GEMS).addTag(AMTags.Items.GEMS_CHIMERITE).addTag(AMTags.Items.GEMS_TOPAZ).addTag(AMTags.Items.GEMS_MOONSTONE).addTag(AMTags.Items.GEMS_SUNSTONE);
             tag(Tags.Items.DUSTS).addTag(AMTags.Items.DUSTS_VINTEUM).addTag(AMTags.Items.DUSTS_ARCANE_COMPOUND).addTag(AMTags.Items.DUSTS_ARCANE_ASH).addTag(AMTags.Items.DUSTS_PURIFIED_VINTEUM);
+
             tag(AMTags.Items.RUNES_COLORLESS).add(AMItems.BLANK_RUNE.get());
-            tag(AMTags.Items.RUNES_BLACK).add(AMItems.BLACK_RUNE.get());
-            tag(AMTags.Items.RUNES_BLUE).add(AMItems.BLUE_RUNE.get());
-            tag(AMTags.Items.RUNES_BROWN).add(AMItems.BROWN_RUNE.get());
-            tag(AMTags.Items.RUNES_CYAN).add(AMItems.CYAN_RUNE.get());
-            tag(AMTags.Items.RUNES_GRAY).add(AMItems.GRAY_RUNE.get());
-            tag(AMTags.Items.RUNES_GREEN).add(AMItems.GREEN_RUNE.get());
-            tag(AMTags.Items.RUNES_LIGHT_BLUE).add(AMItems.LIGHT_BLUE_RUNE.get());
-            tag(AMTags.Items.RUNES_LIGHT_GRAY).add(AMItems.LIGHT_GRAY_RUNE.get());
-            tag(AMTags.Items.RUNES_LIME).add(AMItems.LIME_RUNE.get());
-            tag(AMTags.Items.RUNES_MAGENTA).add(AMItems.MAGENTA_RUNE.get());
-            tag(AMTags.Items.RUNES_ORANGE).add(AMItems.ORANGE_RUNE.get());
-            tag(AMTags.Items.RUNES_PINK).add(AMItems.PINK_RUNE.get());
-            tag(AMTags.Items.RUNES_PURPLE).add(AMItems.PURPLE_RUNE.get());
-            tag(AMTags.Items.RUNES_RED).add(AMItems.RED_RUNE.get());
-            tag(AMTags.Items.RUNES_WHITE).add(AMItems.WHITE_RUNE.get());
-            tag(AMTags.Items.RUNES_YELLOW).add(AMItems.YELLOW_RUNE.get());
+            tag(AMTags.Items.RUNES_WHITE).add(AMItems.COLORED_RUNE.get(DyeColor.WHITE));
+            tag(AMTags.Items.RUNES_ORANGE).add(AMItems.COLORED_RUNE.get(DyeColor.ORANGE));
+            tag(AMTags.Items.RUNES_MAGENTA).add(AMItems.COLORED_RUNE.get(DyeColor.MAGENTA));
+            tag(AMTags.Items.RUNES_LIGHT_BLUE).add(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE));
+            tag(AMTags.Items.RUNES_YELLOW).add(AMItems.COLORED_RUNE.get(DyeColor.YELLOW));
+            tag(AMTags.Items.RUNES_LIME).add(AMItems.COLORED_RUNE.get(DyeColor.LIME));
+            tag(AMTags.Items.RUNES_PINK).add(AMItems.COLORED_RUNE.get(DyeColor.PINK));
+            tag(AMTags.Items.RUNES_GRAY).add(AMItems.COLORED_RUNE.get(DyeColor.GRAY));
+            tag(AMTags.Items.RUNES_LIGHT_GRAY).add(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_GRAY));
+            tag(AMTags.Items.RUNES_CYAN).add(AMItems.COLORED_RUNE.get(DyeColor.CYAN));
+            tag(AMTags.Items.RUNES_PURPLE).add(AMItems.COLORED_RUNE.get(DyeColor.PURPLE));
+            tag(AMTags.Items.RUNES_BLUE).add(AMItems.COLORED_RUNE.get(DyeColor.BLUE));
+            tag(AMTags.Items.RUNES_BROWN).add(AMItems.COLORED_RUNE.get(DyeColor.BROWN));
+            tag(AMTags.Items.RUNES_GREEN).add(AMItems.COLORED_RUNE.get(DyeColor.GREEN));
+            tag(AMTags.Items.RUNES_RED).add(AMItems.COLORED_RUNE.get(DyeColor.RED));
+            tag(AMTags.Items.RUNES_BLACK).add(AMItems.COLORED_RUNE.get(DyeColor.BLACK));
             tag(AMTags.Items.RUNES).addTag(AMTags.Items.RUNES_COLORLESS).addTag(AMTags.Items.RUNES_BLACK).addTag(AMTags.Items.RUNES_BLUE).addTag(AMTags.Items.RUNES_BROWN).addTag(AMTags.Items.RUNES_CYAN).addTag(AMTags.Items.RUNES_GRAY).addTag(AMTags.Items.RUNES_GREEN).addTag(AMTags.Items.RUNES_LIGHT_BLUE).addTag(AMTags.Items.RUNES_LIGHT_GRAY).addTag(AMTags.Items.RUNES_LIME).addTag(AMTags.Items.RUNES_MAGENTA).addTag(AMTags.Items.RUNES_ORANGE).addTag(AMTags.Items.RUNES_PINK).addTag(AMTags.Items.RUNES_PURPLE).addTag(AMTags.Items.RUNES_RED).addTag(AMTags.Items.RUNES_WHITE).addTag(AMTags.Items.RUNES_YELLOW);
 
             tag(ItemTags.LOGS).addTag(AMTags.Items.WITCHWOOD_LOGS);
@@ -131,7 +135,7 @@ class AMTagsProvider {
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        Fluids(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -142,7 +146,7 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(final DataGenerator generator, final String modId, @Nullable final ExistingFileHelper existingFileHelper) {
+        EntityTypes(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 

@@ -14,7 +14,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,14 +29,13 @@ class AMLootTableProvider extends LootTableProvider {
         super(pGenerator);
     }
 
-    @NotNull
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK)/*, Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY)*/);
     }
 
     @Override
-    protected void validate(@NotNull Map<ResourceLocation, LootTable> map, @NotNull ValidationContext validationtracker) {
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
     }
 
     private static final class BlockLootTableProvider extends BlockLoot {
@@ -83,7 +81,7 @@ class AMLootTableProvider extends LootTableProvider {
         }
 
         @Override
-        public void accept(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
             addTables();
             Set<ResourceLocation> set = new HashSet<>();
             for (Block block : getKnownBlocks()) {

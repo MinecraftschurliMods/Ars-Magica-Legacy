@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Objects;
@@ -53,7 +52,7 @@ public interface ITranslatable {
     interface WithDescription extends ITranslatable {
         @Override
         default MutableComponent getDisplayName() {
-            return new TranslatableComponent(getTranslationKey()+".name");
+            return new TranslatableComponent(getTranslationKey() + ".name");
         }
 
         /**
@@ -62,7 +61,7 @@ public interface ITranslatable {
          * @return the {@link Component} containing the description of this object
          */
         default MutableComponent getDescription() {
-            return new TranslatableComponent(getTranslationKey()+".description");
+            return new TranslatableComponent(getTranslationKey() + ".description");
         }
     }
 
@@ -72,7 +71,7 @@ public interface ITranslatable {
     interface OfRegistryEntry<T extends IForgeRegistryEntry<T>> extends IForgeRegistryEntry<T>, ITranslatable {
         @Override
         default ResourceLocation getId() {
-            return Objects.requireNonNull(this.getRegistryName());
+            return Objects.requireNonNull(getRegistryName());
         }
 
         /**

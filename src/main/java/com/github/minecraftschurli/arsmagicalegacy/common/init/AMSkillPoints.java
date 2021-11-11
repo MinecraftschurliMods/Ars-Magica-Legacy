@@ -12,6 +12,10 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 public interface AMSkillPoints {
     RegistryObject<ISkillPoint> BLUE = SKILL_POINTS.register("blue", () -> new SkillPoint(0x0000ff, 0, 1));
 
+    /**
+     * Empty method that is required for classloading
+     */
     @Internal
-    static void register() {}
+    static void register() {
+    }
 }
