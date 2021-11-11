@@ -16,7 +16,6 @@ import java.util.List;
  */
 public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers) {
     public static final Codec<ShapeGroup> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
-
     public static final ShapeGroup EMPTY = of(List.of());
 
     /**

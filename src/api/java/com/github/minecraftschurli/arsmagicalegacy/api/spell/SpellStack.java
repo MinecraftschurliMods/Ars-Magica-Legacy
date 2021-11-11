@@ -14,7 +14,6 @@ import java.util.Objects;
 
 public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers) {
     public static final Codec<SpellStack> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry).listOf().xmap(SpellStack::of, SpellStack::parts);
-
     public static final SpellStack EMPTY = of(List.of());
 
     /**
