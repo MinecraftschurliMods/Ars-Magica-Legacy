@@ -1,7 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell.component;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.SpellUtil;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ public class Potion extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(Spell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, Entity target, Vec3 targetPosition, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, Entity target, Vec3 targetPosition, int index, int ticksUsed) {
         if (!(target instanceof LivingEntity)) return SpellCastResult.FAIL;
         MobEffectInstance effect = new MobEffectInstance(this.effect);
         // TODO modifier
@@ -29,7 +29,7 @@ public class Potion extends AbstractComponent {
     }
 
     @Override
-    public SpellCastResult invoke(Spell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockPos target, Vec3 targetPosition, int index, int ticksUsed) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockPos target, Vec3 targetPosition, int index, int ticksUsed) {
         return SpellCastResult.FAIL;
     }
 }

@@ -26,7 +26,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
                 .setCreativeTab(ArsMagicaAPI.get().getCreativeModeTab().getRecipeFolderName())
                 .setUseResourcepack()
-                .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) //TODO: magitech goggles here instead
+                .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) // TODO: magitech goggles here instead
                 .setSortnum(0)
                 .addEntry("occulus", "Occulus", new ItemStack(AMItems.OCCULUS.get()))
                 .addTextPage("Example page.").build()
@@ -34,7 +34,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addTextPage("Example page.").build()
                 .build()
                 .build()
-                .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) //TODO: crystal wrench here instead
+                .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) // TODO: crystal wrench here instead
                 .setSortnum(1)
                 .build()
                 .addCategory("items", "Items", "", new ItemStack(AMItems.VINTEUM_DUST.get()))
@@ -43,16 +43,16 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addCategory("entities", "Entities", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                 .setSortnum(3)
                 .build()
-                .addCategory("shapes", "Shapes", "", "") //TODO: add icon
+                .addCategory("shapes", "Shapes", "", "") // TODO: add icon
                 .setSortnum(4)
                 .build()
-                .addCategory("components", "Components", "", "") //TODO: add icon
+                .addCategory("components", "Components", "", "") // TODO: add icon
                 .setSortnum(5)
                 .build()
-                .addCategory("modifiers", "Modifiers", "", "") //TODO: add icon
+                .addCategory("modifiers", "Modifiers", "", "") // TODO: add icon
                 .setSortnum(6)
                 .build()
-                .addCategory("talents", "Talents", "", "") //TODO: add icon
+                .addCategory("talents", "Talents", "", "") // TODO: add icon
                 .setSortnum(7)
                 .build()
                 .build(consumer);

@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 /**
  * Data provider for skill jsons
  */
-public abstract class SkillProvider implements DataProvider {// TODO @IHH document
+public abstract class SkillProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final DataGenerator generator;
@@ -56,10 +56,26 @@ public abstract class SkillProvider implements DataProvider {// TODO @IHH docume
 
     protected abstract void createSkills(Consumer<SkillBuilder> consumer);
 
+    /**
+     * Creates a new skill.
+     *
+     * @param name       The skill name.
+     * @param occulusTab The occulus tab to display the skill in.
+     * @param icon       The skill icon.
+     * @return A new skill.
+     */
     protected SkillBuilder createSkill(String name, ResourceLocation occulusTab, ResourceLocation icon) {
         return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
     }
 
+    /**
+     * Creates a new skill.
+     *
+     * @param name       The skill name.
+     * @param occulusTab The occulus tab to display the skill in.
+     * @param icon       The skill icon.
+     * @return A new skill.
+     */
     protected SkillBuilder createSkill(String name, IOcculusTab occulusTab, ResourceLocation icon) {
         return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
     }
