@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  *
  */
-public interface ISpell { // TODO doc
+public interface ISpell {
     String SHAPE_GROUPS_KEY = "shape_groups";
     String CURRENT_SHAPE_GROUP_KEY = "current_shape_group";
     String SPELL_STACK_KEY = "spell_stack";

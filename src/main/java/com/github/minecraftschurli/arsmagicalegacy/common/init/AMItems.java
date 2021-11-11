@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.ColoredRegistryObject;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -37,7 +38,10 @@ public interface AMItems {
     Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
 
     RegistryObject<BlockItem>                    OCCULUS                  = ITEMS.register("occulus", () -> new BlockItem(AMBlocks.OCCULUS.get(), ITEM_1));
-    RegistryObject<BlockItem>                    INSCRIPTION_TABLE        = ITEMS.register("inscription_table", () -> new BlockItem(AMBlocks.INSCRIPTION_TABLE.get(), ITEM_64));
+    RegistryObject<BlockItem>                    INSCRIPTION_TABLE        = registerBlockItem64(AMBlocks.INSCRIPTION_TABLE);
+    RegistryObject<BlockItem>                    ALTAR_CORE               = registerBlockItem64(AMBlocks.ALTAR_CORE);
+    RegistryObject<BlockItem>                    MAGIC_WALL               = registerBlockItem64(AMBlocks.MAGIC_WALL);
+    RegistryObject<WizardsChalkItem>             WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<BlockItem>                    CHIMERITE_ORE            = registerBlockItem64(AMBlocks.CHIMERITE_ORE);
     RegistryObject<BlockItem>                    DEEPSLATE_CHIMERITE_ORE  = registerBlockItem64(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
     RegistryObject<Item>                         CHIMERITE                = registerItem64("chimerite");
@@ -85,7 +89,6 @@ public interface AMItems {
     RegistryObject<Item>                         PURIFIED_VINTEUM_DUST    = registerItem64("purified_vinteum_dust");
     RegistryObject<Item>                         SPELL_PARCHMENT          = registerItem64("spell_parchment");
     RegistryObject<StandingAndWallBlockItem>     VINTEUM_TORCH            = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
-    RegistryObject<WizardsChalkItem>             WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE         = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<SpellItem>                    SPELL                    = ITEMS.register("spell", SpellItem::new);
