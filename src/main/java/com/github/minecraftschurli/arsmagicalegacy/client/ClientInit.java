@@ -8,15 +8,20 @@ import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverrideModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.altarcore.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -71,14 +76,8 @@ public final class ClientInit {
 
     @SubscribeEvent
     static void preStitch(TextureStitchEvent.Pre event) {
-        //if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
-        //event.addSprite(CraftingAltarModel.OVERLAY_LOC);
-    }
-
-    @SubscribeEvent
-    static void postStitch(TextureStitchEvent.Post event) {
-        //if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
-        //CraftingAltarModel.OVERLAY = event.getMap().getSprite(CraftingAltarModel.OVERLAY_LOC);
+        if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
+        event.addSprite(AltarCoreModel.OVERLAY_LOC);
     }
 
     @SubscribeEvent
@@ -104,5 +103,8 @@ public final class ClientInit {
             modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
+        ModelResourceLocation key = BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().defaultBlockState().setValue(AltarCoreBlock.FORMED, true));
+        BakedModel oldModel = event.getModelRegistry().get(key);
+        event.getModelRegistry().put(key, new AltarCoreModel(oldModel));
     }
 }
