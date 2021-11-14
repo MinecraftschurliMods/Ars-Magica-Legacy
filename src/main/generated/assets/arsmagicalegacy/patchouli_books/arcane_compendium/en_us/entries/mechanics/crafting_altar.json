@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.name",
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "arsmagicalegacy:altar_core",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:altar_core"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page1.title",
+      "multiblock_id": "arsmagicalegacy:crafting_altar"
+    }
+  ]
+}
