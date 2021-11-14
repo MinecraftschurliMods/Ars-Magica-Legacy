@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.patchouli_datagen.BookBuilder;
 import com.github.minecraftschurli.patchouli_datagen.PatchouliBookProvider;
 import net.minecraft.data.DataGenerator;
@@ -27,33 +28,35 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .setCreativeTab(ArsMagicaAPI.get().getCreativeModeTab().getRecipeFolderName())
                 .setUseResourcepack()
                 .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) // TODO: magitech goggles here instead
-                .setSortnum(0)
-                .addEntry("occulus", "Occulus", new ItemStack(AMItems.OCCULUS.get()))
-                .addTextPage("Example page.").build()
-                .addTextPage("Example page.", "Example title").build()
-                .addTextPage("Example page.").build()
-                .build()
+                    .setSortnum(0)
+                    .addEntry("occulus", "Occulus", new ItemStack(AMItems.OCCULUS.get()))
+                        .addSimpleTextPage("Example page.")
+                    .build()
+                    .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
+                        .addSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get())).build()
+                        .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
+                    .build()
                 .build()
                 .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) // TODO: crystal wrench here instead
-                .setSortnum(1)
+                    .setSortnum(1)
                 .build()
                 .addCategory("items", "Items", "", new ItemStack(AMItems.VINTEUM_DUST.get()))
-                .setSortnum(2)
+                    .setSortnum(2)
                 .build()
                 .addCategory("entities", "Entities", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
-                .setSortnum(3)
+                    .setSortnum(3)
                 .build()
                 .addCategory("shapes", "Shapes", "", "") // TODO: add icon
-                .setSortnum(4)
+                    .setSortnum(4)
                 .build()
                 .addCategory("components", "Components", "", "") // TODO: add icon
-                .setSortnum(5)
+                    .setSortnum(5)
                 .build()
                 .addCategory("modifiers", "Modifiers", "", "") // TODO: add icon
-                .setSortnum(6)
+                    .setSortnum(6)
                 .build()
                 .addCategory("talents", "Talents", "", "") // TODO: add icon
-                .setSortnum(7)
+                    .setSortnum(7)
                 .build()
                 .build(consumer);
     }

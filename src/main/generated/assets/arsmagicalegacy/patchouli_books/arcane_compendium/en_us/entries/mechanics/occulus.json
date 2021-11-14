@@ -4,16 +4,7 @@
   "icon": "arsmagicalegacy:occulus",
   "pages": [
     {
-      "type": "text",
-      "text": "Example page."
-    },
-    {
-      "type": "text",
-      "text": "Example page.",
-      "title": "Example title"
-    },
-    {
-      "type": "text",
+      "type": "patchouli:text",
       "text": "Example page."
     }
   ]
