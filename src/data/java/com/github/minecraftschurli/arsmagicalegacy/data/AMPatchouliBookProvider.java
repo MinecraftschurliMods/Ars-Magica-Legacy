@@ -34,7 +34,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                     .build()
                     .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
                         .addSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get())).build()
-                        .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
+                        .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR.getID())
                     .build()
                 .build()
                 .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) // TODO: crystal wrench here instead
