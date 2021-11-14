@@ -5,16 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -219,6 +210,23 @@ public final class Spell implements ISpell {
     @Override
     public SpellStack spellStack() {
         return spellStack;
+    }
+
+    @Override
+    public List<ISpellIngredient> recipe() {
+        List<ISpellPartData> iSpellPartData = Stream.concat(shapeGroups.stream()
+                                                                       .map(ShapeGroup::parts)
+                                                                       .flatMap(Collection::stream),
+                                                            spellStack.parts().stream())
+                                                    .map(ArsMagicaAPI.get()
+                                                                     .getSpellDataManager()::getDataForPart)
+                                                    .toList();
+        List<ISpellIngredient> ingredients = new ArrayList<>();
+        for (ISpellPartData data : iSpellPartData) {
+            if (data == null) return List.of();
+            ingredients.addAll(data.recipe());
+        }
+        return ingredients;
     }
 
     @Override

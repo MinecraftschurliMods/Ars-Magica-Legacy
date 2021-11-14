@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientInit;
 import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
@@ -55,6 +56,7 @@ public final class ArsMagicaLegacy {
         OcculusTabManager.instance();
         SkillManager.instance();
         SpellDataManager.instance();
+        AltarMaterialManager.instance();
     }
 
     public static String getModName() {

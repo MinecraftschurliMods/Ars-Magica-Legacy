@@ -63,9 +63,10 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMMobEffects.register();
+        AMBlockEntities.register();
         AMMenuTypes.register();
-        AMAttributes.register();
         AMStats.register();
+        AMAttributes.register();
         bus.addListener(AMStats::onRegister);
         AMSkillPoints.register();
         AMAffinities.register();

@@ -136,4 +136,9 @@ public interface ISpell {
      * @return The spell stack for this spell.
      */
     SpellStack spellStack();
+
+    /**
+     * @return The recipe for this spell.
+     */
+    List<ISpellIngredient> recipe();
 }
