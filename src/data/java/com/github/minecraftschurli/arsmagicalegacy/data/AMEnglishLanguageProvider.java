@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
@@ -92,6 +93,31 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
         itemIdTranslation(AMItems.SPELL);
+        effectIdTranslation(AMMobEffects.AGILITY);
+        effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
+        effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
+        effectIdTranslation(AMMobEffects.CLARITY);
+        effectIdTranslation(AMMobEffects.ENTANGLE);
+        effectIdTranslation(AMMobEffects.FLIGHT);
+        effectIdTranslation(AMMobEffects.FROST);
+        effectIdTranslation(AMMobEffects.FURY);
+        effectIdTranslation(AMMobEffects.GRAVITY_WELL);
+        effectIdTranslation(AMMobEffects.ILLUMINATION);
+        effectIdTranslation(AMMobEffects.INSTANT_MANA);
+        effectIdTranslation(AMMobEffects.MAGIC_SHIELD);
+        effectIdTranslation(AMMobEffects.MANA_BOOST);
+        effectIdTranslation(AMMobEffects.MANA_REGEN);
+        effectIdTranslation(AMMobEffects.REFLECT);
+        effectIdTranslation(AMMobEffects.SCRAMBLE_SYNAPSES);
+        effectIdTranslation(AMMobEffects.SHIELD);
+        effectIdTranslation(AMMobEffects.SHRINK);
+        effectIdTranslation(AMMobEffects.SILENCE);
+        effectIdTranslation(AMMobEffects.SWIFT_SWIM);
+        effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
+        effectIdTranslation(AMMobEffects.TRUE_SIGHT);
+        effectIdTranslation(AMMobEffects.WATERY_GRAVE);
+        skillPointIdTranslation(AMSkillPoints.BLUE);
+        advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         add(SpellItem.BURNOUT, "Burnout: %d");
         add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(SpellItem.INVALID_SPELL, "[Invalid Spell]");
@@ -106,8 +132,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(SpellItem.UNKNOWN_ITEM, "Unknown Item");
         add(SpellItem.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
         add(SpellItem.UNNAMED_SPELL, "Unnamed Spell");
-        skillPointIdTranslation(AMSkillPoints.BLUE);
-        advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this block!");
     }
 

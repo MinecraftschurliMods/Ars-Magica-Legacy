@@ -13,7 +13,7 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.SPELL_PARTS;
 
 public interface AMSpellParts {
-    RegistryObject<Self> SELF               = SPELL_PARTS.register("self", Self::new);
+    RegistryObject<Self>   SELF             = SPELL_PARTS.register("self",             Self::new);
     RegistryObject<Damage> FIRE_DAMAGE      = SPELL_PARTS.register("fire_damage",      () -> new Damage(caster -> DamageSource.IN_FIRE, 6));
     RegistryObject<Damage> FROST_DAMAGE     = SPELL_PARTS.register("frost_damage",     () -> new Damage(caster -> DamageSource.FREEZE, 6));
     RegistryObject<Damage> LIGHTNING_DAMAGE = SPELL_PARTS.register("lightning_damage", () -> new Damage(caster -> DamageSource.LIGHTNING_BOLT, 6));
