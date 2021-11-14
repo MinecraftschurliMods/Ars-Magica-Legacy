@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.client.model;
+package com.github.minecraftschurli.arsmagicalegacy.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

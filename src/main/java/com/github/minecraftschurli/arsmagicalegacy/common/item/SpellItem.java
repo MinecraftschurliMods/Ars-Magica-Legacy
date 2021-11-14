@@ -4,7 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemRenderProperties;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.mojang.datafixers.util.Either;

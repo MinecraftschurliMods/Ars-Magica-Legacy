@@ -30,6 +30,7 @@ public class AMDatagen {
             AMTagsProvider.setup(generator, existingFileHelper);
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMOcculusTabProvider(generator));
+            generator.addProvider(new AMAltarStructureMaterialProvider(generator));
         }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));

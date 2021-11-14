@@ -10,7 +10,8 @@ import com.github.minecraftschurli.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.altarcore.AltarCoreBlock;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -36,11 +38,19 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.ApiStatus.Internal;
+
+import java.util.Map;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public final class ClientInit {
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
+
+    @Internal
+    public static void init() {
+        Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
+    }
 
     @SubscribeEvent
     static void clientSetup(FMLClientSetupEvent event) {
@@ -59,6 +69,9 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
+
+        BlockEntityRenderers.register(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
 
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
@@ -81,7 +94,7 @@ public final class ClientInit {
     static void modelRegister(ModelRegistryEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof IAffinityItem)) continue;
-            var itemId = item.getRegistryName();
+            ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
             for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
@@ -92,20 +105,21 @@ public final class ClientInit {
 
     @SubscribeEvent
     static void modelBake(ModelBakeEvent event) {
-        var modelRegistry = event.getModelRegistry();
+        Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof IAffinityItem)) continue;
-            var itemId = item.getRegistryName();
+            ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
-
-            modelRegistry.computeIfPresent(
-                    new ModelResourceLocation(itemId, "inventory"),
-                    (rl, model) -> new AffinityOverrideModel(model)
-            );
+            modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
         }
+
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
-        ModelResourceLocation key = BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().defaultBlockState().setValue(AltarCoreBlock.FORMED, true));
-        BakedModel oldModel = event.getModelRegistry().get(key);
-        event.getModelRegistry().put(key, new AltarCoreModel(oldModel));
+
+        AMBlocks.ALTAR_CORE.get()
+                           .getStateDefinition()
+                           .getPossibleStates()
+                           .stream()
+                           .map(BlockModelShaper::stateToModelLocation)
+                           .forEach(key -> modelRegistry.computeIfPresent(key, (rl, model) -> new AltarCoreModel(model)));
     }
 }

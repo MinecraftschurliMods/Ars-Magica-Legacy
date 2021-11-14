@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.github.minecraftschurli.arsmagicalegacy.common.block.altarcore;
+package com.github.minecraftschurli.arsmagicalegacy.api.altar;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
