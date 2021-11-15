@@ -16,37 +16,63 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Half;
-import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.patchouli.api.TriPredicate;
 
 public class PatchouliCompat {
-    public static final IMultiblock CRAFTING_ALTAR = PatchouliAPI.get().registerMultiblock(
-            new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar"),
-            PatchouliAPI.get().makeMultiblock(
-                    new String[][]{
-                            {"     ", "C333C", "2BOB4", "C111C", "     "},
-                            {"     ", "B6 5B", "M   M", "B6 5B", "     "},
-                            {"     ", "B   B", "M   M", "B   B", "I    "},
-                            {"     ", "B   B", "M   M", "B   B", "    L"},
-                            {"BBBBB", "BBBBB", "BB0BB", "BBBBB", "BBBBB"}
-                    },
-                    'L', PatchouliAPI.get().predicateMatcher(Blocks.LECTERN, state -> state.getValue(LecternBlock.FACING) == Direction.NORTH),
-                    'I', PatchouliAPI.get().predicateMatcher(Blocks.LEVER, state -> state.getValue(LeverBlock.FACE) == AttachFace.WALL && state.getValue(LeverBlock.FACING) == Direction.NORTH),
-                    'O', PatchouliAPI.get().looseBlockMatcher(AMBlocks.ALTAR_CORE.get()),
-                    'M', PatchouliAPI.get().looseBlockMatcher(AMBlocks.MAGIC_WALL.get()),
-                    'C', new CapStateMatcher(),
-                    'B', new MainBlockStateMatcher(),
-                    '0', new CapStateMatcher(),
-                    '1', new StairBlockStateMatcher(Direction.NORTH, Half.BOTTOM),
-                    '2', new StairBlockStateMatcher(Direction.EAST, Half.BOTTOM),
-                    '3', new StairBlockStateMatcher(Direction.SOUTH, Half.BOTTOM),
-                    '4', new StairBlockStateMatcher(Direction.WEST, Half.BOTTOM),
-                    '5', new StairBlockStateMatcher(Direction.EAST, Half.TOP),
-                    '6', new StairBlockStateMatcher(Direction.WEST, Half.TOP)
-            )
-    );
+    public static final ResourceLocation CRAFTING_ALTAR = new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar");
+
+    public static void init() {
+        CapStateMatcher capStateMatcher = new CapStateMatcher();
+        PatchouliAPI.get().registerMultiblock(CRAFTING_ALTAR, PatchouliAPI.get().makeMultiblock(
+                new String[][]{{
+                            " C2C ",
+                            " 3B1 ",
+                            " 3O1 ",
+                            " 3B1 ",
+                            " C4C "
+                        }, {
+                            " BMB ",
+                            " 6 6 ",
+                            "     ",
+                            " 5 5 ",
+                            " BMB "
+                        }, {
+                            " BMBI",
+                            "     ",
+                            "     ",
+                            "     ",
+                            " BMB "
+                        }, {
+                            " BMB ",
+                            "     ",
+                            "     ",
+                            "     ",
+                            " BMBL"
+                        }, {
+                            "BBBBB",
+                            "BBBBB",
+                            "BB0BB",
+                            "BBBBB",
+                            "BBBBB"
+                        }},
+                'L', PatchouliAPI.get().predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH),
+                'I', PatchouliAPI.get().predicateMatcher(Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LEVER) && state.getValue(LeverBlock.FACE) == AttachFace.WALL && state.getValue(LeverBlock.FACING) == Direction.SOUTH),
+                'O', PatchouliAPI.get().looseBlockMatcher(AMBlocks.ALTAR_CORE.get()),
+                'M', PatchouliAPI.get().looseBlockMatcher(AMBlocks.MAGIC_WALL.get()),
+                'B', new MainBlockStateMatcher(),
+                'C', capStateMatcher,
+                '0', capStateMatcher,
+                '1', new StairBlockStateMatcher(Direction.NORTH, Half.BOTTOM),
+                '2', new StairBlockStateMatcher(Direction.EAST, Half.BOTTOM),
+                '3', new StairBlockStateMatcher(Direction.SOUTH, Half.BOTTOM),
+                '4', new StairBlockStateMatcher(Direction.WEST, Half.BOTTOM),
+                '5', new StairBlockStateMatcher(Direction.EAST, Half.TOP),
+                '6', new StairBlockStateMatcher(Direction.WEST, Half.TOP)
+                )
+        );
+    }
 
     private static class CapStateMatcher implements IStateMatcher {
         private final TriPredicate<BlockGetter, BlockPos, BlockState> predicate;

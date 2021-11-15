@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManage
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -54,6 +55,7 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
+        PatchouliCompat.init();
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
