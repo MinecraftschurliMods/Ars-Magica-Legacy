@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,6 +19,13 @@ public interface ISpellPartData {
      * @return the recipe for the associated spell part
      */
     List<ISpellIngredient> recipe();
+
+    /**
+     * Get the affinity shifts for the associated spell part.
+     *
+     * @return the affinity shifts for the associated spell part
+     */
+    Map<IAffinity, Float> affinityShifts();
 
     /**
      * Get the affinities for the associated spell part.

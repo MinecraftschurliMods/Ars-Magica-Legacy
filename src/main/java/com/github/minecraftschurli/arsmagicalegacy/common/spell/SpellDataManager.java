@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
@@ -10,7 +11,7 @@ import com.github.minecraftschurli.codeclib.CodecDataManager;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -20,13 +21,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
+public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
     private static final Map<ResourceLocation, Codec<ISpellIngredient>> CODECS = new HashMap<>();
+
+    public static final Codec<ISpellIngredient> SPELL_INGREDIENT_CODEC = CompoundTag.CODEC.flatXmap(tag -> {
+            String type = tag.getString("type");
+            tag.remove("type");
+            return CODECS.get(ResourceLocation.tryParse(type)).decode(NbtOps.INSTANCE, tag).map(Pair::getFirst);
+        }, ingredient -> CODECS.get(ingredient.getType()).encodeStart(NbtOps.INSTANCE, ingredient).map(CompoundTag.class::cast));
+
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
@@ -55,19 +60,20 @@ public class SpellDataManager extends CodecDataManager<ISpellPartData> implement
         return INSTANCE.get();
     }
 
-    private record SpellPartData(List<ISpellIngredient> recipe, Set<IAffinity> affinities,
+    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts,
                                  List<Either<Ingredient, ItemStack>> reagents, float manaCost,
                                  float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                CompoundTag.CODEC.flatXmap(tag -> {
-                    var type = tag.getString("type");
-                    tag.remove("type");
-                    return CODECS.get(ResourceLocation.tryParse(type)).decode(NbtOps.INSTANCE, tag).map(Pair::getFirst);
-                }, ingredient -> CODECS.get(ingredient.getType()).encodeStart(NbtOps.INSTANCE, ingredient).map(CompoundTag.class::cast)).listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
-                CodecHelper.setOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry)).fieldOf("affinities").forGetter(ISpellPartData::affinities),
+                SPELL_INGREDIENT_CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
+                CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 Codec.either(CodecHelper.INGREDIENT, ItemStack.CODEC).listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
-                Codec.FLOAT.fieldOf("burnout").forGetter(ISpellPartData::burnout)
-        ).apply(inst, SpellPartData::new));
+                Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.burnout()))
+        ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.orElse((float)(manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
+
+        @Override
+        public Set<IAffinity> affinities() {
+            return affinityShifts().keySet();
+        }
     }
 }

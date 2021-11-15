@@ -25,6 +25,17 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
      * @return the created shape group
      * @throws MalformedShapeGroupException when there are components present in the parts list or a modifier is the first element of the parts list
      */
+    public static ShapeGroup of(ISpellPart... parts) throws MalformedShapeGroupException {
+        return of(List.of(parts));
+    }
+
+    /**
+     * Create a shape group from alist of parts.
+     *
+     * @param parts the list of parts to construct the shape group with
+     * @return the created shape group
+     * @throws MalformedShapeGroupException when there are components present in the parts list or a modifier is the first element of the parts list
+     */
     public static ShapeGroup of(List<ISpellPart> parts) throws MalformedShapeGroupException {
         List<Pair<ISpellShape, List<ISpellModifier>>> map = new ArrayList<>();
         List<ISpellModifier> currentMods = null;

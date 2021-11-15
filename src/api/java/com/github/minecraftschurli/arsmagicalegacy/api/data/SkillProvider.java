@@ -64,8 +64,8 @@ public abstract class SkillProvider implements DataProvider {
      * @param icon       The skill icon.
      * @return A new skill.
      */
-    protected SkillBuilder createSkill(String name, ResourceLocation occulusTab, ResourceLocation icon) {
-        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
+    protected SkillBuilder createSkill(String name, ResourceLocation occulusTab) {
+        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab);
     }
 
     /**
@@ -76,8 +76,8 @@ public abstract class SkillProvider implements DataProvider {
      * @param icon       The skill icon.
      * @return A new skill.
      */
-    protected SkillBuilder createSkill(String name, IOcculusTab occulusTab, ResourceLocation icon) {
-        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab, icon);
+    protected SkillBuilder createSkill(String name, IOcculusTab occulusTab) {
+        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab);
     }
 
     private static void saveSkill(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

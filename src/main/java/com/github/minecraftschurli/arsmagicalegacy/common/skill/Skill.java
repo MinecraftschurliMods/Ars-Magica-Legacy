@@ -23,7 +23,6 @@ public final class Skill implements ISkill {
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
             CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
-            ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
             Codec.INT.fieldOf("y").forGetter(ISkill::getY),
             Codec.BOOL.fieldOf("hidden").orElse(false).forGetter(ISkill::isHidden)
@@ -33,7 +32,6 @@ public final class Skill implements ISkill {
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
             CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
-            ResourceLocation.CODEC.fieldOf("icon").forGetter(ISkill::getIcon),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
             Codec.INT.fieldOf("y").forGetter(ISkill::getY),
             Codec.BOOL.fieldOf("hidden").orElse(false).forGetter(ISkill::isHidden)
@@ -43,7 +41,6 @@ public final class Skill implements ISkill {
     private final int y;
     private ResourceLocation id;
     private final ResourceLocation occulusTab;
-    private final ResourceLocation icon;
     private final Set<ResourceLocation> parents;
     private final Map<ResourceLocation, Integer> cost;
     private final boolean hidden;
@@ -54,14 +51,12 @@ public final class Skill implements ISkill {
      * @param parents    The skill's parent set.
      * @param cost       The skill cost.
      * @param occulusTab The occulus tab to display the skill in.
-     * @param icon       The skill icon.
      * @param x          The X coordinate to display the skill at.
      * @param y          The Y coordinate to display the skill at.
      * @param hidden     Whether the skill is hidden or not.
      */
-    public Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, ResourceLocation icon, int x, int y, boolean hidden) {
+    public Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, int x, int y, boolean hidden) {
         this.occulusTab = occulusTab;
-        this.icon = icon;
         this.parents = parents;
         this.x = x;
         this.y = y;
@@ -76,13 +71,12 @@ public final class Skill implements ISkill {
      * @param parents    The skill's parent set.
      * @param cost       The skill cost.
      * @param occulusTab The occulus tab to display the skill in.
-     * @param icon       The skill icon.
      * @param x          The X coordinate to display the skill at.
      * @param y          The Y coordinate to display the skill at.
      * @param hidden     Whether the skill is hidden or not.
      */
-    public Skill(ResourceLocation id, Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, ResourceLocation icon, Integer x, Integer y, Boolean hidden) {
-        this(parents, cost, occulusTab, icon, x, y, hidden);
+    public Skill(ResourceLocation id, Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, Integer x, Integer y, Boolean hidden) {
+        this(parents, cost, occulusTab, x, y, hidden);
         setId(id);
     }
 
@@ -111,11 +105,6 @@ public final class Skill implements ISkill {
     }
 
     @Override
-    public ResourceLocation getIcon() {
-        return icon;
-    }
-
-    @Override
     public Set<ResourceLocation> getParents() {
         return Collections.unmodifiableSet(parents);
     }
@@ -135,16 +124,16 @@ public final class Skill implements ISkill {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != getClass()) return false;
         var that = (Skill) obj;
-        return Objects.equals(id, that.id) && Objects.equals(occulusTab, that.occulusTab) && Objects.equals(icon, that.icon) && Objects.equals(parents, that.parents) && x == that.x && y == that.y && Objects.equals(cost, that.cost) && hidden == that.hidden;
+        return Objects.equals(id, that.id) && Objects.equals(occulusTab, that.occulusTab) && Objects.equals(parents, that.parents) && x == that.x && y == that.y && Objects.equals(cost, that.cost) && hidden == that.hidden;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, occulusTab, icon, parents, x, y, cost, hidden);
+        return Objects.hash(id, occulusTab, parents, x, y, cost, hidden);
     }
 
     @Override
     public String toString() {
-        return "Skill[id=" + id + ", occulusTab=" + occulusTab + ", icon=" + icon + ", parents=" + parents + ", x=" + x + ", y=" + y + ", cost=" + cost + ", hidden=" + hidden + ']';
+        return "Skill[id=" + id + ", occulusTab=" + occulusTab + ", parents=" + parents + ", x=" + x + ", y=" + y + ", cost=" + cost + ", hidden=" + hidden + ']';
     }
 }

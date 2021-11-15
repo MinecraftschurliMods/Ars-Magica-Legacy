@@ -49,6 +49,8 @@ public interface AMSpellParts {
     RegistryObject<ISpellModifier> MINING_POWER     = SPELL_PARTS.register("mining_power",     () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> FORTUNE          = SPELL_PARTS.register("fortune",          () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> SILK_TOUCH       = SPELL_PARTS.register("silk_touch",       () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> TARGET_NON_SOLID = SPELL_PARTS.register("target_non_solid", () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> RANGE            = SPELL_PARTS.register("range",            () -> new AbstractModifier() {});
 
     /**
      * Empty method that is required for classloading

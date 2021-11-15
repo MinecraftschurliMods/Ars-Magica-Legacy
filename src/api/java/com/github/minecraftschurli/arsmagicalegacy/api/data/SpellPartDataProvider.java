@@ -26,11 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -54,6 +52,50 @@ public abstract class SpellPartDataProvider implements DataProvider {
     }
 
     protected abstract void createSpellPartData();
+
+    /**
+     * Creates a new spell part entry.
+     *
+     * @param spellPart The spell part id.
+     * @param manaCost  The spell part mana cost.
+     * @return A new spell part entry.
+     */
+    public SpellPartDataBuilder createSpellPartData(ResourceLocation spellPart, float manaCost) {
+        return new SpellPartDataBuilder(spellPart, manaCost);
+    }
+
+    /**
+     * Creates a new spell part entry.
+     *
+     * @param spellPart The spell part id.
+     * @param manaCost  The spell part mana cost.
+     * @return A new spell part entry.
+     */
+    public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost) {
+        return createSpellPartData(spellPart.getRegistryName(), manaCost);
+    }
+
+    /**
+     * Creates a new spell part entry.
+     *
+     * @param spellPart The spell part id.
+     * @param manaCost  The spell part mana cost.
+     * @return A new spell part entry.
+     */
+    public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost) {
+        return createSpellPartData(spellPart.get(), manaCost);
+    }
+
+    /**
+     * Creates a new spell part entry.
+     *
+     * @param spellPart The spell part id.
+     * @param manaCost  The spell part mana cost.
+     * @return A new spell part entry.
+     */
+    public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
+        return createSpellPartData(spellPart.getId(), manaCost);
+    }
 
     /**
      * Creates a new spell part entry.
@@ -122,10 +164,10 @@ public abstract class SpellPartDataProvider implements DataProvider {
     public class SpellPartDataBuilder {
         private final ResourceLocation id;
         private final float manaCost;
-        private final float burnout;
+        private final Float burnout;
         private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
         private final List<ISpellIngredient> recipe = new ArrayList<>();
-        private final Set<ResourceLocation> affinities = new HashSet<>();
+        private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
         /**
          * Creates a new spell part builder entry.
@@ -138,6 +180,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
             this.id = id;
             this.manaCost = manaCost;
             this.burnout = burnout;
+        }
+        /**
+         * Creates a new spell part builder entry.
+         *
+         * @param id       The spell part id.
+         * @param manaCost The spell part mana cost.
+         */
+        public SpellPartDataBuilder(ResourceLocation id, float manaCost) {
+            this.id = id;
+            this.manaCost = manaCost;
+            this.burnout = null;
         }
 
         /**
@@ -175,8 +228,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(Supplier<IAffinity> affinity) {
-            return withAffinity(affinity.get());
+        public SpellPartDataBuilder withAffinity(Supplier<IAffinity> affinity, float shift) {
+            return withAffinity(affinity.get(), shift);
         }
 
         /**
@@ -184,8 +237,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(IAffinity affinity) {
-            affinities.add(affinity.getId());
+        public SpellPartDataBuilder withAffinity(IAffinity affinity, float shift) {
+            affinities.put(affinity.getId(), shift);
             return this;
         }
 
@@ -194,8 +247,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(ResourceLocation affinity) {
-            affinities.add(affinity);
+        public SpellPartDataBuilder withAffinity(ResourceLocation affinity, float shift) {
+            affinities.put(affinity, shift);
             return this;
         }
 
@@ -209,17 +262,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
         protected JsonObject serialize() {
             var out = new JsonObject();
             out.addProperty("manaCost", manaCost);
-            out.addProperty("burnout", burnout);
+            if (burnout != null) {
+                out.addProperty("burnout", burnout);
+            }
             var arr = new JsonArray();
-            reagents.forEach(either -> arr.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {
-            }))));
+            reagents.forEach(either -> arr.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
             out.add("reagents", arr);
-            var arr2 = new JsonArray();
-            affinities.forEach(resourceLocation -> arr2.add(resourceLocation.toString()));
+            var arr2 = new JsonObject();
+            affinities.forEach((resourceLocation, shift) -> arr2.addProperty(resourceLocation.toString(), shift));
             out.add("affinities", arr2);
             var arr3 = new JsonArray();
-            recipe.forEach(ingredient -> arr3.add(ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {
-            })));
+            recipe.forEach(ingredient -> arr3.add(ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
             out.add("recipe", arr3);
             return out;
         }

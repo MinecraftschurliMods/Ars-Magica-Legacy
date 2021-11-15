@@ -41,7 +41,6 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 public class SpellItem extends Item implements ISpellItem {
-    public static final ResourceLocation SPELL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");
     public static final BiConsumer<MutableComponent, MutableComponent> COMPONENT_OR_JOINER = (component, component2) -> component.append(new TextComponent(" | ")).append(component2);
     public static final String SPELL_CAST_RESULT = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     public static final String UNNAMED_SPELL = "item." + ArsMagicaAPI.MOD_ID + ".spell.unnamed";

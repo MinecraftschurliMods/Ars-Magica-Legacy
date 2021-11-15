@@ -46,6 +46,8 @@ public interface ISpellHelper {
 
     int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier);
 
+    boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id);
+
     HitResult trace(LivingEntity caster, Level world, double range, boolean includeEntities, boolean targetWater);
 
     /**

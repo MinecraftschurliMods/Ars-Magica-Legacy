@@ -28,13 +28,6 @@ public interface ISkill extends ITranslatable.WithDescription {
     ResourceLocation getOcculusTab();
 
     /**
-     * Get the {@link ResourceLocation} of this skills icon.
-     *
-     * @return the {@link ResourceLocation} of this skills icon
-     */
-    ResourceLocation getIcon();
-
-    /**
      * Get the ids of this' skills parents.
      *
      * @return the ids of this' skills parents

@@ -82,6 +82,7 @@ public final class ClientInit {
     @SubscribeEvent
     static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(SpellIconAtlas.instance());
+        event.registerReloadListener(SkillIconAtlas.instance());
     }
 
     @SubscribeEvent

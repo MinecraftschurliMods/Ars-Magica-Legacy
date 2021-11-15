@@ -125,7 +125,7 @@ public class SpellIconPickScreen extends Screen {
         protected void drawPanel(PoseStack mStack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
             int i = 0;
             var hovered = getHovered(mouseX - left - 2 * ICON_MARGIN, mouseY - top + (int) scrollDistance - 2 * ICON_MARGIN);
-            RenderSystem.setShaderTexture(0, SpellItem.SPELL_ICON_ATLAS);
+            RenderSystem.setShaderTexture(0, SpellIconAtlas.SPELL_ICON_ATLAS);
             for (ResourceLocation icon : icons) {
                 int x = i % elementsX;
                 int y = i / elementsX;

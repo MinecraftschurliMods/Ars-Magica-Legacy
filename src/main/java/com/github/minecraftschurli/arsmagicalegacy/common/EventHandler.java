@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common;
 
+import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
@@ -137,8 +138,8 @@ public final class EventHandler {
         Player player = event.getPlayer();
         int level = event.getLevel();
         // TODO change
-        float newMaxMana = 10 * level;
-        float newMaxBurnout = 10 * level;
+        float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
+        float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level-1);
         IMagicHelper magicHelper = ArsMagicaAPI.get().getMagicHelper();
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {

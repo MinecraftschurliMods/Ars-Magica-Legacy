@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
@@ -112,6 +113,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 }
             }
         }
+        RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         for (ISkill skill : skills) {
             boolean knows = knowledgeHelper.knows(player, skill);
             boolean hasPrereq = knowledgeHelper.canLearn(player, skill) || knows;
@@ -125,9 +127,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 RenderSystem.setShaderColor(red, green, blue, 1);
             }
             setBlitOffset(16);
-            RenderSystem.setShaderTexture(0, skill.getIcon());
             RenderSystem.enableBlend();
-            RenderUtil.drawBox(stack, skill.getX(), skill.getY(), SKILL_SIZE, SKILL_SIZE, getBlitOffset(), 0, 0, 1, 1);
+            blit(stack, skill.getX(), skill.getY(), getBlitOffset(), (int)SKILL_SIZE, (int)SKILL_SIZE, SkillIconAtlas.instance().getSprite(skill.getId()));
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }

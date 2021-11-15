@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.Contract;
@@ -47,6 +46,10 @@ public final class Spell implements ISpell {
     private final Lazy<Boolean> continuous;
     private final Lazy<Boolean> empty;
     private final Lazy<Boolean> valid;
+
+    public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
+        return new Spell(List.of(shapeGroups), spellStack, new CompoundTag());
+    }
 
     public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         this.shapeGroups = shapeGroups;

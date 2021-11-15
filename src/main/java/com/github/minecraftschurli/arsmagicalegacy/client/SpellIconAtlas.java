@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.client;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -17,10 +17,13 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
-public class SpellIconAtlas extends TextureAtlasHolder {
-    private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
-    private static final Predicate<String> RESOURCE_PREDICATE = s -> s.endsWith(".png");
-    private static final String PREFIX = "icon/spell";
+public final class SpellIconAtlas extends TextureAtlasHolder {
+    private static final Lazy<SpellIconAtlas> INSTANCE           = Lazy.of(SpellIconAtlas::new);
+    private static final String               PREFIX             = "icon/spell";
+    private static final String               SUFFIX             = ".png";
+    private static final Predicate<String>    RESOURCE_PREDICATE = s -> s.endsWith(SUFFIX);
+    public  static final ResourceLocation     SPELL_ICON_ATLAS   = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");
+
     private Collection<ResourceLocation> resourceLocations;
 
     /**
@@ -30,8 +33,8 @@ public class SpellIconAtlas extends TextureAtlasHolder {
         return INSTANCE.get();
     }
 
-    public SpellIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SpellItem.SPELL_ICON_ATLAS, PREFIX);
+    private SpellIconAtlas() {
+        super(Minecraft.getInstance().textureManager, SPELL_ICON_ATLAS, PREFIX);
     }
 
     /**
@@ -55,10 +58,11 @@ public class SpellIconAtlas extends TextureAtlasHolder {
     @Override
     protected TextureAtlas.Preparations prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         HashMap<String, ResourceLocation> acc = new HashMap<>();
-        var length = ("textures/" + PREFIX + "/").length();
+        int length = ("textures/" + PREFIX + "/").length();
+        int length1 = SUFFIX.length();
         for (ResourceLocation resourceLocation : resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE)) {
-            var path = resourceLocation.getPath();
-            path = path.substring(length, path.length() - 4);
+            String path = resourceLocation.getPath();
+            path = path.substring(length, path.length() - length1);
             acc.putIfAbsent(path, new ResourceLocation(resourceLocation.getNamespace(), path));
         }
         resourceLocations = acc.values();
