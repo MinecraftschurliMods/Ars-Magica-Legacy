@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ISpellHelper {
     /**
@@ -41,6 +43,8 @@ public interface ISpellHelper {
      * @return How much magic xp the spell usage grants, specific to the player.
      */
     float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player);
+
+    int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier);
 
     /**
      * Casts the spell.
