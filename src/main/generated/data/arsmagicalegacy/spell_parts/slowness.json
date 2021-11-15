@@ -1,0 +1,8 @@
+{
+  "manaCost": 80.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ice": 0.05
+  },
+  "recipe": []
+}

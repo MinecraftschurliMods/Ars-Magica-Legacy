@@ -90,6 +90,11 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
+    public boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id) {
+        return countModifiers(modifiers, id) > 0;
+    }
+
+    @Override
     public HitResult trace(LivingEntity caster, Level world, double range, boolean includeEntities, boolean targetWater) {
         HitResult entityPos = null;
         if (includeEntities) {

@@ -23,6 +23,17 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
      * @return the created spell stack
      * @throws MalformedSpellStackException when a modifier is the first element of the parts list
      */
+    public static SpellStack of(ISpellPart... parts) throws MalformedSpellStackException {
+        return of(List.of(parts));
+    }
+
+    /**
+     * Create a spell stack from alist of parts.
+     *
+     * @param parts the list of parts to construct the spell stack with
+     * @return the created spell stack
+     * @throws MalformedSpellStackException when a modifier is the first element of the parts list
+     */
     public static SpellStack of(List<ISpellPart> parts) throws MalformedSpellStackException {
         List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers = new ArrayList<>();
         List<ISpellModifier> globalMods = new ArrayList<>();

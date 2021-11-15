@@ -31,8 +31,8 @@ public final class RenderUtil {
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         RenderSystem.lineWidth(width);
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1f).normal(0, 1, 0).endVertex();
-        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1f).normal(0, 1, 0).endVertex();
+        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1f).normal(1, 1, 0).endVertex();
+        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1f).normal(1, 1, 0).endVertex();
         buf.end();
         BufferUploader.end(buf);
         RenderSystem.lineWidth(1);

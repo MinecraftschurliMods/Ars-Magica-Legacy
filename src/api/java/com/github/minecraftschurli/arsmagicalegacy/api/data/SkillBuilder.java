@@ -23,35 +23,32 @@ public class SkillBuilder {
     private final Map<ResourceLocation, Integer> cost = new HashMap<>();
     private final ResourceLocation id;
     private ResourceLocation occulusTab;
-    private ResourceLocation icon;
     private Boolean hidden;
     private Integer x;
     private Integer y;
 
     /**
-     * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
+     * Create a new {@link SkillBuilder} with the given id in the given occulusTab.
      *
      * @param id         the id for the skill
      * @param occulusTab the occulus tab this skill belongs to
-     * @param icon       the icon for the skill
      * @return the new {@link SkillBuilder} for the skill
      */
-    @Contract("_, _, _ -> new")
-    public static SkillBuilder create(ResourceLocation id, ResourceLocation occulusTab, ResourceLocation icon) {
-        return new SkillBuilder(id).setOcculusTab(occulusTab).setIcon(icon);
+    @Contract("_, _ -> new")
+    public static SkillBuilder create(ResourceLocation id, ResourceLocation occulusTab) {
+        return new SkillBuilder(id).setOcculusTab(occulusTab);
     }
 
     /**
-     * Create a new {@link SkillBuilder} with the given id in the given occulusTab and with the given icon.
+     * Create a new {@link SkillBuilder} with the given id in the given occulusTab.
      *
      * @param id         the id for the skill
      * @param occulusTab the occulus tab this skill belongs to
-     * @param icon       the icon for the skill
      * @return the new {@link SkillBuilder} for the skill
      */
-    @Contract("_, _, _ -> new")
-    public static SkillBuilder create(ResourceLocation id, IOcculusTab occulusTab, ResourceLocation icon) {
-        return new SkillBuilder(id).setOcculusTab(occulusTab).setIcon(icon);
+    @Contract("_, _ -> new")
+    public static SkillBuilder create(ResourceLocation id, IOcculusTab occulusTab) {
+        return new SkillBuilder(id).setOcculusTab(occulusTab);
     }
 
     protected SkillBuilder(ResourceLocation id) {
@@ -185,18 +182,6 @@ public class SkillBuilder {
     }
 
     /**
-     * Set the icon for this skill.
-     *
-     * @param icon the icon for this skill
-     * @return the {@link SkillBuilder}
-     */
-    @Contract("_ -> this")
-    protected SkillBuilder setIcon(ResourceLocation icon) {
-        this.icon = icon;
-        return this;
-    }
-
-    /**
      * Set the occulus tab this skill should belong to.
      *
      * @param occulusTab the occulus tab this skill should belong to
@@ -235,7 +220,6 @@ public class SkillBuilder {
     JsonObject serialize() {
         JsonObject json = new JsonObject();
         json.addProperty("occulus_tab", occulusTab.toString());
-        json.addProperty("icon", icon.toString());
         if (x == null || y == null) throw new SerializationException("A skill needs a position!");
         json.addProperty("x", x);
         json.addProperty("y", y);
