@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.Contract;
@@ -119,7 +120,7 @@ public final class Spell implements ISpell {
                 return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
-        SpellCastResult result = spellHelper.invoke(this, caster, level, null, null, caster.position(), castingTicks, 0, awardXp);
+        SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
         if (consume) {
             magicHelper.decreaseMana(caster, mana);
             magicHelper.increaseBurnout(caster, burnout);
