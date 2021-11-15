@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -79,6 +81,11 @@ public final class SpellHelper implements ISpellHelper {
     @Override
     public float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player) {
         return 0;
+    }
+
+    @Override
+    public int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier) {
+        return modifiers.stream().map(IForgeRegistryEntry::getRegistryName).filter(modifier::equals).toList().size();
     }
 
     @Override

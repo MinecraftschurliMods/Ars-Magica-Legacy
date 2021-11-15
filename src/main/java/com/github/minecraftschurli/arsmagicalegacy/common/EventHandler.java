@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManage
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -120,6 +121,7 @@ public final class EventHandler {
         event.addListener(SpellDataManager.instance());
         event.addListener(AltarMaterialManager.instance().cap);
         event.addListener(AltarMaterialManager.instance().structure);
+        event.addListener(TierMapping.instance());
     }
 
     private static void onTick(TickEvent.PlayerTickEvent event) {
@@ -149,4 +151,5 @@ public final class EventHandler {
             magicHelper.decreaseBurnout(player, magicHelper.getBurnout(player) / 2);
         }
     }
+
 }
