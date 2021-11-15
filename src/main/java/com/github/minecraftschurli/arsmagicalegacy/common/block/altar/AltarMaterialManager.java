@@ -3,14 +3,16 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block.altar;
 import com.github.minecraftschurli.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurli.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.github.minecraftschurli.codeclib.CodecDataManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 public final class AltarMaterialManager {
     private static final Lazy<AltarMaterialManager> INSTANCE = Lazy.concurrentOf(AltarMaterialManager::new);
@@ -39,5 +41,25 @@ public final class AltarMaterialManager {
 
     public AltarCapMaterial getRandomCapMaterial(int r) {
         return cap.values().toArray(AltarCapMaterial[]::new)[r % cap.size()];
+    }
+
+    @Nullable
+    public ResourceLocation getId(AltarStructureMaterial structureMaterial) {
+        return structure.entrySet().stream().filter(entry -> entry.getValue().equals(structureMaterial)).map(Map.Entry::getKey).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public ResourceLocation getId(AltarCapMaterial capMaterial) {
+        return cap.entrySet().stream().filter(entry -> entry.getValue().equals(capMaterial)).map(Map.Entry::getKey).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public AltarStructureMaterial getStructureMaterial(ResourceLocation location) {
+        return structure.get(location);
+    }
+
+    @Nullable
+    public AltarCapMaterial getCapMaterial(ResourceLocation location) {
+        return cap.get(location);
     }
 }
