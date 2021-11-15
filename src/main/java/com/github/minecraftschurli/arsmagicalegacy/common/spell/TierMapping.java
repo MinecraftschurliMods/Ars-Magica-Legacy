@@ -12,6 +12,7 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
@@ -63,6 +64,16 @@ public class TierMapping extends SimplePreparableReloadListener<JsonArray> {
     }
 
     public Tier getTierForPower(int tier) {
+        if (this.tiers.size() == 0) {
+            return switch (tier) {
+                case 0 -> Tiers.WOOD;
+                case 1 -> Tiers.STONE;
+                case 2 -> Tiers.IRON;
+                case 3 -> Tiers.DIAMOND;
+                case 4 -> Tiers.NETHERITE;
+                default -> null;
+            };
+        }
         return TierSortingRegistry.byName(tiers.get(Math.min(tier, tiers.size() - 1)));
     }
 }
