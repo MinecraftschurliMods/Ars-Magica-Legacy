@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,16 +45,14 @@ public interface ISpellHelper {
     /**
      * Casts the spell.
      *
-     * @param spell          The spell to cast.
-     * @param caster         The entity casting the spell.
-     * @param level          The level the spell is cast in.
-     * @param targetEntity   The target entity for this spell.
-     * @param targetBlock    The target block for this spell.
-     * @param targetPosition The target position for this spell.
-     * @param castingTicks   How long the spell has already been cast.
-     * @param index          The index.
-     * @param awardXp        The magic xp awarded for casting this spell.
+     * @param spell        The spell to cast.
+     * @param caster       The entity casting the spell.
+     * @param level        The level the spell is cast in.
+     * @param target       The target for this spell.
+     * @param castingTicks How long the spell has already been cast.
+     * @param index        The index.
+     * @param awardXp      The magic xp awarded for casting this spell.
      * @return A SpellCastResult that represents the spell casting outcome.
      */
-    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable Entity targetEntity, @Nullable BlockPos targetBlock, Vec3 targetPosition, int castingTicks, int index, boolean awardXp);
+    SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp);
 }
