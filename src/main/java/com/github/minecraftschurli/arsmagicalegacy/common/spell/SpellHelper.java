@@ -4,14 +4,15 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
@@ -86,6 +87,60 @@ public final class SpellHelper implements ISpellHelper {
     @Override
     public int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier) {
         return modifiers.stream().map(IForgeRegistryEntry::getRegistryName).filter(modifier::equals).toList().size();
+    }
+
+    @Override
+    public HitResult trace(LivingEntity caster, Level world, double range, boolean includeEntities, boolean targetWater) {
+        HitResult entityPos = null;
+        if (includeEntities) {
+            Entity pointedEntity = getPointedEntity(world, caster, range, 1, false, targetWater);
+            if (pointedEntity != null) entityPos = new EntityHitResult(pointedEntity);
+        }
+        float factor = 1;
+        float interpPitch = caster.xRotO + (caster.getXRot() - caster.xRotO) * factor;
+        float interpYaw = caster.yRotO + (caster.getYRot() - caster.yRotO) * factor;
+        double interpPosX = caster.xo + (caster.getX() - caster.xo) * factor;
+        double interpPosY = caster.yo + (caster.getY() - caster.yo) * factor + caster.getEyeHeight();
+        double interpPosZ = caster.zo + (caster.getZ() - caster.zo) * factor;
+        Vec3 vec3 = new Vec3(interpPosX, interpPosY, interpPosZ);
+        float magic = 0.017453292F;
+        float offsetYawCos = Mth.cos(-interpYaw * magic - (float) Math.PI);
+        float offsetYawSin = Mth.sin(-interpYaw * magic - (float) Math.PI);
+        float offsetPitchCos = -Mth.cos(-interpPitch * magic);
+        float offsetPitchSin = Mth.sin(-interpPitch * magic);
+        float finalXOffset = offsetYawSin * offsetPitchCos;
+        float finalZOffset = offsetYawCos * offsetPitchCos;
+        Vec3 targetVector = vec3.add(finalXOffset * range, offsetPitchSin * range, finalZOffset * range);
+        HitResult mop = world.clip(new ClipContext(vec3, targetVector, ClipContext.Block.OUTLINE, targetWater ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, caster));
+        return entityPos == null || mop.getLocation().distanceTo(caster.position()) < entityPos.getLocation().distanceTo(caster.position()) ? mop : entityPos;
+    }
+
+    @Nullable
+    public static Entity getPointedEntity(Level world, LivingEntity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
+        Entity pointedEntity = null;
+        Vec3 vec = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
+        Vec3 lookVec = player.getLookAngle();
+        List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
+        double d = 0;
+        for (Entity entity : list) {
+            HitResult mop = null;//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
+            if ((entity.canBeCollidedWith() || nonCollide) && mop == null) {
+                float f2 = Math.max(0.8F, entity.getBbWidth());
+                AABB axisalignedbb = entity.getBoundingBox().inflate(f2, f2, f2);
+                HitResult movingobjectposition = null;//axisalignedbb.calculateIntercept(vec, lookVec);
+                if (axisalignedbb.contains(vec)) {
+                    pointedEntity = entity;
+                    d = 0;
+                } else if (movingobjectposition != null) {
+                    double d3 = vec.distanceTo(movingobjectposition.getLocation());
+                    if ((d3 < d) || (d == 0)) {
+                        pointedEntity = entity;
+                        d = d3;
+                    }
+                }
+            }
+        }
+        return pointedEntity;
     }
 
     @Override
