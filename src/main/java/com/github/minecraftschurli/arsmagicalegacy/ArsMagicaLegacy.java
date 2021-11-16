@@ -14,6 +14,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
@@ -65,7 +66,8 @@ public final class ArsMagicaLegacy {
 
     private void registerNetworkPackets() {
         NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

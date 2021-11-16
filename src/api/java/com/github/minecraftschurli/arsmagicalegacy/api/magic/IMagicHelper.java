@@ -65,6 +65,14 @@ public interface IMagicHelper {
     boolean decreaseMana(LivingEntity entity, float amount);
 
     /**
+     * Sets the mana value of the given player.
+     *
+     * @param entity the player to set the mana value for
+     * @return true if it succeeded, false otherwise
+     */
+    boolean setMana(LivingEntity entity, float amount);
+
+    /**
      * Get the burnout value of the given player.
      *
      * @param entity the player to get the burnout value for
@@ -95,6 +103,14 @@ public interface IMagicHelper {
      * @return true if it succeeded, false otherwise
      */
     boolean decreaseBurnout(LivingEntity entity, float amount);
+
+    /**
+     * Sets the burnout value of the given player.
+     *
+     * @param entity the player to set the burnout value for
+     * @return true if it succeeded, false otherwise
+     */
+    boolean setBurnout(LivingEntity entity, float amount);
 
     /**
      * Check if the given player knows what magic is.
