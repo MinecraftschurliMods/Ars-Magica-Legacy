@@ -61,7 +61,6 @@ public abstract class SkillProvider implements DataProvider {
      *
      * @param name       The skill name.
      * @param occulusTab The occulus tab to display the skill in.
-     * @param icon       The skill icon.
      * @return A new skill.
      */
     protected SkillBuilder createSkill(String name, ResourceLocation occulusTab) {
@@ -73,7 +72,6 @@ public abstract class SkillProvider implements DataProvider {
      *
      * @param name       The skill name.
      * @param occulusTab The occulus tab to display the skill in.
-     * @param icon       The skill icon.
      * @return A new skill.
      */
     protected SkillBuilder createSkill(String name, IOcculusTab occulusTab) {
