@@ -6,7 +6,9 @@ import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
@@ -16,6 +18,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +35,13 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -48,12 +58,20 @@ public final class EventHandler {
         modBus.addListener(EventHandler::entityAttributeModification);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
+        forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
-        forgeBus.addListener(EventHandler::playerJoinWorld);
-        forgeBus.addListener(EventHandler::registerDataManager);
-        forgeBus.addListener(EventHandler::levelUp);
-        forgeBus.addListener(EventHandler::onTick);
-        forgeBus.addListener(EventHandler::compendiumPickup);
+        forgeBus.addListener(EventHandler::playerItemPickup);
+        forgeBus.addListener(EventHandler::playerTick);
+        forgeBus.addListener(EventHandler::livingUpdate);
+        forgeBus.addListener(EventPriority.HIGHEST, EventHandler::livingDeath);
+        forgeBus.addListener(EventPriority.LOWEST, EventHandler::livingHurt);
+        forgeBus.addListener(EventHandler::livingJump);
+        forgeBus.addListener(EventHandler::livingFall);
+        forgeBus.addListener(EventHandler::potionAdded);
+        forgeBus.addListener(EventHandler::potionExpiry);
+        forgeBus.addListener(EventHandler::potionRemove);
+        forgeBus.addListener(EventHandler::addReloadListener);
+        forgeBus.addListener(EventHandler::playerLevelUp);
     }
 
     private static void setup(FMLCommonSetupEvent event) {
@@ -92,12 +110,17 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
     }
 
-    private static void playerJoinWorld(EntityJoinWorldEvent event) {
+    private static void entityJoinWorld(EntityJoinWorldEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (event.getWorld().isClientSide()) return;
         SkillHelper.instance().syncToPlayer(player);
         AffinityHelper.instance().syncToPlayer(player);
         MagicHelper.instance().syncAllToPlayer(player);
+        for (MobEffectInstance instance : player.getActiveEffects()) {
+            if (instance.getEffect() instanceof AMMobEffect) {
+                ((AMMobEffect) instance.getEffect()).startEffect(player, instance);
+            }
+        }
     }
 
     private static void playerClone(PlayerEvent.Clone event) {
@@ -108,7 +131,7 @@ public final class EventHandler {
         event.getOriginal().invalidateCaps();
     }
 
-    private static void compendiumPickup(PlayerEvent.ItemPickupEvent event) {
+    private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
         if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
@@ -116,16 +139,7 @@ public final class EventHandler {
         ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
     }
 
-    private static void registerDataManager(AddReloadListenerEvent event) {
-        event.addListener(OcculusTabManager.instance());
-        event.addListener(SkillManager.instance());
-        event.addListener(SpellDataManager.instance());
-        event.addListener(AltarMaterialManager.instance().cap);
-        event.addListener(AltarMaterialManager.instance().structure);
-        event.addListener(TierMapping.instance());
-    }
-
-    private static void onTick(TickEvent.PlayerTickEvent event) {
+    private static void playerTick(TickEvent.PlayerTickEvent event) {
         if (event.side != LogicalSide.SERVER) return;
         if (event.phase != TickEvent.Phase.START) return;
         Player player = event.player;
@@ -134,7 +148,68 @@ public final class EventHandler {
         ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
-    private static void levelUp(PlayerLevelUpEvent event) {
+    private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && entity.isInWaterOrBubble()) {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0, -0.1f * entity.getEffect(AMMobEffects.WATERY_GRAVE.get()).getAmplifier(), 0));
+        }
+    }
+
+    private static void livingDeath(LivingDeathEvent event) {
+        if (event.getEntityLiving().hasEffect(AMMobEffects.TEMPORAL_ANCHOR.get())) {
+            event.getEntityLiving().removeEffect(AMMobEffects.TEMPORAL_ANCHOR.get());
+            event.setCanceled(true);
+        }
+    }
+
+    private static void livingHurt(LivingHurtEvent event) {
+        if (event.getSource() != DamageSource.OUT_OF_WORLD && event.getEntityLiving().hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
+            event.setAmount(event.getAmount() / (float) event.getEntityLiving().getEffect(AMMobEffects.MAGIC_SHIELD.get()).getAmplifier());
+        }
+    }
+
+    private static void livingJump(LivingEvent.LivingJumpEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1), 0));
+        }
+    }
+
+    private static void livingFall(LivingFallEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
+            event.setDistance(event.getDistance() / 1.1f / (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1));
+        }
+    }
+
+    private static void potionAdded(PotionEvent.PotionAddedEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
+            ((AMMobEffect) event.getPotionEffect().getEffect()).startEffect(event.getEntityLiving(), event.getPotionEffect());
+        }
+    }
+
+    private static void potionExpiry(PotionEvent.PotionExpiryEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
+            ((AMMobEffect) event.getPotionEffect().getEffect()).stopEffect(event.getEntityLiving(), event.getPotionEffect());
+        }
+    }
+
+    private static void potionRemove(PotionEvent.PotionRemoveEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
+            ((AMMobEffect) event.getPotionEffect().getEffect()).stopEffect(event.getEntityLiving(), event.getPotionEffect());
+        }
+    }
+
+    private static void addReloadListener(AddReloadListenerEvent event) {
+        event.addListener(OcculusTabManager.instance());
+        event.addListener(SkillManager.instance());
+        event.addListener(SpellDataManager.instance());
+        event.addListener(AltarMaterialManager.instance().cap);
+        event.addListener(AltarMaterialManager.instance().structure);
+        event.addListener(TierMapping.instance());
+    }
+
+    private static void playerLevelUp(PlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         int level = event.getLevel();
         // TODO change
@@ -152,5 +227,4 @@ public final class EventHandler {
             magicHelper.decreaseBurnout(player, magicHelper.getBurnout(player) / 2);
         }
     }
-
 }

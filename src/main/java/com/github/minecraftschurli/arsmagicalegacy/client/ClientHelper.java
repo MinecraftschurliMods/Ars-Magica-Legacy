@@ -38,4 +38,13 @@ public final class ClientHelper {
     public static boolean showAdvancedTooltips() {
         return Screen.hasShiftDown();
     }
+
+    /**
+     * Sets the player's step height.
+     * @param player     The player to set the step height for.
+     * @param stepHeight The step height to set.
+     */
+    public static void updateStepHeight(Player player, float stepHeight) {
+        player.maxUpStep = stepHeight;
+    }
 }

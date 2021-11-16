@@ -111,6 +111,17 @@ public final class MagicHelper implements IMagicHelper {
         return true;
     }
 
+    public boolean setMana(LivingEntity livingEntity, float amount) {
+        if (amount < 0) return false;
+        var max = getMaxMana(livingEntity);
+        var magicHolder = getManaHolder(livingEntity);
+        magicHolder.setMana(Math.min(amount, max));
+        if (livingEntity instanceof Player player) {
+            syncMana(player);
+        }
+        return true;
+    }
+
     @Override
     public float getBurnout(LivingEntity livingEntity) {
         return getBurnoutHolder(livingEntity).getBurnout();
@@ -143,6 +154,18 @@ public final class MagicHelper implements IMagicHelper {
             amount = current;
         }
         magicHolder.setBurnout(current - amount);
+        if (livingEntity instanceof Player player) {
+            syncBurnout(player);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean setBurnout(LivingEntity livingEntity, float amount) {
+        if (amount < 0) return false;
+        var max = getMaxBurnout(livingEntity);
+        var magicHolder = getBurnoutHolder(livingEntity);
+        magicHolder.setBurnout(Math.min(amount, max));
         if (livingEntity instanceof Player player) {
             syncBurnout(player);
         }
