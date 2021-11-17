@@ -41,7 +41,6 @@ class AMSkillProvider extends SkillProvider {
         SkillBuilder.create(AMSpellParts.INVISIBILITY.getId(), UTILITY).setPosition(185, 255).addCost(AMSkillPoints.GREEN.getId())/*.addParent(true_sight)*/.build(consumer); // TODO
         SkillBuilder.create(AMSpellParts.JUMP_BOOST.getId(), DEFENSE).setPosition(222, 90).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.SELF.getId()).build(consumer);
         SkillBuilder.create(AMSpellParts.LEVITATION.getId(), DEFENSE).setPosition(222, 225).addCost(AMSkillPoints.GREEN.getId())/*.addParent(gravity_well)*/.build(consumer); // TODO
-        //SkillBuilder.create(AMSpellParts.NAUSEA.getId(), ).setPosition().addCost().build(consumer); TODO
         SkillBuilder.create(AMSpellParts.REGENERATION.getId(), DEFENSE).setPosition(357, 90).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.SELF.getId()).build(consumer);
         SkillBuilder.create(AMSpellParts.SLOWNESS.getId(), DEFENSE).setPosition(132, 155).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.SLOW_FALLING.getId()).build(consumer);
         SkillBuilder.create(AMSpellParts.SLOW_FALLING.getId(), DEFENSE).setPosition(222, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.JUMP_BOOST.getId()).build(consumer);
@@ -50,7 +49,7 @@ class AMSkillProvider extends SkillProvider {
         SkillBuilder.create(AMSpellParts.DIG.getId(), UTILITY).setPosition(275, 120).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.TOUCH.getId()).build(consumer);
 
         SkillBuilder.create(AMSpellParts.MINING_POWER.getId(), UTILITY).setPosition(185, 137).addCost(AMSkillPoints.GREEN.getId()).addParent(AMSpellParts.SILK_TOUCH.getId()).build(consumer);
-        //SkillBuilder.create(AMSpellParts.FORTUNE.getId(), ).setPosition().addCost().build(consumer); TODO
+        SkillBuilder.create(AMSpellParts.FORTUNE.getId(), UTILITY).setPosition(75, 135).hidden().build(consumer);
         SkillBuilder.create(AMSpellParts.SILK_TOUCH.getId(), UTILITY).setPosition(230, 137).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.DIG.getId()).build(consumer);
         SkillBuilder.create(AMSpellParts.TARGET_NON_SOLID.getId(), UTILITY).setPosition(230, 75).addCost(AMSkillPoints.BLUE.getId()).addParent(AMSpellParts.TOUCH.getId()).build(consumer);
         SkillBuilder.create(AMSpellParts.RANGE.getId(), UTILITY).setPosition(140, 345).addCost(AMSkillPoints.RED.getId())/*.addParent(random_teleport)*/.build(consumer); // TODO

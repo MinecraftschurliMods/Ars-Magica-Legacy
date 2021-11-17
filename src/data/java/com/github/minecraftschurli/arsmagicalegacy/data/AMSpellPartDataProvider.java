@@ -32,7 +32,7 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.INVISIBILITY, 80f).withAffinity(AMAffinities.ARCANE, 0.05f).build();
         createSpellPartData(AMSpellParts.JUMP_BOOST, 70f).withAffinity(AMAffinities.AIR, 0.01f).build();
         createSpellPartData(AMSpellParts.LEVITATION, 80f).withAffinity(AMAffinities.AIR, 0.05f).build();
-        //createSpellPartData(AMSpellParts.NAUSEA, ).build(); TODO TBD
+        createSpellPartData(AMSpellParts.NAUSEA, 200f).withAffinity(AMAffinities.LIFE, 0.05f).build();
         createSpellPartData(AMSpellParts.REGENERATION, 540f).withAffinity(AMAffinities.LIFE, 0.05f).withAffinity(AMAffinities.NATURE, 0.05f).build();
         createSpellPartData(AMSpellParts.SLOWNESS, 80f).withAffinity(AMAffinities.ICE, 0.05f).build();
         createSpellPartData(AMSpellParts.SLOW_FALLING, 80f).withAffinity(AMAffinities.AIR, 0.05f).build();

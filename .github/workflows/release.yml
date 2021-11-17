@@ -45,6 +45,7 @@ jobs:
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-deobf.jar
           body: ${{ steps.changelog.outputs.content }}
       - name: CF upload
+        id: cf_upload
         uses: itsmeow/curseforge-upload@master
         with:
           release_type: release
@@ -55,3 +56,4 @@ jobs:
           file_path: build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}.jar
           changelog_type: markdown
           changelog: ${{ steps.changelog.outputs.content }}
+          relations: ${{ steps.build.outputs.curse_relations }}
