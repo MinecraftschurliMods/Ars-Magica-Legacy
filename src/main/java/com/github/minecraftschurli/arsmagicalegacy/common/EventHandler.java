@@ -23,6 +23,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
@@ -150,8 +151,8 @@ public final class EventHandler {
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
-        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && entity.isInWaterOrBubble()) {
-            entity.setDeltaMovement(entity.getDeltaMovement().add(0, -0.1f * entity.getEffect(AMMobEffects.WATERY_GRAVE.get()).getAmplifier(), 0));
+        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
+            entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
         }
     }
 
@@ -178,7 +179,10 @@ public final class EventHandler {
     private static void livingFall(LivingFallEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
-            event.setDistance(event.getDistance() / 1.1f / (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1));
+            event.setDistance(event.getDistance() / (1.1f * (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1)));
+        }
+        if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.get())) {
+            event.setDistance(event.getDistance() * (entity.getEffect(AMMobEffects.GRAVITY_WELL.get()).getAmplifier() + 1));
         }
     }
 
