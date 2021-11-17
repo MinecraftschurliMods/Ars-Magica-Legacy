@@ -117,6 +117,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
         skillPointIdTranslation(AMSkillPoints.BLUE);
+        skillPointIdTranslation(AMSkillPoints.GREEN);
+        skillPointIdTranslation(AMSkillPoints.RED);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         add(SpellItem.BURNOUT, "Burnout: %d");
         add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
