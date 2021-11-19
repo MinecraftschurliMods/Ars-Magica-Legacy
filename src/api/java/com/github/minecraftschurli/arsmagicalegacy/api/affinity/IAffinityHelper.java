@@ -86,4 +86,22 @@ public interface IAffinityHelper {
      * @return the depth of the given player in the given affinity
      */
     double getAffinityDepth(Player player, IAffinity affinity);
+
+    /**
+     * Apply the affinity shift for the given player and affinity.
+     *
+     * @param player the player to shift the affinity for
+     * @param affinity the affinity to shift
+     * @param shift the amount to shift
+     */
+    void applyAffinityShift(Player player, ResourceLocation affinity, float shift);
+
+    /**
+     * Apply the affinity shift for the given player and affinity.
+     *
+     * @param player the player to shift the affinity for
+     * @param affinity the affinity to shift
+     * @param shift the amount to shift
+     */
+    void applyAffinityShift(Player player, IAffinity affinity, float shift);
 }

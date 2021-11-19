@@ -52,13 +52,27 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
         public final ForgeConfigSpec.DoubleValue DEFAULT_MAX_MANA;
         public final ForgeConfigSpec.DoubleValue DEFAULT_MAX_BURNOUT;
+        public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
 
         private Server(ForgeConfigSpec.Builder builder) {
-            builder.push("magicvalues");
-            DEFAULT_MAX_MANA = builder.comment("The default maximum mana for the player.").translation(PREFIX + "max_mana").worldRestart().defineInRange("max_mana", 100, 0., 10000);
-            DEFAULT_MAX_BURNOUT = builder.comment("The default maximum burnout for the player.").translation(PREFIX + "max_burnout").worldRestart().defineInRange("max_burnout", 100, 0., 10000);
-            BURNOUT_RATIO = builder.comment("The mana to burnout ratio.").translation(PREFIX + "burnout_ratio").defineInRange("burnout_ratio", 0.5, 0, 10.0);
-            builder.pop();
+            DEFAULT_MAX_MANA = builder
+                    .comment("The default maximum mana for the player.")
+                    .translation(PREFIX + "max_mana")
+                    .worldRestart()
+                    .defineInRange("max_mana", 100, 0., 10000);
+            DEFAULT_MAX_BURNOUT = builder
+                    .comment("The default maximum burnout for the player.")
+                    .translation(PREFIX + "max_burnout")
+                    .worldRestart()
+                    .defineInRange("max_burnout", 100, 0., 10000);
+            BURNOUT_RATIO = builder
+                    .comment("The mana to burnout ratio.")
+                    .translation(PREFIX + "burnout_ratio")
+                    .defineInRange("burnout_ratio", 0.5, 0, 10.0);
+            CRAFTING_ALTAR_CHECK_TIME = builder
+                    .comment("The time in ticks between multiblock validation checks for the crafting altar. [ 1 - 200 ]")
+                    .translation(PREFIX + "crafting_altar_check_time")
+                    .defineInRange("crafting_altar_check_time", 20, 1, 200);
         }
     }
 }

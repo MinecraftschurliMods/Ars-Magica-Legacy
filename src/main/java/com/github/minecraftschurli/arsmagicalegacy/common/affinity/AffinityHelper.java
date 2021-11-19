@@ -13,6 +13,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,8 +33,12 @@ import java.util.Optional;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
+
+    public static final float MAX_DEPTH = 1F;
+    private static final float ADJACENT_FACTOR = 0.25f;
+    private static final float MINOR_OPPOSING_FACTOR = 0.5f;
+    private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
 
     public static final class SyncPacket extends CodecPacket<AffinityHolder> {
         public SyncPacket(AffinityHolder data) {
@@ -133,6 +139,38 @@ public final class AffinityHelper implements IAffinityHelper {
         return getAffinityDepth(player, affinity.getId());
     }
 
+    @Override
+    public void applyAffinityShift(Player player, ResourceLocation affinity, float shift) {
+        applyAffinityShift(player, Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(affinity)), shift);
+    }
+
+    @Override
+    public void applyAffinityShift(Player player, IAffinity affinity, float shift) {
+        if (affinity.getRegistryName() == Affinity.NONE) return;
+        AffinityHolder storage = getAffinityHolder(player);
+        float adjacentDecrement = shift * ADJACENT_FACTOR;
+        float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
+        float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
+        storage.addToAffinity(affinity.getId(), shift);
+        if (storage.getAffinityDepth(affinity) == MAX_DEPTH) {
+            storage.setLocked(true);
+        }
+        for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
+            storage.subtractFromAffinity(adjacent, adjacentDecrement);
+        }
+        for (ResourceLocation minorOpposite : affinity.getMinorOpposingAffinities()) {
+            storage.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
+        }
+        for (ResourceLocation majorOpposite : affinity.getMajorOpposingAffinities()) {
+            storage.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
+        }
+        ResourceLocation directOpposite = affinity.getDirectOpposingAffinity();
+        storage.subtractFromAffinity(directOpposite, shift);
+        if (player instanceof ServerPlayer sp) {
+            syncToPlayer(sp);
+        }
+    }
+
     /**
      * Called upon player death, syncs the capabilites.
      *
@@ -156,14 +194,25 @@ public final class AffinityHelper implements IAffinityHelper {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
     }
 
-    public record AffinityHolder(Map<ResourceLocation, Double> depths) {
-        public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths)).apply(inst, AffinityHolder::new));
+    public static final class AffinityHolder {
+        public static final Codec<AffinityHolder> CODEC =
+                RecordCodecBuilder.create(inst -> inst.group(
+                        CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
+                        Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
+                ).apply(inst, AffinityHolder::new));
+
+        private final Map<ResourceLocation, Double> depths;
+        private boolean locked = false;
+
+        public AffinityHolder(Map<ResourceLocation, Double> depths, boolean locked) {
+            this.depths = depths;
+        }
 
         /**
          * @return A new empty AffinityHolder.
          */
         public static AffinityHolder empty() {
-            return new AffinityHolder(new HashMap<>());
+            return new AffinityHolder(new HashMap<>(), false);
         }
 
         /**
@@ -173,6 +222,10 @@ public final class AffinityHelper implements IAffinityHelper {
          */
         public Map<ResourceLocation, Double> depths() {
             return Collections.unmodifiableMap(depths);
+        }
+
+        public boolean locked() {
+            return locked;
         }
 
         /**
@@ -203,6 +256,36 @@ public final class AffinityHelper implements IAffinityHelper {
          */
         public double getAffinityDepth(IAffinity affinity) {
             return getAffinityDepth(affinity.getId());
+        }
+
+        public void addToAffinity(ResourceLocation affinity, float shift) {
+            depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) + shift, 0, MAX_DEPTH));
+        }
+
+        public void subtractFromAffinity(ResourceLocation affinity, float shift) {
+            depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) - shift, 0, MAX_DEPTH));
+        }
+
+        public void setLocked(boolean locked) {
+            this.locked = locked;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            var that = (AffinityHolder) obj;
+            return Objects.equals(this.depths, that.depths) && this.locked == that.locked;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(depths, locked);
+        }
+
+        @Override
+        public String toString() {
+            return "AffinityHolder[" + "depths=" + depths + ",locked="+ locked + ']';
         }
     }
 }

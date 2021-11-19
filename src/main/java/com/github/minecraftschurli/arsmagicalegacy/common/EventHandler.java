@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
@@ -13,6 +14,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.EtheriumSpellIngredient;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
@@ -77,6 +80,13 @@ public final class EventHandler {
 
     private static void setup(FMLCommonSetupEvent event) {
         PatchouliCompat.init();
+        registerSpellIngredientTypes();
+    }
+
+    public static void registerSpellIngredientTypes() {
+        ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+        spellDataManager.registerSpellIngredientType(IngredientSpellIngredient.INGREDIENT, IngredientSpellIngredient.CODEC);
+        spellDataManager.registerSpellIngredientType(EtheriumSpellIngredient.ETHERIUM, EtheriumSpellIngredient.CODEC);
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {

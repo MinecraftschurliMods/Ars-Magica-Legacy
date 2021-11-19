@@ -3,9 +3,11 @@ package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -22,14 +24,11 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.github.minecraftschurli.arsmagicalegacy.common.util.MiscConstants.AFFINITY_GAINS;
 
 public final class Spell implements ISpell {
     //@formatter:off
@@ -40,6 +39,7 @@ public final class Spell implements ISpell {
     ).apply(inst, Spell::new));
     //@formatter:on
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
+
     private final List<ShapeGroup> shapeGroups;
     private final SpellStack spellStack;
     private final CompoundTag additionalData;
@@ -119,18 +119,44 @@ public final class Spell implements ISpell {
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
-                return SpellCastResult.BURNED_OUT;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
-        if (consume) {
-            magicHelper.decreaseMana(caster, mana);
+        if (consume && result.isConsume()) {
+            magicHelper.decreaseMana(caster, mana, true);
             magicHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
         if (awardXp && caster instanceof Player player) {
-            magicHelper.awardXp(player, spellHelper.getXpForSpellCast(mana, burnout, reagents, this, player));
+            boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
+            boolean continuous = isContinuous();
+            Map<IAffinity, Double> affinityShifts = partsWithModifiers().stream()
+                                                                        .map(Pair::getFirst)
+                                                                        .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
+                                                                        .filter(Objects::nonNull)
+                                                                        .map(ISpellPartData::affinityShifts)
+                                                                        .map(Map::entrySet)
+                                                                        .flatMap(Collection::stream)
+                                                                        .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+            for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
+                IAffinity affinity = entry.getKey();
+                Double shift = entry.getValue();
+                if (continuous) {
+                    shift /= 4;
+                }
+                if (affinityGains) {
+                    shift *= 1.1;
+                }
+                AffinityChangingEvent evt = new AffinityChangingEvent(player, affinity, shift.floatValue());
+                if (!evt.isCanceled()) {
+                    ArsMagicaAPI.get().getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
+                }
+            }
+            float xp = 0.05f * affinityShifts.size();
+            if (continuous) xp /= 4;
+            if (affinityGains) xp *= 0.9f;
+            magicHelper.awardXp(player, xp);
         }
         return result;
     }

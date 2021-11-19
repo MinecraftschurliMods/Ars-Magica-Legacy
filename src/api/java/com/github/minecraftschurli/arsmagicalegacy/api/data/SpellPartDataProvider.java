@@ -272,7 +272,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
             affinities.forEach((resourceLocation, shift) -> arr2.addProperty(resourceLocation.toString(), shift));
             out.add("affinities", arr2);
             var arr3 = new JsonArray();
-            recipe.forEach(ingredient -> arr3.add(ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
+            recipe.forEach(ingredient -> arr3.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
             out.add("recipe", arr3);
             return out;
         }

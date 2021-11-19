@@ -4,5 +4,36 @@
   "affinities": {
     "arsmagicalegacy:earth": 0.001
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "nbt": "{Damage:0}",
+        "item": "minecraft:iron_axe",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "nbt": "{Damage:0}",
+        "item": "minecraft:iron_pickaxe",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "nbt": "{Damage:0}",
+        "item": "minecraft:iron_shovel",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

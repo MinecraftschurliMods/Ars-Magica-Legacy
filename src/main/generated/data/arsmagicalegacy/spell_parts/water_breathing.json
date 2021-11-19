@@ -4,5 +4,27 @@
   "affinities": {
     "arsmagicalegacy:water": 0.05
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:wakebloom"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:sugar_cane"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

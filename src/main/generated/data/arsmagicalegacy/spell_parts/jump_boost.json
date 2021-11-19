@@ -4,5 +4,20 @@
   "affinities": {
     "arsmagicalegacy:air": 0.01
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:white_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:hopper"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

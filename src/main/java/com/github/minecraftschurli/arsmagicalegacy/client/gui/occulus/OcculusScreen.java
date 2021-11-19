@@ -103,12 +103,11 @@ public class OcculusScreen extends Screen {
     }
 
     private void setActiveTab(int tabIndex) {
+        clearWidgets();
         IOcculusTab tab = OcculusTabManager.instance().getByIndex(tabIndex);
-        removeWidget(activeTab);
-        activeTab = tab.getRendererFactory().get().create(tab, this);
-        addRenderableWidget(activeTab);
+        activeTab = tab.getRendererFactory().get().create(tab);
         if (minecraft != null) {
-            activeTab.init(tabWidth, tabHeight, width, height, posX + 7, posY + 7);
+            init();
         }
     }
 

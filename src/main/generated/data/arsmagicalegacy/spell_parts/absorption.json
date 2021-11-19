@@ -4,5 +4,30 @@
   "affinities": {
     "arsmagicalegacy:life": 0.05
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:yellow_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:golden_apple"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "nbt": "{Damage:0}",
+        "item": "minecraft:shield",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

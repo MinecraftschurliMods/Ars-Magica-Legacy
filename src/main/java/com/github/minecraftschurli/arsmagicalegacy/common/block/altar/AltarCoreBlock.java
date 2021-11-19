@@ -38,17 +38,4 @@ public class AltarCoreBlock extends Block implements EntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return (BlockEntityTicker<T>) new AltarCoreTicker();
     }
-
-    private static class AltarCoreTicker implements BlockEntityTicker<AltarCoreBlockEntity> {
-        @Override
-        public void tick(Level pLevel, BlockPos pPos, BlockState pState, AltarCoreBlockEntity pBlockEntity) {
-            pBlockEntity.checkCounter--;
-            if (pBlockEntity.checkCounter <= 0) {
-                pBlockEntity.checkMultiblock();
-                pBlockEntity.checkCounter = 20;
-            }
-            if (!pBlockEntity.isMultiblockFormed()) return;
-            pBlockEntity.consumeTick();
-        }
-    }
 }

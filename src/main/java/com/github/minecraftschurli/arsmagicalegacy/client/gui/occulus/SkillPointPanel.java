@@ -25,7 +25,7 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         var player = getMinecraft().player;
         if (player == null) return;
         stack.pushPose();
-        stack.translate(width, 0, 0);
+        stack.translate(width, 0, -1);
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getSkillHelper();
         var skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());

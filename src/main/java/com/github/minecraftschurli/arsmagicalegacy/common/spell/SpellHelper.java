@@ -153,7 +153,7 @@ public final class SpellHelper implements ISpellHelper {
         Pair<? extends ISpellPart, List<ISpellModifier>> part = spell.partsWithModifiers().get(index);
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
-                SpellCastResult result = SpellCastResult.FAIL;
+                SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 var component = (ISpellComponent) part.getFirst();
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
@@ -168,7 +168,7 @@ public final class SpellHelper implements ISpellHelper {
                 return shape.invoke(spell, caster, level, part.getSecond(), target, castingTicks, index + 1, awardXp);
             }
             default -> {
-                return SpellCastResult.FAIL;
+                return SpellCastResult.EFFECT_FAILED;
             }
         }
     }

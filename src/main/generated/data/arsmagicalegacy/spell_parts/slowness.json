@@ -4,5 +4,20 @@
   "affinities": {
     "arsmagicalegacy:ice": 0.05
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:green_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:slimeballs"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

@@ -7,6 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 /**
  * Renderer for spell ingredients
  */
-public interface ISpellIngredientRenderer {
-    void render(ISpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay);
+public interface ISpellIngredientRenderer<T extends ISpellIngredient> {
+    void render(T ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay);
 }
