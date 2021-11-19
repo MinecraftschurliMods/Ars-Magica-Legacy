@@ -10,22 +10,14 @@ public class RetexturedBakedQuad extends BakedQuad {
         remapQuad();
     }
 
-    private static float getUnInterpolatedU(TextureAtlasSprite sprite, float u) {
-        float f = sprite.getU1() - sprite.getU0();
-        return (u - sprite.getU0()) / f * 16F;
-    }
-
-    private static float getUnInterpolatedV(TextureAtlasSprite sprite, float v) {
-        float f = sprite.getV1() - sprite.getV0();
-        return (v - sprite.getV0()) / f * 16F;
-    }
-
     private void remapQuad() {
+        int uvIndex = 4;
         for (int i = 0; i < 4; ++i) {
             int j = DefaultVertexFormat.BLOCK.getIntegerSize() * i;
-            int uvIndex = 4;
-            vertices[j + uvIndex] = Float.floatToRawIntBits(sprite.getU(getUnInterpolatedU(sprite, Float.intBitsToFloat(vertices[j + uvIndex]))));
-            vertices[j + uvIndex + 1] = Float.floatToRawIntBits(sprite.getV(getUnInterpolatedV(sprite, Float.intBitsToFloat(vertices[j + uvIndex + 1]))));
+            int i1 = j + uvIndex;
+            int i2 = j + uvIndex + 1;
+            vertices[i1] = Float.floatToRawIntBits(sprite.getU(sprite.getUOffset(Float.intBitsToFloat(vertices[i1]))));
+            vertices[i2] = Float.floatToRawIntBits(sprite.getV(sprite.getVOffset(Float.intBitsToFloat(vertices[i2]))));
         }
     }
 }

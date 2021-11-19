@@ -10,11 +10,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurli.codeclib.CodecDataManager;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -26,11 +23,6 @@ import java.util.*;
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
     private static final Map<ResourceLocation, Codec<ISpellIngredient>> CODECS = new HashMap<>();
 
-    public static final Codec<ISpellIngredient> SPELL_INGREDIENT_CODEC = CompoundTag.CODEC.flatXmap(tag -> {
-            String type = tag.getString("type");
-            tag.remove("type");
-            return CODECS.get(ResourceLocation.tryParse(type)).decode(NbtOps.INSTANCE, tag).map(Pair::getFirst);
-        }, ingredient -> CODECS.get(ingredient.getType()).encodeStart(NbtOps.INSTANCE, ingredient).map(CompoundTag.class::cast));
 
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
@@ -64,7 +56,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
                                  List<Either<Ingredient, ItemStack>> reagents, float manaCost,
                                  float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                SPELL_INGREDIENT_CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
+                ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
                 CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 Codec.either(CodecHelper.INGREDIENT, ItemStack.CODEC).listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),

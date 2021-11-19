@@ -162,5 +162,7 @@
   "message.arsmagicalegacy.spell_cast.missing_reagents": "Missing reagents!",
   "message.arsmagicalegacy.spell_cast.not_enough_mana": "Not enough mana!",
   "skill_point.arsmagicalegacy.blue": "Blue",
+  "skill_point.arsmagicalegacy.green": "Green",
+  "skill_point.arsmagicalegacy.red": "Red",
   "tooltip.arsmagicalegacy.hold_shift_for_details": "Hold Shift for details"
 }

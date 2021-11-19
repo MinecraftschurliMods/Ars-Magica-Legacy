@@ -4,5 +4,30 @@
   "affinities": {
     "arsmagicalegacy:arcane": 0.05
   },
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:black_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:gems/chimerite"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "nbt": "{Potion:\"minecraft:invisibility\"}",
+        "item": "minecraft:potion",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

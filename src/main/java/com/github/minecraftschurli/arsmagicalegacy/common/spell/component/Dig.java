@@ -25,7 +25,7 @@ import java.util.List;
 public class Dig extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.FAIL;
+        return SpellCastResult.EFFECT_FAILED;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class Dig extends AbstractComponent {
         BlockPos blockPos = target.getBlockPos();
         BlockState state = level.getBlockState(blockPos);
         float hardness = state.getDestroySpeed(level, blockPos);
-        if (hardness < 0) return SpellCastResult.FAIL;
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(getTier(modifiers), state)) return SpellCastResult.FAIL;
+        if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
+        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(getTier(modifiers), state)) return SpellCastResult.EFFECT_FAILED;
         if (!ArsMagicaAPI.get().getMagicHelper().decreaseMana(caster, hardness * 1.28f)) return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);

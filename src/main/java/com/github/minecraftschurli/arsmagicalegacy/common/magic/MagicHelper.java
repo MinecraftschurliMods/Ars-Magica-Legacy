@@ -9,6 +9,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
@@ -109,6 +110,19 @@ public final class MagicHelper implements IMagicHelper {
             syncMana(player);
         }
         return true;
+    }
+
+    @Override
+    public boolean decreaseMana(LivingEntity entity, float mana, boolean force) {
+        if (!force) return decreaseMana(entity, mana);
+        var magicHolder = getManaHolder(entity);
+        var newMana = magicHolder.getMana() - mana;
+        var clamped = Mth.clamp(newMana, 0, getMaxMana(entity));
+        magicHolder.setMana(clamped);
+        if (entity instanceof Player player) {
+            syncMana(player);
+        }
+        return clamped == newMana;
     }
 
     public boolean setMana(LivingEntity livingEntity, float amount) {

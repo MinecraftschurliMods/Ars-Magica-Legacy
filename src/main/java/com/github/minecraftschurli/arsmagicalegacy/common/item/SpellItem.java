@@ -7,13 +7,13 @@ import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -32,16 +32,14 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
 
 public class SpellItem extends Item implements ISpellItem {
-    public static final BiConsumer<MutableComponent, MutableComponent> COMPONENT_OR_JOINER = (component, component2) -> component.append(new TextComponent(" | ")).append(component2);
     public static final String SPELL_CAST_RESULT = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     public static final String UNNAMED_SPELL = "item." + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
     public static final String UNKNOWN_ITEM = "item." + ArsMagicaAPI.MOD_ID + ".spell.unknown";
@@ -62,7 +60,10 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack,
+                                @Nullable Level pLevel,
+                                List<Component> pTooltipComponents,
+                                TooltipFlag pIsAdvanced) {
         Player player = null;
         if (EffectiveSide.get().isClient()) {
             player = ClientHelper.getLocalPlayer();
@@ -83,7 +84,12 @@ public class SpellItem extends Item implements ISpellItem {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(new TranslatableComponent(REAGENTS));
-            reagents.forEach(e -> pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).map(ItemStack::getHoverName).map(Component::copy).collect(TextComponent.EMPTY::copy, COMPONENT_OR_JOINER, COMPONENT_OR_JOINER)));
+            reagents.stream()
+                    .map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
+                    .forEach(e -> pTooltipComponents.add(Arrays.stream(e)
+                                                               .map(ItemStack::getHoverName)
+                                                               .map(Component::copy)
+                                                               .collect(ComponentUtil.joiningComponents(" | "))));
         } else {
             pTooltipComponents.add(new TranslatableComponent(HOLD_SHIFT_FOR_DETAILS));
         }
@@ -98,7 +104,8 @@ public class SpellItem extends Item implements ISpellItem {
         }
         Spell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(INVALID_SPELL);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(UNNAMED_SPELL));
+        return getSpellName(pStack).<Component>map(TextComponent::new)
+                                   .orElse(new TranslatableComponent(UNNAMED_SPELL));
     }
 
     @Override
@@ -122,7 +129,11 @@ public class SpellItem extends Item implements ISpellItem {
                 player.awardStat(AMStats.SPELL_CAST);
             }
             if (result.isFail()) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                player.displayClientMessage(
+                        new TranslatableComponent(
+                                SPELL_CAST_RESULT + result.name().toLowerCase(),
+                                stack.getDisplayName()
+                        ), true);
             }
         }
         saveSpell(stack, spell);
@@ -192,7 +203,12 @@ public class SpellItem extends Item implements ISpellItem {
                     player.awardStat(AMStats.SPELL_CAST);
                 }
                 if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                    player.displayClientMessage(
+                            new TranslatableComponent(
+                                    SPELL_CAST_RESULT + result.name().toLowerCase(),
+                                    stack.getDisplayName()
+                            ), true
+                    );
                 }
             }
         }
@@ -200,7 +216,8 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     public static Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY))
+                       .filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
     }
 
     public static void setSpellIcon(ItemStack stack, ResourceLocation icon) {
@@ -225,9 +242,10 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     public static Spell getSpell(ItemStack stack) {
+        if (stack.isEmpty()) return Spell.EMPTY;
         return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY))
-                .get()
-                .mapLeft(Pair::getFirst).mapRight(DataResult.PartialResult::message)
+                .map(Pair::getFirst)
+                .get().mapRight(DataResult.PartialResult::message)
                 .ifRight(LOGGER::warn)
                 .left()
                 .orElse(Spell.EMPTY);
