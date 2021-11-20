@@ -5,27 +5,33 @@ import com.github.minecraftschurli.arsmagicalegacy.api.client.ISpellIngredientRe
 import com.github.minecraftschurli.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurli.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
 import com.github.minecraftschurli.codeclib.CodecHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final ResourceLocation ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
-    public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
-            Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
+    public static final ResourceLocation               ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    public static final Codec<EtheriumSpellIngredient> CODEC    = RecordCodecBuilder.create(inst -> inst.group(
+            CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class))
+                       .fieldOf("types")
+                       .forGetter(EtheriumSpellIngredient::types),
+            Codec.INT.fieldOf("amount")
+                     .forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
 
     @Override
@@ -35,18 +41,27 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public Component getTooltip() {
-        if (types.size() == 1) return new TranslatableComponent("etherium." + ArsMagicaAPI.MOD_ID + "." + types.iterator().next().name().toLowerCase()).append(" x "+amount());
-        return new TextComponent("(").append(types.stream().map(etheriumType -> new TranslatableComponent("etherium." + ArsMagicaAPI.MOD_ID + "." + etheriumType.name().toLowerCase())).collect(ComponentUtil.joiningComponents(" | "))).append(") x "+ amount());
+        if (types.size() == 1) return types.iterator().next().getDisplayName().append(" x " + amount());
+        return new TextComponent("(").append(types.stream()
+                                                  .map(ITranslatable::getDisplayName)
+                                                  .collect(ComponentUtil.joiningComponents(" | ")))
+                                     .append(") x "+ amount());
     }
 
     @Override
     public boolean canCombine(ISpellIngredient other) {
+        if (other instanceof EtheriumSpellIngredient eth) {
+            return Objects.equals(eth.types(), types());
+        }
         return false;
     }
 
     @Nullable
     @Override
     public ISpellIngredient combine(ISpellIngredient other) {
+        if (canCombine(other)) {
+            return new EtheriumSpellIngredient(types(), ((EtheriumSpellIngredient) other).amount() + amount());
+        }
         return null;
     }
 
@@ -72,6 +87,19 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public ISpellIngredientRenderer<EtheriumSpellIngredient> getRenderer() {
-        return (ingredient, poseStack, bufferSource, packedLight, packedOverlay) -> {};
+        return EtheriumSpellIngredientRenderer.INSTANCE;
+    }
+
+    private static class EtheriumSpellIngredientRenderer implements ISpellIngredientRenderer<EtheriumSpellIngredient> {
+    public static final EtheriumSpellIngredientRenderer INSTANCE = new EtheriumSpellIngredientRenderer();
+
+        @Override
+        public void render(EtheriumSpellIngredient ingredient,
+                           PoseStack poseStack,
+                           MultiBufferSource bufferSource,
+                           int packedLight,
+                           int packedOverlay) {
+            // TODO render
+        }
     }
 }

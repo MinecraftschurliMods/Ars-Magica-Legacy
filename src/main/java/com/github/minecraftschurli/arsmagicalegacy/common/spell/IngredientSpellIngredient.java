@@ -29,8 +29,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
-    public static final ResourceLocation INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
-    public static final Codec<IngredientSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final ResourceLocation                 INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
+    public static final Codec<IngredientSpellIngredient> CODEC      = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
             Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
     ).apply(inst, IngredientSpellIngredient::new));
@@ -88,12 +88,18 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
 
     @Override
     public ISpellIngredientRenderer<IngredientSpellIngredient> getRenderer() {
-        return new IngredientSpellIngredientRenderer();
+        return IngredientSpellIngredientRenderer.INSTANCE;
     }
 
     private static class IngredientSpellIngredientRenderer implements ISpellIngredientRenderer<IngredientSpellIngredient> {
+        public static final IngredientSpellIngredientRenderer INSTANCE = new IngredientSpellIngredientRenderer();
+
         @Override
-        public void render(IngredientSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        public void render(IngredientSpellIngredient ingredient,
+                           PoseStack poseStack,
+                           MultiBufferSource bufferSource,
+                           int packedLight,
+                           int packedOverlay) {
             Minecraft minecraft = Minecraft.getInstance();
             ItemStack stack = MathUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
