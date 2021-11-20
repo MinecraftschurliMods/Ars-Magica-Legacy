@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -36,7 +37,20 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlock(ALTAR_CORE);
+        getVariantBuilder(ALTAR_CORE.get())
+                .partialState().with(AltarCoreBlock.FORMED, false)
+                .modelForState().modelFile(cubeAll(ALTAR_CORE.get())).addModel()
+                .partialState().with(AltarCoreBlock.FORMED, true)
+                .modelForState().modelFile(models().getBuilder("altar_core_overlay")
+                                                   .texture("overlay", "block/altar_core_overlay")
+                                                   .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                                                   .element()
+                                                   .from(0,0,0)
+                                                   .to(16,0,16)
+                                                   .face(Direction.DOWN)
+                                                   .texture("#overlay")
+                                                   .end()
+                                                   .end()).addModel();
         simpleBlock(MAGIC_WALL);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(DEEPSLATE_CHIMERITE_ORE);
