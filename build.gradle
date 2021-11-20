@@ -199,7 +199,7 @@ dependencies {
     runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
     runtimeMod fg.deobf("curse.maven:fast-leaf-decay-230976:3399353")
     runtimeMod fg.deobf("curse.maven:configured-457570:3523089") // config screen
-    runtimeMod fg.deobf("curse.maven:catalogue-459701:3524252") // better mod menu
+    runtimeMod fg.deobf("curse.maven:catalogue-459701:3529459") // better mod menu
 
     // add internal libraries
     var projects = subprojects.collect {it.path }
