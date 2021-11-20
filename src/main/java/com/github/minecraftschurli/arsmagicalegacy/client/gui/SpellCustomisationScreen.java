@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpellIconPickScreen extends Screen {
+public class SpellCustomisationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
     private static final String NAME_FIELD_MESSAGE = "gui_components." + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.name_box";
     private static final int ICON_SIZE = 15;
@@ -39,7 +39,7 @@ public class SpellIconPickScreen extends Screen {
      * Creates a new spell icon pick screen.
      * @param stack The ItemStack to open this screen for.
      */
-    public SpellIconPickScreen(ItemStack stack) {
+    public SpellCustomisationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
         editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(NAME_FIELD_MESSAGE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
@@ -53,7 +53,7 @@ public class SpellIconPickScreen extends Screen {
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
         editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(NAME_FIELD_MESSAGE)));
-        spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 13, imageHeight - 38, spellIconSelector));
+        spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SpellIconPickScreen extends Screen {
         private ResourceLocation selected = null;
 
         public SpellIconSelector(int x, int y, int width, int height, @Nullable SpellIconSelector spellIconSelector) {
-            super(Minecraft.getInstance(), width, height, y, x);
+            super(Minecraft.getInstance(), width, height, y, x, 2);
             elementsX = (width - border + 2) / (ICON_SIZE + 2 * ICON_MARGIN);
             if (spellIconSelector != null) {
                 setSelected(spellIconSelector.getSelected());
@@ -108,8 +108,7 @@ public class SpellIconPickScreen extends Screen {
         }
 
         @Override
-        public void updateNarration(final NarrationElementOutput pNarrationElementOutput) {
-        }
+        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
 
         @Override
         protected boolean clickPanel(double mouseX, double mouseY, int button) {
@@ -132,7 +131,7 @@ public class SpellIconPickScreen extends Screen {
                 x *= ICON_SIZE + 2 * ICON_MARGIN;
                 y *= ICON_SIZE + 2 * ICON_MARGIN;
                 x += left + 2 * ICON_MARGIN;
-                y += relativeY - border + 2 * ICON_MARGIN;
+                y += relativeY * ICON_MARGIN;
                 if (y > 0 && y < bottom) {
                     if (icon.equals(selected)) {
                         GuiUtils.drawGradientRect(mStack.last().pose(),
