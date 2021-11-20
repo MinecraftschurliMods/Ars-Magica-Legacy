@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverride
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
@@ -86,12 +87,6 @@ public final class ClientInit {
     }
 
     @SubscribeEvent
-    static void preStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
-        event.addSprite(AltarCoreModel.OVERLAY_LOC);
-    }
-
-    @SubscribeEvent
     static void modelRegister(ModelRegistryEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof IAffinityItem)) continue;
@@ -116,11 +111,6 @@ public final class ClientInit {
 
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
 
-        AMBlocks.ALTAR_CORE.get()
-                           .getStateDefinition()
-                           .getPossibleStates()
-                           .stream()
-                           .map(BlockModelShaper::stateToModelLocation)
-                           .forEach(key -> modelRegistry.computeIfPresent(key, (rl, model) -> new AltarCoreModel(model)));
+        modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
     }
 }

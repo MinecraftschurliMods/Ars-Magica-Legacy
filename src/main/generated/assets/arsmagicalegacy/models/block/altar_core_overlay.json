@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "overlay": "arsmagicalegacy:block/altar_core_overlay"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 0, 16],
+      "faces": {
+        "down": {"texture": "#overlay"}
+      }
+    }
+  ]
+}
