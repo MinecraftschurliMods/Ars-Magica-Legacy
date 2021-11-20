@@ -97,6 +97,11 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
+    public boolean usesBlockLight() {
+        return false;
+    }
+
+    @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
         if (this.cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
             ResourceLocation key = icon.get();

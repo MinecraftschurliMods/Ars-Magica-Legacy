@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.client;
 
-import com.github.minecraftschurli.arsmagicalegacy.client.gui.SpellIconPickScreen;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.SpellCustomisationScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -29,7 +29,7 @@ public final class ClientHelper {
      * @param stack The icon to pass in the SpellIconPickScreen constructor.
      */
     public static void openSpellCustomizationGui(ItemStack stack) {
-        Minecraft.getInstance().setScreen(new SpellIconPickScreen(stack));
+        Minecraft.getInstance().setScreen(new SpellCustomisationScreen(stack));
     }
 
     /**
