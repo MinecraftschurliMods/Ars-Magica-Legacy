@@ -282,14 +282,14 @@ def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
         'version': project.version,
         'mod_id': project.mod_id,
-        'mod_name': project.mod_name,
         'mod_url': project.mod_url,
+        'mod_name': project.mod_name,
         'mod_author': project.mod_author,
         'mod_credits': project.mod_credits,
-        'patchouli_version_range': project.patchouli_version_range,
-        'loader_version_range': project.loader_version_range,
-        'forge_version_range': project.forge_version_range,
         'mc_version_range': project.mc_version_range,
+        'forge_version_range': project.forge_version_range,
+        'loader_version_range': project.loader_version_range,
+        'patchouli_version_range': project.patchouli_version_range,
         'issue_tracker_url': "https://github.com/${project.github}/issues"
 ]
 
@@ -393,17 +393,17 @@ task reobf {
 task setupGithubActions() {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
+        println "##[set-output name=version;]${project.version}"
         if(project.hasProperty('curse_project_id')) {
             println "##[set-output name=project_id;]${project.curse_project_id}"
+            println "##[set-output name=curse_versions;]${project.curse_versions}"
             if(project.hasProperty('curse_title')) {
                 println "##[set-output name=curse_title;]${project.curse_title}"
             }
-            println "##[set-output name=curse_versions;]${project.curse_versions}"
             if(project.hasProperty('curse_relations')) {
                 println "##[set-output name=curse_relations;]${project.curse_relations}"
             }
         }
-        println "##[set-output name=version;]${project.version}"
     }
 }
 
@@ -457,6 +457,8 @@ publishing {
                     id = 'ichhabehunger54'
                     name = 'IchHabeHunger54'
                     url = 'https://github.com/IchHabeHunger54'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/MinecraftschurliMods'
                     timezone = 'Europe/Vienna'
                 }
             }

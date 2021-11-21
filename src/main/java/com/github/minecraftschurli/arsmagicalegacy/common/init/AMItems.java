@@ -1,11 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.*;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.ColoredRegistryObject;
 import net.minecraft.world.item.BlockItem;
@@ -92,6 +88,7 @@ public interface AMItems {
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE         = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<SpellItem>                    SPELL                    = ITEMS.register("spell", SpellItem::new);
+    RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES         = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
 
     @SuppressWarnings("SameParameterValue")
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {

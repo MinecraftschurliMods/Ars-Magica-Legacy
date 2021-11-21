@@ -79,6 +79,7 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
         getBuilder(SPELL.getId().getPath());
+        itemGenerated(MAGITECH_GOGGLES);
     }
 
     /**

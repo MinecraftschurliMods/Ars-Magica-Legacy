@@ -9,6 +9,7 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
@@ -77,6 +78,7 @@ class AMTagsProvider {
 
         @Override
         protected void addTags() {
+            tag(ItemTags.createOptional(new ResourceLocation("curios", "head"))).add(AMItems.MAGITECH_GOGGLES.get());
             copy(AMTags.Blocks.WITCHWOOD_LOGS, AMTags.Items.WITCHWOOD_LOGS);
             copy(AMTags.Blocks.ORES_CHIMERITE, AMTags.Items.ORES_CHIMERITE);
             copy(AMTags.Blocks.ORES_TOPAZ, AMTags.Items.ORES_TOPAZ);

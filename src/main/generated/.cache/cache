@@ -159,6 +159,7 @@ ddd3fee1c697d109a11229c92a7c7694537a63a0 assets/arsmagicalegacy/models/item/ligh
 910e03f8276ad6bd6afc201a806b2d2514078926 assets/arsmagicalegacy/models/item/lime_rune.json
 b2d7bd04bb41bbfca8cae726393f2ecd65a6d86a assets/arsmagicalegacy/models/item/magenta_rune.json
 f549f304d72fcc34dc8bab5b326e54c8562e0963 assets/arsmagicalegacy/models/item/magic_wall.json
+4ac3401b31bf78616722f46dc1abfc8c750b79b3 assets/arsmagicalegacy/models/item/magitech_goggles.json
 3ca76698b127459b0305ddbdee518e44c0867bd1 assets/arsmagicalegacy/models/item/moonstone.json
 f22befc5ab29d749450d2f5cda4dd6f3d0d97dc9 assets/arsmagicalegacy/models/item/moonstone_block.json
 ab946f81708a5c6e7aa2a3e047c77e41ec68dfdc assets/arsmagicalegacy/models/item/moonstone_ore.json
@@ -439,6 +440,7 @@ bdd715ef78b0171e68045683d6272ac9fd89e0d6 data/arsmagicalegacy/tags/items/runes/m
 7a8ae8a04e24b3b11f50880528e9cc4abf266f99 data/arsmagicalegacy/tags/items/runes/white.json
 079183c32098ca1023ca0588957de065b0ce4618 data/arsmagicalegacy/tags/items/runes/yellow.json
 cde7e091ad55ebaa73a6727993137de089636460 data/arsmagicalegacy/tags/items/witchwood_logs.json
+3c5f0bb61b84c5c84e5afe651390f10d356cf2dc data/curios/tags/items/head.json
 9030246eb6dff2171a58650e632c2bd2a794d076 data/forge/tags/blocks/fence_gates/wooden.json
 4de0d50315dc2b07dd7b0dc51be002bc1dbee83e data/forge/tags/blocks/fences/wooden.json
 15e98067e8b908cc9bb6cbcdf256e81a056a7b66 data/forge/tags/blocks/ores.json
