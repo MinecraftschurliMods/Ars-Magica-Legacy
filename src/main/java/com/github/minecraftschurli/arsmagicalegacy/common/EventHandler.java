@@ -9,6 +9,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelpe
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
@@ -39,13 +40,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -90,6 +86,7 @@ public final class EventHandler {
     private static void setup(FMLCommonSetupEvent event) {
         PatchouliCompat.init();
         registerSpellIngredientTypes();
+        AMCriteriaTriggers.register();
     }
 
     public static void registerSpellIngredientTypes() {
