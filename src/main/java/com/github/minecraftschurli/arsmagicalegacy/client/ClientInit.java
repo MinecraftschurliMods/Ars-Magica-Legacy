@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverride
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGogglesCurioRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
@@ -24,17 +25,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -78,6 +78,10 @@ public final class ClientInit {
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
 
         Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
+
+        if (ModList.get().isLoaded("curios")) {
+            MagitechGogglesCurioRenderer.register();
+        }
     }
 
     @SubscribeEvent
@@ -113,4 +117,5 @@ public final class ClientInit {
 
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
     }
+
 }
