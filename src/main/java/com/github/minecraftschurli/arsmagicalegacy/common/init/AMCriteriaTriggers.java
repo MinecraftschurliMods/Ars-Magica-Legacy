@@ -1,7 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.trigger.PlayerLearnedSkillTrigger;
-import com.github.minecraftschurli.arsmagicalegacy.common.trigger.PlayerLevelUpTrigger;
+import com.github.minecraftschurli.arsmagicalegacy.api.advancement.PlayerLearnedSkillTrigger;
+import com.github.minecraftschurli.arsmagicalegacy.api.advancement.PlayerLevelUpTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
