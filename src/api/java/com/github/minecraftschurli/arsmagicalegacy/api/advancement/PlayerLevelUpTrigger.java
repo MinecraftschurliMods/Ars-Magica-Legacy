@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.common.trigger;
+package com.github.minecraftschurli.arsmagicalegacy.api.advancement;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.google.gson.JsonObject;

@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.github.minecraftschurli.arsmagicalegacy.common.trigger;
+package com.github.minecraftschurli.arsmagicalegacy.api.advancement;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
