@@ -1,10 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,6 +33,7 @@ public interface AMBlocks {
     RegistryObject<AltarCoreBlock>        ALTAR_CORE               = BLOCKS.register("altar_core",               AltarCoreBlock::new);
     RegistryObject<AltarViewBlock>        ALTAR_VIEW               = BLOCKS.register("altar_view",               AltarViewBlock::new);
     RegistryObject<Block>                 MAGIC_WALL               = BLOCKS.register("magic_wall",               () -> new GlassBlock(BlockBehaviour.Properties.of(Material.ICE).strength(3F).noOcclusion().noOcclusion().isValidSpawn(AMBlocks::never).isRedstoneConductor(AMBlocks::never).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));
+    RegistryObject<WizardsChalkBlock>     WIZARDS_CHALK            = BLOCKS.register("wizards_chalk",            WizardsChalkBlock::new);
     RegistryObject<Block>                 CHIMERITE_ORE            = BLOCKS.register("chimerite_ore",            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block>                 DEEPSLATE_CHIMERITE_ORE  = BLOCKS.register("deepslate_chimerite_ore",  () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).strength(4.5F, 3F).sound(SoundType.DEEPSLATE)));
     RegistryObject<Block>                 CHIMERITE_BLOCK          = BLOCKS.register("chimerite_block",          () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
@@ -50,8 +53,8 @@ public interface AMBlocks {
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD_LOG   = BLOCKS.register("stripped_witchwood_log",   () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD       = BLOCKS.register("stripped_witchwood",       () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<LeavesBlock>           WITCHWOOD_LEAVES         = BLOCKS.register("witchwood_leaves",         () -> new LeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.QUARTZ).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> d == EntityType.OCELOT || d == EntityType.PARROT).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));
-//    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",              () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); //TODO tree type
-    RegistryObject<BushBlock>             WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new BushBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); //TODO tree type
+//    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",              () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
+    RegistryObject<BushBlock>             WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new BushBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
     RegistryObject<Block>                 WITCHWOOD_PLANKS         = BLOCKS.register("witchwood_planks",         () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<SlabBlock>             WITCHWOOD_SLAB           = BLOCKS.register("witchwood_slab",           () -> new SlabBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<StairBlock>            WITCHWOOD_STAIRS         = BLOCKS.register("witchwood_stairs",         () -> new StairBlock(() -> AMBlocks.WITCHWOOD_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
@@ -68,7 +71,7 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                () -> new FlowerBlock(/*AMMobEffects.BURNOUT_REDUCTION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
-    RegistryObject<WizardsChalkBlock>     WIZARDS_CHALK            = BLOCKS.register("wizards_chalk",            () -> new WizardsChalkBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL)));
+    RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
 
     /**
      * Empty method that is required for classloading
