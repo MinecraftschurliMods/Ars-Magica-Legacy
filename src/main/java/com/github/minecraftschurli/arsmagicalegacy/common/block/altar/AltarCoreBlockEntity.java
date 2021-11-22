@@ -203,10 +203,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
         if (!getLevel().getBlockState(this.leverPos).is(Blocks.LEVER)) return false;
 
-        BlockPattern.BlockPatternMatch x = MULTIBLOCK.matches(getLevel(),
-                                                              getBlockPos().offset(-2, -4, -2),
-                                                              Direction.UP,
-                                                              this.direction);
+        BlockPos offset = getBlockPos().relative(this.direction, 2).relative(this.direction.getClockWise(), 2).below(4);
+        BlockPattern.BlockPatternMatch x = MULTIBLOCK.matches(getLevel(), offset, Direction.UP, this.direction);
 
         if (x == null) return false;
 
