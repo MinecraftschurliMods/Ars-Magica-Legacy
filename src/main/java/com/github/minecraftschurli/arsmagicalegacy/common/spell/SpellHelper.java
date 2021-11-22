@@ -17,10 +17,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
@@ -128,16 +125,16 @@ public final class SpellHelper implements ISpellHelper {
         List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
         double d = 0;
         for (Entity entity : list) {
-            HitResult mop = null;//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
-            if ((entity.canBeCollidedWith() || nonCollide) && mop == null) {
+            HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
+            if ((entity.canBeCollidedWith() || nonCollide) && mop.getType() == HitResult.Type.MISS) {
                 float f2 = Math.max(0.8F, entity.getBbWidth());
                 AABB axisalignedbb = entity.getBoundingBox().inflate(f2, f2, f2);
-                HitResult movingobjectposition = null;//axisalignedbb.calculateIntercept(vec, lookVec);
+                Optional<Vec3> movingobjectposition = axisalignedbb.clip(vec, lookVec);
                 if (axisalignedbb.contains(vec)) {
                     pointedEntity = entity;
                     d = 0;
-                } else if (movingobjectposition != null) {
-                    double d3 = vec.distanceTo(movingobjectposition.getLocation());
+                } else if (movingobjectposition.isPresent()) {
+                    double d3 = vec.distanceTo(movingobjectposition.get());
                     if ((d3 < d) || (d == 0)) {
                         pointedEntity = entity;
                         d = d3;
