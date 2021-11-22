@@ -1,10 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -69,6 +71,7 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                () -> new FlowerBlock(/*AMMobEffects.BURNOUT_REDUCTION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
+    RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
 
     /**
      * Empty method that is required for classloading
