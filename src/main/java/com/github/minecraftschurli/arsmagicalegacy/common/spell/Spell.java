@@ -119,19 +119,20 @@ public final class Spell implements ISpell {
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         IMagicHelper magicHelper = api.getMagicHelper();
         ISpellHelper spellHelper = api.getSpellHelper();
-        if (consume) {
+        if (consume && !(caster instanceof Player p && p.isCreative())) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
             if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
                 return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
+        if (caster instanceof Player p && p.isCreative()) return result;
         if (consume && result.isConsume()) {
             magicHelper.decreaseMana(caster, mana, true);
             magicHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
-        if (awardXp && caster instanceof Player player) {
+        if (awardXp && result.isSuccess() && caster instanceof Player player) {
             boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
             Map<IAffinity, Double> affinityShifts = partsWithModifiers().stream().map(Pair::getFirst).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).filter(Objects::nonNull).map(ISpellPartData::affinityShifts).map(Map::entrySet).flatMap(Collection::stream).collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
