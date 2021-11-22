@@ -27,11 +27,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
                 .setCreativeTab(ArsMagicaAPI.get().getCreativeModeTab().getRecipeFolderName())
                 .setUseResourcepack()
-                .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.BLANK_RUNE.get())) // TODO: magitech goggles here instead
+                .addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.MAGITECH_GOGGLES.get()))
                     .setSortnum(0)
-                    .addEntry("occulus", "Occulus", new ItemStack(AMItems.OCCULUS.get()))
-                        .addSimpleTextPage("Example page.")
-                    .build()
                     .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
                         .addSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get())).build()
                         .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
@@ -46,16 +43,16 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addCategory("entities", "Entities", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                     .setSortnum(3)
                 .build()
-                .addCategory("shapes", "Shapes", "", "") // TODO: add icon
+                .addCategory("shapes", "Shapes", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/touch.png")
                     .setSortnum(4)
                 .build()
-                .addCategory("components", "Components", "", "") // TODO: add icon
+                .addCategory("components", "Components", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/dig.png")
                     .setSortnum(5)
                 .build()
-                .addCategory("modifiers", "Modifiers", "", "") // TODO: add icon
+                .addCategory("modifiers", "Modifiers", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/target_non_solid.png")
                     .setSortnum(6)
                 .build()
-                .addCategory("talents", "Talents", "", "") // TODO: add icon
+                .addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
                     .setSortnum(7)
                 .build()
                 .build(consumer);

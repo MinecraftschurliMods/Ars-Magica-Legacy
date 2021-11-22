@@ -88,7 +88,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('#', AMTags.Items.GEMS_SUNSTONE)
                 .unlockedBy("has_sunstone", has(AMItems.SUNSTONE.get()))
                 .save(consumer);
-
         ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD.get(), 3)
                 .group("bark")
                 .pattern("##")

@@ -1,9 +1,7 @@
 {
   "manaCost": 80.0,
   "reagents": [],
-  "affinities": {
-    "arsmagicalegacy:ice": 0.01
-  },
+  "affinities": {},
   "recipe": [
     {
       "ingredient": {
@@ -14,14 +12,17 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/topaz"
+        "tag": "forge:stone"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "nbt": "{Damage:0}",
+        "item": "minecraft:leather_boots",
+        "count": 1,
+        "type": "forge:nbt"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

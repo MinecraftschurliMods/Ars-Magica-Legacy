@@ -1,10 +1,7 @@
 {
   "occulus_tab": "arsmagicalegacy:defense",
-  "x": 222,
-  "y": 225,
-  "parents": [
-    "arsmagicalegacy:gravity_well"
-  ],
+  "x": 132,
+  "y": 245,
   "cost": {
     "arsmagicalegacy:green": 1
   }

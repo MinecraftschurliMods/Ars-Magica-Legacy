@@ -5,17 +5,17 @@
   "recipe": [
     {
       "ingredient": {
-        "tag": "forge:gems/chimerite"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "type": "forge:nbt"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}",
-        "item": "arsmagicalegacy:affinity_essence",
-        "count": 1,
-        "type": "forge:nbt"
+        "tag": "forge:gems/chimerite"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

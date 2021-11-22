@@ -2,26 +2,27 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:ice": 0.01
+    "arsmagicalegacy:earth": 0.03,
+    "arsmagicalegacy:ender": 0.01
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:green_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:gems/topaz"
+        "tag": "forge:stone"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "item": "minecraft:string"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

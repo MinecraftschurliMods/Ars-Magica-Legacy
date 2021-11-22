@@ -15,14 +15,14 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:book"
+        "tag": "forge:gems/lapis"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:gems/lapis"
+        "item": "minecraft:book"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -29,7 +29,6 @@ public class AMAltarStructureMaterialProvider extends AltarStructureMaterialProv
         addStructureMaterial("nether_bricks", Blocks.NETHER_BRICKS, (StairBlock) Blocks.NETHER_BRICK_STAIRS, 3);
         addStructureMaterial("blackstone", Blocks.POLISHED_BLACKSTONE_BRICKS, (StairBlock) Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS, 3);
         addStructureMaterial("purpur", Blocks.PURPUR_BLOCK, (StairBlock) Blocks.PURPUR_STAIRS, 4);
-
         addCapMaterial("glass", Blocks.GLASS, 1);
         addCapMaterial("coal", Blocks.COAL_BLOCK, 2);
         addCapMaterial("redstone", Blocks.REDSTONE_BLOCK, 3);

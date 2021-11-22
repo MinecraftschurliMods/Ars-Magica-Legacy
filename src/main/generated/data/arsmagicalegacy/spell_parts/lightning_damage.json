@@ -28,7 +28,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:stick"
+        "tag": "forge:rods/wooden"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

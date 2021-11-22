@@ -1,18 +1,20 @@
 {
-  "manaCost": 1.25,
+  "manaCost": 80.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:ender": 0.05
+  },
   "recipe": [
     {
       "ingredient": {
-        "tag": "forge:ingots/gold"
+        "item": "arsmagicalegacy:purple_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:ingots/gold"
+        "tag": "forge:ender_pearls"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
