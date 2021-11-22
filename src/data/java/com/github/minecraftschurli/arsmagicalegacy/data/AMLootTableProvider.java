@@ -3,13 +3,17 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
@@ -31,7 +35,7 @@ class AMLootTableProvider extends LootTableProvider {
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK)/*, Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY)*/);
+        return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK), Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY));
     }
 
     @Override
@@ -40,6 +44,7 @@ class AMLootTableProvider extends LootTableProvider {
 
     private static final class BlockLootTableProvider extends BlockLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
+
         @Override
         protected void addTables() {
             dropSelf(AMBlocks.OCCULUS.get());
@@ -105,9 +110,34 @@ class AMLootTableProvider extends LootTableProvider {
     }
 
     private static final class EntityLootTableProvider extends EntityLoot {
+        private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
+
         @Override
         protected void addTables() {
 
+        }
+
+        @Override
+        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+            addTables();
+            Set<ResourceLocation> set = Sets.newHashSet();
+            for(EntityType<?> entitytype : getKnownEntities()) {
+                ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
+                if (isNonLiving(entitytype)) {
+                    if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)
+                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, entitytype.getRegistryName()));
+                } else if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
+                    LootTable.Builder loottable$builder = lootTables.remove(resourcelocation);
+                    if (loottable$builder == null) continue;
+                    consumer.accept(resourcelocation, loottable$builder);
+                }
+            }
+            lootTables.forEach(consumer);
+        }
+
+        @Override
+        protected void add(EntityType<?> pEntityType, LootTable.Builder pLootTableBuilder) {
+            lootTables.put(pEntityType.getDefaultLootTable(), pLootTableBuilder);
         }
     }
 }

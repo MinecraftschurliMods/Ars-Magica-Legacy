@@ -1,35 +1,39 @@
 {
-  "manaCost": 1.2,
+  "manaCost": 120.0,
   "reagents": [],
   "affinities": {},
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}",
-        "item": "arsmagicalegacy:affinity_essence",
-        "count": 1,
-        "type": "forge:nbt"
+        "tag": "forge:bones"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:dusts/redstone"
+        "tag": "forge:nuggets/gold"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:arrow"
+        "item": "minecraft:brown_mushroom"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "item": "minecraft:spider_eye"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:stone_button"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

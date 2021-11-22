@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.event.AffinityChangingEve
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -111,6 +112,7 @@ public final class Spell implements ISpell {
         SpellCastEvent event = new SpellCastEvent(caster, this);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCanceled()) return SpellCastResult.CANCELLED;
+        if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
         float mana = event.mana;
         float burnout = event.burnout;
         Collection<Either<Ingredient, ItemStack>> reagents = event.reagents;
@@ -119,7 +121,8 @@ public final class Spell implements ISpell {
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume) {
             if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
@@ -131,14 +134,7 @@ public final class Spell implements ISpell {
         if (awardXp && caster instanceof Player player) {
             boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
-            Map<IAffinity, Double> affinityShifts = partsWithModifiers().stream()
-                                                                        .map(Pair::getFirst)
-                                                                        .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
-                                                                        .filter(Objects::nonNull)
-                                                                        .map(ISpellPartData::affinityShifts)
-                                                                        .map(Map::entrySet)
-                                                                        .flatMap(Collection::stream)
-                                                                        .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+            Map<IAffinity, Double> affinityShifts = partsWithModifiers().stream().map(Pair::getFirst).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).filter(Objects::nonNull).map(ISpellPartData::affinityShifts).map(Map::entrySet).flatMap(Collection::stream).collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
             for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
                 IAffinity affinity = entry.getKey();
                 Double shift = entry.getValue();
@@ -244,13 +240,7 @@ public final class Spell implements ISpell {
 
     @Override
     public List<ISpellIngredient> recipe() {
-        List<ISpellPartData> iSpellPartData = Stream.concat(shapeGroups.stream()
-                                                                       .map(ShapeGroup::parts)
-                                                                       .flatMap(Collection::stream),
-                                                            spellStack.parts().stream())
-                                                    .map(ArsMagicaAPI.get()
-                                                                     .getSpellDataManager()::getDataForPart)
-                                                    .toList();
+        List<ISpellPartData> iSpellPartData = Stream.concat(shapeGroups.stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack.parts().stream()).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
         for (ISpellPartData data : iSpellPartData) {
             if (data == null) return List.of();

@@ -1,9 +1,7 @@
 {
   "manaCost": 80.0,
   "reagents": [],
-  "affinities": {
-    "arsmagicalegacy:ice": 0.01
-  },
+  "affinities": {},
   "recipe": [
     {
       "ingredient": {
@@ -14,14 +12,14 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/topaz"
+        "tag": "forge:gems/chimerite"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "tag": "forge:glass_panes"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

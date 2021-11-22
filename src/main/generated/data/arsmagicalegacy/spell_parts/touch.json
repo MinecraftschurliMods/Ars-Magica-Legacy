@@ -12,21 +12,21 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:clay_ball"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:cod"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "tag": "forge:feathers"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "minecraft:fishes"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:clay_ball"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

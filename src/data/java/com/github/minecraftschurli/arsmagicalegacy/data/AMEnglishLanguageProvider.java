@@ -131,6 +131,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(SpellItem.SPELL_CAST_RESULT + "fail", "Spell cast failed!");
         add(SpellItem.SPELL_CAST_RESULT + "missing_reagents", "Missing reagents!");
         add(SpellItem.SPELL_CAST_RESULT + "not_enough_mana", "Not enough mana!");
+        add(SpellItem.SPELL_CAST_RESULT + "silenced", "Silence!");
         add(SpellItem.UNKNOWN_ITEM, "Unknown Item");
         add(SpellItem.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
         add(SpellItem.UNNAMED_SPELL, "Unnamed Spell");

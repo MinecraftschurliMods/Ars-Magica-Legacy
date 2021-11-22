@@ -10,6 +10,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -76,7 +77,6 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                                                  box(7.5, 10, 5, 8.5, 16, 11),
                                                  box(8.5, 12, 6.5, 9.5, 14, 9.5))
     );
-    public static final String OCCULUS_PREVENT = "message." + ArsMagicaAPI.MOD_ID + ".occulus.prevent";
 
     /**
      * Creates a new OcculusBlock. Sets the properties and default state.
@@ -84,6 +84,11 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
     public OcculusBlock() {
         super(Properties.of(Material.STONE).explosionResistance(5).destroyTime(3));
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -117,7 +122,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
         if (pLevel.isClientSide) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-                pPlayer.sendMessage(new TranslatableComponent(OCCULUS_PREVENT), pPlayer.getUUID());
+                pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
             } else {
                 api.openOcculusGui(pPlayer);
             }

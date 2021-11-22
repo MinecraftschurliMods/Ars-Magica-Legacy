@@ -37,20 +37,7 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        getVariantBuilder(ALTAR_CORE.get())
-                .partialState().with(AltarCoreBlock.FORMED, false)
-                .modelForState().modelFile(cubeAll(ALTAR_CORE.get())).addModel()
-                .partialState().with(AltarCoreBlock.FORMED, true)
-                .modelForState().modelFile(models().getBuilder("altar_core_overlay")
-                                                   .texture("overlay", "block/altar_core_overlay")
-                                                   .parent(models().getExistingFile(new ResourceLocation("block/block")))
-                                                   .element()
-                                                   .from(0,0,0)
-                                                   .to(16,0,16)
-                                                   .face(Direction.DOWN)
-                                                   .texture("#overlay")
-                                                   .end()
-                                                   .end()).addModel();
+        getVariantBuilder(ALTAR_CORE.get()).partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(cubeAll(ALTAR_CORE.get())).addModel().partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(models().getBuilder("altar_core_overlay").texture("overlay", "block/altar_core_overlay").parent(models().getExistingFile(new ResourceLocation("block/block"))).element().from(0, 0, 0).to(16, 0, 16).face(Direction.DOWN).texture("#overlay").end().end()).addModel();
         simpleBlock(MAGIC_WALL);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(DEEPSLATE_CHIMERITE_ORE);
@@ -293,7 +280,8 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void wizardsChalkBlock(Supplier<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
-        for (int i = 0; i < models.length; i++) models[i] = models().withExistingParent(block.get().getRegistryName().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.get().getRegistryName().getNamespace(), "block/" + block.get().getRegistryName().getPath() + "_" + i));
+        for (int i = 0; i < models.length; i++)
+            models[i] = models().withExistingParent(block.get().getRegistryName().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.get().getRegistryName().getNamespace(), "block/" + block.get().getRegistryName().getPath() + "_" + i));
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
             return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {

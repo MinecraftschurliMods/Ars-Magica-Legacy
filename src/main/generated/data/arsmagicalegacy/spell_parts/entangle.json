@@ -2,26 +2,26 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:ice": 0.01
+    "arsmagicalegacy:nature": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:red_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:gems/topaz"
+        "tag": "forge:slimeballs"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "item": "minecraft:vine"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

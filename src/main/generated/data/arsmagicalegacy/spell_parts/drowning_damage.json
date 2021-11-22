@@ -2,9 +2,16 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:ice": 0.01
+    "arsmagicalegacy:water": 0.01
   },
   "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:black_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
     {
       "ingredient": {
         "item": "arsmagicalegacy:blue_rune"
@@ -21,7 +28,14 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "item": "minecraft:string"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:water_bucket"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
