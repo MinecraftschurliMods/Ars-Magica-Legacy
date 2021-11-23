@@ -1,6 +1,5 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;

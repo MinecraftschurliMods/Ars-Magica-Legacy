@@ -1,6 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellComponent;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
@@ -12,12 +18,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
@@ -92,7 +106,7 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public HitResult trace(LivingEntity caster, Level world, double range, boolean includeEntities, boolean targetWater) {
+    public HitResult trace(Entity caster, Level world, double range, boolean includeEntities, boolean targetWater) {
         HitResult entityPos = null;
         if (includeEntities) {
             Entity pointedEntity = getPointedEntity(world, caster, range, 1, false, targetWater);
@@ -118,23 +132,23 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Nullable
-    public static Entity getPointedEntity(Level world, LivingEntity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
+    public static Entity getPointedEntity(Level world, Entity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
         Entity pointedEntity = null;
         Vec3 vec = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
         Vec3 lookVec = player.getLookAngle();
         List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
         double d = 0;
         for (Entity entity : list) {
-            HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
-            if ((entity.canBeCollidedWith() || nonCollide) && mop.getType() == HitResult.Type.MISS) {
+            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
+            if ((entity.canBeCollidedWith() || nonCollide) && hit.getType() == HitResult.Type.MISS) {
                 float f2 = Math.max(0.8F, entity.getBbWidth());
-                AABB axisalignedbb = entity.getBoundingBox().inflate(f2, f2, f2);
-                Optional<Vec3> movingobjectposition = axisalignedbb.clip(vec, lookVec);
-                if (axisalignedbb.contains(vec)) {
+                AABB aabb = entity.getBoundingBox().inflate(f2, f2, f2);
+                Optional<Vec3> optional = aabb.clip(vec, lookVec);
+                if (aabb.contains(vec)) {
                     pointedEntity = entity;
                     d = 0;
-                } else if (movingobjectposition.isPresent()) {
-                    double d3 = vec.distanceTo(movingobjectposition.get());
+                } else if (optional.isPresent()) {
+                    double d3 = vec.distanceTo(optional.get());
                     if ((d3 < d) || (d == 0)) {
                         pointedEntity = entity;
                         d = d3;

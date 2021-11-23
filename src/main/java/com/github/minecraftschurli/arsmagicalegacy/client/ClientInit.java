@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.client.entity.SpellProjectileRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
@@ -15,6 +16,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGoggl
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -27,6 +29,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -112,10 +115,12 @@ public final class ClientInit {
             if (itemId == null) continue;
             modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
         }
-
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
-
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
     }
 
+    @SubscribeEvent
+    static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(AMEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
+    }
 }

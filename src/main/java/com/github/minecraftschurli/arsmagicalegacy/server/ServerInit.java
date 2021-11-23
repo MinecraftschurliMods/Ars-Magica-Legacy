@@ -11,7 +11,6 @@ import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,8 +21,8 @@ public final class ServerInit {
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
-            ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
-            SpellItem.saveSpell(stack, Spell.of(SpellStack.of(AMSpellParts.DIG.get()), ShapeGroup.of(AMSpellParts.TOUCH.get())));
+            ItemStack stack = new ItemStack(AMItems.SPELL.get());
+            SpellItem.saveSpell(stack, Spell.of(SpellStack.of(AMSpellParts.DIG.get()), ShapeGroup.of(AMSpellParts.PROJECTILE.get())));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;
         }));

@@ -35,9 +35,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     @Override
     public CompoundTag save(CompoundTag pTag) {
         if (this.spell instanceof Spell) {
-            pTag.put(SPELL_KEY,
-                     Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) this.spell)
-                                .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) this.spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
         if (this.index != null) {
             pTag.putInt(INDEX_KEY, this.index);
@@ -51,9 +49,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         if (pTag.contains(SPELL_KEY)) {
-            this.spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY))
-                                    .map(Pair::getFirst)
-                                    .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
+            this.spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
         }
         if (pTag.contains(INDEX_KEY)) {
             this.index = pTag.getInt(INDEX_KEY);
@@ -69,10 +65,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
         ArsMagicaAPI.get().getSpellHelper().invoke(this.spell, this.caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, this.index, this.awardXp);
     }
 
-    public void setSpell(ISpell spell,
-                         LivingEntity caster,
-                         int index,
-                         boolean awardXp) {
+    public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
         this.spell = spell;
         this.index = index;
         this.caster = caster;

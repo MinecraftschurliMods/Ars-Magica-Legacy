@@ -1,7 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.*;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityEssenceItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.AffinityTomeItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.MagitechGogglesItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.ColoredRegistryObject;
 import net.minecraft.world.item.BlockItem;

@@ -11,10 +11,10 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.util.Lazy;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 public final class SkillIconAtlas extends TextureAtlasHolder {
     private static final Lazy<SkillIconAtlas> INSTANCE           = Lazy.of(SkillIconAtlas::new);

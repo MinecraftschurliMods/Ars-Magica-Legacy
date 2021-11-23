@@ -63,6 +63,7 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMMobEffects.register();
+        AMEntities.register();
         AMBlockEntities.register();
         AMMenuTypes.register();
         AMStats.register();
