@@ -2,6 +2,9 @@
   "occulus_tab": "arsmagicalegacy:utility",
   "x": 185,
   "y": 255,
+  "parents": [
+    "arsmagicalegacy:true_sight"
+  ],
   "cost": {
     "arsmagicalegacy:green": 1
   }

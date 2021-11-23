@@ -11,7 +11,11 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManage
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
-import com.github.minecraftschurli.arsmagicalegacy.network.*;
+import com.github.minecraftschurli.arsmagicalegacy.network.BEClientSyncPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;

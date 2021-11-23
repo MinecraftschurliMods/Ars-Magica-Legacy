@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 
 import com.mojang.datafixers.util.Either;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -48,7 +46,7 @@ public interface ISpellHelper {
 
     boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id);
 
-    HitResult trace(LivingEntity caster, Level world, double range, boolean includeEntities, boolean targetWater);
+    HitResult trace(Entity caster, Level world, double range, boolean includeEntities, boolean targetWater);
 
     /**
      * Casts the spell.

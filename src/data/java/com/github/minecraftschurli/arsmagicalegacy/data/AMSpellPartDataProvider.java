@@ -34,6 +34,19 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
 
     @Override
     protected void createSpellPartData() {
+        createSpellPartData(AMSpellParts.PROJECTILE, 1.25f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.SNOWBALL), 1))
+                .build();
+        createSpellPartData(AMSpellParts.RUNE, 1.8f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLACK)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.ORANGE)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.PURPLE)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.RED)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
+                .build();
         createSpellPartData(AMSpellParts.SELF, 0.5f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
@@ -226,23 +239,36 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(new ItemStack(Items.IRON_SHOVEL)){}, 1))
                 .build();
 
+        createSpellPartData(AMSpellParts.BOUNCE, 1.25f)
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.SLIMEBALLS), 1))
+                .build();
+        createSpellPartData(AMSpellParts.GRAVITY, 1f)
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.COMPASS), 1))
+                .build();
+        createSpellPartData(AMSpellParts.MINING_POWER, 1.25f)
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(new ItemStack(Items.DIAMOND_PICKAXE)){}, 1))
+                .build();
+        createSpellPartData(AMSpellParts.PIERCING, 1.5f)
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.GEMS_EMERALD), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
+                .build();
+        createSpellPartData(AMSpellParts.PROSPERITY, 1.25f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.INGOTS_GOLD), 2))
+                .build();
         createSpellPartData(AMSpellParts.RANGE, 1.2f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ARCANE.get())){}, 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.SNOWBALL), 1))
                 .build();
-        createSpellPartData(AMSpellParts.PROSPERITY, 1.25f)
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.INGOTS_GOLD), 2))
-                .build();
         createSpellPartData(AMSpellParts.SILK_TOUCH, 1.25f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())){}, 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.FEATHERS), 1))
-                .build();
-        createSpellPartData(AMSpellParts.MINING_POWER, 1.25f)
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())){}, 1))
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(new ItemStack(Items.DIAMOND_PICKAXE)){}, 1))
                 .build();
         createSpellPartData(AMSpellParts.TARGET_NON_SOLID, 1f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.WATER.get())){}, 1))

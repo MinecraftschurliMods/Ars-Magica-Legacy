@@ -39,7 +39,7 @@ public class Dig extends AbstractComponent {
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            ItemStack dummyStack = createDummyStack(spellHelper.countModifiers(modifiers, AMSpellParts.PROSPERITY.getId()),                     spellHelper.countModifiers(modifiers, AMSpellParts.SILK_TOUCH.getId()));
+            ItemStack dummyStack = createDummyStack(spellHelper.countModifiers(modifiers, AMSpellParts.PROSPERITY.getId()), spellHelper.countModifiers(modifiers, AMSpellParts.SILK_TOUCH.getId()));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);

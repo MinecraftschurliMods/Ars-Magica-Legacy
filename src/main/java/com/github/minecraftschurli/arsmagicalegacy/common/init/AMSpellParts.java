@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Damage
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Dig;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Effect;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.modifier.AbstractModifier;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Projectile;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Rune;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Self;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Touch;
@@ -18,17 +19,18 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 
 public interface AMSpellParts {
     // TODO aoe, beam, chain, channel, projectile, rune, wall, wave, zone
+    RegistryObject<Projectile>     PROJECTILE        = SPELL_PARTS.register("projectile",        Projectile::new);
+    RegistryObject<Rune>           RUNE              = SPELL_PARTS.register("rune",              Rune::new);
     RegistryObject<Self>           SELF              = SPELL_PARTS.register("self",              Self::new);
     RegistryObject<Touch>          TOUCH             = SPELL_PARTS.register("touch",             Touch::new);
-    RegistryObject<Rune>           RUNE              = SPELL_PARTS.register("rune",              Rune::new);
     // TODO contingencies: damage, death, fall, fire, health
 
-    RegistryObject<Damage>         DROWNING_DAMAGE   = SPELL_PARTS.register("drowning_damage",   () -> new Damage(caster -> DamageSource.DROWN, 6));
-    RegistryObject<Damage>         FIRE_DAMAGE       = SPELL_PARTS.register("fire_damage",       () -> new Damage(caster -> DamageSource.IN_FIRE, 6));
-    RegistryObject<Damage>         FROST_DAMAGE      = SPELL_PARTS.register("frost_damage",      () -> new Damage(caster -> DamageSource.FREEZE, 6));
-    RegistryObject<Damage>         LIGHTNING_DAMAGE  = SPELL_PARTS.register("lightning_damage",  () -> new Damage(caster -> DamageSource.LIGHTNING_BOLT, 6));
-    RegistryObject<Damage>         MAGIC_DAMAGE      = SPELL_PARTS.register("magic_damage",      () -> new Damage(caster -> DamageSource.indirectMagic(caster, null), 6));
-    RegistryObject<Damage>         PHYSICAL_DAMAGE   = SPELL_PARTS.register("physical_damage",   () -> new Damage(caster -> caster instanceof Player player ? DamageSource.playerAttack(player) : DamageSource.mobAttack(caster), 6));
+    RegistryObject<Damage>         DROWNING_DAMAGE   = SPELL_PARTS.register("drowning_damage",   () -> new Damage(e -> DamageSource.DROWN, 6));
+    RegistryObject<Damage>         FIRE_DAMAGE       = SPELL_PARTS.register("fire_damage",       () -> new Damage(e -> DamageSource.IN_FIRE, 6));
+    RegistryObject<Damage>         FROST_DAMAGE      = SPELL_PARTS.register("frost_damage",      () -> new Damage(e -> DamageSource.FREEZE, 6));
+    RegistryObject<Damage>         LIGHTNING_DAMAGE  = SPELL_PARTS.register("lightning_damage",  () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, 6));
+    RegistryObject<Damage>         MAGIC_DAMAGE      = SPELL_PARTS.register("magic_damage",      () -> new Damage(e -> DamageSource.indirectMagic(e, null), 6));
+    RegistryObject<Damage>         PHYSICAL_DAMAGE   = SPELL_PARTS.register("physical_damage",   () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), 6));
     RegistryObject<Effect>         ABSORPTION        = SPELL_PARTS.register("absorption",        () -> new Effect(MobEffects.ABSORPTION, 600));
     RegistryObject<Effect>         BLINDNESS         = SPELL_PARTS.register("blindness",         () -> new Effect(MobEffects.BLINDNESS, 600));
     RegistryObject<Effect>         HASTE             = SPELL_PARTS.register("haste",             () -> new Effect(MobEffects.DIG_SPEED, 600));
@@ -57,8 +59,11 @@ public interface AMSpellParts {
     RegistryObject<Dig>            DIG               = SPELL_PARTS.register("dig",               Dig::new);
     // TODO attract, banish_rain, blink, blizzard, charm, create_water, daylight, disarm, dispel, divine_intervention, drought, ender_intervention, falling_star, fire_rain, fling, forge, grow, harvest_plants, heal, igniton, knockback, life_drain, life_tap, light, mana_blast, mana_drain, mana_link, mana_shield, mark, moonrise, place_block, plant, plow, random_teleport, recall, repel, rift, storm, summon, telekinesis, transplace, wizards_autumn
 
-    // TODO bounce, damage, dismembering, duration, effect_power, gravity, healing, lunar, piercing, radius, rune_procs, solar, target_non_solid, velocity
+    // TODO damage, dismembering, duration, effect_power, healing, lunar, piercing, radius, rune_procs, solar, target_non_solid, velocity
+    RegistryObject<ISpellModifier> BOUNCE            = SPELL_PARTS.register("bounce",            () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> GRAVITY           = SPELL_PARTS.register("gravity",           () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> MINING_POWER      = SPELL_PARTS.register("mining_power",      () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> PIERCING          = SPELL_PARTS.register("piercing",          () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> PROSPERITY        = SPELL_PARTS.register("prosperity",        () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> RANGE             = SPELL_PARTS.register("range",             () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> SILK_TOUCH        = SPELL_PARTS.register("silk_touch",        () -> new AbstractModifier() {});

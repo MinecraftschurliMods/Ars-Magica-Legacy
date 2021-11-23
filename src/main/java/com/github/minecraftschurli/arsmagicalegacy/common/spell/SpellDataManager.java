@@ -18,7 +18,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
     private static final Map<ResourceLocation, Codec<ISpellIngredient>> CODECS = new HashMap<>();

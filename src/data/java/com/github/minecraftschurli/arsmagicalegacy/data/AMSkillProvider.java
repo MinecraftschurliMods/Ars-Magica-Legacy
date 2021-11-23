@@ -28,19 +28,21 @@ class AMSkillProvider extends SkillProvider {
 
     @Override
     protected void createSkills(Consumer<SkillBuilder> consumer) {
+        SkillBuilder.create(PROJECTILE.getId(), OFFENSE).setPosition(300, 45).addCost(AMSkillPoints.BLUE.getId()).build(consumer);
+        SkillBuilder.create(RUNE.getId(), DEFENSE).setPosition(157, 315).addCost(AMSkillPoints.GREEN.getId())/*.addParent(ACCELERATE.getId())*/.addParent(ENTANGLE.getId()).build(consumer);
         SkillBuilder.create(SELF.getId(), DEFENSE).setPosition(267, 45).addCost(AMSkillPoints.BLUE.getId()).build(consumer);
         SkillBuilder.create(TOUCH.getId(), UTILITY).setPosition(275, 75).addCost(AMSkillPoints.BLUE.getId()).build(consumer);
 
         SkillBuilder.create(DROWNING_DAMAGE.getId(), OFFENSE).setPosition(435, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(MAGIC_DAMAGE.getId()).build(consumer);
-        SkillBuilder.create(FIRE_DAMAGE.getId(), OFFENSE).setPosition(210, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(PHYSICAL_DAMAGE.getId()).build(consumer);
-        SkillBuilder.create(FROST_DAMAGE.getId(), OFFENSE).setPosition(345, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(MAGIC_DAMAGE.getId()).build(consumer);
-        SkillBuilder.create(LIGHTNING_DAMAGE.getId(), OFFENSE).setPosition(255, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(FIRE_DAMAGE.getId()).build(consumer);
-        SkillBuilder.create(MAGIC_DAMAGE.getId(), OFFENSE).setPosition(390, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(PHYSICAL_DAMAGE.getId()).build(consumer);
-        SkillBuilder.create(PHYSICAL_DAMAGE.getId(), OFFENSE).setPosition(300, 90).addCost(AMSkillPoints.BLUE.getId())/*.addParent(PROJECTILE.getId())*/.build(consumer); // TODO
+        SkillBuilder.create(FIRE_DAMAGE.getId(), OFFENSE).setPosition(255, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(PHYSICAL_DAMAGE.getId()).build(consumer);
+        SkillBuilder.create(FROST_DAMAGE.getId(), OFFENSE).setPosition(390, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(MAGIC_DAMAGE.getId()).build(consumer);
+        SkillBuilder.create(LIGHTNING_DAMAGE.getId(), OFFENSE).setPosition(210, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(FIRE_DAMAGE.getId()).build(consumer);
+        SkillBuilder.create(MAGIC_DAMAGE.getId(), OFFENSE).setPosition(345, 135).addCost(AMSkillPoints.BLUE.getId()).addParent(PHYSICAL_DAMAGE.getId()).build(consumer);
+        SkillBuilder.create(PHYSICAL_DAMAGE.getId(), OFFENSE).setPosition(300, 90).addCost(AMSkillPoints.BLUE.getId()).addParent(PROJECTILE.getId()).build(consumer); // TODO
         SkillBuilder.create(ABSORPTION.getId(), DEFENSE).setPosition(312, 270).addCost(AMSkillPoints.RED.getId()).addParent(SHIELD.getId()).build(consumer);
         SkillBuilder.create(BLINDNESS.getId(), OFFENSE).setPosition(233, 180).addCost(AMSkillPoints.GREEN.getId()).addParent(FIRE_DAMAGE.getId()).addParent(LIGHTNING_DAMAGE.getId()).build(consumer);
         SkillBuilder.create(HASTE.getId(), DEFENSE).setPosition(177, 155).addCost(AMSkillPoints.BLUE.getId()).addParent(SLOW_FALLING.getId()).build(consumer);
-        SkillBuilder.create(INVISIBILITY.getId(), UTILITY).setPosition(185, 255).addCost(AMSkillPoints.GREEN.getId())/*.addParent(TRUE_SIGHT.getId())*/.build(consumer); // TODO
+        SkillBuilder.create(INVISIBILITY.getId(), UTILITY).setPosition(185, 255).addCost(AMSkillPoints.GREEN.getId()).addParent(TRUE_SIGHT.getId()).build(consumer); // TODO
         SkillBuilder.create(JUMP_BOOST.getId(), DEFENSE).setPosition(222, 90).addCost(AMSkillPoints.BLUE.getId()).addParent(SELF.getId()).build(consumer);
         SkillBuilder.create(LEVITATION.getId(), DEFENSE).setPosition(222, 225).addCost(AMSkillPoints.GREEN.getId()).addParent(GRAVITY_WELL.getId()).build(consumer);
         SkillBuilder.create(REGENERATION.getId(), DEFENSE).setPosition(357, 90).addCost(AMSkillPoints.BLUE.getId()).addParent(SELF.getId()).build(consumer);
@@ -61,7 +63,10 @@ class AMSkillProvider extends SkillProvider {
         SkillBuilder.create(WATERY_GRAVE.getId(), OFFENSE).setPosition(435, 245).addCost(AMSkillPoints.GREEN.getId()).addParent(DROWNING_DAMAGE.getId()).build(consumer);
         SkillBuilder.create(DIG.getId(), UTILITY).setPosition(275, 120).addCost(AMSkillPoints.BLUE.getId()).addParent(TOUCH.getId()).build(consumer);
 
+        SkillBuilder.create(BOUNCE.getId(), OFFENSE).setPosition(345, 70).addCost(AMSkillPoints.BLUE.getId()).addParent(PROJECTILE.getId()).build(consumer);
+        SkillBuilder.create(GRAVITY.getId(), OFFENSE).setPosition(255, 70).addCost(AMSkillPoints.BLUE.getId()).addParent(PROJECTILE.getId()).build(consumer);
         SkillBuilder.create(MINING_POWER.getId(), UTILITY).setPosition(185, 137).addCost(AMSkillPoints.GREEN.getId()).addParent(SILK_TOUCH.getId()).build(consumer);
+        SkillBuilder.create(PIERCING.getId(), OFFENSE).setPosition(323, 215).addCost(AMSkillPoints.RED.getId())/*.addParent(FREEZE.getId())*/.build(consumer);
         SkillBuilder.create(PROSPERITY.getId(), UTILITY).setPosition(75, 135).hidden().build(consumer);
         SkillBuilder.create(SILK_TOUCH.getId(), UTILITY).setPosition(230, 137).addCost(AMSkillPoints.BLUE.getId()).addParent(DIG.getId()).build(consumer);
         SkillBuilder.create(TARGET_NON_SOLID.getId(), UTILITY).setPosition(230, 75).addCost(AMSkillPoints.BLUE.getId()).addParent(TOUCH.getId()).build(consumer);
