@@ -3,7 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
-import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
@@ -11,7 +12,9 @@ import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
@@ -56,8 +59,7 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
 public final class EventHandler {
-    private EventHandler() {
-    }
+    private EventHandler() {}
 
     @Internal
     public static void register(IEventBus modBus) {
@@ -103,18 +105,21 @@ public final class EventHandler {
         event.register(SkillHelper.KnowledgeHolder.class);
         event.register(AffinityHelper.AffinityHolder.class);
         event.register(MagicHelper.MagicHolder.class);
-        event.register(MagicHelper.ManaHolder.class);
-        event.register(MagicHelper.BurnoutHolder.class);
+        event.register(ManaHelper.ManaHolder.class);
+        event.register(BurnoutHelper.BurnoutHolder.class);
     }
 
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity livingEntity) {
+            //noinspection unchecked
             AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());
             if (attributes.hasAttribute(AMAttributes.MAX_MANA.get())) {
-                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"), new CodecCapabilityProvider<>(MagicHelper.ManaHolder.CODEC, MagicHelper.getManaCapability(), MagicHelper.ManaHolder::new));
+                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"), new CodecCapabilityProvider<>(
+                        ManaHelper.ManaHolder.CODEC, ManaHelper.getManaCapability(), ManaHelper.ManaHolder::new));
             }
             if (attributes.hasAttribute(AMAttributes.MAX_BURNOUT.get())) {
-                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"), new CodecCapabilityProvider<>(MagicHelper.BurnoutHolder.CODEC, MagicHelper.getBurnoutCapability(), MagicHelper.BurnoutHolder::new));
+                event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"), new CodecCapabilityProvider<>(
+                        BurnoutHelper.BurnoutHolder.CODEC, BurnoutHelper.getBurnoutCapability(), BurnoutHelper.BurnoutHolder::new));
             }
         }
         if (event.getObject() instanceof Player) {
@@ -136,7 +141,9 @@ public final class EventHandler {
         if (event.getWorld().isClientSide()) return;
         SkillHelper.instance().syncToPlayer(player);
         AffinityHelper.instance().syncToPlayer(player);
-        MagicHelper.instance().syncAllToPlayer(player);
+        MagicHelper.instance().syncMagic(player);
+        ManaHelper.instance().syncMana(player);
+        BurnoutHelper.instance().syncBurnout(player);
         for (MobEffectInstance instance : player.getActiveEffects()) {
             if (instance.getEffect() instanceof AMMobEffect) {
                 ((AMMobEffect) instance.getEffect()).startEffect(player, instance);
@@ -165,8 +172,8 @@ public final class EventHandler {
         if (event.phase != TickEvent.Phase.START) return;
         Player player = event.player;
         if (player.isDeadOrDying()) return;
-        ArsMagicaAPI.get().getMagicHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        ArsMagicaAPI.get().getMagicHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        ArsMagicaAPI.get().getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        ArsMagicaAPI.get().getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
@@ -207,20 +214,20 @@ public final class EventHandler {
     }
 
     private static void potionAdded(PotionEvent.PotionAddedEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
-            ((AMMobEffect) event.getPotionEffect().getEffect()).startEffect(event.getEntityLiving(), event.getPotionEffect());
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
+            effect.startEffect(event.getEntityLiving(), event.getPotionEffect());
         }
     }
 
     private static void potionExpiry(PotionEvent.PotionExpiryEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
-            ((AMMobEffect) event.getPotionEffect().getEffect()).stopEffect(event.getEntityLiving(), event.getPotionEffect());
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
+            effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
         }
     }
 
     private static void potionRemove(PotionEvent.PotionRemoveEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect) {
-            ((AMMobEffect) event.getPotionEffect().getEffect()).stopEffect(event.getEntityLiving(), event.getPotionEffect());
+        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
+            effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
         }
     }
 
@@ -239,16 +246,17 @@ public final class EventHandler {
         // TODO change
         float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
         float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level-1);
-        IMagicHelper magicHelper = ArsMagicaAPI.get().getMagicHelper();
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
+            IManaHelper manaHelper = ArsMagicaAPI.get().getManaHelper();
             maxManaAttr.setBaseValue(newMaxMana);
-            magicHelper.increaseMana(player, (newMaxMana - magicHelper.getMana(player)) / 2);
+            manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
+            IBurnoutHelper burnoutHelper = ArsMagicaAPI.get().getBurnoutHelper();
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
-            magicHelper.decreaseBurnout(player, magicHelper.getBurnout(player) / 2);
+            burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
     }
 }
