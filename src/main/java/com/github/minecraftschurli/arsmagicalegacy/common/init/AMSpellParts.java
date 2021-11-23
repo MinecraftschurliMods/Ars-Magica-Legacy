@@ -59,15 +59,24 @@ public interface AMSpellParts {
     RegistryObject<Dig>            DIG               = SPELL_PARTS.register("dig",               Dig::new);
     // TODO attract, banish_rain, blink, blizzard, charm, create_water, daylight, disarm, dispel, divine_intervention, drought, ender_intervention, falling_star, fire_rain, fling, forge, grow, harvest_plants, heal, igniton, knockback, life_drain, life_tap, light, mana_blast, mana_drain, mana_link, mana_shield, mark, moonrise, place_block, plant, plow, random_teleport, recall, repel, rift, storm, summon, telekinesis, transplace, wizards_autumn
 
-    // TODO damage, dismembering, duration, effect_power, healing, lunar, piercing, radius, rune_procs, solar, target_non_solid, velocity
     RegistryObject<ISpellModifier> BOUNCE            = SPELL_PARTS.register("bounce",            () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> DAMAGE            = SPELL_PARTS.register("damage",            () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> DISMEMBERING      = SPELL_PARTS.register("dismembering",      () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> DURATION          = SPELL_PARTS.register("duration",          () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> EFFECT_POWER      = SPELL_PARTS.register("effect_power",      () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> GRAVITY           = SPELL_PARTS.register("gravity",           () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> HEALING           = SPELL_PARTS.register("healing",           () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> LUNAR             = SPELL_PARTS.register("lunar",             () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> MINING_POWER      = SPELL_PARTS.register("mining_power",      () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> PIERCING          = SPELL_PARTS.register("piercing",          () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> PROSPERITY        = SPELL_PARTS.register("prosperity",        () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> RADIUS            = SPELL_PARTS.register("radius",            () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> RANGE             = SPELL_PARTS.register("range",             () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> RUNE_PROCS        = SPELL_PARTS.register("rune_procs",        () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> SILK_TOUCH        = SPELL_PARTS.register("silk_touch",        () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> SOLAR             = SPELL_PARTS.register("solar",             () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier> TARGET_NON_SOLID  = SPELL_PARTS.register("target_non_solid",  () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier> VELOCITY          = SPELL_PARTS.register("velocity",          () -> new AbstractModifier() {});
 
     /**
      * Empty method that is required for classloading
