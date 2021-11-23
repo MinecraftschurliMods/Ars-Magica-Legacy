@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
@@ -17,6 +18,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.mojang.datafixers.util.Either;
@@ -149,18 +151,20 @@ public final class Spell implements ISpell {
         Collection<Either<Ingredient, ItemStack>> reagents = event.reagents;
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         IMagicHelper magicHelper = api.getMagicHelper();
+        IManaHelper manaHelper = api.getManaHelper();
+        IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume && !(caster instanceof Player p && p.isCreative())) {
-            if (magicHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (magicHelper.getMaxBurnout(caster) - magicHelper.getBurnout(caster) < burnout)
+            if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
+            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
                 return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
         if (caster instanceof Player p && p.isCreative()) return result;
         if (consume && result.isConsume()) {
-            magicHelper.decreaseMana(caster, mana, true);
-            magicHelper.increaseBurnout(caster, burnout);
+            manaHelper.decreaseMana(caster, mana, true);
+            burnoutHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
         if (awardXp && result.isSuccess() && caster instanceof Player player) {

@@ -6,7 +6,9 @@ import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
@@ -53,7 +55,6 @@ public final class ArsMagicaLegacy {
         Config.init();
         registerNetworkPackets();
         SkillHelper.init();
-        MagicHelper.init();
         AffinityHelper.init();
         OcculusTabManager.instance();
         SkillManager.instance();
@@ -71,5 +72,8 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

@@ -2,7 +2,9 @@ package com.github.minecraftschurli.arsmagicalegacy.api;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
@@ -22,9 +24,13 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import java.lang.reflect.InvocationTargetException;
 
 public final class ArsMagicaAPI {
+    /**
+     * The modid of the mod
+     */
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
         try {
+            //noinspection unchecked
             Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
             return clazz.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -136,6 +142,20 @@ public final class ArsMagicaAPI {
         IMagicHelper getMagicHelper();
 
         /**
+         * Get the {@link IManaHelper} instance.
+         *
+         * @return the {@link IManaHelper} instance
+         */
+        IManaHelper getManaHelper();
+
+        /**
+         * Get the {@link IBurnoutHelper} instance.
+         *
+         * @return the {@link IBurnoutHelper} instance
+         */
+        IBurnoutHelper getBurnoutHelper();
+
+        /**
          * Open the occulus gui for the given player.
          *
          * @param player the player to open the gui for
@@ -156,6 +176,7 @@ public final class ArsMagicaAPI {
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
@@ -171,6 +192,16 @@ public final class ArsMagicaAPI {
 
         @Override
         public IForgeRegistry<ISkillPoint> getSkillPointRegistry() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<IAffinity> getAffinityRegistry() {
+            return null;
+        }
+
+        @Override
+        public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
             return null;
         }
 
@@ -195,19 +226,6 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public void openOcculusGui(final Player pPlayer) {
-        }
-
-        @Override
-        public ISpellHelper getSpellHelper() {
-            return null;
-        }
-
-        @Override
-        public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
-        }
-
-        @Override
         public IAffinityHelper getAffinityHelper() {
             return null;
         }
@@ -218,13 +236,26 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public IForgeRegistry<IAffinity> getAffinityRegistry() {
+        public IManaHelper getManaHelper() {
             return null;
         }
 
         @Override
-        public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
+        public IBurnoutHelper getBurnoutHelper() {
             return null;
+        }
+
+        @Override
+        public void openOcculusGui(final Player pPlayer) {
+        }
+
+        @Override
+        public ISpellHelper getSpellHelper() {
+            return null;
+        }
+
+        @Override
+        public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
         }
     }
 }
