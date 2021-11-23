@@ -3,6 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block;
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -12,11 +14,12 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.common.util.Constants;
 
 public class SpellRuneBlockEntity extends BlockEntity {
     public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
@@ -28,8 +31,8 @@ public class SpellRuneBlockEntity extends BlockEntity {
     private LivingEntity caster;
     private Boolean awardXp;
 
-    public SpellRuneBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
-        super(pType, pWorldPosition, pBlockState);
+    public SpellRuneBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+        super(AMBlockEntities.SPELL_RUNE.get(), pWorldPosition, pBlockState);
     }
 
     @Override
@@ -61,8 +64,29 @@ public class SpellRuneBlockEntity extends BlockEntity {
     }
 
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
-        ArsMagicaAPI.get().getSpellHelper().invoke(this.spell, this.caster, level, new EntityHitResult(entity), 0, this.index, this.awardXp);
-        ArsMagicaAPI.get().getSpellHelper().invoke(this.spell, this.caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, this.index, this.awardXp);
+        if (this.spell == null) return;
+        SpellCastResult r1 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
+                                                                        this.caster,
+                                                                        level,
+                                                                        new EntityHitResult(entity),
+                                                                        0,
+                                                                        this.index,
+                                                                        this.awardXp);
+        SpellCastResult r2 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
+                                                                        this.caster,
+                                                                        level,
+                                                                        new BlockHitResult(entity.position(),
+                                                                                           direction,
+                                                                                           pos,
+                                                                                           false),
+                                                                        0,
+                                                                        this.index,
+                                                                        this.awardXp);
+        if (r1.isSuccess() || r2.isSuccess()) {
+            level.setBlock(pos,
+                           Blocks.AIR.defaultBlockState(),
+                           Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+        }
     }
 
     public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
