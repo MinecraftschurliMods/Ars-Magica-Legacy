@@ -37,6 +37,7 @@ class AMBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         getVariantBuilder(ALTAR_CORE.get()).partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(cubeAll(ALTAR_CORE.get())).addModel().partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(models().getBuilder("altar_core_overlay").texture("overlay", "block/altar_core_overlay").parent(models().getExistingFile(new ResourceLocation("block/block"))).element().from(0, 0, 0).to(16, 0, 16).face(Direction.DOWN).texture("#overlay").end().end()).addModel();
+        airBlock(ALTAR_VIEW);
         simpleBlock(MAGIC_WALL);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(DEEPSLATE_CHIMERITE_ORE);
@@ -74,6 +75,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         crossBlock(WAKEBLOOM);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
         wizardsChalkBlock(WIZARDS_CHALK);
+        airBlock(SPELL_RUNE);
     }
 
     /**

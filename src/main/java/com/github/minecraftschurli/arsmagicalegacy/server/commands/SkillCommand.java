@@ -29,7 +29,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SkillCommand {
-    private static final String LANG_KEY_PREFIX = "commands.%s.skill".formatted(ArsMagicaAPI.MOD_ID);
+    public static final String LANG_KEY_PREFIX = "commands.%s.skill".formatted(ArsMagicaAPI.MOD_ID);
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
     private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(LANG_KEY_PREFIX + ".skillNotFound", message));
 

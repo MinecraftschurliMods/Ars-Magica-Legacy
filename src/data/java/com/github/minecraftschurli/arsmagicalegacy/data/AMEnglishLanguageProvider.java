@@ -6,11 +6,13 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -93,6 +95,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
         itemIdTranslation(AMItems.SPELL);
+        entityIdTranslation(AMEntities.SPELL_PROJECTILE);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
@@ -120,6 +123,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillPointIdTranslation(AMSkillPoints.GREEN);
         skillPointIdTranslation(AMSkillPoints.RED);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+        add(SkillCommand.LANG_KEY_PREFIX + ".empty", "");
+        add(SkillCommand.LANG_KEY_PREFIX + ".forgetAll.success", "Forgot all skills");
+        add(SkillCommand.LANG_KEY_PREFIX + ".forget.success", "Forgot skill %s");
+        add(SkillCommand.LANG_KEY_PREFIX + ".learnAll.success", "Learned all skills");
+        add(SkillCommand.LANG_KEY_PREFIX + ".learn.success", "Learned skill %s");
+        add(SkillCommand.LANG_KEY_PREFIX + ".skillNotKnown", "Skill %s must be learned first");
+        add(SkillCommand.LANG_KEY_PREFIX + ".skillAlreadyKnown", "Skill %s has already been learned");
         add(SpellItem.BURNOUT, "Burnout: %d");
         add(SpellItem.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(SpellItem.INVALID_SPELL, "[Invalid Spell]");
