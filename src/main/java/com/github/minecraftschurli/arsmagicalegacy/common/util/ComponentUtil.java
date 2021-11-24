@@ -5,7 +5,7 @@ import net.minecraft.network.chat.TextComponent;
 
 import java.util.stream.Collector;
 
-public class ComponentUtil {
+public final class ComponentUtil {
 
     public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String del) {
         TextComponent cdlComp = new TextComponent(del);
