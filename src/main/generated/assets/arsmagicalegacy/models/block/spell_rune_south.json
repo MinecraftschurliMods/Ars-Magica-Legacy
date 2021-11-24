@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "texture": "arsmagicalegacy:block/spell_rune"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        1,
+        15.5
+      ],
+      "to": [
+        15,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}
