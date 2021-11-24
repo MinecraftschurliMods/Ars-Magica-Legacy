@@ -126,27 +126,6 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public Map<IAffinity, Double> getAffinitiesForSpell(ISpell spell) {
-        return spell.partsWithModifiers().stream().map(Pair::getFirst).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).filter(Objects::nonNull).map(ISpellPartData::affinityShifts).map(Map::entrySet).flatMap(Collection::stream).collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
-    }
-
-    @Override
-    public IAffinity getPrimaryAffinityForSpell(ISpell spell) {
-        IAffinity result = AMAffinities.NONE.get();
-        double max = 0;
-        for (Map.Entry<IAffinity, Double> entry : getAffinitiesForSpell(spell).entrySet()) {
-            double shift = entry.getValue();
-            if (shift > max) {
-                max = shift;
-                result = entry.getKey();
-            } else if (shift == max) {
-                result = AMAffinities.NONE.get();
-            }
-        }
-        return result;
-    }
-
-    @Override
     public double getAffinityDepth(Player player, ResourceLocation affinity) {
         return getAffinityHolder(player).getAffinityDepth(affinity);
     }

@@ -19,6 +19,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.mojang.datafixers.util.Either;
@@ -37,14 +38,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.util.MiscConstants.AFFINITY_GAINS;
@@ -171,16 +166,7 @@ public final class Spell implements ISpell {
             boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) &&
                                     SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
-            //Map<IAffinity, Double> affinityShifts = ArsMagicaAPI.get().getAffinityHelper().getAffinitiesForSpell(this);
-            Map<IAffinity, Double> affinityShifts = partsWithModifiers()
-                    .stream()
-                    .map(Pair::getFirst)
-                    .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
-                    .filter(Objects::nonNull)
-                    .map(ISpellPartData::affinityShifts)
-                    .map(Map::entrySet)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+            Map<IAffinity, Double> affinityShifts = affinityShifts();
             for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
                 IAffinity affinity = entry.getKey();
                 Double shift = entry.getValue();
@@ -303,6 +289,41 @@ public final class Spell implements ISpell {
             ingredients.addAll(data.recipe());
         }
         return ingredients;
+    }
+
+    @Override
+    public Map<IAffinity, Double> affinityShifts() {
+        return partsWithModifiers()
+                .stream()
+                .map(Pair::getFirst)
+                .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
+                .filter(Objects::nonNull)
+                .map(ISpellPartData::affinityShifts)
+                .map(Map::entrySet)
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+    }
+
+    @Override
+    public Set<IAffinity> affinities() {
+        return partsWithModifiers()
+                .stream()
+                .map(Pair::getFirst)
+                .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
+                .filter(Objects::nonNull)
+                .map(ISpellPartData::affinityShifts)
+                .map(Map::keySet)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public IAffinity primaryAffinity() {
+        return affinityShifts().entrySet()
+                               .stream()
+                               .max(Map.Entry.comparingByValue())
+                               .map(Map.Entry::getKey)
+                               .orElseGet(AMAffinities.NONE);
     }
 
     @Override
