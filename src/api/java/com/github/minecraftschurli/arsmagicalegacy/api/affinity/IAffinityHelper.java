@@ -1,12 +1,9 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.affinity;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Map;
 
 /**
  * Interface representing an affinity helper
@@ -71,20 +68,6 @@ public interface IAffinityHelper {
      * @return the {@link IAffinity} stored in the stack or the NONE affinity if the stack does not contain one
      */
     IAffinity getAffinityForStack(ItemStack stack);
-
-    /**
-     * Get a map of {@link IAffinity} to {@link Double} that represents the affinity shift of the spell for each affinity.
-     * @param spell The spell to get this map for.
-     * @return a map of {@link IAffinity} to {@link Double} that represents the affinity shift of the spell for each affinity
-     */
-    Map<IAffinity, Double> getAffinitiesForSpell(ISpell spell);
-
-    /**
-     * Get the {@link IAffinity} that the given spell has the greatest shift in.
-     * @param spell The spell to get this affinity for.
-     * @return the {@link IAffinity} that the given spell has the greatest shift in
-     */
-    IAffinity getPrimaryAffinityForSpell(ISpell spell);
 
     /**
      * Get the affinity depth for a given player and affinity.

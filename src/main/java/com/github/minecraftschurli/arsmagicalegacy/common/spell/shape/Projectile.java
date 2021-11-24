@@ -35,7 +35,7 @@ public class Projectile extends AbstractShape {
             projectile.setPierces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.PIERCING.getId()));
             projectile.setOwner(caster);
             projectile.setSpeed(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()) * 0.2f);
-            IAffinity affinity = ArsMagicaAPI.get().getAffinityHelper().getPrimaryAffinityForSpell(spell);
+            IAffinity affinity = spell.primaryAffinity();
             projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(affinity));
             projectile.setStack(caster.getMainHandItem());
             level.addFreshEntity(projectile);

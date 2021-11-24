@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.spell;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
@@ -10,10 +11,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  *
@@ -141,4 +139,24 @@ public interface ISpell {
      * @return The recipe for this spell.
      */
     List<ISpellIngredient> recipe();
+
+    /**
+     * Get a map of {@link IAffinity} to {@link Double} that represents
+     * the affinity shift of the spell for each affinity.
+     * @return a map of {@link IAffinity} to {@link Double} that represents
+     *         the affinity shift of the spell for each affinity
+     */
+    Map<IAffinity, Double> affinityShifts();
+
+    /**
+     * Get a set of {@link IAffinity} that contains the affinities of the spell.
+     * @return a set of {@link IAffinity} that contains the affinities of the spell
+     */
+    Set<IAffinity> affinities();
+
+    /**
+     * Get the {@link IAffinity} that the given spell has the greatest shift in.
+     * @return the {@link IAffinity} that the given spell has the greatest shift in
+     */
+    IAffinity primaryAffinity();
 }

@@ -32,16 +32,6 @@ public interface ISpellHelper {
      */
     void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
 
-    /**
-     * @param mana     The spell's mana cost.
-     * @param burnout  The spell'S burnout cost.
-     * @param reagents The reagents this spell requires.
-     * @param spell    The spell item.
-     * @param player   The player that casts the spell.
-     * @return How much magic xp the spell usage grants, specific to the player.
-     */
-    float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player);
-
     int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier);
 
     boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id);
@@ -61,4 +51,6 @@ public interface ISpellHelper {
      * @return A SpellCastResult that represents the spell casting outcome.
      */
     SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp);
+
+    void nextShapeGroup(ItemStack stack);
 }

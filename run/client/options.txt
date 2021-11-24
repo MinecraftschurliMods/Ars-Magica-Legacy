@@ -30,7 +30,7 @@ guiScale:3
 particles:0
 maxFps:260
 difficulty:2
-graphicsMode:1
+graphicsMode:2
 ao:2
 biomeBlendRadius:2
 renderClouds:false
@@ -103,6 +103,7 @@ key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
 key_key.curios.open.desc:key.keyboard.g
+key_key.arsmagicalegacy.next_shape_group:key.keyboard.c
 key_key.arsmagicalegacy.configure_spell:key.keyboard.m:CONTROL
 key_key.configured.open_mod_list:key.keyboard.unknown
 key_key.jei.toggleOverlay:key.keyboard.o:CONTROL

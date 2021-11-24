@@ -254,9 +254,15 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public CompoundTag save(CompoundTag pTag) {
         pTag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, this.boundPositions)
                                                       .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        pTag.put(RECIPE_KEY, ISpellIngredient.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.recipe != null ? new ArrayList<>(this.recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        pTag.put(RECIPE_KEY, ISpellIngredient.CODEC.listOf()
+                                                   .encodeStart(NbtOps.INSTANCE,
+                                                                this.recipe != null
+                                                                        ? new ArrayList<>(this.recipe)
+                                                                        : new ArrayList<>(0))
+                                                   .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (this.modelData.getData(CAMO_STATE) != null) {
-            pTag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            pTag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE))
+                                               .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
         return super.save(pTag);
     }
@@ -323,7 +329,11 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         Level level = getLevel();
         if (level == null) return;
         BlockPos blockPos = getBlockPos();
-        ItemEntity entityitem = new ItemEntity(level, blockPos.getX(), blockPos.getY() - 2, blockPos.getZ(), makeSpell());
+        ItemEntity entityitem = new ItemEntity(level,
+                                               blockPos.getX(),
+                                               blockPos.getY() - 2,
+                                               blockPos.getZ(),
+                                               makeSpell());
         entityitem.setPickUpDelay(40);
         entityitem.setExtendedLifetime();
         level.addFreshEntity(entityitem);
@@ -415,7 +425,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     private static List<ISpellIngredient> getRecipeFromBook(ItemStack book) {
         Spell spell = SpellItem.getSpell(book);
-        if (spell.isEmpty()) {
+        if (spell.isEmpty() || !spell.isValid()) {
             return null;
         }
         return spell.recipe();
