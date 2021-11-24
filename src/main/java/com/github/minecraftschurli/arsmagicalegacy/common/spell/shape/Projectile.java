@@ -1,13 +1,16 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell.shape;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.SpellProjectile;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellHelper;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +34,9 @@ public class Projectile extends AbstractShape {
             projectile.setIndex(index);
             projectile.setPierces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.PIERCING.getId()));
             projectile.setOwner(caster);
-            projectile.setIcon(ArsMagicaAPI.MOD_ID + ":textures/item/affinity_essence_arcane.png");
+            projectile.setSpeed(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()) * 0.2f);
+            IAffinity affinity = ArsMagicaAPI.get().getAffinityHelper().getPrimaryAffinityForSpell(spell);
+            projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(affinity));
             projectile.setStack(caster.getMainHandItem());
             level.addFreshEntity(projectile);
         }

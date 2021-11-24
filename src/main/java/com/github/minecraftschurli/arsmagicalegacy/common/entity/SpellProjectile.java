@@ -1,8 +1,8 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +34,8 @@ public class SpellProjectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<String> ICON = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(SpellProjectile.class, EntityDataSerializers.ITEM_STACK);
 
     public SpellProjectile(Level level) {
@@ -53,7 +54,8 @@ public class SpellProjectile extends Entity implements ItemSupplier {
         entityData.define(INDEX, 0);
         entityData.define(PIERCES, 0);
         entityData.define(OWNER, 0);
-        entityData.define(ICON, "arcane");
+        entityData.define(SPEED, 1f);
+        entityData.define(ICON, new ItemStack(AMItems.BLANK_RUNE.get()));
         entityData.define(STACK, ItemStack.EMPTY);
     }
 
@@ -66,7 +68,8 @@ public class SpellProjectile extends Entity implements ItemSupplier {
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(PIERCES, tag.getInt("Pierces"));
         entityData.set(OWNER, tag.getInt("Owner"));
-        entityData.set(ICON, tag.getString("Icon"));
+        entityData.set(SPEED, tag.getFloat("Speed"));
+        entityData.set(ICON, ItemStack.of(tag.getCompound("Icon")));
         entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
     }
 
@@ -79,7 +82,10 @@ public class SpellProjectile extends Entity implements ItemSupplier {
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Pierces", entityData.get(PIERCES));
         tag.putInt("Owner", entityData.get(OWNER));
-        tag.putString("Icon", entityData.get(ICON));
+        tag.putFloat("Speed", entityData.get(SPEED));
+        CompoundTag icon = new CompoundTag();
+        entityData.get(ICON).save(icon);
+        tag.put("Icon", icon);
         CompoundTag stack = new CompoundTag();
         entityData.get(STACK).save(stack);
         tag.put("Stack", stack);
@@ -102,7 +108,7 @@ public class SpellProjectile extends Entity implements ItemSupplier {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
             if (getBounces() > 0) {
                 Direction direction = ((BlockHitResult) result).getDirection();
-                double speed = 1; // TODO modifier
+                double speed = getSpeed();
                 double newX = getDeltaMovement().x;
                 double newY = getDeltaMovement().y;
                 double newZ = getDeltaMovement().z;
@@ -126,13 +132,21 @@ public class SpellProjectile extends Entity implements ItemSupplier {
                 decreaseBounces();
             }
         }
-        setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - (getGravity() ? 0.05F : 0), getDeltaMovement().z);
+        setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - (getGravity() ? 0.03F : 0), getDeltaMovement().z);
         setPos(position().add(getDeltaMovement()));
     }
 
     @Override
     public ItemStack getItem() {
-        return ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()); // TODO
+        return getIcon();
+    }
+
+    public boolean getGravity() {
+        return entityData.get(GRAVITY);
+    }
+
+    public void setGravity(boolean gravity) {
+        entityData.set(GRAVITY, gravity);
     }
 
     public boolean getTargetNonSolid() {
@@ -179,19 +193,19 @@ public class SpellProjectile extends Entity implements ItemSupplier {
         }
     }
 
-    public boolean getGravity() {
-        return entityData.get(GRAVITY);
+    public float getSpeed() {
+        return entityData.get(SPEED);
     }
 
-    public void setGravity(boolean gravity) {
-        entityData.set(GRAVITY, gravity);
+    public void setSpeed(float speed) {
+        entityData.set(SPEED, speed);
     }
 
-    public String getIcon() {
+    public ItemStack getIcon() {
         return entityData.get(ICON);
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(ItemStack icon) {
         entityData.set(ICON, icon);
     }
 
