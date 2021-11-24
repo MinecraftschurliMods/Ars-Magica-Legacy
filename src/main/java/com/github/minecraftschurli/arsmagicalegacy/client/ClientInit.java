@@ -6,11 +6,11 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.client.entity.SpellProjectileRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
-import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
-import com.github.minecraftschurli.arsmagicalegacy.client.hud.ManaHUD;
+import com.github.minecraftschurli.arsmagicalegacy.client.hud.*;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellRuneModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGogglesCurioRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -19,6 +19,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -50,6 +51,9 @@ import java.util.Map;
 public final class ClientInit {
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
+    public static IIngameOverlay XP_HUD;
+    public static IIngameOverlay SHAPE_GROUP_HUD;
+    public static IIngameOverlay SPELL_BOOK_HUD;
 
     @Internal
     public static void init() {
@@ -79,6 +83,9 @@ public final class ClientInit {
 
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
+        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
+        SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
+        SPELL_BOOK_HUD = OverlayRegistry.registerOverlayBottom("spell_book_hud", new SpellBookHUD());
 
         Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
 
@@ -117,6 +124,13 @@ public final class ClientInit {
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
+
+        AMBlocks.SPELL_RUNE.get()
+                           .getStateDefinition()
+                           .getPossibleStates()
+                           .stream()
+                           .map(BlockModelShaper::stateToModelLocation)
+                           .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
     }
 
     @SubscribeEvent
