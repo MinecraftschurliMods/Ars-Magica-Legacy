@@ -65,16 +65,16 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         switch (pState.getValue(FACING)) {
             case NORTH -> {
-                return pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
-            }
-            case EAST -> {
-                return pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
-            }
-            case SOUTH -> {
                 return pState.getValue(HALF) == Half.LEFT ? RIGHT_Z : LEFT_Z;
             }
-            case WEST -> {
+            case EAST -> {
                 return pState.getValue(HALF) == Half.LEFT ? LEFT_X : RIGHT_X;
+            }
+            case SOUTH -> {
+                return pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
+            }
+            case WEST -> {
+                return pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
             }
             default -> throw new IllegalStateException("Unexpected value: " + pState.getValue(FACING));
         }
@@ -82,7 +82,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        if (pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getClockWise())).canBeReplaced(pContext))
+        if (pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getCounterClockWise())).canBeReplaced(pContext))
             return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, Half.RIGHT);
         return null;
     }
@@ -90,7 +90,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     @Override
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
         if (pState.getValue(HALF) != Half.LEFT) {
-            pLevel.setBlock(pPos.relative(pState.getValue(FACING).getClockWise()), pState.setValue(HALF, Half.LEFT), Constants.BlockFlags.DEFAULT);
+            pLevel.setBlock(pPos.relative(pState.getValue(FACING).getCounterClockWise()), pState.setValue(HALF, Half.LEFT), Constants.BlockFlags.DEFAULT);
         }
     }
 
@@ -101,14 +101,14 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        boolean left = pState.getValue(HALF) == Half.LEFT;
-        BlockPos pos = left ? pPos.relative(pState.getValue(FACING).getCounterClockWise()) : pPos.relative(pState.getValue(FACING).getClockWise());
+        boolean right = pState.getValue(HALF) == Half.RIGHT;
+        BlockPos pos = right ? pPos.relative(pState.getValue(FACING).getCounterClockWise()) : pPos.relative(pState.getValue(FACING).getClockWise());
         BlockState state = pLevel.getBlockState(pos);
-        if (state.getBlock() == this && (state.getValue(HALF) == Half.LEFT) != left) {
+        if (state.getBlock() == this && (state.getValue(HALF) == Half.RIGHT) != right) {
             pLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 35);
             pLevel.levelEvent(pPlayer, 2001, pos, Block.getId(state));
             ItemStack stack = pPlayer.getMainHandItem();
-            if (!pLevel.isClientSide && !pPlayer.isCreative()) {
+            if (!pLevel.isClientSide() && !pPlayer.isCreative()) {
                 Block.dropResources(pState, pLevel, pPos, null, pPlayer, stack);
                 Block.dropResources(state, pLevel, pos, null, pPlayer, stack);
             }
@@ -119,12 +119,12 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
+        if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
             pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
             return InteractionResult.SUCCESS;
         }
-        if (pLevel.isClientSide) return InteractionResult.SUCCESS;
         pPlayer.openMenu(new SimpleMenuProvider((id, inv, player) -> new InscriptionTableMenu(id, inv), CONTAINER_TITLE));
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;
