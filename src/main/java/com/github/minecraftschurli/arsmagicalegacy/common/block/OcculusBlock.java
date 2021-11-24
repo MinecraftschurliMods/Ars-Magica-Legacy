@@ -119,7 +119,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
-        if (pLevel.isClientSide) {
+        if (pLevel.isClientSide()) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(pPlayer)) {
                 pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
