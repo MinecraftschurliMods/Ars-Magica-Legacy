@@ -5,9 +5,13 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
@@ -25,11 +29,13 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
@@ -117,6 +123,27 @@ public final class AffinityHelper implements IAffinityHelper {
     public IAffinity getAffinityForStack(ItemStack stack) {
         if (stack.getItem() instanceof IAffinityItem item) return item.getAffinity(stack);
         return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(IAffinity.NONE));
+    }
+
+    @Override
+    public Map<IAffinity, Double> getAffinitiesForSpell(ISpell spell) {
+        return spell.partsWithModifiers().stream().map(Pair::getFirst).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).filter(Objects::nonNull).map(ISpellPartData::affinityShifts).map(Map::entrySet).flatMap(Collection::stream).collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+    }
+
+    @Override
+    public IAffinity getPrimaryAffinityForSpell(ISpell spell) {
+        IAffinity result = AMAffinities.NONE.get();
+        double max = 0;
+        for (Map.Entry<IAffinity, Double> entry : getAffinitiesForSpell(spell).entrySet()) {
+            double shift = entry.getValue();
+            if (shift > max) {
+                max = shift;
+                result = entry.getKey();
+            } else if (shift == max) {
+                result = AMAffinities.NONE.get();
+            }
+        }
+        return result;
     }
 
     @Override

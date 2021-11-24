@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.util.MiscConstants.AFFINITY_GAINS;
@@ -152,7 +151,7 @@ public final class Spell implements ISpell {
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
             boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
-            Map<IAffinity, Double> affinityShifts = partsWithModifiers().stream().map(Pair::getFirst).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).filter(Objects::nonNull).map(ISpellPartData::affinityShifts).map(Map::entrySet).flatMap(Collection::stream).collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingDouble(Map.Entry::getValue)));
+            Map<IAffinity, Double> affinityShifts = ArsMagicaAPI.get().getAffinityHelper().getAffinitiesForSpell(this);
             for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
                 IAffinity affinity = entry.getKey();
                 Double shift = entry.getValue();
