@@ -5,13 +5,9 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
@@ -29,13 +25,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public final class AffinityHelper implements IAffinityHelper {
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);

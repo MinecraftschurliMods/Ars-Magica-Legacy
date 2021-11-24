@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.effect;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
-import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.ManaHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectCategory;

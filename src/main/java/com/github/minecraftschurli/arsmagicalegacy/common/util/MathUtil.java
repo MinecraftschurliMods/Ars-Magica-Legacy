@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.util;
 
 import java.util.Random;
 
-public class MathUtil {
+public final class MathUtil {
     public static <T> T getRandom(T[] array, Random rand) {
         return array[rand.nextInt(array.length)];
     }
