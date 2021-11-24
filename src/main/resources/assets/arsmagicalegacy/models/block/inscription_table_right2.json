@@ -1,233 +1,17 @@
 {
   "parent": "block/block",
   "textures": {
-    "book_3": "arsmagicalegacy:block/inscription_table_book_3",
-    "book_4": "arsmagicalegacy:block/inscription_table_book_4",
     "cloth": "arsmagicalegacy:block/inscription_table_cloth"
   },
   "elements": [
     {
       "from": [
-        5,
-        16,
-        9
-      ],
-      "to": [
-        9,
-        18,
-        15
-      ],
-      "faces": {
-        "down": {
-          "texture": "#book_3",
-          "uv": [
-            4,
-            0,
-            8,
-            6
-          ]
-        },
-        "up": {
-          "texture": "#book_3",
-          "uv": [
-            0,
-            0,
-            4,
-            6
-          ]
-        },
-        "north": {
-          "texture": "#book_3",
-          "uv": [
-            0,
-            6,
-            4,
-            8
-          ]
-        },
-        "south": {
-          "texture": "#book_3",
-          "uv": [
-            4,
-            6,
-            8,
-            8
-          ]
-        },
-        "west": {
-          "texture": "#book_3",
-          "uv": [
-            8,
-            0,
-            14,
-            2
-          ]
-        },
-        "east": {
-          "texture": "#book_3",
-          "uv": [
-            8,
-            2,
-            14,
-            4
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        9,
-        16,
-        9
-      ],
-      "to": [
-        13,
-        18,
-        15
-      ],
-      "rotation": {
-        "origin": [
-          9,
-          16,
-          9
-        ],
-        "axis": "y",
-        "angle": 22.5,
-        "rescale": false
-      },
-      "faces": {
-        "down": {
-          "texture": "#book_4",
-          "uv": [
-            4,
-            0,
-            8,
-            6
-          ]
-        },
-        "up": {
-          "texture": "#book_4",
-          "uv": [
-            0,
-            0,
-            4,
-            6
-          ]
-        },
-        "north": {
-          "texture": "#book_4",
-          "uv": [
-            0,
-            6,
-            4,
-            8
-          ]
-        },
-        "south": {
-          "texture": "#book_4",
-          "uv": [
-            4,
-            6,
-            8,
-            8
-          ]
-        },
-        "west": {
-          "texture": "#book_4",
-          "uv": [
-            8,
-            0,
-            14,
-            2
-          ]
-        },
-        "east": {
-          "texture": "#book_4",
-          "uv": [
-            8,
-            2,
-            14,
-            4
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        0,
-        4,
-        0
-      ],
-      "to": [
-        5,
-        13,
-        0
-      ],
-      "faces": {
-        "down": {
-          "texture": "#cloth",
-          "uv": [
-            0,
-            16,
-            0,
-            16
-          ]
-        },
-        "up": {
-          "texture": "#cloth",
-          "uv": [
-            0,
-            16,
-            0,
-            16
-          ]
-        },
-        "north": {
-          "texture": "#cloth",
-          "uv": [
-            0,
-            0,
-            5,
-            9
-          ]
-        },
-        "south": {
-          "texture": "#cloth",
-          "uv": [
-            5,
-            0,
-            10,
-            9
-          ]
-        },
-        "west": {
-          "texture": "#cloth",
-          "uv": [
-            0,
-            16,
-            0,
-            16
-          ]
-        },
-        "east": {
-          "texture": "#cloth",
-          "uv": [
-            0,
-            16,
-            0,
-            16
-          ]
-        }
-      }
-    },
-    {
-      "from": [
-        0,
+        11,
         4,
         16
       ],
       "to": [
-        5,
+        16,
         13,
         16
       ],
@@ -253,18 +37,86 @@
         "north": {
           "texture": "#cloth",
           "uv": [
-            0,
-            0,
             5,
+            0,
+            10,
             9
           ]
         },
         "south": {
           "texture": "#cloth",
           "uv": [
+            0,
+            0,
+            5,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        4,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        0
+      ],
+      "faces": {
+        "down": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            16,
+            0,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#cloth",
+          "uv": [
             5,
             0,
             10,
+            9
+          ]
+        },
+        "south": {
+          "texture": "#cloth",
+          "uv": [
+            0,
+            0,
+            5,
             9
           ]
         },

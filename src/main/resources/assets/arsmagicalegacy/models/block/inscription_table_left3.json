@@ -1,19 +1,98 @@
 {
   "parent": "block/block",
   "textures": {
+    "book_5": "arsmagicalegacy:block/inscription_table_book_5",
     "candle": "arsmagicalegacy:block/inscription_table_candle"
   },
   "elements": [
     {
       "from": [
-        12,
-        16,
-        13
+        10,
+        18,
+        9
       ],
       "to": [
-        13,
+        14,
         20,
-        14
+        15
+      ],
+      "rotation": {
+        "origin": [
+          10,
+          20,
+          9
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": false
+      },
+      "faces": {
+        "down": {
+          "texture": "#book_5",
+          "uv": [
+            4,
+            0,
+            8,
+            6
+          ]
+        },
+        "up": {
+          "texture": "#book_5",
+          "uv": [
+            0,
+            0,
+            4,
+            6
+          ]
+        },
+        "north": {
+          "texture": "#book_5",
+          "uv": [
+            0,
+            6,
+            4,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#book_5",
+          "uv": [
+            4,
+            6,
+            8,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#book_5",
+          "uv": [
+            8,
+            0,
+            14,
+            2
+          ]
+        },
+        "east": {
+          "texture": "#book_5",
+          "uv": [
+            8,
+            2,
+            14,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        16,
+        6
+      ],
+      "to": [
+        12,
+        19,
+        7
       ],
       "faces": {
         "down": {
@@ -40,7 +119,7 @@
             0,
             1,
             1,
-            5
+            4
           ]
         },
         "south": {
@@ -49,7 +128,7 @@
             0,
             1,
             1,
-            5
+            4
           ]
         },
         "west": {
@@ -58,7 +137,7 @@
             0,
             1,
             1,
-            5
+            4
           ]
         },
         "east": {
@@ -67,7 +146,7 @@
             0,
             1,
             1,
-            5
+            4
           ]
         }
       }
