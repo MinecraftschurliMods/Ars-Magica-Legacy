@@ -22,7 +22,23 @@ public final class ServerInit {
         SkillCommand.register(event.getDispatcher());
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
-            SpellItem.saveSpell(stack, Spell.of(SpellStack.of(AMSpellParts.DIG.get()), ShapeGroup.of(AMSpellParts.PROJECTILE.get())));
+            SpellItem.saveSpell(stack, Spell.of(
+                    SpellStack.of(AMSpellParts.DIG.get()),
+                    ShapeGroup.of(AMSpellParts.TOUCH.get()),
+                    ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+            ));
+            context.getSource().getPlayerOrException().addItem(stack);
+            return Command.SINGLE_SUCCESS;
+        }));
+        event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
+            ItemStack stack = new ItemStack(AMItems.SPELL.get());
+            SpellItem.saveSpell(stack, Spell.of(
+                    SpellStack.of(AMSpellParts.LIGHTNING_DAMAGE.get()),
+                    ShapeGroup.of(AMSpellParts.TOUCH.get()),
+                    ShapeGroup.of(AMSpellParts.PROJECTILE.get()),
+                    ShapeGroup.of(AMSpellParts.TOUCH.get(), AMSpellParts.RUNE.get()),
+                    ShapeGroup.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.RUNE.get())
+            ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;
         }));
