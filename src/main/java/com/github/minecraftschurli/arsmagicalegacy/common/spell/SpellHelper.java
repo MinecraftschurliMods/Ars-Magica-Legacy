@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +25,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,11 +91,6 @@ public final class SpellHelper implements ISpellHelper {
             }
             if (reagents.isEmpty()) break;
         }
-    }
-
-    @Override
-    public float getXpForSpellCast(float mana, float burnout, Collection<Either<Ingredient, ItemStack>> reagents, ISpell spell, Player player) {
-        return 0;
     }
 
     @Override
@@ -182,5 +180,12 @@ public final class SpellHelper implements ISpellHelper {
                 return SpellCastResult.EFFECT_FAILED;
             }
         }
+    }
+
+    @Override
+    public void nextShapeGroup(ItemStack stack) {
+        Spell spell = SpellItem.getSpell(stack);
+        spell.shapeGroup((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
+        SpellItem.saveSpell(stack, spell);
     }
 }
