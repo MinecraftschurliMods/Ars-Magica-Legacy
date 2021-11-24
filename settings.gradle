@@ -1,5 +1,35 @@
-rootProject.name = 'Ars Magica Legacy'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name 'MinecraftForge'
+            url 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name 'ParchmentMC'
+            url 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name 'SpongeGradle'
+            url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            switch (requested.id.toString()) {
+                case "net.minecraftforge.gradle": {
+                    useModule("${requested.id}:ForgeGradle:${requested.version}")
+                    break
+                }
+                case "org.spongepowered.mixin": {
+                    useModule("org.spongepowered:mixingradle:${requested.version}")
+                }
+            }
+        }
+    }
+}
 
+rootProject.name = 'Ars Magica Legacy'
 
 file('projects').list().each {
     var pDir = "projects/$it".toString()
