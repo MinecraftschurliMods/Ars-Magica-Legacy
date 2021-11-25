@@ -104,7 +104,7 @@ public class OcculusScreen extends Screen {
 
     private void setActiveTab(int tabIndex) {
         clearWidgets();
-        IOcculusTab tab = OcculusTabManager.instance().getByIndex(tabIndex);
+        IOcculusTab tab = ArsMagicaAPI.get().getOcculusTabManager().getByIndex(tabIndex);
         activeTab = tab.getRendererFactory().get().create(tab);
         if (minecraft != null) {
             init();

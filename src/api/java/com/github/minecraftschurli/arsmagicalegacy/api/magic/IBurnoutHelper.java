@@ -37,4 +37,11 @@ public interface IBurnoutHelper {
      * @return true if it succeeded, false otherwise
      */
     boolean decreaseBurnout(LivingEntity entity, float amount);
+
+    /**
+     * Sets the burnout value of the given entity.
+     *
+     * @param livingEntity the entity to set the burnout value for
+     */
+    void setBurnout(LivingEntity livingEntity, float amount);
 }

@@ -46,4 +46,11 @@ public interface IManaHelper {
      * @return true if it succeeded, false otherwise
      */
     boolean decreaseMana(LivingEntity entity, float amount);
+
+    /**
+     * Sets the mana value of the given entity.
+     *
+     * @param livingEntity the entity to set the mana value for
+     */
+    void setMana(LivingEntity livingEntity, float amount);
 }
