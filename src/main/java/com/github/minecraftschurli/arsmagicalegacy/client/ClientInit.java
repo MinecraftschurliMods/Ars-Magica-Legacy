@@ -131,6 +131,6 @@ public final class ClientInit {
 
     @SubscribeEvent
     static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AMEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
+        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), SpellProjectileRenderer::new);
     }
 }
