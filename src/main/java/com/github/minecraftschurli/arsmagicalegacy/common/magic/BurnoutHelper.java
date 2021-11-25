@@ -75,11 +75,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
         return true;
     }
 
-    /**
-     * Sets the burnout value of the given entity.
-     *
-     * @param livingEntity the entity to set the burnout value for
-     */
+    @Override
     public void setBurnout(LivingEntity livingEntity, float amount) {
         if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
         float max = getMaxBurnout(livingEntity);

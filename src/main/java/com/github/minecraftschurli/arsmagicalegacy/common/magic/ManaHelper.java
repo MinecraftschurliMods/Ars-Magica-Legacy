@@ -90,11 +90,7 @@ public final class ManaHelper implements IManaHelper {
         return true;
     }
 
-    /**
-     * Sets the mana value of the given entity.
-     *
-     * @param livingEntity the entity to set the mana value for
-     */
+    @Override
     public void setMana(LivingEntity livingEntity, float amount) {
         if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
         float max = getMaxMana(livingEntity);

@@ -36,8 +36,8 @@ public class TemporalAnchorEffect extends AMMobEffect {
         entity.setXRot(tag.getFloat("RotationPitch"));
         entity.setYRot(tag.getFloat("RotationYaw"));
         entity.setYHeadRot(tag.getFloat("RotationYawHead"));
-        ManaHelper.instance().setMana(entity, tag.getFloat("Mana"));
-        BurnoutHelper.instance().setBurnout(entity, tag.getFloat("Burnout"));
+        ArsMagicaAPI.get().getManaHelper().setMana(entity, tag.getFloat("Mana"));
+        ArsMagicaAPI.get().getBurnoutHelper().setBurnout(entity, tag.getFloat("Burnout"));
         entity.setHealth(tag.getFloat("Health"));
     }
 }
