@@ -95,7 +95,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
         itemIdTranslation(AMItems.SPELL);
-        entityIdTranslation(AMEntities.SPELL_PROJECTILE);
+        entityIdTranslation(AMEntities.PROJECTILE);
+        entityIdTranslation(AMEntities.WAVE);
+        entityIdTranslation(AMEntities.WALL);
+        entityIdTranslation(AMEntities.ZONE);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);

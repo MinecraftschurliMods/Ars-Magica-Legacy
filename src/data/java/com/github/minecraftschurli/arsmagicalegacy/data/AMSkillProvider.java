@@ -32,6 +32,9 @@ class AMSkillProvider extends SkillProvider {
         SkillBuilder.create(RUNE             .getId(), DEFENSE).setPosition(157, 315).addCost(AMSkillPoints.GREEN.getId())/*.addParent(ACCELERATE       .getId())*/.addParent(ENTANGLE        .getId()).build(consumer);
         SkillBuilder.create(SELF             .getId(), DEFENSE).setPosition(267,  45).addCost(AMSkillPoints.BLUE .getId())                                                                         .build(consumer);
         SkillBuilder.create(TOUCH            .getId(), UTILITY).setPosition(275,  75).addCost(AMSkillPoints.BLUE .getId())                                                                         .build(consumer);
+        SkillBuilder.create(WALL             .getId(), DEFENSE).setPosition( 87, 200).addCost(AMSkillPoints.GREEN.getId())/*.addParent(REPEL            .getId())*/                                    .build(consumer);
+        SkillBuilder.create(WAVE             .getId(), OFFENSE).setPosition(367, 315).addCost(AMSkillPoints.RED  .getId())/*.addParent(BEAM             .getId()).addParent(FLING           .getId())*/.build(consumer);
+        SkillBuilder.create(ZONE             .getId(), DEFENSE).setPosition(357, 225).addCost(AMSkillPoints.RED  .getId())/*.addParent(DISPEL           .getId())*/                                    .build(consumer);
 
         SkillBuilder.create(DROWNING_DAMAGE  .getId(), OFFENSE).setPosition(435, 135).addCost(AMSkillPoints.BLUE .getId()).addParent(MAGIC_DAMAGE     .getId())                                    .build(consumer);
         SkillBuilder.create(FIRE_DAMAGE      .getId(), OFFENSE).setPosition(255, 135).addCost(AMSkillPoints.BLUE .getId()).addParent(PHYSICAL_DAMAGE  .getId())                                    .build(consumer);
