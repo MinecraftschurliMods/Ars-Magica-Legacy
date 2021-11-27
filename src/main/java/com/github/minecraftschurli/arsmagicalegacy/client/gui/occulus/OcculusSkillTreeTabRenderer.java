@@ -77,8 +77,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         stack.pushPose();
-        stack.scale(SCALE, SCALE, 0);
         stack.translate(-offsetX, -offsetY, 0);
+        stack.scale(SCALE, SCALE, 0);
         mouseX += offsetX;
         mouseY += offsetY;
         mouseX *= SCALE;
@@ -132,6 +132,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableScissor();
+        stack.popPose();
         for (ISkill skill : skills) {
             if (mouseX >= skill.getX() && mouseX <= skill.getX() + SKILL_SIZE && mouseY >= skill.getY() && mouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
@@ -141,7 +142,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 } else {
                     list.add(MISSING_REQUIREMENTS);
                 }
-                GuiUtils.drawHoveringText(stack, list, mouseX, mouseY, screenWidth, screenHeight, -1, getFont());
+                GuiUtils.drawHoveringText(stack, list, (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), screenWidth, screenHeight, -1, getFont());
                 hoverItem = skill;
                 isHoveringSkill = true;
             }
@@ -149,7 +150,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         if (!isHoveringSkill) {
             hoverItem = null;
         }
-        stack.popPose();
     }
 
     @Override
