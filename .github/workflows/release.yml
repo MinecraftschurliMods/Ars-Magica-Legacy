@@ -43,7 +43,8 @@ jobs:
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-sources.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-javadoc.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-deobf.jar
-          body: ${{ steps.changelog.outputs.content }}
+          body: >
+             ${{ steps.changelog.outputs.content }}
       - name: CF upload
         id: cf_upload
         uses: itsmeow/curseforge-upload@master
