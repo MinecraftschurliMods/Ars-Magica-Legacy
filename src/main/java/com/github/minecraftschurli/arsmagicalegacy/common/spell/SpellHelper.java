@@ -1,6 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellComponent;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -13,12 +19,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);

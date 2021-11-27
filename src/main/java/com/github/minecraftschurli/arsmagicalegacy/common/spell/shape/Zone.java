@@ -3,7 +3,6 @@ package com.github.minecraftschurli.arsmagicalegacy.common.spell.shape;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaveEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;

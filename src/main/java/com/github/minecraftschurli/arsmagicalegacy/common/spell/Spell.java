@@ -7,18 +7,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.event.AffinityChangingEve
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.*;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
@@ -38,7 +28,15 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

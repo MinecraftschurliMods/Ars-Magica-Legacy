@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.occulus;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
@@ -8,7 +9,7 @@ import java.util.Optional;
 /**
  * Interface representing an occulus tab manager.
  */
-public interface IOcculusTabManager {
+public interface IOcculusTabManager extends IDataManager<IOcculusTab> {
     /**
      * Get the {@link IOcculusTab} for the id or empty.
      *

@@ -3,8 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.api.advancement.PlayerLearnedSkillTrigger;
 import com.github.minecraftschurli.arsmagicalegacy.api.advancement.PlayerLevelUpTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 @NonExtendable
 public interface AMCriteriaTriggers {

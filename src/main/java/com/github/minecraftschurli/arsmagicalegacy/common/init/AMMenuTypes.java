@@ -6,8 +6,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.MENU_TYPES;
 

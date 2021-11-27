@@ -11,11 +11,11 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.util.Lazy;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 
 public final class SpellIconAtlas extends TextureAtlasHolder {
     private static final Lazy<SpellIconAtlas> INSTANCE           = Lazy.of(SpellIconAtlas::new);
