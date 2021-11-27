@@ -15,13 +15,12 @@ import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.GuiUtils;
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     private float offsetY = 0;
     private ISkill hoverItem = null;
 
-    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab, Screen parent) {
-        super(occulusTab, parent);
+    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab) {
+        super(occulusTab);
     }
 
     @Override
@@ -78,8 +77,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         stack.pushPose();
-        stack.scale(SCALE, SCALE, 0);
         stack.translate(-offsetX, -offsetY, 0);
+        stack.scale(SCALE, SCALE, 0);
         mouseX += offsetX;
         mouseY += offsetY;
         mouseX *= SCALE;
@@ -133,6 +132,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         RenderSystem.disableScissor();
+        stack.popPose();
         for (ISkill skill : skills) {
             if (mouseX >= skill.getX() && mouseX <= skill.getX() + SKILL_SIZE && mouseY >= skill.getY() && mouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
@@ -142,10 +142,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 } else {
                     list.add(MISSING_REQUIREMENTS);
                 }
-                stack.pushPose();
-                stack.translate(0,-1,0);
-                parent.renderTooltip(stack, list, Optional.empty(), mouseX, mouseY, getFont());
-                stack.popPose();
+                GuiUtils.drawHoveringText(stack, list, (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), screenWidth, screenHeight, -1, getFont());
                 hoverItem = skill;
                 isHoveringSkill = true;
             }
@@ -153,7 +150,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         if (!isHoveringSkill) {
             hoverItem = null;
         }
-        stack.popPose();
     }
 
     @Override
