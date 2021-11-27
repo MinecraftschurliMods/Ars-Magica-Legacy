@@ -5,8 +5,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreB
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.util.Set;
 

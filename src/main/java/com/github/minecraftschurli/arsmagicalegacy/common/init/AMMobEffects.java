@@ -1,15 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.AgilityEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.EntangleEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.FlightEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.FrostEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.FuryEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.IlluminationEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.InstantManaEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.ScrambleSynapsesEffect;
-import com.github.minecraftschurli.arsmagicalegacy.common.effect.TemporalAnchorEffect;
+import com.github.minecraftschurli.arsmagicalegacy.common.effect.*;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;

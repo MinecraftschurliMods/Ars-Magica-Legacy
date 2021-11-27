@@ -7,8 +7,8 @@ import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
 

@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
@@ -9,7 +10,7 @@ import java.util.Set;
 /**
  * Interface representing a skill manager.
  */
-public interface ISkillManager {
+public interface ISkillManager extends IDataManager<ISkill> {
     /**
      * Get the skills for a given occulus tab.
      *
