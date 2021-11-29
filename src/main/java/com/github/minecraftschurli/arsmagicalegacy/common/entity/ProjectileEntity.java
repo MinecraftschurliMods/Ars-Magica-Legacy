@@ -32,6 +32,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> GRAVITY = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
@@ -61,6 +62,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
         entityData.define(GRAVITY, false);
         entityData.define(TARGET_NON_SOLID, false);
         entityData.define(BOUNCES, 0);
+        entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(PIERCES, 0);
         entityData.define(OWNER, 0);
@@ -75,6 +77,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
         entityData.set(GRAVITY, tag.getBoolean("Gravity"));
         entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
         entityData.set(BOUNCES, tag.getInt("Bounces"));
+        entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(PIERCES, tag.getInt("Pierces"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -89,6 +92,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
         tag.putBoolean("Gravity", entityData.get(GRAVITY));
         tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
         tag.putInt("Bounces", entityData.get(BOUNCES));
+        tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Pierces", entityData.get(PIERCES));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -109,7 +113,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
 
     @Override
     public void tick() {
-        if (tickCount > 200 || getOwner() == null) {
+        if (tickCount > getDuration() || getOwner() == null) {
             remove(RemovalReason.KILLED);
             return;
         }
@@ -173,6 +177,14 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
 
     public void setBounces(int bounces) {
         entityData.set(BOUNCES, bounces);
+    }
+
+    public int getDuration() {
+        return entityData.get(DURATION);
+    }
+
+    public void setDuration(int duration) {
+        entityData.set(DURATION, duration);
     }
 
     public int getIndex() {
