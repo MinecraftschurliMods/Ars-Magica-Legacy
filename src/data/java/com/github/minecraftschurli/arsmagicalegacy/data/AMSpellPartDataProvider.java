@@ -152,6 +152,11 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .build();
+        createSpellPartData(AMSpellParts.NIGHT_VISION, 80f)
+                .withAffinity(AMAffinities.ENDER, 0.05f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.NIGHT_VISION)){}, 1))
+                .build();
         createSpellPartData(AMSpellParts.NAUSEA, 200f)
                 .withAffinity(AMAffinities.LIFE, 0.05f)
                 .build();
