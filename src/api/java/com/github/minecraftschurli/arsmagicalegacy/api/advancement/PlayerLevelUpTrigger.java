@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +21,7 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
 
     @Override
     protected PlayerLevelUpTrigger.TriggerInstance createInstance(JsonObject pJson, EntityPredicate.Composite pPlayer, DeserializationContext pContext) {
-        IntegerPredicate level = IntegerPredicate.fromJson(pJson.get("level"));
-        return new PlayerLevelUpTrigger.TriggerInstance(pPlayer, level);
+        return new PlayerLevelUpTrigger.TriggerInstance(pPlayer, MinMaxBounds.Ints.fromJson(pJson.get("level")));
     }
 
     public void trigger(ServerPlayer pPlayer, int level) {
@@ -29,9 +29,9 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final IntegerPredicate level;
+        private final MinMaxBounds.Ints level;
 
-        public TriggerInstance(EntityPredicate.Composite pPlayer, IntegerPredicate level) {
+        public TriggerInstance(EntityPredicate.Composite pPlayer, MinMaxBounds.Ints level) {
             super(PlayerLevelUpTrigger.ID, pPlayer);
             this.level = level;
         }

@@ -8,6 +8,7 @@ import net.minecraft.util.GsonHelper;
 
 import javax.annotation.Nullable;
 
+@Deprecated(forRemoval = true, since = "1.17.1-0.0.1")
 public record IntegerPredicate(MinMaxBounds.Ints composite) {
     public static final IntegerPredicate ANY = new IntegerPredicate(MinMaxBounds.Ints.ANY);
 

@@ -31,7 +31,7 @@ mixin {
 }
 
 editorconfig {
-    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**']
+    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**', '**/*.ogg']
     excludeNonSourceFiles = true
 }
 
@@ -66,7 +66,6 @@ sourceSets {
         exclude '.cache'
     }
     data.resources.srcDirs = []
-    test.resources.srcDirs = []
 }
 
 configurations {
@@ -84,20 +83,34 @@ configurations {
         transitive = false
     }
 
+    apiExternalLibrary
+    externalLibrary
+    dataExternalLibrary
+    testExternalLibrary
+
+    apiImplementation.extendsFrom(apiExternalLibrary)
+    implementation.extendsFrom(externalLibrary)
+    dataImplementation.extendsFrom(dataExternalLibrary)
+    testImplementation.extendsFrom(testExternalLibrary)
+
     apiCompileOnly.extendsFrom(library)
     compileOnly.extendsFrom(library)
     dataCompileOnly.extendsFrom(library)
+    testCompileOnly.extendsFrom(library)
 
     apiCompileOnly.extendsFrom(modAPI)
     compileOnly.extendsFrom(modAPI)
     dataCompileOnly.extendsFrom(modAPI)
+    testCompileOnly.extendsFrom(modAPI)
 
     runtimeOnly.extendsFrom(runtimeMod)
     dataRuntimeOnly.extendsFrom(runtimeMod)
+    testRuntimeOnly.extendsFrom(runtimeMod)
 
     apiImplementation.extendsFrom(include)
     implementation.extendsFrom(include)
     dataImplementation.extendsFrom(include)
+    testImplementation.extendsFrom(include)
 
     dataImplementation.extendsFrom(datagenLibrary)
 
@@ -265,6 +278,21 @@ minecraft {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
+            }
+            lazyToken('minecraft_classpath') {
+                configurations.dataExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
+        }
+        test {
+            ideaModule "${project.name.replace(' ', '_')}.test"
+            property 'forge.logging.markers', 'REGISTRIES'
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
+            }
+            lazyToken ('minecraft_classpath') {
+                configurations.testExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
             }
         }
     }

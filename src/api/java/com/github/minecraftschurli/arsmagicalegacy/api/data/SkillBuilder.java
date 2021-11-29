@@ -19,13 +19,13 @@ import java.util.function.Consumer;
  * Builder for skills. Used in SkillProviders for data generation.
  */
 public class SkillBuilder {
-    private final Set<ResourceLocation> parents = new HashSet<>();
-    private final Map<ResourceLocation, Integer> cost = new HashMap<>();
-    private final ResourceLocation id;
-    private ResourceLocation occulusTab;
-    private Boolean hidden;
-    private Integer x;
-    private Integer y;
+    private final Set<ResourceLocation>          parents = new HashSet<>();
+    private final Map<ResourceLocation, Integer> cost    = new HashMap<>();
+    private final ResourceLocation               id;
+    private       ResourceLocation               occulusTab;
+    private       Boolean                        hidden;
+    private       Integer                        x;
+    private       Integer                        y;
 
     /**
      * Create a new {@link SkillBuilder} with the given id in the given occulusTab.
