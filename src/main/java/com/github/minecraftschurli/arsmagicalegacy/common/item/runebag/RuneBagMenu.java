@@ -2,7 +2,9 @@ package com.github.minecraftschurli.arsmagicalegacy.common.item.runebag;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.ColoredRuneItem;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -42,6 +44,10 @@ public class RuneBagMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(playerInventory, i, 8 + i * 18, 126));
         }
+    }
+
+    public RuneBagMenu(int id, Inventory inv, FriendlyByteBuf data) {
+        this(id, inv, inv.player.getItemInHand(data.readEnum(InteractionHand.class)));
     }
 
     @Override

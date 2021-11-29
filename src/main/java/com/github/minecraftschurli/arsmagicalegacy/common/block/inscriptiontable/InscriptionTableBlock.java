@@ -3,15 +3,12 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontabl
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,6 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
@@ -45,7 +43,6 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     private static final VoxelShape LEFT_Z = BlockUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 0, 15, 14, 1), box(0, 13, 15, 15, 14, 16), box(15, 12, 0, 16, 14, 16), box(12, 5, 6, 13, 11, 10), box(12, 3, 4, 13, 5, 12), box(12, 11, 5, 14, 14, 11), box(11, 0, 0, 13, 5, 4), box(11, 0, 12, 13, 5, 16), box(12, 3, 4, 13, 5, 12));
     private static final VoxelShape RIGHT_X = BlockUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 0, 1, 14, 15), box(15, 13, 0, 16, 14, 15), box(0, 12, 15, 16, 14, 16), box(6, 5, 12, 10, 11, 13), box(4, 3, 12, 12, 5, 13), box(5, 11, 12, 11, 14, 14), box(0, 0, 11, 4, 5, 13), box(12, 0, 11, 16, 5, 13), box(4, 3, 12, 12, 5, 13));
     private static final VoxelShape RIGHT_Z = BlockUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(1, 13, 0, 16, 14, 1), box(1, 13, 15, 16, 14, 16), box(0, 12, 0, 1, 14, 16), box(3, 5, 6, 4, 11, 10), box(3, 3, 4, 4, 5, 12), box(2, 11, 5, 4, 14, 11), box(3, 0, 0, 5, 5, 4), box(3, 0, 12, 5, 5, 16), box(3, 3, 4, 4, 5, 12));
-    private static final Component CONTAINER_TITLE = new TranslatableComponent(Util.makeDescriptionId("container", new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table")));
 
     public InscriptionTableBlock() {
         super(BlockBehaviour.Properties.of(Material.WOOD).strength(2).lightLevel(state -> 1).noOcclusion());
@@ -120,19 +117,20 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
-        var api = ArsMagicaAPI.get();
+        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
             pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
-            return InteractionResult.SUCCESS;
+            return InteractionResult.FAIL;
         }
-        pPlayer.openMenu(new SimpleMenuProvider((id, inv, player) -> new InscriptionTableMenu(id, inv), CONTAINER_TITLE));
+        if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
+        NetworkHooks.openGui((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return null;
+        return pState.getValue(InscriptionTableBlock.HALF) == Half.RIGHT ? new InscriptionTableBlockEntity(pPos, pState) : null;
     }
 
     public enum Half implements StringRepresentable {

@@ -15,6 +15,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.NextShapeGroupPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.UpdateStepHeightPacket;
@@ -36,7 +37,9 @@ public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
+
     private static ArsMagicaLegacy INSTANCE;
+
     private final IModInfo modInfo;
 
     /**
@@ -75,5 +78,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
     }
 }
