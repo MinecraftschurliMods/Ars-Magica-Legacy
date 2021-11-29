@@ -1,90 +1,79 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.client.ClientInit;
+import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
+import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.magic.ManaHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
+import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.network.BEClientSyncPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurli.easyimclib.IMCHandler;
 import com.github.minecraftschurli.simplenetlib.NetworkHandler;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
-    private static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
-    private static ArsMagicaLegacy INSTANCE;
-
+    public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
-
+    private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
     /**
-     * The Mod Constructor
+     * The mod constructor
      */
     public ArsMagicaLegacy() {
+        if (INSTANCE != null)
+            throw new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!");
         INSTANCE = this;
-        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::setup);
-        bus.addListener(this::createEntityAttributes);
+        modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
-        final ModLoadingContext context = ModLoadingContext.get();
-        Config.init(context);
-        modInfo = context.getActiveContainer().getModInfo();
+        EventHandler.register(bus);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInit::init);
+        Config.init();
+        registerNetworkPackets();
+        SkillHelper.init();
+        AffinityHelper.init();
+        OcculusTabManager.instance();
+        SkillManager.instance();
+        SpellDataManager.instance();
+        AltarMaterialManager.instance();
     }
 
-    /**
-     * @return the mod name
-     */
     public static String getModName() {
         return INSTANCE.modInfo.getDisplayName();
     }
 
-    /**
-     * @return the mod version as a string
-     */
-    public static String getVersion() {
-        return INSTANCE.modInfo.getVersion().toString();
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-        AMItems.setup();
-    }
-
-    private void createEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
-        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
-        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
-        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
-        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
-        event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
-        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
-        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
-        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
-        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
-        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
-        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
-        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
+    private void registerNetworkPackets() {
+        NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }
