@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.render;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
 import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

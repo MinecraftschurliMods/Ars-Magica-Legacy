@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -11,11 +12,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class ZoneEntity extends Entity {
+public class ZoneEntity extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
@@ -29,6 +31,7 @@ public class ZoneEntity extends Entity {
 
     /**
      * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
+     *
      * @param level the level to create the new instance in
      * @return a new instance of this class in the given level
      */
@@ -134,5 +137,10 @@ public class ZoneEntity extends Entity {
 
     public void setStack(ItemStack stack) {
         entityData.set(STACK, stack);
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(AMItems.BLANK_RUNE.get());
     }
 }

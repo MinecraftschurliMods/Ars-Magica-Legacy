@@ -1,9 +1,24 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.*;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ProjectileEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WallEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaveEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
