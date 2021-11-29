@@ -9,8 +9,22 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ArcaneGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Dryad;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EarthGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LifeGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
@@ -41,6 +55,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -65,6 +80,7 @@ public final class EventHandler {
     public static void register(IEventBus modBus) {
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
+        modBus.addListener(EventHandler::entityAttributeCreation);
         modBus.addListener(EventHandler::entityAttributeModification);
         modBus.addListener(EventHandler::enqueueIMC);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
@@ -127,6 +143,22 @@ public final class EventHandler {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"), new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
         }
+    }
+
+    private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
+        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
+        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
+        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
+        event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
+        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
+        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
+        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
+        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
+        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
+        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {
@@ -220,13 +252,13 @@ public final class EventHandler {
     }
 
     private static void potionExpiry(PotionEvent.PotionExpiryEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level.isClientSide() && !(event.getPotionEffect() == null) && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
         }
     }
 
     private static void potionRemove(PotionEvent.PotionRemoveEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level.isClientSide() && !(event.getPotionEffect() == null) && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
         }
     }
