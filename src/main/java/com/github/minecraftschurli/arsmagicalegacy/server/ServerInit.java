@@ -23,9 +23,8 @@ public final class ServerInit {
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DIG.get()),
-                    ShapeGroup.of(AMSpellParts.TOUCH.get()),
-                    ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+                    SpellStack.of(AMSpellParts.ABSORPTION.get()),
+                    ShapeGroup.of(AMSpellParts.ZONE.get(), AMSpellParts.RADIUS.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;

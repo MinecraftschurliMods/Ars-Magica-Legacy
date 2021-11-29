@@ -3,7 +3,6 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurli.arsmagicalegacy.client.entity.SpellProjectileRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
@@ -24,8 +23,10 @@ import com.github.minecraftschurli.arsmagicalegacy.client.render.EarthGuardianRe
 import com.github.minecraftschurli.arsmagicalegacy.client.render.FireGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.ManaCreeperRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.NatureGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.render.ProjectileRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.WaterGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.render.WinterGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.render.ZoneRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGogglesCurioRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -171,7 +172,8 @@ public final class ClientInit {
     }
 
     private static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), SpellProjectileRenderer::new);
+        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ProjectileRenderer::new);
+        event.registerEntityRenderer(AMEntities.ZONE.get(), ZoneRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.WINTER_GUARDIAN.get(), WinterGuardianRenderer::new);

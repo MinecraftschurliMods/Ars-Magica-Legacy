@@ -4,7 +4,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WallEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,9 +18,7 @@ public class Zone extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
             ZoneEntity zone = ZoneEntity.create(level);
-            zone.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
-            zone.setXRot((float) caster.getLookAngle().x());
-            zone.setYRot((float) caster.getLookAngle().y());
+            zone.setPos(caster.getX(), caster.getY(), caster.getZ());
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
                 zone.setTargetNonSolid();
             }
