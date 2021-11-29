@@ -27,19 +27,23 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.DataSerializerEntry;
 import org.jetbrains.annotations.NotNull;
 
+//TODO WaterGuadian registerGoals()
+//TODO WaterGuadian isWaterGuadianActionValid() Network Handler
+
 public class WaterGuardian extends AbstractBoss {
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
     private WaterGuardian clone2 = null;
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
-    //private float spinRotation = 0;
-    //private unerSpinAvailable = false;
+    private float orbitRotation;
+    private float spinRotation = 0;
+    private boolean uberSpinAvailable = false;
+    private WaterGuardianAction waterGuardianAction;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
         setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        //currentAction = BossAction.IDLE;
-        //EntityExtension.For(this).setMagicLevelWithMana(10);
+        this.waterGuardianAction = WaterGuardianAction.IDLE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -68,6 +72,15 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        if (this.getWaterGuardianAction() == WaterGuardianAction.CASTING) {
+            this.uberSpinAvailable = false;
+        } else if (!this.level.isClientSide() && this.uberSpinAvailable && this.getWaterGuardianAction() != WaterGuardianAction.CASTING && this.getWaterGuardianAction() != WaterGuardianAction.IDLE) {
+            this.setWaterGuardianAction(WaterGuardianAction.IDLE);
+        } else if (!this.level.isClientSide() && this.isClone() && (this.master == null || this.tickCount > 400)) {
+            this.remove(RemovalReason.KILLED);
+        } else if (this.level.isClientSide()) {
+            this.updateRotation();
+        }
         super.aiStep();
     }
 
@@ -75,26 +88,22 @@ public class WaterGuardian extends AbstractBoss {
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (!(pSource.getEntity() instanceof WaterGuardian)) {
             return false;
-        }
-        if (isClone() && master != null) {
-            //master.enableUberAttack();
-            master.clearClones();
-        } else if (hasClones()) {
-            clearClones();
-        }
-        if (!isClone() && random.nextInt(10) < 6) {
-            level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
+        } else if (this.isClone() && this.master != null) {
+            this.master.enableUberAttack();
+            this.master.clearClones();
+        } else if (this.hasClones()) {
+            this.clearClones();
+        } else if (!this.isClone() && random.nextInt(10) < 6) {
+            this.level.playSound(null, this, this.getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
             return false;
         }
 
         //modifyDamageAmount
         if(pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2.0f;
-        }
-        if(pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
+        } else if(pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
             pAmount = 0;
-        }
-        if(pSource == DamageSource.FREEZE) {
+        } else if(pSource == DamageSource.FREEZE) {
             pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
@@ -103,6 +112,26 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+    }
+
+    public WaterGuardianAction getWaterGuardianAction() {
+        return this.waterGuardianAction;
+    }
+
+    public void setWaterGuardianAction(final WaterGuardianAction waterGuardianAction) {
+        this.waterGuardianAction = waterGuardianAction;
+        this.spinRotation = 0;  //idk why? war im alten mod
+    }
+
+    public boolean isWaterGuardianActionValid(WaterGuardianAction action) {
+        if (this.uberSpinAvailable && action != WaterGuardianAction.CASTING) {
+            return false;
+        } else if (action == WaterGuardianAction.CASTING) {
+            return this.uberSpinAvailable;
+        } else if (action == WaterGuardianAction.CLONE) {
+            return !this.isClone();
+        }
+        return true;
     }
 
     @Override
@@ -114,13 +143,13 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        entityData.set(IS_CLONE, pCompound.getBoolean("isClone"));
+        this.entityData.set(IS_CLONE, pCompound.getBoolean("isClone"));
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(IS_CLONE, false);
+        this.entityData.define(IS_CLONE, false);
     }
 
     @Override
@@ -144,36 +173,72 @@ public class WaterGuardian extends AbstractBoss {
         }
     }
 
+    private void enableUberAttack(){
+        uberSpinAvailable = true;
+    }
+
+    private void updateRotation() {
+        if (!this.isClone()) {
+            this.orbitRotation += 2f;
+        } else {
+            this.orbitRotation -= 2f;
+        }
+
+        if (this.getWaterGuardianAction() == WaterGuardianAction.SPINNING || this.getWaterGuardianAction() == WaterGuardianAction.CASTING) {
+            this.spinRotation = (this.spinRotation - 30) % 360;
+        }
+    }
+
+    public float getOrbitRotation() {
+        return orbitRotation;
+    }
+
     public void setClones(WaterGuardian clone1, WaterGuardian clone2){
         this.clone1 = clone1;
         this.clone2 = clone2;
     }
 
     private boolean hasClones(){
-        return clone1 != null || clone2 != null;
+        return this.clone1 != null || this.clone2 != null;
     }
 
     public void clearClones(){
-        if (clone1 != null){
-            clone1.setRemoved(RemovalReason.DISCARDED);
-            clone1 = null;
-        }
-        if (clone2 != null){
-            clone2.setRemoved(RemovalReason.DISCARDED);
-            clone2 = null;
+        if (this.clone1 != null){
+            this.clone1.setRemoved(RemovalReason.DISCARDED);
+            this.clone1 = null;
+        } else if (this.clone2 != null){
+            this.clone2.setRemoved(RemovalReason.DISCARDED);
+            this.clone2 = null;
         }
     }
 
     public boolean isClone(){
-        return entityData.get(IS_CLONE);
+        return this.entityData.get(IS_CLONE);
     }
 
     public void setMaster(WaterGuardian master){
-        entityData.set(IS_CLONE, true);
+        this.entityData.set(IS_CLONE, true);
         this.master = master;
     }
 
     public void clearMaster(){
         master = null;
+    }
+
+    public enum WaterGuardianAction {
+        IDLE(-1),
+        SPINNING(160),
+        CASTING(-1),
+        CLONE(30);
+
+        private final int maxActionTime;
+
+        private WaterGuardianAction(int maxTime){
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime(){
+            return maxActionTime;
+        }
     }
 }

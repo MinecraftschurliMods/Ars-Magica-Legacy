@@ -22,6 +22,7 @@ public class FireGuardian extends AbstractBoss {
         this.fireImmune();
     }
 
+
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
     }
@@ -78,5 +79,10 @@ public class FireGuardian extends AbstractBoss {
 
     public int getHitCount() {
         return this.hitCount;
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
     }
 }
