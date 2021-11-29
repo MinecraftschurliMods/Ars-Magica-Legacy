@@ -104,8 +104,6 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(),      RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.SPELL_RUNE.get(),         RenderType.cutout());
 
-        BlockEntityRenderers.register(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
-
         MANA_HUD        = OverlayRegistry.registerOverlayBottom("mana_hud",        new ManaHUD());
         BURNOUT_HUD     = OverlayRegistry.registerOverlayBottom("burnout_hud",     new BurnoutHUD());
         XP_HUD          = OverlayRegistry.registerOverlayBottom("xp_hud",          new XpHUD());
@@ -163,7 +161,7 @@ public final class ClientInit {
                 .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
     }
 
-    private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+    private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
         event.registerLayerDefinition(WinterGuardianModel.LAYER_LOCATION, WinterGuardianModel::createBodyLayer);
@@ -171,7 +169,7 @@ public final class ClientInit {
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
     }
 
-    private static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+    private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ProjectileRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), ZoneRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
@@ -180,6 +178,8 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
+
+        event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
     }
 
     private static void preStitch(TextureStitchEvent.Pre event) {
