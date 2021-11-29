@@ -88,10 +88,10 @@ public interface AMItems {
     RegistryObject<Item>                         ARCANE_COMPOUND          = registerItem64("arcane_compound");
     RegistryObject<Item>                         ARCANE_ASH               = registerItem64("arcane_ash");
     RegistryObject<Item>                         PURIFIED_VINTEUM_DUST    = registerItem64("purified_vinteum_dust");
-    RegistryObject<Item>                         SPELL_PARCHMENT          = registerItem64("spell_parchment");
     RegistryObject<StandingAndWallBlockItem>     VINTEUM_TORCH            = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE         = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
+    RegistryObject<Item>                         SPELL_PARCHMENT          = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                    = ITEMS.register("spell", SpellItem::new);
     RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES         = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
 

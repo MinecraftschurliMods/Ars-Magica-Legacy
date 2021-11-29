@@ -48,6 +48,7 @@ class AMSkillProvider extends SkillProvider {
         SkillBuilder.create(INVISIBILITY     .getId(), UTILITY).setPosition(185, 255).addCost(AMSkillPoints.GREEN.getId()).addParent(TRUE_SIGHT       .getId())                                    .build(consumer);
         SkillBuilder.create(JUMP_BOOST       .getId(), DEFENSE).setPosition(222,  90).addCost(AMSkillPoints.BLUE .getId()).addParent(SELF             .getId())                                    .build(consumer);
         SkillBuilder.create(LEVITATION       .getId(), DEFENSE).setPosition(222, 225).addCost(AMSkillPoints.GREEN.getId()).addParent(GRAVITY_WELL     .getId())                                    .build(consumer);
+        SkillBuilder.create(NIGHT_VISION     .getId(), UTILITY).setPosition(185, 165).addCost(AMSkillPoints.GREEN.getId())/*.addParent(LIGHT            .getId())*/                                    .build(consumer);
         SkillBuilder.create(REGENERATION     .getId(), DEFENSE).setPosition(357,  90).addCost(AMSkillPoints.BLUE .getId()).addParent(SELF             .getId())                                    .build(consumer);
         SkillBuilder.create(SLOWNESS         .getId(), DEFENSE).setPosition(132, 155).addCost(AMSkillPoints.BLUE .getId()).addParent(SLOW_FALLING     .getId())                                    .build(consumer);
         SkillBuilder.create(SLOW_FALLING     .getId(), DEFENSE).setPosition(222, 135).addCost(AMSkillPoints.BLUE .getId()).addParent(JUMP_BOOST       .getId())                                    .build(consumer);
