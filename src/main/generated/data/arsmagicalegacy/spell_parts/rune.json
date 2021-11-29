@@ -5,28 +5,14 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:red_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "arsmagicalegacy:black_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -47,7 +33,14 @@
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:yellow_rune"
+        "item": "arsmagicalegacy:red_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:white_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
