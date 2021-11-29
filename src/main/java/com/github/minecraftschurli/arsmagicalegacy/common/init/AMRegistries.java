@@ -63,11 +63,12 @@ public interface AMRegistries {
         AMBlocks.register();
         AMItems.register();
         AMMobEffects.register();
+        AMAttributes.register();
+        AMSounds.register();
         AMEntities.register();
         AMBlockEntities.register();
         AMMenuTypes.register();
         AMStats.register();
-        AMAttributes.register();
         bus.addListener(AMStats::onRegister);
         AMSkillPoints.register();
         AMAffinities.register();
@@ -88,5 +89,6 @@ public interface AMRegistries {
         ATTRIBUTES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
-        SPELL_PARTS.register(bus);    }
+        SPELL_PARTS.register(bus);
+    }
 }
