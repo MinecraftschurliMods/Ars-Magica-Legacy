@@ -12,23 +12,23 @@ import com.github.minecraftschurli.arsmagicalegacy.client.hud.SpellBookHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.XpHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.EarthGuardianModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.FireGuardianModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.NatureGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellRuneModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.WaterGuardianModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.WinterGuardianModel;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.EarthGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.FireGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.ManaCreeperRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.NatureGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.ProjectileRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.WaterGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.WinterGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.render.ZoneRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.EarthGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.FireGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.NatureGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WaterGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WinterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGogglesCurioRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.WinterGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ZoneRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
@@ -39,18 +39,15 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ModelLoader;
@@ -129,11 +126,7 @@ public final class ClientInit {
             if (itemId == null) continue;
             for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
-                ModelLoader.addSpecialModel(
-                        new ResourceLocation(affinity.getId().getNamespace(),
-                                "item/" + itemId.getPath() + "_" + affinity.getId().getPath()
-                        )
-                );
+                ModelLoader.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
             }
         }
     }
@@ -144,14 +137,10 @@ public final class ClientInit {
             if (!(item instanceof IAffinityItem)) continue;
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
-            modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"),
-                    (rl, model) -> new AffinityOverrideModel(model));
+            modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
         }
-        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"),
-                (rl, model) -> new SpellItemModel(model));
-        modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(
-                AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)
-        ), (rl, model) -> new AltarCoreModel(model));
+        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
+        modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
 
         AMBlocks.SPELL_RUNE.get()
                 .getStateDefinition()
@@ -180,15 +169,5 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
 
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
-    }
-
-    private static void preStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
-        //event.addSprite(CraftingAltarModel.OVERLAY_LOC);
-    }
-
-    private static void postStitch(TextureStitchEvent.Post event) {
-        if (!event.getMap().location().equals(InventoryMenu.BLOCK_ATLAS)) return;
-        //CraftingAltarModel.OVERLAY = event.getMap().getSprite(CraftingAltarModel.OVERLAY_LOC);
     }
 }

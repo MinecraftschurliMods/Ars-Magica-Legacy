@@ -1,10 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.renderer;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,6 @@ import java.util.Collection;
 
 public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
 
-    public static final String LOW_POWER = "message." + ArsMagicaAPI.MOD_ID + ".altar.low_power";
     private final BlockEntityRenderDispatcher dispatcher;
     private final Font font;
 
@@ -60,7 +59,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
             }
             drawNameplate(ingredient.getTooltip(), poseStack, bufferSource, packedLight);
         } else {
-            drawNameplate(new TranslatableComponent(LOW_POWER), poseStack, bufferSource, packedLight);
+            drawNameplate(new TranslatableComponent(TranslationConstants.LOW_POWER), poseStack, bufferSource, packedLight);
         }
         poseStack.popPose();
         poseStack.pushPose();

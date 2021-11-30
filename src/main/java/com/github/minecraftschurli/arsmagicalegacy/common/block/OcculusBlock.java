@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +44,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
             box(4, 8, 7, 5, 10, 9),
             box(7, 8, 4, 9, 10, 5)
     );
-    private static final Map<Direction, VoxelShape> SHAPES = ImmutableMap.of(
+    private static final Map<Direction, VoxelShape> SHAPES                = ImmutableMap.of(
             Direction.NORTH, BlockUtil.joinShapes(SOCKET,
                     box(5, 11, 6.5, 11, 12, 9.5),
                     box(5, 14, 6.5, 11, 15, 9.5),
@@ -122,7 +123,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
         if (pLevel.isClientSide()) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-                pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
+                pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.MAGIC_UNKNOWN_MESSAGE), pPlayer.getUUID());
             } else {
                 api.openOcculusGui(pPlayer);
             }

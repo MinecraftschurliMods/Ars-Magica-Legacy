@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class InscriptionTableMenu extends AbstractContainerMenu {
     private final InscriptionTableBlockEntity table;
@@ -33,5 +34,13 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return this.table.stillValid(pPlayer);
+    }
+
+    public Optional<String> getSpellName() {
+        return Optional.empty();
+    }
+
+    public int allowedShapeGroups() {
+        return 0;
     }
 }

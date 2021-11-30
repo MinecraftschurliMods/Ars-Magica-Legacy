@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.renderer.SpellItemRend
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
@@ -40,16 +41,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SpellItem extends Item implements ISpellItem {
-    public static final String SPELL_CAST_RESULT = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
-    public static final String UNNAMED_SPELL = "item." + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
-    public static final String UNKNOWN_ITEM = "item." + ArsMagicaAPI.MOD_ID + ".spell.unknown";
-    public static final String UNKNOWN_ITEM_DESC = "item." + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
-    public static final String INVALID_SPELL = "item." + ArsMagicaAPI.MOD_ID + ".spell.invalid";
-    public static final String INVALID_SPELL_DESC = "item." + ArsMagicaAPI.MOD_ID + ".spell.invalid.description";
-    public static final String MANA_COST = "item." + ArsMagicaAPI.MOD_ID + ".spell.mana_cost";
-    public static final String BURNOUT = "item." + ArsMagicaAPI.MOD_ID + ".spell.burnout";
-    public static final String REAGENTS = "item." + ArsMagicaAPI.MOD_ID + ".spell.reagents";
-    public static final String HOLD_SHIFT_FOR_DETAILS = "tooltip." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
     private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
     private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
@@ -66,24 +57,24 @@ public class SpellItem extends Item implements ISpellItem {
             player = ClientHelper.getLocalPlayer();
         }
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
-            pTooltipComponents.add(new TranslatableComponent(UNKNOWN_ITEM_DESC));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM_DESC));
             return;
         }
         Spell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) {
-            pTooltipComponents.add(new TranslatableComponent(INVALID_SPELL_DESC));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.INVALID_SPELL_DESC));
             return;
         }
-        pTooltipComponents.add(new TranslatableComponent(MANA_COST, spell.manaCost(player)));
-        pTooltipComponents.add(new TranslatableComponent(BURNOUT, spell.burnout()));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.MANA_COST_TOOLTIP, spell.manaCost(player)));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.BURNOUT_TOOLTIP, spell.burnout()));
         if (player == null) return;
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
             if (reagents.isEmpty()) return;
-            pTooltipComponents.add(new TranslatableComponent(REAGENTS));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.REAGENTS_TOOLTIP));
             reagents.stream().map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).forEach(e -> pTooltipComponents.add(Arrays.stream(e).map(ItemStack::getHoverName).map(Component::copy).collect(ComponentUtil.joiningComponents(" | "))));
         } else {
-            pTooltipComponents.add(new TranslatableComponent(HOLD_SHIFT_FOR_DETAILS));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
         }
     }
 
@@ -92,11 +83,11 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
             assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return new TranslatableComponent(UNKNOWN_ITEM);
+            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM);
         }
         Spell spell = getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(INVALID_SPELL);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(UNNAMED_SPELL));
+        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.INVALID_SPELL);
+        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(TranslationConstants.UNNAMED_SPELL));
     }
 
     @Override
@@ -120,7 +111,7 @@ public class SpellItem extends Item implements ISpellItem {
                 player.awardStat(AMStats.SPELL_CAST);
             }
             if (result.isFail()) {
-                player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
             }
         }
         saveSpell(stack, spell);
@@ -190,7 +181,7 @@ public class SpellItem extends Item implements ISpellItem {
                     player.awardStat(AMStats.SPELL_CAST);
                 }
                 if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                    player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.client.model;
+package com.github.minecraftschurli.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import com.mojang.blaze3d.vertex.PoseStack;

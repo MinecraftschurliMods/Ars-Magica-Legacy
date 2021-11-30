@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.server.commands;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -29,9 +30,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SkillCommand {
-    public static final String LANG_KEY_PREFIX = "commands.%s.skill".formatted(ArsMagicaAPI.MOD_ID);
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(LANG_KEY_PREFIX + ".skillNotFound", message));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(TranslationConstants.SKILL_COMMAND_UNKNOWN_SKILL, message));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         var skill = dispatcher.register(Commands.literal("skill")
@@ -65,7 +65,7 @@ public class SkillCommand {
                         .then(Commands.literal("all").executes(SkillCommand::listAll))
                 )
         );
-        dispatcher.register(Commands.literal("%s:skill".formatted(ArsMagicaAPI.MOD_ID)).redirect(skill));
+        dispatcher.register(Commands.literal(ArsMagicaAPI.MOD_ID+":skill").redirect(skill));
     }
 
     private static int listAll(CommandContext<CommandSourceStack> context) {
@@ -119,7 +119,7 @@ public class SkillCommand {
 
     private static int forgetAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
-        context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX + ".forgetAll.success", player.getDisplayName()), true);
+        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_FORGET_ALL_SUCCESS, player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -143,11 +143,11 @@ public class SkillCommand {
     private static int forget(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
         var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         if (!knowledgeHelper.knows(player, skill)) {
-            context.getSource().sendFailure(new TranslatableComponent(LANG_KEY_PREFIX + ".skillNotKnown", skill.getDisplayName(), player.getDisplayName()));
+            context.getSource().sendFailure(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_NOT_KNOWN_SKILL, skill.getDisplayName(), player.getDisplayName()));
             return 0;
         }
         knowledgeHelper.forget(player, skill);
-        context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX + ".forget.success", skill.getDisplayName(), player.getDisplayName()), true);
+        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_FORGET_SUCCESS, skill.getDisplayName(), player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -166,7 +166,7 @@ public class SkillCommand {
     private static int learnAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         ArsMagicaAPI.get().getSkillManager().getSkills().forEach(iSkill -> knowledgeHelper.learn(player, iSkill));
-        context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX + ".learnAll.success", player.getDisplayName()), true);
+        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_LEARN_ALL_SUCCESS, player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -190,11 +190,11 @@ public class SkillCommand {
     private static int learn(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
         var knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
         if (knowledgeHelper.knows(player, skill)) {
-            context.getSource().sendFailure(new TranslatableComponent(LANG_KEY_PREFIX + ".skillAlreadyKnown", skill.getDisplayName(), player.getDisplayName()));
+            context.getSource().sendFailure(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
             return 0;
         }
         knowledgeHelper.learn(player, skill);
-        context.getSource().sendSuccess(new TranslatableComponent(LANG_KEY_PREFIX + ".learn.success", skill.getDisplayName(), player.getDisplayName()), true);
+        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_LEARN_SUCCESS, skill.getDisplayName(), player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -207,7 +207,7 @@ public class SkillCommand {
     }
 
     private static Component createListComponent(Stream<ISkill> resourceLocationStream) {
-        return resourceLocationStream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.append("\n").append(component2)).orElse(new TranslatableComponent(LANG_KEY_PREFIX + ".empty"));
+        return resourceLocationStream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.append("\n").append(component2)).orElse(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_EMPTY));
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
