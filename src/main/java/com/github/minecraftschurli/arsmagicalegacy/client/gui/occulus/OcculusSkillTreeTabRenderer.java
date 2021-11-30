@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,8 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
-    public static final String MISSING_REQUIREMENTS_KEY = "message.%s.occulus.missingRequirements".formatted(ArsMagicaAPI.MOD_ID);
-    public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(MISSING_REQUIREMENTS_KEY).withStyle(ChatFormatting.DARK_RED);
+    public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS).withStyle(ChatFormatting.DARK_RED);
     private static final float SKILL_SIZE = 32f;
     private static final float SCALE = 1f;
     private int lastMouseX = 0;

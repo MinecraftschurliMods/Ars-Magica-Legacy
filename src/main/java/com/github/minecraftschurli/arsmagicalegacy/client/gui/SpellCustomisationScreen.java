@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurli.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,7 +26,6 @@ import java.util.List;
 
 public class SpellCustomisationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
-    private static final String NAME_FIELD_MESSAGE = "gui_components." + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.name_box";
     private static final int ICON_SIZE = 15;
     private static final int ICON_MARGIN = 1;
     private final int imageWidth = 176;
@@ -41,7 +41,7 @@ public class SpellCustomisationScreen extends Screen {
      */
     public SpellCustomisationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
-        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(NAME_FIELD_MESSAGE));
+        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.NAME_FIELD_MESSAGE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
         SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
         SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
@@ -52,7 +52,7 @@ public class SpellCustomisationScreen extends Screen {
         super.init();
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
-        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(NAME_FIELD_MESSAGE)));
+        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.NAME_FIELD_MESSAGE)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
     }
 

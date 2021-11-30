@@ -5,7 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RenderUtil;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -97,7 +97,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         }
         if (!drawString.isEmpty()) {
             if (!Screen.hasShiftDown()) {
-                drawString.add(new TranslatableComponent(SpellItem.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
+                drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             pMatrixStack.pushPose();
             pMatrixStack.translate(0,-1,0);

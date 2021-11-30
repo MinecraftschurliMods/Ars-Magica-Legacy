@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.client.render;
+package com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WallEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

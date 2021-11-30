@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontabl
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -119,7 +120,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-            pPlayer.sendMessage(new TranslatableComponent("message.%s.prevent".formatted(ArsMagicaAPI.MOD_ID)), pPlayer.getUUID());
+            pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.MAGIC_UNKNOWN_MESSAGE), pPlayer.getUUID());
             return InteractionResult.FAIL;
         }
         if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());

@@ -1,7 +1,7 @@
-package com.github.minecraftschurli.arsmagicalegacy.client.render;
+package com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.client.model.NatureGuardianModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
