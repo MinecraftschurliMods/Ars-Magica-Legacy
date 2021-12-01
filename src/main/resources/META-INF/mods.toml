@@ -2,6 +2,7 @@ modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "\"Don't Be a Jerk\" License"
 # services = [ "com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI.IArsMagicaAPI" ]
+issueTrackerURL = "${issue_tracker_url}"
 
 [[mods]]
 modId = "${mod_id}"
@@ -15,19 +16,12 @@ description = '''
 Continuation of ArsMagica 2 by Mithion
 '''
 
-[[dependencies.${mod_id}]]
-modId = "patchouli"
-mandatory = true
-versionRange = "${patchouli_version_range}"
-ordering = "BEFORE"
-side = "BOTH"
-
 #[[dependencies.${mod_id}]]
-#modId = "ftblibrary"
-#mandatory = false
-#versionRange = "\${ftblibrary_version_range}"
-#ordering = "NONE"
-#side = "CLIENT"
+#modId = "patchouli"
+#mandatory = true
+#versionRange = "${patchouli_version_range}"
+#ordering = "BEFORE"
+#side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "forge"

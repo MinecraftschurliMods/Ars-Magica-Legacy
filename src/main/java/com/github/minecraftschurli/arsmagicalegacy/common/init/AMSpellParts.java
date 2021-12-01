@@ -3,7 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Damage;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Self;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.SPELL_PARTS;

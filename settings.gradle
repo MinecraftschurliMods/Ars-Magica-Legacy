@@ -1,5 +1,45 @@
-rootProject.name = 'Ars Magica Legacy'
+pluginManagement {
+    plugins {
+        id 'org.ec4j.editorconfig' version '0.0.3'
+        id 'net.minecraftforge.gradle' version '5.1.+'
+        id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+        id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    }
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name 'MinecraftForge'
+            url 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name 'ParchmentMC'
+            url 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name 'SpongeGradle'
+            url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            var version = target.version
+            switch (requested.id.toString()) {
+                case "net.minecraftforge.gradle": {
+                    useVersion(version)
+                    useModule("${requested.id}:ForgeGradle:${version}")
+                    break
+                }
+                case "org.spongepowered.mixin": {
+                    useVersion(version)
+                    useModule("org.spongepowered:mixingradle:${version}")
+                    break
+                }
+            }
+        }
+    }
+}
 
+rootProject.name = 'Ars Magica Legacy'
 
 file('projects').list().each {
     var pDir = "projects/$it".toString()

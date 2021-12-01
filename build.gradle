@@ -4,30 +4,24 @@ import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
         classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
-        classpath group: 'org.parchmentmc', name: 'librarian', version: "${project.librarian_version}"
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: "${project.mixingradle_version}"
     }
 }
 
 plugins {
-    id 'org.ec4j.editorconfig' version '0.0.3'
-    id 'maven-publish'
-    id 'eclipse'
     id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'org.ec4j.editorconfig'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
 //=============================================
 
 mixin {
@@ -37,7 +31,7 @@ mixin {
 }
 
 editorconfig {
-    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**']
+    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**', '**/*.ogg']
     excludeNonSourceFiles = true
 }
 
@@ -72,7 +66,6 @@ sourceSets {
         exclude '.cache'
     }
     data.resources.srcDirs = []
-    test.resources.srcDirs = []
 }
 
 configurations {
@@ -90,20 +83,34 @@ configurations {
         transitive = false
     }
 
+    apiExternalLibrary
+    externalLibrary
+    dataExternalLibrary
+    testExternalLibrary
+
+    apiImplementation.extendsFrom(apiExternalLibrary)
+    implementation.extendsFrom(externalLibrary)
+    dataImplementation.extendsFrom(dataExternalLibrary)
+    testImplementation.extendsFrom(testExternalLibrary)
+
     apiCompileOnly.extendsFrom(library)
     compileOnly.extendsFrom(library)
     dataCompileOnly.extendsFrom(library)
+    testCompileOnly.extendsFrom(library)
 
     apiCompileOnly.extendsFrom(modAPI)
     compileOnly.extendsFrom(modAPI)
     dataCompileOnly.extendsFrom(modAPI)
+    testCompileOnly.extendsFrom(modAPI)
 
     runtimeOnly.extendsFrom(runtimeMod)
     dataRuntimeOnly.extendsFrom(runtimeMod)
+    testRuntimeOnly.extendsFrom(runtimeMod)
 
     apiImplementation.extendsFrom(include)
     implementation.extendsFrom(include)
     dataImplementation.extendsFrom(include)
+    testImplementation.extendsFrom(include)
 
     dataImplementation.extendsFrom(datagenLibrary)
 
@@ -120,31 +127,55 @@ repositories {
     maven {
         name = 'Sponge maven'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
+        content {
+            includeGroup 'org.spongepowered'
+        }
     }
     maven {
         name = 'Minecraftschurli Maven'
         url = 'https://minecraftschurli.ddns.net/repository'
-    }
-    maven {
-        name = 'saps Maven'
-        url = 'https://maven.saps.dev/minecraft/'
+        content {
+            includeGroup 'com.github.ichhabehunger54'
+            includeGroup 'com.github.minecraftschurli'
+        }
     }
     maven {
         name = 'Progwml6 Maven'
         url = 'https://dvs1.progwml6.com/files/maven/'
+        content {
+            includeGroup 'mezz.jei'
+        }
     }
     maven {
         name = 'theillusivec4 Maven'
         url = 'https://maven.theillusivec4.top/'
+        content {
+            includeGroup 'top.theillusivec4.curios'
+        }
     }
     maven {
         name = 'blamejared Maven'
         url = 'https://maven.blamejared.com'
+        content {
+            includeGroup 'com.blamejared.controlling'
+            includeGroup 'vazkii.patchouli'
+        }
     }
     maven {
+        name = 'CuresMaven'
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    /*maven {
+        name = 'saps Maven'
+        url = 'https://maven.saps.dev/minecraft/'
+    }*/
+    /*maven {
         name = 'CurseForge'
         url = 'https://minecraft.curseforge.com/api/maven/'
-    }
+    }*/
     maven {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
@@ -158,49 +189,53 @@ dependencies {
     }
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
+    // TODO compile against 1.17 jei api
+    modAPI fg.deobf("mezz.jei:jei-1.17.1:${project.jei_version}:api")
+    // TODO commented out until jei releases for 1.18
+    //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
+    // TODO commented out until curios releases for 1.18
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
     runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
 
+    // TODO commented out until patchouli releases for 1.18
     // patchouli for the guide book (arcane compendium)
-    modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
-    runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
-
-    // ftb library for in-game config gui
-    //modAPI fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
-    //runtimeMod fg.deobf("dev.ftb.mods:ftb-library-forge:${project.ftb_library_version}")
+    //modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
+    //runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
     runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.mc_version}-${project.potionbundles_version}")
+    //runtimeMod fg.deobf("com.blamejared.controlling:Controlling:8.+") {transitive false}
+    //runtimeMod fg.deobf("curse.maven:fast-leaf-decay-230976:3399353")
+    //runtimeMod fg.deobf("curse.maven:configured-457570:3523089") // config screen
+    //runtimeMod fg.deobf("curse.maven:catalogue-459701:3529459") // better mod menu
 
     // add internal libraries
     var projects = subprojects.collect {it.path }
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:easyimclib:1.17.1-1.0-SNAPSHOT')
+        include fg.deobf('com.github.minecraftschurli:easyimclib:1.18-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:simplenetlib')) {
         include project(path: ':projects:simplenetlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.17.1-1.0-SNAPSHOT')
+        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:codeclib')) {
         include project(path: ':projects:codeclib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:codeclib:1.17.1-1.0-SNAPSHOT')
+        include fg.deobf('com.github.minecraftschurli:codeclib:1.18-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:betterkeybindlib')) {
         include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
     } else {
-        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.17.1-1.0-SNAPSHOT')
+        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18-1.0-SNAPSHOT')
     }
     if (projects.contains(':projects:patchouli_datagen')) {
         datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
     } else {
-        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.17.1-1.0-SNAPSHOT')
+        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.18-1.0-SNAPSHOT')
     }
 
     implementation sourceSets.api.output
@@ -244,6 +279,21 @@ minecraft {
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
             }
+            lazyToken('minecraft_classpath') {
+                configurations.dataExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
+        }
+        test {
+            ideaModule "${project.name.replace(' ', '_')}.test"
+            property 'forge.logging.markers', 'REGISTRIES'
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
+            }
+            lazyToken ('minecraft_classpath') {
+                configurations.testExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+            }
         }
     }
     runs.configureEach {
@@ -256,14 +306,15 @@ def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
         'version': project.version,
         'mod_id': project.mod_id,
-        'mod_name': project.mod_name,
         'mod_url': project.mod_url,
+        'mod_name': project.mod_name,
         'mod_author': project.mod_author,
         'mod_credits': project.mod_credits,
-        'patchouli_version_range': project.patchouli_version_range,
-        'loader_version_range': project.loader_version_range,
+        'mc_version_range': project.mc_version_range,
         'forge_version_range': project.forge_version_range,
-        'mc_version_range': project.mc_version_range
+        'loader_version_range': project.loader_version_range,
+        'patchouli_version_range': project.patchouli_version_range,
+        'issue_tracker_url': "https://github.com/${project.github}/issues"
 ]
 
 processResources {
@@ -366,17 +417,17 @@ task reobf {
 task setupGithubActions() {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
+        println "##[set-output name=version;]${project.version}"
         if(project.hasProperty('curse_project_id')) {
             println "##[set-output name=project_id;]${project.curse_project_id}"
+            println "##[set-output name=curse_versions;]${project.curse_versions}"
             if(project.hasProperty('curse_title')) {
                 println "##[set-output name=curse_title;]${project.curse_title}"
             }
-            println "##[set-output name=curse_versions;]${project.curse_versions}"
             if(project.hasProperty('curse_relations')) {
                 println "##[set-output name=curse_relations;]${project.curse_relations}"
             }
         }
-        println "##[set-output name=version;]${project.version}"
     }
 }
 
@@ -410,7 +461,7 @@ publishing {
             }
             issueManagement {
                 system = 'github'
-                url = "https://github.com/${project.github}.git/issues"
+                url = "https://github.com/${project.github}/issues"
             }
             organization {
                 name = 'Minecraftschurli Mods'
@@ -430,6 +481,8 @@ publishing {
                     id = 'ichhabehunger54'
                     name = 'IchHabeHunger54'
                     url = 'https://github.com/IchHabeHunger54'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/MinecraftschurliMods'
                     timezone = 'Europe/Vienna'
                 }
             }
