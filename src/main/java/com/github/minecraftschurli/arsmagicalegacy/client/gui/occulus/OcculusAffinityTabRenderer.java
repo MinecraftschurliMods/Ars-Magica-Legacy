@@ -12,15 +12,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
-    public OcculusAffinityTabRenderer(IOcculusTab occulusTab) {
-        super(occulusTab);
+    public OcculusAffinityTabRenderer(IOcculusTab occulusTab, Screen parent) {
+        super(occulusTab, parent);
     }
 
     @Override
@@ -98,7 +99,10 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             if (!Screen.hasShiftDown()) {
                 drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
-            GuiUtils.drawHoveringText(pMatrixStack, drawString, pMouseX, pMouseY, screenWidth, screenHeight, -1, getFont());
+            pMatrixStack.pushPose();
+            pMatrixStack.translate(0,-1,0);
+            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY, getFont());
+            pMatrixStack.popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);
     }

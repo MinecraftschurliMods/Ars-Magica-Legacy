@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus.Internal;
@@ -25,6 +26,7 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     protected final IOcculusTab occulusTab;
     protected final int textureHeight;
     protected final int textureWidth;
+    protected final Screen parent;
     protected int screenWidth;
     protected int screenHeight;
     protected int width;
@@ -36,11 +38,13 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
      * Constructor for a {@link OcculusTabRenderer}.
      *
      * @param occulusTab the occulus tab of this renderer
+     * @param parent
      */
-    protected OcculusTabRenderer(IOcculusTab occulusTab) {
+    protected OcculusTabRenderer(IOcculusTab occulusTab, final Screen parent) {
         this.occulusTab = occulusTab;
         textureHeight = occulusTab.getHeight();
         textureWidth = occulusTab.getWidth();
+        this.parent = parent;
     }
 
     /**

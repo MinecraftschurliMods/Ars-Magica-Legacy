@@ -13,9 +13,9 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Wall;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Wave;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Zone;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 

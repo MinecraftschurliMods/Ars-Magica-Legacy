@@ -16,12 +16,13 @@ import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     private float offsetY = 0;
     private ISkill hoverItem = null;
 
-    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab) {
-        super(occulusTab);
+    public OcculusSkillTreeTabRenderer(IOcculusTab occulusTab, Screen parent) {
+        super(occulusTab, parent);
     }
 
     @Override
@@ -142,7 +143,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 } else {
                     list.add(MISSING_REQUIREMENTS);
                 }
-                GuiUtils.drawHoveringText(stack, list, (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), screenWidth, screenHeight, -1, getFont());
+                stack.pushPose();
+                stack.translate(0,-1,0);
+                parent.renderTooltip(stack, list, Optional.empty(), (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), getFont());
+                stack.popPose();
                 hoverItem = skill;
                 isHoveringSkill = true;
             }

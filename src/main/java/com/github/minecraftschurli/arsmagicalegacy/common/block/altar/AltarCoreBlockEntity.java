@@ -25,6 +25,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
@@ -40,7 +41,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
-import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +151,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             getLevel().getBlockState(this.viewPos).is(AMBlocks.ALTAR_VIEW.get())) {
             getLevel().setBlock(this.viewPos,
                                 AMBlocks.ALTAR_VIEW.get().defaultBlockState(),
-                                Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+                                Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }
         this.lecternPos = null;
         this.leverPos = null;
@@ -172,7 +172,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         if (getBlockState().getValue(AltarCoreBlock.FORMED) != b) {
             getLevel().setBlock(getBlockPos(),
                                 getBlockState().setValue(AltarCoreBlock.FORMED, b),
-                                Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+                                Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }
     }
 
@@ -221,7 +221,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
         getLevel().setBlock(this.viewPos,
                             AMBlocks.ALTAR_VIEW.get().defaultBlockState(),
-                            Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+                            Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         ((AltarViewBlockEntity) getLevel().getBlockEntity(this.viewPos)).setAltarPos(getBlockPos());
 
         if (getLevel().getBlockState(this.lecternPos).getValue(LecternBlock.HAS_BOOK)) {
@@ -242,7 +242,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, this.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
     }
 
     @Override

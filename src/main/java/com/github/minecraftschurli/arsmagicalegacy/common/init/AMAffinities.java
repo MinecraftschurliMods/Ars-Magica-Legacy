@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.Affinity;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -10,8 +10,8 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 
 @NonExtendable
 public interface AMAffinities {
-    RegistryObject<IAffinity> NONE      = AFFINITIES.register("none",      () -> Affinity.builder().setColor(0).setDirectOpposite(IAffinity.NONE).build());
-    RegistryObject<IAffinity> WATER     = AFFINITIES.register("water",     () -> Affinity.builder().setColor(0x0b5cef).setDirectOpposite(IAffinity.FIRE).addMajorOpposites(IAffinity.LIGHTNING, IAffinity.EARTH, IAffinity.ARCANE, IAffinity.ENDER).addMinorOpposites(IAffinity.AIR, IAffinity.ICE).build());
+    RegistryObject<IAffinity> NONE  = AFFINITIES.register("none", () -> Affinity.builder().setColor(0).setDirectOpposite(IAffinity.NONE).build());
+    RegistryObject<IAffinity> WATER = AFFINITIES.register("water",     () -> Affinity.builder().setColor(0x0b5cef).setDirectOpposite(IAffinity.FIRE).addMajorOpposites(IAffinity.LIGHTNING, IAffinity.EARTH, IAffinity.ARCANE, IAffinity.ENDER).addMinorOpposites(IAffinity.AIR, IAffinity.ICE).build());
     RegistryObject<IAffinity> FIRE      = AFFINITIES.register("fire",      () -> Affinity.builder().setColor(0xef260b).setDirectOpposite(IAffinity.WATER).addMajorOpposites(IAffinity.AIR, IAffinity.ICE, IAffinity.NATURE, IAffinity.LIFE).addMinorOpposites(IAffinity.EARTH, IAffinity.LIGHTNING).build());
     RegistryObject<IAffinity> EARTH     = AFFINITIES.register("earth",     () -> Affinity.builder().setColor(0x61330b).setDirectOpposite(IAffinity.AIR).addMajorOpposites(IAffinity.WATER, IAffinity.ARCANE, IAffinity.LIFE, IAffinity.LIGHTNING).addMinorOpposites(IAffinity.NATURE, IAffinity.FIRE).build());
     RegistryObject<IAffinity> AIR       = AFFINITIES.register("air",       () -> Affinity.builder().setColor(0x777777).setDirectOpposite(IAffinity.EARTH).addMajorOpposites(IAffinity.NATURE, IAffinity.FIRE, IAffinity.ICE, IAffinity.ENDER).addMinorOpposites(IAffinity.WATER, IAffinity.ARCANE).build());

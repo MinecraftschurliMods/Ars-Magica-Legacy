@@ -3,7 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.network;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public record UpdateStepHeightPacket(float stepHeight) implements IPacket {
     public UpdateStepHeightPacket(FriendlyByteBuf buf) {

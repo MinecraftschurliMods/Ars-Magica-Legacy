@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.occulus;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 
 import java.lang.reflect.Constructor;
@@ -75,10 +76,10 @@ public interface IOcculusTab extends ITranslatable {
         static Supplier<OcculusTabRendererFactory> of(String clazz) {
             return () -> {
                 try {
-                    Constructor<? extends OcculusTabRenderer> constructor = ((Class<? extends OcculusTabRenderer>) Class.forName(clazz)).getConstructor(IOcculusTab.class);
-                    return tab -> {
+                    Constructor<? extends OcculusTabRenderer> constructor = ((Class<? extends OcculusTabRenderer>) Class.forName(clazz)).getConstructor(IOcculusTab.class, Screen.class);
+                    return (tab, parent) -> {
                         try {
-                            return constructor.newInstance(tab);
+                            return constructor.newInstance(tab, parent);
                         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                             throw new RuntimeException(e);
                         }
@@ -89,6 +90,6 @@ public interface IOcculusTab extends ITranslatable {
             };
         }
 
-        OcculusTabRenderer create(IOcculusTab tab);
+        OcculusTabRenderer create(IOcculusTab tab, Screen parent);
     }
 }

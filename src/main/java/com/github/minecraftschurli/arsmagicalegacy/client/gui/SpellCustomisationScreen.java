@@ -17,8 +17,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.gui.GuiUtils;
 import net.minecraftforge.client.gui.ScrollPanel;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -144,13 +144,13 @@ public class SpellCustomisationScreen extends Screen {
                                 0xffffff00);
                     } else if (icon.equals(hovered)) {
                         GuiUtils.drawGradientRect(mStack.last().pose(),
-                                1,
+                                                  1,
                                 x - ICON_MARGIN,
                                 y - ICON_MARGIN,
                                 x + ICON_SIZE + ICON_MARGIN,
                                 y + ICON_SIZE + ICON_MARGIN,
-                                0xffffffff,
-                                0xffffffff);
+                                                  0xffffffff,
+                                                  0xffffffff);
                     }
                     blit(mStack, x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
                 }

@@ -34,7 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
-import vazkii.patchouli.api.PatchouliAPI;
+//import vazkii.patchouli.api.PatchouliAPI;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
@@ -44,8 +44,8 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public ItemStack getBookStack() {
-        if (ModList.get().isLoaded("patchouli"))
-            return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+        //if (ModList.get().isLoaded("patchouli"))
+            //return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
         return ItemStack.EMPTY;
     }
 

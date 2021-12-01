@@ -4,7 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public record LearnSkillPacket(ResourceLocation id) implements IPacket {
     public LearnSkillPacket(FriendlyByteBuf buf) {

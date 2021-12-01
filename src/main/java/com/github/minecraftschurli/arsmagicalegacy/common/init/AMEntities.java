@@ -19,7 +19,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
@@ -38,9 +38,9 @@ public interface AMEntities {
     RegistryObject<EntityType<NatureGuardian>>    NATURE_GUARDIAN =    ENTITIES.register("nature_guardian",    () -> EntityType.Builder.of(NatureGuardian   ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(1.65F, 4.75F).build("nature_guardian"));
     RegistryObject<EntityType<LifeGuardian>>      LIFE_GUARDIAN =      ENTITIES.register("life_guardian",      () -> EntityType.Builder.of(LifeGuardian     ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("life_guardian"));
     RegistryObject<EntityType<ArcaneGuardian>>    ARCANE_GUARDIAN =    ENTITIES.register("arcane_guardian",    () -> EntityType.Builder.of(ArcaneGuardian   ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     3).build("arcane_guardian"));
-    RegistryObject<EntityType<EnderGuardian>>     ENDER_GUARDIAN =     ENTITIES.register("ender_guardian",     () -> EntityType.Builder.of(EnderGuardian    ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     3).build("ender_guardian"));
-    RegistryObject<EntityType<Dryad>>             DRYAD =              ENTITIES.register("dryad",              () -> EntityType.Builder.of(Dryad            ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    5,     2).build("dryad"));
-    RegistryObject<EntityType<Mage>>              MAGE =               ENTITIES.register("mage",               () -> EntityType.Builder.of(Mage             ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    5,     2).build("mage"));
+    RegistryObject<EntityType<EnderGuardian>> ENDER_GUARDIAN =     ENTITIES.register("ender_guardian",     () -> EntityType.Builder.of(EnderGuardian    ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     3).build("ender_guardian"));
+    RegistryObject<EntityType<Dryad>>         DRYAD          =              ENTITIES.register("dryad", () -> EntityType.Builder.of(Dryad            ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(5, 2).build("dryad"));
+    RegistryObject<EntityType<Mage>>          MAGE           =               ENTITIES.register("mage",               () -> EntityType.Builder.of(Mage             ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    5,     2).build("mage"));
     RegistryObject<EntityType<ManaCreeper>>       MANA_CREEPER =       ENTITIES.register("mana_creeper",       () -> EntityType.Builder.of(ManaCreeper      ::new, MobCategory.MONSTER).clientTrackingRange(8).sized( 0.6F,  1.7F).build("mana_creeper"));
 
     @Internal
