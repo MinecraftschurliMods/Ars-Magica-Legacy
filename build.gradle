@@ -19,7 +19,7 @@ plugins {
     id 'org.ec4j.editorconfig'
     id 'net.minecraftforge.gradle'
     id 'org.spongepowered.mixin'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.parchmentmc.librarian.forgegradle'
 }
 
 //=============================================
@@ -31,7 +31,7 @@ mixin {
 }
 
 editorconfig {
-    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**', '**/*.ogg']
+    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*']
     excludeNonSourceFiles = true
 }
 
