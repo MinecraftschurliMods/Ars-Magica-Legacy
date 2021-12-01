@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+//import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.patchouli_datagen.BookBuilder;
 import com.github.minecraftschurli.patchouli_datagen.PatchouliBookProvider;
 import net.minecraft.data.DataGenerator;
@@ -31,7 +31,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                     .setSortnum(0)
                     .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
                         .addSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get())).build()
-                        .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
+//                        .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
                     .build()
                 .build()
                 .addCategory("blocks", "Blocks", "", new ItemStack(AMItems.CHIMERITE_ORE.get())) // TODO: crystal wrench here instead

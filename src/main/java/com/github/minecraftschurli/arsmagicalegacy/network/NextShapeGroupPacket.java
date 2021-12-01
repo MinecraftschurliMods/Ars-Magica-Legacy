@@ -5,7 +5,7 @@ import com.github.minecraftschurli.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public record NextShapeGroupPacket(InteractionHand hand) implements IPacket {
     public NextShapeGroupPacket(FriendlyByteBuf buf) {

@@ -10,10 +10,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class Rune extends AbstractShape {
                        AMBlocks.SPELL_RUNE.get()
                                           .defaultBlockState()
                                           .setValue(SpellRuneBlock.FACE, direction.getOpposite()),
-                       Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+                       Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         ((SpellRuneBlockEntity) level.getBlockEntity(pos)).setSpell(spell, caster, index, awardXp);
         return SpellCastResult.SUCCESS;
     }

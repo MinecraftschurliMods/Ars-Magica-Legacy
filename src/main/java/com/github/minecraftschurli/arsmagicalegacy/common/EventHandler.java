@@ -36,7 +36,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.EtheriumSpellIng
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
-import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+//import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -106,7 +106,7 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
-        PatchouliCompat.init();
+        //PatchouliCompat.init();
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
     }

@@ -7,7 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Consumer;
 

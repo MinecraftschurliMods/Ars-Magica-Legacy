@@ -14,12 +14,12 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.util.Constants;
 
 public class SpellRuneBlockEntity extends BlockEntity {
     public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
@@ -85,7 +85,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
         if (r1.isSuccess() || r2.isSuccess()) {
             level.setBlock(pos,
                            Blocks.AIR.defaultBlockState(),
-                           Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+                           Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }
     }
 

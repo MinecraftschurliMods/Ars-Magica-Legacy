@@ -5,7 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreB
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
