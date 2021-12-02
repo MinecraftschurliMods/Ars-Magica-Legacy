@@ -3,6 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -14,7 +16,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ZoneEntity extends Entity implements ItemSupplier {
@@ -84,6 +90,28 @@ public class ZoneEntity extends Entity implements ItemSupplier {
         if (tickCount > getDuration() || getOwner() == null) {
             remove(RemovalReason.KILLED);
             return;
+        }
+        double minX = getX() - getBbWidth() / 2 + getRadius();
+        double minY = getY();
+        double minZ = getZ() - getBbWidth() / 2 + getRadius();
+        double maxX = getX() + getBbWidth() / 2 + getRadius();
+        double maxY = getY() + getBbHeight();
+        double maxZ = getZ() + getBbWidth() / 2 + getRadius();
+        for (int x = (int) Math.floor(minX); x < (int) Math.ceil(maxX); x++) {
+            for (int z = (int) Math.floor(minZ); z < (int) Math.ceil(maxZ); z++) {
+                for (int y = (int) Math.floor(minY); y < (int) Math.ceil(maxY); y++) {
+                    HitResult result = BlockUtil.getHitResult(new Vec3(x, y, z), new Vec3(x, y, z), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+                    if (result.getType() == HitResult.Type.BLOCK) {
+                        ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
+                    }
+                }
+            }
+        }
+        for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
+            HitResult result = BlockUtil.getHitResult(entity.position(), entity.position(), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+            if (result.getType() == HitResult.Type.ENTITY) {
+                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
+            }
         }
     }
 
