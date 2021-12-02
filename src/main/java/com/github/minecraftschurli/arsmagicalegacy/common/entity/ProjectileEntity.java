@@ -4,6 +4,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -117,7 +118,7 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        HitResult result = getHitResult(this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+        HitResult result = BlockUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
             if (getBounces() > 0) {
@@ -245,29 +246,5 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
         } else {
             setPierces(getPierces() - 1);
         }
-    }
-
-    /**
-     * Performs a ray trace from the given entity in its view direction. Modified version of {@link ProjectileUtil#getHitResult(Entity, Predicate)}
-     *
-     * @param entity       the entity that causes this ray trace
-     * @param blockContext the block clipping context to use
-     * @param fluidContext the fluid clipping context to use
-     * @return A hit result, representing the ray trace.
-     */
-    private static HitResult getHitResult(Entity entity, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
-        Vec3 movement = entity.getDeltaMovement();
-        Level level = entity.level;
-        Vec3 pos = entity.position();
-        Vec3 newPos = pos.add(movement);
-        HitResult hitResult = level.clip(new ClipContext(pos, newPos, blockContext, fluidContext, entity));
-        if (hitResult.getType() != HitResult.Type.MISS) {
-            newPos = hitResult.getLocation();
-        }
-        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(level, entity, pos, newPos, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1.0D), e -> true);
-        if (entityHitResult != null) {
-            hitResult = entityHitResult;
-        }
-        return hitResult;
     }
 }
