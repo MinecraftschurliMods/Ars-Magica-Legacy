@@ -14,8 +14,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -51,6 +49,5 @@ public interface AMMobEffects {
      * Empty method that is required for classloading
      */
     @Internal
-    static void register() {
-    }
+    static void register() {}
 }

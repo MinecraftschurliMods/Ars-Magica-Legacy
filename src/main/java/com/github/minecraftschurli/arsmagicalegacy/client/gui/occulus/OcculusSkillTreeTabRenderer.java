@@ -145,7 +145,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 }
                 stack.pushPose();
                 stack.translate(0,-1,0);
-                parent.renderTooltip(stack, list, Optional.empty(), (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), getFont());
+                parent.renderTooltip(stack, list, Optional.empty(), mouseX, mouseY, getFont());
                 stack.popPose();
                 hoverItem = skill;
                 isHoveringSkill = true;

@@ -51,6 +51,8 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -106,8 +108,6 @@ public final class ClientInit {
         XP_HUD          = OverlayRegistry.registerOverlayBottom("xp_hud",          new XpHUD());
         SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
         SPELL_BOOK_HUD  = OverlayRegistry.registerOverlayBottom("spell_book_hud",  new SpellBookHUD());
-
-        Keybinds.init(FMLJavaModLoadingContext.get().getModEventBus());
 
         if (ModList.get().isLoaded("curios")) {
             MagitechGogglesCurioRenderer.register();

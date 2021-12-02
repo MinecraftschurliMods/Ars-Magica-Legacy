@@ -13,8 +13,8 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 
 @NonExtendable
 public interface AMAttributes {
-    RegistryObject<Attribute> MAX_MANA      = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
-    RegistryObject<Attribute> MAX_BURNOUT   = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
+    RegistryObject<Attribute> MAX_MANA    = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
+    RegistryObject<Attribute> MAX_BURNOUT = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
     RegistryObject<Attribute> MANA_REGEN    = registerRanged("mana_regen", 0.1, 0d, Short.MAX_VALUE, false);
     RegistryObject<Attribute> BURNOUT_REGEN = registerRanged("burnout_regen", 0.2, 0d, Short.MAX_VALUE, false);
 
