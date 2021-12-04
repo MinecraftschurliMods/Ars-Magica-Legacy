@@ -8,9 +8,9 @@ issueTrackerURL = "${issue_tracker_url}"
 modId = "${mod_id}"
 version = "${version}"
 displayName = "${mod_name}"
-displayURL="${mod_url}"
-logoFile="logo.png"
-credits="${mod_credits}"
+displayURL = "${mod_url}"
+logoFile = "logo.png"
+credits = "${mod_credits}"
 authors = "${mod_author}"
 description = '''
 Continuation of ArsMagica 2 by Mithion
@@ -22,6 +22,12 @@ Continuation of ArsMagica 2 by Mithion
 #versionRange = "${patchouli_version_range}"
 #ordering = "BEFORE"
 #side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "curios"
+mandatory = false
+versionRange = "${curios_version_range}"
+side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "forge"

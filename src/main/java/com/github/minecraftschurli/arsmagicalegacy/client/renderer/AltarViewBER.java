@@ -89,7 +89,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
         int j = (int) (f1 * 255) << 24;
         float f2 = (float) (-font.width(component) / 2);
-        font.drawInBatch(component, f2, 0, 0xbbffffff, false, poseStack.last().pose(), bufferSource, true, j, packedLight);
+        font.drawInBatch(component, f2, 0, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);
         poseStack.popPose();
     }
 }

@@ -13,6 +13,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManage
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.NextShapeGroupPacket;
@@ -63,6 +64,8 @@ public final class ArsMagicaLegacy {
         SkillManager.instance();
         SpellDataManager.instance();
         AltarMaterialManager.instance();
+
+        CompatManager.preInit();
     }
 
     public static String getModName() {

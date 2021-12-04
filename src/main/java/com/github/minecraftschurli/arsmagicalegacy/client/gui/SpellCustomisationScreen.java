@@ -145,10 +145,10 @@ public class SpellCustomisationScreen extends Screen {
                     } else if (icon.equals(hovered)) {
                         GuiUtils.drawGradientRect(mStack.last().pose(),
                                                   1,
-                                x - ICON_MARGIN,
-                                y - ICON_MARGIN,
-                                x + ICON_SIZE + ICON_MARGIN,
-                                y + ICON_SIZE + ICON_MARGIN,
+                                                  x - ICON_MARGIN,
+                                                  y - ICON_MARGIN,
+                                                  x + ICON_SIZE + ICON_MARGIN,
+                                                  y + ICON_SIZE + ICON_MARGIN,
                                                   0xffffffff,
                                                   0xffffffff);
                     }

@@ -20,7 +20,9 @@ import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.NatureGua
 import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WinterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
-import com.github.minecraftschurli.arsmagicalegacy.client.renderer.MagitechGogglesCurioRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
+import com.github.minecraftschurli.arsmagicalegacy.compat.curios.CurioCompat;
+import com.github.minecraftschurli.arsmagicalegacy.compat.curios.client.MagitechGogglesCurioRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
@@ -50,8 +52,6 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -109,9 +109,7 @@ public final class ClientInit {
         SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
         SPELL_BOOK_HUD  = OverlayRegistry.registerOverlayBottom("spell_book_hud",  new SpellBookHUD());
 
-        if (ModList.get().isLoaded("curios")) {
-            MagitechGogglesCurioRenderer.register();
-        }
+        CompatManager.clientInit(event);
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {

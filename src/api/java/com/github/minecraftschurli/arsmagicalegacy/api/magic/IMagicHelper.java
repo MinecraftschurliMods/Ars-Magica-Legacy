@@ -38,4 +38,22 @@ public interface IMagicHelper {
      * @return true if the entity knows magic, false otherwise
      */
     boolean knowsMagic(Player player);
+
+    /**
+     * Check if the player has magic vision.
+     * (this is mainly a check for the magitech goggles)
+     *
+     * @param player the player to check
+     * @return true if the player has magic vision
+     */
+    //boolean hasMagicVision(Player player);
+
+    /**
+     * Get the level of truesight the player has.
+     * (mainly through the potion effect)
+     *
+     * @param player the player to check
+     * @return the level of truesight
+     */
+    //int getTrueSightLevel(Player player);
 }

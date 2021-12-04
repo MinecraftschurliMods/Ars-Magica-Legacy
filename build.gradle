@@ -184,9 +184,7 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    if (!Boolean.getBoolean('idea.sync.active')) {
-        annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
-    }
+    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
     // TODO compile against 1.17 jei api
@@ -312,6 +310,7 @@ def replaceProperties = [
         'mc_version_range': project.mc_version_range,
         'forge_version_range': project.forge_version_range,
         'loader_version_range': project.loader_version_range,
+        'curios_version_range': project.curios_version_range,
         'patchouli_version_range': project.patchouli_version_range,
         'issue_tracker_url': "https://github.com/${project.github}/issues"
 ]
