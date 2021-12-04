@@ -22,7 +22,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
         double guiScale = getMinecraft().getWindow().getGuiScale();
-        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor(posY * guiScale), (int) (width * guiScale), (int) (height * guiScale));
+        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor((posY-1) * guiScale), (int) (width * guiScale), (int) (height * guiScale));
         for (ISkill skill : skills) {
             boolean knows = knowledgeHelper.knows(player, skill);
             float cX = skill.getX() + SKILL_SIZE / 2 + 1;

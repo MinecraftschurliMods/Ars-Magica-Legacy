@@ -36,7 +36,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.EtheriumSpellIng
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
-//import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -68,6 +68,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
@@ -106,9 +107,9 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
-        //PatchouliCompat.init();
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
+        CompatManager.init(event);
     }
 
     public static void registerSpellIngredientTypes() {

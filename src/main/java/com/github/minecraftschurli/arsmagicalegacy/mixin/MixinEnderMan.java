@@ -1,4 +1,3 @@
-/*
 package com.github.minecraftschurli.arsmagicalegacy.mixin;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.util.AffinityUtil;
@@ -25,4 +24,3 @@ public abstract class MixinEnderMan extends Monster {
         }
     }
 }
-*/

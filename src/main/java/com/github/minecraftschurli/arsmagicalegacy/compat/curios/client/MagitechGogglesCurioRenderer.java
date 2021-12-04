@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.client.renderer;
+package com.github.minecraftschurli.arsmagicalegacy.compat.curios.client;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;

@@ -49,24 +49,24 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(pMatrixStack);
-        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        renderTooltip(pMatrixStack, pMouseX, pMouseY);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShaderTexture(0, GUI);
-        blit(pPoseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         int offsetX = leftPos + SHAPE_GROUP_X;
         for (int sg = 0; sg < Config.SERVER.MAX_STAGE_GROUPS.get(); sg++) {
             if (sg >= menu.allowedShapeGroups()) {
                 RenderSystem.setShaderFogColor(0.5f, 0.5f, 0.5f);
             }
-            blit(pPoseStack, offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, 220, 18, 37, 37);
+            blit(poseStack, offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, 220, 18, 36, 36);
         }
-        blit(pPoseStack, leftPos + 101, topPos + 73, 220, 0, 18, 18);
+        blit(poseStack, leftPos + 101, topPos + 73, 220, 0, 18, 18);
     }
 
     @Override

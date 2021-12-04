@@ -307,6 +307,7 @@ def replaceProperties = [
         'mc_version_range': project.mc_version_range,
         'forge_version_range': project.forge_version_range,
         'loader_version_range': project.loader_version_range,
+        'curios_version_range': project.curios_version_range,
         'patchouli_version_range': project.patchouli_version_range,
         'issue_tracker_url': "https://github.com/${project.github}/issues"
 ]
