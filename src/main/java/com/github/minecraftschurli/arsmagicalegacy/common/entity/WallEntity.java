@@ -18,24 +18,15 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class WallEntity extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(WallEntity.class, EntityDataSerializers.ITEM_STACK);
 
     public WallEntity(EntityType<? extends WallEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static WallEntity create(Level level) {
-        return new WallEntity(AMEntities.WALL.get(), level);
     }
 
     @Override

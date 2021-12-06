@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WallEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -17,7 +18,7 @@ public class Wall extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            WallEntity wall = WallEntity.create(level);
+            WallEntity wall = new WallEntity(AMEntities.WALL.get(), level);
             wall.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             wall.setXRot((float) caster.getLookAngle().x());
             wall.setYRot((float) caster.getLookAngle().y());

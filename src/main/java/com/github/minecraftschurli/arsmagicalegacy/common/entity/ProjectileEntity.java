@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -142,6 +143,8 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
             }
         } else if (result.getType().equals(HitResult.Type.ENTITY)) {
             Entity entity = ((EntityHitResult) result).getEntity();
+            if (entity instanceof EnderDragonPart)
+                entity = ((EnderDragonPart) entity).parentMob;
             if (entity instanceof LivingEntity && entity != getOwner()) {
                 ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
                 decreaseBounces();

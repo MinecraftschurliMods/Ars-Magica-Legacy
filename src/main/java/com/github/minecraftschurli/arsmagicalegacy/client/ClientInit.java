@@ -20,23 +20,21 @@ import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.NatureGua
 import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.WinterGuardianModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.AltarViewBER;
-import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
-import com.github.minecraftschurli.arsmagicalegacy.compat.curios.CurioCompat;
-import com.github.minecraftschurli.arsmagicalegacy.compat.curios.client.MagitechGogglesCurioRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.WinterGuardianRenderer;
-import com.github.minecraftschurli.arsmagicalegacy.client.renderer.entity.ZoneRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -54,7 +52,6 @@ import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -158,7 +155,9 @@ public final class ClientInit {
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ProjectileRenderer::new);
-        event.registerEntityRenderer(AMEntities.ZONE.get(), ZoneRenderer::new);
+        event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.WINTER_GUARDIAN.get(), WinterGuardianRenderer::new);

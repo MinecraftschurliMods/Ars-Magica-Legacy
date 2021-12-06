@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -23,26 +24,20 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class ZoneEntity extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.ITEM_STACK);
 
     public ZoneEntity(EntityType<? extends ZoneEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static ZoneEntity create(Level level) {
-        return new ZoneEntity(AMEntities.ZONE.get(), level);
+        setBoundingBox(new AABB(getX() - 0.1, getY() - 0.1, getZ() - 0.1, getX() + 0.1, getY() + 0.1, getZ() + 0.1));
     }
 
     @Override
@@ -51,6 +46,7 @@ public class ZoneEntity extends Entity implements ItemSupplier {
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
+        entityData.define(GRAVITY, 0f);
         entityData.define(RADIUS, 1.4f);
         entityData.define(STACK, ItemStack.EMPTY);
     }
@@ -62,6 +58,7 @@ public class ZoneEntity extends Entity implements ItemSupplier {
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
+        entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
         entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
     }
@@ -73,6 +70,7 @@ public class ZoneEntity extends Entity implements ItemSupplier {
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
+        tag.putFloat("Gravity", entityData.get(GRAVITY));
         tag.putFloat("Radius", entityData.get(RADIUS));
         CompoundTag stack = new CompoundTag();
         entityData.get(STACK).save(stack);
@@ -91,26 +89,49 @@ public class ZoneEntity extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        double minX = getX() - getBbWidth() / 2 + getRadius();
-        double minY = getY();
-        double minZ = getZ() - getBbWidth() / 2 + getRadius();
-        double maxX = getX() + getBbWidth() / 2 + getRadius();
-        double maxY = getY() + getBbHeight();
-        double maxZ = getZ() + getBbWidth() / 2 + getRadius();
-        for (int x = (int) Math.floor(minX); x < (int) Math.ceil(maxX); x++) {
-            for (int z = (int) Math.floor(minZ); z < (int) Math.ceil(maxZ); z++) {
-                for (int y = (int) Math.floor(minY); y < (int) Math.ceil(maxY); y++) {
-                    HitResult result = BlockUtil.getHitResult(new Vec3(x, y, z), new Vec3(x, y, z), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-                    if (result.getType() == HitResult.Type.BLOCK) {
+        setPos(getX(), getY() + getGravity(), getZ());
+        if (firstTick || tickCount % 20 == 0) {
+            HitResult result = BlockUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+            for (Entity e : level.getEntities(this, new AABB(getX() - getRadius(), getY() - 3, getZ() - getRadius(), getX() + getRadius(), getY() + 3, getZ() + getRadius()))) {
+                if (e == this || e == getOwner()) continue;
+                if (e instanceof EnderDragonPart) {
+                    e = ((EnderDragonPart) e).parentMob;
+                }
+                if (e instanceof LivingEntity) {
+                    ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
+                }
+            }
+            for (float i = -getRadius(); i <= getRadius(); i += 0.1f) {
+                for (int j = -1; j <= 1; j++) {
+                    Vec3 a = new Vec3(getX() + i, getY() + j, getZ() - getRadius());
+                    Vec3 b = new Vec3(getX() + i, getY() + j, getZ() + getRadius());
+                    double stepX = a.x < b.x ? 0.2f : -0.2f;
+                    double stepZ = a.z < b.z ? 0.2f : -0.2f;
+                    ArrayList<Vec3> vecs = new ArrayList<>();
+                    Vec3 curPos = a.add(Vec3.ZERO);
+                    for (int k = 0; k < getBbHeight(); k++) {
+                        vecs.add(new Vec3(curPos.x, curPos.y + k, curPos.z));
+                    }
+                    while (stepX != 0 || stepZ != 0) {
+                        if ((stepX < 0 && curPos.x <= b.x) || (stepX > 0 && curPos.x >= b.x)) {
+                            stepX = 0;
+                        }
+                        if ((stepZ < 0 && curPos.z <= b.z) || (stepZ > 0 && curPos.z >= b.z)) {
+                            stepZ = 0;
+                        }
+                        curPos = new Vec3(curPos.x + stepX, curPos.y, curPos.z + stepZ);
+                        Vec3 tempPos = curPos.add(Vec3.ZERO);
+                        if (!vecs.contains(tempPos)) {
+                            for (int k = 0; k < getBbHeight(); k++) {
+                                vecs.add(new Vec3(tempPos.x, tempPos.y + k, tempPos.z));
+                            }
+                        }
+                    }
+                    for (Vec3 vec : vecs) {
+                        result = BlockUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
                         ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
                     }
                 }
-            }
-        }
-        for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
-            HitResult result = BlockUtil.getHitResult(entity.position(), entity.position(), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            if (result.getType() == HitResult.Type.ENTITY) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
             }
         }
     }
@@ -151,6 +172,14 @@ public class ZoneEntity extends Entity implements ItemSupplier {
         }
     }
 
+    public float getGravity() {
+        return entityData.get(GRAVITY);
+    }
+
+    public void setGravity(float gravity) {
+        entityData.set(GRAVITY, gravity);
+    }
+
     public float getRadius() {
         return entityData.get(RADIUS);
     }
@@ -170,5 +199,10 @@ public class ZoneEntity extends Entity implements ItemSupplier {
     @Override
     public ItemStack getItem() {
         return new ItemStack(AMItems.BLANK_RUNE.get());
+    }
+
+    @Override
+    public boolean shouldRender(double p_20296_, double p_20297_, double p_20298_) {
+        return false;
     }
 }
