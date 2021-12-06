@@ -31,7 +31,7 @@ public class Projectile extends AbstractShape {
                 projectile.setGravity(true);
             }
             projectile.setBounces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.BOUNCE.getId()));
-            projectile.setDuration(200 + 100 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
+            projectile.setDuration(40 + 20 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             projectile.setIndex(index);
             projectile.setPierces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.PIERCING.getId()));
             projectile.setOwner(caster);
