@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 
 public final class BlockUtil {
     /**
-     * Performs a ray trace from the given entity in its view direction. Modified version of {@link ProjectileUtil#getHitResult(Entity, Predicate)}
+     * Performs a ray trace from "from" to "to". Modified version of {@link ProjectileUtil#getHitResult(Entity, Predicate)}
      *
      * @param entity       the entity that causes this ray trace
      * @param blockContext the block clipping context to use
@@ -22,12 +22,11 @@ public final class BlockUtil {
      * @return A hit result, representing the ray trace.
      */
     public static HitResult getHitResult(Vec3 from, Vec3 to, Entity entity, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
-        Level level = entity.level;
-        HitResult hitResult = level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
+        HitResult hitResult = entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
         if (hitResult.getType() != HitResult.Type.MISS) {
             to = hitResult.getLocation();
         }
-        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(level, entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1.0D), e -> true);
+        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level, entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1), e -> true);
         if (entityHitResult != null) {
             hitResult = entityHitResult;
         }

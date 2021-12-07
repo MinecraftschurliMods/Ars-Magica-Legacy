@@ -1,10 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -14,17 +16,22 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ZoneEntity extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.BOOLEAN);
@@ -89,50 +96,33 @@ public class ZoneEntity extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        setPos(getX(), getY() + getGravity(), getZ());
-        if (firstTick || tickCount % 20 == 0) {
-            HitResult result = BlockUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            for (Entity e : level.getEntities(this, new AABB(getX() - getRadius(), getY() - 3, getZ() - getRadius(), getX() + getRadius(), getY() + 3, getZ() + getRadius()))) {
-                if (e == this || e == getOwner()) continue;
-                if (e instanceof EnderDragonPart) {
-                    e = ((EnderDragonPart) e).parentMob;
+        setPos(getX(), getY() - getGravity(), getZ());
+        for (int i = 0; i < 8; ++i) {
+            level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), (random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D);
+        }
+        if (!level.isClientSide() && tickCount % 10 == 0) {
+            List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY(), getZ() - getRadius(), getX() + getRadius(), getY() + getBbHeight(), getZ() + getRadius()));
+            for (Entity entity : list) {
+                if (entity == this) continue;
+                if (entity instanceof PartEntity) {
+                    entity = ((PartEntity<?>) entity).getParent();
                 }
-                if (e instanceof LivingEntity) {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
-                }
-            }
-            for (float i = -getRadius(); i <= getRadius(); i += 0.1f) {
-                for (int j = -1; j <= 1; j++) {
-                    Vec3 a = new Vec3(getX() + i, getY() + j, getZ() - getRadius());
-                    Vec3 b = new Vec3(getX() + i, getY() + j, getZ() + getRadius());
-                    double stepX = a.x < b.x ? 0.2f : -0.2f;
-                    double stepZ = a.z < b.z ? 0.2f : -0.2f;
-                    ArrayList<Vec3> vecs = new ArrayList<>();
-                    Vec3 curPos = a.add(Vec3.ZERO);
-                    for (int k = 0; k < getBbHeight(); k++) {
-                        vecs.add(new Vec3(curPos.x, curPos.y + k, curPos.z));
-                    }
-                    while (stepX != 0 || stepZ != 0) {
-                        if ((stepX < 0 && curPos.x <= b.x) || (stepX > 0 && curPos.x >= b.x)) {
-                            stepX = 0;
-                        }
-                        if ((stepZ < 0 && curPos.z <= b.z) || (stepZ > 0 && curPos.z >= b.z)) {
-                            stepZ = 0;
-                        }
-                        curPos = new Vec3(curPos.x + stepX, curPos.y, curPos.z + stepZ);
-                        Vec3 tempPos = curPos.add(Vec3.ZERO);
-                        if (!vecs.contains(tempPos)) {
-                            for (int k = 0; k < getBbHeight(); k++) {
-                                vecs.add(new Vec3(tempPos.x, tempPos.y + k, tempPos.z));
-                            }
-                        }
-                    }
-                    for (Vec3 vec : vecs) {
-                        result = BlockUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-                        ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
-                    }
+                if (entity instanceof LivingEntity) {
+                    ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
                 }
             }
+        }
+        List<Vec3> list = new ArrayList<>();
+        for (int x = (int) Math.rint(-getRadius()); x <= (int) Math.rint(getRadius()); x++) {
+            for (int y = (int) Math.rint(-getBbHeight()); y <= (int) Math.rint(getBbHeight()); y++) {
+                for (int z = (int) Math.rint(-getRadius()); z <= (int) Math.rint(getRadius()); z++) {
+                    list.add(new Vec3(getX() + x, getY() + y, getZ() + z));
+                }
+            }
+        }
+        for (Vec3 vec : list) {
+            HitResult result = BlockUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+            ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
         }
     }
 
