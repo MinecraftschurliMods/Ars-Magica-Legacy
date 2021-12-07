@@ -100,7 +100,7 @@ public class Wall extends Entity implements ItemSupplier {
                     }
                 }
             }
-        } else if (tickCount % 10 == 0) {
+        } else if (tickCount % 4 == 0) {
             for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
                 if (e == this) continue;
                 if (e instanceof PartEntity) {
