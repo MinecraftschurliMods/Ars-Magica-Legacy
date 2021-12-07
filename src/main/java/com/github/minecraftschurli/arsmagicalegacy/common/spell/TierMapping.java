@@ -31,15 +31,16 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     private static final ResourceLocation TIER_MAPPING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "tier_mapping.json");
     private static final Lazy<TierMapping> INSTANCE = Lazy.concurrentOf(TierMapping::new);
 
-    private final Logger                 LOGGER = LogManager.getLogger();
-    private final Gson                   gson   = (new GsonBuilder()).create();
-    private final List<ResourceLocation> tiers  = new ArrayList<>();
+    private final Logger LOGGER = LogManager.getLogger();
+    private final Gson gson = (new GsonBuilder()).create();
+    private final List<ResourceLocation> tiers = new ArrayList<>();
 
     public static TierMapping instance() {
         return INSTANCE.get();
     }
 
-    private TierMapping() {}
+    private TierMapping() {
+    }
 
     @Nonnull
     @Override

@@ -16,6 +16,7 @@ public class RuneBagContainer extends SimpleContainer {
 
     /**
      * Creates a new RuneBagContainer.
+     *
      * @param stack The ItemStack to create the container for.
      */
     public RuneBagContainer(ItemStack stack) {

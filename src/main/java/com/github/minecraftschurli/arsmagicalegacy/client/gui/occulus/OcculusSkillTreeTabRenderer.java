@@ -87,7 +87,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
         double guiScale = getMinecraft().getWindow().getGuiScale();
-        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor((posY-1) * guiScale), (int) (width * guiScale), (int) (height * guiScale));
+        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor((posY - 1) * guiScale), (int) (width * guiScale), (int) (height * guiScale));
         for (ISkill skill : skills) {
             boolean knows = knowledgeHelper.knows(player, skill);
             float cX = skill.getX() + SKILL_SIZE / 2 + 1;
@@ -127,7 +127,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             }
             setBlitOffset(16);
             RenderSystem.enableBlend();
-            blit(stack, skill.getX(), skill.getY(), getBlitOffset(), (int)SKILL_SIZE, (int)SKILL_SIZE, SkillIconAtlas.instance().getSprite(skill.getId()));
+            blit(stack, skill.getX(), skill.getY(), getBlitOffset(), (int) SKILL_SIZE, (int) SKILL_SIZE, SkillIconAtlas.instance().getSprite(skill.getId()));
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
@@ -143,8 +143,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                     list.add(MISSING_REQUIREMENTS);
                 }
                 stack.pushPose();
-                stack.translate(0,-1,0);
-                parent.renderTooltip(stack, list, Optional.empty(), (int)(mouseX / SCALE - offsetX), (int)(mouseY / SCALE - offsetY), getFont());
+                stack.translate(0, -1, 0);
+                parent.renderTooltip(stack, list, Optional.empty(), (int) (mouseX / SCALE - offsetX), (int) (mouseY / SCALE - offsetY), getFont());
                 stack.popPose();
                 hoverItem = skill;
                 isHoveringSkill = true;

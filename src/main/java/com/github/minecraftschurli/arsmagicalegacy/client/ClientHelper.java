@@ -26,6 +26,7 @@ public final class ClientHelper {
 
     /**
      * Opens a new SpellIconPickScreen.
+     *
      * @param stack The icon to pass in the SpellIconPickScreen constructor.
      */
     public static void openSpellCustomizationGui(ItemStack stack) {
@@ -41,6 +42,7 @@ public final class ClientHelper {
 
     /**
      * Sets the player's step height.
+     *
      * @param player     The player to set the step height for.
      * @param stepHeight The step height to set.
      */

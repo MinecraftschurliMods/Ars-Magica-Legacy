@@ -20,24 +20,13 @@ import java.util.List;
 
 public class Rune extends AbstractShape {
     @Override
-    public SpellCastResult invoke(ISpell spell,
-                                  LivingEntity caster,
-                                  Level level,
-                                  List<ISpellModifier> modifiers,
-                                  @Nullable HitResult hit,
-                                  int ticksUsed,
-                                  int index,
-                                  boolean awardXp) {
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!(hit instanceof BlockHitResult bHit)) return SpellCastResult.EFFECT_FAILED;
         Direction direction = bHit.getDirection();
         BlockPos pos = bHit.getBlockPos().relative(direction);
         BlockState blockState = level.getBlockState(pos);
         if (!blockState.isAir()) return SpellCastResult.EFFECT_FAILED;
-        level.setBlock(pos,
-                       AMBlocks.SPELL_RUNE.get()
-                                          .defaultBlockState()
-                                          .setValue(SpellRuneBlock.FACE, direction.getOpposite()),
-                       Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+        level.setBlock(pos, AMBlocks.SPELL_RUNE.get().defaultBlockState().setValue(SpellRuneBlock.FACE, direction.getOpposite()), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         ((SpellRuneBlockEntity) level.getBlockEntity(pos)).setSpell(spell, caster, index, awardXp);
         return SpellCastResult.SUCCESS;
     }

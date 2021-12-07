@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.mixin;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.util.AffinityUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Monster;
@@ -19,7 +19,7 @@ public abstract class MixinEnderMan extends Monster {
 
     @Inject(at = @At("HEAD"), method = "isLookingAtMe", cancellable = true)
     public void isLookingAtMeMixin(Player pPlayer, CallbackInfoReturnable<Boolean> cir) {
-        if (!AffinityUtil.canEndermanGetAngryAt(pPlayer)) {
+        if (!AMUtil.canEndermanGetAngryAt(pPlayer)) {
             cir.setReturnValue(false);
         }
     }

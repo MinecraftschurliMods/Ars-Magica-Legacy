@@ -68,14 +68,14 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
 public final class EventHandler {
-    private EventHandler() {}
+    private EventHandler() {
+    }
 
     @Internal
     public static void register(IEventBus modBus) {
@@ -278,7 +278,7 @@ public final class EventHandler {
         int level = event.getLevel();
         // TODO change
         float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
-        float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level-1);
+        float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level - 1);
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
             IManaHelper manaHelper = ArsMagicaAPI.get().getManaHelper();

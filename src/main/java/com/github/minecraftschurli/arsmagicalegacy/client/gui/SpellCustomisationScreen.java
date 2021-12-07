@@ -37,6 +37,7 @@ public class SpellCustomisationScreen extends Screen {
 
     /**
      * Creates a new spell icon pick screen.
+     *
      * @param stack The ItemStack to open this screen for.
      */
     public SpellCustomisationScreen(ItemStack stack) {
@@ -108,7 +109,8 @@ public class SpellCustomisationScreen extends Screen {
         }
 
         @Override
-        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
+        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+        }
 
         @Override
         protected boolean clickPanel(double mouseX, double mouseY, int button) {
@@ -134,23 +136,9 @@ public class SpellCustomisationScreen extends Screen {
                 y += relativeY * ICON_MARGIN;
                 if (y > 0 && y < bottom) {
                     if (icon.equals(selected)) {
-                        GuiUtils.drawGradientRect(mStack.last().pose(),
-                                1,
-                                x - ICON_MARGIN,
-                                y - ICON_MARGIN,
-                                x + ICON_SIZE + ICON_MARGIN,
-                                y + ICON_SIZE + ICON_MARGIN,
-                                0xffffff00,
-                                0xffffff00);
+                        GuiUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
                     } else if (icon.equals(hovered)) {
-                        GuiUtils.drawGradientRect(mStack.last().pose(),
-                                                  1,
-                                                  x - ICON_MARGIN,
-                                                  y - ICON_MARGIN,
-                                                  x + ICON_SIZE + ICON_MARGIN,
-                                                  y + ICON_SIZE + ICON_MARGIN,
-                                                  0xffffffff,
-                                                  0xffffffff);
+                        GuiUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
                     }
                     blit(mStack, x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
                 }

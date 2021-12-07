@@ -17,12 +17,10 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkEvent;
 
-/**
- *
- */
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     private ManaHelper() {
     }

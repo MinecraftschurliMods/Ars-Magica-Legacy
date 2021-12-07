@@ -99,7 +99,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             pMatrixStack.pushPose();
-            pMatrixStack.translate(0,-1,0);
+            pMatrixStack.translate(0, -1, 0);
             parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY, getFont());
             pMatrixStack.popPose();
         }

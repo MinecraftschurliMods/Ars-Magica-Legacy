@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 public class RuneBagMenu extends AbstractContainerMenu {
     /**
      * Creates a new RuneBagMenu. Sets all slots.
+     *
      * @param pContainerId    The container id from the supplier.
      * @param playerInventory The player inventory from the supplier.
      * @param stack           The item stack from the supplier.

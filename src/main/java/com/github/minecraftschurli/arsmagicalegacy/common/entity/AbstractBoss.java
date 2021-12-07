@@ -38,7 +38,7 @@ public abstract class AbstractBoss extends Monster {
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         maxUpStep = 1.02F;
         if (!level.isClientSide) {
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0D, 128D, 0D, 192D)))) {
                 bossEvent.addPlayer(player);
             }
         }
@@ -64,7 +64,7 @@ public abstract class AbstractBoss extends Monster {
         super.registerGoals();
         goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 10));
         goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8F));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
     }
@@ -122,7 +122,7 @@ public abstract class AbstractBoss extends Monster {
     private void updatePlayers() {
         if (!level.isClientSide) {
             Set<ServerPlayer> newSet = new HashSet<>();
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0D, 128D, 0D, 192D)))) {
                 bossEvent.addPlayer(player);
                 startSeenByPlayer(player);
                 newSet.add(player);

@@ -9,7 +9,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
@@ -19,9 +18,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**
- *
- */
 public final class CompatManager {
     private static final Map<String, Lazy<ICompatHandler>> compatHandlers = new HashMap<>();
 
@@ -45,7 +41,6 @@ public final class CompatManager {
     public static void preInit() {
         //discoverModCompats();
         register(CurioCompat.class);
-
         forEachLoaded(ICompatHandler::preInit);
     }
 
@@ -87,11 +82,11 @@ public final class CompatManager {
     private static void forEachLoaded(Consumer<ICompatHandler> consumer) {
         ModList modList = ModList.get();
         compatHandlers.entrySet()
-                      .stream()
-                      .filter(entry -> modList.isLoaded(entry.getKey()))
-                      .map(Map.Entry::getValue)
-                      .map(Lazy::get)
-                      .forEach(consumer);
+                .stream()
+                .filter(entry -> modList.isLoaded(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .map(Lazy::get)
+                .forEach(consumer);
     }
 
     @Retention(RetentionPolicy.RUNTIME)

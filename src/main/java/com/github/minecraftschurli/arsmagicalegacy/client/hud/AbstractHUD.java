@@ -30,7 +30,7 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
         mStack.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, BAR_TEXTURE);
-        blit(mStack, x, y, 0, 0, width + 1, height -1);
+        blit(mStack, x, y, 0, 0, width + 1, height - 1);
         float r = ColorUtil.getRed(color);
         float g = ColorUtil.getGreen(color);
         float b = ColorUtil.getBlue(color);
@@ -38,7 +38,7 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
         RenderSystem.setShaderFogColor(r, g, b);
         blit(mStack, x + 2, y + 2, 2, height + 1, relWidth - 1, height - 3);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
-        RenderSystem.setShaderColor(1,1,1,1);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         mStack.popPose();
     }

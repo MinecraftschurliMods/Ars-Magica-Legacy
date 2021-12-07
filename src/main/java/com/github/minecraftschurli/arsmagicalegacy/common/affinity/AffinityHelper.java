@@ -32,10 +32,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class AffinityHelper implements IAffinityHelper {
-    private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
-
     public static final float MAX_DEPTH = 1F;
+    private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
@@ -285,7 +285,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
         @Override
         public String toString() {
-            return "AffinityHolder[" + "depths=" + depths + ",locked="+ locked + ']';
+            return "AffinityHolder[" + "depths=" + depths + ",locked=" + locked + ']';
         }
     }
 }

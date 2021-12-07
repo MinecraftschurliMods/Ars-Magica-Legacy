@@ -27,7 +27,6 @@ import java.util.Set;
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
     private static final Map<ResourceLocation, Codec<ISpellIngredient>> CODECS = new HashMap<>();
 
-
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
@@ -56,16 +55,14 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         return INSTANCE.get();
     }
 
-    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts,
-                                 List<Either<Ingredient, ItemStack>> reagents, float manaCost,
-                                 float burnout) implements ISpellPartData {
+    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
                 CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 Codec.either(CodecHelper.INGREDIENT, ItemStack.CODEC).listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
                 Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.burnout()))
-        ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.orElse((float)(manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
+        ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.orElse((float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
 
         @Override
         public Set<IAffinity> affinities() {

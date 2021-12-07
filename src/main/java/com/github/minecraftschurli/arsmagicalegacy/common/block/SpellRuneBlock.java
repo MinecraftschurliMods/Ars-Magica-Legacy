@@ -23,14 +23,13 @@ import java.util.Map;
 
 public class SpellRuneBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACE = BlockStateProperties.FACING;
-
     public static final Map<Direction, VoxelShape> COLLISION_SHAPES = Map.of(
-            Direction.DOWN,  Block.box( 1.0D,  0.0D,  1.0D, 15.0D,  0.5D, 15.0D),
-            Direction.UP,    Block.box( 1.0D, 15.5D,  1.0D, 15.0D, 16.0D, 15.0D),
-            Direction.NORTH, Block.box( 1.0D,  1.0D,  0.0D, 15.0D, 15.0D,  0.5D),
-            Direction.SOUTH, Block.box( 1.0D,  1.0D, 15.5D, 15.0D, 15.0D, 16.0D),
-            Direction.WEST,  Block.box( 0.0D,  1.0D,  1.0D,  0.5D, 15.0D, 15.0D),
-            Direction.EAST,  Block.box(15.5D,  1.0D,  1.0D, 16.0D, 15.0D, 15.0D)
+            Direction.DOWN, Block.box(1D, 0D, 1D, 15D, 0.5D, 15D),
+            Direction.UP, Block.box(1D, 15.5D, 1D, 15D, 16D, 15D),
+            Direction.NORTH, Block.box(1D, 1D, 0D, 15D, 15D, 0.5D),
+            Direction.SOUTH, Block.box(1D, 1D, 15.5D, 15D, 15D, 16D),
+            Direction.WEST, Block.box(0D, 1D, 1D, 0.5D, 15D, 15D),
+            Direction.EAST, Block.box(15.5D, 1D, 1D, 16D, 15D, 15D)
     );
 
     public SpellRuneBlock() {
@@ -57,7 +56,7 @@ public class SpellRuneBlock extends Block implements EntityBlock {
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pLevel.isClientSide()) return;
-        ((SpellRuneBlockEntity)pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
     }
 
     @Override
