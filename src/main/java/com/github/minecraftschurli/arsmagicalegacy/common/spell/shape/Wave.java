@@ -23,10 +23,11 @@ public class Wave extends AbstractShape {
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
                 wave.setTargetNonSolid();
             }
-            wave.setDuration(200 + 100 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
+            wave.setDuration(80 + 40 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             wave.setIndex(index);
             wave.setOwner(caster);
-            wave.setRadius(1.4f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
+            wave.setGravity(0.025f * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.GRAVITY.getId()));
+            wave.setRadius(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             wave.setSpeed(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()) * 0.2f);
             wave.setStack(caster.getMainHandItem());
             level.addFreshEntity(wave);

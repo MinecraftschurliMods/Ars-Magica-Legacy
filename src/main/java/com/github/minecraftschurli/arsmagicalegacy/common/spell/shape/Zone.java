@@ -27,7 +27,7 @@ public class Zone extends AbstractShape {
             zone.setIndex(index);
             zone.setOwner(caster);
             zone.setGravity(0.025f * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.GRAVITY.getId()));
-            zone.setRadius(1.4f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
+            zone.setRadius(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             zone.setStack(caster.getMainHandItem());
             level.addFreshEntity(zone);
         }

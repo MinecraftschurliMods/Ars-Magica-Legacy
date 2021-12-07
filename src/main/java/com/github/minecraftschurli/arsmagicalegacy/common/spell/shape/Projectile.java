@@ -26,14 +26,12 @@ public class Projectile extends AbstractShape {
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
                 projectile.setTargetNonSolid();
             }
-            if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.GRAVITY.getId()) > 0) {
-                projectile.setGravity(true);
-            }
             projectile.setBounces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.BOUNCE.getId()));
             projectile.setDuration(40 + 20 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             projectile.setIndex(index);
             projectile.setPierces(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.PIERCING.getId()));
             projectile.setOwner(caster);
+            projectile.setGravity(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.GRAVITY.getId()) * 0.025f);
             projectile.setSpeed(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()) * 0.2f);
             IAffinity affinity = spell.primaryAffinity();
             projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(affinity));
