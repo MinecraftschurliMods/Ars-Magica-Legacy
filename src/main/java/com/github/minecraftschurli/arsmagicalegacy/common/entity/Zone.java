@@ -151,10 +151,8 @@ public class Zone extends Entity implements ItemSupplier {
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
-    public void setOwner(Entity owner) {
-        if (owner instanceof LivingEntity) {
-            entityData.set(OWNER, owner.getId());
-        }
+    public void setOwner(LivingEntity owner) {
+        entityData.set(OWNER, owner.getId());
     }
 
     public float getGravity() {
