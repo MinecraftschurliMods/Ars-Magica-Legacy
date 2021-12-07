@@ -52,7 +52,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         }
     };
 
-    private Optional<ResourceLocation>   icon;
+    private Optional<ResourceLocation> icon;
     private ItemTransforms.TransformType cameraTransformType;
 
     public SpellItemModel(BakedModel originalModel) {
@@ -63,12 +63,8 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
         Player player = Minecraft.getInstance().player;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() ||
-            cameraTransformType == ItemTransforms.TransformType.GROUND || this.icon.isEmpty()) {
-            return Minecraft.getInstance()
-                            .getModelManager()
-                            .getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"))
-                            .handlePerspective(cameraTransformType, poseStack);
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || this.icon.isEmpty()) {
+            return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return this;
@@ -90,10 +86,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     private boolean isHand() {
-        return this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND ||
-               this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND ||
-               this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
-               this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+        return this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
     }
 
     @Override
@@ -110,7 +103,8 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
                     TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(key);
                     return List.of(ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 8.504f / 16f, sprite, Direction.SOUTH, -1, 2));
                 });
-            } catch (ExecutionException ignored) {}
+            } catch (ExecutionException ignored) {
+            }
         }
         return super.getQuads(state, side, rand);
     }

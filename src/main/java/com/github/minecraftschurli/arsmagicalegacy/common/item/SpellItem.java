@@ -7,7 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurli.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -72,7 +72,7 @@ public class SpellItem extends Item implements ISpellItem {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.REAGENTS_TOOLTIP));
-            reagents.stream().map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).forEach(e -> pTooltipComponents.add(Arrays.stream(e).map(ItemStack::getHoverName).map(Component::copy).collect(ComponentUtil.joiningComponents(" | "))));
+            reagents.stream().map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).forEach(e -> pTooltipComponents.add(Arrays.stream(e).map(ItemStack::getHoverName).map(Component::copy).collect(AMUtil.joiningComponents(" | "))));
         } else {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
         }
@@ -83,7 +83,8 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
             assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM);
+            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
+                return new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM);
         }
         Spell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.INVALID_SPELL);

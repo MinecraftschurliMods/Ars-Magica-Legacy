@@ -65,7 +65,7 @@ public class SkillCommand {
                         .then(Commands.literal("all").executes(SkillCommand::listAll))
                 )
         );
-        dispatcher.register(Commands.literal(ArsMagicaAPI.MOD_ID+":skill").redirect(skill));
+        dispatcher.register(Commands.literal(ArsMagicaAPI.MOD_ID + ":skill").redirect(skill));
     }
 
     private static int listAll(CommandContext<CommandSourceStack> context) {

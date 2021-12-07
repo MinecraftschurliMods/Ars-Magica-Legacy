@@ -81,9 +81,7 @@ public class MagitechGogglesItem extends ArmorItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return CompatManager.<CurioCompat>getHandler("curios")
-                            .lazyMap(curioCompat -> curioCompat.makeCurioCap(stack, (s, stack1) -> getAttributeModifiers(EquipmentSlot.HEAD, stack1)))
-                            .orElse(super.initCapabilities(stack, nbt));
+        return CompatManager.<CurioCompat>getHandler("curios").lazyMap(curioCompat -> curioCompat.makeCurioCap(stack, (s, stack1) -> getAttributeModifiers(EquipmentSlot.HEAD, stack1))).orElse(super.initCapabilities(stack, nbt));
     }
 
     @Override

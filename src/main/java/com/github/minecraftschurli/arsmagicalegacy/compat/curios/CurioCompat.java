@@ -49,7 +49,7 @@ public class CurioCompat implements ICompatHandler {
     }
 
     private static class GenericCapabilityProvider<T> implements ICapabilityProvider {
-        private final Capability<T>   capability;
+        private final Capability<T> capability;
         private final LazyOptional<T> inst;
 
         private GenericCapabilityProvider(Capability<T> capability, T instance) {

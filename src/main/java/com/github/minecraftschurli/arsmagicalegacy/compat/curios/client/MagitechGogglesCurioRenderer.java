@@ -29,20 +29,9 @@ public class MagitechGogglesCurioRenderer implements ICurioRenderer {
     }
 
     @Override
-    public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack,
-                                                                          SlotContext slotContext,
-                                                                          PoseStack matrixStack,
-                                                                          RenderLayerParent<T, M> renderLayerParent,
-                                                                          MultiBufferSource renderTypeBuffer,
-                                                                          int light,
-                                                                          float limbSwing,
-                                                                          float limbSwingAmount,
-                                                                          float partialTicks,
-                                                                          float ageInTicks,
-                                                                          float netHeadYaw,
-                                                                          float headPitch) {
-        ((HumanoidModel<T>)renderLayerParent.getModel()).copyPropertiesTo((HumanoidModel<T>) model);
+    public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        ((HumanoidModel<T>) renderLayerParent.getModel()).copyPropertiesTo((HumanoidModel<T>) model);
         VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(LOCATION), false, stack.hasFoil());
-        model.renderToBuffer(matrixStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(matrixStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
     }
 }

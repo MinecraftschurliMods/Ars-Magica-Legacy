@@ -34,8 +34,10 @@ public class Dig extends AbstractComponent {
         BlockState state = level.getBlockState(blockPos);
         float hardness = state.getDestroySpeed(level, blockPos);
         if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(getTier(modifiers), state)) return SpellCastResult.EFFECT_FAILED;
-        if (!(caster instanceof Player p && p.isCreative()) && !ArsMagicaAPI.get().getManaHelper().decreaseMana(caster, hardness * 1.28f)) return SpellCastResult.NOT_ENOUGH_MANA;
+        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(getTier(modifiers), state))
+            return SpellCastResult.EFFECT_FAILED;
+        if (!(caster instanceof Player p && p.isCreative()) && !ArsMagicaAPI.get().getManaHelper().decreaseMana(caster, hardness * 1.28f))
+            return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();

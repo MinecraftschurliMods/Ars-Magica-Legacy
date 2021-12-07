@@ -82,30 +82,26 @@ public final class ClientInit {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
-        MenuScreens.register(AMMenuTypes.RUNE_BAG.get(),          RuneBagScreen::new);
-
+        MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
-
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(),  RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(),     RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.AUM.get(),                RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.CERUBLOSSOM.get(),        RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.DESERT_NOVA.get(),        RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.TARMA_ROOT.get(),         RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WAKEBLOOM.get(),          RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(),      RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.AUM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.CERUBLOSSOM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.DESERT_NOVA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.TARMA_ROOT.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WAKEBLOOM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(),      RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.SPELL_RUNE.get(),         RenderType.cutout());
-
-        MANA_HUD        = OverlayRegistry.registerOverlayBottom("mana_hud",        new ManaHUD());
-        BURNOUT_HUD     = OverlayRegistry.registerOverlayBottom("burnout_hud",     new BurnoutHUD());
-        XP_HUD          = OverlayRegistry.registerOverlayBottom("xp_hud",          new XpHUD());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.SPELL_RUNE.get(), RenderType.cutout());
+        MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
+        BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
+        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
         SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
-        SPELL_BOOK_HUD  = OverlayRegistry.registerOverlayBottom("spell_book_hud",  new SpellBookHUD());
-
+        SPELL_BOOK_HUD = OverlayRegistry.registerOverlayBottom("spell_book_hud", new SpellBookHUD());
         CompatManager.clientInit(event);
     }
 
@@ -120,8 +116,9 @@ public final class ClientInit {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
             for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-                if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
-                ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
+                    ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                }
             }
         }
     }
@@ -136,11 +133,7 @@ public final class ClientInit {
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));
-
-        AMBlocks.SPELL_RUNE.get()
-                .getStateDefinition()
-                .getPossibleStates()
-                .stream()
+        AMBlocks.SPELL_RUNE.get().getStateDefinition().getPossibleStates().stream()
                 .map(BlockModelShaper::stateToModelLocation)
                 .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
     }
@@ -164,7 +157,6 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
-
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
     }
 }

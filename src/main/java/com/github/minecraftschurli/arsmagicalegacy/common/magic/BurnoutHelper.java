@@ -18,7 +18,8 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class BurnoutHelper implements IBurnoutHelper {
     private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     private BurnoutHelper() {
     }

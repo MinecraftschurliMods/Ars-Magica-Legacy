@@ -29,7 +29,7 @@ public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             IAffinity affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(stack);
             if (affinity.getId().equals(IAffinity.NONE)) return model;
-            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/"+stack.getItem().getRegistryName().getPath()+"_"+affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + stack.getItem().getRegistryName().getPath() + "_" + affinity.getId().getPath());
             return Minecraft.getInstance().getModelManager().getModel(rl);
         }
     }

@@ -25,9 +25,9 @@ public class Dryad extends PathfinderMob {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 2D));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 }

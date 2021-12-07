@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Mostly taken from McJty's tutorials and the Botania mod.
@@ -19,6 +18,13 @@ import org.jetbrains.annotations.NotNull;
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/client/gui/bag/ContainerFlowerBag.java}
  */
 public class RuneBagMenu extends AbstractContainerMenu {
+    /**
+     * Creates a new RuneBagMenu. Sets all slots.
+     *
+     * @param pContainerId    The container id from the supplier.
+     * @param playerInventory The player inventory from the supplier.
+     * @param stack           The item stack from the supplier.
+     */
     public RuneBagMenu(int pContainerId, Inventory playerInventory, ItemStack stack) {
         super(AMMenuTypes.RUNE_BAG.get(), pContainerId);
         Container inventory = new RuneBagContainer(stack);
@@ -46,13 +52,7 @@ public class RuneBagMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player pPlayer) {
-        return true;
-    }
-
-    @NotNull
-    @Override
-    public ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack is = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot.hasItem()) {
@@ -76,6 +76,11 @@ public class RuneBagMenu extends AbstractContainerMenu {
         return is;
     }
 
+    @Override
+    public boolean stillValid(Player pPlayer) {
+        return true;
+    }
+
     private static class RuneSlot extends Slot {
         private final DyeColor color;
 
@@ -85,8 +90,8 @@ public class RuneBagMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public boolean mayPlace(@NotNull ItemStack pStack) {
-            return pStack.getItem() instanceof ColoredRuneItem item && this.color == item.getDyeColor();
+        public boolean mayPlace(ItemStack pStack) {
+            return pStack.getItem() instanceof ColoredRuneItem item && color == item.getDyeColor();
         }
     }
 }

@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMStats;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Map;
 
 public class OcculusBlock extends HorizontalDirectionalBlock {
-    private static final VoxelShape SOCKET = BlockUtil.joinShapes(
+    private static final VoxelShape SOCKET = AMUtil.joinShapes(
             box(0, 0, 0, 16, 1, 16),
             box(1.5, 1, 1.5, 14.5, 2, 14.5),
             box(3, 2, 3, 13, 3, 13),
@@ -44,8 +44,8 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
             box(4, 8, 7, 5, 10, 9),
             box(7, 8, 4, 9, 10, 5)
     );
-    private static final Map<Direction, VoxelShape> SHAPES                = ImmutableMap.of(
-            Direction.NORTH, BlockUtil.joinShapes(SOCKET,
+    private static final Map<Direction, VoxelShape> SHAPES = ImmutableMap.of(
+            Direction.NORTH, AMUtil.joinShapes(SOCKET,
                     box(5, 11, 6.5, 11, 12, 9.5),
                     box(5, 14, 6.5, 11, 15, 9.5),
                     box(5, 12, 6.5, 6.5, 14, 9.5),
@@ -53,7 +53,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                     box(4, 11, 7.5, 12, 15, 8.5),
                     box(5, 10, 7.5, 11, 16, 8.5),
                     box(6.5, 12, 8.5, 9.5, 14, 9.5)),
-            Direction.EAST, BlockUtil.joinShapes(SOCKET,
+            Direction.EAST, AMUtil.joinShapes(SOCKET,
                     box(6.5, 11, 5, 9.5, 12, 11),
                     box(6.5, 14, 5, 9.5, 15, 11),
                     box(6.5, 12, 9.5, 9.5, 14, 11),
@@ -61,7 +61,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                     box(7.5, 11, 4, 8.5, 15, 12),
                     box(7.5, 10, 5, 8.5, 16, 11),
                     box(6.5, 12, 6.5, 7.5, 14, 9.5)),
-            Direction.SOUTH, BlockUtil.joinShapes(SOCKET,
+            Direction.SOUTH, AMUtil.joinShapes(SOCKET,
                     box(5, 10, 7.5, 11, 16, 8.5),
                     box(4, 11, 7.5, 12, 15, 8.5),
                     box(5, 11, 6.5, 11, 12, 9.5),
@@ -69,7 +69,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                     box(5, 12, 6.5, 6.5, 14, 9.5),
                     box(9.5, 12, 6.5, 11, 14, 9.5),
                     box(6.5, 12, 6.5, 9.5, 14, 7.5)),
-            Direction.WEST, BlockUtil.joinShapes(SOCKET,
+            Direction.WEST, AMUtil.joinShapes(SOCKET,
                     box(6.5, 11, 5, 9.5, 12, 11),
                     box(6.5, 14, 5, 9.5, 15, 11),
                     box(6.5, 12, 5, 9.5, 14, 6.5),
