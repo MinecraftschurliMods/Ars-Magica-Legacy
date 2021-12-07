@@ -1,7 +1,5 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.util;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +23,7 @@ public final class AMUtil {
      * @return Whether the player can anger endermen by looking at them or not
      */
     public static boolean canEndermanGetAngryAt(Player player) {
-        return ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, AMAffinities.ENDER.get()) >= 1d;
+        return true;
     }
 
     /**
