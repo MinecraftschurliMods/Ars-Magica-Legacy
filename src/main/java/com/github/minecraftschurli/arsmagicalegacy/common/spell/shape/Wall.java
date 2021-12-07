@@ -18,12 +18,8 @@ public class Wall extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
             com.github.minecraftschurli.arsmagicalegacy.common.entity.Wall wall = new com.github.minecraftschurli.arsmagicalegacy.common.entity.Wall(AMEntities.WALL.get(), level);
-            wall.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
-            wall.setXRot((float) caster.getLookAngle().x());
-            wall.setYRot((float) caster.getLookAngle().y());
-            if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
-                wall.setTargetNonSolid();
-            }
+            wall.setPos(caster.getX(), caster.getY(), caster.getZ());
+//            wall.setDeltaMovement(caster.getDeltaMovement());
             wall.setDuration(200 + 100 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
             wall.setIndex(index);
             wall.setOwner(caster);
