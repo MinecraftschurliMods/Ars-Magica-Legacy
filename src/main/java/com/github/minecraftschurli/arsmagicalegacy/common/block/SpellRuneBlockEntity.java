@@ -36,7 +36,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    protected void saveAdditional(CompoundTag pTag) {
         if (this.spell instanceof Spell) {
             pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) this.spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
@@ -46,7 +46,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
         if (this.awardXp != null) {
             pTag.putBoolean(AWARD_XP_KEY, this.awardXp);
         }
-        return super.save(pTag);
+        super.save(pTag);
     }
 
     @Override

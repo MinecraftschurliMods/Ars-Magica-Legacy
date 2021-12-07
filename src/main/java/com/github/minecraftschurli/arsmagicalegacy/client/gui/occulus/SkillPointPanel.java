@@ -28,7 +28,7 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         stack.translate(width, 0, -1);
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getSkillHelper();
-        var skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());
+        var skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());
         int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
         setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);

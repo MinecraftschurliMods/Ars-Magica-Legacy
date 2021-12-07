@@ -33,9 +33,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     @Override
-    public CompoundTag save(CompoundTag pCompound) {
+    protected void saveAdditional(CompoundTag pCompound) {
+        super.saveAdditional(pCompound);
         pCompound.put("Inv", this.stack.save(new CompoundTag()));
-        return super.save(pCompound);
     }
 
     @Override
