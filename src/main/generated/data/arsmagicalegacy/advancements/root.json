@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "patchouli:guide_book",
-      "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
+      "item": "minecraft:air"
     },
     "title": {
       "translate": "advancements.arsmagicalegacy.root.title"
@@ -23,7 +22,7 @@
         "items": [
           {
             "items": [
-              "patchouli:guide_book"
+              "minecraft:air"
             ]
           }
         ]

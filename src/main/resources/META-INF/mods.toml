@@ -16,18 +16,23 @@ description = '''
 Continuation of ArsMagica 2 by Mithion
 '''
 
-#[[dependencies.${mod_id}]]
-#modId = "patchouli"
-#mandatory = true
-#versionRange = "${patchouli_version_range}"
-#ordering = "BEFORE"
-#side = "BOTH"
+[[dependencies.${mod_id}]]
+modId = "patchouli"
+mandatory = true
+versionRange = "${patchouli_version_range}"
+ordering = "BEFORE"
+side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "curios"
 mandatory = false
 versionRange = "${curios_version_range}"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "jei"
+mandatory = false
+versionRange = "${jei_version_range}"
 
 [[dependencies.${mod_id}]]
 modId = "forge"

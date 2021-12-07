@@ -25,24 +25,33 @@ public class AltarViewBlockEntity extends BlockEntity {
     }
 
     public Optional<AltarCoreBlockEntity> getAltar() {
-        return this.altar.map(blockPos -> this.level != null && this.level.getBlockEntity(blockPos) instanceof AltarCoreBlockEntity ca ? ca : null);
+        return this.altar.map(blockPos ->
+                                      this.level != null &&
+                                      this.level.getBlockEntity(blockPos) instanceof AltarCoreBlockEntity ca
+                                              ? ca
+                                              : null
+        );
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return this.saveWithoutMetadata();
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        this.altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
-        return super.save(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        this.altar.ifPresent(blockPos -> tag.put("altar",
+                                                 BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos)
+                                                               .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
     }
 
     @Override
     public void load(CompoundTag nbt) {
         if (nbt.contains("altar")) {
-            setAltarPos(BlockPos.CODEC.decode(NbtOps.INSTANCE, nbt.get("altar")).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            setAltarPos(BlockPos.CODEC.decode(NbtOps.INSTANCE, nbt.get("altar"))
+                                      .map(Pair::getFirst)
+                                      .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
         super.load(nbt);
     }

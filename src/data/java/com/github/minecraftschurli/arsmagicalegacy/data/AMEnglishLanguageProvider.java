@@ -139,13 +139,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillPointIdTranslation(AMSkillPoints.GREEN);
         skillPointIdTranslation(AMSkillPoints.RED);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".empty", "");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".forgetAll.success", "Forgot all skills");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".forget.success", "Forgot skill %s");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".learnAll.success", "Learned all skills");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".learn.success", "Learned skill %s");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".skillNotKnown", "Skill %s must be learned first");
-        add(("commands." + ArsMagicaAPI.MOD_ID + ".skill") + ".skillAlreadyKnown", "Skill %s has already been learned");
+        add(TranslationConstants.SKILL_COMMAND_EMPTY, "");
+        add(TranslationConstants.SKILL_COMMAND_FORGET_ALL_SUCCESS, "Forgot all skills");
+        add(TranslationConstants.SKILL_COMMAND_FORGET_SUCCESS, "Forgot skill %s");
+        add(TranslationConstants.SKILL_COMMAND_LEARN_ALL_SUCCESS, "Learned all skills");
+        add(TranslationConstants.SKILL_COMMAND_LEARN_SUCCESS, "Learned skill %s");
+        add(TranslationConstants.SKILL_COMMAND_NOT_KNOWN_SKILL, "Skill %s must be learned first");
+        add(TranslationConstants.SKILL_COMMAND_ALREADY_KNOWN, "Skill %s has already been learned");
         add(TranslationConstants.BURNOUT_TOOLTIP, "Burnout: %d");
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.INVALID_SPELL, "[Invalid Spell]");
@@ -161,7 +161,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.UNKNOWN_ITEM, "Unknown Item");
         add(TranslationConstants.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.UNNAMED_SPELL, "Unnamed Spell");
-        add("message." + ArsMagicaAPI.MOD_ID + ".prevent", "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.MAGIC_UNKNOWN_MESSAGE, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL, "Name");
+        add(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL, "Search");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE, "Default Spell");
     }
 
     /**

@@ -42,7 +42,7 @@ public interface ITranslatable {
      *
      * @return the {@link Component} containing the display name of this object
      */
-    default MutableComponent getDisplayName() {
+    default Component getDisplayName() {
         return new TranslatableComponent(getTranslationKey());
     }
 
@@ -51,7 +51,7 @@ public interface ITranslatable {
      */
     interface WithDescription extends ITranslatable {
         @Override
-        default MutableComponent getDisplayName() {
+        default Component getDisplayName() {
             return new TranslatableComponent(getTranslationKey() + ".name");
         }
 
@@ -60,7 +60,7 @@ public interface ITranslatable {
          *
          * @return the {@link Component} containing the description of this object
          */
-        default MutableComponent getDescription() {
+        default Component getDescription() {
             return new TranslatableComponent(getTranslationKey() + ".description");
         }
     }

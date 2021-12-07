@@ -7,7 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.etherium.IEtheriumProvide
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
@@ -25,13 +25,13 @@ import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final ResourceLocation ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
-    public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    public static final ResourceLocation               ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    public static final Codec<EtheriumSpellIngredient> CODEC    = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class))
-                    .fieldOf("types")
-                    .forGetter(EtheriumSpellIngredient::types),
+                       .fieldOf("types")
+                       .forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount")
-                    .forGetter(EtheriumSpellIngredient::amount)
+                     .forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
 
     @Override
@@ -41,11 +41,12 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public Component getTooltip() {
-        if (types.size() == 1) return types.iterator().next().getDisplayName().append(" x " + amount());
+        if (types.size() == 1) return types.iterator().next().getDisplayName().copy().append(" x " + amount());
         return new TextComponent("(").append(types.stream()
-                        .map(ITranslatable::getDisplayName)
-                        .collect(AMUtil.joiningComponents(" | ")))
-                .append(") x " + amount());
+                                                  .map(ITranslatable::getDisplayName)
+                                                  .map(Component::copy)
+                                                  .collect(ComponentUtil.joiningComponents(" | ")))
+                                     .append(") x "+ amount());
     }
 
     @Override
@@ -91,10 +92,14 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     }
 
     private static class EtheriumSpellIngredientRenderer implements ISpellIngredientRenderer<EtheriumSpellIngredient> {
-        public static final EtheriumSpellIngredientRenderer INSTANCE = new EtheriumSpellIngredientRenderer();
+    public static final EtheriumSpellIngredientRenderer INSTANCE = new EtheriumSpellIngredientRenderer();
 
         @Override
-        public void render(EtheriumSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        public void render(EtheriumSpellIngredient ingredient,
+                           PoseStack poseStack,
+                           MultiBufferSource bufferSource,
+                           int packedLight,
+                           int packedOverlay) {
             // TODO render
         }
     }

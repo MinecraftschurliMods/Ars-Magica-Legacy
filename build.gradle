@@ -305,6 +305,7 @@ def replaceProperties = [
         'mod_author': project.mod_author,
         'mod_credits': project.mod_credits,
         'mc_version_range': project.mc_version_range,
+        'jei_version_range': project.jei_version_range,
         'forge_version_range': project.forge_version_range,
         'loader_version_range': project.loader_version_range,
         'curios_version_range': project.curios_version_range,

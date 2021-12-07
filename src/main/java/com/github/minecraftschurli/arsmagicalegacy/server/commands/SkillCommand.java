@@ -207,7 +207,7 @@ public class SkillCommand {
     }
 
     private static Component createListComponent(Stream<ISkill> resourceLocationStream) {
-        return resourceLocationStream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.append("\n").append(component2)).orElse(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_EMPTY));
+        return resourceLocationStream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(new TranslatableComponent(TranslationConstants.SKILL_COMMAND_EMPTY));
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {

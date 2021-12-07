@@ -75,7 +75,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
             getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
-                drawString.add(aff.getDisplayName().withStyle(style -> style.withColor(aff.getColor())));
+                drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.getColor())));
 /*
                     List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
                     abilites.sort(new Comparator<AbstractAffinityAbility>() {
