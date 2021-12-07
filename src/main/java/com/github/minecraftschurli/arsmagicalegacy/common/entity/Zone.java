@@ -3,9 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.BlockUtil;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,32 +15,29 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZoneEntity extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.ITEM_STACK);
+public class Zone extends Entity implements ItemSupplier {
+    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.ITEM_STACK);
 
-    public ZoneEntity(EntityType<? extends ZoneEntity> pEntityType, Level pLevel) {
+    public Zone(EntityType<? extends Zone> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         setBoundingBox(new AABB(getX() - 0.1, getY() - 0.1, getZ() - 0.1, getX() + 0.1, getY() + 0.1, getZ() + 0.1));
     }

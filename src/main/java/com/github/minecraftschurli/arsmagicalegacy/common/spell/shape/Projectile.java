@@ -5,7 +5,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ProjectileEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
@@ -21,7 +20,7 @@ public class Projectile extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            ProjectileEntity projectile = ProjectileEntity.create(level);
+            com.github.minecraftschurli.arsmagicalegacy.common.entity.Projectile projectile = com.github.minecraftschurli.arsmagicalegacy.common.entity.Projectile.create(level);
             projectile.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             projectile.setDeltaMovement(caster.getLookAngle());
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {

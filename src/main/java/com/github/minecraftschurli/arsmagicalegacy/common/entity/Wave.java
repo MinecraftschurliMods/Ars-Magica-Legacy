@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,16 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class WaveEntity extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ZoneEntity.class, EntityDataSerializers.ITEM_STACK);
+public class Wave extends Entity implements ItemSupplier {
+    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.ITEM_STACK);
 
-    public WaveEntity(EntityType<? extends WaveEntity> pEntityType, Level pLevel) {
+    public Wave(EntityType<? extends Wave> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 

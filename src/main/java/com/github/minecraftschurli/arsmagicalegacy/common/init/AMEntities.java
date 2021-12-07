@@ -11,12 +11,12 @@ import com.github.minecraftschurli.arsmagicalegacy.common.entity.LightningGuardi
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ProjectileEntity;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WallEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Projectile;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaveEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Wave;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.ZoneEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.entity.Zone;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.RegistryObject;
@@ -25,10 +25,10 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
 
 public interface AMEntities {
-    RegistryObject<EntityType<ProjectileEntity>>  PROJECTILE         = ENTITIES.register("projectile",         () -> EntityType.Builder.of(ProjectileEntity ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("projectile"));
-    RegistryObject<EntityType<WallEntity>>        WALL               = ENTITIES.register("wall",               () -> EntityType.Builder.of(WallEntity       ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wall"));
-    RegistryObject<EntityType<WaveEntity>>        WAVE               = ENTITIES.register("wave",               () -> EntityType.Builder.of(WaveEntity       ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wave"));
-    RegistryObject<EntityType<ZoneEntity>>        ZONE               = ENTITIES.register("zone",               () -> EntityType.Builder.of(ZoneEntity       ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("zone"));
+    RegistryObject<EntityType<Projectile>>        PROJECTILE         = ENTITIES.register("projectile",         () -> EntityType.Builder.of(Projectile       ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("projectile"));
+    RegistryObject<EntityType<Wall>>              WALL               = ENTITIES.register("wall",               () -> EntityType.Builder.of(Wall             ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wall"));
+    RegistryObject<EntityType<Wave>>              WAVE               = ENTITIES.register("wave",               () -> EntityType.Builder.of(Wave             ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wave"));
+    RegistryObject<EntityType<Zone>>              ZONE               = ENTITIES.register("zone",               () -> EntityType.Builder.of(Zone             ::new, MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("zone"));
     RegistryObject<EntityType<WaterGuardian>>     WATER_GUARDIAN     = ENTITIES.register("water_guardian",     () -> EntityType.Builder.of(WaterGuardian    ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("water_guardian"));
     RegistryObject<EntityType<FireGuardian>>      FIRE_GUARDIAN      = ENTITIES.register("fire_guardian",      () -> EntityType.Builder.of(FireGuardian     ::new, MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     4).build("fire_guardian"));
     RegistryObject<EntityType<EarthGuardian>>     EARTH_GUARDIAN     = ENTITIES.register("earth_guardian",     () -> EntityType.Builder.of(EarthGuardian    ::new, MobCategory.MONSTER).clientTrackingRange(8).sized( 1.5F,  3.5F).build("earth_guardian"));

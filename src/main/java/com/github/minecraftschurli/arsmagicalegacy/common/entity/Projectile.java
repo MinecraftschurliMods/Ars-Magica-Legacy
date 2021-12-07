@@ -26,23 +26,23 @@ import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
-public class ProjectileEntity extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> GRAVITY = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.ITEM_STACK);
+public class Projectile extends Entity implements ItemSupplier {
+    private static final EntityDataAccessor<Boolean> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
 
     /**
-     * Use {@link ProjectileEntity#create(Level)} instead.
+     * Use {@link Projectile#create(Level)} instead.
      */
     @Internal
-    public ProjectileEntity(EntityType<? extends ProjectileEntity> entityEntityType, Level level) {
+    public Projectile(EntityType<? extends Projectile> entityEntityType, Level level) {
         super(entityEntityType, level);
     }
 
@@ -51,8 +51,8 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
      * @param level the level to create the new instance in
      * @return a new instance of this class in the given level
      */
-    public static ProjectileEntity create(Level level) {
-        return new ProjectileEntity(AMEntities.PROJECTILE.get(), level);
+    public static Projectile create(Level level) {
+        return new Projectile(AMEntities.PROJECTILE.get(), level);
     }
 
     @Override
