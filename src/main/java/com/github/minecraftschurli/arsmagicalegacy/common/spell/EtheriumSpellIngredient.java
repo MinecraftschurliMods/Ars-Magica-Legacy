@@ -7,7 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.etherium.IEtheriumProvide
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.ComponentUtil;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
@@ -45,7 +45,7 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
         return new TextComponent("(").append(types.stream()
                                                   .map(ITranslatable::getDisplayName)
                                                   .map(Component::copy)
-                                                  .collect(ComponentUtil.joiningComponents(" | ")))
+                                                  .collect(AMUtil.joiningComponents(" | ")))
                                      .append(") x "+ amount());
     }
 
