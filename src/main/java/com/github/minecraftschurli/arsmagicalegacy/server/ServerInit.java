@@ -24,7 +24,7 @@ public final class ServerInit {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
                     SpellStack.of(AMSpellParts.ABSORPTION.get()),
-                    ShapeGroup.of(AMSpellParts.ZONE.get(), AMSpellParts.RADIUS.get())
+                    ShapeGroup.of(AMSpellParts.WALL.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;

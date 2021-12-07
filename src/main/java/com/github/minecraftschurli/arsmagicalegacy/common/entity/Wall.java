@@ -2,6 +2,9 @@ package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -14,10 +17,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class Wall extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
@@ -30,18 +36,16 @@ public class Wall extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(TARGET_NON_SOLID, false);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
-        entityData.define(RADIUS, 1.4f);
+        entityData.define(RADIUS, 1f);
         entityData.define(STACK, ItemStack.EMPTY);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
-        entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -52,7 +56,6 @@ public class Wall extends Entity implements ItemSupplier {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
-        tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -74,14 +77,42 @@ public class Wall extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-    }
-
-    public boolean getTargetNonSolid() {
-        return entityData.get(TARGET_NON_SOLID);
-    }
-
-    public void setTargetNonSolid() {
-        entityData.set(TARGET_NON_SOLID, true);
+        Vec3 a = new Vec3(getX() - Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() - Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
+        Vec3 b = new Vec3(getX() + Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() + Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
+        double minX = getX() - getRadius();
+        double minY = getY() - 1;
+        double minZ = getZ() - getRadius();
+        double maxX = getX() + getRadius();
+        double maxY = getY() + 3;
+        double maxZ = getZ() + getRadius();
+        if (level.isClientSide()) {
+            for (double x = minX; x <= maxX; x += 0.2) {
+                for (double y = minY; y <= maxY; y += 0.2) {
+                    for (double z = minZ; z <= maxZ; z += 0.2) {
+                        double newX = x + random.nextDouble(0.2) - 0.1;
+                        double newZ = z + random.nextDouble(0.2) - 0.1;
+                        if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
+                            Vec3 newVec = new Vec3(newX, getY(), newZ);
+                            if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position()) < 0.5) {
+                                level.addParticle(ParticleTypes.PORTAL, newX, y + random.nextDouble(0.2) - 0.1, newZ, (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (tickCount % 10 == 0) {
+            for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
+                if (e == this) continue;
+                if (e instanceof PartEntity) {
+                    e = ((PartEntity<?>) e).getParent();
+                }
+                Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
+                closest = new Vec3(closest.x, getY(), closest.z);
+                if (e instanceof LivingEntity && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
+                    ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
+                }
+            }
+        }
     }
 
     public int getDuration() {
