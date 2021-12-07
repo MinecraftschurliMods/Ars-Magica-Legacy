@@ -27,13 +27,13 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 public class Projectile extends Entity implements ItemSupplier {
-    private static final EntityDataAccessor<Boolean> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
@@ -57,13 +57,13 @@ public class Projectile extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(GRAVITY, false);
         entityData.define(TARGET_NON_SOLID, false);
         entityData.define(BOUNCES, 0);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(PIERCES, 0);
         entityData.define(OWNER, 0);
+        entityData.define(GRAVITY, 0f);
         entityData.define(SPEED, 1f);
         entityData.define(ICON, new ItemStack(AMItems.BLANK_RUNE.get()));
         entityData.define(STACK, ItemStack.EMPTY);
@@ -72,13 +72,13 @@ public class Projectile extends Entity implements ItemSupplier {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
-        entityData.set(GRAVITY, tag.getBoolean("Gravity"));
         entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
         entityData.set(BOUNCES, tag.getInt("Bounces"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(PIERCES, tag.getInt("Pierces"));
         entityData.set(OWNER, tag.getInt("Owner"));
+        entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(SPEED, tag.getFloat("Speed"));
         entityData.set(ICON, ItemStack.of(tag.getCompound("Icon")));
         entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
@@ -87,13 +87,13 @@ public class Projectile extends Entity implements ItemSupplier {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
-        tag.putBoolean("Gravity", entityData.get(GRAVITY));
         tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
         tag.putInt("Bounces", entityData.get(BOUNCES));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Pierces", entityData.get(PIERCES));
         tag.putInt("Owner", entityData.get(OWNER));
+        tag.putFloat("Gravity", entityData.get(GRAVITY));
         tag.putFloat("Speed", entityData.get(SPEED));
         CompoundTag icon = new CompoundTag();
         entityData.get(ICON).save(icon);
@@ -147,7 +147,7 @@ public class Projectile extends Entity implements ItemSupplier {
                 decreaseBounces();
             }
         }
-        setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - (getGravity() ? 0.03F : 0), getDeltaMovement().z);
+        setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - getGravity(), getDeltaMovement().z);
         setPos(position().add(getDeltaMovement()));
     }
 
@@ -156,11 +156,11 @@ public class Projectile extends Entity implements ItemSupplier {
         return getIcon();
     }
 
-    public boolean getGravity() {
+    public float getGravity() {
         return entityData.get(GRAVITY);
     }
 
-    public void setGravity(boolean gravity) {
+    public void setGravity(float gravity) {
         entityData.set(GRAVITY, gravity);
     }
 
