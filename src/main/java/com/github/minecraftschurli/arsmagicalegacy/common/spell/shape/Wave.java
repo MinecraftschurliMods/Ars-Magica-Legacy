@@ -4,7 +4,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaveEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +17,7 @@ public class Wave extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            WaveEntity wave = new WaveEntity(AMEntities.WAVE.get(), level);
+            com.github.minecraftschurli.arsmagicalegacy.common.entity.Wave wave = new com.github.minecraftschurli.arsmagicalegacy.common.entity.Wave(AMEntities.WAVE.get(), level);
             wave.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             wave.setDeltaMovement(caster.getLookAngle());
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
