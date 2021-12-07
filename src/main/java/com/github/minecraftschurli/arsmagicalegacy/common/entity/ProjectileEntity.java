@@ -15,20 +15,16 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Predicate;
 
 public class ProjectileEntity extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> GRAVITY = SynchedEntityData.defineId(ProjectileEntity.class, EntityDataSerializers.BOOLEAN);
@@ -138,15 +134,16 @@ public class ProjectileEntity extends Entity implements ItemSupplier {
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
             } else {
-                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
         } else if (result.getType().equals(HitResult.Type.ENTITY)) {
             Entity entity = ((EntityHitResult) result).getEntity();
-            if (entity instanceof EnderDragonPart)
-                entity = ((EnderDragonPart) entity).parentMob;
+            if (entity instanceof PartEntity) {
+                entity = ((PartEntity<?>) entity).getParent();
+            }
             if (entity instanceof LivingEntity && entity != getOwner()) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, 0, getIndex(), true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
         }

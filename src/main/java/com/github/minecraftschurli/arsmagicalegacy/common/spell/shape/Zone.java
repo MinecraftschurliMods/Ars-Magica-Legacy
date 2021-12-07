@@ -21,6 +21,7 @@ public class Zone extends AbstractShape {
         if (!level.isClientSide()) {
             ZoneEntity zone = new ZoneEntity(AMEntities.ZONE.get(), level);
             zone.setPos(caster.getX(), caster.getY(), caster.getZ());
+            zone.setDeltaMovement(caster.getDeltaMovement());
             if (ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.TARGET_NON_SOLID.getId()) > 0) {
                 zone.setTargetNonSolid();
             }
