@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class BasicDropZone implements DropArea {
     private final List<Draggable> items;
     private DragHandler dragHandler;
 
-    public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int elementPadding, int size) {
+    public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int elementPadding, int size, @Nullable BasicDropZone prev) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -27,10 +28,15 @@ public class BasicDropZone implements DropArea {
         this.elementPadding = elementPadding;
         this.size = size;
         this.items = new ArrayList<>(this.size);
+        if (prev != null) {
+            for (Draggable element : prev.items) {
+                add(element);
+            }
+        }
     }
 
-    public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int size) {
-        this(x, y, width, height, elementWidth, elementHeight, 2, size);
+    public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int size, @Nullable BasicDropZone prev) {
+        this(x, y, width, height, elementWidth, elementHeight, 2, size, prev);
     }
 
     @Override
@@ -51,10 +57,10 @@ public class BasicDropZone implements DropArea {
     @Override
     public void render(final PoseStack poseStack, final int mouseX, final int mouseY, final float partialTicks) {
         DropArea.super.render(poseStack, mouseX, mouseY, partialTicks);
-        DropArea.vLine(poseStack, this.x, this.y, this.y + this.height, 0xffff0000);
-        DropArea.vLine(poseStack, this.x + this.width, this.y, this.y + this.height, 0xffff0000);
-        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y, 0xffff0000);
-        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y + this.height, 0xffff0000);
+//        DropArea.vLine(poseStack, this.x, this.y, this.y + this.height, 0xffff0000);
+//        DropArea.vLine(poseStack, this.x + this.width, this.y, this.y + this.height, 0xffff0000);
+//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y, 0xffff0000);
+//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y + this.height, 0xffff0000);
     }
 
     @Override
@@ -87,8 +93,8 @@ public class BasicDropZone implements DropArea {
         if (j > rows) {
             throw new RuntimeException();
         }
-        d.x = this.x + (i * (this.elementWidth + this.elementPadding)) + this.elementPadding;
-        d.y = this.y + (j * (this.elementHeight + this.elementPadding)) + this.elementPadding;
+        d.x = this.x + (i * (this.elementWidth + this.elementPadding)) + this.elementPadding + 1;
+        d.y = this.y + (j * (this.elementHeight + this.elementPadding)) + this.elementPadding + 1;
         d.width = this.elementWidth;
         d.height = this.elementHeight;
     }

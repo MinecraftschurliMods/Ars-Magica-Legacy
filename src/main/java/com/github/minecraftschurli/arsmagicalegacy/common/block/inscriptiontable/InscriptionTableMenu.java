@@ -2,13 +2,16 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontabl
 
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class InscriptionTableMenu extends AbstractContainerMenu {
     private final InscriptionTableBlockEntity table;
@@ -32,15 +35,27 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return this.table.stillValid(pPlayer);
+    public boolean stillValid(Player player) {
+        return this.table.stillValid(player);
     }
 
     public Optional<String> getSpellName() {
         return Optional.empty();
     }
 
+    public InscriptionTableBlockEntity getTable() {
+        return table;
+    }
+
     public int allowedShapeGroups() {
-        return 0;
+        return 5;
+    }
+
+    public void spellStackChanged(List<ResourceLocation> data) {
+
+    }
+
+    public void shapeGroupChanged(int shapGroupIndex, List<ResourceLocation> dataList) {
+
     }
 }

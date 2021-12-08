@@ -20,6 +20,9 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
     public int width;
     public int height;
     public boolean visible = true;
+    private double dragOffsetX;
+    private double dragOffsetY;
+    private boolean dragOffsetSet;
 
     public Draggable(int x, int y, int width, int height, TextureAtlasSprite sprite, Component name) {
         this.x = x;
@@ -32,8 +35,13 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        this.x = this.x + (int) dragX; // fixme
-        this.y = this.y + (int) dragY;
+        if (!dragOffsetSet) {
+            this.dragOffsetX = mouseX - this.x;
+            this.dragOffsetY = mouseY - this.y;
+            dragOffsetSet = true;
+        }
+        this.x = (int)(mouseX - this.dragOffsetX); // fixme
+        this.y = (int)(mouseY - this.dragOffsetY);
         return true;
     }
 

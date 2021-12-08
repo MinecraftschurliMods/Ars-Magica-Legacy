@@ -44,7 +44,7 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (super.mouseReleased(mouseX, mouseY, button)) return true;
+        super.mouseReleased(mouseX, mouseY, button);
         setDragged(null, null);
         return true;
     }
