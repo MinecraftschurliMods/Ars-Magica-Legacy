@@ -23,9 +23,11 @@ import com.github.minecraftschurli.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.WinterGuardian;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurli.arsmagicalegacy.common.level.Ores;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.ManaHelper;
@@ -50,10 +52,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -79,6 +85,7 @@ public final class EventHandler {
 
     @Internal
     public static void register(IEventBus modBus) {
+        modBus.addGenericListener(Feature.class, EventHandler::registerFeature);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeCreation);
@@ -110,6 +117,17 @@ public final class EventHandler {
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
         CompatManager.init(event);
+    }
+
+    private static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+        Ores.CHIMERITE_FEATURE = Ores.ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
+        Ores.VINTEUM_FEATURE = Ores.ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
+        Ores.TOPAZ_FEATURE = Ores.ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
+        Ores.TOPAZ_EXTRA_FEATURE = Ores.ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
+        Ores.CHIMERITE_PLACEMENT = Ores.placement("chimerite_ore", Ores.CHIMERITE_FEATURE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
+        Ores.VINTEUM_PLACEMENT = Ores.placement("vinteum_ore", Ores.VINTEUM_FEATURE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
+        Ores.TOPAZ_PLACEMENT = Ores.placement("topaz_ore", Ores.TOPAZ_FEATURE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
+        Ores.TOPAZ_EXTRA_PLACEMENT = Ores.placement("topaz_ore_extra", Ores.TOPAZ_EXTRA_FEATURE, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
     }
 
     public static void registerSpellIngredientTypes() {
