@@ -3,10 +3,10 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.BasicDropZone;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DragPane;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DraggableWithData;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.FilteredFilledDropArea;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
@@ -22,30 +22,29 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
-    private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
-    private static final int SHAPE_GROUP_WIDTH = 36;
-    private static final int SHAPE_GROUP_HEIGHT = 36;
-    private static final int SHAPE_GROUP_PADDING = 3;
-    private static final int SHAPE_GROUP_Y = 108;
-    private static final int SHAPE_GROUP_X = 13;
-    private static final int ICON_SIZE = 16;
+    private static final ResourceLocation GUI                 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
+    private static final Component        SEARCH_LABEL        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL);
+    private static final Component        NAME_LABEL          = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL);
+    private static final Component        DEFAULT_NAME        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE);
+    private static final int              SHAPE_GROUP_WIDTH   = 34;
+    private static final int              SHAPE_GROUP_HEIGHT  = 34;
+    private static final int              SHAPE_GROUP_PADDING = 3;
+    private static final int              SHAPE_GROUP_Y       = 108;
+    private static final int              SHAPE_GROUP_X       = 13;
+    private static final int              ICON_SIZE           = 16;
 
-    private final Component searchLabel = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL);
-    private final Component nameLabel = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL);
-    private final Component defaultName = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE);
-
-    private EditBox searchBar;
-    private EditBox nameBar;
-    private FilteredFilledDropArea<ISpellPart> sourceBox;
-    private DragPane dragPane;
+    private       EditBox             searchBar;
+    private       EditBox             nameBar;
+    private       DragPane            dragPane;
+    private       BasicDropZone       spellStackDropZone;
+    private final List<BasicDropZone> shapeGroupDropZones = new ArrayList<>();
 
     public InscriptionTableScreen(InscriptionTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -59,45 +58,48 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         ISkillManager skillManager = api.getSkillManager();
-        Predicate<ISpellPart> searchFilter = spellPart -> {
+        Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
-            if (StringUtil.isNullOrEmpty(value) || value.equals(searchLabel.getString())) return true;
-            assert spellPart.getRegistryName() != null;
-            if (spellPart.getRegistryName() == null) throw new IllegalStateException("an unregistered spell part in the registry ???");
-            return skillManager.get(spellPart.getRegistryName()).getDisplayName().getString().contains(value);
+            if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
+            return skillManager.get(spellPart).getDisplayName().getString().contains(value);
         };
-        Predicate<ISpellPart> knowsFilter = spellPart -> {
+        Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
-            assert spellPart.getRegistryName() != null;
-            return api.getSkillHelper().knows(Minecraft.getInstance().player, spellPart.getRegistryName());
+            return api.getSkillHelper().knows(Minecraft.getInstance().player, spellPart);
         };
 
-        nameBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 93 + this.topPos, 141, 12, 64, this.nameBar, this.font, this.nameLabel));
+        nameBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 93 + this.topPos, 141, 12, 64, this.nameBar, this.font, NAME_LABEL));
         menu.getSpellName().ifPresent(name -> {
             nameBar.setValue(name);
             nameBar.setTextColor(0xffffff);
         });
-        if (nameBar.getValue().equals(nameLabel.getString())) {
-            nameBar.setValue(defaultName.getString());
+        if (nameBar.getValue().equals(NAME_LABEL.getString())) {
+            nameBar.setValue(DEFAULT_NAME.getString());
+            nameBar.setTextColor(0xffffff);
         }
 
-        searchBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 59 + this.topPos, 141, 12, 64, this.searchBar, this.font, this.searchLabel));
+        searchBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 59 + this.topPos, 141, 12, 64, this.searchBar, this.font, SEARCH_LABEL));
 
         dragPane = new DragPane(this.leftPos, this.topPos, this.width, this.height);
-        sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + this.leftPos, 5 + this.topPos,
-                                                                      138, 48,
-                                                                      ICON_SIZE, ICON_SIZE,
-                                                                      knowsFilter.and(searchFilter),
-                                                                      api.getSpellPartRegistry(),
-                                                                      ((Function<ISpellPart, ResourceLocation>)IForgeRegistryEntry::getRegistryName)
-                                                                              .andThen(rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl),
-                                                                                                     skillManager.get(rl).getDescription()))));
+        FilteredFilledDropArea<ResourceLocation> sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + this.leftPos, 5 + this.topPos,
+                                                                                                               138, 48,
+                                                                                                               ICON_SIZE, ICON_SIZE,
+                                                                                                               knowsFilter.and(searchFilter),
+                                                                                                               api.getSpellPartRegistry().getKeys(),
+                                                                                                               rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl),
+                                                                                                                             skillManager.get(rl).getDescription())));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
         for (int sg = 0; sg < menu.allowedShapeGroups(); sg++) {
-            dragPane.addDropArea(new BasicDropZone(offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 4));
+            BasicDropZone old = shapeGroupDropZones.size() > sg ? shapeGroupDropZones.get(sg) : null;
+            BasicDropZone shapeGroupDropZone = dragPane.addDropArea(new BasicDropZone(offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 1, 4, old));
+            if (shapeGroupDropZones.size() > sg) {
+                shapeGroupDropZones.set(sg, shapeGroupDropZone);
+            } else {
+                shapeGroupDropZones.add(shapeGroupDropZone);
+            }
         }
-        dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 144, 141, 18, ICON_SIZE, ICON_SIZE, 8));
+        spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 144, 141, 18, ICON_SIZE, ICON_SIZE, 1, 8, spellStackDropZone));
         addRenderableWidget(dragPane);
         sourceBox.update();
     }
@@ -136,6 +138,11 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         if (listener instanceof EditBox editBox) {
             editBox.setFocus(true);
         }
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return super.mouseReleased(mouseX, mouseY, button) | dragPane.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override
