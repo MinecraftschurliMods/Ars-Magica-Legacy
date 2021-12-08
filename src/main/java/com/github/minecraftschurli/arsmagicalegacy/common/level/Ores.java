@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.level;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -27,14 +28,14 @@ public class Ores {
     public static PlacedFeature TOPAZ_EXTRA_PLACEMENT;
 
     public static ConfiguredFeature<?, ?> ore(String name, Supplier<Block> ore, Supplier<Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
-        return FeatureUtils.register(name, Feature.ORE.configured(new OreConfiguration(List.of(
+        return FeatureUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, Feature.ORE.configured(new OreConfiguration(List.of(
                 OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()),
                 OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())
         ), veinSize, airExposureDiscardChance)));
     }
 
     public static PlacedFeature placement(String name, ConfiguredFeature<?, ?> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
-        return PlacementUtils.register(name, feature.placed(List.of(
+        return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.placed(List.of(
                 CountPlacement.of(veinCount),
                 InSquarePlacement.spread(),
                 heightRangePlacement,
