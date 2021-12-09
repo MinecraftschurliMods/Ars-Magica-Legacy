@@ -17,6 +17,7 @@ public class BasicDropZone implements DropArea {
     private final int size;
     private final List<Draggable> items;
     private DragHandler dragHandler;
+    private DropValidator validator;
 
     public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int elementPadding, int size, @Nullable BasicDropZone prev) {
         this.x = x;
@@ -46,16 +47,15 @@ public class BasicDropZone implements DropArea {
 
     @Override
     public boolean add(Draggable d) {
-        if (this.items.size() + 1 > this.size) {
-            return false;
-        }
+        if (this.validator != null && !this.validator.validate(this.items, d)) return false;
+        if (this.items.size() + 1 > this.size) return false;
         boolean add = this.items.add(d);
         setPositionAndSize(d);
         return add;
     }
 
     @Override
-    public void render(final PoseStack poseStack, final int mouseX, final int mouseY, final float partialTicks) {
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         DropArea.super.render(poseStack, mouseX, mouseY, partialTicks);
 //        DropArea.vLine(poseStack, this.x, this.y, this.y + this.height, 0xffff0000);
 //        DropArea.vLine(poseStack, this.x + this.width, this.y, this.y + this.height, 0xffff0000);
@@ -102,5 +102,9 @@ public class BasicDropZone implements DropArea {
     @Override
     public void remove(Draggable d) {
         this.items.remove(d);
+    }
+
+    public void setDropValidator(DropValidator validator) {
+        this.validator = validator;
     }
 }

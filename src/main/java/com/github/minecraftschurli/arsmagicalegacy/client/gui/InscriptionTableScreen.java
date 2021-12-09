@@ -3,10 +3,16 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurli.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.BasicDropZone;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DragPane;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.Draggable;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DraggableWithData;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DropArea;
+import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DropValidator;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.FilteredFilledDropArea;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
@@ -22,10 +28,15 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
@@ -58,6 +69,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         ISkillManager skillManager = api.getSkillManager();
+        IForgeRegistry<ISpellPart> spellPartRegistry = api.getSpellPartRegistry();
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
@@ -66,6 +78,21 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
             return api.getSkillHelper().knows(Minecraft.getInstance().player, spellPart);
+        };
+        Predicate<ResourceLocation> hasValidPlace = spellPart -> {
+            ISpellPart value = spellPartRegistry.getValue(spellPart);
+            assert value != null;
+            return shapeGroupDropZones.stream()
+                                      .map(basicDropZone -> DraggableWithData.<ResourceLocation>dataList(basicDropZone.items())
+                                                                             .stream()
+                                                                             .map(spellPartRegistry::getValue)
+                                                                             .toList())
+                                      .anyMatch(iSpellParts -> isValidInShapeGroup(iSpellParts, value)) ||
+                   isValidInSpellStack(DraggableWithData.<ResourceLocation>dataList(spellStackDropZone.items())
+                                                        .stream()
+                                                        .map(spellPartRegistry::getValue)
+                                                        .toList(),
+                                       value);
         };
 
         nameBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 93 + this.topPos, 141, 12, 64, this.nameBar, this.font, NAME_LABEL));
@@ -84,24 +111,67 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         FilteredFilledDropArea<ResourceLocation> sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + this.leftPos, 5 + this.topPos,
                                                                                                                138, 48,
                                                                                                                ICON_SIZE, ICON_SIZE,
-                                                                                                               knowsFilter.and(searchFilter),
-                                                                                                               api.getSpellPartRegistry().getKeys(),
+                                                                                                               knowsFilter.and(searchFilter).and(hasValidPlace),
+                                                                                                               spellPartRegistry.getKeys(),
                                                                                                                rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl),
                                                                                                                              skillManager.get(rl).getDescription())));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
+        DropValidator.WithData<ResourceLocation> dropValidator = ((DropValidator.WithData<ISpellPart>)this::isValidInShapeGroup).map(spellPartRegistry::getValue);
         for (int sg = 0; sg < menu.allowedShapeGroups(); sg++) {
             BasicDropZone old = shapeGroupDropZones.size() > sg ? shapeGroupDropZones.get(sg) : null;
             BasicDropZone shapeGroupDropZone = dragPane.addDropArea(new BasicDropZone(offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 1, 4, old));
+            shapeGroupDropZone.setDropValidator(dropValidator);
             if (shapeGroupDropZones.size() > sg) {
                 shapeGroupDropZones.set(sg, shapeGroupDropZone);
             } else {
                 shapeGroupDropZones.add(shapeGroupDropZone);
             }
         }
-        spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 144, 141, 18, ICON_SIZE, ICON_SIZE, 1, 8, spellStackDropZone));
+        spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 143, 141, 18, ICON_SIZE, ICON_SIZE, 1, 8, spellStackDropZone));
+        spellStackDropZone.setDropValidator(((DropValidator.WithData<ISpellPart>)this::isValidInSpellStack).map(spellPartRegistry::getValue));
         addRenderableWidget(dragPane);
         sourceBox.update();
+    }
+
+    private boolean isValidInSpellStack(List<ISpellPart> items, ISpellPart item) {
+        final Function<ResourceLocation, ISpellPart>             registryAccess      = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
+        final Function<BasicDropZone, List<Draggable>>           itemGetter          = BasicDropZone::items;
+        final Function<List<Draggable>, List<ResourceLocation>>  draggableMapper     = DraggableWithData::dataList;
+        final Function<List<ResourceLocation>, List<ISpellPart>> registryMapper      = rls -> rls.stream().map(registryAccess).toList();
+        final Function<BasicDropZone, List<ISpellPart>>          mapper              = itemGetter.andThen(draggableMapper).andThen(registryMapper);
+        final Predicate<List<ISpellPart>>                        isValidInShapeGroup = iSpellParts -> isValidInShapeGroup(iSpellParts, item);
+        final boolean                                            shapeGroupsEmpty    = shapeGroupDropZones.stream().map(itemGetter).allMatch(List::isEmpty);
+        return switch (item.getType()) {
+            case COMPONENT -> true;
+            case MODIFIER -> !shapeGroupsEmpty && shapeGroupDropZones.stream().map(mapper).anyMatch(isValidInShapeGroup);
+            case SHAPE -> shapeGroupDropZones.stream().map(mapper).allMatch(isValidInShapeGroup);
+        };
+    }
+
+    private boolean isValidInShapeGroup(List<ISpellPart> items, ISpellPart item) {
+        Deque<ISpellPart> deque = new ArrayDeque<>(items);
+        return switch (item.getType()) {
+            case COMPONENT -> false;
+            case MODIFIER -> {
+                if (deque.isEmpty()) yield false;
+                for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
+                    final ISpellPart part = it.next();
+                    if (part.getType() == ISpellPart.SpellPartType.SHAPE) {
+                        yield ((ISpellShape) part).canBeModifiedBy(((ISpellModifier)item));
+                    }
+                }
+                yield true;
+            }
+            case SHAPE -> {
+                if (((ISpellShape)item).isBeginnShape()) yield deque.isEmpty();
+                for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
+                    final ISpellPart part = it.next();
+                    if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isTerminusShape();
+                }
+                yield true;
+            }
+        };
     }
 
     @Override
@@ -138,6 +208,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         if (listener instanceof EditBox editBox) {
             editBox.setFocus(true);
         }
+    }
+
+    @Override
+    public void onClose() {
+        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        super.onClose();
     }
 
     @Override
