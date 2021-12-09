@@ -85,7 +85,7 @@ public final class EventHandler {
 
     @Internal
     public static void register(IEventBus modBus) {
-        modBus.addGenericListener(Feature.class, EventHandler::registerFeature);
+        modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeCreation);

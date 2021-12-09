@@ -17,7 +17,9 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class Ores {
+public final class Ores {
+    private Ores() {}
+
     public static ConfiguredFeature<?, ?> CHIMERITE_FEATURE;
     public static ConfiguredFeature<?, ?> VINTEUM_FEATURE;
     public static ConfiguredFeature<?, ?> TOPAZ_FEATURE;

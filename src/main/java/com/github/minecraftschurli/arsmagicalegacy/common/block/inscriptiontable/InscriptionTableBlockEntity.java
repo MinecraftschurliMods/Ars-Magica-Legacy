@@ -1,9 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
@@ -20,7 +23,10 @@ import org.jetbrains.annotations.Nullable;
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
     private static final Component DEFAULT_NAME = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_CONTAINER_TITLE);
 
-    private ItemStack stack = ItemStack.EMPTY;
+    private           ItemStack stack = ItemStack.EMPTY;
+    private @Nullable Spell     spellRecipe;
+    private @Nullable String    spellName;
+    private           boolean   open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
@@ -32,10 +38,27 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         this.stack = ItemStack.of(pTag.getCompound("Inv"));
     }
 
+    public void onSync(String name, Spell spell) {
+        this.spellName = name;
+        this.spellRecipe = spell;
+    }
+
+    @Nullable
+    public String getSpellName() {
+        return this.spellName;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag pCompound) {
         super.saveAdditional(pCompound);
         pCompound.put("Inv", this.stack.save(new CompoundTag()));
+        if (this.spellName != null) {
+            pCompound.putString("spell_name", this.spellName);
+        }
+        if (this.spellRecipe != null) {
+            pCompound.put("spell_recipe", Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe)
+                                                     .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        }
     }
 
     @Override
@@ -46,7 +69,22 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
+        if (isOpen()) return null;
         return new InscriptionTableMenu(pContainerId, pInventory, this);
+    }
+
+    @Override
+    public void startOpen(Player player) {
+        open = true;
+    }
+
+    @Override
+    public void stopOpen(Player player) {
+        open = false;
+    }
+
+    private boolean isOpen() {
+        return open;
     }
 
     @Override

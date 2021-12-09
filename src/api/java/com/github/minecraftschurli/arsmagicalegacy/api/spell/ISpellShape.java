@@ -33,4 +33,16 @@ public interface ISpellShape extends ISpellPart {
     default SpellPartType getType() {
         return SpellPartType.SHAPE;
     }
+
+    default boolean canBeModifiedBy(ISpellModifier modifier) {
+        return false;
+    }
+
+    default boolean isTerminusShape() {
+        return false;
+    }
+
+    default boolean isBeginnShape() {
+        return true;
+    }
 }

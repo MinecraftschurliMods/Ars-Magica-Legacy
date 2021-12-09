@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -17,12 +18,16 @@ public class DraggableWithData<T> extends Draggable {
         return data;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> List<T> dataList(List<Draggable> draggables) {
-        return (List<T>) draggables.stream()
-                                   .filter(DraggableWithData.class::isInstance)
-                                   .map(DraggableWithData.class::cast)
-                                   .map(DraggableWithData::getData)
-                                   .toList();
+        return draggables.stream().<T>map(DraggableWithData::data).toList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <T> T data(Draggable draggable) {
+        if (draggable instanceof DraggableWithData<?> withData) {
+            return (T) withData.getData();
+        }
+        return null;
     }
 }

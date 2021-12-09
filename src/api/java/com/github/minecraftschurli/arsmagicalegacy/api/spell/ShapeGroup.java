@@ -39,12 +39,22 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
     public static ShapeGroup of(List<ISpellPart> parts) throws MalformedShapeGroupException {
         List<Pair<ISpellShape, List<ISpellModifier>>> map = new ArrayList<>();
         List<ISpellModifier> currentMods = null;
+        boolean locked = false;
+        boolean first = true;
         for (ISpellPart part : parts) {
             if (part instanceof ISpellComponent)
                 throw new MalformedShapeGroupException("Shape groups can not contain components!", parts);
             if (part instanceof ISpellShape shape) {
+                if (locked)
+                    throw new MalformedShapeGroupException("A shape can not come after a terminus shape!", parts);
+                if (first && !shape.isBeginnShape())
+                    throw new MalformedShapeGroupException("A non beginn shape can not be first!", parts);
+                first = false;
                 currentMods = new ArrayList<>();
                 map.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
+                if (shape.isTerminusShape()) {
+                    locked = true;
+                }
             }
             if (part instanceof ISpellModifier modifier) {
                 if (currentMods == null)

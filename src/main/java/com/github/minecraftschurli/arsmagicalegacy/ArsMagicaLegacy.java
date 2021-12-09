@@ -15,6 +15,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurli.arsmagicalegacy.network.BEClientSyncPacket;
+import com.github.minecraftschurli.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.NextShapeGroupPacket;
 import com.github.minecraftschurli.arsmagicalegacy.network.OpenOcculusGuiPacket;
@@ -82,5 +83,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
     }
 }

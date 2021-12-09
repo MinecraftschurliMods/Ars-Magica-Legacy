@@ -39,6 +39,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         List<ISpellModifier> globalMods = new ArrayList<>();
         List<ISpellModifier> currentMods = null;
         partsWithModifiers.add(Pair.of(null, globalMods));
+        boolean locked = false;
         for (ISpellPart part : parts) {
             if (part instanceof ISpellComponent component) {
                 currentMods = new ArrayList<>();
@@ -47,8 +48,13 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
             if (part instanceof ISpellShape shape) {
                 if (currentMods != null)
                     throw new MalformedSpellStackException("A shape can not come after the first component!", parts);
+                if (locked)
+                    throw new MalformedSpellStackException("A shape can not come after a terminus shape!", parts);
                 currentMods = new ArrayList<>();
                 partsWithModifiers.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
+                if (shape.isTerminusShape()) {
+                    locked = true;
+                }
             }
             if (part instanceof ISpellModifier modifier) {
                 Objects.requireNonNullElse(currentMods, globalMods).add(modifier);
