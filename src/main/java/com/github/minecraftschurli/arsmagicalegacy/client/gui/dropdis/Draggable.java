@@ -1,6 +1,8 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -40,7 +42,7 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
             this.dragOffsetY = mouseY - this.y;
             dragOffsetSet = true;
         }
-        this.x = (int)(mouseX - this.dragOffsetX); // fixme
+        this.x = (int)(mouseX - this.dragOffsetX);
         this.y = (int)(mouseY - this.dragOffsetY);
         return true;
     }
@@ -49,7 +51,13 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         if (!isVisible()) return;
         poseStack.pushPose();
+        if (RenderSystem.getShaderTexture(0) != Minecraft.getInstance().getTextureManager().getTexture(sprite.atlas().location()).getId()) {
+            RenderSystem.setShaderTexture(0, sprite.atlas().location());
+        }
         blit(poseStack, x, y, 10, width, height, sprite);
+        if (isMouseOver(mouseX, mouseY)) {
+            Minecraft.getInstance().screen.renderTooltip(poseStack, name, mouseX, mouseY);
+        }
         poseStack.popPose();
     }
 
