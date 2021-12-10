@@ -38,11 +38,11 @@ public interface ISpellShape extends ISpellPart {
         return false;
     }
 
-    default boolean isTerminusShape() {
+    default boolean isEndShape() {
         return false;
     }
 
-    default boolean isBeginnShape() {
+    default boolean isBeginShape() {
         return true;
     }
 }
