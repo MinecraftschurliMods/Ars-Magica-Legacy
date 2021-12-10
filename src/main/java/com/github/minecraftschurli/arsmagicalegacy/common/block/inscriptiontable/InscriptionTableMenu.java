@@ -18,7 +18,6 @@ import net.minecraft.world.inventory.Slot;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.function.Function;
 
 public class InscriptionTableMenu extends AbstractContainerMenu {
@@ -65,6 +64,11 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
         Spell spell = Spell.of(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
+        table.onSync(name, spell);
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
+    }
+
+    public Optional<Spell> getSpellRecipe() {
+        return Optional.ofNullable(this.table).map(InscriptionTableBlockEntity::getSpellRecipe);
     }
 }
