@@ -6,6 +6,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurli.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.BasicDropZone;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DragPane;
@@ -61,6 +62,22 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         super(pMenu, pPlayerInventory, pTitle);
         imageWidth = 220;
         imageHeight = 252;
+        nameBar = new EditBox(font,0,0,0,0,NAME_LABEL);
+        pMenu.getSpellName().ifPresent(nameBar::setValue);
+        pMenu.getSpellRecipe().ifPresent(spell -> {
+            ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
+            spellStackDropZone = new BasicDropZone(0, 0, 0, 0, 0, 0, 4, null);
+            for (ISpellPart iSpellPart : spell.spellStack().parts()) {
+                spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDescription(), iSpellPart.getRegistryName()));
+            }
+            for (ShapeGroup shapeGroup : spell.shapeGroups()) {
+                BasicDropZone zone = new BasicDropZone(0, 0, 0, 0, 0, 0, 8, null);
+                for (ISpellPart spellPart : shapeGroup.parts()) {
+                    zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDescription(), spellPart.getRegistryName()));
+                }
+                shapeGroupDropZones.add(zone);
+            }
+        });
     }
 
     @Override

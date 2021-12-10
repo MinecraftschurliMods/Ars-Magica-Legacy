@@ -55,10 +55,11 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
             RenderSystem.setShaderTexture(0, sprite.atlas().location());
         }
         blit(poseStack, x, y, 10, width, height, sprite);
-        if (isMouseOver(mouseX, mouseY)) {
-            Minecraft.getInstance().screen.renderTooltip(poseStack, name, mouseX, mouseY);
-        }
         poseStack.popPose();
+    }
+
+    public void renderTooltip(PoseStack poseStack, int x, int y) {
+        Minecraft.getInstance().screen.renderTooltip(poseStack, name, x, y);
     }
 
     @Override

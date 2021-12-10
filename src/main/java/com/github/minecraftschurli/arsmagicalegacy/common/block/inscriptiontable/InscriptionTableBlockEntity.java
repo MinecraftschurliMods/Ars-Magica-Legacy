@@ -9,6 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -48,6 +51,11 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return this.spellName;
     }
 
+    @Nullable
+    public Spell getSpellRecipe() {
+        return this.spellRecipe;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag pCompound) {
         super.saveAdditional(pCompound);
@@ -59,6 +67,17 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
             pCompound.put("spell_recipe", Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe)
                                                      .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
+    }
+
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 
     @Override

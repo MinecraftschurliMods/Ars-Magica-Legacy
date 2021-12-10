@@ -19,6 +19,11 @@ public interface DropArea extends Widget, GuiEventListener {
         for (Draggable draggable : items()) {
             draggable.render(poseStack, mouseX, mouseY, partialTicks);
         }
+        for (Draggable draggable : items()) {
+            if (draggable.isMouseOver(mouseX, mouseY)) {
+                draggable.renderTooltip(poseStack, mouseX, mouseY);
+            }
+        }
     }
 
     @Override
