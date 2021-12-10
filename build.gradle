@@ -189,15 +189,12 @@ dependencies {
     }
 
     // jei for integration
-    // TODO compile against 1.17 jei api
-    modAPI fg.deobf("mezz.jei:jei-1.17.1:${project.jei_version}:api")
-    // TODO commented out until jei releases for 1.18
-    //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.18:${project.jei_version}:api")
+    runtimeMod fg.deobf("mezz.jei:jei-1.18:${project.jei_version}")
 
-    // TODO commented out until curios releases for 1.18
     // curios for additional inventory slots
-    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}:api")
-    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.mc_version}-${project.curios_version}")
+    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}:api")
+    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}")
 
     // TODO commented out until patchouli releases for 1.18
     // patchouli for the guide book (arcane compendium)
