@@ -30,4 +30,9 @@ public class Rune extends AbstractShape {
         ((SpellRuneBlockEntity) level.getBlockEntity(pos)).setSpell(spell, caster, index, awardXp);
         return SpellCastResult.SUCCESS;
     }
+
+    @Override
+    public boolean isBeginnShape() {
+        return false;
+    }
 }

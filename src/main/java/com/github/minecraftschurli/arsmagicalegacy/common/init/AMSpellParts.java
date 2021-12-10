@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Damage
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Dig;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.Effect;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.modifier.AbstractModifier;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.AoE;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Projectile;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Rune;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.shape.Self;
@@ -23,7 +24,8 @@ import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistri
 
 @NonExtendable
 public interface AMSpellParts {
-    // TODO aoe, beam, chain, channel
+    // TODO beam, chain, channel
+    RegistryObject<AoE>            AOE               = SPELL_PARTS.register("aoe",               AoE::new);
     RegistryObject<Projectile>     PROJECTILE        = SPELL_PARTS.register("projectile",        Projectile::new);
     RegistryObject<Rune>           RUNE              = SPELL_PARTS.register("rune",              Rune::new);
     RegistryObject<Self>           SELF              = SPELL_PARTS.register("self",              Self::new);
