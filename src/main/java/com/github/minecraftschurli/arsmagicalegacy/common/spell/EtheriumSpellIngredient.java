@@ -95,11 +95,7 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     public static final EtheriumSpellIngredientRenderer INSTANCE = new EtheriumSpellIngredientRenderer();
 
         @Override
-        public void render(EtheriumSpellIngredient ingredient,
-                           PoseStack poseStack,
-                           MultiBufferSource bufferSource,
-                           int packedLight,
-                           int packedOverlay) {
+        public void render(EtheriumSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
             // TODO render
         }
     }

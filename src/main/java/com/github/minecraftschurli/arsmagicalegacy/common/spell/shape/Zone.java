@@ -35,7 +35,12 @@ public class Zone extends AbstractShape {
     }
 
     @Override
-    public boolean isBeginnShape() {
+    public boolean isBeginShape() {
         return false;
+    }
+
+    @Override
+    public boolean isEndShape() {
+        return true;
     }
 }

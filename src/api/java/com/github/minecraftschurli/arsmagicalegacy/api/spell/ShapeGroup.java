@@ -47,12 +47,12 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
             if (part instanceof ISpellShape shape) {
                 if (locked)
                     throw new MalformedShapeGroupException("A shape can not come after a terminus shape!", parts);
-                if (first && !shape.isBeginnShape())
+                if (first && !shape.isBeginShape())
                     throw new MalformedShapeGroupException("A non beginn shape can not be first!", parts);
                 first = false;
                 currentMods = new ArrayList<>();
                 map.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
-                if (shape.isTerminusShape()) {
+                if (shape.isEndShape()) {
                     locked = true;
                 }
             }

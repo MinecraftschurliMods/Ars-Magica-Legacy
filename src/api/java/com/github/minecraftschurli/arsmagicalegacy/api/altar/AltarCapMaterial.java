@@ -6,9 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * TODO: doc
- */
 public record AltarCapMaterial(Block cap, int power) {
     public static final Codec<AltarCapMaterial> CODEC =
             RecordCodecBuilder.create(inst -> inst.group(

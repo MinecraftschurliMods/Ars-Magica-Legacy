@@ -181,10 +181,10 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 yield true;
             }
             case SHAPE -> {
-                if (((ISpellShape)item).isBeginnShape()) yield deque.isEmpty();
+                if (((ISpellShape)item).isBeginShape()) yield deque.isEmpty();
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
                     final ISpellPart part = it.next();
-                    if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isTerminusShape();
+                    if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isEndShape();
                 }
                 yield true;
             }

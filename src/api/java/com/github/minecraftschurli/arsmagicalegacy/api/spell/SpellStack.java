@@ -52,7 +52,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
                     throw new MalformedSpellStackException("A shape can not come after a terminus shape!", parts);
                 currentMods = new ArrayList<>();
                 partsWithModifiers.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
-                if (shape.isTerminusShape()) {
+                if (shape.isEndShape()) {
                     locked = true;
                 }
             }
