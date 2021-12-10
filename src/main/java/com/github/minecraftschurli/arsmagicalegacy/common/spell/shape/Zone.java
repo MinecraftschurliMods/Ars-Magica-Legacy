@@ -33,4 +33,9 @@ public class Zone extends AbstractShape {
         }
         return SpellCastResult.SUCCESS;
     }
+
+    @Override
+    public boolean isBeginnShape() {
+        return false;
+    }
 }

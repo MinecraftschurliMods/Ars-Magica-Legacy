@@ -34,6 +34,12 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
 
     @Override
     protected void createSpellPartData() {
+        createSpellPartData(AMSpellParts.AOE, 2f)
+                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TNT), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 1))
+                .build();
         createSpellPartData(AMSpellParts.PROJECTILE, 1.25f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
