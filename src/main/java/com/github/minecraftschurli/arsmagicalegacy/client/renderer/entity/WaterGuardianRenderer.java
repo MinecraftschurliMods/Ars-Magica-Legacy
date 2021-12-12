@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardianRenderer extends MobRenderer<WaterGuardian, WaterGuardianModel<WaterGuardian>> {
-
     protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/water_guardian.png");
 
     public WaterGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {

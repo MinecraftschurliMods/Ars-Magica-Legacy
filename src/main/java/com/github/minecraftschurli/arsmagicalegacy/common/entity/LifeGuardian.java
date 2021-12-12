@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -7,7 +8,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -33,22 +33,22 @@ public class LifeGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return null;
+        return AMSounds.LIFE_GUARDIAN_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return null;
+        return AMSounds.LIFE_GUARDIAN_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return null;
+        return AMSounds.LIFE_GUARDIAN_DEATH.get();
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return null;
+        return AMSounds.LIFE_GUARDIAN_ATTACK.get();
     }
 
     @Override

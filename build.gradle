@@ -184,7 +184,7 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
+    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
