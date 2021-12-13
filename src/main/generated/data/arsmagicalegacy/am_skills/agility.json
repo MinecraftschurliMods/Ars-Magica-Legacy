@@ -1,0 +1,11 @@
+{
+  "occulus_tab": "arsmagicalegacy:defense",
+  "x": 165,
+  "y": 255,
+  "parents": [
+    "arsmagicalegacy:swift_swim"
+  ],
+  "cost": {
+    "arsmagicalegacy:green": 1
+  }
+}

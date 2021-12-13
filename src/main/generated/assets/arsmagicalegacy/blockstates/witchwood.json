@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "arsmagicalegacy:block/witchwood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "arsmagicalegacy:block/witchwood"
+    },
+    "axis=z": {
+      "model": "arsmagicalegacy:block/witchwood",
+      "x": 90
+    }
+  }
+}

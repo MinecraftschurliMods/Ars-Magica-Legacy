@@ -1,0 +1,35 @@
+{
+  "manaCost": 1.0,
+  "reagents": [],
+  "affinities": {},
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "forge:gems/topaz"
+      },
+      "count": 2,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/purified_vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:aum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "types": [
+        "NEUTRAL"
+      ],
+      "amount": 500,
+      "type": "arsmagicalegacy:etherium"
+    }
+  ]
+}

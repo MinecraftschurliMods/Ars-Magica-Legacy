@@ -1,0 +1,25 @@
+{
+  "manaCost": 60.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:water": 0.01,
+    "arsmagicalegacy:earth": 0.01,
+    "arsmagicalegacy:air": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:yellow_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:piston"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

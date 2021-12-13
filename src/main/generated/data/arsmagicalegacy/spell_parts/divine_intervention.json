@@ -1,0 +1,30 @@
+{
+  "manaCost": 400.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ender": 0.4
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:purple_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ender_pearls"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "minecraft:beds"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

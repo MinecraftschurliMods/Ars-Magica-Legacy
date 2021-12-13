@@ -1,0 +1,12 @@
+{
+  "occulus_tab": "arsmagicalegacy:utility",
+  "x": 30,
+  "y": 390,
+  "parents": [
+    "arsmagicalegacy:mark",
+    "arsmagicalegacy:recall"
+  ],
+  "cost": {
+    "arsmagicalegacy:red": 1
+  }
+}

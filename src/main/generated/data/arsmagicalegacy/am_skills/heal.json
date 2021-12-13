@@ -1,0 +1,11 @@
+{
+  "occulus_tab": "arsmagicalegacy:defense",
+  "x": 255,
+  "y": 120,
+  "parents": [
+    "arsmagicalegacy:regeneration"
+  ],
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  }
+}
