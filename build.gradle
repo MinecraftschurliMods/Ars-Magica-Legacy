@@ -191,8 +191,8 @@ dependencies {
     runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
     // curios for additional inventory slots
-    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}:api")
-    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}")
+    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
+    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}")
 
     // patchouli for the guide book (arcane compendium)
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
