@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "side": "arsmagicalegacy:block/witchwood_planks",
-    "bottom": "arsmagicalegacy:block/witchwood_planks",
-    "top": "arsmagicalegacy:block/witchwood_planks"
-  }
-}

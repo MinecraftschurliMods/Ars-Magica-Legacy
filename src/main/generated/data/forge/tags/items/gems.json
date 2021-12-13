@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#forge:gems/chimerite",
-    "#forge:gems/topaz",
-    "#forge:gems/moonstone",
-    "#forge:gems/sunstone"
-  ]
-}

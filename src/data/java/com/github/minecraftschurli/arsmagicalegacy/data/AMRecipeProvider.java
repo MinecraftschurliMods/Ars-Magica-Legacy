@@ -23,6 +23,26 @@ class AMRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapelessRecipeBuilder.shapeless(Items.PINK_DYE)
+                .requires(AMItems.AUM.get())
+                .unlockedBy("item", has(AMItems.AUM.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(Items.BLUE_DYE)
+                .requires(AMItems.CERUBLOSSOM.get())
+                .unlockedBy("item", has(AMItems.CERUBLOSSOM.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(Items.RED_DYE)
+                .requires(AMItems.DESERT_NOVA.get())
+                .unlockedBy("item", has(AMItems.DESERT_NOVA.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(Items.BROWN_DYE)
+                .requires(AMItems.TARMA_ROOT.get())
+                .unlockedBy("item", has(AMItems.TARMA_ROOT.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(Items.MAGENTA_DYE)
+                .requires(AMItems.WAKEBLOOM.get())
+                .unlockedBy("item", has(AMItems.WAKEBLOOM.get()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.OCCULUS.get())
                 .pattern("SGS")
                 .pattern(" S ")
