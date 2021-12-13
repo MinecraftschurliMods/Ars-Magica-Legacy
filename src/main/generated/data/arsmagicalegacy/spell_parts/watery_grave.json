@@ -1,0 +1,31 @@
+{
+  "manaCost": 80.0,
+  "reagents": [],
+  "affinities": {},
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:stone"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "nbt": "{Damage:0}",
+        "item": "minecraft:leather_boots",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurli.arsmagicalegacy.common.block.DesertNova;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.TarmaRoot;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.Wakebloom;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlock;
@@ -12,7 +15,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -80,11 +82,11 @@ public interface AMBlocks {
     RegistryObject<TrapDoorBlock>         WITCHWOOD_TRAPDOOR       = BLOCKS.register("witchwood_trapdoor",       () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noOcclusion().isValidSpawn(AMBlocks::never)));
     RegistryObject<WoodButtonBlock>       WITCHWOOD_BUTTON         = BLOCKS.register("witchwood_button",         () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<PressurePlateBlock>    WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
-    RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      () -> new FlowerBlock(/*AMMobEffects.MANA_REGENERATION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
+    RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      () -> new FlowerBlock(AMMobEffects.mana_regen, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock>           CERUBLOSSOM              = BLOCKS.register("cerublossom",              () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
-    RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              () -> new FlowerBlock(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)) { @Override public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) { return Tags.Blocks.SAND.contains(pLevel.getBlockState(pPos.below()).getBlock()); }});
-    RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               () -> new FlowerBlock(MobEffects.DIG_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
-    RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                () -> new FlowerBlock(/*AMMobEffects.BURNOUT_REDUCTION.get()*/MobEffects.MOVEMENT_SLOWDOWN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
+    RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNova::new);
+    RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRoot::new);
+    RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                Wakebloom::new);
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);

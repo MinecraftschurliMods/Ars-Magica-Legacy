@@ -42,11 +42,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private final ItemOverrides overrides = new ItemOverrides() {
         @Nullable
         @Override
-        public BakedModel resolve(BakedModel model,
-                                  ItemStack stack,
-                                  @Nullable ClientLevel level,
-                                  @Nullable LivingEntity entity,
-                                  int seed) {
+        public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);
             return super.resolve(model, stack, level, entity, seed);
         }

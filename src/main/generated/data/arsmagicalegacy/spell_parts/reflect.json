@@ -1,0 +1,37 @@
+{
+  "manaCost": 1440.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.05
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:white_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:storage_blocks/iron"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:glass"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "minecraft:logs"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

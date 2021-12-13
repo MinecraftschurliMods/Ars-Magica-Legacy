@@ -25,10 +25,7 @@ public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
 
     @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state,
-                                    @Nullable Direction side,
-                                    Random rand,
-                                    IModelData extraData) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
         if (state != null && state.hasProperty(AltarCoreBlock.FORMED) && state.getValue(AltarCoreBlock.FORMED)) {
             BlockState camoState = extraData.getData(AltarCoreBlockEntity.CAMO_STATE);
             if (camoState != null) {

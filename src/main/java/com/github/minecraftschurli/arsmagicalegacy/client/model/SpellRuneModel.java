@@ -23,10 +23,7 @@ public class SpellRuneModel extends BakedModelWrapper<BakedModel> {
 
     @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state,
-                                    @Nullable Direction side,
-                                    Random rand,
-                                    IModelData extraData) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return List.of();
         if (player.isCreative() || player.hasEffect(AMMobEffects.TRUE_SIGHT.get()))

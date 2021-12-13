@@ -1,0 +1,30 @@
+{
+  "manaCost": 20.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:black_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:gems/moonstone"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

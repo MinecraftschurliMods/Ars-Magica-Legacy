@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "side": "arsmagicalegacy:block/stripped_witchwood_log",
+    "end": "arsmagicalegacy:block/stripped_witchwood_log_top"
+  }
+}

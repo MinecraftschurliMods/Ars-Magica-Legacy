@@ -1,0 +1,14 @@
+{
+  "manaCost": 1.25,
+  "reagents": [],
+  "affinities": {},
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "forge:ingots/gold"
+      },
+      "count": 2,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

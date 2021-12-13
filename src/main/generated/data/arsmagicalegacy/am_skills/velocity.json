@@ -1,0 +1,11 @@
+{
+  "occulus_tab": "arsmagicalegacy:offense",
+  "x": 300,
+  "y": 300,
+  "parents": [
+    "arsmagicalegacy:fling"
+  ],
+  "cost": {
+    "arsmagicalegacy:red": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "arcane_compendium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:air"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "arcane_compendium"
+    ]
+  ]
+}

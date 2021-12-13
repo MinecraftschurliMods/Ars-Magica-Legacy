@@ -1,0 +1,31 @@
+{
+  "manaCost": 15.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:lightning": 1.0E-5,
+    "arsmagicalegacy:nature": 1.0E-5
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:yellow_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:gems/topaz"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:ghast_tear"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

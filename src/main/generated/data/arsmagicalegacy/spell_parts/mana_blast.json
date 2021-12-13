@@ -1,0 +1,16 @@
+{
+  "manaCost": 0.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:purple_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

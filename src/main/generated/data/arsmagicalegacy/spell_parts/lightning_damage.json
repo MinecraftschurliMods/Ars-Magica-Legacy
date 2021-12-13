@@ -1,0 +1,37 @@
+{
+  "manaCost": 180.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:lightning": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:yellow_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:rods/wooden"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

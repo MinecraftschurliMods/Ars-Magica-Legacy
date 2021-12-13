@@ -1,0 +1,23 @@
+{
+  "manaCost": 750.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:water": 0.3
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ingots/gold"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}
