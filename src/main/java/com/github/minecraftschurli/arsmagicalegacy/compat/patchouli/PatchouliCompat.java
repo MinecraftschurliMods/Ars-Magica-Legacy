@@ -1,4 +1,3 @@
-/*
 package com.github.minecraftschurli.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
@@ -142,4 +141,3 @@ public class PatchouliCompat {
         }
     }
 }
-*/
