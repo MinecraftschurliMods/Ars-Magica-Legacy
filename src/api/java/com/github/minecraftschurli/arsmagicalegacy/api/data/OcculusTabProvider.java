@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.client.OcculusTabRenderer;
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -16,9 +16,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Abstract base for occulus tab data generators
@@ -26,7 +26,6 @@ import java.util.Objects;
 public abstract class OcculusTabProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-    private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final DataGenerator generator;
     private final String namespace;
 
@@ -45,86 +44,31 @@ public abstract class OcculusTabProvider implements DataProvider {
     @Override
     public void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
-        createOcculusTabs();
-        for (Map.Entry<ResourceLocation, JsonObject> entry : data.entrySet()) {
-            ResourceLocation resourceLocation = entry.getKey();
-            JsonObject jsonObject = entry.getValue();
-            save(pCache, jsonObject, path.resolve("data/" + resourceLocation.getNamespace() + "/occulus_tabs/" + resourceLocation.getPath() + ".json"));
-        }
+        Set<ResourceLocation> set = Sets.newHashSet();
+        createOcculusTabs(consumer -> {
+            if (!set.add(consumer.getId()))
+                throw new IllegalStateException("Duplicate occulus tab " + consumer.getId());
+            else {
+                save(pCache, consumer.serialize(), path.resolve("data/" + consumer.getId().getNamespace() + "/occulus_tabs/" + consumer.getId().getPath() + ".json"));
+            }
+        });
     }
 
     /**
      * Implement to add your own occulus tabs
+     * @param consumer provided by the datagen
      */
-    protected abstract void createOcculusTabs();
+    protected abstract void createOcculusTabs(Consumer<OcculusTabBuilder> consumer);
 
     /**
-     * Create an occulus tab with the given name, index and the default renderer.
+     * Creates a new occulus tab.
      *
-     * @param name  the name of the occulus tab
-     * @param index the index to place the tab at
+     * @param name  The occulus tab name.
+     * @param index The index of the occulus tab.
+     * @return A new occulus tab.
      */
-    protected void add(String name, int index) {
-        add(new ResourceLocation(namespace, name), index);
-    }
-
-    /**
-     * Create an occulus tab with the given name, index and renderer.
-     *
-     * @param name     the name of the occulus tab
-     * @param index    the index to place the tab at
-     * @param renderer the class of the renderer to use
-     */
-    protected void add(String name, int index, Class<? extends OcculusTabRenderer> renderer) {
-        add(name, index, renderer.getName());
-    }
-
-    /**
-     * Create an occulus tab with the given name, index and renderer.
-     *
-     * @param name     the name of the occulus tab
-     * @param index    the index to place the tab at
-     * @param renderer the class of the renderer to use
-     */
-    protected void add(String name, int index, String renderer) {
-        add(new ResourceLocation(namespace, name), index, renderer);
-    }
-
-    /**
-     * Create an occulus tab with the given name, index and the default renderer.
-     *
-     * @param name  the resource location of the occulus tab
-     * @param index the index to place the tab at
-     */
-    protected void add(ResourceLocation name, int index) {
-        final JsonObject obj = new JsonObject();
-        obj.addProperty("index", index);
-        data.put(name, obj);
-    }
-
-    /**
-     * Create an occulus tab with the given name, index and renderer.
-     *
-     * @param name     the resource location of the occulus tab
-     * @param index    the index to place the tab at
-     * @param renderer the class of the renderer to use
-     */
-    protected void add(ResourceLocation name, int index, Class<? extends OcculusTabRenderer> renderer) {
-        add(name, index, renderer.getName());
-    }
-
-    /**
-     * Create an occulus tab with the given name, index and renderer.
-     *
-     * @param name     the resource location of the occulus tab
-     * @param index    the index to place the tab at
-     * @param renderer the class of the renderer to use
-     */
-    protected void add(ResourceLocation name, int index, String renderer) {
-        final JsonObject obj = new JsonObject();
-        obj.addProperty("index", index);
-        obj.addProperty("renderer", renderer);
-        data.put(name, obj);
+    protected OcculusTabBuilder createOcculusTab(String name, int index) {
+        return OcculusTabBuilder.create(new ResourceLocation(namespace, name)).setIndex(index);
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
@@ -139,7 +83,7 @@ public abstract class OcculusTabProvider implements DataProvider {
             }
             pCache.putNew(pPath, s1);
         } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save spell part data {}", pPath, ioexception);
+            LOGGER.error("Couldn't save occulus tab {}", pPath, ioexception);
         }
     }
 }

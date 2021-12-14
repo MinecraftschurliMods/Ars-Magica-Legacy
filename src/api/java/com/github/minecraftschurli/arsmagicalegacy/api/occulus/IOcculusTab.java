@@ -53,6 +53,20 @@ public interface IOcculusTab extends ITranslatable {
     int getHeight();
 
     /**
+     * Get the initial x coord of the background texture.
+     *
+     * @return the height of the background texture
+     */
+    int getStartX();
+
+    /**
+     * Get the initial y coord of the background texture.
+     *
+     * @return the height of the background texture
+     */
+    int getStartY();
+
+    /**
      * Get the path of the renderer class.
      *
      * @return the path of the renderer class

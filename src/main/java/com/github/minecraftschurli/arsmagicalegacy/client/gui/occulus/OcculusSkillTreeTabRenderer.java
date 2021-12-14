@@ -45,7 +45,12 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void init() {
-        if (offsetX == 0) offsetX = textureWidth / 2f - width / 2f;
+        offsetX = occulusTab.getStartX() - width / 2f;
+        if (offsetX < 0) offsetX = 0;
+        if (offsetX > textureWidth - width) offsetX = textureWidth - width;
+        offsetY = occulusTab.getStartY() - width / 2f;
+        if (offsetY < 0) offsetY = 0;
+        if (offsetY > textureHeight - height) offsetY = textureHeight - height;
     }
 
     @Override

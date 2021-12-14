@@ -46,14 +46,18 @@ public abstract class SkillProvider implements DataProvider {
     public final void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
-        createSkills((p_125991_) -> {
-            if (!set.add(p_125991_.getId())) throw new IllegalStateException("Duplicate skill " + p_125991_.getId());
+        createSkills(consumer -> {
+            if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate skill " + consumer.getId());
             else {
-                saveSkill(pCache, p_125991_.serialize(), path.resolve("data/" + p_125991_.getId().getNamespace() + "/am_skills/" + p_125991_.getId().getPath() + ".json"));
+                saveSkill(pCache, consumer.serialize(), path.resolve("data/" + consumer.getId().getNamespace() + "/am_skills/" + consumer.getId().getPath() + ".json"));
             }
         });
     }
 
+    /**
+     * Implement to add your own skills
+     * @param consumer provided by the datagen
+     */
     protected abstract void createSkills(Consumer<SkillBuilder> consumer);
 
     /**

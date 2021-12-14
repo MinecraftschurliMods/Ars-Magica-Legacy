@@ -1,9 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.data.OcculusTabBuilder;
 import com.github.minecraftschurli.arsmagicalegacy.api.data.OcculusTabProvider;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer;
 import net.minecraft.data.DataGenerator;
+
+import java.util.function.Consumer;
 
 public class AMOcculusTabProvider extends OcculusTabProvider {
     public AMOcculusTabProvider(DataGenerator generator) {
@@ -16,11 +19,11 @@ public class AMOcculusTabProvider extends OcculusTabProvider {
     }
 
     @Override
-    protected void createOcculusTabs() {
-        add("offense", 0);
-        add("defense", 1);
-        add("utility", 2);
-        add("affinity", 3, OcculusAffinityTabRenderer.class);
-        add("talent", 4);
+    protected void createOcculusTabs(Consumer<OcculusTabBuilder> consumer) {
+        createOcculusTab("offense", 0).setStartX(226).setStartY(46).build(consumer);
+        createOcculusTab("defense", 1).setStartX(181).setStartY(46).build(consumer);
+        createOcculusTab("utility", 2).setStartX(136).setStartY(46).build(consumer);
+        createOcculusTab("affinity", 3).setRenderer(OcculusAffinityTabRenderer.class).build(consumer);
+        createOcculusTab("talent", 4).build(consumer);
     }
 }
