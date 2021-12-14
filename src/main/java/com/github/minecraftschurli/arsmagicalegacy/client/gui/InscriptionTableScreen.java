@@ -68,12 +68,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
             spellStackDropZone = new BasicDropZone(0, 0, 0, 0, 0, 0, 4, null);
             for (ISpellPart iSpellPart : spell.spellStack().parts()) {
-                spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDescription(), iSpellPart.getRegistryName()));
+                spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDisplayName(), iSpellPart.getRegistryName()));
             }
             for (ShapeGroup shapeGroup : spell.shapeGroups()) {
                 BasicDropZone zone = new BasicDropZone(0, 0, 0, 0, 0, 0, 8, null);
                 for (ISpellPart spellPart : shapeGroup.parts()) {
-                    zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDescription(), spellPart.getRegistryName()));
+                    zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDisplayName(), spellPart.getRegistryName()));
                 }
                 shapeGroupDropZones.add(zone);
             }
@@ -83,7 +83,6 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     protected void init() {
         super.init();
-
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         ISkillManager skillManager = api.getSkillManager();
         IForgeRegistry<ISpellPart> spellPartRegistry = api.getSpellPartRegistry();
@@ -131,7 +130,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                                                                                                                knowsFilter.and(searchFilter).and(hasValidPlace),
                                                                                                                spellPartRegistry.getKeys(),
                                                                                                                rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl),
-                                                                                                                             skillManager.get(rl).getDescription())));
+                                                                                                                             skillManager.get(rl).getDisplayName())));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
         DropValidator.WithData<ResourceLocation> dropValidator = ((DropValidator.WithData<ISpellPart>)this::isValidInShapeGroup).map(spellPartRegistry::getValue);
