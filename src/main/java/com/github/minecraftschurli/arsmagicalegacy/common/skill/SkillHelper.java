@@ -2,9 +2,14 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.InfinityOrbItem;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -13,18 +18,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class SkillHelper implements ISkillHelper {
@@ -188,6 +198,35 @@ public final class SkillHelper implements ISkillHelper {
         var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
         syncToPlayer(player);
         return success;
+    }
+
+    @Override
+    public ItemStack getOrbForSkillPoint(ResourceLocation skillPoint) {
+        return getStackForSkillPoint(AMItems.INFINITY_ORB.get(), skillPoint);
+    }
+
+    @Override
+    public ItemStack getOrbForSkillPoint(ISkillPoint skillPoint) {
+        return getStackForSkillPoint(AMItems.INFINITY_ORB.get(), skillPoint);
+    }
+
+    @Override
+    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceLocation skillPoint) {
+        ItemStack stack = new ItemStack(item);
+        Optional.ofNullable(ArsMagicaAPI.get().getSkillPointRegistry().getValue(skillPoint)).ifPresent(skill -> item.setSkillPoint(stack, skill));
+        return stack;
+    }
+
+    @Override
+    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ISkillPoint skillPoint) {
+        return getStackForSkillPoint(item, skillPoint.getId());
+    }
+
+    @Nullable
+    @Override
+    public ISkillPoint getSkillPointForStack(ItemStack stack) {
+        if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
+        return null;
     }
 
     @Override

@@ -1,0 +1,55 @@
+package com.github.minecraftschurli.arsmagicalegacy.common.item;
+
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import net.minecraft.Util;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+public class InfinityOrbItem extends Item implements ISkillPointItem {
+    private static final String KEY = "skillPoint";
+
+    public InfinityOrbItem() {
+        super(AMItems.ITEM_1);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+        if (getItemCategory() == tab) {
+            for (ISkillPoint point : ArsMagicaAPI.get().getSkillPointRegistry().getValues()) {
+                list.add(setSkillPoint(new ItemStack(this), point));
+            }
+        }
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (level.isClientSide()) return InteractionResultHolder.fail(stack);
+        ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, getSkillPoint(stack));
+        stack.shrink(1);
+        return InteractionResultHolder.success(stack);
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return new TranslatableComponent(getDescriptionId(stack), getSkillPoint(stack));
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack pStack) {
+        ResourceLocation skillPoint = ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(pStack).getRegistryName();
+        return Util.makeDescriptionId(super.getDescriptionId(pStack), skillPoint);
+    }
+}

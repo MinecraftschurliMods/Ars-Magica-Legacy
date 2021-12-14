@@ -3,6 +3,8 @@ package com.github.minecraftschurli.arsmagicalegacy.client;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.BurnoutHUD;
@@ -12,6 +14,7 @@ import com.github.minecraftschurli.arsmagicalegacy.client.hud.SpellBookHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.hud.XpHUD;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.AltarCoreModel;
+import com.github.minecraftschurli.arsmagicalegacy.client.model.SkillPointOverrideModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.SpellRuneModel;
 import com.github.minecraftschurli.arsmagicalegacy.client.model.entity.EarthGuardianModel;
@@ -112,12 +115,18 @@ public final class ClientInit {
 
     private static void modelRegister(ModelRegistryEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
-            if (!(item instanceof IAffinityItem)) continue;
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
-            for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-                if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
-                    ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+            if (item instanceof IAffinityItem) {
+                for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+                    if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
+                        ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                    }
+                }
+            }
+            if (item instanceof ISkillPointItem) {
+                for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
+                    ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }
         }
@@ -126,10 +135,14 @@ public final class ClientInit {
     private static void modelBake(ModelBakeEvent event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
         for (Item item : ForgeRegistries.ITEMS) {
-            if (!(item instanceof IAffinityItem)) continue;
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
-            modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
+            if (item instanceof IAffinityItem) {
+                modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new AffinityOverrideModel(model));
+            }
+            if (item instanceof ISkillPointItem) {
+                modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), (rl, model) -> new SkillPointOverrideModel(model));
+            }
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), (rl, model) -> new SpellItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), (rl, model) -> new AltarCoreModel(model));

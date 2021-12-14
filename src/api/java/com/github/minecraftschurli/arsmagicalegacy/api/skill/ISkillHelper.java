@@ -1,7 +1,12 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -174,6 +179,51 @@ public interface ISkillHelper {
      */
     boolean consumeSkillPoint(Player player, ISkillPoint skillPoint);
 
+    /**
+     * Get the skill point orb {@link ItemStack} for the {@link ISkillPoint skillPoint} under the given {@link ResourceLocation}.
+     *
+     * @param skillPoint the {@link ResourceLocation} of the {@link ISkillPoint skillPoint} to get the orb stack for
+     * @return the {@link ItemStack} containing the orb with the skill point
+     */
+    ItemStack getOrbForSkillPoint(ResourceLocation skillPoint);
+
+    /**
+     * Get the skill point orb {@link ItemStack} for the given {@link ISkillPoint skillPoint}.
+     *
+     * @param skillPoint the {@link ISkillPoint skillPoint} to get the orb stack for
+     * @return the {@link ItemStack} containing the orb with the skill point
+     */
+    ItemStack getOrbForSkillPoint(ISkillPoint skillPoint);
+
+    /**
+     * Get the {@link ItemStack} of the given {@link Item} for the {@link ISkillPoint skillPoint} under the given {@link ResourceLocation}.
+     *
+     * @param item     the item to make the {@link ItemStack} from on which the {@link ISkillPoint} will be set
+     * @param skillPoint the {@link ResourceLocation} of the {@link ISkillPoint skillPoint} to set
+     * @param <T>      the {@link Item} implementing {@link ISkillPointItem}
+     * @return the {@link ItemStack} of the given item with the given {@link ISkillPoint} stored in it
+     */
+    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceLocation skillPoint);
+
+    /**
+     * Get the {@link ItemStack} of the given {@link Item} for the given {@link ISkillPoint skillPoint}.
+     *
+     * @param item     the item to make the {@link ItemStack} from on which the {@link ISkillPoint} will be set
+     * @param skillPoint the {@link ISkillPoint skillPoint} to set
+     * @param <T>      the {@link Item} implementing {@link ISkillPointItem}
+     * @return the {@link ItemStack} of the given item with the given {@link ISkillPoint} stored in it
+     */
+    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ISkillPoint skillPoint);
+
+    /**
+     * Get the {@link ISkillPoint} from a {@link ItemStack} returns null if the stack does not contain a skill point.
+     *
+     * @param stack the stack to get the skill point from
+     * @return the {@link ISkillPoint} stored in the stack or null if the stack does not contain one
+     */
+    @Nullable
+    ISkillPoint getSkillPointForStack(ItemStack stack);
+    
     /**
      * Get all known skills for the given player.
      *

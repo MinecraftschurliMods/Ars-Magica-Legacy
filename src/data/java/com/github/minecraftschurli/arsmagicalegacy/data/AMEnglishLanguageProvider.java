@@ -5,6 +5,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
@@ -39,6 +40,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        itemIdTranslation(AMItems.MAGITECH_GOGGLES);
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);
@@ -94,7 +96,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         }
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL);
-        itemIdTranslation(AMItems.MAGITECH_GOGGLES);
+        for (RegistryObject<ISkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
+            skillPointIdTranslation(skillPoint);
+            skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
+        }
         entityIdTranslation(AMEntities.PROJECTILE);
         entityIdTranslation(AMEntities.WAVE);
         entityIdTranslation(AMEntities.WALL);
@@ -135,9 +140,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
-        skillPointIdTranslation(AMSkillPoints.BLUE);
-        skillPointIdTranslation(AMSkillPoints.GREEN);
-        skillPointIdTranslation(AMSkillPoints.RED);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         add(TranslationConstants.SKILL_COMMAND_EMPTY, "");
         add(TranslationConstants.SKILL_COMMAND_FORGET_ALL_SUCCESS, "Forgot all skills");
@@ -343,5 +345,48 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void addSkillPoint(ISkillPoint skillPoint, String translation) {
         add(skillPoint.getTranslationKey(), translation);
+    }
+
+    /**
+     * Adds an skill point item translation.
+     *
+     * @param skillPointItem The skill point item to add the translation for.
+     * @param skillPoint     The skill point to generate the translation from.
+     */
+    private void skillPointItemIdTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends ISkillPoint> skillPoint) {
+        skillPointItemIdTranslation(skillPointItem.getId(), skillPoint.getId());
+    }
+
+    /**
+     * Adds an skill point item translation.
+     *
+     * @param skillPointItemId The skill point item to add the translation for.
+     * @param skillPointId     The skill point to generate the translation from.
+     */
+    private void skillPointItemIdTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId) {
+        String translation = idToTranslation(skillPointId.getPath()) + " " + idToTranslation(skillPointItemId.getPath());
+        skillPointItemTranslation(skillPointItemId, skillPointId, translation);
+    }
+
+    /**
+     * Adds an skill point item translation.
+     *
+     * @param skillPointItem The skill point item to add the translation for.
+     * @param skillPoint     The skill point to generate the translation from.
+     * @param translation    The custom translation to use.
+     */
+    private void skillPointItemTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends ISkillPoint> skillPoint, String translation) {
+        skillPointItemTranslation(skillPointItem.getId(), skillPoint.getId(), translation);
+    }
+
+    /**
+     * Adds an skill point item translation.
+     *
+     * @param skillPointItemId The skill point item to add the translation for.
+     * @param skillPointId     The skill point to generate the translation from.
+     * @param translation      The custom translation to use.
+     */
+    private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
+        add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
     }
 }
