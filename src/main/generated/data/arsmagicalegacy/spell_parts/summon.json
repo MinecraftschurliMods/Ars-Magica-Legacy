@@ -26,13 +26,6 @@
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "DARK"
-      ],
-      "amount": 1500,
-      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

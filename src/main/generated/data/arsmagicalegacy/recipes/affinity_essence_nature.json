@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AIA",
+    "JDK",
+    "ALA"
+  ],
+  "key": {
+    "A": {
+      "item": "arsmagicalegacy:arcane_ash"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "tag": "minecraft:leaves"
+    },
+    "J": {
+      "item": "minecraft:lily_pad"
+    },
+    "K": {
+      "item": "minecraft:cactus"
+    },
+    "L": {
+      "item": "minecraft:vine"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:affinity_essence",
+    "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
+  }
+}

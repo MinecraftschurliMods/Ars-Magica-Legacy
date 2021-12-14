@@ -15,26 +15,10 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/moonstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "minecraft:tnt"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "LIGHT",
-        "DARK",
-        "NEUTRAL"
-      ],
-      "amount": 1,
-      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

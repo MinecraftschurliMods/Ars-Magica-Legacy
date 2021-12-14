@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:pink_dye"
+      "arsmagicalegacy:affinity_essence_air"
     ]
   },
   "criteria": {
-    "item": {
+    "has_arcane_ash": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "arsmagicalegacy:aum"
+              "arsmagicalegacy:arcane_ash"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:pink_dye"
+        "recipe": "arsmagicalegacy:affinity_essence_air"
       }
     }
   },
   "requirements": [
     [
-      "item",
+      "has_arcane_ash",
       "has_the_recipe"
     ]
   ]

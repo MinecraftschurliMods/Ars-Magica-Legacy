@@ -1,20 +1,45 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.AMTags;
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
+import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 
 class AMRecipeProvider extends RecipeProvider {
     public AMRecipeProvider(DataGenerator pGenerator) {
@@ -26,23 +51,23 @@ class AMRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(Items.PINK_DYE)
                 .requires(AMItems.AUM.get())
                 .unlockedBy("item", has(AMItems.AUM.get()))
-                .save(consumer);
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":pink_dye");
         ShapelessRecipeBuilder.shapeless(Items.BLUE_DYE)
                 .requires(AMItems.CERUBLOSSOM.get())
                 .unlockedBy("item", has(AMItems.CERUBLOSSOM.get()))
-                .save(consumer);
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":blue_dye");
         ShapelessRecipeBuilder.shapeless(Items.RED_DYE)
                 .requires(AMItems.DESERT_NOVA.get())
                 .unlockedBy("item", has(AMItems.DESERT_NOVA.get()))
-                .save(consumer);
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":red_dye");
         ShapelessRecipeBuilder.shapeless(Items.BROWN_DYE)
                 .requires(AMItems.TARMA_ROOT.get())
                 .unlockedBy("item", has(AMItems.TARMA_ROOT.get()))
-                .save(consumer);
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":brown_dye");
         ShapelessRecipeBuilder.shapeless(Items.MAGENTA_DYE)
                 .requires(AMItems.WAKEBLOOM.get())
                 .unlockedBy("item", has(AMItems.WAKEBLOOM.get()))
-                .save(consumer);
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":magenta_dye");
         ShapedRecipeBuilder.shaped(AMItems.OCCULUS.get())
                 .pattern("SGS")
                 .pattern(" S ")
@@ -154,12 +179,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('#', AMItems.STRIPPED_WITCHWOOD_LOG.get())
                 .unlockedBy("has_stripped_witchwood_log", has(AMItems.STRIPPED_WITCHWOOD_LOG.get()))
                 .save(consumer);
-/*
         ShapelessRecipeBuilder.shapeless(AMItems.WITCHWOOD_PLANKS.get(), 4)
                 .group("planks")
                 .requires(AMTags.Items.WITCHWOOD_LOGS)
+                .unlockedBy("has_witchwood_logs", has(AMTags.Items.WITCHWOOD_LOGS))
                 .save(consumer);
-*/
         ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_SLAB.get(), 6)
                 .group("wooden_slab")
                 .pattern("###")
@@ -285,5 +309,259 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('G', Tags.Items.NUGGETS_GOLD)
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', AMItems.WAKEBLOOM.get())
+                .define('J', Items.WATER_BUCKET)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_water");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', ItemTags.COALS)
+                .define('J', Items.BLAZE_POWDER)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_fire");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', ItemTags.DIRT)
+                .define('J', Tags.Items.STONE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_earth");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', Items.FEATHER)
+                .define('J', AMItems.TARMA_ROOT.get())
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_air");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ICE.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', Items.SNOW_BLOCK)
+                .define('J', Items.ICE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ice");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', Tags.Items.DUSTS_REDSTONE)
+                .define('J', Tags.Items.DUSTS_GLOWSTONE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_lightning");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.NATURE.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDK")
+                .pattern("ALA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', ItemTags.LEAVES)
+                .define('J', Items.LILY_PAD)
+                .define('K', Items.CACTUS)
+                .define('L', Items.VINE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_nature");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIFE.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', Tags.Items.EGGS)
+                .define('J', Items.GOLDEN_APPLE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_life");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()).getTag())
+                .pattern("AAA")
+                .pattern("ADA")
+                .pattern("AAA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane");
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ENDER.get()).getTag())
+                .pattern("AIA")
+                .pattern("JDJ")
+                .pattern("AIA")
+                .define('A', AMItems.ARCANE_ASH.get())
+                .define('D', Items.DIAMOND)
+                .define('I', Tags.Items.ENDER_PEARLS)
+                .define('J', Items.ENDER_EYE)
+                .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ender");
+    }
+
+    static class ShapedNBTRecipeBuilder {
+        private final Item result;
+        private final int count;
+        private final CompoundTag tag;
+        private final List<String> rows = new ArrayList<>();
+        private final Map<Character, Ingredient> key = new LinkedHashMap<>();
+        private final Advancement.Builder advancement = Advancement.Builder.advancement();
+
+        public ShapedNBTRecipeBuilder(ItemLike result, int count, CompoundTag tag) {
+            this.result = result.asItem();
+            this.count = count;
+            this.tag = tag;
+        }
+
+        public static ShapedNBTRecipeBuilder shaped(ItemLike result, int count, CompoundTag compound) {
+            return new ShapedNBTRecipeBuilder(result, count, compound);
+        }
+
+        public ShapedNBTRecipeBuilder define(Character symbol, Tag<Item> tag) {
+            return define(symbol, Ingredient.of(tag));
+        }
+
+        public ShapedNBTRecipeBuilder define(Character symbol, ItemLike item) {
+            return define(symbol, Ingredient.of(item));
+        }
+
+        public ShapedNBTRecipeBuilder define(Character symbol, Ingredient item) {
+            if (key.containsKey(symbol)) {
+                throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
+            } else if (symbol == ' ') {
+                throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
+            } else {
+                key.put(symbol, item);
+                return this;
+            }
+        }
+
+        public ShapedNBTRecipeBuilder pattern(String pattern) {
+            if (!rows.isEmpty() && pattern.length() != rows.get(0).length()) {
+                throw new IllegalArgumentException("Pattern must be the same width on every line!");
+            } else {
+                rows.add(pattern);
+                return this;
+            }
+        }
+
+        public ShapedNBTRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
+            advancement.addCriterion(name, criterion);
+            return this;
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer) {
+            save(consumer, ForgeRegistries.ITEMS.getKey(result));
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer, String save) {
+            ResourceLocation saveTo = new ResourceLocation(save);
+            if (saveTo.equals(ForgeRegistries.ITEMS.getKey(result.asItem()))) {
+                throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
+            } else {
+                save(consumer, saveTo);
+            }
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+            ensureValid(id);
+            advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
+            consumer.accept(new Result(id, result, count, tag, "", rows, key, advancement, new ResourceLocation(id.getNamespace(), "recipes/" + result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
+        }
+
+        private void ensureValid(ResourceLocation id) {
+            if (rows.isEmpty()) throw new IllegalStateException("No pattern is defined for shaped recipe " + id + "!");
+            else {
+                Set<Character> set = Sets.newHashSet(key.keySet());
+                set.remove(' ');
+                for (String s : rows) {
+                    for (int i = 0; i < s.length(); ++i) {
+                        char c0 = s.charAt(i);
+                        if (!key.containsKey(c0) && c0 != ' ') {
+                            throw new IllegalStateException("Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'");
+                        }
+                        set.remove(c0);
+                    }
+                }
+                if (!set.isEmpty())
+                    throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id);
+                else if (rows.size() == 1 && rows.get(0).length() == 1)
+                    throw new IllegalStateException("Shaped recipe " + id + " only takes in a single item - should it be a shapeless recipe instead?");
+                else if (advancement.getCriteria().isEmpty())
+                    throw new IllegalStateException("No way of obtaining recipe " + id);
+            }
+        }
+
+        public static class Result implements FinishedRecipe {
+            private final ResourceLocation id;
+            private final Item result;
+            private final int count;
+            private final CompoundTag compound;
+            private final List<String> pattern;
+            private final Map<Character, Ingredient> key;
+            private final Advancement.Builder advancement;
+            private final ResourceLocation advancementId;
+
+            public Result(ResourceLocation id, Item result, int count, CompoundTag compound, String group, List<String> pattern, Map<Character, Ingredient> key, Advancement.Builder advancement, ResourceLocation advancementId) {
+                this.id = id;
+                this.result = result;
+                this.count = count;
+                this.compound = compound;
+                this.pattern = pattern;
+                this.key = key;
+                this.advancement = advancement;
+                this.advancementId = advancementId;
+            }
+
+            public void serializeRecipeData(JsonObject json) {
+                JsonArray patternJson = new JsonArray();
+                for (String s : pattern) {
+                    patternJson.add(s);
+                }
+                json.add("pattern", patternJson);
+                JsonObject keyJson = new JsonObject();
+                for (Map.Entry<Character, Ingredient> entry : key.entrySet()) {
+                    keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
+                }
+                json.add("key", keyJson);
+                JsonObject resultJson = new JsonObject();
+                resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+                if (count > 1) {
+                    resultJson.addProperty("count", count);
+                }
+                resultJson.addProperty("nbt", NbtOps.INSTANCE.convertTo(JsonOps.INSTANCE, compound).toString());
+                json.add("result", resultJson);
+            }
+
+            public RecipeSerializer<?> getType() {
+                return RecipeSerializer.SHAPED_RECIPE;
+            }
+
+            public ResourceLocation getId() {
+                return id;
+            }
+
+            @Nullable
+            public JsonObject serializeAdvancement() {
+                return advancement.serializeToJson();
+            }
+
+            @Nullable
+            public ResourceLocation getAdvancementId() {
+                return advancementId;
+            }
+        }
     }
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:witchwood_planks"
+    ]
+  },
+  "criteria": {
+    "has_witchwood_logs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "arsmagicalegacy:witchwood_logs"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:witchwood_planks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_witchwood_logs",
+      "has_the_recipe"
+    ]
+  ]
+}

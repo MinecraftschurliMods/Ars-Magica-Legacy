@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AIA",
+    "JDJ",
+    "AIA"
+  ],
+  "key": {
+    "A": {
+      "item": "arsmagicalegacy:arcane_ash"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "tag": "forge:eggs"
+    },
+    "J": {
+      "item": "minecraft:golden_apple"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:affinity_essence",
+    "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+  }
+}

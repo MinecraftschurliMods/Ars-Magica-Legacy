@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:magenta_dye"
+      "arsmagicalegacy:affinity_essence_nature"
     ]
   },
   "criteria": {
-    "item": {
+    "has_arcane_ash": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "arsmagicalegacy:wakebloom"
+              "arsmagicalegacy:arcane_ash"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:magenta_dye"
+        "recipe": "arsmagicalegacy:affinity_essence_nature"
       }
     }
   },
   "requirements": [
     [
-      "item",
+      "has_arcane_ash",
       "has_the_recipe"
     ]
   ]

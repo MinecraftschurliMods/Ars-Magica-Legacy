@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:brown_dye"
+      "arsmagicalegacy:affinity_essence_earth"
     ]
   },
   "criteria": {
-    "item": {
+    "has_arcane_ash": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "arsmagicalegacy:tarma_root"
+              "arsmagicalegacy:arcane_ash"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:brown_dye"
+        "recipe": "arsmagicalegacy:affinity_essence_earth"
       }
     }
   },
   "requirements": [
     [
-      "item",
+      "has_arcane_ash",
       "has_the_recipe"
     ]
   ]
