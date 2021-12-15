@@ -1,11 +1,16 @@
 package com.github.minecraftschurli.arsmagicalegacy.common;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
+import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.effect.AMMobEffect;
@@ -27,6 +32,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.MagicHelper;
@@ -40,6 +46,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.SpellDataManager
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -52,6 +59,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
@@ -79,7 +87,12 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class EventHandler {
+    private static final float[] MANA_MODIFIER_PER_LUNAR_PHASE = new float[]{1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
+
     private EventHandler() {
     }
 
@@ -107,6 +120,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::potionRemove);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::playerLevelUp);
+        forgeBus.addListener(EventHandler::spellCast);
     }
 
     private static void enqueueIMC(InterModEnqueueEvent event) {
@@ -319,5 +333,29 @@ public final class EventHandler {
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
+    }
+
+    private static void spellCast(SpellCastEvent event) {
+        ISpell spell = event.spell;
+        List<ISpellModifier> modifiers = new ArrayList<>(spell.partsWithModifiers().get(spell.currentShapeGroupIndex()).getSecond());
+        for (Pair<ISpellPart, List<ISpellModifier>> pair : spell.spellStack().partsWithModifiers()) {
+            modifiers.addAll(pair.getSecond());
+        }
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        Level level = event.getEntity().getLevel();
+        ArsMagicaLegacy.LOGGER.info("Mana before: " + event.mana);
+        float mana = event.mana;
+        if (level.getDayTime() % 24000 < 12000) {
+            for (int i = 0; i < helper.countModifiers(modifiers, AMSpellParts.SOLAR.getId()); i++) {
+                mana *= 0.75f;
+            }
+        } else {
+            float f = MANA_MODIFIER_PER_LUNAR_PHASE[level.getMoonPhase()];
+            for (int i = 0; i < helper.countModifiers(modifiers, AMSpellParts.LUNAR.getId()); i++) {
+                mana *= f;
+            }
+        }
+        event.mana = mana;
+        ArsMagicaLegacy.LOGGER.info("Mana after: " + event.mana);
     }
 }
