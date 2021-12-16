@@ -5,6 +5,8 @@ import com.github.minecraftschurli.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurli.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
+import com.github.minecraftschurli.arsmagicalegacy.compat.ICompatHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -16,14 +18,16 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.patchouli.api.TriPredicate;
 
-public class PatchouliCompat {
+@CompatManager.ModCompat("patchouli")
+public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation CRAFTING_ALTAR = new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar");
 
-    public static void init() {
+    public void init(FMLCommonSetupEvent event) {
         CapStateMatcher capStateMatcher = new CapStateMatcher();
         PatchouliAPI.get().registerMultiblock(CRAFTING_ALTAR, PatchouliAPI.get().makeMultiblock(
                 new String[][]{{

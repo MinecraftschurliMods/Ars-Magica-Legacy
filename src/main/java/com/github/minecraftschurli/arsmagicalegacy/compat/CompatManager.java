@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.compat;
 
 import com.github.minecraftschurli.arsmagicalegacy.compat.curios.CurioCompat;
+import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.google.common.reflect.ClassPath;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -41,6 +42,7 @@ public final class CompatManager {
     public static void preInit() {
         //discoverModCompats();
         register(CurioCompat.class);
+        register(PatchouliCompat.class);
         forEachLoaded(ICompatHandler::preInit);
     }
 
