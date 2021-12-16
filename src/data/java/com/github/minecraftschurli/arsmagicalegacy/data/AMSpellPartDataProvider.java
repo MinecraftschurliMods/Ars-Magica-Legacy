@@ -369,7 +369,7 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.RED)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.FURNACE), 1))
                 .build();
-        createSpellPartData(AMSpellParts.FREEZE, 29f)
+        createSpellPartData(AMSpellParts.FROST, 29f)
                 .withAffinity(AMAffinities.ICE, 0.2f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.SNOW), 1))

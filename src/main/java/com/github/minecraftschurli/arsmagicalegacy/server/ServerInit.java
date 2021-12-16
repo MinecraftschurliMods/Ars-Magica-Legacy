@@ -11,11 +11,9 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -31,7 +29,7 @@ public final class ServerInit {
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.FORGE.get()),
+                    SpellStack.of(AMSpellParts.FORGE.get(), AMSpellParts.SOLAR.get()),
                     ShapeGroup.of(AMSpellParts.PROJECTILE.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
@@ -40,11 +38,8 @@ public final class ServerInit {
         event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.LIGHTNING_DAMAGE.get()),
-                    ShapeGroup.of(AMSpellParts.TOUCH.get()),
-                    ShapeGroup.of(AMSpellParts.PROJECTILE.get()),
-                    ShapeGroup.of(AMSpellParts.TOUCH.get(), AMSpellParts.RUNE.get()),
-                    ShapeGroup.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.RUNE.get())
+                    SpellStack.of(AMSpellParts.FORGE.get(), AMSpellParts.LUNAR.get()),
+                    ShapeGroup.of(AMSpellParts.PROJECTILE.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;

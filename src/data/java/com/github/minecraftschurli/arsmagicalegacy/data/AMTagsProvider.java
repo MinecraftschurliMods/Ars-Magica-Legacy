@@ -17,7 +17,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMTagsProvider {
-    static void setup(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
+    static void add(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
         AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
         generator.addProvider(blocks);
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));

@@ -5,7 +5,6 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

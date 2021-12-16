@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
@@ -95,8 +94,7 @@ public interface AMBlocks {
      * Empty method that is required for classloading
      */
     @Internal
-    static void register() {
-    }
+    static void register() {}
 
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> type) {
         return false;

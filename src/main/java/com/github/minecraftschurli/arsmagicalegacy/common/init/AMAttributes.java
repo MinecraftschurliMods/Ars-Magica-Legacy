@@ -44,6 +44,5 @@ public interface AMAttributes {
      * Empty method that is required for classloading
      */
     @Internal
-    static void register() {
-    }
+    static void register() {}
 }

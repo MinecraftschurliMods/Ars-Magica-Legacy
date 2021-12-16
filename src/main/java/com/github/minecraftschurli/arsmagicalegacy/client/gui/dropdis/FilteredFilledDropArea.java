@@ -1,14 +1,9 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis;
 
-import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
-import com.github.minecraftschurli.arsmagicalegacy.client.gui.ColorUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,5 @@
 package com.github.minecraftschurli.arsmagicalegacy.api.skill;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

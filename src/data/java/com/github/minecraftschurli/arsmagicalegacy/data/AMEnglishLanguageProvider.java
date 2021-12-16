@@ -6,18 +6,19 @@ import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
-import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -89,17 +90,22 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
+        itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
-        itemIdTranslation(AMItems.SPELL_PARCHMENT);
-        itemIdTranslation(AMItems.SPELL);
         for (RegistryObject<ISkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
+        addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
+        addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
+        attributeIdTranslation(AMAttributes.MAGIC_VISION);
+        attributeIdTranslation(AMAttributes.MAX_BURNOUT);
+        attributeIdTranslation(AMAttributes.MAX_MANA);
         entityIdTranslation(AMEntities.PROJECTILE);
         entityIdTranslation(AMEntities.WAVE);
         entityIdTranslation(AMEntities.WALL);
@@ -141,19 +147,23 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
+        add(TranslationConstants.BURNOUT_TOOLTIP, "Burnout: %d");
+        add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE, "Default Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL, "Name");
+        add(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL, "Search");
+        add(TranslationConstants.INVALID_SPELL, "[Invalid Spell]");
+        add(TranslationConstants.INVALID_SPELL_DESC, "Something is wrong with this spell, please check the log for warnings or errors!");
+        add(TranslationConstants.MAGIC_UNKNOWN_MESSAGE, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.MANA_COST_TOOLTIP, "Mana cost: %d");
+        add(TranslationConstants.REAGENTS_TOOLTIP, "Reagents:");
+        add(TranslationConstants.SKILL_COMMAND_ALREADY_KNOWN, "Skill %s has already been learned");
         add(TranslationConstants.SKILL_COMMAND_EMPTY, "");
         add(TranslationConstants.SKILL_COMMAND_FORGET_ALL_SUCCESS, "Forgot all skills");
         add(TranslationConstants.SKILL_COMMAND_FORGET_SUCCESS, "Forgot skill %s");
         add(TranslationConstants.SKILL_COMMAND_LEARN_ALL_SUCCESS, "Learned all skills");
         add(TranslationConstants.SKILL_COMMAND_LEARN_SUCCESS, "Learned skill %s");
         add(TranslationConstants.SKILL_COMMAND_NOT_KNOWN_SKILL, "Skill %s must be learned first");
-        add(TranslationConstants.SKILL_COMMAND_ALREADY_KNOWN, "Skill %s has already been learned");
-        add(TranslationConstants.BURNOUT_TOOLTIP, "Burnout: %d");
-        add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
-        add(TranslationConstants.INVALID_SPELL, "[Invalid Spell]");
-        add(TranslationConstants.INVALID_SPELL_DESC, "Something is wrong with this spell, please check the log for warnings or errors!");
-        add(TranslationConstants.MANA_COST_TOOLTIP, "Mana cost: %d");
-        add(TranslationConstants.REAGENTS_TOOLTIP, "Reagents:");
         add(TranslationConstants.SPELL_CAST_RESULT + "burned_out", "Burned out!");
         add(TranslationConstants.SPELL_CAST_RESULT + "cancelled", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST_RESULT + "fail", "Spell cast failed!");
@@ -163,10 +173,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.UNKNOWN_ITEM, "Unknown Item");
         add(TranslationConstants.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.UNNAMED_SPELL, "Unnamed Spell");
-        add(TranslationConstants.MAGIC_UNKNOWN_MESSAGE, "Mythical forces prevent you from using this block!");
-        add(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL, "Name");
-        add(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL, "Search");
-        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE, "Default Spell");
     }
 
     /**
@@ -188,30 +194,21 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
+     * Adds an attribute translation that matches the attribute id.
+     *
+     * @param attribute The attribute to generate the translation for.
+     */
+    private void attributeIdTranslation(RegistryObject<? extends Attribute> attribute) {
+        add(attribute.get().getDescriptionId(), idToTranslation(attribute.getId().getPath()));
+    }
+
+    /**
      * Adds an effect translation that matches the effect id.
      *
      * @param effect The effect to generate the translation for.
      */
     private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
         addEffect(effect, idToTranslation(effect.getId().getPath()));
-    }
-
-    /**
-     * Adds an affinity translation that matches the affinity id.
-     *
-     * @param affinity The affinity to generate the translation for.
-     */
-    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
-        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
-    }
-
-    /**
-     * Adds an skillPoint translation that matches the skillPoint id.
-     *
-     * @param skillPoint The skillPoint to generate the translation for.
-     */
-    private void skillPointIdTranslation(RegistryObject<? extends ISkillPoint> skillPoint) {
-        addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
     }
 
     /**
@@ -230,6 +227,24 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void entityIdTranslation(RegistryObject<? extends EntityType<?>> entity) {
         addEntityType(entity, idToTranslation(entity.getId().getPath()));
+    }
+
+    /**
+     * Adds an affinity translation that matches the affinity id.
+     *
+     * @param affinity The affinity to generate the translation for.
+     */
+    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
+        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
+    }
+
+    /**
+     * Adds an skillPoint translation that matches the skillPoint id.
+     *
+     * @param skillPoint The skillPoint to generate the translation for.
+     */
+    private void skillPointIdTranslation(RegistryObject<? extends ISkillPoint> skillPoint) {
+        addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
     }
 
     /**
@@ -254,14 +269,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * @param id A string of format "word_word_word".
-     * @return A string of format "Word Word Word".
+     * Adds an attribute translation.
+     *
+     * @param attribute    The attribute to add the translation for.
+     * @param translation The translation for the attribute.
      */
-    private static String idToTranslation(String id) {
-        StringBuilder result = new StringBuilder();
-        for (String string : id.split("_"))
-            result.append(string.substring(0, 1).toUpperCase()).append(string.substring(1)).append(" ");
-        return result.substring(0, result.length() - 1);
+    private void addAttribute(Supplier<? extends Attribute> attribute, String translation) {
+        add(attribute.get().getDescriptionId(), translation);
     }
 
     /**
@@ -388,5 +402,16 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    /**
+     * @param id A string of format "word_word_word".
+     * @return A string of format "Word Word Word".
+     */
+    private static String idToTranslation(String id) {
+        StringBuilder result = new StringBuilder();
+        for (String string : id.split("_"))
+            result.append(string.substring(0, 1).toUpperCase()).append(string.substring(1)).append(" ");
+        return result.substring(0, result.length() - 1);
     }
 }

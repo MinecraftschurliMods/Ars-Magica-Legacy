@@ -90,8 +90,10 @@ public interface AMSounds {
     RegistryObject<SoundEvent> GET_KNOWLEDGE_POINT =              register("misc.get_knowledge_point");
     RegistryObject<SoundEvent> MAGIC_LEVEL_UP =                   register("misc.magic_level_up");
 
-    static void register() {
-    }
+    /**
+     * Empty method that is required for classloading
+     */
+    static void register() {}
 
     private static RegistryObject<SoundEvent> register(String id) {
         return SOUND_EVENTS.register(id, () -> new SoundEvent(new ResourceLocation(ArsMagicaAPI.MOD_ID, id)));

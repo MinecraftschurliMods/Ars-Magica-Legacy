@@ -24,22 +24,22 @@ public class AMDatagen {
         LOGGER.info("Running Datagens");
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
-        if (evt.includeServer()) {
-            generator.addProvider(new AMSkillProvider(generator));
-            generator.addProvider(new AMAdvancementProvider(generator));
-            generator.addProvider(new AMLootTableProvider(generator));
-            generator.addProvider(new AMRecipeProvider(generator));
-            AMTagsProvider.setup(generator, existingFileHelper);
-            generator.addProvider(new AMSpellPartDataProvider(generator));
-            generator.addProvider(new AMOcculusTabProvider(generator));
-            generator.addProvider(new AMAltarStructureMaterialProvider(generator));
-        }
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));
         if (evt.includeClient()) {
-            generator.addProvider(lang);
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
+            generator.addProvider(lang);
+        }
+        if (evt.includeServer()) {
+            generator.addProvider(new AMAdvancementProvider(generator));
+            generator.addProvider(new AMLootTableProvider(generator));
+            generator.addProvider(new AMRecipeProvider(generator));
+            AMTagsProvider.add(generator, existingFileHelper);
+            generator.addProvider(new AMAltarStructureMaterialProvider(generator));
+            generator.addProvider(new AMOcculusTabProvider(generator));
+            generator.addProvider(new AMSkillProvider(generator));
+            generator.addProvider(new AMSpellPartDataProvider(generator));
         }
     }
 }

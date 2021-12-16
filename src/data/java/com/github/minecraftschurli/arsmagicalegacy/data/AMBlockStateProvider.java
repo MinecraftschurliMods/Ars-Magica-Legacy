@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 
 import static com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks.*;
 
+@SuppressWarnings({"ConstantConditions", "SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
     AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
@@ -39,20 +40,22 @@ class AMBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         getVariantBuilder(ALTAR_CORE.get())
-                .partialState().with(AltarCoreBlock.FORMED, false)
-                    .modelForState().modelFile(cubeAll(ALTAR_CORE.get())).addModel()
-                .partialState().with(AltarCoreBlock.FORMED, true)
-                    .modelForState().modelFile(
-                            models().getBuilder("altar_core_overlay")
-                                    .texture("overlay", "block/altar_core_overlay")
-                                    .parent(models().getExistingFile(new ResourceLocation("block/block")))
-                                    .element()
-                                    .from(0, 0, 0)
-                                    .to(16, 0, 16)
-                                    .face(Direction.DOWN)
-                                    .texture("#overlay")
-                                    .end()
-                                    .end()).addModel();
+                .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(
+                        cubeAll(ALTAR_CORE.get())
+                ).addModel()
+                .partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(
+                        models().getBuilder("altar_core_overlay")
+                                .texture("particle", "block/altar_core")
+                                .texture("overlay", "block/altar_core_overlay")
+                                .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                                .element()
+                                .from(0, 0, 0)
+                                .to(16, 0, 16)
+                                .face(Direction.DOWN)
+                                .texture("#overlay")
+                                .end()
+                                .end()
+                ).addModel();
         airBlock(ALTAR_VIEW);
         simpleBlock(MAGIC_WALL);
         simpleBlock(CHIMERITE_ORE);
@@ -95,12 +98,12 @@ class AMBlockStateProvider extends BlockStateProvider {
             Direction face = state.getValue(SpellRuneBlock.FACE);
             AABB shape = SpellRuneBlock.COLLISION_SHAPES.get(face).bounds();
             return ConfiguredModel.builder().modelFile(
-                    models().getBuilder(SPELL_RUNE.getId().getPath()+"_"+face.getName().toLowerCase())
+                    models().getBuilder(SPELL_RUNE.getId().getPath() + "_" + face.getName().toLowerCase())
                             .parent(models().getExistingFile(new ResourceLocation("block/block")))
-                            .texture("texture", "block/"+SPELL_RUNE.getId().getPath())
+                            .texture("texture", "block/" + SPELL_RUNE.getId().getPath())
                             .element()
-                            .from((float)(shape.minX*16), (float)(shape.minY*16), (float)(shape.minZ*16))
-                            .to((float)(shape.maxX*16), (float)(shape.maxY*16), (float)(shape.maxZ*16))
+                            .from((float) shape.minX * 16f, (float) shape.minY * 16f, (float) shape.minZ * 16f)
+                            .to((float) shape.maxX * 16f, (float) shape.maxY * 16f, (float) shape.maxZ * 16f)
                             .face(face.getOpposite())
                             .texture("#texture")
                             .end()
@@ -136,12 +139,8 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void woodBlock(Supplier<? extends RotatedPillarBlock> block, Supplier<? extends Block> log) {
         axisBlock(block.get(),
-                  models().cubeColumn(block.get().getRegistryName().getPath(),
-                                      blockTexture(log.get()),
-                                      blockTexture(log.get())),
-                  models().cubeColumnHorizontal(block.get().getRegistryName().getPath(),
-                                                blockTexture(log.get()),
-                                                blockTexture(log.get())));
+                models().cubeColumn(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())),
+                models().cubeColumnHorizontal(block.get().getRegistryName().getPath(), blockTexture(log.get()), blockTexture(log.get())));
     }
 
     /**
@@ -265,23 +264,22 @@ class AMBlockStateProvider extends BlockStateProvider {
                 default -> new ConfiguredModel[0];
             };
         });
-        models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory")
-                .texture("texture", texture);
+        models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", texture);
     }
 
     private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate,
                                     Supplier<? extends Block> block) {
         getVariantBuilder(pressurePlate.get()).forAllStates(state -> state.getValue(BlockStateProperties.POWERED)
                 ? ConfiguredModel.builder().modelFile(
-                        models().withExistingParent(
-                                pressurePlate.get().getRegistryName().getPath() + "_down",
-                                "block/pressure_plate_down"
-                        ).texture("texture", blockTexture(block.get()))).build()
+                models().withExistingParent(
+                        pressurePlate.get().getRegistryName().getPath() + "_down",
+                        "block/pressure_plate_down"
+                ).texture("texture", blockTexture(block.get()))).build()
                 : ConfiguredModel.builder().modelFile(
-                        models().withExistingParent(
-                                pressurePlate.get().getRegistryName().getPath(),
-                                "block/pressure_plate_up"
-                        ).texture("texture", blockTexture(block.get()))).build()
+                models().withExistingParent(
+                        pressurePlate.get().getRegistryName().getPath(),
+                        "block/pressure_plate_up"
+                ).texture("texture", blockTexture(block.get()))).build()
         );
     }
 
@@ -375,16 +373,16 @@ class AMBlockStateProvider extends BlockStateProvider {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
             return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
                 case NORTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                                     .build();
+                        .build();
                 case EAST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                                    .rotationY(90)
-                                    .build();
+                        .rotationY(90)
+                        .build();
                 case SOUTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                                     .rotationY(180)
-                                     .build();
+                        .rotationY(180)
+                        .build();
                 case WEST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                                    .rotationY(270)
-                                    .build();
+                        .rotationY(270)
+                        .build();
                 default -> new ConfiguredModel[0];
             };
         });

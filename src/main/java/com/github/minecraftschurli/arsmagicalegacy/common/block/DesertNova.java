@@ -1,7 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;

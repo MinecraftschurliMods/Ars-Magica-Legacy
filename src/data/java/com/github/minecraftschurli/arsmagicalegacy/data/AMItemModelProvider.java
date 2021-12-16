@@ -152,6 +152,12 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(blockItem, blockItem.get().getBlock());
     }
 
+    /**
+     * Adds an item model for this item for each affinity, excluding {@link IAffinity.NONE}.
+     *
+     * @param item The affinity item to add this for.
+     * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
+     */
     private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
@@ -161,6 +167,12 @@ class AMItemModelProvider extends ItemModelProvider {
         }
     }
 
+    /**
+     * Adds an item model for this item for each skill point.
+     *
+     * @param item The skill point item to add this for.
+     * @param <T>  An {@link Item} that must also implement {@link ISkillPointItem}
+     */
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {

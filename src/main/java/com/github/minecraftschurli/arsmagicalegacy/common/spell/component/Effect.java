@@ -18,21 +18,19 @@ import java.util.function.Supplier;
 
 public class Effect extends AbstractComponent {
     private final Lazy<? extends MobEffect> effect;
-    private final int duration;
 
-    public Effect(Supplier<? extends MobEffect> effect, int duration) {
+    public Effect(Supplier<? extends MobEffect> effect) {
         this.effect = Lazy.concurrentOf(effect);
-        this.duration = duration;
     }
 
-    public Effect(MobEffect effect, int duration) {
-        this(() -> effect, duration);
+    public Effect(MobEffect effect) {
+        this(() -> effect);
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
-        int duration = (int) (this.duration * (1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()) * 0.5f));
+        int duration = (int) (600 * (1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()) * 0.5f));
         int amplifier = ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.EFFECT_POWER.getId());
         if (effect.get().isInstantenous()) {
             effect.get().applyInstantenousEffect(caster, caster, living, amplifier, 1);

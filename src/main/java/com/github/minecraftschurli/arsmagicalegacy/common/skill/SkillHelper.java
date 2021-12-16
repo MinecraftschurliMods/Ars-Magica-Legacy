@@ -2,14 +2,11 @@ package com.github.minecraftschurli.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurli.arsmagicalegacy.common.item.InfinityOrbItem;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -33,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 

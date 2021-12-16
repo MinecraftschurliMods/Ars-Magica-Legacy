@@ -2,15 +2,11 @@ package com.github.minecraftschurli.arsmagicalegacy.common.spell.shape;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
