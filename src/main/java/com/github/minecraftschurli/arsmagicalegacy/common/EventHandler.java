@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
@@ -32,6 +33,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
@@ -318,18 +320,31 @@ public final class EventHandler {
     private static void playerLevelUp(PlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         int level = event.getLevel();
+        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+
+        if (level == 1) {
+            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_STARTING_BLUE_POINTS.get());
+        }
+
+        for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
+            int minEarnLevel = iSkillPoint.getMinEarnLevel();
+            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
+                api.getSkillHelper().addSkillPoint(player, iSkillPoint);
+            }
+        }
+
         // TODO change
         float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
         float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level - 1);
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
-            IManaHelper manaHelper = ArsMagicaAPI.get().getManaHelper();
+            IManaHelper manaHelper = api.getManaHelper();
             maxManaAttr.setBaseValue(newMaxMana);
             manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
-            IBurnoutHelper burnoutHelper = ArsMagicaAPI.get().getBurnoutHelper();
+            IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
