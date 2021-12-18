@@ -20,7 +20,11 @@ public interface ISpellIngredient {
         tag.remove("type");
         return ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(new ResourceLocation(type)).decode(
                 NbtOps.INSTANCE, tag).map(Pair::getFirst);
-    }, ingredient -> ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientCodec(ingredient.getType()).encodeStart(NbtOps.INSTANCE, ingredient).map(CompoundTag.class::cast).map(tag -> {
+    }, ingredient -> ArsMagicaAPI.get()
+                             .getSpellDataManager()
+                             .getSpellIngredientCodec(ingredient.getType())
+                             .encodeStart(NbtOps.INSTANCE, ingredient)
+                             .map(CompoundTag.class::cast).map(tag -> {
         tag.putString("type", ingredient.getType().toString());
         return tag;
     }));
@@ -33,6 +37,4 @@ public interface ISpellIngredient {
     @Nullable ISpellIngredient combine(ISpellIngredient other);
 
     @Nullable ISpellIngredient consume(Level level, BlockPos pos);
-
-    ISpellIngredientRenderer<?> getRenderer();
 }

@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.client.renderer;
 
-import com.github.minecraftschurli.arsmagicalegacy.api.client.ISpellIngredientRenderer;
+import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
@@ -67,9 +67,10 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         if (altar.hasEnoughPower()) {
             ISpellIngredient currentIngredient = altar.getCurrentIngredient();
             if (currentIngredient != null) {
-                //noinspection unchecked
-                ((ISpellIngredientRenderer<ISpellIngredient>) currentIngredient.getRenderer())
-                        .render(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
+                ArsMagicaAPI.get()
+                            .getSpellDataManager()
+                            .getSpellIngredientRenderer(currentIngredient.getType())
+                            .renderInWorld(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
             }
         } else {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

@@ -86,16 +86,14 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
         return this;
     }
 
-    @Override
-    public ISpellIngredientRenderer<EtheriumSpellIngredient> getRenderer() {
-        return EtheriumSpellIngredientRenderer.INSTANCE;
-    }
-
-    private static class EtheriumSpellIngredientRenderer implements ISpellIngredientRenderer<EtheriumSpellIngredient> {
-    public static final EtheriumSpellIngredientRenderer INSTANCE = new EtheriumSpellIngredientRenderer();
+    public static class EtheriumSpellIngredientRenderer implements ISpellIngredientRenderer<EtheriumSpellIngredient> {
+        @Override
+        public void renderInWorld(EtheriumSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+            // TODO render
+        }
 
         @Override
-        public void render(EtheriumSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        public void renderInGui(EtheriumSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
             // TODO render
         }
     }

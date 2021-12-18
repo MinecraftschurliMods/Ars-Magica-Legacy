@@ -1,1 +1,7 @@
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package com.github.minecraftschurli.arsmagicalegacy.compat.patchouli;
+
+import net.minecraft.MethodsReturnNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

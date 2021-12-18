@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurli.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
@@ -23,9 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
-    private static final Map<ResourceLocation, Codec<ISpellIngredient>> CODECS = new HashMap<>();
+    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>>                          CODECS    = new HashMap<>();
+    private static final Map<ResourceLocation, Lazy<ISpellIngredientRenderer<? extends ISpellIngredient>>> RENDERERS = new HashMap<>();
 
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
@@ -38,14 +41,23 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         return get(part.getRegistryName());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec) {
-        CODECS.putIfAbsent(type, (Codec<ISpellIngredient>) codec);
+    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer) {
+        CODECS.putIfAbsent(type, codec);
+        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type) {
-        return CODECS.get(type);
+        return (Codec<ISpellIngredient>) CODECS.get(type);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ISpellIngredient> ISpellIngredientRenderer<T> getSpellIngredientRenderer(ResourceLocation type) {
+        return (ISpellIngredientRenderer<T>) RENDERERS.get(type).get();
     }
 
     /**

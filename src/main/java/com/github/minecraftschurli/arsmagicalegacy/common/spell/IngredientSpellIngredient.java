@@ -79,21 +79,22 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
         return new IngredientSpellIngredient(ingredient(), count);
     }
 
-    @Override
-    public ISpellIngredientRenderer<IngredientSpellIngredient> getRenderer() {
-        return IngredientSpellIngredientRenderer.INSTANCE;
-    }
-
-    private static class IngredientSpellIngredientRenderer implements ISpellIngredientRenderer<IngredientSpellIngredient> {
-        public static final IngredientSpellIngredientRenderer INSTANCE = new IngredientSpellIngredientRenderer();
-
+    public static class IngredientSpellIngredientRenderer implements ISpellIngredientRenderer<IngredientSpellIngredient> {
         @Override
-        public void render(IngredientSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        public void renderInWorld(IngredientSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
             Minecraft minecraft = Minecraft.getInstance();
             ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
             BakedModel model = itemRenderer.getModel(stack, null, null, 0);
             itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay, model);
+        }
+
+        @Override
+        public void renderInGui(IngredientSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
+            Minecraft minecraft = Minecraft.getInstance();
+            ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
+            ItemRenderer itemRenderer = minecraft.getItemRenderer();
+            itemRenderer.renderGuiItem(stack, x, y);
         }
     }
 }

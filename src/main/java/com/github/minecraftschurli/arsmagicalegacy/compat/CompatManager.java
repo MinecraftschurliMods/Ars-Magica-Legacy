@@ -1,25 +1,29 @@
 package com.github.minecraftschurli.arsmagicalegacy.compat;
 
-import com.github.minecraftschurli.arsmagicalegacy.compat.curios.CurioCompat;
-import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
-import com.google.common.reflect.ClassPath;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.forgespi.language.ModFileScanData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.Type;
 
-import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class CompatManager {
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final Map<String, Lazy<ICompatHandler>> compatHandlers = new HashMap<>();
 
     public static void register(Class<? extends ICompatHandler> clazz) {
@@ -40,9 +44,7 @@ public final class CompatManager {
     }
 
     public static void preInit() {
-        //discoverModCompats();
-        register(CurioCompat.class);
-        register(PatchouliCompat.class);
+        discoverModCompats();
         forEachLoaded(ICompatHandler::preInit);
     }
 
@@ -59,18 +61,27 @@ public final class CompatManager {
         return LazyOptional.of(compatHandlers.get(modid)::get).cast();
     }
 
-    @SuppressWarnings({"UnstableApiUsage", "unchecked"})
     private static void discoverModCompats() {
-        try {
-            for (ClassPath.ClassInfo classInfo : ClassPath.from(CompatManager.class.getClassLoader()).getAllClasses()) {
-                Class<?> clazz = classInfo.load();
-                if (ICompatHandler.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(ModCompat.class)) {
-                    register((Class<? extends ICompatHandler>) clazz);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        getClasses(ModCompat.class, ICompatHandler.class).forEach(CompatManager::register);
+    }
+
+    private static <T> List<Class<? extends T>> getClasses(Class<?> annotationClass, Class<T> instanceClass) {
+        Type annotationType = Type.getType(annotationClass);
+        return ModList.get()
+                      .getAllScanData()
+                      .stream()
+                      .map(ModFileScanData::getAnnotations)
+                      .flatMap(Collection::stream)
+                      .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
+                      .map(ModFileScanData.AnnotationData::memberName)
+                      .<Class<? extends T>>map(memberName -> {
+                          try {
+                              return Class.forName(memberName).asSubclass(instanceClass);
+                          } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {
+                              LOGGER.error("Failed to load: {}", memberName, e);
+                          }
+                          return null;
+                      }).toList();
     }
 
     private static Supplier<ICompatHandler> supplierFromClass(Class<? extends ICompatHandler> clazz) {
