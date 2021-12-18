@@ -12,6 +12,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
@@ -173,6 +174,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.UNKNOWN_ITEM, "Unknown Item");
         add(TranslationConstants.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.UNNAMED_SPELL, "Unnamed Spell");
+        skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.");
     }
 
     /**
@@ -269,9 +271,21 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
+     * Adds a skill translation.
+     *
+     * @param skill       The skill id.
+     * @param name        The skill name.
+     * @param description The skill description.
+     */
+    private void skillTranslation(ResourceLocation skill, String name, String description) {
+        add(Util.makeDescriptionId("skill", skill) + ".name", name);
+        add(Util.makeDescriptionId("skill", skill) + ".description", description);
+    }
+
+    /**
      * Adds an attribute translation.
      *
-     * @param attribute    The attribute to add the translation for.
+     * @param attribute   The attribute to add the translation for.
      * @param translation The translation for the attribute.
      */
     private void addAttribute(Supplier<? extends Attribute> attribute, String translation) {

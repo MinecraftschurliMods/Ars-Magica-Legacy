@@ -358,7 +358,6 @@ public final class EventHandler {
         }
         var helper = ArsMagicaAPI.get().getSpellHelper();
         Level level = event.getEntity().getLevel();
-        ArsMagicaLegacy.LOGGER.info("Mana before: " + event.mana);
         float mana = event.mana;
         if (level.getDayTime() % 24000 < 12000) {
             for (int i = 0; i < helper.countModifiers(modifiers, AMSpellParts.SOLAR.getId()); i++) {
@@ -371,6 +370,5 @@ public final class EventHandler {
             }
         }
         event.mana = mana;
-        ArsMagicaLegacy.LOGGER.info("Mana after: " + event.mana);
     }
 }
