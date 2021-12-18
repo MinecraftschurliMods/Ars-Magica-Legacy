@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
+    "particle": "arsmagicalegacy:block/altar_core",
     "overlay": "arsmagicalegacy:block/altar_core_overlay"
   },
   "elements": [

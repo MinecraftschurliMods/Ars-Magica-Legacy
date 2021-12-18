@@ -24,6 +24,5 @@ public class AMOcculusTabProvider extends OcculusTabProvider {
         createOcculusTab("defense", 1).setStartX(181).setStartY(46).build(consumer);
         createOcculusTab("utility", 2).setStartX(136).setStartY(46).build(consumer);
         createOcculusTab("affinity", 3).setRenderer(OcculusAffinityTabRenderer.class).build(consumer);
-        createOcculusTab("talent", 4).build(consumer);
     }
 }
