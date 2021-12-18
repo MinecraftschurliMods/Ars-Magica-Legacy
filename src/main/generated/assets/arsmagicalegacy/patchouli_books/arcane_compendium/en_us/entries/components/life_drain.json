@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:life_drain"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/life_drain"
 }

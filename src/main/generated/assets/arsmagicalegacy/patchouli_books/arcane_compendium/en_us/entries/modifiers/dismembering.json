@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:dismembering"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/dismembering"
 }

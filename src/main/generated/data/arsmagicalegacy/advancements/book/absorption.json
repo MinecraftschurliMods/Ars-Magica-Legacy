@@ -1,0 +1,16 @@
+{
+  "parent": "arsmagicalegacy:book/root",
+  "criteria": {
+    "knows": {
+      "trigger": "arsmagicalegacy:player_learned_skill",
+      "conditions": {
+        "skill": "arsmagicalegacy:absorption"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ]
+}

@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:water_breathing"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/water_breathing"
 }

@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:frost_damage"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/frost_damage"
 }

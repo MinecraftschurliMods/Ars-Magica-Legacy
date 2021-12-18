@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:wizards_autumn"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/wizards_autumn"
 }

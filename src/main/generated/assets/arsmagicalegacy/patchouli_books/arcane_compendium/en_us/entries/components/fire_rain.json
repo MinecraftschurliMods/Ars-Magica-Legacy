@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:fire_rain"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/fire_rain"
 }

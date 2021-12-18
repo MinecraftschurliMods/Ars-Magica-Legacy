@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:night_vision"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/night_vision"
 }

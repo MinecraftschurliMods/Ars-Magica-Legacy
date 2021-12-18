@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:mana_blast"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/mana_blast"
 }

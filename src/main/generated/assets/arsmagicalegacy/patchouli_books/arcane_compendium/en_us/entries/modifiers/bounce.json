@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:bounce"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/bounce"
 }

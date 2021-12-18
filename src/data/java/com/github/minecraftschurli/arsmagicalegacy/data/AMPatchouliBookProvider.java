@@ -1,6 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.PatchouliCompat;
@@ -18,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.data.LanguageProvider;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 class AMPatchouliBookProvider extends PatchouliBookProvider {
@@ -58,6 +61,10 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         TranslatedCategoryBuilder modifiers = builder.addCategory("modifiers", "Modifiers", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/target_non_solid.png")
                                                      .setSortnum(6);
 
+        /*TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
+                                                   .setSortnum(7);*/
+
+        Set<ResourceLocation> parts = new HashSet<>();
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
             TranslatedCategoryBuilder b = switch (spellPart.getType()) {
                 case COMPONENT -> components;
@@ -65,18 +72,24 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 case SHAPE -> shapes;
             };
             ResourceLocation registryName = spellPart.getRegistryName();
+            parts.add(registryName);
             String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
             TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace()+":textures/icon/skill/"+registryName.getPath()+".png", b){});
             String textLangKey = "%s.page0.text".formatted(entryLangKey);
             entry.addPage(new TextPageBuilder(textLangKey, entry)).build()
-                 .addPage(new SpellPartPageBuilder(registryName, entry)).build();
+                 .addPage(new SpellPartPageBuilder(registryName, entry)).build()
+                 .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
         }
 
-/*
-                .addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
-                    .setSortnum(7)
-                .build()
-*/
+        /*for (ISkill skill : api.getSkillManager().getSkills()) {
+            if (parts.contains(skill.getId())) continue;
+            ResourceLocation registryName = skill.getId();
+            String entryLangKey = "item.%s.%s.%s.%s".formatted(talents.getBookId().getNamespace(), talents.getBookId().getPath(), talents.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
+            TranslatedEntryBuilder entry = talents.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace()+":textures/icon/skill/"+registryName.getPath()+".png", b){});
+            String textLangKey = "%s.page0.text".formatted(entryLangKey);
+            entry.addPage(new TextPageBuilder(textLangKey, entry)).build()
+                 .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+        }*/
         builder.build(consumer);
     }
 

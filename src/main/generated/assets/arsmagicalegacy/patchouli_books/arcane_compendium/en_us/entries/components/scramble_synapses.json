@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:scramble_synapses"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/scramble_synapses"
 }

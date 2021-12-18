@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:random_teleport"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/random_teleport"
 }

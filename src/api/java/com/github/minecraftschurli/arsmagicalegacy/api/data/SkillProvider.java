@@ -17,6 +17,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -27,8 +30,10 @@ import java.util.function.Consumer;
 public abstract class SkillProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-    private final DataGenerator generator;
-    private final String namespace;
+
+    private final DataGenerator      generator;
+    private final String             namespace;
+    private Set<ResourceLocation> ids;
 
     /**
      * Create a skill provider for the given namespace
@@ -45,13 +50,17 @@ public abstract class SkillProvider implements DataProvider {
     @Override
     public final void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
-        Set<ResourceLocation> set = Sets.newHashSet();
-        createSkills(consumer -> {
-            if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate skill " + consumer.getId());
+        ids = Sets.newHashSet();
+        createSkills(skill -> {
+            if (!ids.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
             else {
-                saveSkill(pCache, consumer.serialize(), path.resolve("data/" + consumer.getId().getNamespace() + "/am_skills/" + consumer.getId().getPath() + ".json"));
+                saveSkill(pCache, skill.serialize(), path.resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
             }
         });
+    }
+
+    public Set<ResourceLocation> getSkills() {
+        return Collections.unmodifiableSet(ids);
     }
 
     /**

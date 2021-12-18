@@ -6,6 +6,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurli.codeclib.CodecHelper;
 import com.github.minecraftschurli.simplenetlib.CodecPacket;
@@ -14,6 +15,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -107,12 +109,14 @@ public final class SkillHelper implements ISkillHelper {
     @Override
     public void learn(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).learn(skill);
+        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill);
         syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, ISkill skill) {
         getKnowledgeHolder(player).learn(skill);
+        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId());
         syncToPlayer(player);
     }
 

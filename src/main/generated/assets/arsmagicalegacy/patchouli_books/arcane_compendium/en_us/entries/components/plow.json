@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:plow"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/plow"
 }

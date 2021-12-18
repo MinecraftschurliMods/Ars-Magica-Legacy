@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:mana_shield"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/mana_shield"
 }

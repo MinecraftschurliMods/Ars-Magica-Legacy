@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:melt_armor"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/melt_armor"
 }

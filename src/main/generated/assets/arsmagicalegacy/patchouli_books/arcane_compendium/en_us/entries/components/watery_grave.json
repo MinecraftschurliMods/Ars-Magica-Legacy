@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:watery_grave"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/watery_grave"
 }

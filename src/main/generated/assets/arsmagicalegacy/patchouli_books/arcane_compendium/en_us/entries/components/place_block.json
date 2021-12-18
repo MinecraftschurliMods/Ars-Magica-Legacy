@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:place_block"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/place_block"
 }

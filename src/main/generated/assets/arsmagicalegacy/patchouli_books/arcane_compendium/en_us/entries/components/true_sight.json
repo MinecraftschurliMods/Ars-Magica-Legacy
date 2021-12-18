@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:true_sight"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/true_sight"
 }

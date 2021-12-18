@@ -11,5 +11,6 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:temporal_anchor"
     }
-  ]
+  ],
+  "advancement": "arsmagicalegacy:book/temporal_anchor"
 }
