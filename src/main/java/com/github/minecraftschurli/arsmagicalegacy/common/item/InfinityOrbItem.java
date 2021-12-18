@@ -18,15 +18,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class InfinityOrbItem extends Item implements ISkillPointItem {
-    private static final String KEY = "skillPoint";
-
     public InfinityOrbItem() {
         super(AMItems.ITEM_1);
     }
 
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        if (getItemCategory() == tab) {
+        if (allowdedIn(tab)) {
             for (ISkillPoint point : ArsMagicaAPI.get().getSkillPointRegistry().getValues()) {
                 list.add(setSkillPoint(new ItemStack(this), point));
             }

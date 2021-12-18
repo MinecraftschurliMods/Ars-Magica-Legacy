@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.compat.jei;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPointItem;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.MethodsReturnNonnullByDefault;
@@ -30,6 +31,9 @@ public class JEICompat implements IModPlugin {
             if (item instanceof IAffinityItem) {
                 registration.registerSubtypeInterpreter(item, AffinitySubtypeInterpreter.INSTANCE);
             }
+            if (item instanceof ISkillPointItem) {
+                registration.registerSubtypeInterpreter(item, SkillPointSubtypeInterpreter.INSTANCE);
+            }
         }
     }
 
@@ -42,6 +46,18 @@ public class JEICompat implements IModPlugin {
         @Override
         public String apply(ItemStack ingredient, UidContext context) {
             return ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(ingredient).getRegistryName().toString();
+        }
+    }
+
+    public static class SkillPointSubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {
+        public static final SkillPointSubtypeInterpreter INSTANCE = new SkillPointSubtypeInterpreter();
+
+        private SkillPointSubtypeInterpreter() {
+        }
+
+        @Override
+        public String apply(ItemStack ingredient, UidContext context) {
+            return ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(ingredient).getRegistryName().toString();
         }
     }
 }
