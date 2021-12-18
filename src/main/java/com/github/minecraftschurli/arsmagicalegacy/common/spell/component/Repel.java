@@ -8,6 +8,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -21,7 +22,7 @@ public class Repel extends AbstractComponent {
         Entity entity = target.getEntity();
         for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(range, range, range))) {
             if (e instanceof LivingEntity) {
-                performRepel(entity, e, modifiers);
+                performRepel(entity.position(), e, modifiers);
             }
         }
         return SpellCastResult.SUCCESS;
@@ -29,15 +30,20 @@ public class Repel extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
+        int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
+        for (Entity e : level.getEntities(null, new AABB(target.getBlockPos().getX() - range, target.getBlockPos().getY() - range, target.getBlockPos().getZ() - range, target.getBlockPos().getX() + range, target.getBlockPos().getY() + range, target.getBlockPos().getZ() + range))) {
+            if (e instanceof LivingEntity) {
+                performRepel(target.getLocation(), e, modifiers);
+            }
+        }
+        return SpellCastResult.SUCCESS;
     }
 
-    private static void performRepel(Entity caster, Entity entity, List<ISpellModifier> modifiers) {
-        Vec3 casterPos = caster.position();
-        Vec3 entityPos = entity.position();
-        double distance = casterPos.distanceTo(entityPos) + 0.1;
+    private static void performRepel(Vec3 caster, Entity entity, List<ISpellModifier> modifiers) {
+        Vec3 vec = entity.position();
+        double distance = caster.distanceTo(vec) + 0.1;
         double factor = 0.9 / (double) (1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()));
-        Vec3 delta = entityPos.subtract(casterPos);
+        Vec3 delta = vec.subtract(caster);
         entity.setDeltaMovement(entity.getDeltaMovement().x() + delta.x() / factor / distance, entity.getDeltaMovement().y() + delta.y() / factor / distance, entity.getDeltaMovement().z() + delta.z() / factor / distance);
     }
 }
