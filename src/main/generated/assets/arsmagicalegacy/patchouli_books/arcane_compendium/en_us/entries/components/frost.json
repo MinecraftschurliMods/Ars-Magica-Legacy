@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.components.frost",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/icon/skill/frost.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.frost.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:frost"
+    }
+  ]
+}

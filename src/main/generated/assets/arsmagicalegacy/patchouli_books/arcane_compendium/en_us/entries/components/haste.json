@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.components.haste",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/icon/skill/haste.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.haste.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:haste"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.components.forge",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/icon/skill/forge.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.forge.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:forge"
+    }
+  ]
+}

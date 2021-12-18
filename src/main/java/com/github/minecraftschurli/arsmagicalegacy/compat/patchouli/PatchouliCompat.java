@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 @CompatManager.ModCompat("patchouli")
 public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation CRAFTING_ALTAR = new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar");
-    public static final ResourceLocation SPELL_PART_PAGE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "crafting_altar");
+    public static final ResourceLocation SPELL_PART_PAGE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_part");
 
     private static final String[][] MULTIBLOCK_TEMPLATE = new String[][]{{" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
                                                                          {" BMB ", " 6 6 ", "     ", " 5 5 ", " BMB "},

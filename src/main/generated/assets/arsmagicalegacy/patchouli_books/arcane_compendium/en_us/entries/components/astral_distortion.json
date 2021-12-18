@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.components.astral_distortion",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/icon/skill/astral_distortion.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.astral_distortion.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:astral_distortion"
+    }
+  ]
+}
