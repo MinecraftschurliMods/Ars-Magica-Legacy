@@ -200,6 +200,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.ENDER_INTERVENTION.getId(), "Ender Intervention", "Well, I didn't know what hell looked like...");
         skillTranslation(AMSpellParts.ENTANGLE.getId(), "Entangle", "Stop right there.");
         skillTranslation(AMSpellParts.FALLING_STAR.getId(), "Falling Star", "Shiny! Wait, is it falling towards me?");
+        skillTranslation(AMSpellParts.FROST.getId(), "Frost", "Freezes water to ice, lava to obsidian, and slows entities.");
         skillTranslation(AMSpellParts.FIRE_DAMAGE.getId(), "Fire Damage", "You shall burn!");
         skillTranslation(AMSpellParts.FIRE_RAIN.getId(), "Fire Rain", "Well, at least I'm not going to catch a cold...");
         skillTranslation(AMSpellParts.FLIGHT.getId(), "Flight", "I'd rather use a plane.");
@@ -242,7 +243,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.RANGE.getId(), "Range", "Think you're far enough? No, you're not.");
         skillTranslation(AMSpellParts.RECALL.getId(), "Recall", "Can someone remind me who marked the trash?");
         skillTranslation(AMSpellParts.REGENERATION.getId(), "Regeneration", "A little bit of health");
+        skillTranslation(AMSpellParts.REFLECT.getId(), "Reflect", "Gives the target the Spell Reflect effect, which doesn't do anything for now. Incompatible with the Shield component.");
         skillTranslation(AMSpellParts.REPEL.getId(), "Repel", "Go away from me!");
+        skillTranslation(AMSpellParts.RIFT.getId(), "Rift", "One day I'll walk through it, for now, it'll just store items.");
         skillTranslation(AMSpellParts.RUNE.getId(), "Rune", "Placeable magic.");
         skillTranslation(AMSpellParts.RUNE_PROCS.getId(), "Rune Procs", "I want more!");
         skillTranslation(AMSpellParts.SELF.getId(), "Self", "It's all about me.");
@@ -250,14 +253,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.SHRINK.getId(), "Shrink", "Looks like I'm smaller now...");
         skillTranslation(AMSpellParts.SILENCE.getId(), "Silence", "No talking! (or casting in this case...)");
         skillTranslation(AMSpellParts.SILK_TOUCH.getId(), "Silk Touch", "Feels soft...");
+        skillTranslation(AMSpellParts.SLOWNESS.getId(), "Slowness", "No more running!");
+        skillTranslation(AMSpellParts.SLOW_FALLING.getId(), "Slow falling", "Like a chicken...");
         skillTranslation(AMSpellParts.SOLAR.getId(), "Solar", "Sun power!");
         skillTranslation(AMSpellParts.STORM.getId(), "Storm", "It's raining...");
         skillTranslation(AMSpellParts.SUMMON.getId(), "Summon", "Rise creation! Oh you look like the others...");
         skillTranslation(AMSpellParts.SWIFT_SWIM.getId(), "Swift Swim", "No more swimming for hours.");
+        skillTranslation(AMSpellParts.TARGET_NON_SOLID.getId(), "Target Non Solid", "And I decided that I would fight the water.");
         skillTranslation(AMSpellParts.TELEKINESIS.getId(), "Telekinesis", "Up, down, up, down, I think you get and idea.");
+        skillTranslation(AMSpellParts.TEMPORAL_ANCHOR.getId(), "Temporal Anchor", "Let's look at the time. Oh dear! It went backward!");
         skillTranslation(AMSpellParts.TOUCH.getId(), "Touch", "Someone in there?");
         skillTranslation(AMSpellParts.TRANSPLACE.getId(), "Transplace", "From point A to point B.");
         skillTranslation(AMSpellParts.TRUE_SIGHT.getId(), "True Sight", "Reveal what is hidden.");
+        skillTranslation(AMSpellParts.VELOCITY.getId(), "Velocity", "Faster! FASTER!");
         skillTranslation(AMSpellParts.WALL.getId(), "Wall", "You shall not pass.");
         skillTranslation(AMSpellParts.WATER_BREATHING.getId(), "Water Breathing", "Creating air directly inside my lungs? Cool!");
         skillTranslation(AMSpellParts.WATERY_GRAVE.getId(), "Watery Grave", "Bottom of the ocean.");
