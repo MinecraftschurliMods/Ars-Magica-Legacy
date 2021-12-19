@@ -179,6 +179,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.ASTRAL_DISTORTION.getId(), "Astral Distortion", "Going nowhere...");
         skillTranslation(AMSpellParts.ATTRACT.getId(), "Attract", "Come closer... or not, just stay where you are.");
         skillTranslation(AMSpellParts.BANISH_RAIN.getId(), "Banish Rain", "Come back latter. Or don't. It would be kind.");
+        skillTranslation(AMSpellParts.BLINDNESS.getId(), "Blindness", "Just as the name says.");
         skillTranslation(AMSpellParts.BEAM.getId(), "Beam", "Beam me up, Scotty!");
         skillTranslation(AMSpellParts.BLIZZARD.getId(), "Blizzard", "Snow. Lots of snow");
         skillTranslation(AMSpellParts.BOUNCE.getId(), "Bounce", "Hey! Come back!");
@@ -195,8 +196,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.DIVINE_INTERVENTION.getId(), "Divine Intervention", "Help from across the cosmos.");
         skillTranslation(AMSpellParts.DROUGHT.getId(), "Drought", "Sand. Who doesn't know that?");
         skillTranslation(AMSpellParts.DURATION.getId(), "Duration", "Time manipulation tricks.");
+        skillTranslation(AMSpellParts.EFFECT_POWER.getId(), "Effect Power", "Makes spell projectiles bouncy");
         skillTranslation(AMSpellParts.ENDER_INTERVENTION.getId(), "Ender Intervention", "Well, I didn't know what hell looked like...");
         skillTranslation(AMSpellParts.ENTANGLE.getId(), "Entangle", "Stop right there.");
+        skillTranslation(AMSpellParts.FALLING_STAR.getId(), "Falling Star", "Shiny! Wait, is it falling towards me?");
         skillTranslation(AMSpellParts.FIRE_DAMAGE.getId(), "Fire Damage", "You shall burn!");
         skillTranslation(AMSpellParts.FIRE_RAIN.getId(), "Fire Rain", "Well, at least I'm not going to catch a cold...");
         skillTranslation(AMSpellParts.FLIGHT.getId(), "Flight", "I'd rather use a plane.");
