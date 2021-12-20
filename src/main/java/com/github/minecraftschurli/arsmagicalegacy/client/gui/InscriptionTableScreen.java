@@ -42,9 +42,9 @@ import java.util.function.Predicate;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
     private static final ResourceLocation GUI                 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
-    private static final Component        SEARCH_LABEL        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL);
-    private static final Component        NAME_LABEL          = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL);
-    private static final Component        DEFAULT_NAME        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE);
+    private static final Component        SEARCH_LABEL        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
+    private static final Component        NAME_LABEL          = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME);
+    private static final Component        DEFAULT_NAME        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
     private static final int              SHAPE_GROUP_WIDTH   = 34;
     private static final int              SHAPE_GROUP_HEIGHT  = 34;
     private static final int              SHAPE_GROUP_PADDING = 3;

@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
-    private static final Component DEFAULT_NAME = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_CONTAINER_TITLE);
+    private static final Component DEFAULT_NAME = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
 
     private           ItemStack stack = ItemStack.EMPTY;
     private @Nullable Spell     spellRecipe;

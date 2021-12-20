@@ -59,7 +59,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
             }
             drawNameplate(ingredient.getTooltip(), poseStack, bufferSource, packedLight);
         } else {
-            drawNameplate(new TranslatableComponent(TranslationConstants.LOW_POWER), poseStack, bufferSource, packedLight);
+            drawNameplate(new TranslatableComponent(TranslationConstants.ALTAR_CORE_LOW_POWER), poseStack, bufferSource, packedLight);
         }
         poseStack.popPose();
         poseStack.pushPose();

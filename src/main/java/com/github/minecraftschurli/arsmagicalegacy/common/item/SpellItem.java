@@ -57,21 +57,21 @@ public class SpellItem extends Item implements ISpellItem {
             player = ClientHelper.getLocalPlayer();
         }
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM_DESC));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
             return;
         }
         Spell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) {
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.INVALID_SPELL_DESC));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
         }
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.MANA_COST_TOOLTIP, spell.manaCost(player)));
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.BURNOUT_TOOLTIP, spell.burnout()));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.manaCost(player)));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout()));
         if (player == null) return;
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
             if (reagents.isEmpty()) return;
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.REAGENTS_TOOLTIP));
+            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
             reagents.stream().map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).forEach(e -> pTooltipComponents.add(Arrays.stream(e).map(ItemStack::getHoverName).map(Component::copy).collect(AMUtil.joiningComponents(" | "))));
         } else {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
@@ -84,11 +84,11 @@ public class SpellItem extends Item implements ISpellItem {
             Player player = ClientHelper.getLocalPlayer();
             assert player != null;
             if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
-                return new TranslatableComponent(TranslationConstants.UNKNOWN_ITEM);
+                return new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN);
         }
         Spell spell = getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.INVALID_SPELL);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(TranslationConstants.UNNAMED_SPELL));
+        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
+        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class SpellItem extends Item implements ISpellItem {
                 player.awardStat(AMStats.SPELL_CAST);
             }
             if (result.isFail()) {
-                player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
             }
         }
         saveSpell(stack, spell);
@@ -182,7 +182,7 @@ public class SpellItem extends Item implements ISpellItem {
                     player.awardStat(AMStats.SPELL_CAST);
                 }
                 if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST_RESULT + result.name().toLowerCase(), stack.getDisplayName()), true);
+                    player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
                 }
             }
         }

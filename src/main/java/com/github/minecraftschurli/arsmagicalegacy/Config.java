@@ -1,6 +1,5 @@
 package com.github.minecraftschurli.arsmagicalegacy;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -59,29 +58,29 @@ public final class Config {
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
                     .comment("The default maximum mana for the player.")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "max_mana")
+                    .translation(TranslationConstants.CONFIG + "max_mana")
                     .worldRestart()
                     .defineInRange("max_mana", 100, 0., 10000);
             DEFAULT_MAX_BURNOUT = builder
                     .comment("The default maximum burnout for the player.")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "max_burnout")
+                    .translation(TranslationConstants.CONFIG + "max_burnout")
                     .worldRestart()
                     .defineInRange("max_burnout", 100, 0., 10000);
             BURNOUT_RATIO = builder
                     .comment("The mana to burnout ratio.")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "burnout_ratio")
+                    .translation(TranslationConstants.CONFIG + "burnout_ratio")
                     .defineInRange("burnout_ratio", 0.5, 0, 10.0);
             CRAFTING_ALTAR_CHECK_TIME = builder
                     .comment("The time in ticks between multiblock validation checks for the crafting altar. [ 1 - 200 ]")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "crafting_altar_check_time")
+                    .translation(TranslationConstants.CONFIG + "crafting_altar_check_time")
                     .defineInRange("crafting_altar_check_time", 20, 1, 200);
             MAX_STAGE_GROUPS = builder
                     .comment("The maximum number of shape groups allowed for new spells. [ 0 - 5 ]")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "max_shape_groups")
+                    .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
             EXTRA_STARTING_BLUE_POINTS = builder
                     .comment("The extra skill points a player gets on level 1. [ 0 - 100 ]")
-                    .translation(TranslationConstants.CONFIG_PREFIX + "extra_starting_blue_points")
+                    .translation(TranslationConstants.CONFIG + "extra_starting_blue_points")
                     .defineInRange("extra_starting_blue_points", 2, 0, 100);
         }
     }

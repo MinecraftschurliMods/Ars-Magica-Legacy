@@ -42,7 +42,7 @@ public class SpellCustomisationScreen extends Screen {
      */
     public SpellCustomisationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
-        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.NAME_FIELD_MESSAGE));
+        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_NAME));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
         SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
         SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
@@ -53,7 +53,7 @@ public class SpellCustomisationScreen extends Screen {
         super.init();
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
-        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.NAME_FIELD_MESSAGE)));
+        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_NAME)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
     }
 

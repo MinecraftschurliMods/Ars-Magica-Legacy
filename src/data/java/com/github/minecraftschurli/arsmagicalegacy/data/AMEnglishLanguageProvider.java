@@ -148,32 +148,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
-        add(TranslationConstants.BURNOUT_TOOLTIP, "Burnout: %d");
-        add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
-        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME_VALUE, "Default Spell");
-        add(TranslationConstants.INSCRIPTION_TABLE_NAME_LABEL, "Name");
-        add(TranslationConstants.INSCRIPTION_TABLE_SEARCH_BAR_LABEL, "Search");
-        add(TranslationConstants.INVALID_SPELL, "[Invalid Spell]");
-        add(TranslationConstants.INVALID_SPELL_DESC, "Something is wrong with this spell, please check the log for warnings or errors!");
-        add(TranslationConstants.MAGIC_UNKNOWN_MESSAGE, "Mythical forces prevent you from using this block!");
-        add(TranslationConstants.MANA_COST_TOOLTIP, "Mana cost: %d");
-        add(TranslationConstants.REAGENTS_TOOLTIP, "Reagents:");
-        add(TranslationConstants.SKILL_COMMAND_ALREADY_KNOWN, "Skill %s has already been learned");
-        add(TranslationConstants.SKILL_COMMAND_EMPTY, "");
-        add(TranslationConstants.SKILL_COMMAND_FORGET_ALL_SUCCESS, "Forgot all skills");
-        add(TranslationConstants.SKILL_COMMAND_FORGET_SUCCESS, "Forgot skill %s");
-        add(TranslationConstants.SKILL_COMMAND_LEARN_ALL_SUCCESS, "Learned all skills");
-        add(TranslationConstants.SKILL_COMMAND_LEARN_SUCCESS, "Learned skill %s");
-        add(TranslationConstants.SKILL_COMMAND_NOT_KNOWN_SKILL, "Skill %s must be learned first");
-        add(TranslationConstants.SPELL_CAST_RESULT + "burned_out", "Burned out!");
-        add(TranslationConstants.SPELL_CAST_RESULT + "cancelled", "Spell cast failed!");
-        add(TranslationConstants.SPELL_CAST_RESULT + "fail", "Spell cast failed!");
-        add(TranslationConstants.SPELL_CAST_RESULT + "missing_reagents", "Missing reagents!");
-        add(TranslationConstants.SPELL_CAST_RESULT + "not_enough_mana", "Not enough mana!");
-        add(TranslationConstants.SPELL_CAST_RESULT + "silenced", "Silence!");
-        add(TranslationConstants.UNKNOWN_ITEM, "Unknown Item");
-        add(TranslationConstants.UNKNOWN_ITEM_DESC, "Mythical forces prevent you from using this item!");
-        add(TranslationConstants.UNNAMED_SPELL, "Unnamed Spell");
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "");
@@ -198,7 +172,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.DIVINE_INTERVENTION.getId(), "Divine Intervention", "Help from across the cosmos.", "components", "");
         skillTranslation(AMSpellParts.DROUGHT.getId(), "Drought", "Sand. Who doesn't know that?", "components", "");
         skillTranslation(AMSpellParts.DROWNING_DAMAGE.getId(), "Drowning Damage", "How can you drown? There isn't any water.", "components", "");
-        skillTranslation(AMSpellParts.DURATION.getId(), "Duration", "Time manipulation tricks.", "components", "");
+        skillTranslation(AMSpellParts.DURATION.getId(), "Duration", "Time manipulation tricks.", "modifiers", "");
         skillTranslation(AMSpellParts.EFFECT_POWER.getId(), "Effect Power", "Harder, better, faster and... my mana pool is empty.", "modifiers", "");
         skillTranslation(AMSpellParts.ENDER_INTERVENTION.getId(), "Ender Intervention", "Well, I didn't know what hell looked like...", "components", "");
         skillTranslation(AMSpellParts.ENTANGLE.getId(), "Entangle", "Stop right there.", "components", "");
@@ -275,6 +249,37 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.WAVE.getId(), "Wave", "You might not want to surf on this one...", "shapes", "");
         skillTranslation(AMSpellParts.WIZARDS_AUTUMN.getId(), "Wizard's Autumn", "Leaves fall in autumn. But it's kind of a slow process...", "components", "");
         skillTranslation(AMSpellParts.ZONE.getId(), "Zone", "No one can beat me in my sanctuary!", "shapes", "");
+        add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
+        add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "Other spell parts must be learned first!");
+        add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
+        add(TranslationConstants.SPELL_INVALID, "[Invalid Spell]");
+        add(TranslationConstants.SPELL_INVALID_DESCRIPTION, "Something is wrong with this spell, please check the log for warnings or errors!");
+        add(TranslationConstants.SPELL_MANA_COST, "Mana cost: %d");
+        add(TranslationConstants.SPELL_REAGENTS, "Reagents:");
+        add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
+        add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
+        add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
+        add(TranslationConstants.COMMAND_SKILL_ALREADY_KNOWN, "Skill %s has already been learned");
+        add(TranslationConstants.COMMAND_SKILL_EMPTY, "");
+        add(TranslationConstants.COMMAND_SKILL_FORGET_ALL_SUCCESS, "Forgot all skills");
+        add(TranslationConstants.COMMAND_SKILL_FORGET_SUCCESS, "Forgot skill %s");
+        add(TranslationConstants.COMMAND_SKILL_LEARN_ALL_SUCCESS, "Learned all skills");
+        add(TranslationConstants.COMMAND_SKILL_LEARN_SUCCESS, "Learned skill %s");
+        add(TranslationConstants.COMMAND_SKILL_NOT_YET_KNOWN, "Skill %s must be learned first");
+        add(TranslationConstants.COMMAND_SKILL_UNKNOWN, "Could not find skill %s");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Default Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
+        add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
+        add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
+        add(TranslationConstants.SPELL_CUSTOMIZATION_NAME, "Spell Customization");
+        add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
+        add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.SPELL_CAST + "cancelled", "Spell cast failed!");
+        add(TranslationConstants.SPELL_CAST + "fail", "Spell cast failed!");
+        add(TranslationConstants.SPELL_CAST + "missing_reagents", "Missing reagents!");
+        add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
+        add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
+        add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
     }
 
     /**
@@ -528,8 +533,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private static String idToTranslation(String id) {
         StringBuilder result = new StringBuilder();
-        for (String string : id.split("_"))
+        for (String string : id.split("_")) {
             result.append(string.substring(0, 1).toUpperCase()).append(string.substring(1)).append(" ");
+        }
         return result.substring(0, result.length() - 1);
     }
 }

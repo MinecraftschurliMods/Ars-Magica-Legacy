@@ -119,7 +119,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-            pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.MAGIC_UNKNOWN_MESSAGE), pPlayer.getUUID());
+            pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
             return InteractionResult.FAIL;
         }
         if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT)
