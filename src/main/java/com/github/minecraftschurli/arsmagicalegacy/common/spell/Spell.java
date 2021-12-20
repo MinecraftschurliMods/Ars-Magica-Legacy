@@ -78,7 +78,7 @@ public final class Spell implements ISpell {
         this.spellStack = spellStack;
         this.additionalData = additionalData;
         this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
-        this.empty = Lazy.concurrentOf(() -> this.shapeGroups().isEmpty() && spellStack().isEmpty());
+        this.empty = Lazy.concurrentOf(() -> (this.shapeGroups().isEmpty() || this.shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
         this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream()
                                 .map(ShapeGroup::parts)
                                 .flatMap(Collection::stream),

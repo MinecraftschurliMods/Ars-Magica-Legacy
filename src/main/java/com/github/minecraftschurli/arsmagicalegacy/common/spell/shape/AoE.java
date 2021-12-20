@@ -66,7 +66,7 @@ public class AoE extends AbstractShape {
     }
 
     @Override
-    public boolean isBeginShape() {
+    public boolean canComeFirst() {
         return false;
     }
 

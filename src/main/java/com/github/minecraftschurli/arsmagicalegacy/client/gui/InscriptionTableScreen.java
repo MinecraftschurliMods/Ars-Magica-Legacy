@@ -16,7 +16,9 @@ import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DropArea;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.DropValidator;
 import com.github.minecraftschurli.arsmagicalegacy.client.gui.dropdis.FilteredFilledDropArea;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
+import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
@@ -34,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -64,20 +67,17 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         imageHeight = 252;
         nameBar = new EditBox(font,0,0,0,0,NAME_LABEL);
         pMenu.getSpellName().ifPresent(nameBar::setValue);
-        pMenu.getSpellRecipe().ifPresent(spell -> {
-            ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
-            spellStackDropZone = new BasicDropZone(0, 0, 0, 0, 0, 0, 4, null);
-            for (ISpellPart iSpellPart : spell.spellStack().parts()) {
-                spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDisplayName(), iSpellPart.getRegistryName()));
-            }
-            for (ShapeGroup shapeGroup : spell.shapeGroups()) {
-                BasicDropZone zone = new BasicDropZone(0, 0, 0, 0, 0, 0, 8, null);
-                for (ISpellPart spellPart : shapeGroup.parts()) {
-                    zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDisplayName(), spellPart.getRegistryName()));
-                }
-                shapeGroupDropZones.add(zone);
-            }
-        });
+        pMenu.getSpellRecipe().ifPresent(this::setFromRecipe);
+    }
+
+    private void onSlotChangedInt() {
+        menu.getSpellRecipe().ifPresent(this::setFromRecipe);
+    }
+
+    public static void onSlotChanged() {
+        if (Minecraft.getInstance().screen instanceof InscriptionTableScreen inscriptionTableScreen) {
+            inscriptionTableScreen.onSlotChangedInt();
+        }
     }
 
     @Override
@@ -138,6 +138,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             BasicDropZone old = shapeGroupDropZones.size() > sg ? shapeGroupDropZones.get(sg) : null;
             BasicDropZone shapeGroupDropZone = dragPane.addDropArea(new BasicDropZone(offsetX + (sg * (SHAPE_GROUP_WIDTH + SHAPE_GROUP_PADDING)), topPos + SHAPE_GROUP_Y, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 1, 4, old));
             shapeGroupDropZone.setDropValidator(dropValidator);
+            shapeGroupDropZone.setOnDropListener(p -> sourceBox.update());
+            shapeGroupDropZone.setOnDragListener(p -> sourceBox.update());
             if (shapeGroupDropZones.size() > sg) {
                 shapeGroupDropZones.set(sg, shapeGroupDropZone);
             } else {
@@ -146,6 +148,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         }
         spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 143, 141, 18, ICON_SIZE, ICON_SIZE, 1, 8, spellStackDropZone));
         spellStackDropZone.setDropValidator(((DropValidator.WithData<ISpellPart>)this::isValidInSpellStack).map(spellPartRegistry::getValue));
+        spellStackDropZone.setOnDropListener(p -> sourceBox.update());
+        spellStackDropZone.setOnDragListener(p -> sourceBox.update());
         addRenderableWidget(dragPane);
         sourceBox.update();
     }
@@ -180,7 +184,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 yield true;
             }
             case SHAPE -> {
-                if (((ISpellShape)item).isBeginShape()) yield deque.isEmpty();
+                if (((ISpellShape) item).needsToComeFirst()) yield deque.isEmpty();
+                if (!((ISpellShape) item).canComeFirst() && deque.isEmpty()) yield false;
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
                     final ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isEndShape();
@@ -202,7 +207,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         RenderSystem.setShaderTexture(0, GUI);
         blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         int offsetX = leftPos + SHAPE_GROUP_X;
-        for (int sg = 0; sg < Config.SERVER.MAX_STAGE_GROUPS.get(); sg++) {
+        for (int sg = 0; sg < Config.SERVER.MAX_SHAPE_GROUPS.get(); sg++) {
             if (sg >= menu.allowedShapeGroups()) {
                 RenderSystem.setShaderFogColor(0.5f, 0.5f, 0.5f);
             }
@@ -243,7 +248,57 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     @Override
-    public boolean charTyped(char codePoint, int modifiers) {
-        return super.charTyped(codePoint, modifiers);
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == InputConstants.KEY_ESCAPE && this.shouldCloseOnEsc()) {
+            this.onClose();
+            return true;
+        } else if (keyCode == InputConstants.KEY_TAB) {
+            boolean flag = !hasShiftDown();
+            if (!this.changeFocus(flag)) {
+                this.changeFocus(flag);
+            }
+            return false;
+        } else {
+            return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
+        }
+    }
+
+    private void setFromRecipe(Spell spell) {
+        ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
+        spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0,
+                                               spellStackDropZone != null ? spellStackDropZone.getY() : 0,
+                                               141,
+                                               18,
+                                               ICON_SIZE,
+                                               ICON_SIZE,
+                                               4,
+                                               spellStackDropZone);
+        spellStackDropZone.clear();
+        for (ISpellPart iSpellPart : spell.spellStack().parts()) {
+            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDisplayName(), iSpellPart.getRegistryName()));
+        }
+        int i = 0;
+        for (ShapeGroup shapeGroup : spell.shapeGroups()) {
+            BasicDropZone zone;
+            if (shapeGroupDropZones.size() > i) {
+                BasicDropZone prev = shapeGroupDropZones.get(i);
+                zone = new BasicDropZone(prev.getX(), prev.getY(), SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 8, prev);
+            } else {
+                zone = new BasicDropZone(0, 0, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 8, null);
+            }
+            zone.clear();
+            for (ISpellPart spellPart : shapeGroup.parts()) {
+                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDisplayName(), spellPart.getRegistryName()));
+            }
+            if (shapeGroupDropZones.size() > i) {
+                shapeGroupDropZones.set(i, zone);
+            } else {
+                shapeGroupDropZones.add(zone);
+            }
+            i++;
+        }
+        if (minecraft != null) {
+            init();
+        }
     }
 }

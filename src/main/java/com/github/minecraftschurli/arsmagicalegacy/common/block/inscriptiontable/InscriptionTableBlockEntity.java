@@ -2,10 +2,12 @@ package com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontabl
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMBlockEntities;
+import com.github.minecraftschurli.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -16,10 +18,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
     private static final Component DEFAULT_NAME = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
@@ -52,6 +59,26 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Nullable
     public Spell getSpellRecipe() {
         return this.spellRecipe;
+    }
+
+    public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
+        return Optional.ofNullable(getSpellRecipe())
+                       .map(spell -> {
+                           if (spell.isEmpty()) return stack;
+                           ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+                           SpellItem.saveSpell(book, spell);
+                           CompoundTag tag = book.getOrCreateTag();
+                           tag.putString(WrittenBookItem.TAG_TITLE, Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()));
+                           tag.putString(WrittenBookItem.TAG_AUTHOR, player.getDisplayName().getString());
+                           ListTag pages = new ListTag();
+                           makeSpellRecipePages(pages, player, spell);
+                           tag.put(WrittenBookItem.TAG_PAGES, pages);
+                           return book;
+                       });
+    }
+
+    private static void makeSpellRecipePages(ListTag pages, Player player, Spell spell) {
+        // TODO how to do this datadriven (re-resolve on reload)
     }
 
     @Override
@@ -149,6 +176,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void setItem(int pIndex, ItemStack pStack) {
+        this.stack = pStack;
     }
 
     @Override

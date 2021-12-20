@@ -32,4 +32,5 @@ public interface TranslationConstants {
     String HOLD_SHIFT_FOR_DETAILS           = "message."  + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String PREVENT                          = "message."  + ArsMagicaAPI.MOD_ID + ".prevent";
     String SPELL_CAST                       = "message."  + ArsMagicaAPI.MOD_ID + ".spell_cast.";
+    String SPELL_RECIPE_TITLE               = "item."     + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";
 }

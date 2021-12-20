@@ -42,7 +42,11 @@ public interface ISpellShape extends ISpellPart {
         return false;
     }
 
-    default boolean isBeginShape() {
+    default boolean canComeFirst() {
         return true;
+    }
+
+    default boolean needsToComeFirst() {
+        return false;
     }
 }

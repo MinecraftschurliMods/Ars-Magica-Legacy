@@ -4,20 +4,24 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BasicDropZone implements DropArea {
-    private final int x;
-    private final int y;
-    private final int width;
-    private final int height;
-    private final int elementWidth;
-    private final int elementHeight;
-    private final int elementPadding;
-    private final int size;
+    private final int             x;
+    private final int             y;
+    private final int             width;
+    private final int             height;
+    private final int             elementWidth;
+    private final int             elementHeight;
+    private final int             elementPadding;
+    private final int             size;
     private final List<Draggable> items;
-    private DragHandler dragHandler;
-    private DropValidator validator;
+    private       DragHandler     dragHandler;
+    private       DropValidator   validator;
+    private Consumer<Draggable> dropListener;
+    private Consumer<Draggable> dragListener;
 
     public BasicDropZone(int x, int y, int width, int height, int elementWidth, int elementHeight, int elementPadding, int size, @Nullable BasicDropZone prev) {
         this.x = x;
@@ -51,6 +55,9 @@ public class BasicDropZone implements DropArea {
         if (this.items.size() + 1 > this.size) return false;
         boolean add = this.items.add(d);
         setPositionAndSize(d);
+        if (this.dropListener != null) {
+            this.dropListener.accept(d);
+        }
         return add;
     }
 
@@ -81,6 +88,19 @@ public class BasicDropZone implements DropArea {
         this.dragHandler = dragHandler;
     }
 
+    public void setOnDropListener(Consumer<Draggable> listener) {
+        this.dropListener = listener;
+    }
+
+    public void setOnDragListener(Consumer<Draggable> listener) {
+        this.dragListener = listener;
+    }
+
+    public void clear() {
+        if (this.items == null) return;
+        new ArrayList<>(this.items()).forEach(this::remove);
+    }
+
     private void setPositionAndSize(Draggable d) {
         int i = this.items.indexOf(d);
         int j = 0;
@@ -102,9 +122,20 @@ public class BasicDropZone implements DropArea {
     @Override
     public void remove(Draggable d) {
         this.items.remove(d);
+        if (this.dragListener != null) {
+            this.dragListener.accept(d);
+        }
     }
 
     public void setDropValidator(DropValidator validator) {
         this.validator = validator;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
