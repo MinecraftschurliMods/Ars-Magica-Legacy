@@ -1,0 +1,11 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.magitech_goggles.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:magitech_goggles",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Magitech Goggles are a fancy piece of armor that can be equipped in the helmet slot, or the head slot if Curios is installed. While it is currently unknown what the great advantage of the goggles is, you feel like you will learn at some point in the future."
+    }
+  ]
+}

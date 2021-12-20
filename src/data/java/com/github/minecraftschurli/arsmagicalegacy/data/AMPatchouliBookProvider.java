@@ -15,6 +15,7 @@ import com.github.minecraftschurli.patchouli_datagen.translated.TranslatedEntryB
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -82,9 +83,50 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addEntry("vinteum_torch", "Vinteum Torch", new ItemStack(AMItems.VINTEUM_TORCH.get()))
                 .addSimpleTextPage("Vinteum Torches are crafted in a simplistic way, and glow with the same brightness as a standard torch. They are just an aesthetic alternative.")
                 .addSimpleRecipePage("crafting", AMItems.VINTEUM_TORCH.get().getRegistryName())
+                .build()
                 .build();
         builder.addCategory("items", "Items", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                 .setSortnum(2)
+                .addEntry("wizards_chalk", "Wizard's Chalk", new ItemStack(AMItems.WIZARDS_CHALK.get()))
+                .addSimpleTextPage("Wizard's Chalk is used to draw decorative shapes on the ground.")
+                .addSimpleRecipePage("crafting", AMItems.WIZARDS_CHALK.get().getRegistryName())
+                .build()
+                .addEntry("magitech_goggles", "Magitech Goggles", new ItemStack(AMItems.MAGITECH_GOGGLES.get()))
+                .addSimpleTextPage("The Magitech Goggles are a fancy piece of armor that can be equipped in the helmet slot, or the head slot if Curios is installed. While it is currently unknown what the great advantage of the goggles is, you feel like you will learn at some point in the future.")
+                .addSimpleRecipePage("crafting", AMItems.MAGITECH_GOGGLES.get().getRegistryName())
+                .build()
+                .addEntry("runes", "Runes", new ItemStack(AMItems.BLANK_RUNE.get()))
+                .addSimpleTextPage("Runes are the basic building parts for spells. When combined with multiple other items in the right combination, a magical spell scroll can be created.")
+                .addSimpleRecipePage("crafting", AMItems.BLANK_RUNE.get().getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BLACK).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.BLUE).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BROWN).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.CYAN).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.GRAY).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.GREEN).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.LIGHT_GRAY).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.LIME).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.MAGENTA).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.ORANGE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.PINK).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.PURPLE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.RED).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.WHITE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.YELLOW).getRegistryName())
+                .build()
+                .addEntry("rune_bag", "Rune Bag", new ItemStack(AMItems.RUNE_BAG.get()))
+                .addSimpleTextPage("The Rune Bag can hold a stack of each rune color, helping to save inventory space.")
+                .addSimpleRecipePage("crafting", AMItems.RUNE_BAG.get().getRegistryName())
+                .build()
+                .addEntry("arcane_compound", "Arcane Compound", new ItemStack(AMItems.ARCANE_COMPOUND.get()))
+                .addSimpleTextPage("A combination of materials from multiple worlds, the Arcane Compound forms the base resource needed to get Arcane Ash.")
+                .addSimpleRecipePage("crafting", AMItems.ARCANE_COMPOUND.get().getRegistryName())
+                .build()
+                .addEntry("arcane_ash", "Arcane Ash", new ItemStack(AMItems.ARCANE_ASH.get()))
+                .addSimpleTextPage("Created by burning Arcane Compounds in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magical machinery.")
+                .addSimpleRecipePage("crafting", AMItems.ARCANE_ASH.get().getRegistryName())
+                .build()
+                .addEntry("purified_vinteum_dust", "Purified Vinteum Dust", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
+                .addSimpleTextPage("By adding Arcane Ash to strengthen its magical properties, Cerublossoms as a catalyst and Desert Novas to release instability, Vinteum Dust can be put into a purified state with much higher capacity for magic.")
+                .addSimpleRecipePage("crafting", AMItems.PURIFIED_VINTEUM_DUST.get().getRegistryName())
+                .build()
+                .addEntry("spell_parchment", "Spell Parchment", new ItemStack(AMItems.SPELL_PARCHMENT.get()))
+                .addSimpleTextPage("Any mage that wants to cast spells without the need of some sort of staff or wand needs something to write the spell down on. This has worked for thousands of years, and surprisingly nothing more effective has been invented yet.")
+                .addSimpleRecipePage("crafting", AMItems.SPELL_PARCHMENT.get().getRegistryName())
+                .build()
                 .build();
 /*
         builder.addCategory("entities", "Entities", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))

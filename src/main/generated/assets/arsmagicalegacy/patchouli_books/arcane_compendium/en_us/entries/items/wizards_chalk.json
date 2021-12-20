@@ -1,0 +1,11 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.wizards_chalk.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:wizards_chalk{\"Damage\":0}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wizard's Chalk is used to draw decorative shapes on the ground."
+    }
+  ]
+}

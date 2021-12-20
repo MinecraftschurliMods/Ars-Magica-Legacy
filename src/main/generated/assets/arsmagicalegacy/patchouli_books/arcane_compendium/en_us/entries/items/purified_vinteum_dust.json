@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.purified_vinteum_dust.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:purified_vinteum_dust",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By adding Arcane Ash to strengthen its magical properties, Cerublossoms as a catalyst and Desert Novas to release instability, Vinteum Dust can be put into a purified state with much higher capacity for magic."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:purified_vinteum_dust"
+    }
+  ]
+}

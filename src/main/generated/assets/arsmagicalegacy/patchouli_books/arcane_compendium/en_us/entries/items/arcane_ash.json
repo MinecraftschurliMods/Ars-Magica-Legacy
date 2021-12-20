@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_ash.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:arcane_ash",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Created by burning Arcane Compounds in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magical machinery."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:arcane_ash"
+    }
+  ]
+}
