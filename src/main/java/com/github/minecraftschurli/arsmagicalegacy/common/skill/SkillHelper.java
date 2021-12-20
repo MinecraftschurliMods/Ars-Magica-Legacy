@@ -108,14 +108,30 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public void learn(Player player, ResourceLocation skill) {
-        getKnowledgeHolder(player).learn(skill);
+        var api = getKnowledgeHolder(player);
+        Map<ResourceLocation, Integer> map = new HashMap<>(api.skillPoints);
+        for (ResourceLocation rl : ArsMagicaAPI.get().getSkillManager().get(skill).getCost().keySet()) {
+            int cost = map.get(rl) - ArsMagicaAPI.get().getSkillManager().get(skill).getCost().get(rl);
+            if (cost < 0) return;
+            map.put(rl, cost);
+        }
+        api.skillPoints.putAll(map);
+        api.learn(skill);
         AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill);
         syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, ISkill skill) {
-        getKnowledgeHolder(player).learn(skill);
+        var api = getKnowledgeHolder(player);
+        Map<ResourceLocation, Integer> map = new HashMap<>(api.skillPoints);
+        for (ResourceLocation rl : skill.getCost().keySet()) {
+            int cost = map.get(rl) - skill.getCost().get(rl);
+            if (cost < 0) return;
+            map.put(rl, cost);
+        }
+        api.skillPoints.putAll(map);
+        api.learn(skill);
         AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId());
         syncToPlayer(player);
     }
@@ -285,7 +301,14 @@ public final class SkillHelper implements ISkillHelper {
          * @return Whether the skill can be learned or not.
          */
         public synchronized boolean canLearn(ResourceLocation skill) {
-            return skills.containsAll(ArsMagicaAPI.get().getSkillManager().get(skill).getParents());
+            ISkill iSkill = ArsMagicaAPI.get().getSkillManager().get(skill);
+            boolean canLearn = true;
+            for (ResourceLocation rl : iSkill.getCost().keySet()) {
+                if (skillPoints.getOrDefault(rl, 0) < iSkill.getCost().get(rl)) {
+                    canLearn = false;
+                }
+            }
+            return canLearn && skills.containsAll(ArsMagicaAPI.get().getSkillManager().get(skill).getParents());
         }
 
         /**

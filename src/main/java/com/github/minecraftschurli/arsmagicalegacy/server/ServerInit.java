@@ -12,6 +12,7 @@ import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
@@ -27,18 +28,18 @@ public final class ServerInit {
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
-            ItemStack stack = new ItemStack(AMItems.SPELL.get());
+            ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DISARM.get()),
+                    SpellStack.of(AMSpellParts.DIG.get()),
                     ShapeGroup.of(AMSpellParts.PROJECTILE.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;
         }));
         event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
-            ItemStack stack = new ItemStack(AMItems.SPELL.get());
+            ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DISARM.get()),
+                    SpellStack.of(AMSpellParts.FIRE_DAMAGE.get()),
                     ShapeGroup.of(AMSpellParts.SELF.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);

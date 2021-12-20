@@ -250,7 +250,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.WIZARDS_AUTUMN.getId(), "Wizard's Autumn", "Leaves fall in autumn. But it's kind of a slow process...", "components", "");
         skillTranslation(AMSpellParts.ZONE.getId(), "Zone", "No one can beat me in my sanctuary!", "shapes", "");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
-        add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "Other spell parts must be learned first!");
+        add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
         add(TranslationConstants.SPELL_INVALID, "[Invalid Spell]");
         add(TranslationConstants.SPELL_INVALID_DESCRIPTION, "Something is wrong with this spell, please check the log for warnings or errors!");

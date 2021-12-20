@@ -38,13 +38,29 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setVersion("1").setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(api.getCreativeModeTab().getRecipeFolderName()).setUseResourcepack();
         builder.addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .setSortnum(0)
+                .addEntry("getting_started", "Getting Started", ArsMagicaAPI.get().getBookStack())
+                .setPriority(true)
+                .addSimpleTextPage("Spellcrafting looks complex from a distance, but gets very easy when doing it more often.<br><br>You start by crafting an Occulus, placing it down and opening it. Through the Occulus, you can unlock new skills. Skills come in three categories, more on that in a minute.")
+                .addImagePage(new ResourceLocation(ArsMagicaAPI.MOD_ID, "patchouli_books/arcane_compendium/en_us/images/occulus.png")).setText("The Occulus has four tabs, the first three of which are skill tree tabs.").build()
+                .addSimpleTextPage("The first category of skills, shapes, determine how the spell is cast. For example, Self means that the spell is cast onto yourself, while Projectile shoots a projectile that casts the spell on whatever it hits.<br><br>Shapes have a square outline in the Occulus.", "Shapes")
+                .addSimpleTextPage("The second skill category, the components, represent what the spell does. For instance, Physical Damage acts as if the spell hit the target with a sword, while Dig breaks the targeted block. As you may have guessed, some components only affect blocks, some only affect mobs, some affect both, and very few affect neither.<br><br>Components have an octagonal outline in the Occulus.", "Components")
+                .addSimpleTextPage("And lastly, modifiers. Modifiers can affect both shapes and components, but not every combination will turn out to actually have an effect (what sense would Fire Damage + Gravity make?) The book tells you most, but not all useful combinations.<br><br>Modifiers have a rotated square outline in the Occulus.", "Modifiers")
+                .addSimpleTextPage("At this point, you may rightfully ask yourself: Why should I learn all this? We'll catch up to this in a moment. For now, the next thing you need is an Inscription Table. The Inscription Table is where you will assemble your spell.")
+                .addImagePage(new ResourceLocation(ArsMagicaAPI.MOD_ID, "patchouli_books/arcane_compendium/en_us/images/inscription_table_1.png")).setText("Once placed and opened, you are presented with a GUI that consists of four major sections:").build()
+                .addSimpleTextPage("1) The skills you currently know in the gray square at the top.<br>2) A slot that takes in a Book & Quill. The spell recipe will be written onto this book.<br>3) A total of five brown squares, the so-called shape groups. You can drag shapes and modifiers here. For the beginning, you should only be using the first one.<br>4) The spell grammar section. This is where components and component-related modifiers go.")
+                .addImagePage(new ResourceLocation(ArsMagicaAPI.MOD_ID, "patchouli_books/arcane_compendium/en_us/images/inscription_table_2.png")).setText("Drag the skills down to the shape groups and the spell grammar section.").build()
+                .addImagePage(new ResourceLocation(ArsMagicaAPI.MOD_ID, "patchouli_books/arcane_compendium/en_us/images/inscription_table_3.png")).setText("The shown spell recipe is Projectile-Dig, which is recommended for beginners.").build()
+                .addSimpleTextPage("Above the book slot is a search bar, which will search through all known skills. Below the slot is where the name for your spell recipe goes (note that this is not the name of the spell itself).<br><br>Once you are done, simply take out the book.")
+                .addSimpleTextPage("Now that you have your spell recipe, you can do the final step: crafting the spell at the Crafting Altar.<br><br>To start crafting the spell, put the recipe onto the altar's lectern. The items you need to throw in will appear above it, starting with a Blank Rune and ending with a Spell Parchment.")
+                .addSimpleTextPage("When first using the spell, you can choose an icon and a name for the spell. After that, you're done!<br><br>It is heavily recommended to at least read the other chapters in this category; they cover most things to know in magic.")
+                .build()
                 .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .addSimpleTextPage("Harnessing the forces of creation, the crafting altar allows mages to work miracles of magic. This is where you will create all of your spells.")
                 .addSimpleSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get()), "A basic yet important block, it focuses an altar's power in order to perform spell crafting.")
                 .addSimpleSpotlightPage(new ItemStack(AMItems.MAGIC_WALL.get()), "The magic wall was a nice try into illusion blocks, but it did not work. Instead, it has proven important when building crafting altars.")
                 .addSimpleDoubleRecipePage("crafting", AMItems.ALTAR_CORE.get().getRegistryName(), AMItems.MAGIC_WALL.get().getRegistryName())
                 .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
-                .addSimpleTextPage("The altar is upgradeable by two groups, the caps and the structure materials. Both groups stack cumulatively, so for example wooden planks (1) plus glass (1) equals a power of two, while stone bricks (1) plus redstone blocks (3) equals a power of four. The higher the power, the more powerful spells can be crafted.")
+                .addSimpleTextPage("The altar is upgradeable by two groups, the caps and the structure materials. Both groups stack cumulatively, so for example wooden planks (1) plus glass (1) equals a power of two, while sandstone (2) plus diamond blocks (7) equals a power of nine. The higher the power, the more powerful spells can be crafted.")
                 .addSimpleTextPage("- Glass: 1<br>- Block of Coal: 2<br>- Block of Redstone: 3<br>- Block of Iron: 4<br>- Block of Lapis Lazuli: 5<br>- Block of Gold: 6<br>- Block of Diamond: 7<br>- Block of Emerald: 8<br>- Block of Moonstone: 9<br>- Block of Sunstone: 10", "Caps")
                 .addSimpleTextPage("- Wooden Planks: 1<br>- Stone Bricks: 1<br>- Sandstone/Red Sandstone: 2<br>- Bricks: 2<br>- Block of Quartz: 3<br>- Nether Bricks: 3<br>- Polished Blackstone Bricks: 3<br>- Purpur Block: 4", "Structure Materials")
                 .build()
@@ -117,7 +133,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build()
                 .addEntry("arcane_ash", "Arcane Ash", new ItemStack(AMItems.ARCANE_ASH.get()))
                 .addSimpleTextPage("Created by burning Arcane Compounds in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magical machinery.")
-                .addSimpleRecipePage("crafting", AMItems.ARCANE_ASH.get().getRegistryName())
+                .addSimpleRecipePage("smelting", AMItems.ARCANE_ASH.get().getRegistryName())
                 .build()
                 .addEntry("purified_vinteum_dust", "Purified Vinteum Dust", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                 .addSimpleTextPage("By adding Arcane Ash to strengthen its magical properties, Cerublossoms as a catalyst and Desert Novas to release instability, Vinteum Dust can be put into a purified state with much higher capacity for magic.")
@@ -155,8 +171,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
             String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
             TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
             String textLangKey = "%s.page0.text".formatted(entryLangKey);
-            entry.addPage(new TextPageBuilder(textLangKey, entry)).build()
-                    .addPage(new SpellPartPageBuilder(registryName, entry)).build()
+            entry.addPage(new TextPageBuilder(textLangKey, entry)).build().addPage(new SpellPartPageBuilder(registryName, entry)).build()
                     .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
         }
 /*

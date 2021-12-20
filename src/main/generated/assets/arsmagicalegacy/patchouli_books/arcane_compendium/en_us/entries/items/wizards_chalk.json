@@ -6,6 +6,10 @@
     {
       "type": "patchouli:text",
       "text": "Wizard's Chalk is used to draw decorative shapes on the ground."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:wizards_chalk"
     }
   ]
 }

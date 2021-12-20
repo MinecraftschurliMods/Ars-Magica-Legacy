@@ -1,14 +1,13 @@
 package com.github.minecraftschurli.arsmagicalegacy.common;
 
-import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.event.SpellCastEvent;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurli.arsmagicalegacy.api.magic.IManaHelper;
-import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
@@ -93,7 +92,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EventHandler {
-    private static final float[] MANA_MODIFIER_PER_LUNAR_PHASE = new float[]{1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
+    private static final float[] MANA_MODIFIER_PER_LUNAR_PHASE = new float[]{1.0F, 0.875F, 0.75F, 0.625F, 0.5F, 0.625F, 0.75F, 0.875F};
 
     private EventHandler() {
     }
