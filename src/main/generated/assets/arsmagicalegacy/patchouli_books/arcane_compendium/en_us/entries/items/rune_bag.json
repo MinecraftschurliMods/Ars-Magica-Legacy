@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Rune Bag can hold a stack of each rune color, helping to save inventory space."
+      "text": "The Rune Bag can hold runes, a stack of each color, to save inventory space."
     },
     {
       "type": "patchouli:crafting",

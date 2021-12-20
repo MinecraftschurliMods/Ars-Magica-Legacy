@@ -9,28 +9,33 @@
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "aum",
       "item": "arsmagicalegacy:aum",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page1.text"
+      "text": "A flower with healing properties, Aum is a component in many spells. It can be found in forests."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "cerublossom",
       "item": "arsmagicalegacy:cerublossom",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page2.text"
+      "text": "Cerublossom flowers thrive in lush, green environments. They were one of the first magical plants discovered, being used in potions and light-focused spells. A short while after its discovery, it was also noted that the Cerublossom could be used as part of the $(l:items/purified_vinteum_dust)purification process for Vinteum Dust$()."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "desert_nova",
       "item": "arsmagicalegacy:desert_nova",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page3.text"
+      "text": "Desert Novas grow in dry conditions. The Nova has extraordinary magical properties for a desert plant, and is highly sought after. It is one of the two plants used in the $(l:items/purified_vinteum_dust)purification process of Vinteum Dust$()."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "tarma_root",
       "item": "arsmagicalegacy:tarma_root",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page4.text"
+      "text": "Lighter than it looks, Tarma Root grows in mountain biomes. It is an ingredient in spells and air essences."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "wakebloom",
       "item": "arsmagicalegacy:wakebloom",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page5.text"
+      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water essence."
     },
     {
       "type": "patchouli:crafting",

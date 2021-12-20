@@ -125,6 +125,7 @@ class AMLootTableProvider extends LootTableProvider {
 
         @Override
         protected void addTables() {
+/*
             add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.INFINITY_ORB.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getSkillHelper().getOrbForSkillPoint(AMSkillPoints.GREEN.get()).getOrCreateTag())))));
             add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.INFINITY_ORB.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getSkillHelper().getOrbForSkillPoint(AMSkillPoints.RED.get()).getOrCreateTag())))));
             add(AMEntities.EARTH_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.INFINITY_ORB.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getSkillHelper().getOrbForSkillPoint(AMSkillPoints.GREEN.get()).getOrCreateTag())))));
@@ -138,6 +139,7 @@ class AMLootTableProvider extends LootTableProvider {
             add(AMEntities.DRYAD.get(), LootTable.lootTable());
             add(AMEntities.MAGE.get(), LootTable.lootTable());
             add(AMEntities.MANA_CREEPER.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0F, 2F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F))))));
+*/
         }
 
         @Override

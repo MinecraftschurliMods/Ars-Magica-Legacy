@@ -9,18 +9,21 @@
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "chimerite",
       "item": "arsmagicalegacy:chimerite_ore",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.ores.page1.text"
+      "text": "Found where the stones shift, Chimerite is used in spells that require a great deal of alternation or illusion."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "topaz",
       "item": "arsmagicalegacy:topaz_ore",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.ores.page2.text"
+      "text": "Found in the deepest depths or on the highest peaks, Topaz is commonly used as an entry level magical crystal."
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "vinteum",
       "item": "arsmagicalegacy:vinteum_ore",
-      "text": "item.arsmagicalegacy.arcane_compendium.blocks.ores.page3.text"
+      "text": "Found relatively common in most layers of the world, Vinteum Dust quickly proved itself a viable magical resource."
     },
     {
       "type": "patchouli:crafting",

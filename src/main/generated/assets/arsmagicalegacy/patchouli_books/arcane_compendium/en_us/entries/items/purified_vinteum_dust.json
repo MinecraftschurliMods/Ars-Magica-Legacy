@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "By adding Arcane Ash to strengthen its magical properties, Cerublossoms as a catalyst and Desert Novas to release instability, Vinteum Dust can be put into a purified state with much higher capacity for magic."
+      "text": "By adding $(l:items/arcane_ash)Arcane Ash$() to strengthen its magical properties, $(l:blocks/flowers#cerublossom)Cerublossoms$() as a catalyst and $(l:blocks/flowers#desert_nova)Desert Novas$() to release instability, $(l:blocks/ores#vinteum)Vinteum Dust$() can be put into a purified state with much higher capacity for magic."
     },
     {
       "type": "patchouli:crafting",

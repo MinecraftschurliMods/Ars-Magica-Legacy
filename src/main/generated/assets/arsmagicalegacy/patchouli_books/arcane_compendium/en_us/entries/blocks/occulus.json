@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A gateway to the stars, the Occulus shows you your innermost self. Here, you can spend skill points to unlock new spell parts."
+      "text": "A gateway to the stars, the Occulus shows you your innermost self. Here, you can spend skill points to unlock new skills."
     },
     {
       "type": "patchouli:crafting",

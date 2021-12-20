@@ -309,7 +309,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('G', Tags.Items.NUGGETS_GOLD)
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -319,7 +319,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.WATER_BUCKET)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_water");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -329,7 +329,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.BLAZE_POWDER)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_fire");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -339,7 +339,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Tags.Items.STONE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_earth");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -349,7 +349,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', AMItems.TARMA_ROOT.get())
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_air");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ICE.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ICE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -359,7 +359,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.ICE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ice");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -369,7 +369,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Tags.Items.DUSTS_GLOWSTONE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_lightning");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.NATURE.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.NATURE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDK")
                 .pattern("ALA")
@@ -381,7 +381,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('L', Items.VINE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_nature");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIFE.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIFE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -391,7 +391,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.GOLDEN_APPLE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_life");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()).getOrCreateTag())
                 .pattern("AAA")
                 .pattern("ADA")
                 .pattern("AAA")
@@ -399,7 +399,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('D', Items.DIAMOND)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), 1, ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ENDER.get()).getTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ENDER.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -411,7 +411,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ender");
     }
 
-    static class ShapedNBTRecipeBuilder {
+    private static class ShapedNBTRecipeBuilder {
         private final Item result;
         private final int count;
         private final CompoundTag tag;
@@ -423,6 +423,10 @@ class AMRecipeProvider extends RecipeProvider {
             this.result = result.asItem();
             this.count = count;
             this.tag = tag;
+        }
+
+        public static ShapedNBTRecipeBuilder shaped(ItemLike result, CompoundTag compound) {
+            return new ShapedNBTRecipeBuilder(result, 1, compound);
         }
 
         public static ShapedNBTRecipeBuilder shaped(ItemLike result, int count, CompoundTag compound) {
@@ -547,6 +551,137 @@ class AMRecipeProvider extends RecipeProvider {
 
             public RecipeSerializer<?> getType() {
                 return RecipeSerializer.SHAPED_RECIPE;
+            }
+
+            public ResourceLocation getId() {
+                return id;
+            }
+
+            @Nullable
+            public JsonObject serializeAdvancement() {
+                return advancement.serializeToJson();
+            }
+
+            @Nullable
+            public ResourceLocation getAdvancementId() {
+                return advancementId;
+            }
+        }
+    }
+
+    private static class ShapelessNBTRecipeBuilder {
+        private final Item result;
+        private final int count;
+        private final CompoundTag compound;
+        private final List<Ingredient> ingredients = new ArrayList<>();
+        private final Advancement.Builder advancement = Advancement.Builder.advancement();
+
+        private ShapelessNBTRecipeBuilder(ItemLike result, int count, CompoundTag compound) {
+            this.result = result.asItem();
+            this.count = count;
+            this.compound = compound;
+        }
+
+        public static ShapelessNBTRecipeBuilder shapeless(ItemLike result, CompoundTag compound) {
+            return new ShapelessNBTRecipeBuilder(result, 1, compound);
+        }
+
+        public static ShapelessNBTRecipeBuilder shapeless(ItemLike result, int count, CompoundTag compound) {
+            return new ShapelessNBTRecipeBuilder(result, count, compound);
+        }
+
+        public ShapelessNBTRecipeBuilder requires(Tag<Item> tag) {
+            return requires(Ingredient.of(tag));
+        }
+
+        public ShapelessNBTRecipeBuilder requires(ItemLike item) {
+            return requires(item, 1);
+        }
+
+        public ShapelessNBTRecipeBuilder requires(ItemLike item, int quantity) {
+            for (int i = 0; i < quantity; ++i) {
+                requires(Ingredient.of(item));
+            }
+            return this;
+        }
+
+        public ShapelessNBTRecipeBuilder requires(Ingredient ingredient) {
+            return requires(ingredient, 1);
+        }
+
+        public ShapelessNBTRecipeBuilder requires(Ingredient ingredient, int quantity) {
+            for (int i = 0; i < quantity; ++i) {
+                ingredients.add(ingredient);
+            }
+            return this;
+        }
+
+        public ShapelessNBTRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
+            this.advancement.addCriterion(name, criterion);
+            return this;
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer) {
+            this.save(consumer, ForgeRegistries.ITEMS.getKey(result.asItem()));
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer, String save) {
+            ResourceLocation saveTo = new ResourceLocation(save);
+            if (saveTo.equals(ForgeRegistries.ITEMS.getKey(result.asItem()))) {
+                throw new IllegalStateException("Shapeless Recipe " + save + " should remove its 'save' argument");
+            } else {
+                save(consumer, saveTo);
+            }
+        }
+
+        public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+            ensureValid(id);
+            advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
+            consumer.accept(new ShapelessNBTRecipeBuilder.Result(id, result, count, compound, ingredients, advancement, new ResourceLocation(id.getNamespace(), "recipes/" + result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
+        }
+
+        private void ensureValid(ResourceLocation id) {
+            if (advancement.getCriteria().isEmpty()) {
+                throw new IllegalStateException("No way of obtaining recipe " + id);
+            }
+        }
+
+        public static class Result implements FinishedRecipe {
+            private final ResourceLocation id;
+            private final Item result;
+            private final int count;
+            private final CompoundTag compound;
+            private final List<Ingredient> ingredients;
+            private final Advancement.Builder advancement;
+            private final ResourceLocation advancementId;
+
+            public Result(ResourceLocation id, Item result, int count, CompoundTag compound, List<Ingredient> ingredients, Advancement.Builder advancementBuilder, ResourceLocation advancementId) {
+                this.id = id;
+                this.result = result;
+                this.count = count;
+                this.compound = compound;
+                this.ingredients = ingredients;
+                this.advancement = advancementBuilder;
+                this.advancementId = advancementId;
+            }
+
+            public void serializeRecipeData(JsonObject json) {
+                JsonArray ingredientsJson = new JsonArray();
+                for (Ingredient ingredient : ingredients) {
+                    ingredientsJson.add(ingredient.toJson());
+                }
+                json.add("ingredients", ingredientsJson);
+                JsonObject resultJson = new JsonObject();
+                resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+                if (count > 1) {
+                    resultJson.addProperty("count", count);
+                }
+                resultJson.addProperty("nbt", NbtOps.INSTANCE.convertTo(JsonOps.INSTANCE, compound).toString());
+                json.add("result", resultJson);
+            }
+
+            public RecipeSerializer<?> getType() {
+                return RecipeSerializer.SHAPELESS_RECIPE;
             }
 
             public ResourceLocation getId() {

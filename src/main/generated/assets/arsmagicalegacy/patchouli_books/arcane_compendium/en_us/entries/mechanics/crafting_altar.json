@@ -29,16 +29,16 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The altar is upgradeable by two groups, the caps and the structure materials. Both groups stack cumulatively, so for example wooden planks (1) plus glass (1) equals a power of two, while stone bricks (1) plus redstone blocks (3) equals a power of four. The higher the power, the more powerful spells can be crafted."
+      "text": "The altar is upgradeable by two groups, the caps and the structure materials. Both groups stack cumulatively, so for example wooden planks (1) plus glass (1) equals a power of two, while sandstone (2) plus diamond blocks (7) equals a power of nine. The higher the power, the more powerful spells can be crafted."
     },
     {
       "type": "patchouli:text",
-      "text": "- Glass: 1<br>- Block of Coal: 2<br>- Block of Redstone: 3<br>- Block of Iron: 4<br>- Block of Lapis Lazuli: 5<br>- Block of Gold: 6<br>- Block of Diamond: 7<br>- Block of Emerald: 8<br>- Block of Moonstone: 9<br>- Block of Sunstone: 10",
+      "text": "- Glass: 1$(br)- Block of Coal: 2$(br)- Block of Redstone: 3$(br)- Block of Iron: 4$(br)- Block of Lapis Lazuli: 5$(br)- Block of Gold: 6$(br)- Block of Diamond: 7$(br)- Block of Emerald: 8",
       "title": "Caps"
     },
     {
       "type": "patchouli:text",
-      "text": "- Wooden Planks: 1<br>- Stone Bricks: 1<br>- Sandstone/Red Sandstone: 2<br>- Bricks: 2<br>- Block of Quartz: 3<br>- Nether Bricks: 3<br>- Polished Blackstone Bricks: 3<br>- Purpur Block: 4",
+      "text": "- Wooden Planks: 1$(br)- Stone Bricks: 1$(br)- Sandstone/Red Sandstone: 2$(br)- Bricks: 2$(br)- Block of Quartz: 3$(br)- Nether Bricks: 3$(br)- Polished Blackstone Bricks: 3$(br)- Purpur Block: 4",
       "title": "Structure Materials"
     }
   ]

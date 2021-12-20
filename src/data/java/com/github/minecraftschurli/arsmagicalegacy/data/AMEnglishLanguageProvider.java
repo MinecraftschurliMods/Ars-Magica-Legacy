@@ -55,28 +55,28 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.DEEPSLATE_VINTEUM_ORE);
         itemIdTranslation(AMItems.VINTEUM_DUST);
         addBlock(AMBlocks.VINTEUM_BLOCK, "Block of Vinteum");
-        blockIdTranslation(AMBlocks.MOONSTONE_ORE);
-        blockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
-        itemIdTranslation(AMItems.MOONSTONE);
-        addBlock(AMBlocks.MOONSTONE_BLOCK, "Block of Moonstone");
-        blockIdTranslation(AMBlocks.SUNSTONE_ORE);
-        itemIdTranslation(AMItems.SUNSTONE);
-        addBlock(AMBlocks.SUNSTONE_BLOCK, "Block of Sunstone");
-        blockIdTranslation(AMBlocks.WITCHWOOD_LOG);
-        blockIdTranslation(AMBlocks.WITCHWOOD);
-        blockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD_LOG);
-        blockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD);
-        blockIdTranslation(AMBlocks.WITCHWOOD_LEAVES);
-        blockIdTranslation(AMBlocks.WITCHWOOD_SAPLING);
-        blockIdTranslation(AMBlocks.WITCHWOOD_PLANKS);
-        blockIdTranslation(AMBlocks.WITCHWOOD_SLAB);
-        blockIdTranslation(AMBlocks.WITCHWOOD_STAIRS);
-        blockIdTranslation(AMBlocks.WITCHWOOD_FENCE);
-        blockIdTranslation(AMBlocks.WITCHWOOD_FENCE_GATE);
-        blockIdTranslation(AMBlocks.WITCHWOOD_DOOR);
-        blockIdTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
-        blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
-        blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
+        wipBlockIdTranslation(AMBlocks.MOONSTONE_ORE);
+        wipBlockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
+        wipItemIdTranslation(AMItems.MOONSTONE);
+        addBlock(AMBlocks.MOONSTONE_BLOCK, "[NYI] Block of Moonstone");
+        wipBlockIdTranslation(AMBlocks.SUNSTONE_ORE);
+        wipItemIdTranslation(AMItems.SUNSTONE);
+        addBlock(AMBlocks.SUNSTONE_BLOCK, "[NYI] Block of Sunstone");
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_LOG);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD);
+        wipBlockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD_LOG);
+        wipBlockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_LEAVES);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_SAPLING);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_PLANKS);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_SLAB);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_STAIRS);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_FENCE);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_FENCE_GATE);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_DOOR);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
+        wipBlockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         itemIdTranslation(AMItems.BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));
@@ -280,6 +280,24 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
+    }
+
+    /**
+     * Adds a block translation that matches [WIP] + the block id.
+     *
+     * @param block The block to generate the translation for.
+     */
+    private void wipBlockIdTranslation(RegistryObject<? extends Block> block) {
+        addBlock(block, "[WIP]" + idToTranslation(block.getId().getPath()));
+    }
+
+    /**
+     * Adds an item translation that matches [WIP] + the item id.
+     *
+     * @param item The item to generate the translation for.
+     */
+    private void wipItemIdTranslation(RegistryObject<? extends Item> item) {
+        addItem(item, "[WIP]" + idToTranslation(item.getId().getPath()));
     }
 
     /**

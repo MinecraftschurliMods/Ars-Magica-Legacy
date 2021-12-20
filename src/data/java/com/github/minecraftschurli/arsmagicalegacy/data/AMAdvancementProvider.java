@@ -40,7 +40,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     AMAdvancementProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper, AMSkillProvider skillProvider) {
         super(pGenerator, existingFileHelper);
         generator = pGenerator;
-        tabs = ImmutableList.of(new AMAdvancements(), new AMBookAdvancements(skillProvider));
+        tabs = ImmutableList.of(/*new AMAdvancements(), */new AMBookAdvancements(skillProvider));
     }
 
     @Override

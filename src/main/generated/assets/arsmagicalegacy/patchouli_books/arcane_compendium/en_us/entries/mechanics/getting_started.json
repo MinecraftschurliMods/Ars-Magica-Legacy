@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Spellcrafting looks complex from a distance, but gets very easy when doing it more often.<br><br>You start by crafting an Occulus, placing it down and opening it. Through the Occulus, you can unlock new skills. Skills come in three categories, more on that in a minute."
+      "text": "Spellcrafting looks complex from a distance, but gets very easy when doing it more often.$(br2)You start by crafting an $(l:blocks/occulus)Occulus$(), placing it down and opening it. Through the Occulus, you can unlock new skills. Skills come in three categories, more on that in a minute."
     },
     {
       "type": "patchouli:image",
@@ -16,33 +16,33 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The first category of skills, shapes, determine how the spell is cast. For example, Self means that the spell is cast onto yourself, while Projectile shoots a projectile that casts the spell on whatever it hits.<br><br>Shapes have a square outline in the Occulus.",
+      "text": "The first category of skills, shapes, determine how the spell is cast. For example, $(l:shapes/self)Self$() means that the spell is cast onto yourself, while $(l:shapes/projectile)Projectile$() shoots a projectile that casts the spell on whatever it hits.$(br2)Shapes have a square outline in the Occulus.",
       "title": "Shapes"
     },
     {
       "type": "patchouli:text",
-      "text": "The second skill category, the components, represent what the spell does. For instance, Physical Damage acts as if the spell hit the target with a sword, while Dig breaks the targeted block. As you may have guessed, some components only affect blocks, some only affect mobs, some affect both, and very few affect neither.<br><br>Components have an octagonal outline in the Occulus.",
+      "text": "The second skill category, the components, represent what the spell does. For instance, $(l:components/physical_damage)Physical Damage$() acts as if the spell hit the target with a sword, while $(l:components/dig)Dig$() breaks the targeted block. As you may have guessed, some components only affect blocks, some only affect mobs, some affect both, and very few affect neither.$(br2)Components have an octagonal outline in the Occulus.",
       "title": "Components"
     },
     {
       "type": "patchouli:text",
-      "text": "And lastly, modifiers. Modifiers can affect both shapes and components, but not every combination will turn out to actually have an effect (what sense would Fire Damage + Gravity make?) The book tells you most, but not all useful combinations.<br><br>Modifiers have a rotated square outline in the Occulus.",
+      "text": "And lastly, modifiers. Modifiers can affect both shapes and components, but not every combination will turn out to actually have an effect (what sense would $(l:components/fire_damage)Fire Damage$() + $(l:modifiers/gravity)Gravity$() make?) The book tells you most, but not all useful combinations.$(br2)Modifiers have a rotated square outline in the Occulus.",
       "title": "Modifiers"
     },
     {
       "type": "patchouli:text",
-      "text": "At this point, you may rightfully ask yourself: Why should I learn all this? We'll catch up to this in a moment. For now, the next thing you need is an Inscription Table. The Inscription Table is where you will assemble your spell."
+      "text": "At this point, you may rightfully ask yourself: Why should I learn all this? We'll catch up to this in a moment. For now, the next thing you need is an $(l:blocks/inscription_table)Inscription Table$(). The Inscription Table is where you will assemble your spell."
     },
     {
       "type": "patchouli:image",
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_1.png"
       ],
-      "text": "Once placed and opened, you are presented with a GUI that can be divided into four major sections:"
+      "text": "Once placed and opened, you are presented with a GUI that consists of four major sections:"
     },
     {
       "type": "patchouli:text",
-      "text": "1) The skills you currently know in the gray square at the top.<br>2) A slot that takes in a Book & Quill. The spell recipe will be written onto this book.<br>3) A total of five squares, the so-called shape groups. You can drag shapes and modifiers here. For the beginning, you should only be using the first one.<br>4) The spell grammar section. This is where components and component-related modifiers go."
+      "text": "1) The skills you currently know in the Source Region, located right at the top.$(br)2) A slot that takes in a Book & Quill. The spell recipe will be written onto this book.$(br)3) A total of five brown squares, the so-called $(l:mechanics/shape_groups)shape groups$(). You can drag shapes and modifiers here. For the beginning, you should only be using the first one.$(br)4) The spell grammar section. This is where components and component-related modifiers go."
     },
     {
       "type": "patchouli:image",
@@ -56,19 +56,19 @@
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_3.png"
       ],
-      "text": "The shown spell recipe is Projectile-Dig, which is recommended for beginners."
+      "text": "The shown spell recipe is $(l:shapes/projectile)Projectile$()-$(l:components/dig)Dig$(), which is recommended for beginners."
     },
     {
       "type": "patchouli:text",
-      "text": "Above the book slot is a search bar, which will search through all known skills. Below the slot is where the name for your spell recipe goes (note that this is not the name of the spell itself).<br><br>Once you are done, simply take out the book."
+      "text": "Above the book slot is a search bar, which will search through all known skills. Below the slot is where the name for your spell recipe goes (note that this is not the name of the spell itself).$(br2)Once you are done, simply take out the book."
     },
     {
       "type": "patchouli:text",
-      "text": "Now that you have your spell recipe, you can do the final step: crafting the spell at the Crafting Altar.<br><br>To start crafting the spell, put the recipe onto the altar's lectern. The items you need to throw in will appear above it, starting with a Blank Rune and ending with a Spell Parchment."
+      "text": "Now that you have your spell recipe, you can do the final step: crafting the spell at the $(l:mechanics/crafting_altar)Crafting Altar$().$(br2)To start crafting the spell, put the recipe onto the altar's lectern. The items you need to throw in will appear above it, always starting with a $(l:items/runes)Blank Rune$() and ending with a $(l:items/spell_parchment)Spell Parchment$()."
     },
     {
       "type": "patchouli:text",
-      "text": "When first using the spell, you can choose an icon and a name for the spell. After that, you're done!<br><br>It is heavily recommended to at least read the other chapters in this category; they cover most things to know in magic."
+      "text": "When first using the spell, you can choose an icon and a name for the spell. After that, you're done!$(br2)It is heavily recommended to at least read the other chapters in this category, as they cover most things to know in magic."
     }
   ],
   "priority": true
