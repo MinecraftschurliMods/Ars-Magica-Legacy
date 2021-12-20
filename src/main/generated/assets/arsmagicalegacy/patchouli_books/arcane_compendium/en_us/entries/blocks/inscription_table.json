@@ -1,0 +1,19 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.inscription_table.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:inscription_table",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using this table along with a writable book, you can compose spells of incredible power.<br><br>You will see what spell parts you know at the top of the table in the Source Region. You can then drag shapes and modifiers to the brown squares set aside for Shape Groups, and drag components to the gray Spell Grammar section at the bottom to lay out a spell."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Once satisfied with the spell, you can write the spells down in a writable book (you did remember to bring one, didn't you?). This book can be placed upon a lectern that is part of the Crafting Altar structure, and will guide you through the process needed to make the spell.<br><br>The book is worth reading too, as it contains a recap of the spell you will be creating, a materials list, and an affinity breakdown."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:inscription_table"
+    }
+  ]
+}

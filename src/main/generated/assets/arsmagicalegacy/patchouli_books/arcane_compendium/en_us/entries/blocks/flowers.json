@@ -1,0 +1,50 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:aum",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A variety of flowers can be found scattered across the world."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:aum",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page1.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:cerublossom",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page2.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:desert_nova",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:tarma_root",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page4.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:wakebloom",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page5.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:pink_dye",
+      "recipe2": "arsmagicalegacy:blue_dye"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:red_dye",
+      "recipe2": "arsmagicalegacy:brown_dye"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:magenta_dye"
+    }
+  ]
+}

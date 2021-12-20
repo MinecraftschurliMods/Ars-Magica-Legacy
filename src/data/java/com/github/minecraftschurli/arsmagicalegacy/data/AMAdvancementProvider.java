@@ -2,7 +2,6 @@ package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.advancement.PlayerLearnedSkillTrigger;
-import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkill;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
@@ -37,12 +36,10 @@ class AMAdvancementProvider extends AdvancementProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
     private final DataGenerator generator;
-    private final AMSkillProvider skillProvider;
 
     AMAdvancementProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper, AMSkillProvider skillProvider) {
         super(pGenerator, existingFileHelper);
         generator = pGenerator;
-        this.skillProvider = skillProvider;
         tabs = ImmutableList.of(new AMAdvancements(), new AMBookAdvancements(skillProvider));
     }
 
@@ -144,9 +141,9 @@ class AMAdvancementProvider extends AdvancementProvider {
                     .save(consumer, ArsMagicaAPI.MOD_ID + ":book/root");
             for (ResourceLocation skill : skillProvider.getSkills()) {
                 Advancement.Builder.advancement()
-                                   .addCriterion("knows", new PlayerLearnedSkillTrigger.TriggerInstance(EntityPredicate.Composite.ANY, skill))
-                                   .parent(root)
-                                   .save(consumer, ArsMagicaAPI.MOD_ID + ":book/" + skill.getPath());
+                        .addCriterion("knows", new PlayerLearnedSkillTrigger.TriggerInstance(EntityPredicate.Composite.ANY, skill))
+                        .parent(root)
+                        .save(consumer, ArsMagicaAPI.MOD_ID + ":book/" + skill.getPath());
             }
         }
     }
