@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,19 +41,12 @@ public class Dig extends AbstractComponent {
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            ItemStack dummyStack = createDummyStack(spellHelper.countModifiers(modifiers, AMSpellParts.PROSPERITY.getId()), spellHelper.countModifiers(modifiers, AMSpellParts.SILK_TOUCH.getId()));
+            var spellHelper = ArsMagicaAPI.get().getSpellHelper();
+            ItemStack dummyStack = AMUtil.createDummyStack(spellHelper.countModifiers(modifiers, AMSpellParts.PROSPERITY.getId()), spellHelper.countModifiers(modifiers, AMSpellParts.SILK_TOUCH.getId()));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);
         return SpellCastResult.SUCCESS;
-    }
-
-    private ItemStack createDummyStack(int fortune, int silk_touch) {
-        ItemStack stack = new ItemStack(null);
-        stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
-        stack.enchant(Enchantments.SILK_TOUCH, silk_touch);
-        return stack;
     }
 
     private Tier getTier(List<ISpellModifier> modifiers) {

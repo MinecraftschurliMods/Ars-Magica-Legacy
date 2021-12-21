@@ -28,16 +28,16 @@ public final class ServerInit {
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
         event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
-            ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
+            ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DIG.get()),
+                    SpellStack.of(AMSpellParts.WIZARDS_AUTUMN.get()),
                     ShapeGroup.of(AMSpellParts.PROJECTILE.get())
             ));
             context.getSource().getPlayerOrException().addItem(stack);
             return Command.SINGLE_SUCCESS;
         }));
         event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
-            ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
+            ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, Spell.of(
                     SpellStack.of(AMSpellParts.FIRE_DAMAGE.get()),
                     ShapeGroup.of(AMSpellParts.SELF.get())

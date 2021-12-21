@@ -5,6 +5,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -39,6 +41,19 @@ public final class AMUtil {
         Vec3 d = b.subtract(a).normalize();
         double p = d.dot(c);
         return p <= 0 ? a : p >= a.distanceTo(b) ? b : a.add(d.scale(p));
+    }
+
+    /**
+     * Creates a dummy item stack for situations where you have the spell, but not the ItemStack.
+     * @param fortune    The fortune level of the stack.
+     * @param silk_touch The silk touch level of the stack.
+     * @return A dummy item stack, enchanted with fortune and silk touch if necessary
+     */
+    public static ItemStack createDummyStack(int fortune, int silk_touch) {
+        ItemStack stack = new ItemStack(null);
+        stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
+        stack.enchant(Enchantments.SILK_TOUCH, silk_touch);
+        return stack;
     }
 
     /**
