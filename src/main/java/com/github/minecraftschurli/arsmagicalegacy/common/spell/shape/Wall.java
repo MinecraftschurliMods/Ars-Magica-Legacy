@@ -31,7 +31,7 @@ public class Wall extends AbstractShape {
     }
 
     @Override
-    public boolean isBeginShape() {
+    public boolean canComeFirst() {
         return false;
     }
 

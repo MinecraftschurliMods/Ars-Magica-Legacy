@@ -47,7 +47,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
             if (part instanceof ISpellShape shape) {
                 if (locked)
                     throw new MalformedShapeGroupException("A shape can not come after a terminus shape!", parts);
-                if (first && !shape.isBeginShape())
+                if (first && !shape.canComeFirst())
                     throw new MalformedShapeGroupException("A non beginn shape can not be first!", parts);
                 first = false;
                 currentMods = new ArrayList<>();

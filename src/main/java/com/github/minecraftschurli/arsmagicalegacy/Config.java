@@ -52,7 +52,7 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue DEFAULT_MAX_MANA;
         public final ForgeConfigSpec.DoubleValue DEFAULT_MAX_BURNOUT;
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
-        public final ForgeConfigSpec.IntValue MAX_STAGE_GROUPS;
+        public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
 
         private Server(ForgeConfigSpec.Builder builder) {
@@ -74,7 +74,7 @@ public final class Config {
                     .comment("The time in ticks between multiblock validation checks for the crafting altar. [ 1 - 200 ]")
                     .translation(TranslationConstants.CONFIG + "crafting_altar_check_time")
                     .defineInRange("crafting_altar_check_time", 20, 1, 200);
-            MAX_STAGE_GROUPS = builder
+            MAX_SHAPE_GROUPS = builder
                     .comment("The maximum number of shape groups allowed for new spells. [ 0 - 5 ]")
                     .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
