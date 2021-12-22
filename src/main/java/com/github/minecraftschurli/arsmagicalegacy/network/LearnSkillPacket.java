@@ -20,10 +20,6 @@ public record LearnSkillPacket(ResourceLocation id) implements IPacket {
 
     @Override
     public void handle(NetworkEvent.Context ctx) {
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        ISkillHelper skillHelper = api.getSkillHelper();
-        ServerPlayer sender = ctx.getSender();
-        api.getSkillManager().get(id()).getCost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
-        skillHelper.learn(sender, id());
+        ArsMagicaAPI.get().getSkillHelper().learn(ctx.getSender(), id());
     }
 }

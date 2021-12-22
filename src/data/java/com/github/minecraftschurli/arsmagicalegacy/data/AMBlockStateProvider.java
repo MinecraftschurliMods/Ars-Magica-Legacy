@@ -110,6 +110,7 @@ class AMBlockStateProvider extends BlockStateProvider {
                             .end()
             ).build();
         });
+        airBlock(SPELL_LIGHT);
     }
 
     /**
