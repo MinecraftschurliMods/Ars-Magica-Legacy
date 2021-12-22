@@ -52,7 +52,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         }
     }
 
-    public void onSync(String name, Spell spell) {
+    public void onSync(@Nullable String name, @Nullable Spell spell) {
         this.spellName = name;
         this.spellRecipe = spell;
         this.setChanged();

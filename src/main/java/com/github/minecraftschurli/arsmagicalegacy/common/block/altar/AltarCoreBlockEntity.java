@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -342,6 +343,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     private ItemStack makeSpell() {
         ItemStack stack = new ItemStack(AMItems.SPELL.get());
         SpellItem.saveSpell(stack, SpellItem.getSpell(getBook()));
+        SpellItem.setSpellName(stack, getBook().getOrCreateTag().getString(WrittenBookItem.TAG_TITLE));
         return stack;
     }
 

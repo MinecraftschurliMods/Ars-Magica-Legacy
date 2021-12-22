@@ -102,7 +102,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         @Override
         public void setChanged() {
             super.setChanged();
-            if (getItem().getItem() instanceof ISpellItem && table.getLevel().isClientSide()) {
+            if (table.getLevel().isClientSide()) {
                 DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InscriptionTableScreen::onSlotChanged);
             }
         }

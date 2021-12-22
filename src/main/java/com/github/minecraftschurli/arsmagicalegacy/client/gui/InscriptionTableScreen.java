@@ -3,6 +3,7 @@ package com.github.minecraftschurli.arsmagicalegacy.client.gui;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurli.arsmagicalegacy.api.spell.ISpellShape;
@@ -31,6 +32,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
@@ -72,7 +74,10 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void onSlotChangedInt() {
-        menu.getSpellRecipe().ifPresent(this::setFromRecipe);
+        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        if (menu.getSlot(0).getItem().getItem() instanceof ISpellItem) {
+            menu.getSpellRecipe().ifPresent(this::setFromRecipe);
+        }
     }
 
     public static void onSlotChanged() {
