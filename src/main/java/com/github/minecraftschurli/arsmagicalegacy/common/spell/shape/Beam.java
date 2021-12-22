@@ -21,4 +21,14 @@ public class Beam extends AbstractShape {
     public boolean isContinuous() {
         return true;
     }
+
+    @Override
+    public boolean needsPrecedingShape() {
+        return false;
+    }
+
+    @Override
+    public boolean needsToComeFirst() {
+        return true;
+    }
 }

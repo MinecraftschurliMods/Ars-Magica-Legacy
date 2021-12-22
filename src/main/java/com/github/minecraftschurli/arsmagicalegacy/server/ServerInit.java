@@ -11,6 +11,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.server.commands.SkillCommand;
 import com.mojang.brigadier.Command;
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
@@ -21,9 +22,15 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.permission.events.PermissionGatherEvent;
+import net.minecraftforge.server.permission.nodes.PermissionNode;
+import net.minecraftforge.server.permission.nodes.PermissionType;
+import net.minecraftforge.server.permission.nodes.PermissionTypes;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = ArsMagicaAPI.MOD_ID)
 public final class ServerInit {
+    public static final PermissionNode<Boolean> CAN_CAST_SPELL = new PermissionNode<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "can_cast_spell"), PermissionTypes.BOOLEAN, (player, playerUUID, context) -> true);
+
     @SubscribeEvent
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
@@ -71,5 +78,10 @@ public final class ServerInit {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.TARMA_ROOT_PLACEMENT);
             }
         }
+    }
+
+    @SubscribeEvent
+    static void registerPermissionNodes(PermissionGatherEvent.Nodes event) {
+        event.addNodes(CAN_CAST_SPELL);
     }
 }

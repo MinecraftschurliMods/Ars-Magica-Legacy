@@ -108,30 +108,14 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public void learn(Player player, ResourceLocation skill) {
-        var api = getKnowledgeHolder(player);
-        Map<ResourceLocation, Integer> map = new HashMap<>(api.skillPoints);
-        for (ResourceLocation rl : ArsMagicaAPI.get().getSkillManager().get(skill).getCost().keySet()) {
-            int cost = map.get(rl) - ArsMagicaAPI.get().getSkillManager().get(skill).getCost().get(rl);
-            if (cost < 0) return;
-            map.put(rl, cost);
-        }
-        api.skillPoints.putAll(map);
-        api.learn(skill);
+        getKnowledgeHolder(player).learn(skill);
         AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill);
         syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, ISkill skill) {
-        var api = getKnowledgeHolder(player);
-        Map<ResourceLocation, Integer> map = new HashMap<>(api.skillPoints);
-        for (ResourceLocation rl : skill.getCost().keySet()) {
-            int cost = map.get(rl) - skill.getCost().get(rl);
-            if (cost < 0) return;
-            map.put(rl, cost);
-        }
-        api.skillPoints.putAll(map);
-        api.learn(skill);
+        getKnowledgeHolder(player).learn(skill);
         AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId());
         syncToPlayer(player);
     }
@@ -241,7 +225,9 @@ public final class SkillHelper implements ISkillHelper {
     @Nullable
     @Override
     public ISkillPoint getSkillPointForStack(ItemStack stack) {
-        if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
+        if (stack.getItem() instanceof ISkillPointItem item) {
+            return item.getSkillPoint(stack);
+        }
         return null;
     }
 

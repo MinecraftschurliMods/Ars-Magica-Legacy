@@ -17,4 +17,14 @@ public class Self extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult target, int ticksUsed, int index, boolean awardXp) {
         return ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new EntityHitResult(caster), ticksUsed, index, awardXp);
     }
+
+    @Override
+    public boolean needsPrecedingShape() {
+        return false;
+    }
+
+    @Override
+    public boolean needsToComeFirst() {
+        return true;
+    }
 }

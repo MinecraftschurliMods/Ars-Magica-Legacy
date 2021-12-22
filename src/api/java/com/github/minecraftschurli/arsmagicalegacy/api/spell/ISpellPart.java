@@ -17,6 +17,6 @@ public interface ISpellPart extends IForgeRegistryEntry<ISpellPart> {
      * The type of the spell part
      */
     enum SpellPartType {
-        COMPONENT, MODIFIER, SHAPE
+        SHAPE, COMPONENT, MODIFIER
     }
 }

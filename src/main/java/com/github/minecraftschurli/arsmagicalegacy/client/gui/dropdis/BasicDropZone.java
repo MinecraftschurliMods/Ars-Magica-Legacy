@@ -113,8 +113,8 @@ public class BasicDropZone implements DropArea {
         if (j > rows) {
             throw new RuntimeException();
         }
-        d.x = this.x + (i * (this.elementWidth + this.elementPadding)) + this.elementPadding + 1;
-        d.y = this.y + (j * (this.elementHeight + this.elementPadding)) + this.elementPadding + 1;
+        d.x = this.x + (i * (this.elementWidth + this.elementPadding)) + this.elementPadding;
+        d.y = this.y + (j * (this.elementHeight + this.elementPadding)) + this.elementPadding;
         d.width = this.elementWidth;
         d.height = this.elementHeight;
     }

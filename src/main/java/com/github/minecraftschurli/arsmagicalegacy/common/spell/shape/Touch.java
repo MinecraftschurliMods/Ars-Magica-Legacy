@@ -22,4 +22,9 @@ public class Touch extends AbstractShape {
         HitResult trace = spellHelper.trace(caster, level, range, true, targetNonSolid);
         return spellHelper.invoke(spell, caster, level, trace, ticksUsed, index, awardXp);
     }
+
+    @Override
+    public boolean needsToComeFirst() {
+        return true;
+    }
 }

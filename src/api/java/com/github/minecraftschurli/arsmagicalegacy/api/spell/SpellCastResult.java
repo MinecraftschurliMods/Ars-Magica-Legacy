@@ -4,7 +4,7 @@ package com.github.minecraftschurli.arsmagicalegacy.api.spell;
  * The result of a spell cast.
  */
 public enum SpellCastResult {
-    SUCCESS, NOT_ENOUGH_MANA, BURNED_OUT, MISSING_REAGENTS, CANCELLED, EFFECT_FAILED, SILENCED;
+    SUCCESS, NOT_ENOUGH_MANA, BURNED_OUT, MISSING_REAGENTS, CANCELLED, EFFECT_FAILED, SILENCED, NO_PERMISSION;
 
     /**
      * @return true, if this spellcast result represents a failed cast

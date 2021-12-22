@@ -42,8 +42,8 @@ public interface ISpellShape extends ISpellPart {
         return false;
     }
 
-    default boolean canComeFirst() {
-        return true;
+    default boolean needsPrecedingShape() {
+        return false;
     }
 
     default boolean needsToComeFirst() {

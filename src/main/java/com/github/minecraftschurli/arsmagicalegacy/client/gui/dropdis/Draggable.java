@@ -65,8 +65,8 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
         if (mouseX < x || mouseY < y) return false;
-        int w = x + width;
-        int h = y + height;
+        int w = x + width - 1;
+        int h = y + height - 1;
         return w < x && h < y || w > mouseX && h < y || w < x && h > mouseY || w > mouseX && h > mouseY;
     }
 

@@ -44,11 +44,18 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public void load(CompoundTag pTag) {
         super.load(pTag);
         this.stack = ItemStack.of(pTag.getCompound("Inv"));
+        if (pTag.contains("spell_recipe")) {
+            this.spellRecipe = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get("spell_recipe")).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
+        }
+        if (pTag.contains("spell_name")) {
+            this.spellName = pTag.getString("spell_name");
+        }
     }
 
     public void onSync(String name, Spell spell) {
         this.spellName = name;
         this.spellRecipe = spell;
+        this.setChanged();
     }
 
     @Nullable
@@ -192,6 +199,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void setChanged() {
+        super.setChanged();
         // stub
     }
 

@@ -32,8 +32,8 @@ public class Rune extends AbstractShape {
     }
 
     @Override
-    public boolean canComeFirst() {
-        return false;
+    public boolean needsPrecedingShape() {
+        return true;
     }
 
     @Override

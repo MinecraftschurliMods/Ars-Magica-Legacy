@@ -32,11 +32,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +49,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     private static final Component        SEARCH_LABEL        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
     private static final Component        NAME_LABEL          = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME);
     private static final Component        DEFAULT_NAME        = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
-    private static final int              SHAPE_GROUP_WIDTH   = 34;
+    private static final int              SHAPE_GROUP_WIDTH   = 36;
     private static final int              SHAPE_GROUP_HEIGHT  = 34;
     private static final int              SHAPE_GROUP_PADDING = 3;
     private static final int              SHAPE_GROUP_Y       = 108;
@@ -128,7 +129,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                                                                                                                138, 48,
                                                                                                                ICON_SIZE, ICON_SIZE,
                                                                                                                knowsFilter.and(searchFilter).and(hasValidPlace),
-                                                                                                               spellPartRegistry.getKeys(),
+                                                                                                               spellPartRegistry.getValues()
+                                                                                                                                .stream()
+                                                                                                                                .sorted(Comparator.comparing(ISpellPart::getType)
+                                                                                                                                                  .thenComparing(IForgeRegistryEntry::getRegistryName))
+                                                                                                                                .map(IForgeRegistryEntry::getRegistryName)
+                                                                                                                                .toList(),
                                                                                                                rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl),
                                                                                                                              skillManager.get(rl).getDisplayName())));
         searchBar.setResponder(s -> sourceBox.update());
@@ -146,7 +152,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 shapeGroupDropZones.add(shapeGroupDropZone);
             }
         }
-        spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 143, 141, 18, ICON_SIZE, ICON_SIZE, 1, 8, spellStackDropZone));
+        spellStackDropZone = dragPane.addDropArea(new BasicDropZone(leftPos + 39, topPos + 143, 141, 18, ICON_SIZE, ICON_SIZE, 2, 8, spellStackDropZone));
         spellStackDropZone.setDropValidator(((DropValidator.WithData<ISpellPart>)this::isValidInSpellStack).map(spellPartRegistry::getValue));
         spellStackDropZone.setOnDropListener(p -> sourceBox.update());
         spellStackDropZone.setOnDragListener(p -> sourceBox.update());
@@ -185,7 +191,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }
             case SHAPE -> {
                 if (((ISpellShape) item).needsToComeFirst()) yield deque.isEmpty();
-                if (!((ISpellShape) item).canComeFirst() && deque.isEmpty()) yield false;
+                if (((ISpellShape) item).needsPrecedingShape() && deque.isEmpty()) yield false;
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
                     final ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isEndShape();
