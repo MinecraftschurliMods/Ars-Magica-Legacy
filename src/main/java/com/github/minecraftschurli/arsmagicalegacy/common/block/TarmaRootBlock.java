@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.Tags;
 
-public class TarmaRoot extends FlowerBlock {
-    public TarmaRoot() {
+public class TarmaRootBlock extends FlowerBlock {
+    public TarmaRootBlock() {
         super(MobEffects.DIG_SLOWDOWN, 7, Properties.copy(Blocks.POPPY));
     }
 

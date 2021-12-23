@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 
-public class Wakebloom extends FlowerBlock {
-    public Wakebloom() {
+public class WakebloomBlock extends FlowerBlock {
+    public WakebloomBlock() {
         super(AMMobEffects.burnout_reduction, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
     }
 

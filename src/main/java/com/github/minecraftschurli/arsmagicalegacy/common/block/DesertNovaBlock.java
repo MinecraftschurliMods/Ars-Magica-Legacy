@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
 
-public class DesertNova extends FlowerBlock {
-    public DesertNova() {
+public class DesertNovaBlock extends FlowerBlock {
+    public DesertNovaBlock() {
         super(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
     }
 

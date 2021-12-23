@@ -1,10 +1,10 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.block.DesertNova;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.DesertNovaBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.TarmaRoot;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.Wakebloom;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.TarmaRootBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.WakebloomBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlock;
@@ -84,9 +84,9 @@ public interface AMBlocks {
     RegistryObject<PressurePlateBlock>    WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      () -> new FlowerBlock(AMMobEffects.mana_regen, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock>           CERUBLOSSOM              = BLOCKS.register("cerublossom",              () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
-    RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNova::new);
-    RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRoot::new);
-    RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                Wakebloom::new);
+    RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);
+    RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRootBlock::new);
+    RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                WakebloomBlock::new);
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
