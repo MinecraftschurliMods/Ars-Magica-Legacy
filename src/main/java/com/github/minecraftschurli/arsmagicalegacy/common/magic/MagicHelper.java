@@ -97,8 +97,7 @@ public final class MagicHelper implements IMagicHelper {
 
     private float getXpForNextLevel(int level) {
         if (level == 0) return 0;
-        // TODO change
-        return Byte.MAX_VALUE;
+        return 2.5f * (float) Math.pow(1.2, level);
     }
 
     private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {

@@ -7,6 +7,7 @@ import com.github.minecraftschurli.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurli.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -24,7 +25,7 @@ public class AoE extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (hit == null) return SpellCastResult.EFFECT_FAILED;
-        double radius = 1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
+        int radius = 1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
         boolean appliedToAtLeastOneEntity = false;
         for (Entity e : level.getEntities(caster, new AABB(hit.getLocation().x() - radius, hit.getLocation().y() - radius, hit.getLocation().z() - radius, hit.getLocation().x() + radius, hit.getLocation().y() + radius, hit.getLocation().z() + radius))) {
             if (e == caster || e instanceof ItemEntity || e instanceof Projectile) continue;
@@ -37,30 +38,22 @@ public class AoE extends AbstractShape {
         }
         if (appliedToAtLeastOneEntity) return SpellCastResult.SUCCESS;
         BlockPos pos = new BlockPos(hit.getLocation());
-        BlockPos lookPos = pos;
-        for (int x = (int) -Math.floor(radius); x <= radius; x++) {
-            for (int y = (int) -Math.floor(radius); y <= radius; y++) {
-                for (int z = (int) -Math.floor(radius); z <= radius; z++) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
                     if (hit.getType() == HitResult.Type.BLOCK) {
-                        lookPos = switch (((BlockHitResult) hit).getDirection().getAxis()) {
-                            case X -> pos.offset(0, y, z);
-                            case Y -> pos.offset(x, 0, z);
-                            case Z -> pos.offset(x, y, 0);
+                        int offset = ((BlockHitResult) hit).getDirection().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 0 : -1;
+                        BlockPos lookPos = switch (((BlockHitResult) hit).getDirection().getAxis()) {
+                            case X -> pos.offset(offset, y, z);
+                            case Y -> pos.offset(x, offset, z);
+                            case Z -> pos.offset(x, y, offset);
                         };
-                    } else {
-                        int gravityMagnitude = ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.GRAVITY.getId());
-                        lookPos = pos.offset(x, 0, z);
-                        if (gravityMagnitude > 0) {
-                            for (int i = 0; level.getBlockState(lookPos).isAir() && i < gravityMagnitude; i++) {
-                                lookPos = lookPos.below();
-                            }
+                        if (!level.getBlockState(lookPos).isAir()) {
+                            ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
                         }
                     }
                 }
             }
-            if (level.getBlockState(lookPos).isAir()) continue;
-            SpellCastResult result = ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
-            if (result != SpellCastResult.SUCCESS) return result;
         }
         return SpellCastResult.SUCCESS;
     }

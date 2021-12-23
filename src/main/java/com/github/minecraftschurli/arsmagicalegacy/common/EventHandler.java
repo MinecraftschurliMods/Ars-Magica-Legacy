@@ -33,6 +33,7 @@ import com.github.minecraftschurli.arsmagicalegacy.common.init.AMCriteriaTrigger
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSkillPoints;
+import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurli.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurli.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurli.arsmagicalegacy.common.magic.BurnoutHelper;
@@ -49,6 +50,7 @@ import com.github.minecraftschurli.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurli.codeclib.CodecCapabilityProvider;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -109,7 +111,8 @@ public final class EventHandler {
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
-        forgeBus.addListener(EventHandler::playerItemPickup);
+//        forgeBus.addListener(EventHandler::playerItemPickup);
+        forgeBus.addListener(EventHandler::playerItemCrafted);
         forgeBus.addListener(EventHandler::playerTick);
         forgeBus.addListener(EventHandler::livingUpdate);
         forgeBus.addListener(EventPriority.HIGHEST, EventHandler::livingDeath);
@@ -235,11 +238,21 @@ public final class EventHandler {
         event.getOriginal().invalidateCaps();
     }
 
+/*
     private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
         if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getStack())) return;
+        ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
+    }
+*/
+
+    private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        if (event.getPlayer().isCreative()) return;
+        if (event.getPlayer().isSpectator()) return;
+        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
+        if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getCrafting())) return;
         ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
     }
 
@@ -320,19 +333,15 @@ public final class EventHandler {
         Player player = event.getPlayer();
         int level = event.getLevel();
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-
         if (level == 1) {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_STARTING_BLUE_POINTS.get());
         }
-
         for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
             int minEarnLevel = iSkillPoint.getMinEarnLevel();
             if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
                 api.getSkillHelper().addSkillPoint(player, iSkillPoint);
             }
         }
-
-        // TODO change
         float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
         float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level - 1);
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
@@ -347,6 +356,7 @@ public final class EventHandler {
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
+        event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.MASTER, 1f, 1f);
     }
 
     private static void spellCast(SpellCastEvent event) {

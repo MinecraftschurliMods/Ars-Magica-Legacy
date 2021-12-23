@@ -68,6 +68,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(AMItems.WAKEBLOOM.get())
                 .unlockedBy("item", has(AMItems.WAKEBLOOM.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":magenta_dye");
+        ShapelessNBTRecipeBuilder.shapeless(ArsMagicaAPI.get().getBookStack().getItem(), ArsMagicaAPI.get().getBookStack().getOrCreateTag())
+                .requires(Items.BOOK)
+                .requires(AMItems.VINTEUM_DUST.get())
+                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
+                .save(consumer, ArsMagicaAPI.MOD_ID + ":arcane_compendium");
         ShapedRecipeBuilder.shaped(AMItems.OCCULUS.get())
                 .pattern("SGS")
                 .pattern(" S ")
