@@ -267,7 +267,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.COMMAND_SKILL_LEARN_SUCCESS, "Learned skill %s");
         add(TranslationConstants.COMMAND_SKILL_NOT_YET_KNOWN, "Skill %s must be learned first");
         add(TranslationConstants.COMMAND_SKILL_UNKNOWN, "Could not find skill %s");
-        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Default Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
@@ -275,7 +275,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
         add(TranslationConstants.SPELL_CAST + "cancelled", "Spell cast failed!");
-        add(TranslationConstants.SPELL_CAST + "fail", "Spell cast failed!");
+        add(TranslationConstants.SPELL_CAST + "effect_failed", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "missing_reagents", "Missing reagents!");
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");

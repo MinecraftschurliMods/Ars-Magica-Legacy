@@ -14,7 +14,6 @@ import com.github.minecraftschurli.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurli.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -45,6 +44,28 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(inventory, i, 30 + i * 18, 228));
         }
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack stack = ItemStack.EMPTY;
+        Slot slot = slots.get(pIndex);
+        if (slot.hasItem()) {
+            ItemStack slotstack = slot.getItem();
+            stack = slotstack.copy();
+            if (pIndex > 0) {
+                if (slots.get(0).mayPlace(slotstack)) {
+                    if (!moveItemStackTo(slotstack, 0, 1, false)) return ItemStack.EMPTY;
+                } else if (!moveItemStackTo(slotstack, 1, slots.size(), pIndex < 10)) return ItemStack.EMPTY;
+            } else if (!moveItemStackTo(slotstack, 1, slots.size(), true))
+                return ItemStack.EMPTY;
+            if (slotstack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+        }
+        return stack;
     }
 
     @Override
@@ -87,6 +108,11 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public InscriptionTableSlot(InscriptionTableBlockEntity table) {
             super(table, 0, 102, 74);
             this.table = table;
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 1;
         }
 
         @Override
