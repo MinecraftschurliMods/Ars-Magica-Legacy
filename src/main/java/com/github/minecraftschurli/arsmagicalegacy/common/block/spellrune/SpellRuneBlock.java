@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.common.block;
+package com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

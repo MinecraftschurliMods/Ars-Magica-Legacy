@@ -162,6 +162,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         this.recipe = null;
         this.modelData.setData(CAMO_STATE, null);
         sync();
+        setChanged();
     }
     
     public void checkMultiblock() {
@@ -237,6 +238,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         this.powerLevel = this.structureMaterial.power() + this.capMaterial.power();
 
         sync();
+        setChanged();
         return true;
     }
 
@@ -316,6 +318,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                     .ifPresent(ingredient -> {
                         this.recipe.offerFirst(ingredient);
                         sync();
+                        setChanged();
                     });
         }
     }

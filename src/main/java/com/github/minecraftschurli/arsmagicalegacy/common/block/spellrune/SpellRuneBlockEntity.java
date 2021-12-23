@@ -1,4 +1,4 @@
-package com.github.minecraftschurli.arsmagicalegacy.common.block;
+package com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune;
 
 import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
@@ -22,8 +22,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class SpellRuneBlockEntity extends BlockEntity {
-    public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
-    public static final String INDEX_KEY = ArsMagicaAPI.MOD_ID + ":index";
+    public static final String SPELL_KEY    = ArsMagicaAPI.MOD_ID + ":spell";
+    public static final String INDEX_KEY    = ArsMagicaAPI.MOD_ID + ":index";
     public static final String AWARD_XP_KEY = ArsMagicaAPI.MOD_ID + ":award_xp";
 
     private ISpell spell;

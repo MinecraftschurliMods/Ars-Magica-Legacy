@@ -2,7 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurli.arsmagicalegacy.common.block.DesertNova;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.OcculusBlock;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.TarmaRoot;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.Wakebloom;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;

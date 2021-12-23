@@ -1,6 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlockEntity;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune.SpellRuneBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;

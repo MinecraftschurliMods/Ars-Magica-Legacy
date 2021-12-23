@@ -1,7 +1,7 @@
 package com.github.minecraftschurli.arsmagicalegacy.data;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurli.arsmagicalegacy.common.block.SpellRuneBlock;
+import com.github.minecraftschurli.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import net.minecraft.core.Direction;
