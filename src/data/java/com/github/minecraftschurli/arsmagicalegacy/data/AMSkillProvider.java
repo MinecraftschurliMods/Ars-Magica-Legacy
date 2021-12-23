@@ -257,12 +257,12 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(DROUGHT.getId())
                 .build(consumer);
+/*
         createUtility(BLINK)
                 .setPosition(30, 300)
                 .addCost(GREEN.get())
                 .addParent(RANDOM_TELEPORT.getId())
                 .build(consumer);
-/*
         createOffense(BLIZZARD)
                 .setPosition(30, 30)
                 .hidden()
@@ -469,12 +469,12 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
                 .build(consumer);
-*/
         createUtility(TRANSPLACE)
                 .setPosition(75, 300)
                 .addCost(GREEN.get())
                 .addParent(BLINK.getId())
                 .build(consumer);
+*/
         createUtility(WIZARDS_AUTUMN)
                 .setPosition(165, 120)
                 .addCost(BLUE.get())
