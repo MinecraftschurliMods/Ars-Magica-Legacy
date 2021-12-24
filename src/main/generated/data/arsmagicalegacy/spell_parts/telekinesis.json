@@ -1,0 +1,30 @@
+{
+  "manaCost": 6.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.001
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:purple_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:chests/wooden"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:sticky_piston"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

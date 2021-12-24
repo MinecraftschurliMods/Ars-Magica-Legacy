@@ -184,15 +184,15 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
+    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-1.18:${project.jei_version}:api")
-    runtimeMod fg.deobf("mezz.jei:jei-1.18:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
+    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
 
     // curios for additional inventory slots
-    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}:api")
-    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:1.18-${project.curios_version}")
+    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
+    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}")
 
     // patchouli for the guide book (arcane compendium)
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
@@ -305,8 +305,10 @@ def replaceProperties = [
         'mod_author': project.mod_author,
         'mod_credits': project.mod_credits,
         'mc_version_range': project.mc_version_range,
+        'jei_version_range': project.jei_version_range,
         'forge_version_range': project.forge_version_range,
         'loader_version_range': project.loader_version_range,
+        'curios_version_range': project.curios_version_range,
         'patchouli_version_range': project.patchouli_version_range,
         'issue_tracker_url': "https://github.com/${project.github}/issues"
 ]
@@ -342,6 +344,10 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
+    from configurations.include.collect {it.isDirectory() ? it : zipTree(it) }, {
+        exclude 'LICENSE'
+        exclude '**/META_INF/**'
+    }
     finalizedBy('reobfJar')
 }
 

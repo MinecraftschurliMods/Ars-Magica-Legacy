@@ -1,0 +1,55 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:aum",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A variety of flowers can be found scattered across the world."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "aum",
+      "item": "arsmagicalegacy:aum",
+      "text": "A flower with healing properties, Aum is a component in many spells. It can be found in forests."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cerublossom",
+      "item": "arsmagicalegacy:cerublossom",
+      "text": "Cerublossom flowers thrive in lush, green environments. They were one of the first magical plants discovered, being used in potions and light-focused spells. A short while after its discovery, it was also noted that the Cerublossom could be used as part of the $(l:items/purified_vinteum_dust)purification process for Vinteum Dust$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "desert_nova",
+      "item": "arsmagicalegacy:desert_nova",
+      "text": "Desert Novas grow in dry conditions. The Nova has extraordinary magical properties for a desert plant, and is highly sought after. It is one of the two plants used in the $(l:items/purified_vinteum_dust)purification process of Vinteum Dust$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "tarma_root",
+      "item": "arsmagicalegacy:tarma_root",
+      "text": "Lighter than it looks, Tarma Root grows in mountain biomes. It is an ingredient in spells and air essences."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "wakebloom",
+      "item": "arsmagicalegacy:wakebloom",
+      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water essence."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:pink_dye",
+      "recipe2": "arsmagicalegacy:blue_dye"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:red_dye",
+      "recipe2": "arsmagicalegacy:brown_dye"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:magenta_dye"
+    }
+  ]
+}

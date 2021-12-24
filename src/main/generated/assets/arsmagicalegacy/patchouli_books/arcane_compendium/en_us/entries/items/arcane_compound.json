@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_compound.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:arcane_compound",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A combination of materials from multiple worlds, the Arcane Compound forms the base resource needed to get $(l:items/arcane_ash)Arcane Ash$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:arcane_compound"
+    }
+  ]
+}

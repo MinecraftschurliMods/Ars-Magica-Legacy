@@ -1,0 +1,31 @@
+{
+  "manaCost": 400.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:life": 0.01,
+    "arsmagicalegacy:ender": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "forge:gems/chimerite"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/purified_vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:cerublossom"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

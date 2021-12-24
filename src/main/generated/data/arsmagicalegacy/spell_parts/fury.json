@@ -1,0 +1,17 @@
+{
+  "manaCost": 261.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:fire": 0.01,
+    "arsmagicalegacy:lightning": 0.01
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "minecraft:fishes"
+      },
+      "count": 14,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

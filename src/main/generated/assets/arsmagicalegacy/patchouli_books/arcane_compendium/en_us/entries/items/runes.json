@@ -1,0 +1,55 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.runes.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:blank_rune",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Runes are the basic building parts of spells. When combined with multiple other items in the right combination, a magical spell scroll can be created."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:blank_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:black_rune",
+      "recipe2": "arsmagicalegacy:blue_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:brown_rune",
+      "recipe2": "arsmagicalegacy:cyan_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:gray_rune",
+      "recipe2": "arsmagicalegacy:green_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:light_blue_rune",
+      "recipe2": "arsmagicalegacy:light_gray_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:lime_rune",
+      "recipe2": "arsmagicalegacy:magenta_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:orange_rune",
+      "recipe2": "arsmagicalegacy:pink_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:purple_rune",
+      "recipe2": "arsmagicalegacy:red_rune"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:white_rune",
+      "recipe2": "arsmagicalegacy:yellow_rune"
+    }
+  ]
+}

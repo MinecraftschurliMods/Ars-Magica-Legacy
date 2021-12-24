@@ -1,0 +1,30 @@
+{
+  "manaCost": 17.4,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:nature": 0.02
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:green_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "minecraft:logs"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:bone_meal"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

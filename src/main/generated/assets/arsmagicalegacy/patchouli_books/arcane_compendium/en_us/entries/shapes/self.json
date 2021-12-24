@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.shapes.self",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/self.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.self.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:self"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/self"
+}

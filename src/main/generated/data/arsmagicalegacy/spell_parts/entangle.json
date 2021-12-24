@@ -1,0 +1,30 @@
+{
+  "manaCost": 80.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:nature": 0.05
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:red_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:slimeballs"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:vine"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.spell_parchment.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:spell_parchment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Any mage that wants to cast spells without the need of some sort of staff or wand needs something to write the spell down on. This has worked for thousands of years, and surprisingly nothing more effective has been invented yet."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:spell_parchment"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "occulus_tab": "arsmagicalegacy:utility",
+  "x": 165,
+  "y": 165,
+  "parents": [
+    "arsmagicalegacy:light"
+  ],
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  }
+}

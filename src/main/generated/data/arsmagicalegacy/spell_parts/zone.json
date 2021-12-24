@@ -1,0 +1,21 @@
+{
+  "manaCost": 4.5,
+  "reagents": [],
+  "affinities": {},
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "forge:gems/diamond"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:tarma_root"
+      },
+      "count": 2,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

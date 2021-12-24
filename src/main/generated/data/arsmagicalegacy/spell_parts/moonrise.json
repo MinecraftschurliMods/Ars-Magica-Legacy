@@ -1,0 +1,14 @@
+{
+  "manaCost": 25000.0,
+  "reagents": [],
+  "affinities": {},
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "minecraft:clock"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

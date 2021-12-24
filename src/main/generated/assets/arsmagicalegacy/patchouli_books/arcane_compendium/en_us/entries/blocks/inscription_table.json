@@ -1,0 +1,19 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.inscription_table.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:inscription_table",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using this table with a Book & Quill, you can compose spells of incredible power.$(br2)You will see what skills you know at the top in the Source Region. You can then drag shapes and modifiers to the brown $(l:mechanics/shape_groups)Shape Group$() squares, and drag components to the gray Spell Grammar section at the bottom to lay out a spell."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Once satisfied with the spell, you can write the spells onto that Book & Quill. This book can then be placed on a $(l:mechanics/crafting_altar)Crafting Altar's$() lectern, and will guide you through the process needed to make the spell.$(br2)The book is worth reading too, as it contains a recap of the spell you will be creating, a materials list, and an $(l:mechanics/affinities)affinity$() breakdown."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:inscription_table"
+    }
+  ]
+}

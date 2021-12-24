@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.mining_power",
+  "category": "arsmagicalegacy:modifiers",
+  "icon": "arsmagicalegacy:textures/icon/skill/mining_power.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.modifiers.mining_power.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:mining_power"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/mining_power"
+}

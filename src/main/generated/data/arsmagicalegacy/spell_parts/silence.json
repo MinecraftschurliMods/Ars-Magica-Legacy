@@ -1,0 +1,30 @@
+{
+  "manaCost": 80.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.05
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "minecraft:wool"
+      },
+      "count": 2,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:arcane_ash"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:jukebox"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}
