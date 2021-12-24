@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -48,6 +49,10 @@ public class PatchouliCompat implements ICompatHandler {
                 '5', new StairBlockStateMatcher(Direction.EAST, Half.TOP),
                 '6', new StairBlockStateMatcher(Direction.WEST, Half.TOP)
         ));
+    }
+
+    @Override
+    public void clientInit(FMLClientSetupEvent event) {
         PatchouliAPI.get().registerTemplateAsBuiltin(SPELL_PART_PAGE, () -> new ByteArrayInputStream(SPELL_PART_TEMPLATE.getBytes(StandardCharsets.UTF_8)));
     }
 }

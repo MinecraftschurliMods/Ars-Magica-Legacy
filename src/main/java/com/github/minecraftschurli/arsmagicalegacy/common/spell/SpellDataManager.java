@@ -1,5 +1,6 @@
 package com.github.minecraftschurli.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurli.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurli.arsmagicalegacy.Config;
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.api.affinity.IAffinity;
@@ -34,6 +35,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
 
     private SpellDataManager() {
         super("spell_parts", SpellPartData.CODEC, LogManager.getLogger());
+        subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.github.minecraftschurli.arsmagicalegacy;
 
 import com.github.minecraftschurli.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurli.arsmagicalegacy.client.ClientInit;
+import com.github.minecraftschurli.arsmagicalegacy.client.DistProxy;
 import com.github.minecraftschurli.arsmagicalegacy.common.EventHandler;
 import com.github.minecraftschurli.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurli.arsmagicalegacy.common.block.altar.AltarMaterialManager;
@@ -56,7 +57,7 @@ public final class ArsMagicaLegacy {
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInit::init);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> DistProxy::init);
         Config.init();
         registerNetworkPackets();
         SkillHelper.init();
