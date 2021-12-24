@@ -9,8 +9,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManag
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurli.codeclib.CodecDataManager;
-import com.github.minecraftschurli.codeclib.CodecHelper;
+import com.github.minecraftschurlimods.codeclib.CodecDataManager;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -30,7 +30,7 @@ public class PatchouliCompat implements ICompatHandler {
             {" BMB ", "     ", "     ", "     ", " BMBL"},
             {"BBBBB", "BBBBB", "BB0BB", "BBBBB", "BBBBB"}
     };
-    private static final String SPELL_PART_TEMPLATE = "{\"components\": [{\"type\": \"custom\",\"class\": \"com.github.minecraftschurli.arsmagicalegacy.compat.patchouli.SpellPartPage\",\"part\": \"#part\"}]}";
+    private static final String SPELL_PART_TEMPLATE = "{\"components\": [{\"type\": \"custom\",\"class\": \"com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.SpellPartPage\",\"part\": \"#part\"}]}";
 
     public void init(FMLCommonSetupEvent event) {
         CapStateMatcher capStateMatcher = new CapStateMatcher();

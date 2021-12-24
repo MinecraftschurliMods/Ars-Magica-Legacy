@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
-import com.github.minecraftschurli.codeclib.CodecDataManager;
+import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.util.Lazy;

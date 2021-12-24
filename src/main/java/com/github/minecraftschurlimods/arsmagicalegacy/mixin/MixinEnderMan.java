@@ -1,7 +1,7 @@
 /*
-package com.github.minecraftschurli.arsmagicalegacy.mixin;
+package com.github.minecraftschurlimods.arsmagicalegacy.mixin;
 
-import com.github.minecraftschurli.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Monster;

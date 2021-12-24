@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class OcculusTab implements IOcculusTab {
-    private static final String DEFAULT_RENDERER = "com.github.minecraftschurli.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer";
+    private static final String DEFAULT_RENDERER = "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer";
     //@formatter:off
     public static final Codec<IOcculusTab> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Codec.STRING.fieldOf("renderer").orElse(DEFAULT_RENDERER).forGetter(IOcculusTab::getRenderer),

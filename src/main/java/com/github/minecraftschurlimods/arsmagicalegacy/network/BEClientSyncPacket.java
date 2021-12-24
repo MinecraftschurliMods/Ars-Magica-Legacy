@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
-import com.github.minecraftschurli.simplenetlib.IPacket;
+import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

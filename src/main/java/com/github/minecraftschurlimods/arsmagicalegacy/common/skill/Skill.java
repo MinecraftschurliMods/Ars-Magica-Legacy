@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
-import com.github.minecraftschurli.codeclib.CodecHelper;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

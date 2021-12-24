@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurli.arsmagicalegacy.common.spell.component.*;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.*;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.AbstractModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.AoE;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;

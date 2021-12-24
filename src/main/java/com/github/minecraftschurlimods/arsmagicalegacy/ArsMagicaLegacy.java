@@ -21,8 +21,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPac
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
-import com.github.minecraftschurli.easyimclib.IMCHandler;
-import com.github.minecraftschurli.simplenetlib.NetworkHandler;
+import com.github.minecraftschurlimods.easyimclib.IMCHandler;
+import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;

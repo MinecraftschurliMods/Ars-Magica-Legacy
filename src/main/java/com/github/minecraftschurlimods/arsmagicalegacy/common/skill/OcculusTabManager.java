@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
-import com.github.minecraftschurli.codeclib.CodecDataManager;
+import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
