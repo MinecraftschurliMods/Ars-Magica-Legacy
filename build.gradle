@@ -344,6 +344,10 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
+    from configurations.include.collect {it.isDirectory() ? it : zipTree(it) }, {
+        exclude 'LICENSE'
+        exclude '**/META_INF/**'
+    }
     finalizedBy('reobfJar')
 }
 
