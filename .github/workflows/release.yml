@@ -35,6 +35,7 @@ jobs:
           draft: false
           gzip: false
           prerelease: false
+          allow_override: false
           name: ${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: >
