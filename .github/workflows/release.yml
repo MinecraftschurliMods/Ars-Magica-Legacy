@@ -56,6 +56,7 @@ jobs:
           project_id: ${{ steps.build.outputs.project_id }}
           game_versions: ${{ steps.build.outputs.curse_versions }}
           file_path: build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}.jar
-          changelog_type: markdown
-          changelog: ${{ steps.changelog.outputs.content }}
           relations: ${{ steps.build.outputs.curse_relations }}
+          changelog_type: markdown
+          changelog: >
+            ${{ steps.changelog.outputs.content }}
