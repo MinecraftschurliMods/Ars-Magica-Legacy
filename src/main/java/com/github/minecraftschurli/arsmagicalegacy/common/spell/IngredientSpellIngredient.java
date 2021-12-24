@@ -33,6 +33,10 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             CodecHelper.INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
             Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
     ).apply(inst, IngredientSpellIngredient::new));
+    public static final Codec<IngredientSpellIngredient> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            CodecHelper.NETWORK_INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
+            Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
+    ).apply(inst, IngredientSpellIngredient::new));
 
     @Override
     public ResourceLocation getType() {
