@@ -91,12 +91,12 @@ public final class AMUtil {
     /**
      * Joins multiple components into one, returning a collector.
      *
-     * @param del The delimiter to use.
+     * @param delimiter The delimiter to use.
      * @return The collector to join multiple components into one.
      */
-    public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String del) {
-        TextComponent delComp = new TextComponent(del);
-        return Collector.of(TextComponent.EMPTY::copy, (component, component2) -> component.append(delComp).append(component2), (component, component2) -> component.append(delComp).append(component2));
+    public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String delimiter) {
+        TextComponent del = new TextComponent(delimiter);
+        return Collector.of(TextComponent.EMPTY::copy, (c1, c2) -> c1.append(del).append(c2), (c1, c2) -> c1.append(del).append(c2));
     }
 
     /**

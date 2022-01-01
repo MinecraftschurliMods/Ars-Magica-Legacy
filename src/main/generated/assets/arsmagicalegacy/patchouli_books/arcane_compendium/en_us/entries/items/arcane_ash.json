@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Created by burning $(l:items/arcane_compound)Arcane Compounds$() in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magic."
+      "text": "item.arsmagicalegacy.arcane_compendium.items.arcane_ash.page0.text"
     },
     {
       "type": "patchouli:smelting",

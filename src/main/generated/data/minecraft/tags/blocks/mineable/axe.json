@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "arsmagicalegacy:inscription_table"
+    "arsmagicalegacy:inscription_table",
+    "arsmagicalegacy:witchwood_fence_gate"
   ]
 }

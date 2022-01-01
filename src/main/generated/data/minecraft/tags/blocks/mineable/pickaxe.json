@@ -3,6 +3,20 @@
   "values": [
     "arsmagicalegacy:occulus",
     "arsmagicalegacy:altar_core",
-    "arsmagicalegacy:magic_wall"
+    "arsmagicalegacy:magic_wall",
+    "arsmagicalegacy:chimerite_block",
+    "arsmagicalegacy:chimerite_ore",
+    "arsmagicalegacy:deepslate_chimerite_ore",
+    "arsmagicalegacy:topaz_block",
+    "arsmagicalegacy:topaz_ore",
+    "arsmagicalegacy:deepslate_topaz_ore",
+    "arsmagicalegacy:vinteum_block",
+    "arsmagicalegacy:vinteum_ore",
+    "arsmagicalegacy:deepslate_vinteum_ore",
+    "arsmagicalegacy:moonstone_block",
+    "arsmagicalegacy:moonstone_ore",
+    "arsmagicalegacy:deepslate_moonstone_ore",
+    "arsmagicalegacy:sunstone_block",
+    "arsmagicalegacy:sunstone_ore"
   ]
 }

@@ -14,7 +14,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Touch;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Wave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Zone;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -28,27 +27,27 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMSpellParts {
-    RegistryObject<AoE>        AOE        = SPELL_PARTS.register("aoe",                 AoE::new);
-    RegistryObject<Beam>       BEAM       = SPELL_PARTS.register("beam", Beam::new);
-    RegistryObject<Chain>      CHAIN      = SPELL_PARTS.register("chain", Chain::new);
-    RegistryObject<Channel>    CHANNEL    = SPELL_PARTS.register("channel", Channel::new);
-    RegistryObject<Projectile> PROJECTILE = SPELL_PARTS.register("projectile", Projectile::new);
-    RegistryObject<Rune>       RUNE       = SPELL_PARTS.register("rune",                Rune::new);
-    RegistryObject<Self>       SELF       = SPELL_PARTS.register("self", Self::new);
-    RegistryObject<Touch>      TOUCH      = SPELL_PARTS.register("touch", Touch::new);
-    RegistryObject<Wall>       WALL       = SPELL_PARTS.register("wall", Wall::new);
-    RegistryObject<Wave>       WAVE       = SPELL_PARTS.register("wave", Wave::new);
-    RegistryObject<Zone>       ZONE       = SPELL_PARTS.register("zone", Zone::new);
+    RegistryObject<AoE>                AOE                 = SPELL_PARTS.register("aoe",                 AoE::new);
+    RegistryObject<Beam>               BEAM                = SPELL_PARTS.register("beam",                Beam::new);
+    RegistryObject<Chain>              CHAIN               = SPELL_PARTS.register("chain",               Chain::new);
+    RegistryObject<Channel>            CHANNEL             = SPELL_PARTS.register("channel",             Channel::new);
+    RegistryObject<Projectile>         PROJECTILE          = SPELL_PARTS.register("projectile",          Projectile::new);
+    RegistryObject<Rune>               RUNE                = SPELL_PARTS.register("rune",                Rune::new);
+    RegistryObject<Self>               SELF                = SPELL_PARTS.register("self",                Self::new);
+    RegistryObject<Touch>              TOUCH               = SPELL_PARTS.register("touch",               Touch::new);
+    RegistryObject<Wall>               WALL                = SPELL_PARTS.register("wall",                Wall::new);
+    RegistryObject<Wave>               WAVE                = SPELL_PARTS.register("wave",                Wave::new);
+    RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
     // TODO contingencies: damage, death, fall, fire, health
 
-    RegistryObject<Damage>      DROWNING_DAMAGE = SPELL_PARTS.register("drowning_damage", () -> new Damage(e -> DamageSource.DROWN, 6, e -> e instanceof LivingEntity l && l.canBreatheUnderwater()));
-    RegistryObject<Damage>      FIRE_DAMAGE     = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, 6, Entity::fireImmune));
-    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, 6, Entity::canFreeze));
-    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, 6, e -> false));
-    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), 6, e -> false));
-    RegistryObject<Damage>      PHYSICAL_DAMAGE = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), 6, e -> false));
-    RegistryObject<Effect>      ABSORPTION      = SPELL_PARTS.register("absorption", () -> new Effect(MobEffects.ABSORPTION));
-    RegistryObject<Effect>      BLINDNESS       = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
+    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, 6, e -> e instanceof LivingEntity l && l.canBreatheUnderwater()));
+    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, 6, Entity::fireImmune));
+    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, 6, e -> !e.canFreeze()));
+    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, 6));
+    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), 6));
+    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), 6));
+    RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
+    RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));
     RegistryObject<Effect>             INVISIBILITY        = SPELL_PARTS.register("invisibility",        () -> new Effect(MobEffects.INVISIBILITY));
     RegistryObject<Effect>             JUMP_BOOST          = SPELL_PARTS.register("jump_boost",          () -> new Effect(MobEffects.JUMP));
@@ -73,16 +72,16 @@ public interface AMSpellParts {
     RegistryObject<Effect>             SWIFT_SWIM          = SPELL_PARTS.register("swift_swim",          () -> new Effect(AMMobEffects.SWIFT_SWIM));
     RegistryObject<Effect>             TEMPORAL_ANCHOR     = SPELL_PARTS.register("temporal_anchor",     () -> new Effect(AMMobEffects.TEMPORAL_ANCHOR));
     RegistryObject<Effect>             TRUE_SIGHT          = SPELL_PARTS.register("true_sight",          () -> new Effect(AMMobEffects.TRUE_SIGHT));
-    RegistryObject<Effect>      WATERY_GRAVE    = SPELL_PARTS.register("watery_grave",        () -> new Effect(AMMobEffects.WATERY_GRAVE));
-    RegistryObject<Attract>     ATTRACT         = SPELL_PARTS.register("attract", Attract::new);
-    RegistryObject<BanishRain>  BANISH_RAIN     = SPELL_PARTS.register("banish_rain", BanishRain::new);
-    RegistryObject<Blink>       BLINK           = SPELL_PARTS.register("blink", Blink::new);
-    RegistryObject<Blizzard>    BLIZZARD        = SPELL_PARTS.register("blizzard", Blizzard::new);
-    RegistryObject<Charm>       CHARM           = SPELL_PARTS.register("charm", Charm::new);
-    RegistryObject<CreateWater> CREATE_WATER    = SPELL_PARTS.register("create_water", CreateWater::new);
-    RegistryObject<Daylight>    DAYLIGHT        = SPELL_PARTS.register("daylight", Daylight::new);
-    RegistryObject<Dig>         DIG             = SPELL_PARTS.register("dig", Dig::new);
-    RegistryObject<Disarm>      DISARM          = SPELL_PARTS.register("disarm",              Disarm::new);
+    RegistryObject<Effect>             WATERY_GRAVE        = SPELL_PARTS.register("watery_grave",        () -> new Effect(AMMobEffects.WATERY_GRAVE));
+    RegistryObject<Attract>            ATTRACT             = SPELL_PARTS.register("attract",             Attract::new);
+    RegistryObject<BanishRain>         BANISH_RAIN         = SPELL_PARTS.register("banish_rain",         BanishRain::new);
+    RegistryObject<Blink>              BLINK               = SPELL_PARTS.register("blink",               Blink::new);
+    RegistryObject<Blizzard>           BLIZZARD            = SPELL_PARTS.register("blizzard",            Blizzard::new);
+    RegistryObject<Charm>              CHARM               = SPELL_PARTS.register("charm",               Charm::new);
+    RegistryObject<CreateWater>        CREATE_WATER        = SPELL_PARTS.register("create_water",        CreateWater::new);
+    RegistryObject<Daylight>           DAYLIGHT            = SPELL_PARTS.register("daylight",            Daylight::new);
+    RegistryObject<Dig>                DIG                 = SPELL_PARTS.register("dig",                 Dig::new);
+    RegistryObject<Disarm>             DISARM              = SPELL_PARTS.register("disarm",              Disarm::new);
     RegistryObject<Dispel>             DISPEL              = SPELL_PARTS.register("dispel",              Dispel::new);
     RegistryObject<DivineIntervention> DIVINE_INTERVENTION = SPELL_PARTS.register("divine_intervention", DivineIntervention::new);
     RegistryObject<Drought>            DROUGHT             = SPELL_PARTS.register("drought",             Drought::new);
@@ -119,8 +118,8 @@ public interface AMSpellParts {
     RegistryObject<Transplace>         TRANSPLACE          = SPELL_PARTS.register("transplace",          Transplace::new);
     RegistryObject<WizardsAutumn>      WIZARDS_AUTUMN      = SPELL_PARTS.register("wizards_autumn",      WizardsAutumn::new);
 
-    RegistryObject<ISpellModifier> BOUNCE = SPELL_PARTS.register("bounce", () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier> DAMAGE = SPELL_PARTS.register("damage",              () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier>     BOUNCE              = SPELL_PARTS.register("bounce",              () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier>     DAMAGE              = SPELL_PARTS.register("damage",              () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier>     DISMEMBERING        = SPELL_PARTS.register("dismembering",        () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier>     DURATION            = SPELL_PARTS.register("duration",            () -> new AbstractModifier() {});
     RegistryObject<ISpellModifier>     EFFECT_POWER        = SPELL_PARTS.register("effect_power",        () -> new AbstractModifier() {});
