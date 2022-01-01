@@ -17,11 +17,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 public final class ArsMagicaAPI {
     /**
@@ -29,22 +32,14 @@ public final class ArsMagicaAPI {
      */
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
-        try {
-            //noinspection unchecked
-            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
-            return clazz.getDeclaredConstructor().newInstance();
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
-            return StubArsMagicaAPI.INSTANCE;
-        }
-        /*var impl = ServiceLoader.load(FMLLoader.getGameLayer(), IArsMagicaAPI.class).findFirst();
+        Optional<IArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), IArsMagicaAPI.class).findFirst();
         if (!FMLEnvironment.production) {
             return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI")));
         }
         return impl.orElseGet(() -> {
             LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
             return StubArsMagicaAPI.INSTANCE;
-        });*/
+        });
     });
 
     private ArsMagicaAPI() {
@@ -177,7 +172,7 @@ public final class ArsMagicaAPI {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static class StubArsMagicaAPI implements IArsMagicaAPI {
+    private static final class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
         @Override
