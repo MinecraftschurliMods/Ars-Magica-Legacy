@@ -58,10 +58,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         wipBlockIdTranslation(AMBlocks.MOONSTONE_ORE);
         wipBlockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
         wipItemIdTranslation(AMItems.MOONSTONE);
-        addBlock(AMBlocks.MOONSTONE_BLOCK, "[NYI] Block of Moonstone");
+        addBlock(AMBlocks.MOONSTONE_BLOCK, "[WIP] Block of Moonstone");
         wipBlockIdTranslation(AMBlocks.SUNSTONE_ORE);
         wipItemIdTranslation(AMItems.SUNSTONE);
-        addBlock(AMBlocks.SUNSTONE_BLOCK, "[NYI] Block of Sunstone");
+        addBlock(AMBlocks.SUNSTONE_BLOCK, "[WIP] Block of Sunstone");
         wipBlockIdTranslation(AMBlocks.WITCHWOOD_LOG);
         wipBlockIdTranslation(AMBlocks.WITCHWOOD);
         wipBlockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD_LOG);
@@ -288,7 +288,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param block The block to generate the translation for.
      */
     private void wipBlockIdTranslation(RegistryObject<? extends Block> block) {
-        addBlock(block, "[WIP]" + idToTranslation(block.getId().getPath()));
+        addBlock(block, "[WIP] " + idToTranslation(block.getId().getPath()));
     }
 
     /**

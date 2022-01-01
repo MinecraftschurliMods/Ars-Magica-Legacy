@@ -82,8 +82,7 @@ public class SpellItem extends Item implements ISpellItem {
     public Component getName(ItemStack pStack) {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
-            assert player != null;
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
+            if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
                 return new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN);
         }
         Spell spell = getSpell(pStack);

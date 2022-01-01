@@ -2,5 +2,43 @@
   "name": "item.arsmagicalegacy.arcane_compendium.mechanics.affinities.name",
   "category": "arsmagicalegacy:mechanics",
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
-  "pages": []
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.affinities.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.affinities.page1.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.affinities.page2.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_fire",
+      "recipe2": "arsmagicalegacy:affinity_essence_water"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_earth",
+      "recipe2": "arsmagicalegacy:affinity_essence_air"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_ice",
+      "recipe2": "arsmagicalegacy:affinity_essence_lightning"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_nature",
+      "recipe2": "arsmagicalegacy:affinity_essence_life"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_arcane",
+      "recipe2": "arsmagicalegacy:affinity_essence_ender"
+    }
+  ]
 }

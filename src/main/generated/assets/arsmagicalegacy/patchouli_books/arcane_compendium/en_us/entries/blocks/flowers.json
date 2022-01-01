@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A variety of flowers can be found scattered across the world."
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page0.text"
     },
     {
       "type": "patchouli:spotlight",

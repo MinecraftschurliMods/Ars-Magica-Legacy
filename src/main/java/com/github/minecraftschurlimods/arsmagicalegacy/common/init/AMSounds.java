@@ -74,9 +74,9 @@ public interface AMSounds {
     RegistryObject<SoundEvent> LOOP_EARTH =                       register("spell.loop.earth");
     RegistryObject<SoundEvent> LOOP_ENDER =                       register("spell.loop.ender");
     RegistryObject<SoundEvent> LOOP_FIRE =                        register("spell.loop.fire");
-    RegistryObject<SoundEvent> LOOP_LIFE      =                        register("spell.loop.life");
+    RegistryObject<SoundEvent> LOOP_LIFE      =                   register("spell.loop.life");
     RegistryObject<SoundEvent> LOOP_LIGHTNING =                   register("spell.loop.lightning");
-    RegistryObject<SoundEvent> LOOP_NATURE    =                      register("spell.loop.nature");
+    RegistryObject<SoundEvent> LOOP_NATURE    =                   register("spell.loop.nature");
     RegistryObject<SoundEvent> LOOP_NONE =                        register("spell.loop.none");
     RegistryObject<SoundEvent> LOOP_WATER =                       register("spell.loop.water");
     RegistryObject<SoundEvent> LOOP_WINTER =                      register("spell.loop.winter");
