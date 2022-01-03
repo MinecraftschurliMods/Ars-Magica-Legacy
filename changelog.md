@@ -1,6 +1,10 @@
-# Version 1.18.1-0.0.1
+# Version 1.18.1-0.0.2
 
 ## Fixes
+
+### Commands
+
+- Remove test commands
 
 ### Arcane Compendium
 
