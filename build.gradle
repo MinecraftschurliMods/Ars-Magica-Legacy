@@ -72,53 +72,53 @@ configurations {
     library
     modAPI
     runtimeMod
+    include { transitive = false }
+
+    sourceSets.forEach {
+        Configuration extLib
+        Configuration impl
+        Configuration compile
+        Configuration runtime
+        Configuration rcp
+        Configuration ccp
+        if (it.name == "main") {
+            extLib = create("externalLibrary")
+            impl = implementation
+            compile = compileOnly
+            runtime = runtimeOnly
+            rcp = runtimeClasspath
+            ccp = compileClasspath
+        } else {
+            extLib = create(it.name+"ExternalLibrary")
+            impl = getByName(it.name+"Implementation")
+            compile = getByName(it.name+"CompileOnly")
+            runtime = getByName(it.name+"RuntimeOnly")
+            rcp = getByName(it.name+"RuntimeClasspath")
+            ccp = getByName(it.name+"CompileClasspath")
+        }
+        impl.extendsFrom(extLib)
+        compile.extendsFrom(library)
+        compile.extendsFrom(modAPI)
+        if (it.name != "api") {
+            if (it.name != "main") {
+                rcp.extendsFrom(minecraft)
+            }
+            runtime.extendsFrom(runtimeMod)
+        }
+        if (it.name != "main") {
+            ccp.extendsFrom(minecraft)
+        }
+        impl.extendsFrom(include)
+    }
+}
+
+configurations {
     datagenLibrary {
         canBeConsumed = false
         canBeResolved = true
         transitive = false
     }
-    include {
-        canBeConsumed = false
-        canBeResolved = true
-        transitive = false
-    }
-
-    apiExternalLibrary
-    externalLibrary
-    dataExternalLibrary
-    testExternalLibrary
-
-    apiImplementation.extendsFrom(apiExternalLibrary)
-    implementation.extendsFrom(externalLibrary)
-    dataImplementation.extendsFrom(dataExternalLibrary)
-    testImplementation.extendsFrom(testExternalLibrary)
-
-    apiCompileOnly.extendsFrom(library)
-    compileOnly.extendsFrom(library)
-    dataCompileOnly.extendsFrom(library)
-    testCompileOnly.extendsFrom(library)
-
-    apiCompileOnly.extendsFrom(modAPI)
-    compileOnly.extendsFrom(modAPI)
-    dataCompileOnly.extendsFrom(modAPI)
-    testCompileOnly.extendsFrom(modAPI)
-
-    runtimeOnly.extendsFrom(runtimeMod)
-    dataRuntimeOnly.extendsFrom(runtimeMod)
-    testRuntimeOnly.extendsFrom(runtimeMod)
-
-    apiImplementation.extendsFrom(include)
-    implementation.extendsFrom(include)
-    dataImplementation.extendsFrom(include)
-    testImplementation.extendsFrom(include)
-
     dataImplementation.extendsFrom(datagenLibrary)
-
-    apiCompileClasspath.extendsFrom(minecraft)
-    dataCompileClasspath.extendsFrom(minecraft)
-    dataRuntimeClasspath.extendsFrom(minecraft)
-    testCompileClasspath.extendsFrom(minecraft)
-    testRuntimeClasspath.extendsFrom(minecraft)
 }
 
 repositories {
@@ -162,7 +162,7 @@ repositories {
         }
     }
     maven {
-        name = 'CuresMaven'
+        name = 'CurseMaven'
         url = "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
