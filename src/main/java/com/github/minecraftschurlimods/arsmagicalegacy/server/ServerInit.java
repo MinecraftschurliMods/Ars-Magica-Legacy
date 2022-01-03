@@ -32,24 +32,6 @@ public final class ServerInit {
     @SubscribeEvent
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
-        event.getDispatcher().register(Commands.literal("givetestspell").executes(context -> {
-            ItemStack stack = new ItemStack(AMItems.SPELL.get());
-            SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DIG.get()),
-                    ShapeGroup.of(AMSpellParts.PROJECTILE.get())
-            ));
-            context.getSource().getPlayerOrException().addItem(stack);
-            return Command.SINGLE_SUCCESS;
-        }));
-        event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
-            ItemStack stack = new ItemStack(AMItems.SPELL.get());
-            SpellItem.saveSpell(stack, Spell.of(
-                    SpellStack.of(AMSpellParts.DIG.get()),
-                    ShapeGroup.of(AMSpellParts.PROJECTILE.get())
-            ));
-            context.getSource().getPlayerOrException().addItem(stack);
-            return Command.SINGLE_SUCCESS;
-        }));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
