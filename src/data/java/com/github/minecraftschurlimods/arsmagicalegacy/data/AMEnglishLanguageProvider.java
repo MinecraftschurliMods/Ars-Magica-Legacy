@@ -297,7 +297,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param item The item to generate the translation for.
      */
     private void wipItemIdTranslation(RegistryObject<? extends Item> item) {
-        addItem(item, "[WIP]" + idToTranslation(item.getId().getPath()));
+        addItem(item, "[WIP] " + idToTranslation(item.getId().getPath()));
     }
 
     /**
