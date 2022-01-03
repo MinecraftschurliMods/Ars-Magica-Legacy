@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Runes are the basic building parts of spells. When combined with multiple other items in the right combination, a magical spell scroll can be created."
+      "text": "item.arsmagicalegacy.arcane_compendium.items.runes.page0.text"
     },
     {
       "type": "patchouli:crafting",

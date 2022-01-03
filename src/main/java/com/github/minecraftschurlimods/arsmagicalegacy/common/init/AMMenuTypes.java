@@ -11,7 +11,7 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 @NonExtendable
 public interface AMMenuTypes {
     RegistryObject<MenuType<InscriptionTableMenu>> INSCRIPTION_TABLE = AMRegistries.MENU_TYPES.register("inscription_table", () -> IForgeMenuType.create(InscriptionTableMenu::new));
-    RegistryObject<MenuType<RuneBagMenu>>          RUNE_BAG          = AMRegistries.MENU_TYPES.register("rune_bag", () -> IForgeMenuType.create(RuneBagMenu::new));
+    RegistryObject<MenuType<RuneBagMenu>>          RUNE_BAG          = AMRegistries.MENU_TYPES.register("rune_bag",          () -> IForgeMenuType.create(RuneBagMenu::new));
 
     /**
      * Empty method that is required for classloading

@@ -1,3 +1,24 @@
+# Version 1.18.1-0.0.2
+
+## Fixes
+
+### Commands
+
+- Remove test commands
+
+### Arcane Compendium
+
+- Affinity and Shape Group pages are now properly displaying text
+- All pages now use translation keys
+
+### Occulus
+
+- The Occulus now consumes skill points
+
+### Components
+
+- Physical Damage, Fire Damage, Frost Damage, Lightning Damage, Magic Damage and Drowning Damage now respect the server PvP setting
+
 # Version 1.18.1-0.0.1
 
 ## Additions
