@@ -49,7 +49,9 @@ public final class ArsMagicaLegacy {
      */
     public ArsMagicaLegacy() {
         if (INSTANCE != null)
-            throw new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!");
+            throw LOGGER.throwing(new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!"));
+        if (!(ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl))
+            throw LOGGER.throwing(new IllegalStateException("API was not initialized!"));
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
