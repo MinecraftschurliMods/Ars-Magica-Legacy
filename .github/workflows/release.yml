@@ -30,7 +30,7 @@ jobs:
           path: ./changelog.md
       - name: Create a Release
         id: create_release
-        uses: meeDamian/github-release@2.0
+        uses: swift-project/github-release@2.0-connreset-retry
         with:
           draft: false
           gzip: false
