@@ -19,31 +19,33 @@ public class Repel extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
+        boolean success = false;
         Entity entity = target.getEntity();
         for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(range, range, range))) {
-            if (e instanceof LivingEntity) {
-                performRepel(entity.position(), e, modifiers);
-            }
+            success = performRepel(entity.position(), e, modifiers) || success;
         }
-        return SpellCastResult.SUCCESS;
+        return success ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
+        boolean success = false;
         for (Entity e : level.getEntities(null, new AABB(target.getBlockPos().getX() - range, target.getBlockPos().getY() - range, target.getBlockPos().getZ() - range, target.getBlockPos().getX() + range, target.getBlockPos().getY() + range, target.getBlockPos().getZ() + range))) {
-            if (e instanceof LivingEntity) {
-                performRepel(target.getLocation(), e, modifiers);
-            }
+            success = performRepel(target.getLocation(), e, modifiers) || success;
         }
-        return SpellCastResult.SUCCESS;
+        return success ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
-    private static void performRepel(Vec3 caster, Entity entity, List<ISpellModifier> modifiers) {
-        Vec3 vec = entity.position();
-        double distance = caster.distanceTo(vec) + 0.1;
-        double factor = 0.9 / (double) (1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()));
-        Vec3 delta = vec.subtract(caster);
-        entity.setDeltaMovement(entity.getDeltaMovement().x() + delta.x() / factor / distance, entity.getDeltaMovement().y() + delta.y() / factor / distance, entity.getDeltaMovement().z() + delta.z() / factor / distance);
+    private static boolean performRepel(Vec3 caster, Entity entity, List<ISpellModifier> modifiers) {
+        if (entity instanceof LivingEntity) {
+            Vec3 vec = entity.position();
+            double distance = caster.distanceTo(vec) + 0.1;
+            double factor = 0.9 / (double) (1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.VELOCITY.getId()));
+            Vec3 delta = vec.subtract(caster);
+            entity.setDeltaMovement(entity.getDeltaMovement().x() + delta.x() / factor / distance, entity.getDeltaMovement().y() + delta.y() / factor / distance, entity.getDeltaMovement().z() + delta.z() / factor / distance);
+            return true;
+        }
+        return false;
     }
 }

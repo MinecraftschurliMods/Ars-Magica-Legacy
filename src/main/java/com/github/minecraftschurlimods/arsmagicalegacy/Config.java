@@ -54,6 +54,8 @@ public final class Config {
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
+        public final ForgeConfigSpec.IntValue EFFECT_DURATION;
+        public final ForgeConfigSpec.IntValue EFFECT_EXTRA_DURATION;
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
@@ -82,6 +84,12 @@ public final class Config {
                     .comment("The extra skill points a player gets on level 1. [ 0 - 100 ]")
                     .translation(TranslationConstants.CONFIG + "extra_starting_blue_points")
                     .defineInRange("extra_starting_blue_points", 2, 0, 100);
+            EFFECT_DURATION = builder
+                    .comment("Effect duration of effect-based components, in ticks.")
+                    .defineInRange("effect_duration", 600, 1, 3600);
+            EFFECT_EXTRA_DURATION = builder
+                    .comment("Extra effect duration for each Duration modifier, in ticks.")
+                    .defineInRange("effect_extra_duration", 300, 1, 3600);
         }
     }
 }

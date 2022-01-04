@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class Light extends Effect {
         Direction direction = target.getDirection();
         BlockPos pos = target.getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
         if (level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, AMBlocks.SPELL_LIGHT.get().defaultBlockState(), 3);
+            level.setBlock(pos, AMBlocks.SPELL_LIGHT.get().defaultBlockState(), Block.UPDATE_ALL);
         }
         return SpellCastResult.EFFECT_FAILED;
     }
