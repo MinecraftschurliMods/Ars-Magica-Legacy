@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.vinteum_torch.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:vinteum_torch",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.vinteum_torch.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:vinteum_torch"
+    }
+  ]
+}

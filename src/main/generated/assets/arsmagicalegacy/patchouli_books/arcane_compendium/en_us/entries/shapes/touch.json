@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.shapes.touch",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/touch.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.touch.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:touch"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/touch"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_compound.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:arcane_compound",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.arcane_compound.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:arcane_compound"
+    }
+  ]
+}

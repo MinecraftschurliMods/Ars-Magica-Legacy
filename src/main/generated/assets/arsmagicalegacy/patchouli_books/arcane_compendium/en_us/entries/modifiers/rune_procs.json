@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.rune_procs",
+  "category": "arsmagicalegacy:modifiers",
+  "icon": "arsmagicalegacy:textures/icon/skill/rune_procs.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.modifiers.rune_procs.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:rune_procs"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/rune_procs"
+}

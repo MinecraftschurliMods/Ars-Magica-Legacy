@@ -1,0 +1,23 @@
+{
+  "manaCost": 55.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:fire": 0.1
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:red_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:furnace"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

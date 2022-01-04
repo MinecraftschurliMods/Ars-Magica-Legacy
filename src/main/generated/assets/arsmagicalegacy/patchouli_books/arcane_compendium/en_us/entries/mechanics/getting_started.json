@@ -1,0 +1,75 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.name",
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "patchouli:guide_book{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page0.text"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/occulus.png"
+      ],
+      "text": "The Occulus has four tabs, the first three of which are skill tree tabs."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page2.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page2.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page3.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page3.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page4.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page4.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page5.text"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_1.png"
+      ],
+      "text": "Once placed and opened, you are presented with a GUI that consists of four major sections:"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page7.text"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_2.png"
+      ],
+      "text": "Drag the skills down to the shape groups and the spell grammar section."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_3.png"
+      ],
+      "text": "The shown spell recipe is $(l:shapes/projectile)Projectile$()-$(l:components/dig)Dig$(), which is recommended for beginners."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page10.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page11.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page12.text"
+    }
+  ],
+  "priority": true
+}

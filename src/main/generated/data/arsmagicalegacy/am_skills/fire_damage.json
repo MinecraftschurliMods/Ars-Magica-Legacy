@@ -1,7 +1,7 @@
 {
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 255,
-  "y": 135,
+  "x": 165,
+  "y": 120,
   "parents": [
     "arsmagicalegacy:physical_damage"
   ],

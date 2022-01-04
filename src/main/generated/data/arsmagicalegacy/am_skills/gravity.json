@@ -1,7 +1,7 @@
 {
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 255,
-  "y": 70,
+  "x": 165,
+  "y": 75,
   "parents": [
     "arsmagicalegacy:projectile"
   ],

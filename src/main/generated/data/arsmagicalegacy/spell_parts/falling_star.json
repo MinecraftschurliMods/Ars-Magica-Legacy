@@ -1,0 +1,33 @@
+{
+  "manaCost": 400.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.05
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "type": "forge:nbt"
+      },
+      "count": 2,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/arcane_ash"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:lava_bucket"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

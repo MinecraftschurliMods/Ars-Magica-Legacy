@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.magitech_goggles.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:magitech_goggles",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.magitech_goggles.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:magitech_goggles"
+    }
+  ]
+}

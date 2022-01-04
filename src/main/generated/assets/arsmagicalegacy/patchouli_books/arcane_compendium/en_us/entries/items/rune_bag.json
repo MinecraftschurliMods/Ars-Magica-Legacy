@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.rune_bag.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:rune_bag",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.rune_bag.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:rune_bag"
+    }
+  ]
+}

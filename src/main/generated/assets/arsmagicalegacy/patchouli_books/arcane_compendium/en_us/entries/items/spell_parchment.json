@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.spell_parchment.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:spell_parchment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.spell_parchment.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:spell_parchment"
+    }
+  ]
+}

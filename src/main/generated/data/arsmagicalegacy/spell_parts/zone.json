@@ -5,20 +5,6 @@
   "recipe": [
     {
       "ingredient": {
-        "tag": "forge:gems/moonstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:gems/sunstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "tag": "forge:gems/diamond"
       },
       "count": 1,

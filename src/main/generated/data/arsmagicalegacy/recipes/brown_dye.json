@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:tarma_root"
+    }
+  ],
+  "result": {
+    "item": "minecraft:brown_dye"
+  }
+}

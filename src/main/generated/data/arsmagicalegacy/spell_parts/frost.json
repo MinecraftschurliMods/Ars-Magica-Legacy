@@ -1,0 +1,23 @@
+{
+  "manaCost": 29.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ice": 0.2
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:snow"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

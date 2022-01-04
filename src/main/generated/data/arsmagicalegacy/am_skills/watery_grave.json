@@ -1,7 +1,7 @@
 {
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 435,
-  "y": 245,
+  "x": 345,
+  "y": 165,
   "parents": [
     "arsmagicalegacy:drowning_damage"
   ],

@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_ash.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:arcane_ash",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.arcane_ash.page0.text"
+    },
+    {
+      "type": "patchouli:smelting",
+      "recipe": "arsmagicalegacy:arcane_ash"
+    }
+  ]
+}

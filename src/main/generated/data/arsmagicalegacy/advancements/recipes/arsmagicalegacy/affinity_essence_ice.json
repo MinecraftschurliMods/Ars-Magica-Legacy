@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:affinity_essence_ice"
+    ]
+  },
+  "criteria": {
+    "has_arcane_ash": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:arcane_ash"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:affinity_essence_ice"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_arcane_ash",
+      "has_the_recipe"
+    ]
+  ]
+}

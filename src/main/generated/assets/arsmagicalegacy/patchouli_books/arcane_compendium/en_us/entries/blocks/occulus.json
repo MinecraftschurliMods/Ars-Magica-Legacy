@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.occulus.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:occulus",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.occulus.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:occulus"
+    }
+  ]
+}

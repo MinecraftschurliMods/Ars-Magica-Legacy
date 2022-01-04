@@ -1,0 +1,37 @@
+{
+  "manaCost": 100.0,
+  "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ender": 0.02
+  },
+  "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:blue_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:red_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ender_pearls"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:compass"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
+}

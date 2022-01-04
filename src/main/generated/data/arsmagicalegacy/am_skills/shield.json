@@ -1,8 +1,11 @@
 {
   "occulus_tab": "arsmagicalegacy:defense",
-  "x": 357,
-  "y": 270,
+  "x": 255,
+  "y": 255,
+  "parents": [
+    "arsmagicalegacy:zone"
+  ],
   "cost": {
-    "arsmagicalegacy:blue": 1
+    "arsmagicalegacy:red": 1
   }
 }

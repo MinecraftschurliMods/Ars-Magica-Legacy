@@ -1,0 +1,15 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.purified_vinteum_dust.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:purified_vinteum_dust",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.purified_vinteum_dust.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:purified_vinteum_dust"
+    }
+  ]
+}

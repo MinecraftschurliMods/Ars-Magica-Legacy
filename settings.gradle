@@ -1,4 +1,10 @@
 pluginManagement {
+    plugins {
+        id 'org.ec4j.editorconfig' version '0.0.3'
+        id 'net.minecraftforge.gradle' version '5.1.+'
+        id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+        id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    }
     repositories {
         gradlePluginPortal()
         maven {
@@ -16,13 +22,17 @@ pluginManagement {
     }
     resolutionStrategy {
         eachPlugin {
+            var version = target.version
             switch (requested.id.toString()) {
                 case "net.minecraftforge.gradle": {
-                    useModule("${requested.id}:ForgeGradle:${requested.version}")
+                    useVersion(version)
+                    useModule("${requested.id}:ForgeGradle:${version}")
                     break
                 }
                 case "org.spongepowered.mixin": {
-                    useModule("org.spongepowered:mixingradle:${requested.version}")
+                    useVersion(version)
+                    useModule("org.spongepowered:mixingradle:${version}")
+                    break
                 }
             }
         }
