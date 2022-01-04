@@ -59,37 +59,37 @@ public final class Config {
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
-                    .comment("The default maximum mana for the player.")
+                    .comment("The default maximum mana for the player. [ 0.0 - 10000.0 ]")
                     .translation(TranslationConstants.CONFIG + "max_mana")
                     .worldRestart()
                     .defineInRange("max_mana", 100, 0., 10000);
             DEFAULT_MAX_BURNOUT = builder
-                    .comment("The default maximum burnout for the player.")
+                    .comment("The default maximum burnout for the player. [ 0.0 - 10000.0 ]")
                     .translation(TranslationConstants.CONFIG + "max_burnout")
                     .worldRestart()
                     .defineInRange("max_burnout", 100, 0., 10000);
             BURNOUT_RATIO = builder
-                    .comment("The mana to burnout ratio.")
+                    .comment("The mana to burnout ratio. [ 0.0 - 10.0 ]")
                     .translation(TranslationConstants.CONFIG + "burnout_ratio")
                     .defineInRange("burnout_ratio", 0.5, 0, 10.0);
             CRAFTING_ALTAR_CHECK_TIME = builder
-                    .comment("The time in ticks between multiblock validation checks for the crafting altar.")
+                    .comment("The time in ticks between multiblock validation checks for the crafting altar. [ 1 - 200 ]")
                     .translation(TranslationConstants.CONFIG + "crafting_altar_check_time")
                     .defineInRange("crafting_altar_check_time", 20, 1, 200);
             MAX_SHAPE_GROUPS = builder
-                    .comment("The maximum number of shape groups allowed for new spells.")
+                    .comment("The maximum number of shape groups allowed for new spells. [ 0 - 5 ]")
                     .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
             EXTRA_STARTING_BLUE_POINTS = builder
-                    .comment("The extra skill points a player gets on level 1.")
+                    .comment("The extra skill points a player gets on level 1. [ 0 - 100 ]")
                     .translation(TranslationConstants.CONFIG + "extra_starting_blue_points")
                     .defineInRange("extra_starting_blue_points", 2, 0, 100);
             EFFECT_DURATION = builder
-                    .comment("Effect duration of effect-based components, in ticks.")
+                    .comment("Effect duration of effect-based components, in ticks. [ 1 - 3600 ]")
                     .translation(TranslationConstants.CONFIG + "effect_duration")
                     .defineInRange("effect_duration", 600, 1, 3600);
             EFFECT_EXTRA_DURATION = builder
-                    .comment("Extra effect duration for each Duration modifier, in ticks.")
+                    .comment("Extra effect duration for each Duration modifier, in ticks. [ 1 - 3600 ]")
                     .translation(TranslationConstants.CONFIG + "effect_extra_duration")
                     .defineInRange("effect_extra_duration", 300, 1, 3600);
         }
