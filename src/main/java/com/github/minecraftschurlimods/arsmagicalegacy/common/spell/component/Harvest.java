@@ -35,7 +35,7 @@ public class Harvest extends AbstractComponent {
         if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state) && !level.isClientSide()) {
             List<ItemStack> drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos));
             if (drops.stream().anyMatch(e -> e.getItem() == crop.asItem())) {
-                level.setBlock(pos, level.getBlockState(pos).setValue(CropBlock.AGE, 0), 3);
+                level.setBlock(pos, level.getBlockState(pos).setValue(CropBlock.AGE, 0), Block.UPDATE_ALL);
                 for (ItemStack stack : drops) {
                     int count = stack.getItem() == crop.asItem() ? stack.getCount() - 1 : stack.getCount();
                     if (count > 0) {

@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -31,13 +32,13 @@ public class Ignition extends AbstractComponent {
         }
         if (level.getBlockState(pos).isAir()) {
             if (!level.isClientSide()) {
-                level.setBlock(pos, Blocks.FIRE.defaultBlockState(), 3);
+                level.setBlock(pos, Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
             }
             return SpellCastResult.SUCCESS;
         }
         if (level.getBlockState(pos.above()).isAir()) {
             if (!level.isClientSide()) {
-                level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);
+                level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
             }
             return SpellCastResult.SUCCESS;
         }
