@@ -38,7 +38,7 @@ public class Damage extends AbstractComponent {
         Entity entity = target.getEntity();
         if (entity instanceof Player && !((ServerLevel) level).getServer().isPvpAllowed()) return SpellCastResult.EFFECT_FAILED;
         float damage = this.damage;
-        damage *= 1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, entity instanceof LivingEntity && ((LivingEntity) entity).isInvertedHealAndHarm() ? AMSpellParts.HEALING.getId() : AMSpellParts.DAMAGE.getId());
+        damage *= 1 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, entity instanceof LivingEntity living && living.isInvertedHealAndHarm() ? AMSpellParts.HEALING.getId() : AMSpellParts.DAMAGE.getId());
         return !failIf.test(entity) && entity.hurt(damageSourceFunction.apply(caster), damage) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
