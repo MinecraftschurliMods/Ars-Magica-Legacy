@@ -249,6 +249,14 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.WAVE.getId(), "Wave", "You might not want to surf on this one...", "shapes", "");
         skillTranslation(AMSpellParts.WIZARDS_AUTUMN.getId(), "Wizard's Autumn", "Leaves fall in autumn. But it's kind of a slow process...", "components", "");
         skillTranslation(AMSpellParts.ZONE.getId(), "Zone", "No one can beat me in my sanctuary!", "shapes", "");
+        configTranslation("max_mana", "The default maximum mana for the player.");
+        configTranslation("max_burnout", "The default maximum burnout for the player.");
+        configTranslation("burnout_ratio", "The mana to burnout ratio.");
+        configTranslation("crafting_altar_check_time", "The time in ticks between multiblock validation checks for the crafting altar.");
+        configTranslation("max_shape_groups", "The maximum number of shape groups allowed for new spells.");
+        configTranslation("extra_starting_blue_points", "The extra skill points a player gets on level 1.");
+        configTranslation("effect_duration", "Effect duration of effect-based components, in ticks.");
+        configTranslation("effect_extra_duration", "Extra effect duration for each Duration modifier, in ticks.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
@@ -543,6 +551,16 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    /**
+     * Adds a config translation.
+     *
+     * @param name        The config entry to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void configTranslation(String name, String translation) {
+        add(TranslationConstants.CONFIG + name, translation);
     }
 
     /**
