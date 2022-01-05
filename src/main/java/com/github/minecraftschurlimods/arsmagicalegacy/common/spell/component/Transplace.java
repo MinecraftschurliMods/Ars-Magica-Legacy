@@ -7,14 +7,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-//TODO
 public class Transplace extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
+        Vec3 targetPos = target.getEntity().position();
+        Vec3 casterPos = caster.position();
+        target.getEntity().moveTo(casterPos);
+        caster.moveTo(targetPos);
+        return SpellCastResult.SUCCESS;
     }
 
     @Override
