@@ -65,6 +65,7 @@ public interface AMSpellParts {
     RegistryObject<Effect>             FROST               = SPELL_PARTS.register("frost",               () -> new Effect(AMMobEffects.FROST));
     RegistryObject<Effect>             FURY                = SPELL_PARTS.register("fury",                () -> new Effect(AMMobEffects.FURY));
     RegistryObject<Effect>             GRAVITY_WELL        = SPELL_PARTS.register("gravity_well",        () -> new Effect(AMMobEffects.GRAVITY_WELL));
+    RegistryObject<Effect>             REFLECT             = SPELL_PARTS.register("reflect",             () -> new Effect(AMMobEffects.REFLECT));
     RegistryObject<Effect>             SCRAMBLE_SYNAPSES   = SPELL_PARTS.register("scramble_synapses",   () -> new Effect(AMMobEffects.SCRAMBLE_SYNAPSES));
     RegistryObject<Effect>             SHIELD              = SPELL_PARTS.register("shield",              () -> new Effect(AMMobEffects.SHIELD));
     RegistryObject<Effect>             SHRINK              = SPELL_PARTS.register("shrink",              () -> new Effect(AMMobEffects.SHRINK));
@@ -109,7 +110,6 @@ public interface AMSpellParts {
     RegistryObject<Plow>               PLOW                = SPELL_PARTS.register("plow",                Plow::new);
     RegistryObject<RandomTeleport>     RANDOM_TELEPORT     = SPELL_PARTS.register("random_teleport",     RandomTeleport::new);
     RegistryObject<Recall>             RECALL              = SPELL_PARTS.register("recall",              Recall::new);
-    RegistryObject<Reflect>            REFLECT             = SPELL_PARTS.register("reflect",             Reflect::new);
     RegistryObject<Repel>              REPEL               = SPELL_PARTS.register("repel",               Repel::new);
     RegistryObject<Rift>               RIFT                = SPELL_PARTS.register("rift",                Rift::new);
     RegistryObject<Storm>              STORM               = SPELL_PARTS.register("storm",               Storm::new);
