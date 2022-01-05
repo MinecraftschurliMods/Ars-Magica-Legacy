@@ -21,6 +21,7 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
 import net.minecraftforge.server.permission.nodes.PermissionTypes;
@@ -32,6 +33,26 @@ public final class ServerInit {
     @SubscribeEvent
     static void registerCommands(RegisterCommandsEvent event) {
         SkillCommand.register(event.getDispatcher());
+        if (!FMLEnvironment.production) {
+            event.getDispatcher().register(Commands.literal("givetestspell1").executes(context -> {
+                ItemStack stack = new ItemStack(AMItems.SPELL.get());
+                SpellItem.saveSpell(stack, Spell.of(
+                        SpellStack.of(AMSpellParts.PLACE_BLOCK.get()),
+                        ShapeGroup.of(AMSpellParts.TOUCH.get())
+                ));
+                context.getSource().getPlayerOrException().addItem(stack);
+                return Command.SINGLE_SUCCESS;
+            }));
+            event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
+                ItemStack stack = new ItemStack(AMItems.SPELL.get());
+                SpellItem.saveSpell(stack, Spell.of(
+                        SpellStack.of(AMSpellParts.DIG.get()),
+                        ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+                ));
+                context.getSource().getPlayerOrException().addItem(stack);
+                return Command.SINGLE_SUCCESS;
+            }));
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

@@ -1,8 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
@@ -86,6 +89,18 @@ public final class AMUtil {
             hitResult = entityHitResult;
         }
         return hitResult;
+    }
+
+    /**
+     * Returns the entity's main hand stack if it has a spell, otherwise the entity's off hand stack if it has a spell, otherwise an empty stack.
+     * @param entity The entity to get the spell stack from.
+     * @return the entity's main hand stack if it has a spell, otherwise the entity's off hand stack if it has a spell, otherwise an empty stack
+     */
+    public static ItemStack getSpellStack(LivingEntity entity) {
+        ItemStack stack = entity.getMainHandItem();
+        if (SpellItem.getSpell(stack) != Spell.EMPTY) return stack;
+        stack = entity.getOffhandItem();
+        return SpellItem.getSpell(stack) != Spell.EMPTY ? stack : ItemStack.EMPTY;
     }
 
     /**
