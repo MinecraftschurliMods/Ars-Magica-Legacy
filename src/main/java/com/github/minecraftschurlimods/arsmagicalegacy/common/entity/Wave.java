@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -105,7 +106,7 @@ public class Wave extends Entity implements ItemSupplier {
                 if (entity instanceof PartEntity) {
                     entity = ((PartEntity<?>) entity).getParent();
                 }
-                if (entity instanceof LivingEntity) {
+                if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
                     ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
                 }
             }

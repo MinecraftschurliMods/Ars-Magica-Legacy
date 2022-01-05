@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -108,7 +109,7 @@ public class Wall extends Entity implements ItemSupplier {
                 }
                 Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
                 closest = new Vec3(closest.x, getY(), closest.z);
-                if (e instanceof LivingEntity && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
+                if (e instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
                     ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
                 }
             }
