@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
@@ -18,8 +19,8 @@ public final class AltarMaterialManager {
     private static final Lazy<AltarMaterialManager> INSTANCE = Lazy.concurrentOf(AltarMaterialManager::new);
 
     private final Logger logger = LogManager.getLogger();
-    public final CodecDataManager<AltarStructureMaterial> structure = new CodecDataManager<>("altar/structure", AltarStructureMaterial.CODEC, logger);
-    public final CodecDataManager<AltarCapMaterial> cap = new CodecDataManager<>("altar/cap", AltarCapMaterial.CODEC, logger);
+    public final CodecDataManager<AltarStructureMaterial> structure = new CodecDataManager<>("altar/structure", AltarStructureMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+    public final CodecDataManager<AltarCapMaterial> cap = new CodecDataManager<>("altar/cap", AltarCapMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
 
     public static AltarMaterialManager instance() {
         return INSTANCE.get();
@@ -35,12 +36,14 @@ public final class AltarMaterialManager {
         return this.cap.values().stream().filter(mat -> mat.cap() == cap).findFirst();
     }
 
+    @Nullable
     public AltarStructureMaterial getRandomStructureMaterial(int r) {
-        return structure.values().toArray(AltarStructureMaterial[]::new)[r % structure.size()];
+        return structure.size() > 0 ? structure.values().toArray(AltarStructureMaterial[]::new)[r % structure.size()] : null;
     }
 
+    @Nullable
     public AltarCapMaterial getRandomCapMaterial(int r) {
-        return cap.values().toArray(AltarCapMaterial[]::new)[r % cap.size()];
+        return cap.size() > 0 ? cap.values().toArray(AltarCapMaterial[]::new)[r % cap.size()] : null;
     }
 
     @Nullable
