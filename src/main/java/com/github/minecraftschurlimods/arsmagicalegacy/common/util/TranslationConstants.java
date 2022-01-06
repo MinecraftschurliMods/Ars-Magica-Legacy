@@ -30,6 +30,8 @@ public interface TranslationConstants {
     String SPELL_CUSTOMIZATION_NAME         = "screen."   + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.name";
     String CONFIG                           = "config."   + ArsMagicaAPI.MOD_ID + ".";
     String HOLD_SHIFT_FOR_DETAILS           = "message."  + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
+    String NO_TELEPORT                      = "message."  + ArsMagicaAPI.MOD_ID + ".no_teleport";
+    String NO_TELEPORT_NETHER               = "message."  + ArsMagicaAPI.MOD_ID + ".no_teleport_nether";
     String PREVENT                          = "message."  + ArsMagicaAPI.MOD_ID + ".prevent";
     String SPELL_CAST                       = "message."  + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String SPELL_RECIPE_TITLE               = "item."     + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";

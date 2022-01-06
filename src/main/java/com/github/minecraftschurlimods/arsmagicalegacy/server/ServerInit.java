@@ -37,7 +37,7 @@ public final class ServerInit {
             event.getDispatcher().register(Commands.literal("givetestspell1").executes(context -> {
                 ItemStack stack = new ItemStack(AMItems.SPELL.get());
                 SpellItem.saveSpell(stack, Spell.of(
-                        SpellStack.of(AMSpellParts.BLINK.get()),
+                        SpellStack.of(AMSpellParts.DIVINE_INTERVENTION.get()),
                         ShapeGroup.of(AMSpellParts.SELF.get())
                 ));
                 context.getSource().getPlayerOrException().addItem(stack);
@@ -46,8 +46,8 @@ public final class ServerInit {
             event.getDispatcher().register(Commands.literal("givetestspell2").executes(context -> {
                 ItemStack stack = new ItemStack(AMItems.SPELL.get());
                 SpellItem.saveSpell(stack, Spell.of(
-                        SpellStack.of(AMSpellParts.DIG.get()),
-                        ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+                        SpellStack.of(AMSpellParts.ENDER_INTERVENTION.get()),
+                        ShapeGroup.of(AMSpellParts.SELF.get())
                 ));
                 context.getSource().getPlayerOrException().addItem(stack);
                 return Command.SINGLE_SUCCESS;
