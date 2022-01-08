@@ -133,7 +133,7 @@ repositories {
     }
     maven {
         name = 'Minecraftschurli Maven'
-        url = 'https://minecraftschurli.ddns.net/repository'
+        url = 'https://minecraftschurli.ddns.net/repository/maven-public/'
         content {
             includeGroup 'com.github.ichhabehunger54'
             includeGroup 'com.github.minecraftschurli'
