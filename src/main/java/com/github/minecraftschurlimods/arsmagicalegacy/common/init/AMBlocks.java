@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -46,6 +47,8 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMBlocks {
+    BlockBehaviour.Properties FLOWER_POT = BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion();
+
     RegistryObject<OcculusBlock>          OCCULUS                  = BLOCKS.register("occulus",                  OcculusBlock::new);
     RegistryObject<InscriptionTableBlock> INSCRIPTION_TABLE        = BLOCKS.register("inscription_table",        InscriptionTableBlock::new);
     RegistryObject<AltarCoreBlock>        ALTAR_CORE               = BLOCKS.register("altar_core",               AltarCoreBlock::new);
@@ -87,6 +90,12 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);
     RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRootBlock::new);
     RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                WakebloomBlock::new);
+    RegistryObject<FlowerPotBlock>        POTTED_AUM               = flowerPot(AUM);
+    RegistryObject<FlowerPotBlock>        POTTED_CERUBLOSSOM       = flowerPot(CERUBLOSSOM);
+    RegistryObject<FlowerPotBlock>        POTTED_DESERT_NOVA       = flowerPot(DESERT_NOVA);
+    RegistryObject<FlowerPotBlock>        POTTED_TARMA_ROOT        = flowerPot(TARMA_ROOT);
+    RegistryObject<FlowerPotBlock>        POTTED_WAKEBLOOM         = flowerPot(WAKEBLOOM);
+    RegistryObject<FlowerPotBlock>        POTTED_WITCHWOOD_SAPLING = flowerPot(WITCHWOOD_SAPLING);
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
@@ -97,6 +106,12 @@ public interface AMBlocks {
      */
     @Internal
     static void register() {}
+
+    static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
+        RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(flower.getId(), register);
+        return register;
+    }
 
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> type) {
         return false;
