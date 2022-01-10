@@ -92,6 +92,12 @@ class AMBlockStateProvider extends BlockStateProvider {
         crossBlock(DESERT_NOVA);
         crossBlock(TARMA_ROOT);
         crossBlock(WAKEBLOOM);
+        flowerPotBlock(POTTED_AUM, AUM);
+        flowerPotBlock(POTTED_CERUBLOSSOM, CERUBLOSSOM);
+        flowerPotBlock(POTTED_DESERT_NOVA, DESERT_NOVA);
+        flowerPotBlock(POTTED_TARMA_ROOT, TARMA_ROOT);
+        flowerPotBlock(POTTED_WAKEBLOOM, WAKEBLOOM);
+        flowerPotBlock(POTTED_WITCHWOOD_SAPLING, WITCHWOOD_SAPLING);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
         wizardsChalkBlock(WIZARDS_CHALK);
         getVariantBuilder(SPELL_RUNE.get()).forAllStates(state -> {
@@ -160,6 +166,10 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void crossBlock(Supplier<? extends Block> block) {
         simpleBlock(block.get(), models().cross(block.get().getRegistryName().getPath(), blockTexture(block.get())));
+    }
+
+    private void flowerPotBlock(Supplier<? extends Block> pot, Supplier<? extends Block> flower) {
+        simpleBlock(pot.get(), models().withExistingParent(pot.get().getRegistryName().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(flower.get())));
     }
 
     /**

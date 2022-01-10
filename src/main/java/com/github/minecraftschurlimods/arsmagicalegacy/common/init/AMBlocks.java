@@ -73,12 +73,12 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);
     RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRootBlock::new);
     RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                WakebloomBlock::new);
-    RegistryObject<FlowerPotBlock>        POTTED_AUM               = BLOCKS.register("potted_aum",               flowerPot(AUM));
-    RegistryObject<FlowerPotBlock>        POTTED_CERUBLOSSOM       = BLOCKS.register("potted_cerublossom",       flowerPot(CERUBLOSSOM));
-    RegistryObject<FlowerPotBlock>        POTTED_DESERT_NOVA       = BLOCKS.register("potted_desert_nova",       flowerPot(DESERT_NOVA));
-    RegistryObject<FlowerPotBlock>        POTTED_TARMA_ROOT        = BLOCKS.register("potted_tarma_root",        flowerPot(TARMA_ROOT));
-    RegistryObject<FlowerPotBlock>        POTTED_WAKEBLOOM         = BLOCKS.register("potted_wakebloom",         flowerPot(WAKEBLOOM));
-    RegistryObject<FlowerPotBlock>        POTTED_WITCHWOOD_SAPLING = BLOCKS.register("potted_witchwood_sapling", flowerPot(WITCHWOOD_SAPLING));
+    RegistryObject<FlowerPotBlock>        POTTED_AUM               = flowerPot(AUM);
+    RegistryObject<FlowerPotBlock>        POTTED_CERUBLOSSOM       = flowerPot(CERUBLOSSOM);
+    RegistryObject<FlowerPotBlock>        POTTED_DESERT_NOVA       = flowerPot(DESERT_NOVA);
+    RegistryObject<FlowerPotBlock>        POTTED_TARMA_ROOT        = flowerPot(TARMA_ROOT);
+    RegistryObject<FlowerPotBlock>        POTTED_WAKEBLOOM         = flowerPot(WAKEBLOOM);
+    RegistryObject<FlowerPotBlock>        POTTED_WITCHWOOD_SAPLING = flowerPot(WITCHWOOD_SAPLING);
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
@@ -90,8 +90,10 @@ public interface AMBlocks {
     @Internal
     static void register() {}
 
-    static Supplier<FlowerPotBlock> flowerPot(Supplier<? extends BushBlock> flower) {
-        return () -> new FlowerPotBlock(() -> ((FlowerPotBlock)Blocks.FLOWER_POT), flower, FLOWER_POT);
+    static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
+        RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(flower.getId(), register);
+        return register;
     }
 
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> type) {
