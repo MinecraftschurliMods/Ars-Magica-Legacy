@@ -15,25 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.AirBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.GlassBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TorchBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -42,10 +24,14 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
+import java.util.function.Supplier;
+
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.BLOCKS;
 
 @NonExtendable
 public interface AMBlocks {
+    BlockBehaviour.Properties FLOWER_POT = BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion();
+
     RegistryObject<OcculusBlock>          OCCULUS                  = BLOCKS.register("occulus",                  OcculusBlock::new);
     RegistryObject<InscriptionTableBlock> INSCRIPTION_TABLE        = BLOCKS.register("inscription_table",        InscriptionTableBlock::new);
     RegistryObject<AltarCoreBlock>        ALTAR_CORE               = BLOCKS.register("altar_core",               AltarCoreBlock::new);
@@ -87,6 +73,12 @@ public interface AMBlocks {
     RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);
     RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRootBlock::new);
     RegistryObject<FlowerBlock>           WAKEBLOOM                = BLOCKS.register("wakebloom",                WakebloomBlock::new);
+    RegistryObject<FlowerPotBlock>        POTTED_AUM               = BLOCKS.register("potted_aum",               flowerPot(AUM));
+    RegistryObject<FlowerPotBlock>        POTTED_CERUBLOSSOM       = BLOCKS.register("potted_cerublossom",       flowerPot(CERUBLOSSOM));
+    RegistryObject<FlowerPotBlock>        POTTED_DESERT_NOVA       = BLOCKS.register("potted_desert_nova",       flowerPot(DESERT_NOVA));
+    RegistryObject<FlowerPotBlock>        POTTED_TARMA_ROOT        = BLOCKS.register("potted_tarma_root",        flowerPot(TARMA_ROOT));
+    RegistryObject<FlowerPotBlock>        POTTED_WAKEBLOOM         = BLOCKS.register("potted_wakebloom",         flowerPot(WAKEBLOOM));
+    RegistryObject<FlowerPotBlock>        POTTED_WITCHWOOD_SAPLING = BLOCKS.register("potted_witchwood_sapling", flowerPot(WITCHWOOD_SAPLING));
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<SpellRuneBlock>        SPELL_RUNE               = BLOCKS.register("spell_rune",               SpellRuneBlock::new);
@@ -97,6 +89,10 @@ public interface AMBlocks {
      */
     @Internal
     static void register() {}
+
+    static Supplier<FlowerPotBlock> flowerPot(Supplier<? extends BushBlock> flower) {
+        return () -> new FlowerPotBlock(() -> ((FlowerPotBlock)Blocks.FLOWER_POT), flower, FLOWER_POT);
+    }
 
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> type) {
         return false;
