@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
@@ -23,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 public class PlaceBlock extends AbstractComponent {
-    private static final String KEY = "PlaceBlockID";
+    private static final String KEY = ArsMagicaAPI.MOD_ID + ":place_block_id";
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {

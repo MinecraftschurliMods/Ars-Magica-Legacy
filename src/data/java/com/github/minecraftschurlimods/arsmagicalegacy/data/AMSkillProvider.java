@@ -301,9 +301,8 @@ class AMSkillProvider extends SkillProvider {
                 .build(consumer);
 /*
         createUtility(DIVINE_INTERVENTION)
-                .setPosition(30, 390)
+                .setPosition(30, 345)
                 .addCost(RED.get())
-                .addParent(MARK.getId())
                 .addParent(RECALL.getId())
                 .build(consumer);
 */
@@ -314,9 +313,8 @@ class AMSkillProvider extends SkillProvider {
                 .build(consumer);
 /*
         createUtility(ENDER_INTERVENTION)
-                .setPosition(75, 390)
+                .setPosition(120, 345)
                 .addCost(RED.get())
-                .addParent(MARK.getId())
                 .addParent(RECALL.getId())
                 .build(consumer);
         createOffense(FALLING_STAR)
@@ -398,11 +396,6 @@ class AMSkillProvider extends SkillProvider {
         createDefense(MANA_SHIELD)
                 .setPosition(30, 30)
                 .hidden()
-                .build(consumer);
-        createUtility(MARK)
-                .setPosition(30, 345)
-                .addCost(GREEN.get())
-                .addParent(TRANSPLACE.getId())
                 .build(consumer);
         createUtility(MOONRISE)
                 .setPosition(30, 75)

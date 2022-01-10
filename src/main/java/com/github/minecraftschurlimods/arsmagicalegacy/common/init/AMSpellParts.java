@@ -102,7 +102,6 @@ public interface AMSpellParts {
     RegistryObject<ManaBlast>          MANA_BLAST          = SPELL_PARTS.register("mana_blast",          ManaBlast::new);
     RegistryObject<ManaDrain>          MANA_DRAIN          = SPELL_PARTS.register("mana_drain",          ManaDrain::new);
     RegistryObject<ManaShield>         MANA_SHIELD         = SPELL_PARTS.register("mana_shield",         ManaShield::new);
-    RegistryObject<Mark>               MARK                = SPELL_PARTS.register("mark",                Mark::new);
     RegistryObject<MeltArmor>          MELT_ARMOR          = SPELL_PARTS.register("melt_armor",          MeltArmor::new);
     RegistryObject<Moonrise>           MOONRISE            = SPELL_PARTS.register("moonrise",            Moonrise::new);
     RegistryObject<PlaceBlock>         PLACE_BLOCK         = SPELL_PARTS.register("place_block",         PlaceBlock::new);

@@ -441,10 +441,6 @@ public class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         createSpellPartData(AMSpellParts.MELT_ARMOR, 15f)
                 .build();
-        createSpellPartData(AMSpellParts.MARK, 5f)
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.RED)), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.MAP), 1))
-                .build();
         createSpellPartData(AMSpellParts.MOONRISE, 25000f)
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
