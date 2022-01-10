@@ -287,11 +287,12 @@ public final class Spell implements ISpell {
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.BLANK_RUNE.get()), 1)); // TODO make datadriven
         for (ISpellPartData data : iSpellPartData) {
             if (data == null) return List.of();
             ingredients.addAll(data.recipe());
         }
-        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_PARCHMENT.get()), 1)); // todo make datadriven
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_PARCHMENT.get()), 1)); // TODO make datadriven
         return ingredients;
     }
 
