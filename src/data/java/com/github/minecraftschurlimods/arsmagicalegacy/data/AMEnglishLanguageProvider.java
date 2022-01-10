@@ -288,6 +288,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
+        spellPartEntryTranslation("shapes", "projectile", "You are able to focus your will into a concentrated ball, which you can propel forwards away from you.  The projectile will last for 5 seconds of flight, or until it strikes something.  It will by default pass through water and non-collidable blocks unless you modify it with target non-solid blocks.");
     }
 
     /**
@@ -561,6 +562,17 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void configTranslation(String name, String translation) {
         add(TranslationConstants.CONFIG + name, translation);
+    }
+
+    /**
+     * Adds a spell part entry translation for the arcane compendium.
+     *
+     * @param category    The spell part category to add the translation for.
+     * @param name        The spell part entry to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void spellPartEntryTranslation(String category, String name, String translation) {
+        add("item.arsmagicalegacy.arcane_compendium." + category + "." + name + ".page0.text", translation);
     }
 
     /**
