@@ -179,6 +179,7 @@ public final class AffinityHelper implements IAffinityHelper {
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+        syncToPlayer(player);
     }
 
     /**

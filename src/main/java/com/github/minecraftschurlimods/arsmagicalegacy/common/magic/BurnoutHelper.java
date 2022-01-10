@@ -96,6 +96,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         original.getCapability(BurnoutHelper.BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BurnoutHelper.BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
+        syncBurnout(player);
     }
 
     public void syncBurnout(Player player) {

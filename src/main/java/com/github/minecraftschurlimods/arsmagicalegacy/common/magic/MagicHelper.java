@@ -78,6 +78,7 @@ public final class MagicHelper implements IMagicHelper {
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
+        syncMagic(player);
     }
 
     public void syncMagic(Player player) {
