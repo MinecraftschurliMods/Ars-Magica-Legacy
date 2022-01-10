@@ -32,6 +32,10 @@ public final class RiftHelper implements IRiftHelper {
         return RIFT;
     }
 
+    public void syncOnDeath(Player original, Player player) {
+        original.getCapability(RIFT).ifPresent(rift -> player.getCapability(RIFT).ifPresent(holder -> holder.onSync(rift)));
+    }
+
     public static final class RiftHolder extends ItemStackHandler {
         public static final Codec<RiftHolder> CODEC = CompoundTag.CODEC.xmap(RiftHolder::new, RiftHolder::serializeNBT);
 
@@ -41,6 +45,10 @@ public final class RiftHelper implements IRiftHelper {
 
         private RiftHolder(CompoundTag tag) {
             deserializeNBT(tag);
+        }
+
+        public void onSync(RiftHolder rift) {
+            this.deserializeNBT(rift.serializeNBT());
         }
     }
 }

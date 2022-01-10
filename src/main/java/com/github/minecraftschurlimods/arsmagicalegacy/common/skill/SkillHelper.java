@@ -251,6 +251,7 @@ public final class SkillHelper implements ISkillHelper {
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(KNOWLEDGE).ifPresent(knowledgeHolder -> player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
+        syncToPlayer(player);
     }
 
     /**

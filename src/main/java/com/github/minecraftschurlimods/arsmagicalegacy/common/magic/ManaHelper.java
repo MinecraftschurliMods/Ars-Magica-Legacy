@@ -108,6 +108,7 @@ public final class ManaHelper implements IManaHelper {
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
         original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
+        syncMana(player);
     }
 
     public void syncMana(Player player) {
