@@ -237,6 +237,9 @@ public final class EventHandler {
         SkillHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         AffinityHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         MagicHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        ManaHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        BurnoutHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        RiftHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         event.getOriginal().invalidateCaps();
     }
 
@@ -262,7 +265,7 @@ public final class EventHandler {
         if (event.side != LogicalSide.SERVER) return;
         if (event.phase != TickEvent.Phase.START) return;
         Player player = event.player;
-        if (player.isDeadOrDying()) return;
+        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
         ArsMagicaAPI.get().getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
         ArsMagicaAPI.get().getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }

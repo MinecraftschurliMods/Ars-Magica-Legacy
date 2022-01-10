@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarM
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -25,6 +26,7 @@ class StairBlockStateMatcher implements IStateMatcher {
     @Override
     public BlockState getDisplayedState(int ticks) {
         AltarStructureMaterial mat = AltarMaterialManager.instance().getRandomStructureMaterial(ticks / 20);
+        if (mat == null) return Blocks.AIR.defaultBlockState();
         return mat.stair().defaultBlockState().setValue(StairBlock.FACING, direction).setValue(StairBlock.HALF, half);
     }
 

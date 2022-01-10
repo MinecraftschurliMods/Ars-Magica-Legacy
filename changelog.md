@@ -1,3 +1,12 @@
+# Version 1.18.1-0.0.3
+
+## Fixes
+
+### Issues
+
+- fix #236 error with syncing altar materials
+- fix #238 flowers can't be put into flowerpots
+
 # Version 1.18.1-0.0.2
 
 ## Fixes
