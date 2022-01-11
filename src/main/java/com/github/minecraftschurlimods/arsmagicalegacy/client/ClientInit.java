@@ -86,12 +86,7 @@ public final class ClientInit {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_1.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_2.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_3.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_4.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_5.get(), RiftScreen::new);
-        MenuScreens.register(AMMenuTypes.RIFT_6.get(), RiftScreen::new);
+        MenuScreens.register(AMMenuTypes.RIFT.get(), RiftScreen::new);
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());

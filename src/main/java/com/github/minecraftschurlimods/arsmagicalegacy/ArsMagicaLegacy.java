@@ -21,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPac
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
 import com.github.minecraftschurlimods.easyimclib.IMCHandler;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
@@ -58,6 +59,7 @@ public final class ArsMagicaLegacy {
         IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
+        ServerInit.init();
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> DistProxy::init);
         Config.init();
         registerNetworkPackets();

@@ -1,62 +1,66 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class RiftContainer extends SimpleContainer {
-    private final ItemStackHandler handler;
+public record RiftContainer(IItemHandlerModifiable handler) implements Container {
 
-    public RiftContainer(ItemStackHandler handler) {
-        super(54);
-        this.handler = handler;
+    @Override
+    public int getContainerSize() {
+        return handler.getSlots();
     }
 
     @Override
-    public void fromTag(ListTag list) {
-        for (int i = 0; i < getContainerSize(); i++) {
-            setItem(i, ItemStack.EMPTY);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag tag = list.getCompound(i);
-            int slot = tag.getByte("Slot") & 255;
-            if (slot < getContainerSize()) {
-                setItem(slot, ItemStack.of(tag));
+    public boolean isEmpty() {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            if (!handler.getStackInSlot(i).isEmpty()) {
+                return false;
             }
         }
+        return true;
     }
 
     @Override
-    public ListTag createTag() {
-        ListTag list = new ListTag();
-        for (int i = 0; i < getContainerSize(); i++) {
-            ItemStack stack = getItem(i);
-            if (!stack.isEmpty()) {
-                CompoundTag tag = new CompoundTag();
-                tag.putByte("Slot", (byte) i);
-                stack.save(tag);
-                list.add(tag);
-            }
+    public ItemStack getItem(final int index) {
+        return handler.getStackInSlot(index);
+    }
+
+    @Override
+    public ItemStack removeItem(final int index, final int count) {
+        ItemStack stack = handler.getStackInSlot(index);
+        return stack.isEmpty() ? ItemStack.EMPTY : stack.split(count);
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(final int index) {
+        ItemStack s = getItem(index);
+        if (s.isEmpty()) {
+            return ItemStack.EMPTY;
         }
-        return list;
+        setItem(index, ItemStack.EMPTY);
+        return s;
     }
 
     @Override
-    public void startOpen(Player pPlayer) {
-        fromTag(handler.serializeNBT().getList("Items", ListTag.TAG_COMPOUND));
-        super.startOpen(pPlayer);
+    public void setItem(final int index, final ItemStack stack) {
+        handler.setStackInSlot(index, stack);
     }
 
     @Override
-    public void stopOpen(Player pPlayer) {
-        CompoundTag tag = new CompoundTag();
-        ListTag list = createTag();
-        tag.put("Items", list);
-        tag.putInt("Size", 54);
-        handler.deserializeNBT(tag);
-        super.stopOpen(pPlayer);
+    public void setChanged() {
+    }
+
+    @Override
+    public boolean stillValid(final Player player) {
+        return true;
+    }
+
+    @Override
+    public void clearContent() {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            handler.setStackInSlot(i, ItemStack.EMPTY);
+        }
     }
 }
