@@ -19,9 +19,10 @@ public class Attract extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
-        Entity entity = target.getEntity();
         boolean success = false;
+        Entity entity = target.getEntity();
         for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(range, range, range))) {
+            if (e == caster) continue;
             success = true;
             performAttract(entity.position(), e, modifiers);
         }
@@ -33,8 +34,9 @@ public class Attract extends AbstractComponent {
         int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
         boolean success = false;
         for (Entity e : level.getEntities(null, new AABB(target.getBlockPos().getX() - range, target.getBlockPos().getY() - range, target.getBlockPos().getZ() - range, target.getBlockPos().getX() + range, target.getBlockPos().getY() + range, target.getBlockPos().getZ() + range))) {
-            performAttract(target.getLocation(), e, modifiers);
+            if (e == caster) continue;
             success = true;
+            performAttract(target.getLocation(), e, modifiers);
         }
         return success ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }

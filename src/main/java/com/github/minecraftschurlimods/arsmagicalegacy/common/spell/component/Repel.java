@@ -22,6 +22,7 @@ public class Repel extends AbstractComponent {
         boolean success = false;
         Entity entity = target.getEntity();
         for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(range, range, range))) {
+            if (e == caster) continue;
             success = true;
             performRepel(entity.position(), e, modifiers);
         }
@@ -33,6 +34,7 @@ public class Repel extends AbstractComponent {
         int range = 2 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId());
         boolean success = false;
         for (Entity e : level.getEntities(null, new AABB(target.getBlockPos().getX() - range, target.getBlockPos().getY() - range, target.getBlockPos().getZ() - range, target.getBlockPos().getX() + range, target.getBlockPos().getY() + range, target.getBlockPos().getZ() + range))) {
+            if (e == caster) continue;
             success = true;
             performRepel(target.getLocation(), e, modifiers);
         }
