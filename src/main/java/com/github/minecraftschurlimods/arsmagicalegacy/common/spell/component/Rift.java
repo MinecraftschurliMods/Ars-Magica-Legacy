@@ -33,7 +33,7 @@ public class Rift extends AbstractComponent {
                 case 3 -> RiftMenu.rift4(id, inv, new RiftContainer(rift));
                 case 4 -> RiftMenu.rift5(id, inv, new RiftContainer(rift));
                 case 5 -> RiftMenu.rift6(id, inv, new RiftContainer(rift));
-            }, new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE)), buf -> buf.writeUUID(sp.getUUID()));
+            }, new TranslatableComponent(TranslationConstants.RIFT_TITLE)), buf -> buf.writeUUID(sp.getUUID()));
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;

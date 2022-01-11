@@ -279,6 +279,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
+        add(TranslationConstants.RIFT_TITLE, "Rift Storage");
         add(TranslationConstants.SPELL_CUSTOMIZATION_NAME, "Spell Customization");
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
@@ -288,7 +289,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
-        spellPartEntryTranslation("shapes", "projectile", "You are able to focus your will into a concentrated ball, which you can propel forwards away from you.  The projectile will last for 5 seconds of flight, or until it strikes something.  It will by default pass through water and non-collidable blocks unless you modify it with target non-solid blocks.");
+//        spellPartEntryTranslation("shapes", "projectile", "You are able to focus your will into a concentrated ball, which you can propel forwards away from you.  The projectile will last for 5 seconds of flight, or until it strikes something.  It will by default pass through water and non-collidable blocks unless you modify it with target non-solid blocks.");
     }
 
     /**

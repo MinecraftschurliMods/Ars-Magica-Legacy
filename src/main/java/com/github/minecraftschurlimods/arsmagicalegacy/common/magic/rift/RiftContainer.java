@@ -55,7 +55,7 @@ public class RiftContainer extends SimpleContainer {
         CompoundTag tag = new CompoundTag();
         ListTag list = createTag();
         tag.put("Items", list);
-        tag.putInt("Size", list.size());
+        tag.putInt("Size", 54);
         handler.deserializeNBT(tag);
         super.stopOpen(pPlayer);
     }
