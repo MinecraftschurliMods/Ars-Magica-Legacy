@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillBuilder;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryObject;
@@ -14,6 +13,7 @@ import java.util.function.Consumer;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.BLUE;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.GREEN;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.RED;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts.*;
 
 class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation OFFENSE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense");
@@ -32,18 +32,18 @@ class AMSkillProvider extends SkillProvider {
 
     @Override
     protected void createSkills(Consumer<SkillBuilder> consumer) {
-        createOffense(AMSpellParts.AOE)
+        createOffense(AOE)
                 .setPosition(210, 165)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.FIRE_DAMAGE.getId())
-                .addParent(AMSpellParts.FROST_DAMAGE.getId())
-                .addParent(AMSpellParts.LIGHTNING_DAMAGE.getId())
-                .addParent(AMSpellParts.MAGIC_DAMAGE.getId())
+                .addParent(FIRE_DAMAGE.getId())
+                .addParent(FROST_DAMAGE.getId())
+                .addParent(LIGHTNING_DAMAGE.getId())
+                .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.BEAM)
+        createOffense(BEAM)
                 .setPosition(210, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.AOE.getId())
+                .addParent(AOE.getId())
                 .build(consumer);
 /*
         createUtility(CHAIN)
@@ -51,167 +51,167 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(GROW.getId())
                 .build(consumer);
+*/
         createUtility(CHANNEL)
                 .setPosition(165, 255)
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId())
                 .build(consumer);
-*/
-        createOffense(AMSpellParts.PROJECTILE)
+        createOffense(PROJECTILE)
                 .setPosition(210, 30)
                 .addCost(BLUE.get())
                 .build(consumer);
-        createDefense(AMSpellParts.RUNE)
+        createDefense(RUNE)
                 .setPosition(120, 300)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.AGILITY.getId())
-                .addParent(AMSpellParts.ENTANGLE.getId())
+                .addParent(AGILITY.getId())
+                .addParent(ENTANGLE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.SELF)
+        createDefense(SELF)
                 .setPosition(165, 30)
                 .addCost(BLUE.get())
                 .build(consumer);
-        createUtility(AMSpellParts.TOUCH)
+        createUtility(TOUCH)
                 .setPosition(120, 30)
                 .addCost(BLUE.get())
                 .build(consumer);
-        createDefense(AMSpellParts.WALL)
+        createDefense(WALL)
                 .setPosition(30, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.REPEL.getId())
+                .addParent(REPEL.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.WAVE)
+        createOffense(WAVE)
                 .setPosition(255, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.DAMAGE.getId())
-                .addParent(AMSpellParts.VELOCITY.getId())
+                .addParent(DAMAGE.getId())
+                .addParent(VELOCITY.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.ZONE)
+        createDefense(ZONE)
                 .setPosition(255, 210)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.DISPEL.getId())
+                .addParent(DISPEL.getId())
                 .build(consumer);
 
-        createOffense(AMSpellParts.DROWNING_DAMAGE)
+        createOffense(DROWNING_DAMAGE)
                 .setPosition(300, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.MAGIC_DAMAGE.getId())
+                .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.FIRE_DAMAGE)
+        createOffense(FIRE_DAMAGE)
                 .setPosition(165, 120)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PHYSICAL_DAMAGE.getId())
+                .addParent(PHYSICAL_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.FROST_DAMAGE)
+        createOffense(FROST_DAMAGE)
                 .setPosition(255, 120)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PHYSICAL_DAMAGE.getId())
+                .addParent(PHYSICAL_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.LIGHTNING_DAMAGE)
+        createOffense(LIGHTNING_DAMAGE)
                 .setPosition(165, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PHYSICAL_DAMAGE.getId())
+                .addParent(PHYSICAL_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.MAGIC_DAMAGE)
+        createOffense(MAGIC_DAMAGE)
                 .setPosition(255, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PHYSICAL_DAMAGE.getId())
+                .addParent(PHYSICAL_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.PHYSICAL_DAMAGE)
+        createOffense(PHYSICAL_DAMAGE)
                 .setPosition(210, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PROJECTILE.getId())
+                .addParent(PROJECTILE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.ABSORPTION)
+        createDefense(ABSORPTION)
                 .setPosition(210, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.SHIELD.getId())
+                .addParent(SHIELD.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.BLINDNESS)
+        createOffense(BLINDNESS)
                 .setPosition(165, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.FIRE_DAMAGE.getId())
-                .addParent(AMSpellParts.LIGHTNING_DAMAGE.getId())
+                .addParent(FIRE_DAMAGE.getId())
+                .addParent(LIGHTNING_DAMAGE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.HASTE)
+        createDefense(HASTE)
                 .setPosition(165, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.SLOW_FALLING.getId())
+                .addParent(SLOW_FALLING.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.INVISIBILITY)
+        createUtility(INVISIBILITY)
                 .setPosition(30, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.TRUE_SIGHT.getId())
+                .addParent(TRUE_SIGHT.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.JUMP_BOOST)
+        createDefense(JUMP_BOOST)
                 .setPosition(120, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.SELF.getId())
+                .addParent(SELF.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.LEVITATION)
+        createDefense(LEVITATION)
                 .setPosition(120, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.GRAVITY_WELL.getId())
+                .addParent(GRAVITY_WELL.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.NIGHT_VISION)
+        createUtility(NIGHT_VISION)
                 .setPosition(75, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.LIGHT.getId())
+                .addParent(LIGHT.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.REGENERATION)
+        createDefense(REGENERATION)
                 .setPosition(255, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.SELF.getId())
+                .addParent(SELF.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.SLOWNESS)
+        createDefense(SLOWNESS)
                 .setPosition(75, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.SLOW_FALLING.getId())
+                .addParent(SLOW_FALLING.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.SLOW_FALLING)
+        createDefense(SLOW_FALLING)
                 .setPosition(120, 120)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.JUMP_BOOST.getId())
+                .addParent(JUMP_BOOST.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.WATER_BREATHING)
+        createUtility(WATER_BREATHING)
                 .setPosition(255, 255)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.CREATE_WATER.getId())
+                .addParent(CREATE_WATER.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.AGILITY)
+        createDefense(AGILITY)
                 .setPosition(165, 255)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.SWIFT_SWIM.getId())
+                .addParent(SWIFT_SWIM.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.ASTRAL_DISTORTION)
+        createOffense(ASTRAL_DISTORTION)
                 .setPosition(255, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.MAGIC_DAMAGE.getId())
+                .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.ENTANGLE)
+        createDefense(ENTANGLE)
                 .setPosition(75, 255)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.REPEL.getId())
+                .addParent(REPEL.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.FLIGHT)
+        createDefense(FLIGHT)
                 .setPosition(120, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.LEVITATION.getId())
+                .addParent(LEVITATION.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.FURY)
+        createOffense(FURY)
                 .setPosition(165, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.DAMAGE.getId())
+                .addParent(DAMAGE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.GRAVITY_WELL)
+        createDefense(GRAVITY_WELL)
                 .setPosition(120, 165)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.SLOW_FALLING.getId())
+                .addParent(SLOW_FALLING.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.SHIELD)
+        createDefense(SHIELD)
                 .setPosition(255, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.ZONE.getId())
+                .addParent(ZONE.getId())
                 .build(consumer);
 /*
         createDefense(SHRINK)
@@ -220,30 +220,30 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(REGENERATION.getId())
                 .build(consumer);
 */
-        createOffense(AMSpellParts.SILENCE)
+        createOffense(SILENCE)
                 .setPosition(255, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.ASTRAL_DISTORTION.getId())
+                .addParent(ASTRAL_DISTORTION.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.SWIFT_SWIM)
+        createDefense(SWIFT_SWIM)
                 .setPosition(165, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.HASTE.getId())
+                .addParent(HASTE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.TEMPORAL_ANCHOR)
+        createDefense(TEMPORAL_ANCHOR)
                 .setPosition(210, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.REFLECT.getId())
+                .addParent(REFLECT.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.TRUE_SIGHT)
+        createUtility(TRUE_SIGHT)
                 .setPosition(75, 210)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.NIGHT_VISION.getId())
+                .addParent(NIGHT_VISION.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.WATERY_GRAVE)
+        createOffense(WATERY_GRAVE)
                 .setPosition(345, 165)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.DROWNING_DAMAGE.getId())
+                .addParent(DROWNING_DAMAGE.getId())
                 .build(consumer);
 /*
         createUtility(ATTRACT)
@@ -252,71 +252,67 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(RIFT.getId())
                 .build(consumer);
 */
-        createUtility(AMSpellParts.BANISH_RAIN)
+        createUtility(BANISH_RAIN)
                 .setPosition(255, 300)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.DROUGHT.getId())
+                .addParent(DROUGHT.getId())
                 .build(consumer);
-/*
         createUtility(BLINK)
                 .setPosition(30, 300)
                 .addCost(GREEN.get())
                 .addParent(RANDOM_TELEPORT.getId())
                 .build(consumer);
+/*
         createOffense(BLIZZARD)
                 .setPosition(30, 30)
                 .hidden()
                 .build(consumer);
 */
-        createUtility(AMSpellParts.CHARM)
+        createUtility(CHARM)
                 .setPosition(165, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.LIGHT.getId())
+                .addParent(LIGHT.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.CREATE_WATER)
+        createUtility(CREATE_WATER)
                 .setPosition(210, 255)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.PLANT.getId())
+                .addParent(PLANT.getId())
                 .build(consumer);
-/*
         createUtility(DAYLIGHT)
                 .setPosition(30, 30)
                 .hidden()
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.DIG)
+        createUtility(DIG)
                 .setPosition(120, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.TOUCH.getId())
+                .addParent(TOUCH.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.DISARM)
+        createDefense(DISARM)
                 .setPosition(300, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.DISPEL.getId())
+                .addParent(DISPEL.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.DISPEL)
+        createDefense(DISPEL)
                 .setPosition(255, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.HEAL.getId())
+                .addParent(HEAL.getId())
                 .build(consumer);
-/*
         createUtility(DIVINE_INTERVENTION)
                 .setPosition(30, 345)
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.DROUGHT)
+        createUtility(DROUGHT)
                 .setPosition(210, 300)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.CREATE_WATER.getId())
+                .addParent(CREATE_WATER.getId())
                 .build(consumer);
-/*
         createUtility(ENDER_INTERVENTION)
                 .setPosition(120, 345)
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
                 .build(consumer);
+/*
         createOffense(FALLING_STAR)
                 .setPosition(30, 75)
                 .hidden()
@@ -326,47 +322,46 @@ class AMSkillProvider extends SkillProvider {
                 .hidden()
                 .build(consumer);
 */
-        createOffense(AMSpellParts.FLING)
+        createOffense(FLING)
                 .setPosition(300, 255)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.KNOCKBACK.getId())
+                .addParent(KNOCKBACK.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.FORGE)
+        createOffense(FORGE)
                 .setPosition(75, 120)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.IGNITION.getId())
+                .addParent(IGNITION.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.FROST)
+        createOffense(FROST)
                 .setPosition(300, 120)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.FROST_DAMAGE.getId())
+                .addParent(FROST_DAMAGE.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.GROW)
+        createUtility(GROW)
                 .setPosition(255, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.PLANT.getId())
+                .addParent(PLANT.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.HARVEST)
+        createUtility(HARVEST)
                 .setPosition(210, 120)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.PLOW.getId())
+                .addParent(PLOW.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.HEAL)
+        createDefense(HEAL)
                 .setPosition(255, 120)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.REGENERATION.getId())
+                .addParent(REGENERATION.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.IGNITION)
+        createOffense(IGNITION)
                 .setPosition(120, 120)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.FIRE_DAMAGE.getId())
+                .addParent(FIRE_DAMAGE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.KNOCKBACK)
+        createOffense(KNOCKBACK)
                 .setPosition(300, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.MAGIC_DAMAGE.getId())
+                .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
-/*
         createDefense(LIFE_DRAIN)
                 .setPosition(210, 165)
                 .addCost(GREEN.get())
@@ -377,26 +372,28 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(HEAL.getId())
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.LIGHT)
+        createUtility(LIGHT)
                 .setPosition(120, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.DIG.getId())
+                .addParent(DIG.getId())
                 .build(consumer);
 /*
         createOffense(MANA_BLAST)
                 .setPosition(30, 165)
                 .hidden()
                 .build(consumer);
+*/
         createDefense(MANA_DRAIN)
                 .setPosition(210, 210)
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId())
                 .build(consumer);
+/*
         createDefense(MANA_SHIELD)
                 .setPosition(30, 30)
                 .hidden()
                 .build(consumer);
+*/
         createUtility(MOONRISE)
                 .setPosition(30, 75)
                 .hidden()
@@ -406,50 +403,45 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.PLANT)
+        createUtility(PLANT)
                 .setPosition(210, 210)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.LIGHT.getId())
+                .addParent(LIGHT.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.PLOW)
+        createUtility(PLOW)
                 .setPosition(210, 165)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PLANT.getId())
+                .addParent(PLANT.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.RANDOM_TELEPORT)
+        createUtility(RANDOM_TELEPORT)
                 .setPosition(30, 255)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.INVISIBILITY.getId())
+                .addParent(INVISIBILITY.getId())
                 .build(consumer);
-/*
         createUtility(RECALL)
                 .setPosition(75, 345)
                 .addCost(GREEN.get())
                 .addParent(TRANSPLACE.getId())
                 .build(consumer);
-*/
-        createDefense(AMSpellParts.REFLECT)
+        createDefense(REFLECT)
                 .setPosition(255, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.SHIELD.getId())
+                .addParent(SHIELD.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.REPEL)
+        createDefense(REPEL)
                 .setPosition(75, 210)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.SLOWNESS.getId())
+                .addParent(SLOWNESS.getId())
                 .build(consumer);
-/*
         createUtility(RIFT)
                 .setPosition(120, 255)
                 .addCost(GREEN.get())
                 .addParent(LIGHT.getId())
                 .build(consumer);
-*/
-        createOffense(AMSpellParts.STORM)
+        createOffense(STORM)
                 .setPosition(120, 165)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.LIGHTNING_DAMAGE.getId())
+                .addParent(LIGHTNING_DAMAGE.getId())
                 .build(consumer);
 /*
         createDefense(SUMMON)
@@ -462,105 +454,99 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
                 .build(consumer);
+*/
         createUtility(TRANSPLACE)
                 .setPosition(75, 300)
                 .addCost(GREEN.get())
                 .addParent(BLINK.getId())
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.WIZARDS_AUTUMN)
+        createUtility(WIZARDS_AUTUMN)
                 .setPosition(165, 120)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.DIG.getId())
+                .addParent(DIG.getId())
                 .build(consumer);
 
-        createOffense(AMSpellParts.BOUNCE)
+        createOffense(BOUNCE)
                 .setPosition(255, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PROJECTILE.getId())
+                .addParent(PROJECTILE.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.DAMAGE)
+        createOffense(DAMAGE)
                 .setPosition(210, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.BEAM.getId())
+                .addParent(BEAM.getId())
                 .build(consumer);
-/*
         createOffense(DISMEMBERING)
                 .setPosition(30, 210)
                 .hidden()
                 .build(consumer);
-*/
-        createDefense(AMSpellParts.DURATION)
+        createDefense(DURATION)
                 .setPosition(210, 345)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.TEMPORAL_ANCHOR.getId())
+                .addParent(TEMPORAL_ANCHOR.getId())
                 .build(consumer);
-/*
         createDefense(EFFECT_POWER)
                 .setPosition(30, 75)
                 .hidden()
                 .build(consumer);
-*/
-        createOffense(AMSpellParts.GRAVITY)
+        createOffense(GRAVITY)
                 .setPosition(165, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.PROJECTILE.getId())
+                .addParent(PROJECTILE.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.HEALING)
+        createDefense(HEALING)
                 .setPosition(300, 120)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.HEAL.getId())
+                .addParent(HEAL.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.LUNAR)
+        createUtility(LUNAR)
                 .setPosition(30, 165)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.NIGHT_VISION.getId())
+                .addParent(NIGHT_VISION.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.MINING_POWER)
+        createUtility(MINING_POWER)
                 .setPosition(75, 120)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.SILK_TOUCH.getId())
+                .addParent(SILK_TOUCH.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.PIERCING)
+        createOffense(PIERCING)
                 .setPosition(345, 120)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.FROST.getId())
+                .addParent(FROST.getId())
                 .build(consumer);
-/*
         createUtility(PROSPERITY)
                 .setPosition(30, 120)
                 .hidden()
                 .build(consumer);
-*/
-        createUtility(AMSpellParts.RANGE)
+        createUtility(RANGE)
                 .setPosition(75, 255)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.RANDOM_TELEPORT.getId())
+                .addParent(RANDOM_TELEPORT.getId())
                 .build(consumer);
-        createDefense(AMSpellParts.RUNE_PROCS)
+        createDefense(RUNE_PROCS)
                 .setPosition(120, 345)
                 .addCost(GREEN.get())
-                .addParent(AMSpellParts.RUNE.getId())
+                .addParent(RUNE.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.SILK_TOUCH)
+        createUtility(SILK_TOUCH)
                 .setPosition(75, 75)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.DIG.getId())
+                .addParent(DIG.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.SOLAR)
+        createOffense(SOLAR)
                 .setPosition(120, 210)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.BLINDNESS.getId())
+                .addParent(BLINDNESS.getId())
                 .build(consumer);
-        createUtility(AMSpellParts.TARGET_NON_SOLID)
+        createUtility(TARGET_NON_SOLID)
                 .setPosition(75, 30)
                 .addCost(BLUE.get())
-                .addParent(AMSpellParts.TOUCH.getId())
+                .addParent(TOUCH.getId())
                 .build(consumer);
-        createOffense(AMSpellParts.VELOCITY)
+        createOffense(VELOCITY)
                 .setPosition(300, 300)
                 .addCost(RED.get())
-                .addParent(AMSpellParts.FLING.getId())
+                .addParent(FLING.getId())
                 .build(consumer);
     }
 
