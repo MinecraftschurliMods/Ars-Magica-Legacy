@@ -14,13 +14,6 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/moonstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "arsmagicalegacy:cerublossom"
       },
       "count": 1,

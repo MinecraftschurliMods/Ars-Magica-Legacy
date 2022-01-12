@@ -88,8 +88,8 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         createSpellPartData(AMSpellParts.ZONE, 3.5f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())){}, 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .build();
 
@@ -413,7 +413,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.LIFE_DRAIN, 40f)
                 .withAffinity(AMAffinities.LIFE, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.MAGENTA)), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
                 .build();
         createSpellPartData(AMSpellParts.LIFE_TAP, 0f)
@@ -435,7 +435,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.MANA_DRAIN, 20f)
                 .withAffinity(AMAffinities.ARCANE, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.CYAN)), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
                 .build();
         createSpellPartData(AMSpellParts.MANA_SHIELD, 0f)
