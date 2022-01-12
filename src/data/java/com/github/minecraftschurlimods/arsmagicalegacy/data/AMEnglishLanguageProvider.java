@@ -155,7 +155,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.ATTRACT.getId(), "Attract", "Come closer... or not, just stay where you are.", "components", "");
         skillTranslation(AMSpellParts.BANISH_RAIN.getId(), "Banish Rain", "Come back later. Or don't. It would be kind.", "components", "");
         skillTranslation(AMSpellParts.BLINDNESS.getId(), "Blindness", "Just as the name says.", "components", "");
-        skillTranslation(AMSpellParts.BEAM.getId(), "Beam", "Beam me up, Scotty!", "shapes", "");
+        skillTranslation(AMSpellParts.BEAM.getId(), "[WIP] Beam", "Beam me up, Scotty!", "shapes", "");
         skillTranslation(AMSpellParts.BLINK.getId(), "Blink", "Well, I'm out.", "components", "");
         skillTranslation(AMSpellParts.BLIZZARD.getId(), "Blizzard", "Snow. Lots of snow.", "components", "");
         skillTranslation(AMSpellParts.BOUNCE.getId(), "Bounce", "Hey! Come back!", "modifiers", "");
@@ -227,7 +227,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.RUNE_PROCS.getId(), "Rune Procs", "I want more!", "modifiers", "");
         skillTranslation(AMSpellParts.SELF.getId(), "Self", "It's all about me.", "shapes", "");
         skillTranslation(AMSpellParts.SHIELD.getId(), "Shield", "Don't worry about the weight, it's magic.", "components", "");
-        skillTranslation(AMSpellParts.SHRINK.getId(), "Shrink", "Looks like I'm smaller now...", "components", "");
+        skillTranslation(AMSpellParts.SHRINK.getId(), "[WIP] Shrink", "Looks like I'm smaller now...", "components", "");
         skillTranslation(AMSpellParts.SILENCE.getId(), "Silence", "No talking! (Or casting in this case...)", "components", "");
         skillTranslation(AMSpellParts.SILK_TOUCH.getId(), "Silk Touch", "Feels soft...", "modifiers", "");
         skillTranslation(AMSpellParts.SLOWNESS.getId(), "Slowness", "No more running!", "components", "");
