@@ -1,3 +1,23 @@
+# Version 1.18.1-0.0.5
+
+## Fixes
+
+### Issues
+
+- fix #242 crash on forge 39.0.18
+
+# Version 1.18.1-0.0.4
+
+## Fixes
+
+### Issues
+
+- fix #241 crash with catalogue
+
+### Compat
+
+- make compatible with newer versions of jei
+
 # Version 1.18.1-0.0.3
 
 ## Fixes
