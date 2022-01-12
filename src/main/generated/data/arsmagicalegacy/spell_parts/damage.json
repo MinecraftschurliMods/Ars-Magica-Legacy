@@ -1,11 +1,11 @@
 {
-  "manaCost": 1.3,
+  "manaCost": 1.25,
   "reagents": [],
   "affinities": {},
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
         "type": "forge:nbt"
@@ -15,10 +15,7 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:iron_pickaxe",
-        "count": 1,
-        "type": "forge:nbt"
+        "item": "minecraft:copper_ingot"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

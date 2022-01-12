@@ -7,14 +7,21 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:black_rune"
+        "item": "arsmagicalegacy:cyan_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:dusts/vinteum"
+        "tag": "forge:gems/moonstone"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:cerublossom"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

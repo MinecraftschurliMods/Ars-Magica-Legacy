@@ -1,16 +1,29 @@
 {
-  "manaCost": 261.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:fire": 0.01,
-    "arsmagicalegacy:lightning": 0.01
+    "arsmagicalegacy:lightning": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "tag": "minecraft:fishes"
+        "item": "arsmagicalegacy:orange_rune"
       },
-      "count": 14,
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:rods/blaze"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:tropical_fish"
+      },
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     }
   ]

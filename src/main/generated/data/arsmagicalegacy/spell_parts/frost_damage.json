@@ -7,7 +7,14 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:cyan_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:light_blue_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -21,7 +28,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:snowball"
+        "item": "minecraft:ice"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

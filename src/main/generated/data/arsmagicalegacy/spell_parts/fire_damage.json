@@ -1,10 +1,17 @@
 {
-  "manaCost": 120.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:fire": 0.01
   },
   "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:orange_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
     {
       "ingredient": {
         "item": "arsmagicalegacy:red_rune"

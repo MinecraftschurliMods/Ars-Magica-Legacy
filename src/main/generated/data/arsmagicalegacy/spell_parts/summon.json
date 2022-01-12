@@ -2,10 +2,16 @@
   "manaCost": 400.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:life": 0.01,
-    "arsmagicalegacy:ender": 0.01
+    "arsmagicalegacy:life": 0.01
   },
   "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:gray_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
     {
       "ingredient": {
         "tag": "forge:gems/chimerite"

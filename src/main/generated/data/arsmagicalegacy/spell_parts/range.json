@@ -1,11 +1,11 @@
 {
-  "manaCost": 1.2,
+  "manaCost": 1.25,
   "reagents": [],
   "affinities": {},
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}",
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
         "type": "forge:nbt"
@@ -23,13 +23,6 @@
     {
       "ingredient": {
         "item": "minecraft:arrow"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:snowball"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

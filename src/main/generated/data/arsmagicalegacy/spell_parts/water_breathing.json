@@ -21,7 +21,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:sugar_cane"
+        "item": "minecraft:pufferfish"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

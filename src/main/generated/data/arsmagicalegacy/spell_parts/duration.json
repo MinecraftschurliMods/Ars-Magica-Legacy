@@ -5,7 +5,7 @@
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
         "type": "forge:nbt"

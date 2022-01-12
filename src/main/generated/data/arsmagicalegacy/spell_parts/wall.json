@@ -21,12 +21,12 @@
       "ingredient": {
         "item": "arsmagicalegacy:magic_wall"
       },
-      "count": 2,
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:cobblestone_wall"
+        "tag": "minecraft:walls"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

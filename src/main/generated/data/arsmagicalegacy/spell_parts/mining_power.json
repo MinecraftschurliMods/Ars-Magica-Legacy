@@ -15,10 +15,7 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:diamond_pickaxe",
-        "count": 1,
-        "type": "forge:nbt"
+        "tag": "forge:gems/diamond"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

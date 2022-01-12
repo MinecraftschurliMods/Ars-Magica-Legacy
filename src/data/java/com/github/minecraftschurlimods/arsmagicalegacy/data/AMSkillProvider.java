@@ -245,13 +245,11 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(DROWNING_DAMAGE.getId())
                 .build(consumer);
-/*
         createUtility(ATTRACT)
                 .setPosition(120, 300)
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId())
                 .build(consumer);
-*/
         createUtility(BANISH_RAIN)
                 .setPosition(255, 300)
                 .addCost(GREEN.get())

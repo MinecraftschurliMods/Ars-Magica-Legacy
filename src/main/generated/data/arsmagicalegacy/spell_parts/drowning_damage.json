@@ -28,13 +28,6 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:string"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "minecraft:water_bucket"
       },
       "count": 1,

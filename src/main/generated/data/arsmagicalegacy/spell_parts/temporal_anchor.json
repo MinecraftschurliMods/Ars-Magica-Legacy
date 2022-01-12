@@ -2,12 +2,12 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:arcane": 0.15
+    "arsmagicalegacy:arcane": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
+        "item": "arsmagicalegacy:yellow_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

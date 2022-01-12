@@ -1,5 +1,5 @@
 {
-  "manaCost": 1200.0,
+  "manaCost": 2000.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:ice": 0.1
@@ -12,7 +12,7 @@
         "count": 1,
         "type": "forge:nbt"
       },
-      "count": 2,
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
@@ -25,6 +25,13 @@
     {
       "ingredient": {
         "item": "minecraft:ice"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:packed_ice"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

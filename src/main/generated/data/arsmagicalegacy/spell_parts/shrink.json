@@ -1,18 +1,13 @@
 {
-  "manaCost": 120.0,
+  "manaCost": 80.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.05
+  },
   "recipe": [
     {
       "ingredient": {
         "tag": "forge:bones"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:nuggets/gold"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
