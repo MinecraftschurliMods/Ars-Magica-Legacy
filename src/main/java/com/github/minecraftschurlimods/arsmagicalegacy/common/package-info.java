@@ -1,1 +1,4 @@
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurlimods.arsmagicalegacy.common;
+
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -2,9 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellCastEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
@@ -144,13 +143,11 @@ public final class Spell implements ISpell {
     @Override
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
         if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, Permissions.CAN_CAST_SPELL)) return SpellCastResult.NO_PERMISSION;
-        SpellCastEvent event = new SpellCastEvent(caster, this);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.isCanceled()) return SpellCastResult.CANCELLED;
+        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
-        float mana = event.mana;
-        float burnout = event.burnout;
-        Collection<Either<Ingredient, ItemStack>> reagents = event.reagents;
+        float mana = mana(caster);
+        float burnout = burnout(caster);
+        Collection<Either<Ingredient, ItemStack>> reagents = reagents(caster);
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         IMagicHelper magicHelper = api.getMagicHelper();
         IManaHelper manaHelper = api.getManaHelper();
@@ -213,60 +210,59 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public float manaCost(@Nullable LivingEntity caster) {
+    public float mana(@Nullable LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
         ISpellDataManager spellDataManager = api.getSpellDataManager();
-        IAffinityHelper affinityHelper = api.getAffinityHelper();
         for (ISpellPart part : parts()) {
+            ISpellPartData data = spellDataManager.getDataForPart(part);
+            if (data == null) continue;
             switch (part.getType()) {
-                case SHAPE, MODIFIER -> multiplier *= spellDataManager.getDataForPart(part).manaCost();
-                case COMPONENT -> {
-                    ISpellPartData data = spellDataManager.getDataForPart(part);
-                    cost += data.manaCost();
-                    if (caster instanceof Player player) {
-                        for (IAffinity aff : data.affinities()) {
-                            if (affinityHelper.getAffinityDepth(player, aff) > 0) {
-                                cost -= (float) (cost * (0.5f * affinityHelper.getAffinityDepth(player, aff) / 100f));
-                            }// else {
-                            //cost = cost + (cost * (0.10f));
-                            //}
-                        }
-                    }
-                }
+                case SHAPE, MODIFIER -> multiplier *= data.manaCost();
+                case COMPONENT -> cost += data.manaCost();
             }
         }
+        SpellEvent.ManaCost.Pre pre = new SpellEvent.ManaCost.Pre(caster, this, cost, multiplier);
+        MinecraftForge.EVENT_BUS.post(pre);
+        cost = pre.getModifiedBase();
+        multiplier = pre.getModifiedMultiplier();
         if (multiplier == 0) {
             multiplier = 1;
         }
         cost *= multiplier;
-        if (caster instanceof Player player && affinityHelper.getAffinityDepth(player, IAffinity.ARCANE) > 0.5f) {
-            float reduction = (float) (1 - (0.5 * affinityHelper.getAffinityDepth(player, IAffinity.ARCANE)));
-            cost *= reduction;
-        }
-        return cost;
+        SpellEvent.ManaCost.Post post = new SpellEvent.ManaCost.Post(caster, this, cost);
+        MinecraftForge.EVENT_BUS.post(post);
+        return post.getModifiedMana();
     }
 
     @Override
-    public float burnout() {
+    public float burnout(@Nullable LivingEntity caster) {
         float cost = 0;
         for (ISpellPart part : parts()) {
-            if (part.getType() == ISpellPart.SpellPartType.COMPONENT) {
-                cost += ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part).burnout();
+            ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part);
+            if (data != null && part.getType() == ISpellPart.SpellPartType.COMPONENT) {
+                cost += data.burnout();
             }
         }
-        return cost;
+        SpellEvent.BurnoutCost event = new SpellEvent.BurnoutCost(caster, this, cost);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.getModifiedBurnout();
     }
 
     @Override
-    public List<Either<Ingredient, ItemStack>> reagents() {
+    public List<Either<Ingredient, ItemStack>> reagents(@Nullable LivingEntity caster) {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
-        return parts().stream()
-                .filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT)
-                .map(spellDataManager::getDataForPart)
-                .flatMap(data -> data.reagents().stream())
-                .toList();
+        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        for (ISpellPart part : parts()) {
+            if (part.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
+            ISpellPartData dataForPart = spellDataManager.getDataForPart(part);
+            if (dataForPart == null) continue;
+            reagents.addAll(dataForPart.reagents());
+        }
+        SpellEvent.ReagentCost event = new SpellEvent.ReagentCost(caster, this, reagents);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.reagents;
     }
 
     @Override
@@ -283,9 +279,10 @@ public final class Spell implements ISpell {
 
     @Override
     public List<ISpellIngredient> recipe() {
-        List<ISpellPartData> iSpellPartData = Stream.concat(shapeGroups.stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack.parts().stream())
-                .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
-                .toList();
+        List<ISpellPartData> iSpellPartData = Stream.concat(
+                shapeGroups.stream().map(ShapeGroup::parts).flatMap(Collection::stream),
+                spellStack.parts().stream()
+        ).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
         ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.BLANK_RUNE.get()), 1)); // TODO make datadriven
         for (ISpellPartData data : iSpellPartData) {
