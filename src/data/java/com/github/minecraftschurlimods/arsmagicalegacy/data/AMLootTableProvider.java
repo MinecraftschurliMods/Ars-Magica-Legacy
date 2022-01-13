@@ -96,6 +96,12 @@ class AMLootTableProvider extends LootTableProvider {
             dropSelf(AMBlocks.DESERT_NOVA.get());
             dropSelf(AMBlocks.TARMA_ROOT.get());
             dropSelf(AMBlocks.WAKEBLOOM.get());
+            add(AMBlocks.POTTED_AUM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.AUM.get()));
+            add(AMBlocks.POTTED_CERUBLOSSOM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.CERUBLOSSOM.get()));
+            add(AMBlocks.POTTED_DESERT_NOVA.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.DESERT_NOVA.get()));
+            add(AMBlocks.POTTED_TARMA_ROOT.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.TARMA_ROOT.get()));
+            add(AMBlocks.POTTED_WAKEBLOOM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.WAKEBLOOM.get()));
+            add(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.WITCHWOOD_SAPLING.get()));
             dropSelf(AMBlocks.VINTEUM_TORCH.get());
             dropSelf(AMBlocks.VINTEUM_WALL_TORCH.get());
         }
