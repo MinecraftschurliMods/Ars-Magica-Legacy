@@ -5,12 +5,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +26,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -92,13 +92,15 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier) {
-        return modifiers.stream().map(IForgeRegistryEntry::getRegistryName).filter(modifier::equals).toList().size();
-    }
-
-    @Override
-    public boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id) {
-        return countModifiers(modifiers, id) > 0;
+    public float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target) {
+        float modified = baseValue;
+        for (ISpellModifier iSpellModifier : modifiers) {
+            if (iSpellModifier.getStatsModified().contains(stat)) {
+                ISpellPartStatModifier modifier = iSpellModifier.getStatModifier(stat);
+                modified = modifier.modify(baseValue, modified, spell, caster, target);
+            }
+        }
+        return modified;
     }
 
     @Override

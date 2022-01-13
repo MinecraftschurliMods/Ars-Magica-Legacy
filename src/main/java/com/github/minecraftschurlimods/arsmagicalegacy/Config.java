@@ -55,7 +55,6 @@ public final class Config {
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
         public final ForgeConfigSpec.IntValue EFFECT_DURATION;
-        public final ForgeConfigSpec.IntValue EFFECT_EXTRA_DURATION;
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
@@ -88,10 +87,6 @@ public final class Config {
                     .comment("Effect duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "effect_duration")
                     .defineInRange("effect_duration", 600, 1, 3600);
-            EFFECT_EXTRA_DURATION = builder
-                    .comment("Extra effect duration for each Duration modifier, in ticks.")
-                    .translation(TranslationConstants.CONFIG + "effect_extra_duration")
-                    .defineInRange("effect_extra_duration", 300, 1, 3600);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartSta
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.*;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.GenericSpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Lunar;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Solar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.AoE;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
@@ -134,7 +135,7 @@ public interface AMSpellParts {
     RegistryObject<ISpellModifier>     RANGE               = SPELL_PARTS.register("range",               GenericSpellModifier::new);// TODO switch to new system @IHH
     RegistryObject<ISpellModifier>     RUNE_PROCS          = SPELL_PARTS.register("rune_procs",          GenericSpellModifier::new);// TODO switch to new system @IHH
     RegistryObject<ISpellModifier>     SILK_TOUCH          = SPELL_PARTS.register("silk_touch",          GenericSpellModifier::new);// TODO switch to new system @IHH
-    RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               Solar::new);
     RegistryObject<ISpellModifier>     TARGET_NON_SOLID    = SPELL_PARTS.register("target_non_solid",    GenericSpellModifier::new);// TODO switch to new system @IHH
     RegistryObject<ISpellModifier>     VELOCITY            = SPELL_PARTS.register("velocity",            GenericSpellModifier::new);// TODO switch to new system @IHH
 
