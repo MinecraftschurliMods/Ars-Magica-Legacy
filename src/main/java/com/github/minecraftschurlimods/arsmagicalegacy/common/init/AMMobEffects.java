@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.Illuminatio
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.InstantManaEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ManaRegenEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ScrambleSynapsesEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ShrinkEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.TemporalAnchorEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -45,7 +46,7 @@ public interface AMMobEffects {
     RegistryObject<MobEffect> REFLECT           = MOB_EFFECTS.register("reflect",           () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xadffff));
     RegistryObject<MobEffect> SCRAMBLE_SYNAPSES = MOB_EFFECTS.register("scramble_synapses", ScrambleSynapsesEffect::new);
     RegistryObject<MobEffect> SHIELD            = MOB_EFFECTS.register("shield",            () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xc4c4c4).addAttributeModifier(Attributes.ARMOR, "F323F5EB-9C66-4142-BCFA-B7855F16D534", 2, AttributeModifier.Operation.ADDITION));
-    RegistryObject<MobEffect> SHRINK            = MOB_EFFECTS.register("shrink",            () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0x0000dd)); // TODO
+    RegistryObject<MobEffect> SHRINK            = MOB_EFFECTS.register("shrink",            ShrinkEffect::new);
     RegistryObject<MobEffect> SILENCE           = MOB_EFFECTS.register("silence",           () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0xc1c1ff));
     RegistryObject<MobEffect> SWIFT_SWIM        = MOB_EFFECTS.register("swift_swim",        () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0x3b3bff).addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "A5B6CF2A-2F7C-51EF-9022-7C3E7D5E6AAC", 1.133f, AttributeModifier.Operation.MULTIPLY_BASE));
     RegistryObject<MobEffect> TEMPORAL_ANCHOR   = MOB_EFFECTS.register("temporal_anchor",   TemporalAnchorEffect::new);
