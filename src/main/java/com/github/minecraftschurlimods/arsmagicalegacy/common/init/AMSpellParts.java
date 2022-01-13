@@ -1,8 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.DefaultSpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.*;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.AbstractModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.GenericSpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Lunar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.AoE;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
@@ -117,23 +120,23 @@ public interface AMSpellParts {
     RegistryObject<Transplace>         TRANSPLACE          = SPELL_PARTS.register("transplace",          Transplace::new);
     RegistryObject<WizardsAutumn>      WIZARDS_AUTUMN      = SPELL_PARTS.register("wizards_autumn",      WizardsAutumn::new);
 
-    RegistryObject<ISpellModifier>     BOUNCE              = SPELL_PARTS.register("bounce",              () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     DAMAGE              = SPELL_PARTS.register("damage",              () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     DISMEMBERING        = SPELL_PARTS.register("dismembering",        () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     DURATION            = SPELL_PARTS.register("duration",            () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     EFFECT_POWER        = SPELL_PARTS.register("effect_power",        () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     GRAVITY             = SPELL_PARTS.register("gravity",             () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     HEALING             = SPELL_PARTS.register("healing",             () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     LUNAR               = SPELL_PARTS.register("lunar",               () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     MINING_POWER        = SPELL_PARTS.register("mining_power",        () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     PIERCING            = SPELL_PARTS.register("piercing",            () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     PROSPERITY          = SPELL_PARTS.register("prosperity",          () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     RANGE               = SPELL_PARTS.register("range",               () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     RUNE_PROCS          = SPELL_PARTS.register("rune_procs",          () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     SILK_TOUCH          = SPELL_PARTS.register("silk_touch",          () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     TARGET_NON_SOLID    = SPELL_PARTS.register("target_non_solid",    () -> new AbstractModifier() {});
-    RegistryObject<ISpellModifier>     VELOCITY            = SPELL_PARTS.register("velocity",            () -> new AbstractModifier() {});
+    RegistryObject<ISpellModifier>     BOUNCE              = SPELL_PARTS.register("bounce",              () -> new GenericSpellModifier().addStatModifier(SpellPartStats.BOUNCE, DefaultSpellPartStatModifier.add(2)));
+    RegistryObject<ISpellModifier>     DAMAGE              = SPELL_PARTS.register("damage",              () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DAMAGE, DefaultSpellPartStatModifier.add(2.2f)));
+    RegistryObject<ISpellModifier>     DISMEMBERING        = SPELL_PARTS.register("dismembering",        GenericSpellModifier::new);
+    RegistryObject<ISpellModifier>     DURATION            = SPELL_PARTS.register("duration",            () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DURATION, DefaultSpellPartStatModifier.multiply(2.2f)));
+    RegistryObject<ISpellModifier>     EFFECT_POWER        = SPELL_PARTS.register("effect_power",        GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     GRAVITY             = SPELL_PARTS.register("gravity",             GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     HEALING             = SPELL_PARTS.register("healing",             GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     LUNAR               = SPELL_PARTS.register("lunar",               Lunar::new);
+    RegistryObject<ISpellModifier>     MINING_POWER        = SPELL_PARTS.register("mining_power",        GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     PIERCING            = SPELL_PARTS.register("piercing",            GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     PROSPERITY          = SPELL_PARTS.register("prosperity",          GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     RANGE               = SPELL_PARTS.register("range",               GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     RUNE_PROCS          = SPELL_PARTS.register("rune_procs",          GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     SILK_TOUCH          = SPELL_PARTS.register("silk_touch",          GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     TARGET_NON_SOLID    = SPELL_PARTS.register("target_non_solid",    GenericSpellModifier::new);// TODO switch to new system @IHH
+    RegistryObject<ISpellModifier>     VELOCITY            = SPELL_PARTS.register("velocity",            GenericSpellModifier::new);// TODO switch to new system @IHH
 
     /**
      * Empty method that is required for classloading
