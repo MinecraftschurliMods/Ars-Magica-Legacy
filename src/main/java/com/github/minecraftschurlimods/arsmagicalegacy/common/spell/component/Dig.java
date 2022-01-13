@@ -5,14 +5,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,22 +33,17 @@ public class Dig extends AbstractComponent {
         BlockState state = level.getBlockState(blockPos);
         float hardness = state.getDestroySpeed(level, blockPos);
         if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(getTier(modifiers), state))
+        ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
+        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int)spellHelper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target)), state))
             return SpellCastResult.EFFECT_FAILED;
         if (!(caster instanceof Player player && player.isCreative()) && !ArsMagicaAPI.get().getManaHelper().decreaseMana(caster, hardness * 1.28f))
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            var spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            ItemStack dummyStack = AMUtil.createDummyStack(spellHelper.countModifiers(modifiers, AMSpellParts.PROSPERITY.getId()), spellHelper.countModifiers(modifiers, AMSpellParts.SILK_TOUCH.getId()));
+            ItemStack dummyStack = AMUtil.createDummyStack((int)spellHelper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int)spellHelper.getModifiedStat(0, SpellPartStats.SILKTOUCH, modifiers, spell, caster, target));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);
         return SpellCastResult.SUCCESS;
-    }
-
-    private Tier getTier(List<ISpellModifier> modifiers) {
-        ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-        return TierMapping.instance().getTierForPower(2 + spellHelper.countModifiers(modifiers, AMSpellParts.MINING_POWER.getId()));
     }
 }

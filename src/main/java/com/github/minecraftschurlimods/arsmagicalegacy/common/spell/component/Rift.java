@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMenu;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.Permissions;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -24,7 +25,7 @@ public class Rift extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof ServerPlayer sp) {
-            int size = Math.min(ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.EFFECT_POWER.getId()) + 1, PermissionAPI.getPermission(sp, Permissions.MAX_RIFT_SIZE));
+            int size = Math.min(Math.round(Math.max(1, ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.POWER, modifiers, spell, caster, target))), PermissionAPI.getPermission(sp, Permissions.MAX_RIFT_SIZE));
             NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> RiftMenu.rift(id, inv, sp, size), new TranslatableComponent(TranslationConstants.RIFT_TITLE)), buf -> {
                 buf.writeUUID(sp.getUUID());
                 buf.writeInt(size);

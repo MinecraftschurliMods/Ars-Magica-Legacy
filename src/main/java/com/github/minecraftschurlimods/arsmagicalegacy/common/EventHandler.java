@@ -406,15 +406,14 @@ public final class EventHandler {
         for (Pair<ISpellPart, List<ISpellModifier>> pair : spell.spellStack().partsWithModifiers()) {
             modifiers.addAll(pair.getSecond());
         }
-        ISpellHelper helper = ArsMagicaAPI.get().getSpellHelper();
         Level level = event.getEntity().getLevel();
         if (level.getDayTime() % 24000 < 12000) {
-            for (int i = 0; i < helper.countModifiers(modifiers, AMSpellParts.SOLAR.getId()); i++) {
+            for (int i = 0; i < modifiers.stream().map(ISpellModifier::getRegistryName).filter(AMSpellParts.SOLAR.getId()::equals).count(); i++) {
                 mana *= 0.75f;
             }
         } else {
             float f = MANA_MODIFIER_PER_LUNAR_PHASE[level.getMoonPhase()];
-            for (int i = 0; i < helper.countModifiers(modifiers, AMSpellParts.LUNAR.getId()); i++) {
+            for (int i = 0; i < modifiers.stream().map(ISpellModifier::getRegistryName).filter(AMSpellParts.LUNAR.getId()::equals).count(); i++) {
                 mana *= f;
             }
         }

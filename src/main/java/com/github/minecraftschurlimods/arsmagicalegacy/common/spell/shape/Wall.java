@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -18,12 +18,16 @@ public class Wall extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = new com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall(AMEntities.WALL.get(), level);
-            wall.setPos(ArsMagicaAPI.get().getSpellHelper().trace(caster, level, 2.5f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId()), true, ArsMagicaAPI.get().getSpellHelper().isModifierPresent(modifiers, AMSpellParts.TARGET_NON_SOLID.getId())).getLocation());
+            float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
+            boolean tns = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
+            float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+            int duration = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            wall.setPos(ArsMagicaAPI.get().getSpellHelper().trace(caster, level, range, true, tns).getLocation());
             wall.setYRot(caster.getYHeadRot());
-            wall.setDuration(200 + 100 * ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()));
+            wall.setDuration(duration);
             wall.setIndex(index);
             wall.setOwner(caster);
-            wall.setRadius(1f + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId()));
+            wall.setRadius(radius);
             wall.setStack(caster.getMainHandItem());
             level.addFreshEntity(wall);
         }

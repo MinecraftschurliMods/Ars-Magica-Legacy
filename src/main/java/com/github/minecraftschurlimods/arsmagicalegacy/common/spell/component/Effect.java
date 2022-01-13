@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,8 +31,8 @@ public class Effect extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
-        int duration = Config.SERVER.EFFECT_DURATION.get() + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.DURATION.getId()) * Config.SERVER.EFFECT_EXTRA_DURATION.get();
-        int amplifier = ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.EFFECT_POWER.getId());
+        int duration = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(Config.SERVER.EFFECT_DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target);
+        int amplifier = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.POWER, modifiers, spell, caster, target);
         if (effect.get().isInstantenous()) {
             effect.get().applyInstantenousEffect(caster, caster, living, amplifier, 1);
             return SpellCastResult.SUCCESS;

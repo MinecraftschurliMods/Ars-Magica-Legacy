@@ -4,16 +4,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class Blink extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();
         double oldX = entity.getX(), oldY = entity.getEyeY(), oldZ = entity.getZ();
-        for (int range = 12 + ArsMagicaAPI.get().getSpellHelper().countModifiers(modifiers, AMSpellParts.RANGE.getId()) * 12; range > 0; range--) {
+        for (int range = Math.round(ArsMagicaAPI.get().getSpellHelper().getModifiedStat(12, SpellPartStats.RANGE, modifiers, spell, caster, target) * 12); range > 0; range--) {
             double x = oldX + entity.getLookAngle().x() * range;
             double y = oldY + entity.getLookAngle().y() * range;
             double z = oldZ + entity.getLookAngle().z() * range;
