@@ -10,7 +10,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -45,6 +44,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelpe
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
@@ -97,9 +97,7 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public final class EventHandler {
@@ -200,6 +198,7 @@ public final class EventHandler {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),  new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),     new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"),      new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"),    new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
         }
     }
 
@@ -249,6 +248,7 @@ public final class EventHandler {
         ManaHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         BurnoutHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         RiftHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
+        ShrinkHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         event.getOriginal().invalidateCaps();
     }
 

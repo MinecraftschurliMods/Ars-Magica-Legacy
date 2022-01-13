@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -166,10 +167,20 @@ public final class ArsMagicaAPI {
         ISpellHelper getSpellHelper();
 
         /**
-         *
+         * Get the {@link IRiftHelper} instance.
+         * 
+         * @return the {@link IRiftHelper} instance
          */
         @Unmodifiable
         IRiftHelper getRiftHelper();
+
+        /**
+         * Get the {@link IShrinkHelper} instance.
+         *
+         * @return the {@link IShrinkHelper} instance
+         */
+        @Unmodifiable
+        IShrinkHelper getShrinkHelper();
 
         /**
          * Open the occulus gui for the given player.
@@ -261,6 +272,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public IRiftHelper getRiftHelper() {
+            return null;
+        }
+
+        @Override
+        public IShrinkHelper getShrinkHelper() {
             return null;
         }
 
