@@ -22,6 +22,10 @@ import net.minecraftforge.common.TierSortingRegistry;
 import java.util.List;
 
 public class Dig extends AbstractComponent {
+    public Dig() {
+        super(SpellPartStats.MINING_TIER, SpellPartStats.FORTUNE, SpellPartStats.SILKTOUCH);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

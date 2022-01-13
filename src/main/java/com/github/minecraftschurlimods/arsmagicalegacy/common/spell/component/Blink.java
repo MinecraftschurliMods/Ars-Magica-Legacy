@@ -15,6 +15,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class Blink extends AbstractComponent {
+    public Blink() {
+        super(SpellPartStats.RANGE);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();

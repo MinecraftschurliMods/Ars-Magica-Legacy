@@ -16,6 +16,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class RandomTeleport extends AbstractComponent {
+    public RandomTeleport() {
+        super(SpellPartStats.RANGE);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(5, SpellPartStats.RANGE, modifiers, spell, caster, target) * 4;

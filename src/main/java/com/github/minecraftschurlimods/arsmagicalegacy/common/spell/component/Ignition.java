@@ -17,6 +17,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class Ignition extends AbstractComponent {
+    public Ignition() {
+        super(SpellPartStats.DURATION);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity().isOnFire()) return SpellCastResult.EFFECT_FAILED;

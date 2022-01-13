@@ -5,6 +5,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
  */
 public final class DefaultSpellPartStatModifier {
     public static final ISpellPartStatModifier NOOP = (base, modified, spell, caster, target) -> modified;
+    public static final ISpellPartStatModifier COUNTING = (base, modified, spell, caster, target) -> modified + 1;
 
     public static ISpellPartStatModifier add(final float value) {
         return (base, modified, spell, caster, target) -> modified + value;

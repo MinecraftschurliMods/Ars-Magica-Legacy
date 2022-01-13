@@ -22,6 +22,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class AoE extends AbstractShape {
+
+    public AoE() {
+        super(SpellPartStats.SIZE);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (hit == null) return SpellCastResult.EFFECT_FAILED;

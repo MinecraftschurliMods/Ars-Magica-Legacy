@@ -8,9 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -23,6 +21,10 @@ public class Recall extends AbstractComponent {
     private static final String Y = ArsMagicaAPI.MOD_ID + ":recall_pos_y";
     private static final String Z = ArsMagicaAPI.MOD_ID + ":recall_pos_z";
     private static final String DIMENSION = ArsMagicaAPI.MOD_ID + ":recall_dimension";
+
+    public Recall() {
+        super();
+    }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {

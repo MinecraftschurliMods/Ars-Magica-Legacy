@@ -35,6 +35,10 @@ public class Drought extends AbstractComponent {
         map.put(Blocks.SANDSTONE, Blocks.SMOOTH_SANDSTONE);
     });
 
+    public Drought() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

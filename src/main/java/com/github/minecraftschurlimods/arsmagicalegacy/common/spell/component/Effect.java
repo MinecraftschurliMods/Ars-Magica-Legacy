@@ -21,6 +21,7 @@ public class Effect extends AbstractComponent {
     private final Lazy<? extends MobEffect> effect;
 
     public Effect(Supplier<? extends MobEffect> effect) {
+        super(SpellPartStats.DURATION, SpellPartStats.POWER);
         this.effect = Lazy.concurrentOf(effect);
     }
 

@@ -17,6 +17,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class Attract extends AbstractComponent {
+    public Attract() {
+        super(SpellPartStats.RANGE, SpellPartStats.SPEED);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target);

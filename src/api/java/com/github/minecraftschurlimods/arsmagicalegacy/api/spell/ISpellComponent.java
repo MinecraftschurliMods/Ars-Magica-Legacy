@@ -7,6 +7,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Base interface for spell components
@@ -42,6 +43,8 @@ public interface ISpellComponent extends ISpellPart {
      */
     @OverrideOnly
     SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed);
+
+    Set<ISpellPartStat> getStatsUsed();
 
     @Override
     default SpellPartType getType() {

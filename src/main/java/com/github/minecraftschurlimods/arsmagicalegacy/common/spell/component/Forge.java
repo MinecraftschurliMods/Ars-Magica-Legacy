@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class Forge extends AbstractComponent {
+    public Forge() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof Villager villager) {

@@ -18,6 +18,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Projectile extends AbstractShape {
+    public Projectile() {
+        super(SpellPartStats.TARGET_NON_SOLID,
+              SpellPartStats.BOUNCE,
+              SpellPartStats.DURATION,
+              SpellPartStats.PIERCING,
+              SpellPartStats.GRAVITY,
+              SpellPartStats.SPEED);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {

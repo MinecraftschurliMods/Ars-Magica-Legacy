@@ -23,6 +23,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Storm extends AbstractComponent {
+    public Storm() {
+        super(SpellPartStats.DURATION);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return performStorm(caster, level, modifiers, spell, target);
