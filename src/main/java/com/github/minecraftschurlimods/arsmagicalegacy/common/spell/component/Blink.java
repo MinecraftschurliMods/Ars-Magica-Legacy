@@ -4,6 +4,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +23,7 @@ public class Blink extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
         Entity entity = target.getEntity();
         double oldX = entity.getX(), oldY = entity.getEyeY(), oldZ = entity.getZ();
         for (int range = Math.round(ArsMagicaAPI.get().getSpellHelper().getModifiedStat(12, SpellPartStats.RANGE, modifiers, spell, caster, target) * 12); range > 0; range--) {

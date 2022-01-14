@@ -22,7 +22,8 @@ public class DivineIntervention extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (target.getEntity() instanceof LivingEntity living) {
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
+        if (target.getEntity() instanceof LivingEntity living && !living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
             if (living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
                 if (living instanceof Player) {
                     living.sendMessage(new TranslatableComponent(TranslationConstants.NO_TELEPORT), living.getUUID());

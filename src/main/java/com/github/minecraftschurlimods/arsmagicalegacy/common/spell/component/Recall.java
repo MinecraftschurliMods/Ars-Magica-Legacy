@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +29,8 @@ public class Recall extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return SpellCastResult.EFFECT_FAILED;
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
+        return performRecall(caster, level, AMUtil.getSpellStack(caster).getOrCreateTag()) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
     @Override
@@ -49,10 +51,14 @@ public class Recall extends AbstractComponent {
             tag.putString(DIMENSION, level.dimension().location().toString());
             stack.setTag(tag);
             return SpellCastResult.SUCCESS;
-        } else if (tag.contains(DIMENSION) && tag.getString(DIMENSION).equals(level.dimension().location().toString()) && tag.contains(X) && tag.contains(Y) && tag.contains(Z)) {
+        } else return performRecall(caster, level, tag) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
+    }
+
+    private static boolean performRecall(LivingEntity caster, Level level, CompoundTag tag) {
+        if (tag.contains(DIMENSION) && tag.getString(DIMENSION).equals(level.dimension().location().toString()) && tag.contains(X) && tag.contains(Y) && tag.contains(Z)) {
             caster.moveTo(tag.getInt(X) + 0.5f, tag.getInt(Y) + 0.5f, tag.getInt(Z) + 0.5f);
-            return SpellCastResult.SUCCESS;
+            return true;
         }
-        return SpellCastResult.EFFECT_FAILED;
+        return false;
     }
 }

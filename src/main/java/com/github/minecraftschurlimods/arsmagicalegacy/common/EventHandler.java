@@ -81,6 +81,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -126,6 +127,9 @@ public final class EventHandler {
         forgeBus.addListener(EventPriority.LOWEST, EventHandler::livingHurt);
         forgeBus.addListener(EventHandler::livingJump);
         forgeBus.addListener(EventHandler::livingFall);
+        forgeBus.addListener(EventHandler::enderEntityTeleport);
+        forgeBus.addListener(EventHandler::enderPearlTeleport);
+        forgeBus.addListener(EventHandler::chorusFruitTeleport);
         forgeBus.addListener(EventHandler::potionAdded);
         forgeBus.addListener(EventHandler::potionExpiry);
         forgeBus.addListener(EventHandler::potionRemove);
@@ -312,6 +316,24 @@ public final class EventHandler {
         }
         if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.get())) {
             event.setDistance(event.getDistance() * (entity.getEffect(AMMobEffects.GRAVITY_WELL.get()).getAmplifier() + 1));
+        }
+    }
+
+    private static void enderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
+        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    private static void enderPearlTeleport(EntityTeleportEvent.EnderPearl event) {
+        if (event.getPlayer().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    private static void chorusFruitTeleport(EntityTeleportEvent.ChorusFruit event) {
+        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+            event.setCanceled(true);
         }
     }
 
