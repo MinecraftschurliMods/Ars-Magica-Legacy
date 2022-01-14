@@ -55,6 +55,7 @@ public final class Config {
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
         public final ForgeConfigSpec.IntValue EFFECT_DURATION;
+        public final ForgeConfigSpec.IntValue DAMAGE;
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
@@ -87,6 +88,10 @@ public final class Config {
                     .comment("Effect duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "effect_duration")
                     .defineInRange("effect_duration", 600, 1, 3600);
+            DAMAGE = builder
+                    .comment("Damage of damage-based components, in half hearts.")
+                    .translation(TranslationConstants.CONFIG + "damage")
+                    .defineInRange("damage", 6, 1, 100);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.DefaultSpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -44,12 +45,12 @@ public interface AMSpellParts {
     RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
     // TODO contingencies: damage, death, fall, fire, health
 
-    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, 6, e -> e instanceof LivingEntity l && l.canBreatheUnderwater()));
-    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, 6, Entity::fireImmune));
-    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, 6, e -> !e.canFreeze()));
-    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, 6));
-    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), 6));
-    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), 6));
+    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), e -> e instanceof LivingEntity l && l.canBreatheUnderwater()));
+    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE.get(), Entity::fireImmune));
+    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, Config.SERVER.DAMAGE.get(), e -> !e.canFreeze()));
+    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, Config.SERVER.DAMAGE.get()));
+    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), Config.SERVER.DAMAGE.get()));
+    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), Config.SERVER.DAMAGE.get()));
     RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));

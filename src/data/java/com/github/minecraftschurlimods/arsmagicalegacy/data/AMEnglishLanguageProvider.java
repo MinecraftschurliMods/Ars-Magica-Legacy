@@ -256,7 +256,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("max_shape_groups", "The maximum number of shape groups allowed for new spells.");
         configTranslation("extra_starting_blue_points", "The extra skill points a player gets on level 1.");
         configTranslation("effect_duration", "Effect duration of effect-based components, in ticks.");
-        configTranslation("effect_extra_duration", "Extra effect duration for each Duration modifier, in ticks.");
+        configTranslation("damage", "Damage of damage-based components, in half hearts.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
