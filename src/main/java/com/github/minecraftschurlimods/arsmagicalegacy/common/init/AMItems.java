@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityEssenceItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.CrystalWrenchItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
@@ -47,6 +48,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    MAGIC_WALL               = registerBlockItem64(AMBlocks.MAGIC_WALL);
     RegistryObject<WizardsChalkItem>             WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES         = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
+    RegistryObject<CrystalWrenchItem>            CRYSTAL_WRENCH           = ITEMS.register("crystal_wrench", CrystalWrenchItem::new);
     RegistryObject<BlockItem>                    CHIMERITE_ORE            = registerBlockItem64(AMBlocks.CHIMERITE_ORE);
     RegistryObject<BlockItem>                    DEEPSLATE_CHIMERITE_ORE  = registerBlockItem64(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
     RegistryObject<Item>                         CHIMERITE                = registerItem64("chimerite");
