@@ -2,11 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 public class GenericSpellModifier extends AbstractModifier {

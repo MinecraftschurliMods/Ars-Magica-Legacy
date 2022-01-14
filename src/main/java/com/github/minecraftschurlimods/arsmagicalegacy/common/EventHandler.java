@@ -102,8 +102,6 @@ import java.util.List;
 import java.util.Set;
 
 public final class EventHandler {
-    private static final float[] MANA_MODIFIER_PER_LUNAR_PHASE = new float[]{1.0F, 0.875F, 0.75F, 0.625F, 0.5F, 0.625F, 0.75F, 0.875F};
-
     private EventHandler() {
     }
 
@@ -136,7 +134,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::playerLevelUp);
         forgeBus.addListener(EventHandler::manaCostPre);
-        forgeBus.addListener(EventHandler::manaCostPost);
     }
 
     private static void enqueueIMC(InterModEnqueueEvent event) {
@@ -413,32 +410,5 @@ public final class EventHandler {
             }
         }
         event.setBase(cost);
-    }
-
-    private static void manaCostPost(SpellEvent.ManaCost.Post event) {
-        ISpell spell = event.getSpell();
-        float mana = event.getMana();
-        LivingEntity caster = event.getEntityLiving();
-        IAffinityHelper affinityHelper = ArsMagicaAPI.get().getAffinityHelper();
-        if (caster instanceof Player player && affinityHelper.getAffinityDepth(player, IAffinity.ARCANE) > 0.5f) {
-            float reduction = (float) (1 - (0.5 * affinityHelper.getAffinityDepth(player, IAffinity.ARCANE)));
-            mana *= reduction;
-        }
-        List<ISpellModifier> modifiers = new ArrayList<>(spell.partsWithModifiers().get(spell.currentShapeGroupIndex()).getSecond());
-        for (Pair<ISpellPart, List<ISpellModifier>> pair : spell.spellStack().partsWithModifiers()) {
-            modifiers.addAll(pair.getSecond());
-        }
-        Level level = event.getEntity().getLevel();
-        if (level.getDayTime() % 24000 < 12000) {
-            for (int i = 0; i < modifiers.stream().map(ISpellModifier::getRegistryName).filter(AMSpellParts.SOLAR.getId()::equals).count(); i++) {
-                mana *= 0.75f;
-            }
-        } else {
-            float f = MANA_MODIFIER_PER_LUNAR_PHASE[level.getMoonPhase()];
-            for (int i = 0; i < modifiers.stream().map(ISpellModifier::getRegistryName).filter(AMSpellParts.LUNAR.getId()::equals).count(); i++) {
-                mana *= f;
-            }
-        }
-        event.setMana(mana);
     }
 }
