@@ -12,6 +12,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class Transplace extends AbstractComponent {
+    public Transplace() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Vec3 targetPos = target.getEntity().position();

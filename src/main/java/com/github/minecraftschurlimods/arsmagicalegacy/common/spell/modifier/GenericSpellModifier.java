@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public final class GenericSpellModifier extends AbstractModifier {
-    Map<ISpellPartStat, ISpellPartStatModifier> modifiers = new HashMap<>();
+public class GenericSpellModifier extends AbstractModifier {
+    protected Map<ISpellPartStat, ISpellPartStatModifier> modifiers = new HashMap<>();
 
     @Override
     public ISpellPartStatModifier getStatModifier(ISpellPartStat stat) {

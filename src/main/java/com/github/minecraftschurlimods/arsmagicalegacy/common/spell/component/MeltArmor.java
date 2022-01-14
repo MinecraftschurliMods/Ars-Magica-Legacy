@@ -12,6 +12,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class MeltArmor extends AbstractComponent {
+    public MeltArmor() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         boolean success = false;

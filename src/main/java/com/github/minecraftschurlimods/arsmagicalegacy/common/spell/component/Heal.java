@@ -14,6 +14,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class Heal extends AbstractComponent {
+    public Heal() {
+        super(SpellPartStats.HEALING);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {

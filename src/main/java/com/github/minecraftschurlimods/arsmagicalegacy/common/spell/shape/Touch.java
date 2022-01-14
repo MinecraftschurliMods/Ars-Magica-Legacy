@@ -14,6 +14,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Touch extends AbstractShape {
+    public Touch() {
+        super(SpellPartStats.TARGET_NON_SOLID, SpellPartStats.RANGE);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();

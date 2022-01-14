@@ -15,6 +15,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Wave extends AbstractShape {
+    public Wave() {
+        super(SpellPartStats.TARGET_NON_SOLID,
+              SpellPartStats.DURATION,
+              SpellPartStats.GRAVITY,
+              SpellPartStats.SIZE,
+              SpellPartStats.SPEED);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {

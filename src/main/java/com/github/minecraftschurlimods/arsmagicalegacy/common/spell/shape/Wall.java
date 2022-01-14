@@ -14,6 +14,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Wall extends AbstractShape {
+    public Wall() {
+        super(SpellPartStats.RANGE,
+              SpellPartStats.TARGET_NON_SOLID,
+              SpellPartStats.SIZE,
+              SpellPartStats.DURATION);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {

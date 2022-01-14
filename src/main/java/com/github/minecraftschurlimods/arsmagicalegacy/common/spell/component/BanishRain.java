@@ -12,6 +12,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class BanishRain extends AbstractComponent {
+    public BanishRain() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!level.isClientSide() && level.getLevelData().isRaining()) {

@@ -26,6 +26,10 @@ import java.util.List;
 public class PlaceBlock extends AbstractComponent {
     private static final String KEY = ArsMagicaAPI.MOD_ID + ":place_block_id";
 
+    public PlaceBlock() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

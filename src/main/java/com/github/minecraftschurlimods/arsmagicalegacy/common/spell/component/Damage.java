@@ -24,6 +24,7 @@ public class Damage extends AbstractComponent {
     private final Predicate<Entity> failIf;
 
     public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage, Predicate<Entity> failIf) {
+        super(SpellPartStats.HEALING, SpellPartStats.DAMAGE);
         this.damageSourceFunction = damageSourceFunction;
         this.damage = damage;
         this.failIf = failIf;

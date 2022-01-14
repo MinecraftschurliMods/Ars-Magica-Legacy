@@ -6,6 +6,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ISpellShape extends ISpellPart {
     /**
@@ -34,9 +35,7 @@ public interface ISpellShape extends ISpellPart {
         return SpellPartType.SHAPE;
     }
 
-    default boolean canBeModifiedBy(ISpellModifier modifier) {
-        return false;
-    }
+    Set<ISpellPartStat> getStatsUsed();
 
     default boolean isEndShape() {
         return false;

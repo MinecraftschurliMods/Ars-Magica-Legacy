@@ -15,6 +15,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class Fling extends AbstractComponent {
+    public Fling() {
+        super(SpellPartStats.SPEED);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();

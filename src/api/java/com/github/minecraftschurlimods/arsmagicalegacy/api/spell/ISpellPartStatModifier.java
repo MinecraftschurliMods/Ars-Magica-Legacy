@@ -9,5 +9,13 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface ISpellPartStatModifier {
+    /**
+     * Modify the stat value.
+     *
+     * @param base                the base value being modified
+     * @param modified            the value with all previous modifications
+     * @param spell,caster,target the context
+     * @return the new modified value
+     */
     float modify(float base, float modified, ISpell spell, LivingEntity caster, @Nullable HitResult target);
 }

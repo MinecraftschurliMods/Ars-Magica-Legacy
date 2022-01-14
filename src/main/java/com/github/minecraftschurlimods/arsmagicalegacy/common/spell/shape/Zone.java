@@ -15,6 +15,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Zone extends AbstractShape {
+    public Zone() {
+        super(SpellPartStats.TARGET_NON_SOLID,
+              SpellPartStats.DURATION,
+              SpellPartStats.GRAVITY,
+              SpellPartStats.SIZE);
+    }
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {

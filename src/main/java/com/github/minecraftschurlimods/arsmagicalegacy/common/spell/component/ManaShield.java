@@ -12,6 +12,10 @@ import java.util.List;
 
 //TODO
 public class ManaShield extends AbstractComponent {
+    public ManaShield() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
