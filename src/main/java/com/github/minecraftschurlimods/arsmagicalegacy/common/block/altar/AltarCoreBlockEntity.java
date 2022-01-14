@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureM
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumConsumer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -42,6 +43,8 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +71,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable private AltarStructureMaterial structureMaterial;
     @Nullable private AltarCapMaterial       capMaterial;
 
-    private final BlockPattern MULTIBLOCK = BlockPatternBuilder.start()
+    private final BlockPattern                    MULTIBLOCK = BlockPatternBuilder.start()
      .aisle(
             "BBBBB",
             "BBBBB",
@@ -379,6 +382,14 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Override
     public ModelDataMap getModelData() {
         return modelData;
+    }
+
+    private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);
     }
 
     public boolean isMultiblockFormed() {

@@ -28,6 +28,7 @@ public interface TranslationConstants {
     String INSCRIPTION_TABLE_SEARCH         = "screen."   + ArsMagicaAPI.MOD_ID + ".inscription_table.search";
     String INSCRIPTION_TABLE_TITLE          = "screen."   + ArsMagicaAPI.MOD_ID + ".inscription_table.title";
     String SPELL_CUSTOMIZATION_NAME         = "screen."   + ArsMagicaAPI.MOD_ID + ".spell_customization_screen.name";
+    String OBELISK_DEFAULT_NAME             = "screen."   + ArsMagicaAPI.MOD_ID + ".obelisk.default_name";
     String CONFIG                           = "config."   + ArsMagicaAPI.MOD_ID + ".";
     String HOLD_SHIFT_FOR_DETAILS           = "message."  + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String PREVENT                          = "message."  + ArsMagicaAPI.MOD_ID + ".prevent";

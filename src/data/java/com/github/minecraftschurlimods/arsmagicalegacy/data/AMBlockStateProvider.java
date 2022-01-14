@@ -3,10 +3,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
@@ -22,9 +24,12 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
@@ -115,6 +120,23 @@ class AMBlockStateProvider extends BlockStateProvider {
                             .end()
                             .end()
             ).build();
+        });
+        ConfiguredModel[] upper = ConfiguredModel.builder().modelFile(models().getBuilder(OBELISK.getId().getPath() + "_upper").texture("particle", mcLoc("block/stone_bricks"))).build();
+        getVariantBuilder(OBELISK.get()).forAllStates(state -> {
+            if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
+                ResourceLocation texture = state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/obelisk_lit") : modLoc("block/obelisk");
+                return ConfiguredModel.builder().modelFile(
+                        models().getBuilder(OBELISK.getId().getPath())
+                                .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                                .customLoader(OBJLoaderBuilder::begin)
+                                .modelLocation(modLoc("models/block/obj/obelisk.obj"))
+                                .end()
+                                .texture("tex", texture)
+                                .texture("particle", mcLoc("block/stone_bricks"))
+                ).rotationY((state.getValue(AbstractFurnaceBlock.FACING).get2DDataValue() + 2) % 4 * 90).build();
+            } else {
+                return upper;
+            }
         });
         airBlock(SPELL_LIGHT);
     }

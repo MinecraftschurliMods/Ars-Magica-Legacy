@@ -11,7 +11,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -84,6 +86,14 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
         skillPointItem(INFINITY_ORB);
+        blockItem(OBELISK).transforms()
+                          .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+                          .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
+                          .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
+                          .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+                          .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
+                          .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end()
+                          .end();
     }
 
     /**
@@ -130,8 +140,8 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item   The item to generate the model for.
      * @param parent The parent model to use.
      */
-    private void withExistingParent(RegistryObject<? extends Item> item, String parent) {
-        withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
+    private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, String parent) {
+        return withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
     }
 
     /**
@@ -140,8 +150,8 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item  The item to generate the model for.
      * @param block The block model to use.
      */
-    private void blockItem(RegistryObject<? extends Item> item, Block block) {
-        withExistingParent(item, block.getRegistryName().getPath());
+    private ItemModelBuilder blockItem(RegistryObject<? extends Item> item, Block block) {
+        return withExistingParent(item, block.getRegistryName().getPath());
     }
 
     /**
@@ -149,8 +159,8 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param blockItem The item to generate the model for.
      */
-    private void blockItem(RegistryObject<? extends BlockItem> blockItem) {
-        blockItem(blockItem, blockItem.get().getBlock());
+    private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> blockItem) {
+        return blockItem(blockItem, blockItem.get().getBlock());
     }
 
     /**

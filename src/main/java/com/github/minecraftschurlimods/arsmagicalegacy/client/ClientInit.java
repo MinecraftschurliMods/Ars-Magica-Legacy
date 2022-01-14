@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
@@ -86,6 +87,7 @@ public final class ClientInit {
     private static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
+        MenuScreens.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
