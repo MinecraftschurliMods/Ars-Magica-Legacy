@@ -11,6 +11,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.CandleBlock;
+import net.minecraft.world.level.block.CandleCakeBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
@@ -31,20 +35,32 @@ public class Ignition extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         BlockPos pos = target.getBlockPos();
-        if (target.getDirection().getAxis() != Direction.Axis.Y) {
-            pos = pos.offset(target.getDirection().getNormal());
-        }
-        if (level.getBlockState(pos).isAir()) {
-            if (!level.isClientSide()) {
-                level.setBlock(pos, Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
-            }
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof CampfireBlock && !state.getValue(CampfireBlock.LIT)) {
+            level.setBlock(pos, state.setValue(CampfireBlock.LIT, true), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
-        }
-        if (level.getBlockState(pos.above()).isAir()) {
-            if (!level.isClientSide()) {
-                level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
-            }
+        } else if (state.getBlock() instanceof CandleBlock && !state.getValue(CandleBlock.LIT)) {
+            level.setBlock(pos, state.setValue(CandleBlock.LIT, true), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
+        } else if (state.getBlock() instanceof CandleCakeBlock && !state.getValue(CandleCakeBlock.LIT)) {
+            level.setBlock(pos, state.setValue(CandleCakeBlock.LIT, true), Block.UPDATE_ALL);
+            return SpellCastResult.SUCCESS;
+        } else {
+            if (target.getDirection().getAxis() != Direction.Axis.Y) {
+                pos = pos.offset(target.getDirection().getNormal());
+            }
+            if (state.isAir()) {
+                if (!level.isClientSide()) {
+                    level.setBlock(pos, Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+                }
+                return SpellCastResult.SUCCESS;
+            }
+            if (level.getBlockState(pos.above()).isAir()) {
+                if (!level.isClientSide()) {
+                    level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+                }
+                return SpellCastResult.SUCCESS;
+            }
         }
         return SpellCastResult.EFFECT_FAILED;
     }
