@@ -18,7 +18,7 @@ public class Solar extends AbstractModifier {
     public ISpellPartStatModifier getStatModifier(ISpellPartStat stat) {
         if (!(stat instanceof SpellPartStats)) return DefaultSpellPartStatModifier.NOOP;
         return switch ((SpellPartStats) stat) {
-            case DAMAGE -> (base, modified, spell, caster, target) -> modified + modifyValueOnTime(caster.level.getDayTime() % 24000, 2.4f);
+            case DAMAGE -> (base, modified, spell, caster, target) -> modified + modifyValueOnTime(caster.level.getDayTime() % 24000, 2.5f);
             case DURATION -> (base, modified, spell, caster, target) -> modified * modifyValueOnTime(caster.level.getDayTime() % 24000, 5);
             case HEALING -> (base, modified, spell, caster, target) -> modified * modifyValueOnTime(caster.level.getDayTime() % 24000, 2);
             case SIZE, RANGE -> (base, modified, spell, caster, target) -> modified + 2;
@@ -32,7 +32,7 @@ public class Solar extends AbstractModifier {
     }
 
     private float modifyValueOnTime(long time, float value) {
-        float multiplierFromTime = (float) (Math.cos(((time / 3800f) * (time / 24000f) - 13000f) * (180f / Math.PI)) * 1.5f) + 1;
+        float multiplierFromTime = (float) (Math.cos(((time / 3800f) * (time / 24000f) - 13000f) * (180f / Math.PI)) * 1.5f) + 1f;
         if (multiplierFromTime < 0) {
             multiplierFromTime *= -0.5f;
         }

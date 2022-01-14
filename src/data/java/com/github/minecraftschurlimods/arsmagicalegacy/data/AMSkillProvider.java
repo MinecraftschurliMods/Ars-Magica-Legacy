@@ -45,13 +45,11 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(AOE.getId())
                 .build(consumer);
-/*
         createUtility(CHAIN)
                 .setPosition(255, 165)
                 .addCost(RED.get())
                 .addParent(GROW.getId())
                 .build(consumer);
-*/
         createUtility(CHANNEL)
                 .setPosition(165, 255)
                 .addCost(GREEN.get())
@@ -213,13 +211,11 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(ZONE.getId())
                 .build(consumer);
-/*
         createDefense(SHRINK)
                 .setPosition(300, 75)
                 .addCost(BLUE.get())
                 .addParent(REGENERATION.getId())
                 .build(consumer);
-*/
         createOffense(SILENCE)
                 .setPosition(255, 255)
                 .addCost(RED.get())
@@ -260,12 +256,10 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(RANDOM_TELEPORT.getId())
                 .build(consumer);
-/*
         createOffense(BLIZZARD)
                 .setPosition(30, 30)
                 .hidden()
                 .build(consumer);
-*/
         createUtility(CHARM)
                 .setPosition(165, 165)
                 .addCost(BLUE.get())
@@ -310,7 +304,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
                 .build(consumer);
-/*
         createOffense(FALLING_STAR)
                 .setPosition(30, 75)
                 .hidden()
@@ -319,7 +312,6 @@ class AMSkillProvider extends SkillProvider {
                 .setPosition(30, 120)
                 .hidden()
                 .build(consumer);
-*/
         createOffense(FLING)
                 .setPosition(300, 255)
                 .addCost(GREEN.get())
@@ -375,23 +367,19 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
                 .build(consumer);
-/*
         createOffense(MANA_BLAST)
                 .setPosition(30, 165)
                 .hidden()
                 .build(consumer);
-*/
         createDefense(MANA_DRAIN)
                 .setPosition(210, 210)
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId())
                 .build(consumer);
-/*
         createDefense(MANA_SHIELD)
                 .setPosition(30, 30)
                 .hidden()
                 .build(consumer);
-*/
         createUtility(MOONRISE)
                 .setPosition(30, 75)
                 .hidden()
@@ -441,7 +429,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(LIGHTNING_DAMAGE.getId())
                 .build(consumer);
-/*
         createDefense(SUMMON)
                 .setPosition(165, 120)
                 .addCost(GREEN.get())
@@ -452,7 +439,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
                 .build(consumer);
-*/
         createUtility(TRANSPLACE)
                 .setPosition(75, 300)
                 .addCost(GREEN.get())

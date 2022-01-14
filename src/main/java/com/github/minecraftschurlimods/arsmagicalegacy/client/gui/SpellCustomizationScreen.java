@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpellCustomisationScreen extends Screen {
+public class SpellCustomizationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
     private static final int ICON_SIZE = 15;
     private static final int ICON_MARGIN = 1;
@@ -40,9 +40,9 @@ public class SpellCustomisationScreen extends Screen {
      *
      * @param stack The ItemStack to open this screen for.
      */
-    public SpellCustomisationScreen(ItemStack stack) {
+    public SpellCustomizationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
-        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_NAME));
+        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
         SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
         SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
@@ -53,7 +53,7 @@ public class SpellCustomisationScreen extends Screen {
         super.init();
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
-        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_NAME)));
+        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
     }
 

@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.patchouli_datagen.AbstractPageBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.BookBuilder;
@@ -175,30 +176,28 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 */
         Set<ResourceLocation> parts = new HashSet<>();
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
-            TranslatedCategoryBuilder b = switch (spellPart.getType()) {
-                case COMPONENT -> components;
-                case MODIFIER -> modifiers;
-                case SHAPE -> shapes;
-            };
-            ResourceLocation registryName = spellPart.getRegistryName();
-            parts.add(registryName);
-            String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
-            TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
-            String textLangKey = "%s.page0.text".formatted(entryLangKey);
-            entry.addPage(new TextPageBuilder(textLangKey, entry)).build().addPage(new SpellPartPageBuilder(registryName, entry)).build()
-                    .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+            if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
+                TranslatedCategoryBuilder b = switch (spellPart.getType()) {
+                    case COMPONENT -> components;
+                    case MODIFIER -> modifiers;
+                    case SHAPE -> shapes;
+                };
+                ResourceLocation registryName = spellPart.getRegistryName();
+                parts.add(registryName);
+                String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
+                TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
+                String textLangKey = "%s.page0.text".formatted(entryLangKey);
+                entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                if (registryName.toString().equals("arsmagicalegacy:summon")) {
+                    textLangKey = "%s.page1.text".formatted(entryLangKey);
+                    entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                }
+                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build().setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+            }
         }
-/*
-        for (ISkill skill : api.getSkillManager().getSkills()) {
-            if (parts.contains(skill.getId())) continue;
-            ResourceLocation registryName = skill.getId();
-            String entryLangKey = "item.%s.%s.%s.%s".formatted(talents.getBookId().getNamespace(), talents.getBookId().getPath(), talents.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
-            TranslatedEntryBuilder entry = talents.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace()+":textures/icon/skill/"+registryName.getPath()+".png", b){});
-            String textLangKey = "%s.page0.text".formatted(entryLangKey);
-            entry.addPage(new TextPageBuilder(textLangKey, entry)).build()
-                 .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
-        }
-*/
+        shapes.build();
+        components.build();
+        modifiers.build();
         builder.build(consumer);
     }
 

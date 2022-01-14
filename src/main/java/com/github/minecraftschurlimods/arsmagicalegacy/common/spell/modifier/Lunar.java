@@ -18,7 +18,7 @@ public class Lunar extends AbstractModifier {
     public ISpellPartStatModifier getStatModifier(ISpellPartStat stat) {
         if (!(stat instanceof SpellPartStats)) return DefaultSpellPartStatModifier.NOOP;
         return switch ((SpellPartStats) stat) {
-            case DAMAGE -> (base, modified, spell, caster, target) -> modified + modifyValueOnTime(caster.level.getDayTime() % 24000, 2.4f);
+            case DAMAGE -> (base, modified, spell, caster, target) -> modified + modifyValueOnTime(caster.level.getDayTime() % 24000, 2.5f);
             case DURATION -> (base, modified, spell, caster, target) -> modified * modifyValueOnTime(caster.level.getDayTime() % 24000, 5);
             case HEALING -> (base, modified, spell, caster, target) -> modified * modifyValueOnTime(caster.level.getDayTime() % 24000, 2);
             case SIZE, RANGE -> (base, modified, spell, caster, target) -> {
@@ -36,7 +36,7 @@ public class Lunar extends AbstractModifier {
     }
 
     private float modifyValueOnTime(long time, float value) {
-        float multiplierFromTime = (float) (Math.sin(((time / 4600f) * (time / 21000f) - 900) * (180 / 3.14159265358979)) * 3) + 1;
+        float multiplierFromTime = (float) (Math.sin(((time / 4600f) * (time / 21000f) - 900f) * (180f / Math.PI)) * 3f) + 1f;
         if (multiplierFromTime < 0) {
             multiplierFromTime *= -0.5f;
         }
