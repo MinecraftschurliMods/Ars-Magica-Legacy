@@ -354,10 +354,11 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public List<IEtheriumProvider> getBoundProviders() {
         Level level = getLevel();
         if (level != null) {
-            this.boundPositions.removeIf(blockPos -> !(level.getBlockEntity(blockPos) instanceof IEtheriumProvider));
+            this.boundPositions.removeIf(blockPos -> !ArsMagicaAPI.get().getEtheriumHelper().hasEtheriumProvider(level, blockPos));
             return this.boundPositions.stream()
                                       .map(level::getBlockEntity)
-                                      .map(IEtheriumProvider.class::cast)
+                                      .map(ArsMagicaAPI.get().getEtheriumHelper()::getEtheriumProvider)
+                                      .map(opt -> opt.orElseThrow(() -> new RuntimeException("IEtheriumProvider not present!")))
                                       .collect(Collectors.toList());
         }
         return List.of();
@@ -365,7 +366,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     @Override
     public void bindProvider(BlockPos pos) {
-        if (getLevel().getBlockEntity(pos) instanceof IEtheriumProvider) {
+        if (ArsMagicaAPI.get().getEtheriumHelper().hasEtheriumProvider(getLevel(), pos)) {
             if (this.boundPositions.contains(pos)) {
                 this.boundPositions.remove(pos);
             } else {

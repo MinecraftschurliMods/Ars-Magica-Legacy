@@ -5,6 +5,9 @@ import net.minecraft.world.level.Level;
 
 import java.util.Set;
 
+/**
+ * TODO doc
+ */
 public interface IEtheriumProvider {
     boolean provides(Set<EtheriumType> types);
 

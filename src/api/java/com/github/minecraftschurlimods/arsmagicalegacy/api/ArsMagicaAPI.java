@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
@@ -151,6 +152,13 @@ public final class ArsMagicaAPI {
         IBurnoutHelper getBurnoutHelper();
 
         /**
+         * Get the {@link IEtheriumHelper} instance.
+         *
+         * @return the {@link IEtheriumHelper} instance
+         */
+        IEtheriumHelper getEtheriumHelper();
+
+        /**
          * Open the occulus gui for the given player.
          *
          * @param player the player to open the gui for
@@ -237,6 +245,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public IBurnoutHelper getBurnoutHelper() {
+            return null;
+        }
+
+        @Override
+        public IEtheriumHelper getEtheriumHelper() {
             return null;
         }
 
