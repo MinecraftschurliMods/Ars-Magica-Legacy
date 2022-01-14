@@ -29,6 +29,7 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         itemGenerated(MAGITECH_GOGGLES);
+        itemGenerated(CRYSTAL_WRENCH);
         blockItem(CHIMERITE_ORE);
         blockItem(DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);
@@ -153,7 +154,7 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity.NONE}.
+     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
      *
      * @param item The affinity item to add this for.
      * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
