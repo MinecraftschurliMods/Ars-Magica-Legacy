@@ -37,25 +37,29 @@ public final class ServerInit {
     @SubscribeEvent(priority = EventPriority.HIGH)
     static void biomeLoading(BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
-        if (event.getCategory() != Biome.BiomeCategory.NETHER && event.getCategory() != Biome.BiomeCategory.THEEND) {
+        Biome.BiomeCategory category = event.getCategory();
+        if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.CHIMERITE_PLACEMENT);
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.VINTEUM_PLACEMENT);
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.TOPAZ_PLACEMENT);
-            if (event.getCategory() == Biome.BiomeCategory.MOUNTAIN) {
+            if (category == Biome.BiomeCategory.MOUNTAIN) {
                 builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.TOPAZ_EXTRA_PLACEMENT);
             }
-            if (event.getCategory() == Biome.BiomeCategory.FOREST) {
+            if (category == Biome.BiomeCategory.FOREST) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.AUM_PLACEMENT);
             }
-            if (event.getCategory() == Biome.BiomeCategory.JUNGLE || event.getCategory() == Biome.BiomeCategory.SWAMP) {
+            if (category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.SWAMP) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.CERUBLOSSOM_PLACEMENT);
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.WAKEBLOOM_PLACEMENT);
             }
-            if (event.getCategory() == Biome.BiomeCategory.DESERT || event.getCategory() == Biome.BiomeCategory.MESA) {
+            if (category == Biome.BiomeCategory.DESERT || category == Biome.BiomeCategory.MESA) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.DESERT_NOVA_PLACEMENT);
             }
-            if (event.getCategory() == Biome.BiomeCategory.MOUNTAIN || event.getCategory() == Biome.BiomeCategory.EXTREME_HILLS || event.getCategory() == Biome.BiomeCategory.UNDERGROUND) {
+            if (category == Biome.BiomeCategory.MOUNTAIN || category == Biome.BiomeCategory.EXTREME_HILLS || category == Biome.BiomeCategory.UNDERGROUND) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.TARMA_ROOT_PLACEMENT);
+            }
+            if (category == Biome.BiomeCategory.SWAMP) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.WITCHWOOD_TREE_VEGETATION);
             }
         }
     }

@@ -49,8 +49,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -65,6 +67,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -92,6 +98,7 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 public final class EventHandler {
     private static final float[] MANA_MODIFIER_PER_LUNAR_PHASE = new float[]{1.0F, 0.875F, 0.75F, 0.625F, 0.5F, 0.625F, 0.75F, 0.875F};
@@ -142,20 +149,23 @@ public final class EventHandler {
         AMFeatures.VINTEUM_FEATURE = AMFeatures.ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
         AMFeatures.TOPAZ_FEATURE = AMFeatures.ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
         AMFeatures.TOPAZ_EXTRA_FEATURE = AMFeatures.ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
+        AMFeatures.CHIMERITE_PLACEMENT = AMFeatures.orePlacement("chimerite_ore", AMFeatures.CHIMERITE_FEATURE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
+        AMFeatures.VINTEUM_PLACEMENT = AMFeatures.orePlacement("vinteum_ore", AMFeatures.VINTEUM_FEATURE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
+        AMFeatures.TOPAZ_PLACEMENT = AMFeatures.orePlacement("topaz_ore", AMFeatures.TOPAZ_FEATURE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
+        AMFeatures.TOPAZ_EXTRA_PLACEMENT = AMFeatures.orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_EXTRA_FEATURE, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
         AMFeatures.AUM_FEATURE = AMFeatures.flower("aum", 64, AMBlocks.AUM);
         AMFeatures.CERUBLOSSOM_FEATURE = AMFeatures.flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
         AMFeatures.DESERT_NOVA_FEATURE = AMFeatures.flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
         AMFeatures.TARMA_ROOT_FEATURE = AMFeatures.flower("tarma_root", 64, AMBlocks.TARMA_ROOT);
         AMFeatures.WAKEBLOOM_FEATURE = AMFeatures.flower("wakebloom", 64, AMBlocks.WAKEBLOOM);
-        AMFeatures.CHIMERITE_PLACEMENT = AMFeatures.orePlacement("chimerite_ore", AMFeatures.CHIMERITE_FEATURE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
-        AMFeatures.VINTEUM_PLACEMENT = AMFeatures.orePlacement("vinteum_ore", AMFeatures.VINTEUM_FEATURE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
-        AMFeatures.TOPAZ_PLACEMENT = AMFeatures.orePlacement("topaz_ore", AMFeatures.TOPAZ_FEATURE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
-        AMFeatures.TOPAZ_EXTRA_PLACEMENT = AMFeatures.orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_EXTRA_FEATURE, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
         AMFeatures.AUM_PLACEMENT = AMFeatures.flowerPlacement("aum", AMFeatures.AUM_FEATURE, 32);
         AMFeatures.CERUBLOSSOM_PLACEMENT = AMFeatures.flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM_FEATURE, 32);
         AMFeatures.DESERT_NOVA_PLACEMENT = AMFeatures.flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA_FEATURE, 32);
         AMFeatures.TARMA_ROOT_PLACEMENT = AMFeatures.flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT_FEATURE, 32);
         AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
+        AMFeatures.WITCHWOOD_TREE_FEATURE = AMFeatures.tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new StraightTrunkPlacer(7, 3, 0), AMBlocks.WITCHWOOD_LEAVES, new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1));
+        AMFeatures.WITCHWOOD_TREE_PLACEMENT = AMFeatures.treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE_FEATURE, AMBlocks.WITCHWOOD_SAPLING);
+        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), AMBlocks.WITCHWOOD_SAPLING);
     }
 
     public static void registerSpellIngredientTypes() {

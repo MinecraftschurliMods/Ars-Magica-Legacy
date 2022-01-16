@@ -9,32 +9,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarC
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarViewBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.WitchwoodTreeGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.AirBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.GlassBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TorchBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -74,8 +56,7 @@ public interface AMBlocks {
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD_LOG   = BLOCKS.register("stripped_witchwood_log",   () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD       = BLOCKS.register("stripped_witchwood",       () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<LeavesBlock>           WITCHWOOD_LEAVES         = BLOCKS.register("witchwood_leaves",         () -> new LeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.QUARTZ).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> d == EntityType.OCELOT || d == EntityType.PARROT).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));
-    //    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",              () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
-    RegistryObject<BushBlock>             WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new BushBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
+    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new SaplingBlock(new WitchwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
     RegistryObject<Block>                 WITCHWOOD_PLANKS         = BLOCKS.register("witchwood_planks",         () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<SlabBlock>             WITCHWOOD_SLAB           = BLOCKS.register("witchwood_slab",           () -> new SlabBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<StairBlock>            WITCHWOOD_STAIRS         = BLOCKS.register("witchwood_stairs",         () -> new StairBlock(() -> AMBlocks.WITCHWOOD_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
