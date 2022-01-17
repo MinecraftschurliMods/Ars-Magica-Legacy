@@ -23,7 +23,7 @@ public class Heal extends AbstractComponent {
         if (target.getEntity() instanceof LivingEntity living) {
             float healing = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.HEALING, modifiers, spell, caster, target);
             if (living.isInvertedHealAndHarm()) {
-                living.hurt(DamageSource.indirectMagic(caster, null), healing);
+                living.hurt(DamageSource.indirectMagic(caster, caster), healing);
             } else {
                 living.heal(healing);
             }
