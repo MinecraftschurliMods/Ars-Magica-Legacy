@@ -414,10 +414,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (this.recipe == null || this.recipe.isEmpty()) {
-            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>)Spell::isEmpty).negate()).ifPresent(spell -> {
+            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>)Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 List<ISpellIngredient> recipe = spell.recipe();
                 this.recipe = new ArrayDeque<>(recipe);
                 this.requiredPower = spell.parts().size();
+            }, () -> {
+                this.recipe = null;
+                this.requiredPower = 0;
             });
         }
         return this.recipe;
