@@ -74,7 +74,7 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
             if (leverActive) {
                 int amount = amount();
                 for (IEtheriumProvider iEtheriumProvider : altarCore.getBoundProviders()) {
-                    if (iEtheriumProvider.provides(types())) {
+                    if (types().contains(iEtheriumProvider.getType())) {
                         amount = iEtheriumProvider.consume(level, pos, amount);
                         if (amount <= 0) return null;
                     }

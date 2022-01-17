@@ -14,10 +14,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:night_vision\"}",
+        "type": "forge:nbt",
         "item": "minecraft:potion",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Potion:\"minecraft:night_vision\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -47,6 +47,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    ALTAR_CORE               = registerBlockItem64(AMBlocks.ALTAR_CORE);
     RegistryObject<BlockItem>                    MAGIC_WALL               = registerBlockItem64(AMBlocks.MAGIC_WALL);
     RegistryObject<BlockItem>                    OBELISK                  = registerBlockItem64(AMBlocks.OBELISK);
+    RegistryObject<BlockItem>                    CELESTIAL_PRISM          = registerBlockItem64(AMBlocks.CELESTIAL_PRISM);
     RegistryObject<WizardsChalkItem>             WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES         = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
     RegistryObject<CrystalWrenchItem>            CRYSTAL_WRENCH           = ITEMS.register("crystal_wrench", CrystalWrenchItem::new);

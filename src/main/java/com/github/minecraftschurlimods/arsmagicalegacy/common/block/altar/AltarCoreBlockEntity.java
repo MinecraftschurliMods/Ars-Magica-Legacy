@@ -294,9 +294,10 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     private void sync() {
-        if (getLevel() != null && !getLevel().isClientSide()) {
+        setChanged();
+        /*if (getLevel() != null && !getLevel().isClientSide()) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllTracking(new BEClientSyncPacket(this), getLevel(), getBlockPos());
-        }
+        }*/
     }
 
     private void finishRecipe() {

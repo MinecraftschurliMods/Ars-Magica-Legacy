@@ -1,12 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -41,7 +39,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide() || state.getValue(PART) != Part.LOWER ? null : createTickerHelper(blockEntityType, AMBlockEntities.OBELISK.get(), ObeliskBlockEntity::tick);
+        return level.isClientSide() || state.getValue(PART) != Part.LOWER ? null : createTickerHelper(blockEntityType, AMBlockEntities.OBELISK.get(), (level1, pos, state1, blockEntity) -> blockEntity.tick(level1, pos, state1));
     }
 
     @Nullable
@@ -65,9 +63,13 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        if (pContext.getLevel().getBlockState(pContext.getClickedPos().above()).canBeReplaced(pContext) && pContext.getLevel().getBlockState(pContext.getClickedPos().above(2)).canBeReplaced(pContext))
-            return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
-        return null;
+        if (pContext.getLevel().isOutsideBuildHeight(pContext.getClickedPos())) return null;
+        if (pContext.getLevel().isOutsideBuildHeight(pContext.getClickedPos().above())) return null;
+        if (pContext.getLevel().isOutsideBuildHeight(pContext.getClickedPos().above(2))) return null;
+        if (!pContext.getLevel().getBlockState(pContext.getClickedPos()).canBeReplaced(pContext)) return null;
+        if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above()).canBeReplaced(pContext)) return null;
+        if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above(2)).canBeReplaced(pContext)) return null;
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override
