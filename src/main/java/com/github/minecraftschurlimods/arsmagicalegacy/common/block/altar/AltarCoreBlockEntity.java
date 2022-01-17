@@ -226,7 +226,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         super.load(pTag);
     }
 
-    private void saveAltar(CompoundTag tag, boolean forNetwork) {
+    public void saveAltar(CompoundTag tag, boolean forNetwork) {
         tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, this.boundPositions)
                                                      .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf()
@@ -241,7 +241,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         }
     }
 
-    private void loadAltar(final CompoundTag tag, final boolean fromNetwork) {
+    public void loadAltar(final CompoundTag tag, final boolean fromNetwork) {
         this.boundPositions = SET_OF_POSITIONS_CODEC.decode(NbtOps.INSTANCE, tag.get(PROVIDERS_KEY))
                                                     .map(Pair::getFirst)
                                                     .get()
@@ -294,10 +294,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     private void sync() {
-        setChanged();
-        /*if (getLevel() != null && !getLevel().isClientSide()) {
+        if (getLevel() != null && !getLevel().isClientSide()) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllTracking(new BEClientSyncPacket(this), getLevel(), getBlockPos());
-        }*/
+        }
     }
 
     private void finishRecipe() {

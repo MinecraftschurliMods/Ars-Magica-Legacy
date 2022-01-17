@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,12 @@ public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPack
 
     @Override
     public void handle(NetworkEvent.Context ctx) {
-        ctx.enqueueWork(() -> Optional.ofNullable(Minecraft.getInstance().level).map(level -> level.getBlockEntity(pos)).ifPresent(blockEntity -> {}));
+        ctx.enqueueWork(() -> Optional.ofNullable(Minecraft.getInstance().level).map(level -> level.getBlockEntity(pos)).ifPresent(blockEntity -> {
+            if (blockEntity instanceof AltarCoreBlockEntity acbe) {
+                acbe.loadAltar(tag(), true);
+            } else {
+                blockEntity.load(tag());
+            }
+        }));
     }
 }
