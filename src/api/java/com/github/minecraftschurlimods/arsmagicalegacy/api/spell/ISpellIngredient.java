@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Interface representing an ingredient for spell crafting.
  */
@@ -18,44 +20,12 @@ public interface ISpellIngredient {
     /**
      * The codec used to serialize and deserialize any ingredient.
      */
-    Codec<ISpellIngredient> CODEC = CompoundTag.CODEC.flatXmap(tag -> {
-        String type = tag.getString("type");
-        tag.remove("type");
-        return ArsMagicaAPI.get()
-                           .getSpellDataManager()
-                           .getSpellIngredientCodec(new ResourceLocation(type))
-                           .decode(NbtOps.INSTANCE, tag)
-                           .map(Pair::getFirst);
-    }, ingredient -> ArsMagicaAPI.get()
-                                 .getSpellDataManager()
-                                 .getSpellIngredientCodec(ingredient.getType())
-                                 .encodeStart(NbtOps.INSTANCE, ingredient)
-                                 .map(CompoundTag.class::cast)
-                                 .map(tag -> {
-                                     tag.putString("type", ingredient.getType().toString());
-                                     return tag;
-                                 }));
+    Codec<ISpellIngredient> CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientCodec);
 
     /**
      * The codec used to serialize and deserialize any ingredient in a network context.
      */
-    Codec<ISpellIngredient> NETWORK_CODEC = CompoundTag.CODEC.flatXmap(tag -> {
-        String type = tag.getString("type");
-        tag.remove("type");
-        return ArsMagicaAPI.get()
-                           .getSpellDataManager()
-                           .getSpellIngredientNetworkCodec(new ResourceLocation(type))
-                           .decode(NbtOps.INSTANCE, tag)
-                           .map(Pair::getFirst);
-    }, ingredient -> ArsMagicaAPI.get()
-                                 .getSpellDataManager()
-                                 .getSpellIngredientNetworkCodec(ingredient.getType())
-                                 .encodeStart(NbtOps.INSTANCE, ingredient)
-                                 .map(CompoundTag.class::cast)
-                                 .map(tag -> {
-                                     tag.putString("type", ingredient.getType().toString());
-                                     return tag;
-                                 }));
+    Codec<ISpellIngredient> NETWORK_CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientNetworkCodec);
 
     /**
      * Get the resourcelocation of the type.
@@ -65,7 +35,7 @@ public interface ISpellIngredient {
     /**
      * Get the tooltip.
      */
-    Component getTooltip();
+    List<Component> getTooltip();
 
     /**
      * Check if this can combine with the other.
