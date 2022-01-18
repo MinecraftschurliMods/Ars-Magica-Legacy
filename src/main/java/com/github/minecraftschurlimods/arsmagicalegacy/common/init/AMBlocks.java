@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WakebloomBlo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarViewBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
@@ -58,6 +59,7 @@ public interface AMBlocks {
     RegistryObject<AltarViewBlock>        ALTAR_VIEW               = BLOCKS.register("altar_view",               AltarViewBlock::new);
     RegistryObject<ObeliskBlock>          OBELISK                  = BLOCKS.register("obelisk",                  ObeliskBlock::new);
     RegistryObject<CelestialPrismBlock>   CELESTIAL_PRISM          = BLOCKS.register("celestial_prism",          CelestialPrismBlock::new);
+    RegistryObject<BlackAuremBlock>       BLACK_AUREM              = BLOCKS.register("black_aurem",              BlackAuremBlock::new);
     RegistryObject<Block>                 MAGIC_WALL               = BLOCKS.register("magic_wall",               () -> new GlassBlock(BlockBehaviour.Properties.of(Material.ICE).strength(3F).noOcclusion().noOcclusion().isValidSpawn(AMBlocks::never).isRedstoneConductor(AMBlocks::never).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));
     RegistryObject<WizardsChalkBlock>     WIZARDS_CHALK            = BLOCKS.register("wizards_chalk",            WizardsChalkBlock::new);
     RegistryObject<Block>                 CHIMERITE_ORE            = BLOCKS.register("chimerite_ore",            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));

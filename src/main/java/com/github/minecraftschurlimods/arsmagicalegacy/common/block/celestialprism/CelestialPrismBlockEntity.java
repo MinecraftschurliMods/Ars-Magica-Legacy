@@ -7,12 +7,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -32,16 +34,16 @@ public class CelestialPrismBlockEntity extends BlockEntity {
     }
 
     private int getEtheriumByTime(final Level level) {
-        return (int) level.getTimeOfDay(0);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap) {
-        return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHolder);
+        return (int)Math.ceil(((level.getDayTime() - 1) % 6000 + 1) / 1500d);
     }
 
     private static void onConsume(Level level, BlockPos consumerPos, int amount) {
         // TODO spawn particles
+    }
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap, @Nullable final Direction side) {
+        return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHolder);
     }
 }

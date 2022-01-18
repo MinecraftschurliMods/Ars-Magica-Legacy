@@ -95,6 +95,7 @@ class AMItemModelProvider extends ItemModelProvider {
                           .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end()
                           .end();
         blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+        itemGenerated(BLACK_AUREM, "block/"+BLACK_AUREM.getId().getPath());
     }
 
     /**
@@ -102,8 +103,8 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private void itemGenerated(RegistryObject<? extends Item> item) {
-        itemGenerated(item, "item/" + item.getId().getPath());
+    private ItemModelBuilder itemGenerated(RegistryObject<? extends Item> item) {
+        return itemGenerated(item, "item/" + item.getId().getPath());
     }
 
     /**
@@ -112,8 +113,8 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      * @param name The texture id to use.
      */
-    private void itemGenerated(RegistryObject<? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+    private ItemModelBuilder itemGenerated(RegistryObject<? extends Item> item, String name) {
+        return singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
     }
 
     /**

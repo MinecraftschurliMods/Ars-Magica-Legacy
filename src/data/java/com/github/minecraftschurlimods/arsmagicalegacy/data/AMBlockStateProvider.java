@@ -153,6 +153,7 @@ class AMBlockStateProvider extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(models().getBuilder(CELESTIAL_PRISM.getId().getPath() + "_upper").texture("particle", modLoc("block/celestial_prism"))).build();
             }
         });
+        getVariantBuilder(BLACK_AUREM.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(BLACK_AUREM.getId().getPath()).texture("particle", blockTexture(BLACK_AUREM.get()))).build());
         airBlock(SPELL_LIGHT);
     }
 
