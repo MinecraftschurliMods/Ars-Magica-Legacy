@@ -22,19 +22,22 @@ public class CelestialPrismBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.LIGHT, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(CelestialPrismBlockEntity::onConsume);
 
     private final LazyOptional<IEtheriumProvider> etheriumHolder = LazyOptional.of(() -> provider);
+    private int time;
 
     public CelestialPrismBlockEntity(final BlockPos pWorldPosition, final BlockState pBlockState) {
         super(AMBlockEntities.CELESTIAL_PRISM.get(), pWorldPosition, pBlockState);
     }
 
     void tick(final Level level, final BlockPos pos, final BlockState state) {
-        if (level.isDay() && level.canSeeSky(pos) && provider.canStore(0)) {
-            provider.add(getEtheriumByTime(level));
+        int tier = state.getBlock() instanceof CelestialPrismBlock block ? block.getTier(state, level, pos) : 0;
+        if (level.canSeeSky(pos) && (level.isDay() || tier == 5)) {
+            if (time > 0) {
+                time--;
+            } else {
+                time = 6 / (tier + 1);
+                provider.add(1);
+            }
         }
-    }
-
-    private int getEtheriumByTime(final Level level) {
-        return (int)Math.ceil(((level.getDayTime() - 1) % 6000 + 1) / 1500d);
     }
 
     private static void onConsume(Level level, BlockPos consumerPos, int amount) {

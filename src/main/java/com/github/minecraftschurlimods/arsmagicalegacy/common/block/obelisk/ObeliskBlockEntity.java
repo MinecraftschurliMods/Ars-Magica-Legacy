@@ -120,7 +120,9 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     void tick(Level level, BlockPos pos, BlockState state) {
         if (burnTimeRemaining > 0) {
-            etheriumProvider.add(etheriumPerTick);
+            int c = state.getBlock() instanceof ObeliskBlock block ? block.getTier(state, level, pos) : 0;
+            float mul = c * 0.5f + 0.5f;
+            etheriumProvider.add(Math.round(etheriumPerTick * mul));
             burnTimeRemaining--;
             setChanged();
         }

@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -21,9 +22,12 @@ import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.function.BiPredicate;
 
 public class ObeliskBlock extends AbstractFurnaceBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
+    private final BiPredicate<Level, BlockPos> OBELISK_CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_CHALK);
+    private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
         super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(ObeliskBlock::getLightLevel));
@@ -75,8 +79,8 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (state.getValue(PART) == Part.LOWER) {
-            level.setBlock(pos.above(), defaultBlockState().setValue(PART, Part.MIDDLE), UPDATE_ALL);
-            level.setBlock(pos.above(2), defaultBlockState().setValue(PART, Part.UPPER), UPDATE_ALL);
+            level.setBlock(pos.above(), defaultBlockState().setValue(PART, Part.MIDDLE).setValue(FACING, state.getValue(FACING)), UPDATE_ALL);
+            level.setBlock(pos.above(2), defaultBlockState().setValue(PART, Part.UPPER).setValue(FACING, state.getValue(FACING)), UPDATE_ALL);
         }
     }
 
@@ -107,6 +111,17 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
             level.levelEvent(player, 2001, pos2, Block.getId(level.getBlockState(pos2)));
         }
         super.playerWillDestroy(level, pos, state, player);
+    }
+
+    public int getTier(BlockState state, Level world, BlockPos pos) {
+        int tier = 0;
+        if (OBELISK_CHALK.test(world, pos)) {
+            tier = 1;
+            if (OBELISK_PILLARS.test(world, pos)) {
+                tier = 2;
+            }
+        }
+        return tier;
     }
 
     public enum Part implements StringRepresentable {

@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -20,14 +21,31 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiPredicate;
+
 public class CelestialPrismBlock extends BaseEntityBlock {
+    private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);
+
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+
+    public final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_CHALK);
+    public final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR1);
+    public final BiPredicate<Level, BlockPos> PILLAR2 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR2);
+    public final BiPredicate<Level, BlockPos> PILLAR3 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR3);
+    public final BiPredicate<Level, BlockPos> PILLAR4 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR4);
 
     public CelestialPrismBlock() {
         super(BlockBehaviour.Properties.of(Material.AMETHYST).lightLevel(value -> 1).noOcclusion().emissiveRendering((p_61036_, p_61037_, p_61038_) -> true));
         registerDefaultState(getStateDefinition().any().setValue(HALF, DoubleBlockHalf.LOWER));
+    }
+
+    @Override
+    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+        return BOX;
     }
 
     @Override
@@ -85,5 +103,23 @@ public class CelestialPrismBlock extends BaseEntityBlock {
             level.levelEvent(player, 2001, blockpos, Block.getId(level.getBlockState(blockpos)));
         }
         super.playerWillDestroy(level, pos, state, player);
+    }
+
+    public int getTier(BlockState state, Level world, BlockPos pos) {
+        int tier = 0;
+        if (CHALK.test(world, pos)) {
+            if (PILLAR1.test(world, pos)) {
+                tier = 2;
+            } else if (PILLAR2.test(world, pos)) {
+                tier = 3;
+            } else if (PILLAR3.test(world, pos)) {
+                tier = 4;
+            } else if (PILLAR4.test(world, pos)) {
+                tier = 5;
+            } else {
+                tier = 1;
+            }
+        }
+        return tier;
     }
 }
