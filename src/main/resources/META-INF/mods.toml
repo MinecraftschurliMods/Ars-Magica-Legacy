@@ -17,33 +17,36 @@ Continuation of ArsMagica 2 by Mithion
 '''
 
 [[dependencies.${mod_id}]]
-modId = "patchouli"
-mandatory = true
-versionRange = "${patchouli_version_range}"
-ordering = "BEFORE"
-side = "BOTH"
+    modId = "patchouli"
+    mandatory = true
+    versionRange = "${patchouli_version_range}"
+    ordering = "BEFORE"
+    side = "BOTH"
 
 [[dependencies.${mod_id}]]
-modId = "curios"
-mandatory = false
-versionRange = "${curios_version_range}"
-side = "BOTH"
+    modId = "curios"
+    mandatory = false
+    versionRange = "${curios_version_range}"
+    side = "BOTH"
 
 [[dependencies.${mod_id}]]
-modId = "jei"
-mandatory = false
-versionRange = "${jei_version_range}"
+    modId = "jei"
+    mandatory = false
+    versionRange = "${jei_version_range}"
 
 [[dependencies.${mod_id}]]
-modId = "forge"
-mandatory = true
-versionRange = "${forge_version_range}"
-ordering = "NONE"
-side = "BOTH"
+    modId = "forge"
+    mandatory = true
+    versionRange = "${forge_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[dependencies.${mod_id}]]
-modId = "minecraft"
-mandatory = true
-versionRange = "${mc_version_range}"
-ordering = "NONE"
-side = "BOTH"
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "${mc_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[modproperties.${mod_id}]
+    catalogueItemIcon="${mod_id}:occulus"
