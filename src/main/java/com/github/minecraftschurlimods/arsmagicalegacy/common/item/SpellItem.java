@@ -6,12 +6,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -23,6 +25,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -91,7 +94,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         Spell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElse(new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
+        return getSpellName(pStack).<Component>map(TextComponent::new).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -168,6 +171,13 @@ public class SpellItem extends Item implements ISpellItem {
             ArsMagicaAPI.get().openSpellCustomizationGui(context.getLevel(), player, item);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void fillItemCategory(final CreativeModeTab category, final NonNullList<ItemStack> items) {
+        if (category == PrefabSpellManager.ITEM_CATEGORY) {
+            PrefabSpellManager.instance().values().stream().map(PrefabSpellManager.PrefabSpell::makeSpell).forEach(items::add);
+        }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
