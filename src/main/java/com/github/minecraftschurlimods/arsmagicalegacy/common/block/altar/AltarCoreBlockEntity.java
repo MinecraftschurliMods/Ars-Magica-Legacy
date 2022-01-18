@@ -15,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -22,7 +23,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
@@ -207,14 +208,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     @Override
-    public void onDataPacket(final Connection net, final ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag compoundtag = pkt.getTag();
-        if (compoundtag != null) {
-            this.loadAltar(compoundtag, true);
-        }
-    }
-
-    @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         saveAltar(tag, false);
@@ -222,7 +215,33 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     @Override
     public void load(CompoundTag pTag) {
-        this.loadAltar(pTag, false);
+        this.boundPositions = SET_OF_POSITIONS_CODEC.decode(NbtOps.INSTANCE, pTag.get(PROVIDERS_KEY))
+                                                    .map(Pair::getFirst)
+                                                    .get()
+                                                    .mapRight(DataResult.PartialResult::message)
+                                                    .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                                                    .left()
+                                                    .orElse(Set.of());
+        this.recipe = Codec.either(ISpellIngredient.NETWORK_CODEC, ISpellIngredient.CODEC)
+                           .xmap(i -> i.map(Function.identity(), Function.identity()), Either::right)
+                           .listOf()
+                           .decode(NbtOps.INSTANCE, pTag.get(RECIPE_KEY))
+                           .map(Pair::getFirst)
+                           .get()
+                           .mapRight(DataResult.PartialResult::message)
+                           .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                           .left()
+                           .map(ArrayDeque::new)
+                           .orElse(null);
+        if (pTag.contains(CAMO_KEY)) {
+            this.modelData.setData(CAMO_STATE, BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
+                                                               .map(Pair::getFirst)
+                                                               .get()
+                                                               .mapRight(DataResult.PartialResult::message)
+                                                               .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                                                               .left()
+                                                               .orElse(null));
+        }
         super.load(pTag);
     }
 
@@ -238,35 +257,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         if (this.modelData.getData(CAMO_STATE) != null) {
             tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE))
                                               .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        }
-    }
-
-    public void loadAltar(final CompoundTag tag, final boolean fromNetwork) {
-        this.boundPositions = SET_OF_POSITIONS_CODEC.decode(NbtOps.INSTANCE, tag.get(PROVIDERS_KEY))
-                                                    .map(Pair::getFirst)
-                                                    .get()
-                                                    .mapRight(DataResult.PartialResult::message)
-                                                    .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                                                    .left()
-                                                    .orElse(Set.of());
-        this.recipe = (fromNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC)
-                .listOf()
-                .decode(NbtOps.INSTANCE, tag.get(RECIPE_KEY))
-                .map(Pair::getFirst)
-                .get()
-                .mapRight(DataResult.PartialResult::message)
-                .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                .left()
-                .map(ArrayDeque::new)
-                .orElse(null);
-        if (tag.contains(CAMO_KEY)) {
-            this.modelData.setData(CAMO_STATE, BlockState.CODEC.decode(NbtOps.INSTANCE, tag.get(CAMO_KEY))
-                                                               .map(Pair::getFirst)
-                                                               .get()
-                                                               .mapRight(DataResult.PartialResult::message)
-                                                               .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                                                               .left()
-                                                               .orElse(null));
         }
     }
 
