@@ -1,0 +1,82 @@
+{
+  "variants": {
+    "facing=north,lit=false,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk"
+    },
+    "facing=south,lit=false,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 180
+    },
+    "facing=west,lit=false,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 270
+    },
+    "facing=east,lit=false,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 90
+    },
+    "facing=north,lit=true,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk"
+    },
+    "facing=south,lit=true,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 180
+    },
+    "facing=west,lit=true,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 270
+    },
+    "facing=east,lit=true,part=lower": {
+      "model": "arsmagicalegacy:block/obelisk",
+      "y": 90
+    },
+    "facing=north,lit=false,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=south,lit=false,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=west,lit=false,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=east,lit=false,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=north,lit=true,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=south,lit=true,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=west,lit=true,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=east,lit=true,part=middle": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=north,lit=false,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=south,lit=false,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=west,lit=false,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=east,lit=false,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=north,lit=true,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=south,lit=true,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=west,lit=true,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    },
+    "facing=east,lit=true,part=upper": {
+      "model": "arsmagicalegacy:block/obelisk_upper"
+    }
+  }
+}

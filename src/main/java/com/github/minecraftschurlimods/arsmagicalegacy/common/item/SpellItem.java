@@ -72,7 +72,11 @@ public class SpellItem extends Item implements ISpellItem {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
-            reagents.stream().map(e -> e.map(Ingredient::getItems, stack -> new ItemStack[]{stack})).forEach(e -> pTooltipComponents.add(Arrays.stream(e).map(ItemStack::getHoverName).map(Component::copy).collect(AMUtil.joiningComponents(" | "))));
+            for (Either<Ingredient, ItemStack> e : reagents) {
+                pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
+                                             .map(stack1 -> stack1.getHoverName().copy())
+                                             .collect(AMUtil.joiningComponents(" | ")));
+            }
         } else {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
         }

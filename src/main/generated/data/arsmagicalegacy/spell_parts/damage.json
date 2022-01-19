@@ -5,30 +5,30 @@
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+        "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:iron_pickaxe",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:harming\"}",
+        "type": "forge:nbt",
         "item": "minecraft:potion",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Potion:\"minecraft:harming\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

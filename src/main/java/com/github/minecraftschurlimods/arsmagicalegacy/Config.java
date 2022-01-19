@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -54,6 +55,7 @@ public final class Config {
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
+        public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
@@ -82,6 +84,10 @@ public final class Config {
                     .comment("The extra skill points a player gets on level 1. [ 0 - 100 ]")
                     .translation(TranslationConstants.CONFIG + "extra_starting_blue_points")
                     .defineInRange("extra_starting_blue_points", 2, 0, 100);
+            MAX_ETHERIUM_STORAGE = builder
+                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem. [ 3000 - "+Short.MAX_VALUE+" ]")
+                    .translation(TranslationConstants.CONFIG + "max_etherium_storage")
+                    .defineInRange("max_etherium_storage", 5000, 3000, Short.MAX_VALUE);
         }
     }
 }

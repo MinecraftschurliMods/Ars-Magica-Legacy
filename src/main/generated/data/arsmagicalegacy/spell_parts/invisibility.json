@@ -21,10 +21,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:invisibility\"}",
+        "type": "forge:nbt",
         "item": "minecraft:potion",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Potion:\"minecraft:invisibility\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
