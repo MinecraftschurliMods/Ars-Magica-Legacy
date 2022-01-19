@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
 
 public class IlluminationEffect extends AMMobEffect {
     public IlluminationEffect() {
@@ -13,7 +13,7 @@ public class IlluminationEffect extends AMMobEffect {
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if (pLivingEntity.getLevel().getBrightness(LightLayer.BLOCK, pLivingEntity.blockPosition()) == 0) {
-            pLivingEntity.getLevel().setBlock(pLivingEntity.blockPosition(), AMBlocks.SPELL_LIGHT.get().defaultBlockState(), 3);
+            pLivingEntity.getLevel().setBlock(pLivingEntity.blockPosition(), Blocks.LIGHT.defaultBlockState(), 3);
         }
     }
 }

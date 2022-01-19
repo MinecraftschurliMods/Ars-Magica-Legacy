@@ -154,7 +154,6 @@ class AMBlockStateProvider extends BlockStateProvider {
             }
         });
         getVariantBuilder(BLACK_AUREM.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(BLACK_AUREM.getId().getPath()).texture("particle", blockTexture(BLACK_AUREM.get()))).build());
-        airBlock(SPELL_LIGHT);
     }
 
     /**
