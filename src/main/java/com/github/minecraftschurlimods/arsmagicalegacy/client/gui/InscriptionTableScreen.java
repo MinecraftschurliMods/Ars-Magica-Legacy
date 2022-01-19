@@ -36,6 +36,7 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
@@ -97,7 +98,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
-            return skillManager.get(spellPart).getDisplayName().getString().contains(value);
+            return StringUtils.containsIgnoreCase(skillManager.get(spellPart).getDisplayName().getString(), value);
         };
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
