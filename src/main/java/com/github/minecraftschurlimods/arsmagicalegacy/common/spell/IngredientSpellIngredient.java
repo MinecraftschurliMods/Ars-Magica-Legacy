@@ -25,7 +25,9 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
     public static final ResourceLocation INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
@@ -44,10 +46,12 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
     }
 
     @Override
-    public Component getTooltip() {
+    public List<Component> getTooltip() {
         ItemStack[] items = ingredient().getItems();
-        if (items.length == 1) return items[0].getDisplayName().copy().append(" x " + count());
-        return new TextComponent("(").append(Arrays.stream(items).map(ItemStack::getDisplayName).map(Component::copy).collect(AMUtil.joiningComponents(" | "))).append(") x " + count());
+        if (items.length == 1) return List.of(items[0].getDisplayName(), new TextComponent("x " + count()));
+        ArrayList<Component> components = new ArrayList<>(Arrays.stream(items).map(ItemStack::getDisplayName).toList());
+        components.add(new TextComponent("x " + count()));
+        return components;
     }
 
     @Override

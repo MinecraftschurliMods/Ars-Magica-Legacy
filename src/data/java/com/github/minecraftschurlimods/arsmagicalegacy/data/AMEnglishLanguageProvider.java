@@ -13,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
@@ -37,12 +38,14 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
+        creativeTabTranslation(PrefabSpellManager.ITEM_CATEGORY,ArsMagicaLegacy.getModName() + " Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         itemIdTranslation(AMItems.MAGITECH_GOGGLES);
+        itemIdTranslation(AMItems.CRYSTAL_WRENCH);
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
         blockIdTranslation(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
         itemIdTranslation(AMItems.CHIMERITE);

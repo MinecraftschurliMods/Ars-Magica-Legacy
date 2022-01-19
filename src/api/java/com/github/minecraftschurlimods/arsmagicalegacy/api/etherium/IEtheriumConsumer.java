@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import java.util.List;
 
 /**
- *
+ * TODO doc
  */
 public interface IEtheriumConsumer {
     List<IEtheriumProvider> getBoundProviders();

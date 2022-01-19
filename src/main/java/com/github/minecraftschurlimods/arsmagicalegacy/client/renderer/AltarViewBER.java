@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.Collection;
+import java.util.List;
 
 public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
 
@@ -59,7 +60,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
             }
             drawNameplate(ingredient.getTooltip(), poseStack, bufferSource, packedLight);
         } else {
-            drawNameplate(new TranslatableComponent(TranslationConstants.ALTAR_CORE_LOW_POWER), poseStack, bufferSource, packedLight);
+            drawNameplate(List.of(new TranslatableComponent(TranslationConstants.ALTAR_CORE_LOW_POWER)), poseStack, bufferSource, packedLight);
         }
         poseStack.popPose();
         poseStack.pushPose();
@@ -81,7 +82,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         poseStack.popPose();
     }
 
-    private void drawNameplate(Component component, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    private void drawNameplate(List<Component> components, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0, 0.9, 0);
         poseStack.mulPose(dispatcher.camera.rotation());
@@ -89,8 +90,13 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         poseStack.scale(1.2f, 1.2f, 1.2f);
         float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
         int j = (int) (f1 * 255) << 24;
-        float f2 = (float) (-font.width(component) / 2);
-        font.drawInBatch(component, f2, 0, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);
+        int i = 0;
+        float offset = font.lineHeight * (components.size() - 1.5f);
+        for (final Component sibling : components) {
+            float y = font.lineHeight * i++ - offset;
+            float f2 = (float) (-font.width(sibling) / 2);
+            font.drawInBatch(sibling, f2, y, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);
+        }
         poseStack.popPose();
     }
 }

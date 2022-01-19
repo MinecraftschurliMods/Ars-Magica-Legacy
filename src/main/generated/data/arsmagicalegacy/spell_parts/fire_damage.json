@@ -28,10 +28,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:flint_and_steel",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

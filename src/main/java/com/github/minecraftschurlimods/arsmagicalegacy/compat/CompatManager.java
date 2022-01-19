@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,6 +55,10 @@ public final class CompatManager {
 
     public static void clientInit(FMLClientSetupEvent event) {
         forEachLoaded(wrap(ICompatHandler::clientInit).apply(event));
+    }
+
+    public static void imcEnqueue(InterModEnqueueEvent event) {
+        forEachLoaded(wrap(ICompatHandler::imcEnqueue).apply(event));
     }
 
     public static <T extends ICompatHandler> LazyOptional<T> getHandler(String modid) {

@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
@@ -24,6 +25,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Natur
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WinterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
@@ -88,6 +90,7 @@ public final class ClientInit {
         MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
         MenuScreens.register(AMMenuTypes.RIFT.get(), RiftScreen::new);
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
+        MenuScreens.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
@@ -179,5 +182,6 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
+        event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
     }
 }

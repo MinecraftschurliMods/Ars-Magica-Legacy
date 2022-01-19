@@ -7,10 +7,10 @@
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}",
+        "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

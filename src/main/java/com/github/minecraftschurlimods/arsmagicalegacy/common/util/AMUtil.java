@@ -111,7 +111,7 @@ public final class AMUtil {
      */
     public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String delimiter) {
         TextComponent del = new TextComponent(delimiter);
-        return Collector.of(TextComponent.EMPTY::copy, (c1, c2) -> c1.append(del).append(c2), (c1, c2) -> c1.append(del).append(c2));
+        return Collector.of(TextComponent.EMPTY::copy, (c1, c2) -> (c1.getContents().isEmpty() ? c1 : c1.append(del)).append(c2), (c1, c2) -> c1.append(del).append(c2));
     }
 
     /**

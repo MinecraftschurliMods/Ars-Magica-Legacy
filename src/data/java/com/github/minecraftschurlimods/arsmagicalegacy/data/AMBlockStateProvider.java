@@ -3,10 +3,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
@@ -21,10 +24,12 @@ import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
@@ -116,6 +121,39 @@ class AMBlockStateProvider extends BlockStateProvider {
                             .end()
             ).build();
         });
+        ConfiguredModel[] obeliskUpper = ConfiguredModel.builder().modelFile(models().getBuilder(OBELISK.getId().getPath() + "_upper").texture("particle", mcLoc("block/stone_bricks"))).build();
+        getVariantBuilder(OBELISK.get()).forAllStates(state -> {
+            if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
+                ResourceLocation texture = state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/obelisk_lit") : modLoc("block/obelisk");
+                return ConfiguredModel.builder().modelFile(
+                        models().getBuilder(OBELISK.getId().getPath())
+                                .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                                .customLoader(OBJLoaderBuilder::begin)
+                                .modelLocation(modLoc("models/block/obj/obelisk.obj"))
+                                .end()
+                                .texture("tex", texture)
+                                .texture("particle", mcLoc("block/stone_bricks"))
+                ).rotationY((state.getValue(AbstractFurnaceBlock.FACING).get2DDataValue() + 2) % 4 * 90).build();
+            } else {
+                return obeliskUpper;
+            }
+        });
+        getVariantBuilder(CELESTIAL_PRISM.get()).forAllStates(state -> {
+            if (state.getValue(CelestialPrismBlock.HALF) == DoubleBlockHalf.LOWER) {
+                return ConfiguredModel.builder().modelFile(
+                        models().getBuilder(CELESTIAL_PRISM.getId().getPath())
+                                .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                                .customLoader(OBJLoaderBuilder::begin)
+                                .modelLocation(modLoc("models/block/obj/celestial_prism.obj"))
+                                .end()
+                                .texture("tex", modLoc("block/celestial_prism"))
+                                .texture("particle", modLoc("block/celestial_prism"))
+                ).build();
+            } else {
+                return ConfiguredModel.builder().modelFile(models().getBuilder(CELESTIAL_PRISM.getId().getPath() + "_upper").texture("particle", modLoc("block/celestial_prism"))).build();
+            }
+        });
+        getVariantBuilder(BLACK_AUREM.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(BLACK_AUREM.getId().getPath()).texture("particle", blockTexture(BLACK_AUREM.get()))).build());
         airBlock(SPELL_LIGHT);
     }
 

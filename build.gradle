@@ -147,6 +147,13 @@ repositories {
         }
     }
     maven {
+        name = 'mcjty maven'
+        url = "https://maven.k-4u.nl"
+        content {
+            includeGroup 'mcjty.theoneprobe'
+        }
+    }
+    maven {
         name = 'theillusivec4 Maven'
         url = 'https://maven.theillusivec4.top/'
         content {
@@ -197,6 +204,10 @@ dependencies {
     // patchouli for the guide book (arcane compendium)
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    // theoneprobe for integration
+    modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
+    runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
     //runtimeMod fg.deobf("com.blamejared.controlling:Controlling:8.+") {transitive false}

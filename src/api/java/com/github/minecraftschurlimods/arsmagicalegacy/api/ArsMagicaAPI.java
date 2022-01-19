@@ -2,11 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -168,7 +167,7 @@ public final class ArsMagicaAPI {
 
         /**
          * Get the {@link IRiftHelper} instance.
-         * 
+         *
          * @return the {@link IRiftHelper} instance
          */
         @Unmodifiable
@@ -181,6 +180,13 @@ public final class ArsMagicaAPI {
          */
         @Unmodifiable
         IShrinkHelper getShrinkHelper();
+
+        /**
+         * Get the {@link IEtheriumHelper} instance.
+         *
+         * @return the {@link IEtheriumHelper} instance
+         */
+        IEtheriumHelper getEtheriumHelper();
 
         /**
          * Open the occulus gui for the given player.
@@ -262,6 +268,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public IBurnoutHelper getBurnoutHelper() {
+            return null;
+        }
+
+        @Override
+        public IEtheriumHelper getEtheriumHelper() {
             return null;
         }
 

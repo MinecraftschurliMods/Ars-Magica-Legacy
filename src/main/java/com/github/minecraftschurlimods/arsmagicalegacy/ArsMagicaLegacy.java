@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
@@ -66,6 +67,7 @@ public final class ArsMagicaLegacy {
         registerNetworkPackets();
         SkillHelper.init();
         AffinityHelper.init();
+        EtheriumHelper.instance();
         OcculusTabManager.instance();
         SkillManager.instance();
         SpellDataManager.instance();

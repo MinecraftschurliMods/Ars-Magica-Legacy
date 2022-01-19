@@ -50,6 +50,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
@@ -90,12 +91,10 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +136,7 @@ public final class EventHandler {
     }
 
     private static void enqueueIMC(InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("head").build());
+        CompatManager.imcEnqueue(event);
     }
 
     private static void setup(FMLCommonSetupEvent event) {
@@ -359,6 +358,7 @@ public final class EventHandler {
         event.addListener(AltarMaterialManager.instance().cap);
         event.addListener(AltarMaterialManager.instance().structure);
         event.addListener(TierMapping.instance());
+        event.addListener(PrefabSpellManager.instance());
     }
 
     private static void playerLevelUp(PlayerLevelUpEvent event) {
