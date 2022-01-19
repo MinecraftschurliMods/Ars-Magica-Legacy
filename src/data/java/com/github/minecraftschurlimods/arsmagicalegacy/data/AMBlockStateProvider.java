@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
@@ -44,25 +45,13 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        getVariantBuilder(ALTAR_CORE.get())
-                .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(
-                        cubeAll(ALTAR_CORE.get())
-                ).addModel()
-                .partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(
-                        models().getBuilder("altar_core_overlay")
-                                .texture("particle", "block/altar_core")
-                                .texture("overlay", "block/altar_core_overlay")
-                                .parent(models().getExistingFile(new ResourceLocation("block/block")))
-                                .element()
-                                .from(0, 0, 0)
-                                .to(16, 0, 16)
-                                .face(Direction.DOWN)
-                                .texture("#overlay")
-                                .end()
-                                .end()
-                ).addModel();
+        altarCoreBlock(ALTAR_CORE);
         airBlock(ALTAR_VIEW);
         simpleBlock(MAGIC_WALL);
+        obeliskBlock(OBELISK);
+        celestialPrismBlock(CELESTIAL_PRISM);
+        blackAuremBlock(BLACK_AUREM);
+        wizardsChalkBlock(WIZARDS_CHALK);
         simpleBlock(CHIMERITE_ORE);
         simpleBlock(DEEPSLATE_CHIMERITE_ORE);
         simpleBlock(CHIMERITE_BLOCK);
@@ -83,12 +72,13 @@ class AMBlockStateProvider extends BlockStateProvider {
         woodBlock(STRIPPED_WITCHWOOD, STRIPPED_WITCHWOOD_LOG);
         simpleBlock(WITCHWOOD_LEAVES);
         crossBlock(WITCHWOOD_SAPLING);
+        flowerPotBlock(POTTED_WITCHWOOD_SAPLING, WITCHWOOD_SAPLING);
         simpleBlock(WITCHWOOD_PLANKS);
         slabBlock(WITCHWOOD_SLAB, WITCHWOOD_PLANKS);
         stairsBlock(WITCHWOOD_STAIRS, WITCHWOOD_PLANKS);
         fenceBlock(WITCHWOOD_FENCE, WITCHWOOD_PLANKS);
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
-        doorBlock(WITCHWOOD_DOOR, "witchwood");
+        doorBlock(WITCHWOOD_DOOR);
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
@@ -102,58 +92,8 @@ class AMBlockStateProvider extends BlockStateProvider {
         flowerPotBlock(POTTED_DESERT_NOVA, DESERT_NOVA);
         flowerPotBlock(POTTED_TARMA_ROOT, TARMA_ROOT);
         flowerPotBlock(POTTED_WAKEBLOOM, WAKEBLOOM);
-        flowerPotBlock(POTTED_WITCHWOOD_SAPLING, WITCHWOOD_SAPLING);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
-        wizardsChalkBlock(WIZARDS_CHALK);
-        getVariantBuilder(SPELL_RUNE.get()).forAllStates(state -> {
-            Direction face = state.getValue(SpellRuneBlock.FACE);
-            AABB shape = SpellRuneBlock.COLLISION_SHAPES.get(face).bounds();
-            return ConfiguredModel.builder().modelFile(
-                    models().getBuilder(SPELL_RUNE.getId().getPath() + "_" + face.getName().toLowerCase())
-                            .parent(models().getExistingFile(new ResourceLocation("block/block")))
-                            .texture("texture", "block/" + SPELL_RUNE.getId().getPath())
-                            .element()
-                            .from((float) shape.minX * 16f, (float) shape.minY * 16f, (float) shape.minZ * 16f)
-                            .to((float) shape.maxX * 16f, (float) shape.maxY * 16f, (float) shape.maxZ * 16f)
-                            .face(face.getOpposite())
-                            .texture("#texture")
-                            .end()
-                            .end()
-            ).build();
-        });
-        ConfiguredModel[] obeliskUpper = ConfiguredModel.builder().modelFile(models().getBuilder(OBELISK.getId().getPath() + "_upper").texture("particle", mcLoc("block/stone_bricks"))).build();
-        getVariantBuilder(OBELISK.get()).forAllStates(state -> {
-            if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
-                ResourceLocation texture = state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/obelisk_lit") : modLoc("block/obelisk");
-                return ConfiguredModel.builder().modelFile(
-                        models().getBuilder(OBELISK.getId().getPath())
-                                .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
-                                .customLoader(OBJLoaderBuilder::begin)
-                                .modelLocation(modLoc("models/block/obj/obelisk.obj"))
-                                .end()
-                                .texture("tex", texture)
-                                .texture("particle", mcLoc("block/stone_bricks"))
-                ).rotationY((state.getValue(AbstractFurnaceBlock.FACING).get2DDataValue() + 2) % 4 * 90).build();
-            } else {
-                return obeliskUpper;
-            }
-        });
-        getVariantBuilder(CELESTIAL_PRISM.get()).forAllStates(state -> {
-            if (state.getValue(CelestialPrismBlock.HALF) == DoubleBlockHalf.LOWER) {
-                return ConfiguredModel.builder().modelFile(
-                        models().getBuilder(CELESTIAL_PRISM.getId().getPath())
-                                .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
-                                .customLoader(OBJLoaderBuilder::begin)
-                                .modelLocation(modLoc("models/block/obj/celestial_prism.obj"))
-                                .end()
-                                .texture("tex", modLoc("block/celestial_prism"))
-                                .texture("particle", modLoc("block/celestial_prism"))
-                ).build();
-            } else {
-                return ConfiguredModel.builder().modelFile(models().getBuilder(CELESTIAL_PRISM.getId().getPath() + "_upper").texture("particle", modLoc("block/celestial_prism"))).build();
-            }
-        });
-        getVariantBuilder(BLACK_AUREM.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(BLACK_AUREM.getId().getPath()).texture("particle", blockTexture(BLACK_AUREM.get()))).build());
+        spellRuneBlock(SPELL_RUNE);
     }
 
     /**
@@ -163,6 +103,15 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void simpleBlock(Supplier<? extends Block> block) {
         simpleBlock(block.get());
+    }
+
+    /**
+     * Adds a block model that uses block/air as the parent.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void airBlock(Supplier<? extends Block> block) {
+        simpleBlock(block.get(), models().getExistingFile(mcLoc("block/air")));
     }
 
     /**
@@ -188,15 +137,6 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     /**
-     * Adds a block model that uses block/air as the parent.
-     *
-     * @param block The block to generate the model for.
-     */
-    private void airBlock(Supplier<? extends Block> block) {
-        simpleBlock(block.get(), models().getExistingFile(mcLoc("block/air")));
-    }
-
-    /**
      * Adds a cross block model, as seen on flowers and saplings. Uses the block id as the texture name.
      *
      * @param block The block to generate the model for.
@@ -205,27 +145,14 @@ class AMBlockStateProvider extends BlockStateProvider {
         simpleBlock(block.get(), models().cross(block.get().getRegistryName().getPath(), blockTexture(block.get())));
     }
 
-    private void flowerPotBlock(Supplier<? extends Block> pot, Supplier<? extends Block> flower) {
-        simpleBlock(pot.get(), models().withExistingParent(pot.get().getRegistryName().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(flower.get())));
-    }
-
     /**
-     * Adds a door block model.
+     * Adds a flower pot model with a flower inside.
      *
-     * @param block The block to generate the model for.
-     * @param name  The base name of the door texture, excluding "_door". E.g. "oak" or "acacia".
+     * @param pot   The flower pot block to generate the model for.
+     * @param plant The plant to place inside the flower pot.
      */
-    private void doorBlock(Supplier<? extends DoorBlock> block, String name) {
-        doorBlock(block.get(), name, modLoc("block/" + name + "_door_bottom"), modLoc("block/" + name + "_door_top"));
-    }
-
-    /**
-     * Adds a trapdoor block model. Uses the block id as the texture name.
-     *
-     * @param block The block to generate the model for.
-     */
-    private void trapdoorBlock(Supplier<? extends TrapDoorBlock> block) {
-        trapdoorBlock(block.get(), blockTexture(block.get()), true);
+    private void flowerPotBlock(Supplier<? extends Block> pot, Supplier<? extends Block> plant) {
+        simpleBlock(pot.get(), models().withExistingParent(pot.get().getRegistryName().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(plant.get())));
     }
 
     /**
@@ -270,6 +197,24 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     /**
+     * Adds a door block model.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void doorBlock(Supplier<? extends DoorBlock> block) {
+        doorBlock(block.get(), block.get().getRegistryName().getPath().replace("_door", ""), modLoc("block/" + block.get().getRegistryName().getPath() + "_bottom"), modLoc("block/" + block.get().getRegistryName().getPath() + "_top"));
+    }
+
+    /**
+     * Adds a trapdoor block model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void trapdoorBlock(Supplier<? extends TrapDoorBlock> block) {
+        trapdoorBlock(block.get(), blockTexture(block.get()), true);
+    }
+
+    /**
      * Adds a button model.
      *
      * @param button The block to generate the model for.
@@ -277,17 +222,10 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void buttonBlock(Supplier<? extends ButtonBlock> button, Supplier<? extends Block> block) {
         ResourceLocation texture = blockTexture(block.get());
-        ModelFile normal = models().withExistingParent(
-                button.get().getRegistryName().getPath(),
-                "block/button"
-        ).texture("texture", texture);
-        ModelFile pressed = models().withExistingParent(
-                button.get().getRegistryName().getPath() + "_pressed",
-                "block/button_pressed"
-        ).texture("texture", texture);
+        ModelFile normal = models().withExistingParent(button.get().getRegistryName().getPath(), "block/button").texture("texture", texture);
+        ModelFile pressed = models().withExistingParent(button.get().getRegistryName().getPath() + "_pressed", "block/button_pressed").texture("texture", texture);
         getVariantBuilder(button.get()).forAllStates(state -> {
-            boolean powered = state.getValue(BlockStateProperties.POWERED);
-            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(powered ? pressed : normal);
+            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal);
             return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
                 case NORTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
                     case FLOOR -> builder.build();
@@ -315,20 +253,17 @@ class AMBlockStateProvider extends BlockStateProvider {
         models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", texture);
     }
 
-    private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate,
-                                    Supplier<? extends Block> block) {
-        getVariantBuilder(pressurePlate.get()).forAllStates(state -> state.getValue(BlockStateProperties.POWERED)
-                ? ConfiguredModel.builder().modelFile(
-                models().withExistingParent(
-                        pressurePlate.get().getRegistryName().getPath() + "_down",
-                        "block/pressure_plate_down"
-                ).texture("texture", blockTexture(block.get()))).build()
-                : ConfiguredModel.builder().modelFile(
-                models().withExistingParent(
-                        pressurePlate.get().getRegistryName().getPath(),
-                        "block/pressure_plate_up"
-                ).texture("texture", blockTexture(block.get()))).build()
-        );
+    /**
+     * Adds a pressure plate model.
+     *
+     * @param pressurePlate The block to generate the model for.
+     * @param block         The block to take the texture from.
+     */
+    private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate, Supplier<? extends Block> block) {
+        ResourceLocation texture = blockTexture(block.get());
+        ModelFile up = models().withExistingParent(pressurePlate.get().getRegistryName().getPath(), "block/pressure_plate_up").texture("texture", texture);
+        ModelFile down = models().withExistingParent(pressurePlate.get().getRegistryName().getPath() + "_down", "block/pressure_plate_down").texture("texture", texture);
+        getVariantBuilder(pressurePlate.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? down : up).build());
     }
 
     /**
@@ -338,29 +273,16 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param wallTorch The WallTorchBlock to generate the model for.
      */
     private void torchBlock(Supplier<? extends TorchBlock> torch, Supplier<? extends WallTorchBlock> wallTorch) {
-        ModelFile file = models().withExistingParent(
-                torch.get().getRegistryName().getPath(),
-                "block/template_torch"
-        ).texture(
-                "torch",
-                new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath())
-        );
+        ModelFile file = models().withExistingParent(torch.get().getRegistryName().getPath(), "block/template_torch").texture("torch", modLoc("block/" + torch.get().getRegistryName().getPath()));
+        ModelFile wallFile = models().withExistingParent(wallTorch.get().getRegistryName().getPath(), "block/template_torch_wall").texture("torch", modLoc("block/" + torch.get().getRegistryName().getPath()));
         getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
-        ModelFile wallFile = models().withExistingParent(
-                wallTorch.get().getRegistryName().getPath(),
-                "block/template_torch_wall"
-        ).texture(
-                "torch",
-                new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + torch.get().getRegistryName().getPath())
-        );
-        getVariantBuilder(wallTorch.get())
-                .forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-                    case EAST -> ConfiguredModel.builder().modelFile(wallFile).build();
-                    case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
-                    case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
-                    case NORTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
-                    default -> new ConfiguredModel[0];
-                });
+        getVariantBuilder(wallTorch.get()).forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case EAST -> ConfiguredModel.builder().modelFile(wallFile).build();
+            case SOUTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(90).build();
+            case WEST -> ConfiguredModel.builder().modelFile(wallFile).rotationY(180).build();
+            case NORTH -> ConfiguredModel.builder().modelFile(wallFile).rotationY(270).build();
+            default -> new ConfiguredModel[0];
+        });
     }
 
     /**
@@ -370,22 +292,10 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void railBlock(Supplier<? extends RailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
-        ModelFile straight = models().withExistingParent(
-                block.get().getRegistryName().getPath(),
-                mcLoc("block/rail")
-        ).texture("rail", texture);
-        ModelFile curved = models().withExistingParent(
-                block.get().getRegistryName().getPath() + "_corner",
-                mcLoc("block/rail_curved")
-        ).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
-        ModelFile raisedNE = models().withExistingParent(
-                block.get().getRegistryName().getPath() + "_raised_ne",
-                mcLoc("block/template_rail_raised_ne")
-        ).texture("rail", texture);
-        ModelFile raisedSW = models().withExistingParent(
-                block.get().getRegistryName().getPath() + "_raised_sw",
-                mcLoc("block/template_rail_raised_sw")
-        ).texture("rail", texture);
+        ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", texture);
+        ModelFile curved = models().withExistingParent(block.get().getRegistryName().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
+        ModelFile raisedNE = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture);
+        ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
             return switch (state.getValue(((RailBlock) block).getShapeProperty())) {
@@ -404,35 +314,116 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     /**
+     * Adds an altar core model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void altarCoreBlock(Supplier<? extends AltarCoreBlock> block) {
+        String texture = block.get().getRegistryName().getPath();
+        getVariantBuilder(block.get())
+                .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(cubeAll(block.get())).addModel()
+                .partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(models().getBuilder(texture + "_overlay")
+                        .texture("particle", "block/" + texture)
+                        .texture("overlay", "block/" + texture + "_overlay")
+                        .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                        .element().from(0, 0, 0).to(16, 0, 16).face(Direction.DOWN).texture("#overlay")
+                        .end().end()
+                ).addModel();
+    }
+
+    /**
+     * Adds an obelisk model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void obeliskBlock(Supplier<? extends ObeliskBlock> block) {
+        String texture = block.get().getRegistryName().getPath();
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
+                        .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                        .customLoader(OBJLoaderBuilder::begin)
+                        .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
+                        .end()
+                        .texture("tex", state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/" + texture + "_lit") : blockTexture(block.get()))
+                        .texture("particle", mcLoc("block/stone_bricks"))
+                ).rotationY((state.getValue(AbstractFurnaceBlock.FACING).get2DDataValue() + 2) % 4 * 90).build();
+            } else {
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture + "_upper").texture("particle", mcLoc("block/stone_bricks"))).build();
+            }
+        });
+    }
+
+    /**
+     * Adds an obelisk model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void celestialPrismBlock(Supplier<? extends CelestialPrismBlock> block) {
+        String texture = block.get().getRegistryName().getPath();
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            if (state.getValue(CelestialPrismBlock.HALF) == DoubleBlockHalf.LOWER) {
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
+                        .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                        .customLoader(OBJLoaderBuilder::begin)
+                        .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
+                        .end()
+                        .texture("tex", blockTexture(block.get()))
+                        .texture("particle", blockTexture(block.get()))
+                ).build();
+            } else {
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture + "_upper").texture("particle", blockTexture(block.get()))).build();
+            }
+        });
+    }
+
+    private void blackAuremBlock(Supplier<? extends BlackAuremBlock> block) {
+        getVariantBuilder(block.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(block.get().getRegistryName().getPath()).texture("particle", blockTexture(block.get()))).build());
+    }
+
+    /**
      * Adds a wizard's chalk model. Uses the block id as the texture name.
      *
      * @param block The block to generate the model for.
      */
     private void wizardsChalkBlock(Supplier<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
-        for (int i = 0; i < models.length; i++)
-            models[i] = models().withExistingParent(
-                    block.get().getRegistryName().getPath() + "_" + i,
-                    "block/rail_flat"
-            ).texture("rail", new ResourceLocation(
-                    block.get().getRegistryName().getNamespace(),
-                    "block/" + block.get().getRegistryName().getPath() + "_" + i));
+        for (int i = 0; i < models.length; i++) {
+            models[i] = models().withExistingParent(block.get().getRegistryName().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.get().getRegistryName().getNamespace(), "block/" + block.get().getRegistryName().getPath() + "_" + i));
+        }
         getVariantBuilder(block.get()).forAllStates(state -> {
-            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]);
             return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-                case NORTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                        .build();
-                case EAST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                        .rotationY(90)
-                        .build();
-                case SOUTH -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                        .rotationY(180)
-                        .build();
-                case WEST -> builder.modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)])
-                        .rotationY(270)
-                        .build();
+                case NORTH -> builder.build();
+                case EAST -> builder.rotationY(90).build();
+                case SOUTH -> builder.rotationY(180).build();
+                case WEST -> builder.rotationY(270).build();
                 default -> new ConfiguredModel[0];
             };
+        });
+    }
+
+    /**
+     * Adds a spell rune model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void spellRuneBlock(Supplier<? extends SpellRuneBlock> block) {
+        String texture = block.get().getRegistryName().getPath();
+        getVariantBuilder(block.get()).forAllStates(state -> {
+            Direction face = state.getValue(SpellRuneBlock.FACE);
+            AABB shape = SpellRuneBlock.COLLISION_SHAPES.get(face).bounds();
+            return ConfiguredModel.builder().modelFile(models().getBuilder(texture + "_" + face.getName().toLowerCase())
+                    .parent(models().getExistingFile(new ResourceLocation("block/block")))
+                    .texture("texture", blockTexture(block.get()))
+                    .element()
+                    .from((float) shape.minX * 16f, (float) shape.minY * 16f, (float) shape.minZ * 16f)
+                    .to((float) shape.maxX * 16f, (float) shape.maxY * 16f, (float) shape.maxZ * 16f)
+                    .face(face.getOpposite())
+                    .texture("#texture")
+                    .end()
+                    .end()
+            ).build();
         });
     }
 }

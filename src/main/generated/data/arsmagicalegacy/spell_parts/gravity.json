@@ -5,10 +5,10 @@
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+        "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

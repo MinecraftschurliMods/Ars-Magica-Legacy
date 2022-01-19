@@ -24,7 +24,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -37,12 +36,15 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
 
     @Override
     protected void addTranslations() {
-        creativeTabTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        creativeTabTranslation(PrefabSpellManager.ITEM_CATEGORY,ArsMagicaLegacy.getModName() + " Prefab Spells");
+        itemGroupTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
+        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY,ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
+        blockIdTranslation(AMBlocks.OBELISK);
+        blockIdTranslation(AMBlocks.CELESTIAL_PRISM);
+        blockIdTranslation(AMBlocks.BLACK_AUREM);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         itemIdTranslation(AMItems.MAGITECH_GOGGLES);
         itemIdTranslation(AMItems.CRYSTAL_WRENCH);
@@ -105,28 +107,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
-        addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
-        addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
-        attributeIdTranslation(AMAttributes.MAGIC_VISION);
-        attributeIdTranslation(AMAttributes.MAX_BURNOUT);
-        attributeIdTranslation(AMAttributes.MAX_MANA);
-        entityIdTranslation(AMEntities.PROJECTILE);
-        entityIdTranslation(AMEntities.WAVE);
-        entityIdTranslation(AMEntities.WALL);
-        entityIdTranslation(AMEntities.ZONE);
-        entityIdTranslation(AMEntities.WATER_GUARDIAN);
-        entityIdTranslation(AMEntities.FIRE_GUARDIAN);
-        entityIdTranslation(AMEntities.EARTH_GUARDIAN);
-        entityIdTranslation(AMEntities.AIR_GUARDIAN);
-        entityIdTranslation(AMEntities.WINTER_GUARDIAN);
-        entityIdTranslation(AMEntities.LIGHTNING_GUARDIAN);
-        entityIdTranslation(AMEntities.NATURE_GUARDIAN);
-        entityIdTranslation(AMEntities.LIFE_GUARDIAN);
-        entityIdTranslation(AMEntities.ARCANE_GUARDIAN);
-        entityIdTranslation(AMEntities.ENDER_GUARDIAN);
-        entityIdTranslation(AMEntities.DRYAD);
-        entityIdTranslation(AMEntities.MAGE);
-        entityIdTranslation(AMEntities.MANA_CREEPER);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
@@ -150,6 +130,28 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
+        addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
+        addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
+        attributeIdTranslation(AMAttributes.MAGIC_VISION);
+        attributeIdTranslation(AMAttributes.MAX_BURNOUT);
+        attributeIdTranslation(AMAttributes.MAX_MANA);
+        entityIdTranslation(AMEntities.PROJECTILE);
+        entityIdTranslation(AMEntities.WAVE);
+        entityIdTranslation(AMEntities.WALL);
+        entityIdTranslation(AMEntities.ZONE);
+        entityIdTranslation(AMEntities.WATER_GUARDIAN);
+        entityIdTranslation(AMEntities.FIRE_GUARDIAN);
+        entityIdTranslation(AMEntities.EARTH_GUARDIAN);
+        entityIdTranslation(AMEntities.AIR_GUARDIAN);
+        entityIdTranslation(AMEntities.WINTER_GUARDIAN);
+        entityIdTranslation(AMEntities.LIGHTNING_GUARDIAN);
+        entityIdTranslation(AMEntities.NATURE_GUARDIAN);
+        entityIdTranslation(AMEntities.LIFE_GUARDIAN);
+        entityIdTranslation(AMEntities.ARCANE_GUARDIAN);
+        entityIdTranslation(AMEntities.ENDER_GUARDIAN);
+        entityIdTranslation(AMEntities.DRYAD);
+        entityIdTranslation(AMEntities.MAGE);
+        entityIdTranslation(AMEntities.MANA_CREEPER);
         advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
@@ -157,8 +159,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.ASTRAL_DISTORTION.getId(), "Astral Distortion", "Going nowhere...", "components", "This spell entirely prevents teleportation of the target for some time. Also works on endermen and shulkers!");
         skillTranslation(AMSpellParts.ATTRACT.getId(), "Attract", "Come closer... or not, just stay where you are.", "components", "You create an area of negative pressure around you, pulling everything living in towards you.");
         skillTranslation(AMSpellParts.BANISH_RAIN.getId(), "Banish Rain", "Come back later. Or don't. It would be kind.", "components", "Rain rain, go away. Come again another day!$(br2)Who would have thought that those were the words to the spell?");
-        skillTranslation(AMSpellParts.BLINDNESS.getId(), "Blindness", "Just as the name says.", "components", "Having a fireball to throw at dark mages is good. But making it so they also can't see to retaliate is better.");
         skillTranslation(AMSpellParts.BEAM.getId(), "[WIP] Beam", "Beam me up, Scotty!", "shapes", "You can switch from a channeled spell to a beam. The amount of mana, however, is another story.$(br2)A beam is a much more controlled version of a channeled spell.");
+        skillTranslation(AMSpellParts.BLINDNESS.getId(), "Blindness", "Just as the name says.", "components", "Having a fireball to throw at dark mages is good. But making it so they also can't see to retaliate is better.");
         skillTranslation(AMSpellParts.BLINK.getId(), "Blink", "Well, I'm out.", "components", "You can teleport a short distance directly forward the way you are facing.$(br2)Blink can take you through solid walls, but will make every effort to ensure you don't get stuck in one.");
         skillTranslation(AMSpellParts.BLIZZARD.getId(), "[WIP] Blizzard", "Snow. Lots of snow.", "components", "You have learned to summon a fearsome blizzard, which will slow and damage any entities in its radius.$(br2)Blizzard has a built-in $(l:shapes/aoe)AoE$() to it.$(br2)Though blizzard will harm all entities in its radius, it will never harm its caster.");
         skillTranslation(AMSpellParts.BOUNCE.getId(), "Bounce", "Hey! Come back!", "modifiers", "Causes $(l:shapes/projectile)spell projectiles$() to bounce off surfaces.");
@@ -222,8 +224,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.RANDOM_TELEPORT.getId(), "Random Teleport", "I wanna go... there! Woops, wrong spot.", "components", "You can randomly teleport your target a short distance away.");
         skillTranslation(AMSpellParts.RANGE.getId(), "Range", "Think you're far enough? No, you're not.", "modifiers", "Increases the range/size of many spells.");
         skillTranslation(AMSpellParts.RECALL.getId(), "Recall", "Can someone remind me who marked the trash?", "components", "You can tune your teleportation magic to home in on a mark you have left by shift-using the spell, transporting the target back to that location.");
-        skillTranslation(AMSpellParts.REGENERATION.getId(), "Regeneration", "A little bit of health.", "components", "I wrapped my arm in a healing light, and watched as every injury, down to the last bruise, slowly vanished before my eyes.");
         skillTranslation(AMSpellParts.REFLECT.getId(), "Reflect", "Bounces back to you.", "components", "You create a magic shield that $(l:shapes/projectile)spell projectiles$(), $(l:shapes/wall)walls$(), $(l:shapes/wave)waves$() and $(l:shapes/zone)zones$() will bounce off.");
+        skillTranslation(AMSpellParts.REGENERATION.getId(), "Regeneration", "A little bit of health.", "components", "I wrapped my arm in a healing light, and watched as every injury, down to the last bruise, slowly vanished before my eyes.");
         skillTranslation(AMSpellParts.REPEL.getId(), "Repel", "Go away from me!", "components", "You can create a singularity in space, which, as long as you maintain it, will radiate waves of force, pushing anything moving away from the target position.");
         skillTranslation(AMSpellParts.RIFT.getId(), "Rift", "One day I'll walk through it, for now, it'll just store items.", "components", "You can tear open a rift in space, granting access to a small inventory to store items in. More $(l:modifiers/effect_power)effect power$() modifiers give greater storage access.$(br2)You can, if your friends are foolish enough, also open their personal rift instead.");
         skillTranslation(AMSpellParts.RUNE.getId(), "Rune", "Placeable magic.", "shapes", "You can create a magically infused rune on the ground that, when someone steps on them, can apply powerful buffs - or trigger deadly traps.");
@@ -247,8 +249,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.TRUE_SIGHT.getId(), "True Sight", "Reveal what is hidden.", "components", "Your magical sight allows you to see things as they really are. Who knows what beauties and horrors you will discover?");
         skillTranslation(AMSpellParts.VELOCITY.getId(), "Velocity", "Faster! FASTER!", "modifiers", "Enhances speed altering effects of spells, most notably the speed of $(l:shapes/projectile)projectiles$().");
         skillTranslation(AMSpellParts.WALL.getId(), "Wall", "You shall not pass.", "shapes", "You can manifest a wall in front of you.$(br2)Walls function similarly to $(l:shapes/zone)zones$(), but with a different form.");
-        skillTranslation(AMSpellParts.WATER_BREATHING.getId(), "Water Breathing", "Creating air directly inside my lungs? Cool!", "components", "You can use your magic to pull oxygen from the water, allowing you to get enough to not drown.");
         skillTranslation(AMSpellParts.WATERY_GRAVE.getId(), "Watery Grave", "Bottom of the ocean.", "components", "You can make water come alive, wrapping tendrils around the target and dragging it down into the black, crushing depths.");
+        skillTranslation(AMSpellParts.WATER_BREATHING.getId(), "Water Breathing", "Creating air directly inside my lungs? Cool!", "components", "You can use your magic to pull oxygen from the water, allowing you to get enough to not drown.");
         skillTranslation(AMSpellParts.WAVE.getId(), "Wave", "You might not want to surf on this one...", "shapes", "You can project a wave of magic in front of you that rolls forward, applying its effect to everything in its path.");
         skillTranslation(AMSpellParts.WIZARDS_AUTUMN.getId(), "Wizard's Autumn", "Leaves fall in autumn. But it's kind of a slow process...", "components", "You have learned to focus your digging magic into a small radius that directly affects leaves.$(br2)This component has a built-in $(l:shapes/aoe)AoE$() that can be modified with $(l:modifiers/range)Range$() modifiers.");
         skillTranslation(AMSpellParts.ZONE.getId(), "Zone", "No one can beat me in my sanctuary!", "shapes", "You have learned to focus your will into an area effect that will persist for a time.");
@@ -262,11 +264,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
+        add(TranslationConstants.CRYSTAL_WRENCH_TOO_FAR, "You cannot perform this action over such distance!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
         add(TranslationConstants.SPELL_INVALID, "[Invalid Spell]");
         add(TranslationConstants.SPELL_INVALID_DESCRIPTION, "Something is wrong with this spell, please check the log for warnings or errors!");
         add(TranslationConstants.SPELL_MANA_COST, "Mana cost: %d");
         add(TranslationConstants.SPELL_REAGENTS, "Reagents:");
+        add(TranslationConstants.SPELL_RECIPE_TITLE, "Spell Recipe:");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
@@ -282,17 +286,21 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
+        add(TranslationConstants.OBELISK_TITLE, "Obelisk");
         add(TranslationConstants.RIFT_TITLE, "Rift Storage");
         add(TranslationConstants.SPELL_CUSTOMIZATION_TITLE, "Spell Customization");
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
+        add(TranslationConstants.NO_TELEPORT, "You are too distorted to teleport!");
+        add(TranslationConstants.NO_TELEPORT_NETHER, "The nether's force forbids you to simply teleport out of it!");
         add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
         add(TranslationConstants.SPELL_CAST + "cancelled", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "effect_failed", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "missing_reagents", "Missing reagents!");
+        add(TranslationConstants.SPELL_CAST + "no_permission", "No permission!");
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
-        add("item.arsmagicalegacy.arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
     }
 
     /**
@@ -332,15 +340,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds an attribute translation that matches the attribute id.
-     *
-     * @param attribute The attribute to generate the translation for.
-     */
-    private void attributeIdTranslation(RegistryObject<? extends Attribute> attribute) {
-        add(attribute.get().getDescriptionId(), idToTranslation(attribute.getId().getPath()));
-    }
-
-    /**
      * Adds an effect translation that matches the effect id.
      *
      * @param effect The effect to generate the translation for.
@@ -350,12 +349,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds an enchantment translation that matches the enchantment id.
+     * Adds an attribute translation that matches the attribute id.
      *
-     * @param enchantment The enchantment to generate the translation for.
+     * @param attribute The attribute to generate the translation for.
      */
-    private void enchantmentIdTranslation(RegistryObject<? extends Enchantment> enchantment) {
-        addEnchantment(enchantment, idToTranslation(enchantment.getId().getPath()));
+    private void attributeIdTranslation(RegistryObject<? extends Attribute> attribute) {
+        add(attribute.get().getDescriptionId(), idToTranslation(attribute.getId().getPath()));
     }
 
     /**
@@ -368,15 +367,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds an affinity translation that matches the affinity id.
-     *
-     * @param affinity The affinity to generate the translation for.
-     */
-    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
-        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
-    }
-
-    /**
      * Adds an skillPoint translation that matches the skillPoint id.
      *
      * @param skillPoint The skillPoint to generate the translation for.
@@ -386,11 +376,30 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds a creative tab translation that matches the effect id.
+     * Adds an affinity translation that matches the affinity id.
+     *
+     * @param affinity The affinity to generate the translation for.
+     */
+    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
+        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
+    }
+
+    /**
+     * Adds a config translation.
+     *
+     * @param name        The config entry to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void configTranslation(String name, String translation) {
+        add(TranslationConstants.CONFIG + name, translation);
+    }
+
+    /**
+     * Adds an item group translation that matches the item group id.
      *
      * @param translation The creative tab to generate the translation for.
      */
-    private void creativeTabTranslation(CreativeModeTab tab, String translation) {
+    private void itemGroupTranslation(CreativeModeTab tab, String translation) {
         add("itemGroup." + tab.getRecipeFolderName(), translation);
     }
 
@@ -556,16 +565,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
-    }
-
-    /**
-     * Adds a config translation.
-     *
-     * @param name        The config entry to add the translation for.
-     * @param translation The translation to use.
-     */
-    private void configTranslation(String name, String translation) {
-        add(TranslationConstants.CONFIG + name, translation);
     }
 
     /**

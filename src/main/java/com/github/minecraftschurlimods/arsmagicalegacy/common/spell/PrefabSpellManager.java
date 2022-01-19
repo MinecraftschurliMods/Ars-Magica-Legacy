@@ -41,7 +41,7 @@ public class PrefabSpellManager extends CodecDataManager<PrefabSpellManager.Pref
 
     public record PrefabSpell(Component name, Spell spell, ResourceLocation icon) {
         public static final Codec<PrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.DEFAULT_PREFAB_SPELL)).forGetter(PrefabSpell::name),
+                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(PrefabSpell::name),
                 Spell.CODEC.fieldOf("spell").forGetter(PrefabSpell::spell),
                 ResourceLocation.CODEC.fieldOf("icon").forGetter(PrefabSpell::icon)
         ).apply(inst, PrefabSpell::new));

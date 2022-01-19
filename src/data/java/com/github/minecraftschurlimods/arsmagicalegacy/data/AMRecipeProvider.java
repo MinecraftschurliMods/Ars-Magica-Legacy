@@ -252,12 +252,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.COBBLESTONE)
                 .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
                 .save(consumer);
-        var hasBlankRune = has(AMItems.BLANK_RUNE.get());
         for (DyeColor color : DyeColor.values()) {
             ShapelessRecipeBuilder.shapeless(AMItems.COLORED_RUNE.get(color))
                     .requires(AMItems.BLANK_RUNE.get())
                     .requires(color.getTag())
-                    .unlockedBy("has_blank_rune", hasBlankRune)
+                    .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
                     .save(consumer);
         }
         ShapedRecipeBuilder.shaped(AMItems.RUNE_BAG.get())

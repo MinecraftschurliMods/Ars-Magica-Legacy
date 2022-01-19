@@ -192,7 +192,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                     textLangKey = "%s.page1.text".formatted(entryLangKey);
                     entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
                 }
-                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build().setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build().setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath())).build();
             }
         }
         shapes.build();

@@ -1,12 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
@@ -17,6 +18,7 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -62,6 +64,9 @@ class AMLootTableProvider extends LootTableProvider {
             add(AMBlocks.INSCRIPTION_TABLE.get(), p -> BlockLoot.createSinglePropConditionTable(p, InscriptionTableBlock.HALF, InscriptionTableBlock.Half.RIGHT));
             dropSelf(AMBlocks.ALTAR_CORE.get());
             dropSelf(AMBlocks.MAGIC_WALL.get());
+            add(AMBlocks.OBELISK.get(), p -> BlockLoot.createSinglePropConditionTable(p, ObeliskBlock.PART, ObeliskBlock.Part.LOWER));
+            add(AMBlocks.CELESTIAL_PRISM.get(), p -> BlockLoot.createSinglePropConditionTable(p, CelestialPrismBlock.HALF, DoubleBlockHalf.LOWER));
+            dropSelf(AMBlocks.BLACK_AUREM.get());
             add(AMBlocks.CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             add(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             dropSelf(AMBlocks.CHIMERITE_BLOCK.get());

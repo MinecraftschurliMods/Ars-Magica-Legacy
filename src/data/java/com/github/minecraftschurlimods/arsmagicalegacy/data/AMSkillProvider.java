@@ -89,7 +89,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(DISPEL.getId())
                 .build(consumer);
-
         createOffense(DROWNING_DAMAGE)
                 .setPosition(300, 165)
                 .addCost(BLUE.get())
@@ -449,7 +448,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
                 .build(consumer);
-
         createOffense(BOUNCE)
                 .setPosition(255, 75)
                 .addCost(BLUE.get())

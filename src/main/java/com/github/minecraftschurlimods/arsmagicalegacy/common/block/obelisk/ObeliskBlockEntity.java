@@ -153,7 +153,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     protected Component getDefaultName() {
-        return new TranslatableComponent(TranslationConstants.OBELISK_DEFAULT_NAME);
+        return new TranslatableComponent(TranslationConstants.OBELISK_TITLE);
     }
 
     @Override

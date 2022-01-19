@@ -14,30 +14,30 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:iron_axe",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:iron_pickaxe",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:iron_shovel",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

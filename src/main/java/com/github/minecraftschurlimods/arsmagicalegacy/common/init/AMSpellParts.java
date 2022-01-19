@@ -122,11 +122,10 @@ public interface AMSpellParts {
     RegistryObject<Transplace>         TRANSPLACE          = SPELL_PARTS.register("transplace",          Transplace::new);
     RegistryObject<WizardsAutumn>      WIZARDS_AUTUMN      = SPELL_PARTS.register("wizards_autumn",      WizardsAutumn::new);
 
-    // TODO check values and balance @IHH
     RegistryObject<ISpellModifier>     BOUNCE              = SPELL_PARTS.register("bounce",              () -> new GenericSpellModifier().addStatModifier(SpellPartStats.BOUNCE, DefaultSpellPartStatModifier.add(2)));
-    RegistryObject<ISpellModifier>     DAMAGE              = SPELL_PARTS.register("damage",              () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DAMAGE, DefaultSpellPartStatModifier.add(2.2f)));
-    RegistryObject<ISpellModifier>     DISMEMBERING        = SPELL_PARTS.register("dismembering",        GenericSpellModifier::new);// TODO switch to new system @IHH (disable?)
-    RegistryObject<ISpellModifier>     DURATION            = SPELL_PARTS.register("duration",            () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DURATION, DefaultSpellPartStatModifier.multiply(2.2f)));
+    RegistryObject<ISpellModifier>     DAMAGE              = SPELL_PARTS.register("damage",              () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DAMAGE, DefaultSpellPartStatModifier.add(2f)));
+    RegistryObject<ISpellModifier>     DISMEMBERING        = SPELL_PARTS.register("dismembering",        GenericSpellModifier::new);
+    RegistryObject<ISpellModifier>     DURATION            = SPELL_PARTS.register("duration",            () -> new GenericSpellModifier().addStatModifier(SpellPartStats.DURATION, DefaultSpellPartStatModifier.multiply(2f)));
     RegistryObject<ISpellModifier>     EFFECT_POWER        = SPELL_PARTS.register("effect_power",        () -> new GenericSpellModifier().addStatModifier(SpellPartStats.POWER, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     GRAVITY             = SPELL_PARTS.register("gravity",             () -> new GenericSpellModifier().addStatModifier(SpellPartStats.GRAVITY, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     HEALING             = SPELL_PARTS.register("healing",             () -> new GenericSpellModifier().addStatModifier(SpellPartStats.HEALING, DefaultSpellPartStatModifier.multiply(2)));
@@ -135,7 +134,7 @@ public interface AMSpellParts {
     RegistryObject<ISpellModifier>     PIERCING            = SPELL_PARTS.register("piercing",            () -> new GenericSpellModifier().addStatModifier(SpellPartStats.PIERCING, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     PROSPERITY          = SPELL_PARTS.register("prosperity",          () -> new GenericSpellModifier().addStatModifier(SpellPartStats.FORTUNE, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     RANGE               = SPELL_PARTS.register("range",               () -> new GenericSpellModifier().addStatModifier(SpellPartStats.RANGE, DefaultSpellPartStatModifier.multiply(4)));
-    RegistryObject<ISpellModifier>     RUNE_PROCS          = SPELL_PARTS.register("rune_procs",          GenericSpellModifier::new);// TODO switch to new system @IHH (disable?)
+    RegistryObject<ISpellModifier>     RUNE_PROCS          = SPELL_PARTS.register("rune_procs",          GenericSpellModifier::new);
     RegistryObject<ISpellModifier>     SILK_TOUCH          = SPELL_PARTS.register("silk_touch",          () -> new GenericSpellModifier().addStatModifier(SpellPartStats.SILKTOUCH, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               Solar::new);
     RegistryObject<ISpellModifier>     TARGET_NON_SOLID    = SPELL_PARTS.register("target_non_solid",    () -> new GenericSpellModifier().addStatModifier(SpellPartStats.TARGET_NON_SOLID, DefaultSpellPartStatModifier.COUNTING));

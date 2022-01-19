@@ -38,8 +38,8 @@ public interface AMItems {
             return ArsMagicaAPI.get().getBookStack();
         }
     };
-    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
     Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
+    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
 
     RegistryObject<InfinityOrbItem>              INFINITY_ORB             = ITEMS.register("infinity_orb", InfinityOrbItem::new);
     RegistryObject<BlockItem>                    OCCULUS                  = registerBlockItem64(AMBlocks.OCCULUS);
