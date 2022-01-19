@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.mojang.datafixers.util.Either;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
