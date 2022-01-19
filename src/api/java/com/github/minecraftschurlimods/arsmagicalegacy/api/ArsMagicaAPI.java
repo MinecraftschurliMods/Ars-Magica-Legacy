@@ -6,6 +6,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;

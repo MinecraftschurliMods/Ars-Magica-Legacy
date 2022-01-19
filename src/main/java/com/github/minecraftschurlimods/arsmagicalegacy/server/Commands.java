@@ -19,7 +19,7 @@ public final class Commands {
             event.getDispatcher().register(net.minecraft.commands.Commands.literal("givetestspell1").executes(context -> {
                 ItemStack stack = new ItemStack(AMItems.SPELL.get());
                 SpellItem.saveSpell(stack, Spell.of(
-                        SpellStack.of(AMSpellParts.RIFT.get()),
+                        SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get()),
                         ShapeGroup.of(AMSpellParts.SELF.get())
                 ));
                 context.getSource().getPlayerOrException().addItem(stack);
@@ -28,8 +28,8 @@ public final class Commands {
             event.getDispatcher().register(net.minecraft.commands.Commands.literal("givetestspell2").executes(context -> {
                 ItemStack stack = new ItemStack(AMItems.SPELL.get());
                 SpellItem.saveSpell(stack, Spell.of(
-                        SpellStack.of(AMSpellParts.RIFT.get(), AMSpellParts.EFFECT_POWER.get()),
-                        ShapeGroup.of(AMSpellParts.SELF.get())
+                        SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get()),
+                        ShapeGroup.of(AMSpellParts.PROJECTILE.get())
                 ));
                 context.getSource().getPlayerOrException().addItem(stack);
                 return Command.SINGLE_SUCCESS;
