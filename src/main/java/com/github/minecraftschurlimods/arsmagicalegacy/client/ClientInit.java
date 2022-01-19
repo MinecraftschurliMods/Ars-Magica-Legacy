@@ -6,8 +6,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;

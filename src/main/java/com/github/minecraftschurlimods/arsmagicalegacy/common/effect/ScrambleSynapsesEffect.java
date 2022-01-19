@@ -1,11 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
 
 public class ScrambleSynapsesEffect extends AMMobEffect {
     public ScrambleSynapsesEffect() {

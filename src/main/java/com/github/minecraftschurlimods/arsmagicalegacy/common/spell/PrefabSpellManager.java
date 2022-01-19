@@ -9,8 +9,6 @@ import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;

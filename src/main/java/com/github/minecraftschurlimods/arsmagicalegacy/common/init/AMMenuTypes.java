@@ -1,11 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagMenu;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.RegistryObject;
