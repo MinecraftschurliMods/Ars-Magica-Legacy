@@ -24,6 +24,7 @@ import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -76,16 +77,21 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return Optional.ofNullable(getSpellRecipe())
                        .map(spell -> {
                            if (spell.isEmpty()) return stack;
-                           ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-                           SpellItem.saveSpell(book, spell);
-                           CompoundTag tag = book.getOrCreateTag();
-                           tag.putString(WrittenBookItem.TAG_TITLE, Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()));
-                           tag.putString(WrittenBookItem.TAG_AUTHOR, player.getDisplayName().getString());
-                           ListTag pages = new ListTag();
-                           makeSpellRecipePages(pages, player, spell);
-                           tag.put(WrittenBookItem.TAG_PAGES, pages);
-                           return book;
+                           return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
                        });
+    }
+
+    @NotNull
+    public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        SpellItem.saveSpell(book, spell);
+        CompoundTag tag = book.getOrCreateTag();
+        tag.putString(WrittenBookItem.TAG_TITLE, name);
+        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
+        ListTag pages = new ListTag();
+        //makeSpellRecipePages(pages, player, spell);
+        tag.put(WrittenBookItem.TAG_PAGES, pages);
+        return book;
     }
 
     private static void makeSpellRecipePages(ListTag pages, Player player, Spell spell) {

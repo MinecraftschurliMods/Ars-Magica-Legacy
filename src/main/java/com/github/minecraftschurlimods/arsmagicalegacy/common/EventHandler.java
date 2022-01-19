@@ -44,6 +44,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
@@ -325,6 +326,7 @@ public final class EventHandler {
         event.addListener(AltarMaterialManager.instance().cap);
         event.addListener(AltarMaterialManager.instance().structure);
         event.addListener(TierMapping.instance());
+        event.addListener(PrefabSpellManager.instance());
     }
 
     private static void playerLevelUp(PlayerLevelUpEvent event) {

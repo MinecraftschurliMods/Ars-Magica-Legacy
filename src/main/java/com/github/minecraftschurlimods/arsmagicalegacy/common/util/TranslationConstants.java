@@ -15,6 +15,8 @@ public interface TranslationConstants {
     String SPELL_UNKNOWN                    = "item."     + ArsMagicaAPI.MOD_ID + ".spell.unknown";
     String SPELL_UNKNOWN_DESCRIPTION        = "item."     + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
     String SPELL_UNNAMED                    = "item."     + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
+    String DEFAULT_PREFAB_SPELL             = "item."     + ArsMagicaAPI.MOD_ID + ".spell.prefab.name";
+    String SPELL_RECIPE_TITLE               = "item."     + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";
     String COMMAND_SKILL_ALREADY_KNOWN      = "commands." + ArsMagicaAPI.MOD_ID + ".skill.already_known";
     String COMMAND_SKILL_EMPTY              = "commands." + ArsMagicaAPI.MOD_ID + ".skill.empty";
     String COMMAND_SKILL_FORGET_ALL_SUCCESS = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget_all.success";
@@ -33,6 +35,5 @@ public interface TranslationConstants {
     String HOLD_SHIFT_FOR_DETAILS           = "message."  + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String PREVENT                          = "message."  + ArsMagicaAPI.MOD_ID + ".prevent";
     String SPELL_CAST                       = "message."  + ArsMagicaAPI.MOD_ID + ".spell_cast.";
-    String SPELL_RECIPE_TITLE               = "item."     + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";
     String CRYSTAL_WRENCH_TOO_FAR           = "item."     + ArsMagicaAPI.MOD_ID + ".crystal_wrench.too_far";
 }
