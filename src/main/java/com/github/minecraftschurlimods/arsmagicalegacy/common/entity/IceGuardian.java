@@ -11,12 +11,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class WinterGuardian extends AbstractBoss {
+public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm;
     private boolean hasLeftArm;
     private float orbitRotation;
 
-    public WinterGuardian(EntityType<? extends WinterGuardian> type, Level level) {
+    public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
         this.hasRightArm = true;
         this.hasLeftArm = true;
@@ -28,22 +28,22 @@ public class WinterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AMSounds.WINTER_GUARDIAN_AMBIENT.get();
+        return AMSounds.ICE_GUARDIAN_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return AMSounds.WINTER_GUARDIAN_HURT.get();
+        return AMSounds.ICE_GUARDIAN_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AMSounds.WINTER_GUARDIAN_DEATH.get();
+        return AMSounds.ICE_GUARDIAN_DEATH.get();
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.WINTER_GUARDIAN_ATTACK.get();
+        return AMSounds.ICE_GUARDIAN_ATTACK.get();
     }
 
     @Override

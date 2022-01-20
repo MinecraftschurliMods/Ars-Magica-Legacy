@@ -157,6 +157,36 @@
       "arsmagicalegacy:entity/fire_guardian/nova"
     ]
   },
+  "entity.ice_guardian.ambient": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/ambient"
+    ]
+  },
+  "entity.ice_guardian.attack": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/attack"
+    ]
+  },
+  "entity.ice_guardian.death": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/death"
+    ]
+  },
+  "entity.ice_guardian.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/hurt"
+    ]
+  },
+  "entity.ice_guardian.launch_arm": {
+    "category": "hostile",
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/launch_arm"
+    ]
+  },
   "entity.life_guardian.ambient": {
     "category": "hostile",
     "sounds": [
@@ -269,36 +299,6 @@
     "category": "hostile",
     "sounds": []
   },
-  "entity.winter_guardian.ambient": {
-    "category": "hostile",
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/ambient"
-    ]
-  },
-  "entity.winter_guardian.attack": {
-    "category": "hostile",
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/attack"
-    ]
-  },
-  "entity.winter_guardian.death": {
-    "category": "hostile",
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/death"
-    ]
-  },
-  "entity.winter_guardian.hurt": {
-    "category": "hostile",
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/hurt"
-    ]
-  },
-  "entity.winter_guardian.launch_arm": {
-    "category": "hostile",
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/launch_arm"
-    ]
-  },
   "misc.get_knowledge_point": {
     "category": "player",
     "sounds": [
@@ -341,6 +341,12 @@
       "arsmagicalegacy:spell/cast/fire"
     ]
   },
+  "spell.cast.ice": {
+    "category": "player",
+    "sounds": [
+      "arsmagicalegacy:spell/cast/ice"
+    ]
+  },
   "spell.cast.life": {
     "category": "player",
     "sounds": [
@@ -369,12 +375,6 @@
     "category": "player",
     "sounds": [
       "arsmagicalegacy:spell/cast/water"
-    ]
-  },
-  "spell.cast.winter": {
-    "category": "player",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/winter"
     ]
   },
   "spell.contingency": {
@@ -413,6 +413,12 @@
       "arsmagicalegacy:spell/loop/fire"
     ]
   },
+  "spell.loop.ice": {
+    "category": "player",
+    "sounds": [
+      "arsmagicalegacy:spell/loop/ice"
+    ]
+  },
   "spell.loop.life": {
     "category": "player",
     "sounds": [
@@ -439,12 +445,6 @@
     "category": "player",
     "sounds": [
       "arsmagicalegacy:spell/loop/water"
-    ]
-  },
-  "spell.loop.winter": {
-    "category": "player",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/winter"
     ]
   },
   "spell.mana_shield": {
