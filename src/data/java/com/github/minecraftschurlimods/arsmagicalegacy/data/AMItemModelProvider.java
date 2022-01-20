@@ -5,11 +5,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -70,11 +72,11 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_PLANKS);
         blockItem(WITCHWOOD_SLAB);
         blockItem(WITCHWOOD_STAIRS);
-        withExistingParent(WITCHWOOD_FENCE, "witchwood_fence_inventory");
+        withExistingParent(WITCHWOOD_FENCE, "arsmagicalegacy:block/witchwood_fence_inventory");
         blockItem(WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
-        withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
-        withExistingParent(WITCHWOOD_BUTTON, "witchwood_button_inventory");
+        withExistingParent(WITCHWOOD_TRAPDOOR, "arsmagicalegacy:block/witchwood_trapdoor_bottom");
+        withExistingParent(WITCHWOOD_BUTTON, "arsmagicalegacy:block/witchwood_button_inventory");
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
@@ -94,6 +96,19 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
+        spawnEggItem(AMItems.DRYAD_SPAWN_EGG);
+        spawnEggItem(AMItems.MAGE_SPAWN_EGG);
+        spawnEggItem(AMItems.MANA_CREEPER_SPAWN_EGG);
+        spawnEggItem(AMItems.WATER_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.FIRE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.EARTH_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.AIR_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.ICE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.LIGHTNING_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.NATURE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
     }
 
     /**
@@ -112,7 +127,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param name The texture id to use.
      */
     private void itemGenerated(RegistryObject<? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", modLoc(name));
     }
 
     /**
@@ -141,7 +156,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param parent The parent model to use.
      */
     private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, String parent) {
-        return withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
+        return withExistingParent(item.getId().getPath(), new ResourceLocation(parent));
     }
 
     /**
@@ -150,7 +165,16 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
-        return withExistingParent(item, item.get().getBlock().getRegistryName().getPath());
+        return withExistingParent(item, ArsMagicaAPI.MOD_ID + ":block/" + item.get().getBlock().getRegistryName().getPath());
+    }
+
+    /**
+     * Adds a block item model that uses the corresponding block model as the parent model.
+     *
+     * @param item The item to generate the model for.
+     */
+    private void spawnEggItem(RegistryObject<? extends SpawnEggItem> item) {
+        withExistingParent(item, ":item/template_spawn_egg");
     }
 
     /**

@@ -98,6 +98,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL);
+        itemIdTranslation(AMItems.DRYAD_SPAWN_EGG);
+        itemIdTranslation(AMItems.MAGE_SPAWN_EGG);
+        itemIdTranslation(AMItems.MANA_CREEPER_SPAWN_EGG);
+        itemIdTranslation(AMItems.WATER_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.FIRE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.EARTH_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.AIR_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ICE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.LIGHTNING_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.NATURE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
