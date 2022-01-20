@@ -98,19 +98,20 @@ public interface ISpell {
      * @param caster The player that casts the spells.
      * @return The amount of mana the spell costs.
      */
-    float manaCost(LivingEntity caster);
+    float mana(LivingEntity caster);
 
     /**
      * How much burnout the spell causes.
      *
      * @return The burnout the spell causes.
+     * @param caster
      */
-    float burnout();
+    float burnout(LivingEntity caster);
 
     /**
      * @return The spell reagents.
      */
-    List<Either<Ingredient, ItemStack>> reagents();
+    List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster);
 
     /**
      * @return The list of spell parts in this spell.

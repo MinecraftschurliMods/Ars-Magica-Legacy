@@ -53,15 +53,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>>      SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
     public static final ModelProperty<BlockState> CAMO_STATE             = new ModelProperty<>();
 
-    public static final String PROVIDERS_KEY = ArsMagicaAPI.MOD_ID + ":bound_providers";
-    public static final String RECIPE_KEY    = ArsMagicaAPI.MOD_ID + ":recipe";
-    public static final String CAMO_KEY      = ArsMagicaAPI.MOD_ID + ":camo";
+    public static final String PROVIDERS_KEY      = ArsMagicaAPI.MOD_ID + ":bound_providers";
+    public static final String RECIPE_KEY         = ArsMagicaAPI.MOD_ID + ":recipe";
+    public static final String CAMO_KEY           = ArsMagicaAPI.MOD_ID + ":camo";
+    public static final String ALTAR_POWER_KEY    = ArsMagicaAPI.MOD_ID + ":altar_power_key";
+    public static final String REQUIRED_POWER_KEY = ArsMagicaAPI.MOD_ID + ":required_power_key";
 
     private final ModelDataMap modelData = new ModelDataMap.Builder().withProperty(CAMO_STATE).build();
 
@@ -133,6 +136,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     private Set<BlockPos>           boundPositions = new HashSet<>();
     private Deque<ISpellIngredient> recipe;
 
+    private int     requiredPower = 0;
     private boolean isCrafting;
     private int     powerLevel = -1;
     public  int     checkCounter;
@@ -264,6 +268,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                                                                        ? new ArrayList<>(this.recipe)
                                                                        : new ArrayList<>(0))
                                                   .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        tag.putInt(ALTAR_POWER_KEY, this.powerLevel);
+        tag.putInt(REQUIRED_POWER_KEY, this.requiredPower);
         if (this.modelData.getData(CAMO_STATE) != null) {
             tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE))
                                               .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
@@ -288,6 +294,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                 .left()
                 .map(ArrayDeque::new)
                 .orElse(null);
+        this.powerLevel = pTag.getInt(ALTAR_POWER_KEY);
+        this.requiredPower = pTag.getInt(REQUIRED_POWER_KEY);
         if (pTag.contains(CAMO_KEY)) {
             this.modelData.setData(CAMO_STATE, BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
                     .map(Pair::getFirst)
@@ -389,7 +397,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     private int getRequiredPower() {
-        return getRecipe() != null ? getRecipe().size() : 0;
+        return requiredPower;
     }
 
     @Nullable
@@ -406,12 +414,14 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (this.recipe == null || this.recipe.isEmpty()) {
-            List<ISpellIngredient> recipeFromBook = getRecipeFromBook(getBook());
-            if (recipeFromBook == null) {
+            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>)Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
+                List<ISpellIngredient> recipe = spell.recipe();
+                this.recipe = new ArrayDeque<>(recipe);
+                this.requiredPower = spell.parts().size();
+            }, () -> {
                 this.recipe = null;
-            } else {
-                this.recipe = new ArrayDeque<>(recipeFromBook);
-            }
+                this.requiredPower = 0;
+            });
         }
         return this.recipe;
     }
@@ -425,12 +435,5 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             this.getLevel().getBlockEntity(this.lecternPos) instanceof LecternBlockEntity lecternBlockEntity)
             return lecternBlockEntity.getBook();
         return ItemStack.EMPTY;
-    }
-
-    @Nullable
-    private static List<ISpellIngredient> getRecipeFromBook(ItemStack book) {
-        Spell spell = SpellItem.getSpell(book);
-        if (spell.isEmpty() || !spell.isValid()) return null;
-        return spell.recipe();
     }
 }

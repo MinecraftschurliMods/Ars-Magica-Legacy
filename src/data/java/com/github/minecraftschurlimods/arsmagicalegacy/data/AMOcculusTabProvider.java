@@ -8,7 +8,7 @@ import net.minecraft.data.DataGenerator;
 
 import java.util.function.Consumer;
 
-public class AMOcculusTabProvider extends OcculusTabProvider {
+class AMOcculusTabProvider extends OcculusTabProvider {
     public AMOcculusTabProvider(DataGenerator generator) {
         super(generator, ArsMagicaAPI.MOD_ID);
     }

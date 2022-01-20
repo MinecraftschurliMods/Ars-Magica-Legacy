@@ -1,1 +1,7 @@
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier;
+
+import net.minecraft.MethodsReturnNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -11,11 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import java.util.UUID;
@@ -26,6 +29,11 @@ public class CurioCompat implements ICompatHandler {
     @Override
     public void clientInit(FMLClientSetupEvent event) {
         MagitechGogglesCurioRenderer.register();
+    }
+
+    @Override
+    public void imcEnqueue(final InterModEnqueueEvent event) {
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("head").build());
     }
 
     public ICapabilityProvider makeCurioCap(ItemStack stack, BiFunction<String, ItemStack, Multimap<Attribute, AttributeModifier>> proxy) {

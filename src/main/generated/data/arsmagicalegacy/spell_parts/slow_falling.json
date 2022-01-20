@@ -14,7 +14,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:feathers"
+        "item": "minecraft:phantom_membrane"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

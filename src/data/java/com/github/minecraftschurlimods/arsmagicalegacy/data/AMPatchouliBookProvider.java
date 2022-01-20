@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.patchouli_datagen.AbstractPageBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.BookBuilder;
@@ -66,10 +67,10 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_ender"))
                 .build()
                 .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
-                .addSimpleTextPage("Harnessing the forces of creation, the crafting altar allows mages to work miracles of magic. This is where you will create all of your spells.")
+                .addSimpleTextPage("Harnessing the forces of creation, the crafting altar allows you to work miracles of magic. This is where you will create all of your spells.")
                 .addSimpleSpotlightPage(new ItemStack(AMItems.ALTAR_CORE.get()), "A basic yet important block, it focuses an altar's power in order to perform spell crafting.")
                 .addSimpleSpotlightPage(new ItemStack(AMItems.MAGIC_WALL.get()), "The magic wall was a nice try into illusion blocks, but it did not work. Instead, it has proven important when building crafting altars.")
-                .addSimpleDoubleRecipePage("crafting", AMItems.ALTAR_CORE.get().getRegistryName(), AMItems.MAGIC_WALL.get().getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.ALTAR_CORE.getId(), AMItems.MAGIC_WALL.getId())
                 .addSimpleMultiblockPage("Crafting Altar", PatchouliCompat.CRAFTING_ALTAR)
                 .addSimpleTextPage("The altar is upgradeable by two groups, the caps and the structure materials. Both groups stack cumulatively, so for example wooden planks (1) plus glass (1) equals a power of two, while sandstone (2) plus diamond blocks (7) equals a power of nine. The higher the power, the more powerful spells can be crafted.")
                 .addSimpleTextPage("- Glass: 1$(br)- Block of Coal: 2$(br)- Block of Redstone: 3$(br)- Block of Iron: 4$(br)- Block of Lapis Lazuli: 5$(br)- Block of Gold: 6$(br)- Block of Diamond: 7$(br)- Block of Emerald: 8", "Caps")
@@ -78,26 +79,53 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addEntry("shape_groups", "Shape Groups", new ItemStack(AMItems.SPELL_PARCHMENT.get()))
                 .addSimpleTextPage("Shape groups define how your spell is executed. A spell has multiple shape groups, each shape group is represented by one of the brown squares in the $(l:blocks/inscription_table)Inscription Table$(). The selected shape group can be changed by pressing $(k:arsmagicalegacy.next_shape_group).$(br2)This mechanic proves useful if, for example, you want to have two modes on a $(l:components/heal)Heal$() spell, one for $(l:shapes/self)yourself$() and one for $(l:shapes/projectile)your friends$().")
                 .build()
+                .addEntry("etherium", "Etherium", new ItemStack(AMItems.CRYSTAL_WRENCH.get()))
+                .addSimpleTextPage("During spellcrafting, you will sooner or later stumble across the requirement of Etherium. Etherium is an invisible magical substance that comes in three variants: light, neutral and dark. It is created by burning $(l:blocks/ores#vinteum)Vinteum Dust$() in the respective generator:$(br2)- Neutral -> $(l:blocks/obelisk)Obelisk$()$(br)- Light -> $(l:blocks/celestial_prism)Celestial Prism$()$(br)- Dark -> $(l:blocks/black_aurem)Black Aurem$()")
+                .addSimpleRecipePage("crafting", AMItems.CRYSTAL_WRENCH.getId(), "To actually consume the Etherium, you need to link it to the $(l:mechanics/crafting_altar)altar$() by first right-clicking the generator, then the Altar Core with a Crystal Wrench. The distance between generator and Altar Core must not exceed 32 blocks.")
+                .addSimpleTextPage("If a spell requires Etherium, the generator is properly linked and has the required Etherium amount of the correct type, simply flip the lever on the altar. The required amount of Etherium will be drawn automatically.")
+                .build()
                 .build();
         builder.addCategory("blocks", "Blocks", "", new ItemStack(AMItems.OCCULUS.get()))
                 .setSortnum(1)
                 .addEntry("occulus", "Occulus", new ItemStack(AMItems.OCCULUS.get()))
                 .addSimpleTextPage("A gateway to the stars, the Occulus shows you your innermost self. Here, you can spend skill points to unlock new skills.")
-                .addSimpleRecipePage("crafting", AMItems.OCCULUS.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.OCCULUS.getId())
                 .build()
                 .addEntry("inscription_table", "Inscription Table", new ItemStack(AMItems.INSCRIPTION_TABLE.get()))
                 .addSimpleTextPage("Using this table with a Book & Quill, you can compose spells of incredible power.$(br2)You will see what skills you know at the top in the Source Region. You can then drag shapes and modifiers to the brown $(l:mechanics/shape_groups)Shape Group$() squares, and drag components to the gray Spell Grammar section at the bottom to lay out a spell.")
                 .addSimpleTextPage("Once satisfied with the spell, you can write the spells onto that Book & Quill. This book can then be placed on a $(l:mechanics/crafting_altar)Crafting Altar's$() lectern, and will guide you through the process needed to make the spell.$(br2)The book is worth reading too, as it contains a recap of the spell you will be creating, a materials list, and an $(l:mechanics/affinities)affinity$() breakdown.")
-                .addSimpleRecipePage("crafting", AMItems.INSCRIPTION_TABLE.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.INSCRIPTION_TABLE.getId())
+                .build()
+                .addEntry("obelisk", "Obelisk", new ItemStack(AMItems.OBELISK.get()))
+                .addSimpleTextPage("The Obelisk is a runed block that is used to generate neutral $(l:mechanics/etherium)Etherium$().$(br2)To boost its power, it can optionally be supported by a multiblock structure, which builds up in levels.")
+                .addSimpleDoubleRecipePage("crafting", AMItems.OBELISK.getId(), AMItems.WIZARDS_CHALK.getId())
+                .addSimpleMultiblockPage("Obelisk Chalk", PatchouliCompat.OBELISK_CHALK)
+                .addSimpleMultiblockPage("Obelisk Pillars", PatchouliCompat.OBELISK_PILLARS)
+                .build()
+                .addEntry("celestial_prism", "Celestial Prism", new ItemStack(AMItems.CELESTIAL_PRISM.get()))
+                .addSimpleTextPage("The Celestial Prism is the $(l:blocks/obelisk)Obelisk's$() light counterpart, used to generate light $(l:mechanics/etherium)Etherium$().$(br2)Similarly, it can be supported by a multiblock structure, which builds up in levels.")
+                .addSimpleMultiblockPage("Celestial Prism Chalk", PatchouliCompat.CELESTIAL_PRISM_CHALK)
+                .addSimpleMultiblockPage("Celestial Prism Level 1", PatchouliCompat.CELESTIAL_PRISM_PILLAR1)
+                .addSimpleMultiblockPage("Celestial Prism Level 2", PatchouliCompat.CELESTIAL_PRISM_PILLAR2)
+                .addSimpleMultiblockPage("Celestial Prism Level 3", PatchouliCompat.CELESTIAL_PRISM_PILLAR3)
+                .addSimpleMultiblockPage("Celestial Prism Level 4", PatchouliCompat.CELESTIAL_PRISM_PILLAR4)
+                .build()
+                .addEntry("black_aurem", "Black Aurem", new ItemStack(AMItems.BLACK_AUREM.get()))
+                .addSimpleTextPage("The Black Aurem is the $(l:blocks/obelisk)Obelisk's$() dark counterpart, used to generate dark $(l:mechanics/etherium)Etherium$().$(br2)Similarly, it can be supported by a multiblock structure, which builds up in levels.")
+                .addSimpleMultiblockPage("Black Aurem Chalk", PatchouliCompat.BLACK_AUREM_CHALK)
+                .addSimpleMultiblockPage("Black Aurem Level 1", PatchouliCompat.BLACK_AUREM_PILLAR1)
+                .addSimpleMultiblockPage("Black Aurem Level 2", PatchouliCompat.BLACK_AUREM_PILLAR2)
+                .addSimpleMultiblockPage("Black Aurem Level 3", PatchouliCompat.BLACK_AUREM_PILLAR3)
+                .addSimpleMultiblockPage("Black Aurem Level 4", PatchouliCompat.BLACK_AUREM_PILLAR4)
                 .build()
                 .addEntry("ores", "Ores", new ItemStack(AMItems.CHIMERITE_ORE.get()))
                 .addSimpleTextPage("A variety of ores can be found scattered across the world.")
                 .addSpotlightPage(new ItemStack(AMItems.CHIMERITE_ORE.get())).setText("Found where the stones shift, Chimerite is used in spells that require a great deal of alternation or illusion.").setAnchor("chimerite").build()
                 .addSpotlightPage(new ItemStack(AMItems.TOPAZ_ORE.get())).setText("Found in the deepest depths or on the highest peaks, Topaz is commonly used as an entry level magical crystal.").setAnchor("topaz").build()
                 .addSpotlightPage(new ItemStack(AMItems.VINTEUM_ORE.get())).setText("Found relatively common in most layers of the world, Vinteum Dust quickly proved itself a viable magical resource.").setAnchor("vinteum").build()
-                .addSimpleDoubleRecipePage("crafting", AMItems.CHIMERITE_BLOCK.get().getRegistryName(), AMItems.CHIMERITE.get().getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.TOPAZ_BLOCK.get().getRegistryName(), AMItems.TOPAZ.get().getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.VINTEUM_BLOCK.get().getRegistryName(), AMItems.VINTEUM_DUST.get().getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.CHIMERITE_BLOCK.getId(), AMItems.CHIMERITE.getId())
+                .addSimpleDoubleRecipePage("crafting", AMItems.TOPAZ_BLOCK.getId(), AMItems.TOPAZ.getId())
+                .addSimpleDoubleRecipePage("crafting", AMItems.VINTEUM_BLOCK.getId(), AMItems.VINTEUM_DUST.getId())
                 .build()
                 .addEntry("flowers", "Flowers", new ItemStack(AMItems.AUM.get()))
                 .addSimpleTextPage("A variety of flowers can be found scattered across the world.")
@@ -112,22 +140,17 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build()
                 .addEntry("vinteum_torch", "Vinteum Torch", new ItemStack(AMItems.VINTEUM_TORCH.get()))
                 .addSimpleTextPage("Vinteum Torches are crafted in a simplistic way, and glow with the same brightness as a standard torch. They are just an aesthetic alternative.")
-                .addSimpleRecipePage("crafting", AMItems.VINTEUM_TORCH.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.VINTEUM_TORCH.getId())
                 .build()
                 .build();
         builder.addCategory("items", "Items", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
-                .setSortnum(2)
-                .addEntry("wizards_chalk", "Wizard's Chalk", new ItemStack(AMItems.WIZARDS_CHALK.get()))
-                .addSimpleTextPage("Wizard's Chalk is used to draw decorative shapes on the ground.")
-                .addSimpleRecipePage("crafting", AMItems.WIZARDS_CHALK.get().getRegistryName())
-                .build()
                 .addEntry("magitech_goggles", "Magitech Goggles", new ItemStack(AMItems.MAGITECH_GOGGLES.get()))
                 .addSimpleTextPage("The Magitech Goggles are a fancy piece of armor that can be equipped in the helmet slot, or the head slot if Curios is installed. While it is currently unknown what the great advantage of the goggles is, you feel like you will learn at some point in the future.")
-                .addSimpleRecipePage("crafting", AMItems.MAGITECH_GOGGLES.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.MAGITECH_GOGGLES.getId())
                 .build()
                 .addEntry("runes", "Runes", new ItemStack(AMItems.BLANK_RUNE.get()))
                 .addSimpleTextPage("Runes are the basic building parts of spells. When combined with multiple other items in the right combination, a magical spell scroll can be created.")
-                .addSimpleRecipePage("crafting", AMItems.BLANK_RUNE.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.BLANK_RUNE.getId())
                 .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BLACK).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.BLUE).getRegistryName())
                 .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BROWN).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.CYAN).getRegistryName())
                 .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.GRAY).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.GREEN).getRegistryName())
@@ -139,23 +162,23 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build()
                 .addEntry("rune_bag", "Rune Bag", new ItemStack(AMItems.RUNE_BAG.get()))
                 .addSimpleTextPage("The Rune Bag can hold runes, a stack of each color, to save inventory space.")
-                .addSimpleRecipePage("crafting", AMItems.RUNE_BAG.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.RUNE_BAG.getId())
                 .build()
                 .addEntry("arcane_compound", "Arcane Compound", new ItemStack(AMItems.ARCANE_COMPOUND.get()))
                 .addSimpleTextPage("A combination of materials from multiple worlds, the Arcane Compound forms the base resource needed to get $(l:items/arcane_ash)Arcane Ash$().")
-                .addSimpleRecipePage("crafting", AMItems.ARCANE_COMPOUND.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.ARCANE_COMPOUND.getId())
                 .build()
                 .addEntry("arcane_ash", "Arcane Ash", new ItemStack(AMItems.ARCANE_ASH.get()))
                 .addSimpleTextPage("Created by burning $(l:items/arcane_compound)Arcane Compounds$() in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magic.")
-                .addSimpleRecipePage("smelting", AMItems.ARCANE_ASH.get().getRegistryName())
+                .addSimpleRecipePage("smelting", AMItems.ARCANE_ASH.getId())
                 .build()
                 .addEntry("purified_vinteum_dust", "Purified Vinteum Dust", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                 .addSimpleTextPage("By adding $(l:items/arcane_ash)Arcane Ash$() to strengthen its magical properties, $(l:blocks/flowers#cerublossom)Cerublossoms$() as a catalyst and $(l:blocks/flowers#desert_nova)Desert Novas$() to release instability, $(l:blocks/ores#vinteum)Vinteum Dust$() can be put into a purified state with much higher capacity for magic.")
-                .addSimpleRecipePage("crafting", AMItems.PURIFIED_VINTEUM_DUST.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.PURIFIED_VINTEUM_DUST.getId())
                 .build()
                 .addEntry("spell_parchment", "Spell Parchment", new ItemStack(AMItems.SPELL_PARCHMENT.get()))
                 .addSimpleTextPage("Any mage that wants to cast spells without the need of some sort of staff or wand needs something to write the spell down on. This has worked for thousands of years, and surprisingly nothing more effective has been invented yet.")
-                .addSimpleRecipePage("crafting", AMItems.SPELL_PARCHMENT.get().getRegistryName())
+                .addSimpleRecipePage("crafting", AMItems.SPELL_PARCHMENT.getId())
                 .build()
                 .build();
 /*
@@ -175,30 +198,28 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 */
         Set<ResourceLocation> parts = new HashSet<>();
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
-            TranslatedCategoryBuilder b = switch (spellPart.getType()) {
-                case COMPONENT -> components;
-                case MODIFIER -> modifiers;
-                case SHAPE -> shapes;
-            };
-            ResourceLocation registryName = spellPart.getRegistryName();
-            parts.add(registryName);
-            String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
-            TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
-            String textLangKey = "%s.page0.text".formatted(entryLangKey);
-            entry.addPage(new TextPageBuilder(textLangKey, entry)).build().addPage(new SpellPartPageBuilder(registryName, entry)).build()
-                    .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+            if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
+                TranslatedCategoryBuilder b = switch (spellPart.getType()) {
+                    case COMPONENT -> components;
+                    case MODIFIER -> modifiers;
+                    case SHAPE -> shapes;
+                };
+                ResourceLocation registryName = spellPart.getRegistryName();
+                parts.add(registryName);
+                String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
+                TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
+                String textLangKey = "%s.page0.text".formatted(entryLangKey);
+                entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                if (spellPart == AMSpellParts.SUMMON.get()) {
+                    textLangKey = "%s.page1.text".formatted(entryLangKey);
+                    entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                }
+                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build().setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath())).build();
+            }
         }
-/*
-        for (ISkill skill : api.getSkillManager().getSkills()) {
-            if (parts.contains(skill.getId())) continue;
-            ResourceLocation registryName = skill.getId();
-            String entryLangKey = "item.%s.%s.%s.%s".formatted(talents.getBookId().getNamespace(), talents.getBookId().getPath(), talents.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
-            TranslatedEntryBuilder entry = talents.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace()+":textures/icon/skill/"+registryName.getPath()+".png", b){});
-            String textLangKey = "%s.page0.text".formatted(entryLangKey);
-            entry.addPage(new TextPageBuilder(textLangKey, entry)).build()
-                 .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
-        }
-*/
+        shapes.build();
+        components.build();
+        modifiers.build();
         builder.build(consumer);
     }
 

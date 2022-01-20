@@ -21,17 +21,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:obsidian"
-      },
-      "count": 2,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:flint_and_steel",
-        "count": 1,
-        "type": "forge:nbt"
+        "item": "minecraft:ender_eye"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

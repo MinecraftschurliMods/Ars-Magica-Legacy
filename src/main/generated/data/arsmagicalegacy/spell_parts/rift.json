@@ -1,15 +1,10 @@
 {
-  "manaCost": 90.0,
+  "manaCost": 75.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:ender": 0.01
+  },
   "recipe": [
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
     {
       "ingredient": {
         "item": "arsmagicalegacy:purple_rune"
@@ -19,14 +14,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:chests/wooden"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:ender_eye"
+        "item": "minecraft:ender_chest"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

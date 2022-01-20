@@ -1,8 +1,8 @@
 {
-  "manaCost": 300.0,
+  "manaCost": 40.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:life": 0.1
+    "arsmagicalegacy:life": 0.01
   },
   "recipe": [
     {
@@ -14,12 +14,9 @@
     },
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}",
-        "item": "arsmagicalegacy:affinity_essence",
-        "count": 1,
-        "type": "forge:nbt"
+        "item": "minecraft:wheat"
       },
-      "count": 2,
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     }
   ]

@@ -19,13 +19,6 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:fishes"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "minecraft:clay_ball"
       },
       "count": 1,

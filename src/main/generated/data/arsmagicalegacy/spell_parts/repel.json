@@ -1,7 +1,9 @@
 {
-  "manaCost": 5.0,
+  "manaCost": 2.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:nature": 0.01
+  },
   "recipe": [
     {
       "ingredient": {
@@ -12,7 +14,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:water_bucket"
+        "tag": "forge:dusts/purified_vinteum"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

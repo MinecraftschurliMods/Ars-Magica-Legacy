@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -36,6 +37,6 @@ public class AltarCoreBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return (BlockEntityTicker<T>) new AltarCoreTicker();
+        return !pLevel.isClientSide() && pBlockEntityType == AMBlockEntities.ALTAR_CORE.get() ? (BlockEntityTicker<T>) new AltarCoreTicker() : null;
     }
 }

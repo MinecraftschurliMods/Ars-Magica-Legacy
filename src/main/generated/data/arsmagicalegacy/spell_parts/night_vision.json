@@ -7,17 +7,14 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:green_rune"
+        "item": "arsmagicalegacy:blue_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:night_vision\"}",
-        "item": "minecraft:potion",
-        "count": 1,
-        "type": "forge:nbt"
+        "item": "minecraft:golden_carrot"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -2,9 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -22,6 +25,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -120,6 +124,7 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link ISkillHelper} instance
          */
+        @Unmodifiable
         ISkillHelper getSkillHelper();
 
         /**
@@ -127,6 +132,7 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link IAffinityHelper} instance
          */
+        @Unmodifiable
         IAffinityHelper getAffinityHelper();
 
         /**
@@ -134,6 +140,7 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link IMagicHelper} instance
          */
+        @Unmodifiable
         IMagicHelper getMagicHelper();
 
         /**
@@ -141,6 +148,7 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link IManaHelper} instance
          */
+        @Unmodifiable
         IManaHelper getManaHelper();
 
         /**
@@ -148,7 +156,39 @@ public final class ArsMagicaAPI {
          *
          * @return the {@link IBurnoutHelper} instance
          */
+        @Unmodifiable
         IBurnoutHelper getBurnoutHelper();
+
+        /**
+         * Get the {@link ISpellHelper} instance.
+         *
+         * @return the {@link ISpellHelper} instance
+         */
+        @Unmodifiable
+        ISpellHelper getSpellHelper();
+
+        /**
+         * Get the {@link IRiftHelper} instance.
+         *
+         * @return the {@link IRiftHelper} instance
+         */
+        @Unmodifiable
+        IRiftHelper getRiftHelper();
+
+        /**
+         * Get the {@link IShrinkHelper} instance.
+         *
+         * @return the {@link IShrinkHelper} instance
+         */
+        @Unmodifiable
+        IShrinkHelper getShrinkHelper();
+
+        /**
+         * Get the {@link IEtheriumHelper} instance.
+         *
+         * @return the {@link IEtheriumHelper} instance
+         */
+        IEtheriumHelper getEtheriumHelper();
 
         /**
          * Open the occulus gui for the given player.
@@ -156,13 +196,6 @@ public final class ArsMagicaAPI {
          * @param player the player to open the gui for
          */
         void openOcculusGui(Player player);
-
-        /**
-         * Get the {@link ISpellHelper} instance.
-         *
-         * @return the {@link ISpellHelper} instance
-         */
-        ISpellHelper getSpellHelper();
 
         /**
          * Open the spell customization gui for the given spell (the given stack).<br>
@@ -241,12 +274,27 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public void openOcculusGui(final Player pPlayer) {
+        public IEtheriumHelper getEtheriumHelper() {
+            return null;
         }
 
         @Override
         public ISpellHelper getSpellHelper() {
             return null;
+        }
+
+        @Override
+        public IRiftHelper getRiftHelper() {
+            return null;
+        }
+
+        @Override
+        public IShrinkHelper getShrinkHelper() {
+            return null;
+        }
+
+        @Override
+        public void openOcculusGui(final Player pPlayer) {
         }
 
         @Override

@@ -2,43 +2,19 @@
   "manaCost": 5.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:earth": 0.05,
-    "arsmagicalegacy:ender": 0.05
+    "arsmagicalegacy:earth": 0.01
   },
   "recipe": [
     {
       "ingredient": {
+        "item": "arsmagicalegacy:light_gray_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "tag": "forge:chests/wooden"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:stone_axe",
-        "count": 1,
-        "type": "forge:nbt"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:stone_pickaxe",
-        "count": 1,
-        "type": "forge:nbt"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:stone_shovel",
-        "count": 1,
-        "type": "forge:nbt"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

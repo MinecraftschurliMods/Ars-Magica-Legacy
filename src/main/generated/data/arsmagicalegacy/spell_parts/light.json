@@ -1,20 +1,13 @@
 {
-  "manaCost": 50.0,
+  "manaCost": 40.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:water": 0.01
+    "arsmagicalegacy:lightning": 0.01
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:cerublossom"
+        "item": "arsmagicalegacy:yellow_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -22,13 +15,6 @@
     {
       "ingredient": {
         "item": "arsmagicalegacy:vinteum_torch"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:torch"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

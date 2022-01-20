@@ -1,8 +1,8 @@
 {
-  "manaCost": 60.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:nature": 0.02
+    "arsmagicalegacy:nature": 0.01
   },
   "recipe": [
     {
@@ -14,10 +14,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:shears",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

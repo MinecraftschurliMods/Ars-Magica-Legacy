@@ -3,9 +3,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
@@ -34,12 +36,14 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -94,7 +98,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
-            return skillManager.get(spellPart).getDisplayName().getString().contains(value);
+            return StringUtils.containsIgnoreCase(skillManager.get(spellPart).getDisplayName().getString(), value);
         };
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
@@ -174,7 +178,24 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         final boolean                                            shapeGroupsEmpty    = shapeGroupDropZones.stream().map(itemGetter).allMatch(List::isEmpty);
         return switch (item.getType()) {
             case COMPONENT -> true;
-            case MODIFIER -> !shapeGroupsEmpty && shapeGroupDropZones.stream().map(mapper).anyMatch(isValidInShapeGroup);
+            case MODIFIER -> {
+                Deque<ISpellPart> deque = new ArrayDeque<>(items);
+                for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext();) {
+                    final ISpellPart part = it.next();
+                    if (part.getType() == ISpellPart.SpellPartType.MODIFIER) continue;
+                    if (part.getType() == ISpellPart.SpellPartType.COMPONENT) {
+                        HashSet<ISpellPartStat> stats = new HashSet<>(((ISpellComponent) part).getStatsUsed());
+                        stats.retainAll(((ISpellModifier)item).getStatsModified());
+                        yield !stats.isEmpty();
+                    }
+                    if (part.getType() == ISpellPart.SpellPartType.SHAPE) {
+                        HashSet<ISpellPartStat> stats = new HashSet<>(((ISpellShape) part).getStatsUsed());
+                        stats.retainAll(((ISpellModifier)item).getStatsModified());
+                        yield !stats.isEmpty();
+                    }
+                }
+                yield !shapeGroupsEmpty && shapeGroupDropZones.stream().map(mapper).anyMatch(isValidInShapeGroup);
+            }
             case SHAPE -> shapeGroupDropZones.stream().map(mapper).allMatch(isValidInShapeGroup);
         };
     }
@@ -188,7 +209,9 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
                     final ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.SHAPE) {
-                        yield ((ISpellShape) part).canBeModifiedBy(((ISpellModifier)item));
+                        HashSet<ISpellPartStat> stats = new HashSet<>(((ISpellShape) part).getStatsUsed());
+                        stats.retainAll(((ISpellModifier)item).getStatsModified());
+                        yield !stats.isEmpty();
                     }
                 }
                 yield true;

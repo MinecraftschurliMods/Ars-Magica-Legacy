@@ -1,20 +1,20 @@
 {
-  "manaCost": 70.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:air": 0.01
+    "arsmagicalegacy:air": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
+        "item": "arsmagicalegacy:lime_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:hopper"
+        "item": "arsmagicalegacy:tarma_root"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

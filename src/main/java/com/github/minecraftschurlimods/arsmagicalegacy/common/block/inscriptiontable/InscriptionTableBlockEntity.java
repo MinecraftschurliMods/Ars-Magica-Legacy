@@ -24,21 +24,22 @@ import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
 
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
-    private static final Component DEFAULT_NAME     = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
-    public static final  String    SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
-    public static final  String    INVENTORY_KEY    = ArsMagicaAPI.MOD_ID+":inventory";
-    public static final  String    SPELL_NAME_KEY   = ArsMagicaAPI.MOD_ID+":spell_name";
+    public static final String SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
+    public static final String INVENTORY_KEY = ArsMagicaAPI.MOD_ID + ":inventory";
+    public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+    private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
 
-    private           ItemStack stack = ItemStack.EMPTY;
-    private @Nullable Spell     spellRecipe;
-    private @Nullable String    spellName;
-    private           boolean   open;
+    private ItemStack stack = ItemStack.EMPTY;
+    private @Nullable Spell spellRecipe;
+    private @Nullable String spellName;
+    private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
@@ -76,16 +77,21 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return Optional.ofNullable(getSpellRecipe())
                        .map(spell -> {
                            if (spell.isEmpty()) return stack;
-                           ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-                           SpellItem.saveSpell(book, spell);
-                           CompoundTag tag = book.getOrCreateTag();
-                           tag.putString(WrittenBookItem.TAG_TITLE, Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()));
-                           tag.putString(WrittenBookItem.TAG_AUTHOR, player.getDisplayName().getString());
-                           ListTag pages = new ListTag();
-                           makeSpellRecipePages(pages, player, spell);
-                           tag.put(WrittenBookItem.TAG_PAGES, pages);
-                           return book;
+                           return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
                        });
+    }
+
+    @NotNull
+    public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        SpellItem.saveSpell(book, spell);
+        CompoundTag tag = book.getOrCreateTag();
+        tag.putString(WrittenBookItem.TAG_TITLE, name);
+        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
+        ListTag pages = new ListTag();
+        //makeSpellRecipePages(pages, player, spell);
+        tag.put(WrittenBookItem.TAG_PAGES, pages);
+        return book;
     }
 
     private static void makeSpellRecipePages(ListTag pages, Player player, Spell spell) {
@@ -118,7 +124,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public Component getDisplayName() {
-        return DEFAULT_NAME;
+        return TITLE;
     }
 
     @Nullable

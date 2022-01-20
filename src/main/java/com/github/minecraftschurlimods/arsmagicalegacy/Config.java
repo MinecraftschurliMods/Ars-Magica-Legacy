@@ -54,6 +54,9 @@ public final class Config {
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.IntValue EXTRA_STARTING_BLUE_POINTS;
+        public final ForgeConfigSpec.IntValue EFFECT_DURATION;
+        public final ForgeConfigSpec.IntValue DAMAGE;
+        public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
 
         private Server(ForgeConfigSpec.Builder builder) {
             DEFAULT_MAX_MANA = builder
@@ -71,17 +74,29 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "burnout_ratio")
                     .defineInRange("burnout_ratio", 0.5, 0, 10.0);
             CRAFTING_ALTAR_CHECK_TIME = builder
-                    .comment("The time in ticks between multiblock validation checks for the crafting altar. [ 1 - 200 ]")
+                    .comment("The time in ticks between multiblock validation checks for the crafting altar.")
                     .translation(TranslationConstants.CONFIG + "crafting_altar_check_time")
                     .defineInRange("crafting_altar_check_time", 20, 1, 200);
             MAX_SHAPE_GROUPS = builder
-                    .comment("The maximum number of shape groups allowed for new spells. [ 0 - 5 ]")
+                    .comment("The maximum number of shape groups allowed for new spells.")
                     .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
             EXTRA_STARTING_BLUE_POINTS = builder
                     .comment("The extra skill points a player gets on level 1. [ 0 - 100 ]")
                     .translation(TranslationConstants.CONFIG + "extra_starting_blue_points")
                     .defineInRange("extra_starting_blue_points", 2, 0, 100);
+            EFFECT_DURATION = builder
+                    .comment("Effect duration of effect-based components, in ticks.")
+                    .translation(TranslationConstants.CONFIG + "effect_duration")
+                    .defineInRange("effect_duration", 600, 1, 3600);
+            DAMAGE = builder
+                    .comment("Damage of damage-based components, in half hearts.")
+                    .translation(TranslationConstants.CONFIG + "damage")
+                    .defineInRange("damage", 6, 1, 100);
+            MAX_ETHERIUM_STORAGE = builder
+                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem. [ 3000 - "+Short.MAX_VALUE+" ]")
+                    .translation(TranslationConstants.CONFIG + "max_etherium_storage")
+                    .defineInRange("max_etherium_storage", 5000, 3000, Short.MAX_VALUE);
         }
     }
 }

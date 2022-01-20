@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:obelisk"
+    ]
+  },
+  "criteria": {
+    "has_vinteum_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/vinteum"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:obelisk"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vinteum_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumPro
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
@@ -21,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,13 +41,11 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     }
 
     @Override
-    public Component getTooltip() {
-        if (types.size() == 1) return types.iterator().next().getDisplayName().copy().append(" x " + amount());
-        return new TextComponent("(").append(types.stream()
-                                                  .map(ITranslatable::getDisplayName)
-                                                  .map(Component::copy)
-                                                  .collect(AMUtil.joiningComponents(" | ")))
-                                     .append(") x "+ amount());
+    public List<Component> getTooltip() {
+        if (types.size() == 1) return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
+        ArrayList<Component> components = new ArrayList<>(types.stream().map(ITranslatable::getDisplayName).toList());
+        components.add(new TextComponent("x " + amount()));
+        return components;
     }
 
     @Override
@@ -75,7 +74,7 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
             if (leverActive) {
                 int amount = amount();
                 for (IEtheriumProvider iEtheriumProvider : altarCore.getBoundProviders()) {
-                    if (iEtheriumProvider.provides(types())) {
+                    if (types().contains(iEtheriumProvider.getType())) {
                         amount = iEtheriumProvider.consume(level, pos, amount);
                         if (amount <= 0) return null;
                     }
