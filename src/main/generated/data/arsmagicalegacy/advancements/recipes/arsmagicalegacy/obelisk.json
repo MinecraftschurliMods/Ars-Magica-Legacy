@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "arsmagicalegacy:magitech_goggles"
+      "arsmagicalegacy:obelisk"
     ]
   },
   "criteria": {
-    "has_topaz": {
+    "has_vinteum_dust": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:gems/topaz"
+            "tag": "forge:dusts/vinteum"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "arsmagicalegacy:magitech_goggles"
+        "recipe": "arsmagicalegacy:obelisk"
       }
     }
   },
   "requirements": [
     [
-      "has_topaz",
+      "has_vinteum_dust",
       "has_the_recipe"
     ]
   ]

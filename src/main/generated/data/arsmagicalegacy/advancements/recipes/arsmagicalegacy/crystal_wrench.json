@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "arsmagicalegacy:magitech_goggles"
+      "arsmagicalegacy:crystal_wrench"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "arsmagicalegacy:magitech_goggles"
+        "recipe": "arsmagicalegacy:crystal_wrench"
       }
     }
   },

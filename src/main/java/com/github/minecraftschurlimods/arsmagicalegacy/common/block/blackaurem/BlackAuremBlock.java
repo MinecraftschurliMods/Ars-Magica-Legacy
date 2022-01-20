@@ -27,6 +27,7 @@ public class BlackAuremBlock extends BaseEntityBlock {
     private static final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR1);
     private static final BiPredicate<Level, BlockPos> PILLAR2 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR2);
     private static final BiPredicate<Level, BlockPos> PILLAR3 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR3);
+    private static final BiPredicate<Level, BlockPos> PILLAR4 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR4);
 
     public BlackAuremBlock() {
         super(BlockBehaviour.Properties.of(Material.AIR).color(MaterialColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
@@ -58,6 +59,8 @@ public class BlackAuremBlock extends BaseEntityBlock {
                 tier = 3;
             } else if (PILLAR3.test(world, pos)) {
                 tier = 4;
+            } else if (PILLAR4.test(world, pos)) {
+                tier = 5;
             } else {
                 tier = 1;
             }

@@ -43,8 +43,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
         blockIdTranslation(AMBlocks.OBELISK);
-        blockIdTranslation(AMBlocks.CELESTIAL_PRISM);
-        blockIdTranslation(AMBlocks.BLACK_AUREM);
+        wipBlockIdTranslation(AMBlocks.CELESTIAL_PRISM);
+        wipBlockIdTranslation(AMBlocks.BLACK_AUREM);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         itemIdTranslation(AMItems.MAGITECH_GOGGLES);
         itemIdTranslation(AMItems.CRYSTAL_WRENCH);
