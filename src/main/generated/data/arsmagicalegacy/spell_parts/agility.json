@@ -1,8 +1,8 @@
 {
-  "manaCost": 6.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:air": 1.0
+    "arsmagicalegacy:air": 0.05
   },
   "recipe": [
     {
@@ -15,16 +15,6 @@
     {
       "ingredient": {
         "tag": "forge:dusts/redstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "type": "forge:nbt",
-        "item": "minecraft:leather_boots",
-        "count": 1,
-        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -107,6 +107,34 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('S', Tags.Items.STONE)
                 .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.OBELISK.get())
+                .pattern("VSV")
+                .pattern("SBS")
+                .pattern("VSV")
+                .define('V', AMTags.Items.DUSTS_VINTEUM)
+                .define('S', Tags.Items.STONE)
+                .define('B', ItemTags.STONE_BRICKS)
+                .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.MAGITECH_GOGGLES.get())
+                .pattern("LLL")
+                .pattern("CGC")
+                .pattern("TLT")
+                .define('L', Items.LEATHER)
+                .define('C', AMTags.Items.GEMS_CHIMERITE)
+                .define('T', AMTags.Items.GEMS_TOPAZ)
+                .define('G', Tags.Items.NUGGETS_GOLD)
+                .unlockedBy("has_topaz", has(AMTags.Items.GEMS_TOPAZ))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.CRYSTAL_WRENCH.get())
+                .pattern("ITI")
+                .pattern(" V ")
+                .pattern(" I ")
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('T', AMTags.Items.GEMS_TOPAZ)
+                .define('V', AMTags.Items.DUSTS_VINTEUM)
+                .unlockedBy("has_topaz", has(AMTags.Items.GEMS_TOPAZ))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.WIZARDS_CHALK.get())
                 .requires(AMTags.Items.DUSTS_VINTEUM)
                 .requires(Items.BONE_MEAL)
@@ -252,12 +280,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.COBBLESTONE)
                 .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
                 .save(consumer);
-        var hasBlankRune = has(AMItems.BLANK_RUNE.get());
         for (DyeColor color : DyeColor.values()) {
             ShapelessRecipeBuilder.shapeless(AMItems.COLORED_RUNE.get(color))
                     .requires(AMItems.BLANK_RUNE.get())
                     .requires(color.getTag())
-                    .unlockedBy("has_blank_rune", hasBlankRune)
+                    .unlockedBy("has_blank_rune", has(AMItems.BLANK_RUNE.get()))
                     .save(consumer);
         }
         ShapedRecipeBuilder.shaped(AMItems.RUNE_BAG.get())
@@ -295,24 +322,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('V', AMTags.Items.DUSTS_VINTEUM)
                 .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.SPELL_PARCHMENT.get())
-                .pattern("S")
-                .pattern("P")
-                .pattern("S")
-                .define('S', Tags.Items.RODS_WOODEN)
-                .define('P', Items.PAPER)
-                .unlockedBy("has_paper", has(Items.PAPER))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.MAGITECH_GOGGLES.get())
-                .pattern("LLL")
-                .pattern("CGC")
-                .pattern("TLT")
-                .define('L', Items.LEATHER)
-                .define('C', AMTags.Items.GEMS_CHIMERITE)
-                .define('T', AMTags.Items.GEMS_TOPAZ)
-                .define('G', Tags.Items.NUGGETS_GOLD)
-                .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
         ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())
                 .pattern("AIA")
@@ -414,6 +423,14 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.ENDER_EYE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ender");
+        ShapedRecipeBuilder.shaped(AMItems.SPELL_PARCHMENT.get())
+                .pattern("S")
+                .pattern("P")
+                .pattern("S")
+                .define('S', Tags.Items.RODS_WOODEN)
+                .define('P', Items.PAPER)
+                .unlockedBy("has_paper", has(Items.PAPER))
+                .save(consumer);
     }
 
     private static class ShapedNBTRecipeBuilder {

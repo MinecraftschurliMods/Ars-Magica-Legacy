@@ -1,18 +1,19 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
-import net.minecraft.world.effect.InstantenousMobEffect;
+import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
 
-public class ScrambleSynapsesEffect extends InstantenousMobEffect {
+public class ScrambleSynapsesEffect extends AMMobEffect {
     public ScrambleSynapsesEffect() {
         super(MobEffectCategory.HARMFUL, 0x306600);
     }
 
     @Override
-    public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
-        super.applyInstantenousEffect(pSource, pIndirectSource, pLivingEntity, pAmplifier, pHealth);
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+        if (pLivingEntity.getLevel().getRandom().nextInt(80) < 10) {
+            Direction direction = Direction.from2DDataValue(pLivingEntity.getLevel().getRandom().nextInt(4));
+            pLivingEntity.setDeltaMovement(pLivingEntity.getDeltaMovement().add(direction.getStepX() / 2f, direction.getStepY() / 2f, direction.getStepZ() / 2f));
+        }
     }
 }

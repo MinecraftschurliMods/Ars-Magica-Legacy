@@ -7,7 +7,7 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:black_rune"
+        "item": "arsmagicalegacy:white_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

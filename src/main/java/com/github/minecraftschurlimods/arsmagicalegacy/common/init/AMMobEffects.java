@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.Illuminatio
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.InstantManaEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ManaRegenEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ScrambleSynapsesEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ShrinkEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.TemporalAnchorEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -37,15 +38,15 @@ public interface AMMobEffects {
     RegistryObject<MobEffect> FROST             = MOB_EFFECTS.register("frost",             FrostEffect::new);
     RegistryObject<MobEffect> FURY              = MOB_EFFECTS.register("fury",              FuryEffect::new);
     RegistryObject<MobEffect> GRAVITY_WELL      = MOB_EFFECTS.register("gravity_well",      () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0xa400ff).addAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), "CC5AF142-2BD2-4215-B836-2605AED11727", 2, AttributeModifier.Operation.MULTIPLY_BASE));
-    RegistryObject<MobEffect> ILLUMINATION      = MOB_EFFECTS.register("illumination",      IlluminationEffect::new); // TODO
+    RegistryObject<MobEffect> ILLUMINATION      = MOB_EFFECTS.register("illumination",      IlluminationEffect::new);
     RegistryObject<MobEffect> INSTANT_MANA      = MOB_EFFECTS.register("instant_mana",      InstantManaEffect::new);
     RegistryObject<MobEffect> MAGIC_SHIELD      = MOB_EFFECTS.register("magic_shield",      () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xd780ff));
     RegistryObject<MobEffect> MANA_BOOST        = MOB_EFFECTS.register("mana_boost",        () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0x0093ff).addAttributeModifier(AMAttributes.MAX_MANA.get(), "88812AE6-E2A3-4FC3-9A52-E0040DF399A9", 250, AttributeModifier.Operation.ADDITION));
     RegistryObject<MobEffect> MANA_REGEN        = MOB_EFFECTS.register("mana_regen",        ManaRegenEffect::new);
     RegistryObject<MobEffect> REFLECT           = MOB_EFFECTS.register("reflect",           () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xadffff));
-    RegistryObject<MobEffect> SCRAMBLE_SYNAPSES = MOB_EFFECTS.register("scramble_synapses", ScrambleSynapsesEffect::new); // TODO
+    RegistryObject<MobEffect> SCRAMBLE_SYNAPSES = MOB_EFFECTS.register("scramble_synapses", ScrambleSynapsesEffect::new);
     RegistryObject<MobEffect> SHIELD            = MOB_EFFECTS.register("shield",            () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xc4c4c4).addAttributeModifier(Attributes.ARMOR, "F323F5EB-9C66-4142-BCFA-B7855F16D534", 2, AttributeModifier.Operation.ADDITION));
-    RegistryObject<MobEffect> SHRINK            = MOB_EFFECTS.register("shrink",            () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0x0000dd)); // TODO
+    RegistryObject<MobEffect> SHRINK            = MOB_EFFECTS.register("shrink",            ShrinkEffect::new);
     RegistryObject<MobEffect> SILENCE           = MOB_EFFECTS.register("silence",           () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0xc1c1ff));
     RegistryObject<MobEffect> SWIFT_SWIM        = MOB_EFFECTS.register("swift_swim",        () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0x3b3bff).addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "A5B6CF2A-2F7C-51EF-9022-7C3E7D5E6AAC", 1.133f, AttributeModifier.Operation.MULTIPLY_BASE));
     RegistryObject<MobEffect> TEMPORAL_ANCHOR   = MOB_EFFECTS.register("temporal_anchor",   TemporalAnchorEffect::new);

@@ -3,8 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.etherium;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import java.util.Set;
-
 /**
  * TODO doc
  */

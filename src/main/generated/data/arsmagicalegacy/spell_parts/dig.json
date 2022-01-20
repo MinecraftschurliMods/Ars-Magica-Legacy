@@ -7,6 +7,13 @@
   "recipe": [
     {
       "ingredient": {
+        "item": "arsmagicalegacy:brown_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "type": "forge:nbt",
         "item": "minecraft:iron_axe",
         "count": 1,

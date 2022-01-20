@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -27,9 +26,20 @@ class AMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
+        skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
+        blockItem(OBELISK).transforms()
+                .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+                .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
+                .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
+                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
+        blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+        itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
+        itemGenerated(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);
         itemGenerated(CRYSTAL_WRENCH);
         blockItem(CHIMERITE_ORE);
@@ -80,22 +90,10 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(TARMA_ROOT, "block/tarma_root");
         itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
-        itemGenerated(WIZARDS_CHALK);
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
-        skillPointItem(INFINITY_ORB);
-        blockItem(OBELISK).transforms()
-                          .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-                          .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
-                          .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
-                          .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-                          .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
-                          .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end()
-                          .end();
-        blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
-        itemGenerated(BLACK_AUREM, "block/"+BLACK_AUREM.getId().getPath());
     }
 
     /**
@@ -103,8 +101,8 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private ItemModelBuilder itemGenerated(RegistryObject<? extends Item> item) {
-        return itemGenerated(item, "item/" + item.getId().getPath());
+    private void itemGenerated(RegistryObject<? extends Item> item) {
+        itemGenerated(item, "item/" + item.getId().getPath());
     }
 
     /**
@@ -113,8 +111,8 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      * @param name The texture id to use.
      */
-    private ItemModelBuilder itemGenerated(RegistryObject<? extends Item> item, String name) {
-        return singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+    private void itemGenerated(RegistryObject<? extends Item> item, String name) {
+        singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
     }
 
     /**
@@ -147,22 +145,12 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model that uses the corresponding block model as the parent model.
-     *
-     * @param item  The item to generate the model for.
-     * @param block The block model to use.
-     */
-    private ItemModelBuilder blockItem(RegistryObject<? extends Item> item, Block block) {
-        return withExistingParent(item, block.getRegistryName().getPath());
-    }
-
-    /**
      * Adds a block item model that uses the corresponding block model as the parent model.
      *
-     * @param blockItem The item to generate the model for.
+     * @param item The item to generate the model for.
      */
-    private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> blockItem) {
-        return blockItem(blockItem, blockItem.get().getBlock());
+    private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
+        return withExistingParent(item, item.get().getBlock().getRegistryName().getPath());
     }
 
     /**

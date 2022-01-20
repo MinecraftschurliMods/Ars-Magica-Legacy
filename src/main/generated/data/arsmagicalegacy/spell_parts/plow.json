@@ -1,5 +1,5 @@
 {
-  "manaCost": 75.0,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:earth": 0.01
@@ -15,7 +15,7 @@
     {
       "ingredient": {
         "type": "forge:nbt",
-        "item": "minecraft:stone_hoe",
+        "item": "minecraft:iron_hoe",
         "count": 1,
         "nbt": "{Damage:0}"
       },

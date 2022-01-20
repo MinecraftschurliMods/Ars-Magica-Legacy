@@ -1,21 +1,13 @@
 {
-  "manaCost": 60.0,
+  "manaCost": 75.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:fire": 0.008,
-    "arsmagicalegacy:air": 0.004
+    "arsmagicalegacy:fire": 0.001
   },
   "recipe": [
     {
       "ingredient": {
         "item": "arsmagicalegacy:orange_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "minecraft:sand"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

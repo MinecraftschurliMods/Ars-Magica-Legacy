@@ -68,11 +68,11 @@ public class SpellItem extends Item implements ISpellItem {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
         }
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.manaCost(player)));
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout()));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
+        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
         if (player == null) return;
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
-            List<Either<Ingredient, ItemStack>> reagents = spell.reagents();
+            List<Either<Ingredient, ItemStack>> reagents = spell.reagents(player);
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
             for (Either<Ingredient, ItemStack> e : reagents) {

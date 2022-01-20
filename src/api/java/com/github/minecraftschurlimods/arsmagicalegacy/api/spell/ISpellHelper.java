@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.mojang.datafixers.util.Either;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -31,9 +30,17 @@ public interface ISpellHelper {
      */
     void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
 
-    int countModifiers(List<ISpellModifier> modifiers, ResourceLocation modifier);
-
-    boolean isModifierPresent(List<ISpellModifier> modifiers, ResourceLocation id);
+    /**
+     * Get the stat value modified by the modifiers.
+     *
+     * @param baseValue the base value for the stat
+     * @param stat      the stat that is modified
+     * @param spell     the spell that the part belongs to
+     * @param caster    the caster of the spell
+     * @param target    the target of the spell cast
+     * @return          the modified value of the stat
+     */
+    float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target);
 
     HitResult trace(Entity caster, Level world, double range, boolean includeEntities, boolean targetWater);
 

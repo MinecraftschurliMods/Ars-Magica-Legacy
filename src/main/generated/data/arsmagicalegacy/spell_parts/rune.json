@@ -1,5 +1,5 @@
 {
-  "manaCost": 1.8,
+  "manaCost": 2.0,
   "reagents": [],
   "affinities": {},
   "recipe": [
@@ -19,14 +19,7 @@
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:orange_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:purple_rune"
+        "item": "arsmagicalegacy:green_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -41,6 +34,13 @@
     {
       "ingredient": {
         "item": "arsmagicalegacy:white_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:yellow_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

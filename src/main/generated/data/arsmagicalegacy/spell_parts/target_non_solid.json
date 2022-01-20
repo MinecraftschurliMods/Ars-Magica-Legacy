@@ -22,13 +22,6 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:brown_mushroom"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "minecraft:poppy"
       },
       "count": 1,

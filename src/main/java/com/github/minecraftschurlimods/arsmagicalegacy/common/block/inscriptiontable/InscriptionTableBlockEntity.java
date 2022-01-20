@@ -31,15 +31,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
-    private static final Component DEFAULT_NAME     = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
-    public static final  String    SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
-    public static final  String    INVENTORY_KEY    = ArsMagicaAPI.MOD_ID+":inventory";
-    public static final  String    SPELL_NAME_KEY   = ArsMagicaAPI.MOD_ID+":spell_name";
+    public static final String SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
+    public static final String INVENTORY_KEY = ArsMagicaAPI.MOD_ID + ":inventory";
+    public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+    private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
 
-    private           ItemStack stack = ItemStack.EMPTY;
-    private @Nullable Spell     spellRecipe;
-    private @Nullable String    spellName;
-    private           boolean   open;
+    private ItemStack stack = ItemStack.EMPTY;
+    private @Nullable Spell spellRecipe;
+    private @Nullable String spellName;
+    private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
@@ -124,7 +124,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public Component getDisplayName() {
-        return DEFAULT_NAME;
+        return TITLE;
     }
 
     @Nullable

@@ -35,6 +35,10 @@ public class Drought extends AbstractComponent {
         map.put(Blocks.SANDSTONE, Blocks.SMOOTH_SANDSTONE);
     });
 
+    public Drought() {
+        super();
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
@@ -46,16 +50,16 @@ public class Drought extends AbstractComponent {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
         if (Tags.Blocks.DIRT.contains(block)) {
-            level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
+            level.setBlock(pos, Blocks.SAND.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (BlockTags.FLOWERS.contains(block)) {
-            level.setBlock(pos, Blocks.WATER.defaultBlockState(), 3);
+            level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (level.getBlockState(pos.offset(target.getDirection().getNormal())).getBlock() == Blocks.WATER) {
-            level.setBlock(pos.offset(target.getDirection().getNormal()), Blocks.AIR.defaultBlockState(), 3);
+            level.setBlock(pos.offset(target.getDirection().getNormal()), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (TRANSITIONS.containsKey(block)) {
-            level.setBlock(pos, TRANSITIONS.get(block).defaultBlockState(), 3);
+            level.setBlock(pos, TRANSITIONS.get(block).defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;

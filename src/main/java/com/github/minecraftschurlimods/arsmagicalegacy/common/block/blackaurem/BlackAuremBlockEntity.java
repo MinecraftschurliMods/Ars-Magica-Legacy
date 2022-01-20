@@ -47,7 +47,7 @@ public class BlackAuremBlockEntity extends BlockEntity {
                     break;
                 }
             }
-            timer = 5 / (tier + 1);
+            timer = 6 / (tier + 1);
         } else {
             timer--;
         }

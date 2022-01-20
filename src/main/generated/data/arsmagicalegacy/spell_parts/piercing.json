@@ -1,5 +1,5 @@
 {
-  "manaCost": 1.5,
+  "manaCost": 1.25,
   "reagents": [],
   "affinities": {},
   "recipe": [
@@ -15,14 +15,14 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/emerald"
+        "item": "minecraft:arrow"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:arrow"
+        "item": "minecraft:snowball"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

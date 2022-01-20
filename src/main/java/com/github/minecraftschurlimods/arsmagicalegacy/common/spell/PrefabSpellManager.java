@@ -9,8 +9,6 @@ import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -43,7 +41,7 @@ public class PrefabSpellManager extends CodecDataManager<PrefabSpellManager.Pref
 
     public record PrefabSpell(Component name, Spell spell, ResourceLocation icon) {
         public static final Codec<PrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.DEFAULT_PREFAB_SPELL)).forGetter(PrefabSpell::name),
+                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(PrefabSpell::name),
                 Spell.CODEC.fieldOf("spell").forGetter(PrefabSpell::spell),
                 ResourceLocation.CODEC.fieldOf("icon").forGetter(PrefabSpell::icon)
         ).apply(inst, PrefabSpell::new));

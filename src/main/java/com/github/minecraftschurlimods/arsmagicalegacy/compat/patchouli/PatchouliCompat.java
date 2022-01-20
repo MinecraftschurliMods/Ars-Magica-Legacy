@@ -41,6 +41,7 @@ public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation BLACK_AUREM_PILLAR1 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar1");
     public static final ResourceLocation BLACK_AUREM_PILLAR2 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar2");
     public static final ResourceLocation BLACK_AUREM_PILLAR3 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar3");
+    public static final ResourceLocation BLACK_AUREM_PILLAR4 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar4");
 
     private static final String[][] CRAFTING_ALTAR_STRUCTURE = new String[][]{
             {" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
@@ -91,12 +92,13 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher quartzPillar = api.strictBlockMatcher(Blocks.QUARTZ_PILLAR);
         IStateMatcher netherBricks = api.strictBlockMatcher(Blocks.NETHER_BRICKS);
         IStateMatcher stoneBricks = api.looseBlockMatcher(Blocks.STONE_BRICKS);
-        IStateMatcher glass = api.strictBlockMatcher(Blocks.GLASS);
         IStateMatcher chiseledStoneBricks = api.looseBlockMatcher(Blocks.CHISELED_STONE_BRICKS);
+        IStateMatcher glass = api.strictBlockMatcher(Blocks.GLASS);
+        IStateMatcher chimeriteBlock = api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get());
         IStateMatcher goldBlock = api.strictBlockMatcher(Blocks.GOLD_BLOCK);
         IStateMatcher diamondBlock = api.strictBlockMatcher(Blocks.DIAMOND_BLOCK);
-        IStateMatcher chimeriteBlock = api.strictBlockMatcher(AMBlocks.CHIMERITE_BLOCK.get());
         IStateMatcher moonstoneBlock = api.strictBlockMatcher(AMBlocks.MOONSTONE_BLOCK.get());
+        IStateMatcher sunstoneBlock = api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get());
         IStateMatcher air = api.airMatcher();
 
         api.registerMultiblock(CRAFTING_ALTAR, api.makeMultiblock(
@@ -137,9 +139,10 @@ public class PatchouliCompat implements ICompatHandler {
         api.registerMultiblock(CELESTIAL_PRISM_PILLAR2, makePillarsMultiblock(api, quartzPillar, goldBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
         api.registerMultiblock(CELESTIAL_PRISM_PILLAR3, makePillarsMultiblock(api, quartzPillar, diamondBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
         api.registerMultiblock(CELESTIAL_PRISM_PILLAR4, makePillarsMultiblock(api, quartzPillar, moonstoneBlock, celestialPrismLower, celestialPrismUpper, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR1, makePillarsMultiblock(api, netherBricks, goldBlock, air, blackAurem, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR2, makePillarsMultiblock(api, netherBricks, diamondBlock, air, blackAurem, air, chalk));
-        api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, netherBricks, chimeriteBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR1, makePillarsMultiblock(api, netherBricks, chimeriteBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR2, makePillarsMultiblock(api, netherBricks, goldBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, netherBricks, diamondBlock, air, blackAurem, air, chalk));
+        api.registerMultiblock(BLACK_AUREM_PILLAR4, makePillarsMultiblock(api, netherBricks, sunstoneBlock, air, blackAurem, air, chalk));
     }
 
     public static BiPredicate<Level, BlockPos> getMultiblockMatcher(ResourceLocation location) {

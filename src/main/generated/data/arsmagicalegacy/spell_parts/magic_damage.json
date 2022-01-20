@@ -2,10 +2,16 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:arcane": 0.01,
-    "arsmagicalegacy:ender": 0.005
+    "arsmagicalegacy:arcane": 0.01
   },
   "recipe": [
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:magenta_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
     {
       "ingredient": {
         "item": "arsmagicalegacy:purple_rune"
@@ -15,7 +21,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/lapis"
+        "tag": "forge:gems/chimerite"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -23,16 +29,6 @@
     {
       "ingredient": {
         "item": "minecraft:book"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "type": "forge:nbt",
-        "item": "minecraft:stone_sword",
-        "count": 1,
-        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

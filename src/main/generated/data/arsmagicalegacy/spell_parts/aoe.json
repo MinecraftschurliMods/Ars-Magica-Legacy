@@ -8,7 +8,7 @@
         "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -19,6 +19,15 @@
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "types": [
+        "NEUTRAL",
+        "LIGHT",
+        "DARK"
+      ],
+      "amount": 1,
+      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

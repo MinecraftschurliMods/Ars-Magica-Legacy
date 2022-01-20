@@ -1,13 +1,13 @@
 {
-  "manaCost": 225.0,
+  "manaCost": 40.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:life": 0.05
+    "arsmagicalegacy:life": 0.01
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:yellow_rune"
+        "item": "arsmagicalegacy:pink_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -15,13 +15,6 @@
     {
       "ingredient": {
         "tag": "forge:dusts/glowstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:dusts/redstone"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

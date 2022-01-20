@@ -1,8 +1,8 @@
 {
-  "manaCost": 400.0,
+  "manaCost": 1000.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:arcane": 0.05
+    "arsmagicalegacy:arcane": 0.1
   },
   "recipe": [
     {
@@ -12,12 +12,19 @@
         "count": 1,
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
       },
-      "count": 2,
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
         "tag": "forge:dusts/arcane_ash"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:end_stones"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -3,10 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.etherium;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
 
 public class SimpleEtheriumProvider implements IEtheriumProvider {
 
