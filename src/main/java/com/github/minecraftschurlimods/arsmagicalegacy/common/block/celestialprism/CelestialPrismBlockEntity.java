@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEth
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +37,18 @@ public class CelestialPrismBlockEntity extends BlockEntity {
                 provider.add(1);
             }
         }
+    }
+
+    @Override
+    protected void saveAdditional(final CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("etheriumValue", this.provider.getAmount());
+    }
+
+    @Override
+    public void load(final CompoundTag tag) {
+        super.load(tag);
+        provider.set(tag.getInt("etheriumValue"));
     }
 
     private static void onConsume(Level level, BlockPos consumerPos, int amount) {

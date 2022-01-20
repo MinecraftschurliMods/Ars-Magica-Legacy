@@ -1,15 +1,28 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.theoneprobe;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlockEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlockEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
+import mcjty.theoneprobe.api.Color;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.NumberFormat;
 import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.Optional;
@@ -21,15 +34,35 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
     }
 
     @Override
-    public void addProbeInfo(final ProbeMode probeMode, final IProbeInfo iProbeInfo, final Player player, final Level level, final BlockState blockState, final IProbeHitData iProbeHitData) {
-        Optional.ofNullable(level.getBlockEntity(iProbeHitData.getPos()))
-                .filter(ArsMagicaAPI.get().getEtheriumHelper()::hasEtheriumProvider)
-                .map(ArsMagicaAPI.get().getEtheriumHelper()::getEtheriumProvider)
-                .flatMap(LazyOptional::resolve)
-                .ifPresent(provider -> iProbeInfo.progress(provider.getAmount(),
-                                                           provider.getMax(),
-                                                           iProbeInfo.defaultProgressStyle()
-                                                                     .filledColor(provider.getType().getColor())
-                                                                     .numberFormat(NumberFormat.COMMAS)));
+    public void addProbeInfo(final ProbeMode probeMode, final IProbeInfo iProbeInfo, final Player player, final Level level, BlockState blockState, final IProbeHitData iProbeHitData) {
+        BlockPos pos = iProbeHitData.getPos();
+        final int tier;
+        if (blockState.getBlock() instanceof ObeliskBlock obeliskBlock) {
+            pos = pos.below(blockState.getValue(ObeliskBlock.PART).ordinal());
+            blockState = level.getBlockState(pos);
+            tier = obeliskBlock.getTier(blockState, level, pos);
+        } else if (blockState.getBlock() instanceof CelestialPrismBlock celestialPrismBlock) {
+            if (blockState.getValue(CelestialPrismBlock.HALF) != DoubleBlockHalf.LOWER) {
+                pos = pos.below();
+                blockState = level.getBlockState(pos);
+            }
+            tier = celestialPrismBlock.getTier(blockState, level, pos);
+        } else if (blockState.getBlock() instanceof BlackAuremBlock blackAuremBlock) {
+            tier = blackAuremBlock.getTier(blockState, level, pos);
+        } else {
+            tier = -1;
+        }
+        ArsMagicaAPI.get()
+                    .getEtheriumHelper()
+                    .getEtheriumProvider(level, pos)
+                    .ifPresent(provider -> iProbeInfo.progress(provider.getAmount(),
+                                                               provider.getMax(),
+                                                               iProbeInfo.defaultProgressStyle()
+                                                                         .filledColor(provider.getType().getColor())
+                                                                         .alternateFilledColor(Color.darker(provider.getType().getColor(), .8))
+                                                                         .numberFormat(NumberFormat.FULL)));
+        if (tier > -1) {
+            iProbeInfo.mcText(new TranslatableComponent(TranslationConstants.MULTIBLOCK_TIER, tier));
+        }
     }
 }

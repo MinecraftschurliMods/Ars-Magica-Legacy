@@ -31,6 +31,8 @@ class AMObeliskFuelProvider implements DataProvider {
 
     protected void addData() {
         forTag("vinteum_dust", AMTags.Items.DUSTS_VINTEUM, 200, 1);
+        forTag("vinteum_block", AMTags.Items.STORAGE_BLOCKS_VINTEUM, 900, 2);
+        // TODO essence bucket
     }
 
     protected void forItem(final String name, final Item item, final int burntime, final int valuepertick) {

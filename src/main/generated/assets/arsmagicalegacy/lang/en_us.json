@@ -489,6 +489,7 @@
   "message.arsmagicalegacy.spell_cast.no_permission": "No permission!",
   "message.arsmagicalegacy.spell_cast.not_enough_mana": "Not enough mana!",
   "message.arsmagicalegacy.spell_cast.silenced": "Silence!",
+  "multiblock.arsmagicalegacy.tier": "Tier: %s",
   "screen.arsmagicalegacy.inscription_table.default_name": "Spell",
   "screen.arsmagicalegacy.inscription_table.name": "Name",
   "screen.arsmagicalegacy.inscription_table.search": "Search",
