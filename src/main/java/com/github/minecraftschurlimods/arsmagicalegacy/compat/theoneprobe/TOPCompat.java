@@ -18,5 +18,7 @@ public class TOPCompat implements ICompatHandler {
 
     private void initTOP(final ITheOneProbe api) {
         api.registerProvider(new EtheriumProbeInfoProvider());
+        api.registerProvider(new AltarProbeInfoProvider());
     }
+
 }

@@ -10,3 +10,6 @@
 [![Discord](https://img.shields.io/discord/358283695104458752?color=%235865F2&label=Discord&logo=discord&logoColor=%235865F2)](https://discord.gg/GcFqXwX)
 
 </div>
+
+## Legal disclaimer
+Ars Magica is a trademark of Atlas Games®, used with permission.

@@ -35,13 +35,13 @@ public final class ObeliskFuelManager extends CodecDataManager<ObeliskFuelManage
     public record ObeliskFuel(Ingredient ingredient, int burnTime, int etheriumPerTick) {
         public static final Codec<ObeliskFuel> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 CodecHelper.INGREDIENT.fieldOf("input").forGetter(ObeliskFuel::ingredient),
-                Codec.INT.optionalFieldOf("burn_time", 200).forGetter(ObeliskFuel::burnTime),
-                Codec.INT.fieldOf("etherium_per_tick").forGetter(ObeliskFuel::etheriumPerTick)
+                Codec.INT.optionalFieldOf("burn_time").xmap(o -> o.orElse(200), Optional::of).forGetter(ObeliskFuel::burnTime),
+                Codec.INT.optionalFieldOf("etherium_per_tick").xmap(o -> o.orElse(1), Optional::of).forGetter(ObeliskFuel::etheriumPerTick)
         ).apply(instance, ObeliskFuel::new));
         public static final Codec<ObeliskFuel> NETWORK_CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 CodecHelper.NETWORK_INGREDIENT.fieldOf("input").forGetter(ObeliskFuel::ingredient),
                 Codec.INT.optionalFieldOf("burn_time", 200).forGetter(ObeliskFuel::burnTime),
-                Codec.INT.fieldOf("etherium_per_tick").forGetter(ObeliskFuel::etheriumPerTick)
+                Codec.INT.optionalFieldOf("etherium_per_tick", 1).forGetter(ObeliskFuel::etheriumPerTick)
         ).apply(instance, ObeliskFuel::new));
     }
 }

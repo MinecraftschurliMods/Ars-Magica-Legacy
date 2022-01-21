@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
  * The etherium types.
  */
 public enum EtheriumType implements ITranslatable {
-    LIGHT(0x79a5ed), NEUTRAL(0x2effab), DARK(0x800000);
+    LIGHT(0xff79a5ed), NEUTRAL(0xff2effab), DARK(0xff800000);
 
     private final int color;
 
