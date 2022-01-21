@@ -41,7 +41,7 @@ import org.apache.logging.log4j.Logger;
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 0);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 1);
 
     private static ArsMagicaLegacy INSTANCE;
 

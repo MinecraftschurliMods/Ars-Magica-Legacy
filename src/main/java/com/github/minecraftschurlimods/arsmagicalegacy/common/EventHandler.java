@@ -13,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
@@ -350,6 +351,7 @@ public final class EventHandler {
         event.addListener(AltarMaterialManager.instance().structure);
         event.addListener(TierMapping.instance());
         event.addListener(PrefabSpellManager.instance());
+        event.addListener(ObeliskFuelManager.instance());
     }
 
     private static void playerLevelUp(PlayerLevelUpEvent event) {

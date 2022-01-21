@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEth
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +52,18 @@ public class BlackAuremBlockEntity extends BlockEntity {
         } else {
             timer--;
         }
+    }
+
+    @Override
+    protected void saveAdditional(final CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("etheriumValue", this.provider.getAmount());
+    }
+
+    @Override
+    public void load(final CompoundTag tag) {
+        super.load(tag);
+        provider.set(tag.getInt("etheriumValue"));
     }
 
     private static void onConsume(Level level, BlockPos consumerPos, int amount) {
