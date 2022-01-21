@@ -26,11 +26,15 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -430,6 +434,21 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('S', Tags.Items.RODS_WOODEN)
                 .define('P', Items.PAPER)
                 .unlockedBy("has_paper", has(Items.PAPER))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.MANA_CAKE.get(), 3)
+                .requires(Tags.Items.CROPS_WHEAT)
+                .requires(Items.SUGAR)
+                .requires(AMItems.AUM.get())
+                .requires(AMItems.CERUBLOSSOM.get())
+                .unlockedBy("has_cerublossom", has(AMItems.CERUBLOSSOM.get()))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.MANA_MARTINI.get())
+                .requires(Tags.Items.RODS_WOODEN)
+                .requires(Tags.Items.CROPS_POTATO)
+                .requires(Items.ICE)
+                .requires(Items.SUGAR)
+                .requires(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
+                .unlockedBy("has_ice", has(Items.ICE))
                 .save(consumer);
     }
 

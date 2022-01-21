@@ -5,12 +5,15 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityEssen
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.CrystalWrenchItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ColoredRegistryObject;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -102,6 +105,8 @@ public interface AMItems {
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<Item>                         SPELL_PARCHMENT          = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                    = ITEMS.register("spell", SpellItem::new);
+    RegistryObject<Item>                         MANA_CAKE                = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<Item>                         MANA_MARTINI             = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
 
     @SuppressWarnings("SameParameterValue")
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {

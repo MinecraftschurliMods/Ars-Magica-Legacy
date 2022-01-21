@@ -94,6 +94,8 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
+        itemGenerated(MANA_CAKE);
+        itemGenerated(MANA_MARTINI);
     }
 
     /**

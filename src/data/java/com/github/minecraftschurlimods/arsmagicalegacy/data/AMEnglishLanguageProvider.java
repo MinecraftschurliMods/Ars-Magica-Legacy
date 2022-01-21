@@ -99,6 +99,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL);
+        itemIdTranslation(AMItems.MANA_CAKE);
+        itemIdTranslation(AMItems.MANA_MARTINI);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
