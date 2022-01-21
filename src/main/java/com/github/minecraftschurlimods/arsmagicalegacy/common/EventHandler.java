@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
@@ -32,6 +33,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -49,6 +51,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMBrewingRecipe;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -64,10 +67,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -132,6 +139,7 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
+        registerBrewingRecipes();
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
         CompatManager.init(event);
@@ -156,6 +164,15 @@ public final class EventHandler {
         AMFeatures.DESERT_NOVA_PLACEMENT = AMFeatures.flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA_FEATURE, 32);
         AMFeatures.TARMA_ROOT_PLACEMENT = AMFeatures.flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT_FEATURE, 32);
         AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
+    }
+
+    private static void registerBrewingRecipes() {
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.CHIMERITE.get()), AMMobEffects.LESSER_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.WAKEBLOOM.get()), AMMobEffects.STANDARD_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.VINTEUM_DUST.get()), AMMobEffects.GREATER_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.ARCANE_ASH.get()), AMMobEffects.EPIC_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), AMMobEffects.LEGENDARY_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.TARMA_ROOT.get()), AMMobEffects.INFUSED_MANA.get()));
     }
 
     public static void registerSpellIngredientTypes() {

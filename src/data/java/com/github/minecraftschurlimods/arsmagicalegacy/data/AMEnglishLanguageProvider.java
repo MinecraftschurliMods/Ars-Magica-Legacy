@@ -138,6 +138,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         potionIdTranslation(AMMobEffects.GREATER_MANA);
         potionIdTranslation(AMMobEffects.EPIC_MANA);
         potionIdTranslation(AMMobEffects.LEGENDARY_MANA);
+        potionIdTranslation(AMMobEffects.INFUSED_MANA);
         addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
         addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
         attributeIdTranslation(AMAttributes.MAGIC_VISION);
@@ -310,6 +311,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.MULTIBLOCK_TIER, "Tier: %s");
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
+        add("potion.potency.5", "VI");
+        add("potion.potency.6", "VII");
+        add("potion.potency.7", "VII");
+        add("potion.potency.8", "IX");
+        add("potion.potency.9", "X");
     }
 
     /**

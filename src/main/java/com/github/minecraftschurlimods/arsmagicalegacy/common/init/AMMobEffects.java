@@ -61,6 +61,7 @@ public interface AMMobEffects {
     RegistryObject<Potion> GREATER_MANA   = POTIONS.register("greater_mana",   () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 2), new MobEffectInstance(MANA_REGEN.get(), 1800, 2)));
     RegistryObject<Potion> EPIC_MANA      = POTIONS.register("epic_mana",      () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 3), new MobEffectInstance(MANA_REGEN.get(), 1800, 2), new MobEffectInstance(MANA_BOOST.get(),  600, 0)));
     RegistryObject<Potion> LEGENDARY_MANA = POTIONS.register("legendary_mana", () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 4), new MobEffectInstance(MANA_REGEN.get(), 1800, 2), new MobEffectInstance(MANA_BOOST.get(), 1200, 1)));
+    RegistryObject<Potion> INFUSED_MANA   = POTIONS.register("infused_mana",   () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 9)));
 
     /**
      * Empty method that is required for classloading
