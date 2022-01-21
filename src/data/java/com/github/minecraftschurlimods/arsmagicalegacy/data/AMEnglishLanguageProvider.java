@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -130,6 +131,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
+        potionIdTranslation(AMMobEffects.LESSER_MANA);
+        potionIdTranslation(AMMobEffects.STANDARD_MANA);
+        potionIdTranslation(AMMobEffects.GREATER_MANA);
+        potionIdTranslation(AMMobEffects.EPIC_MANA);
+        potionIdTranslation(AMMobEffects.LEGENDARY_MANA);
         addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
         addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
         attributeIdTranslation(AMAttributes.MAGIC_VISION);
@@ -347,6 +353,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
         addEffect(effect, idToTranslation(effect.getId().getPath()));
+    }
+
+    /**
+     * Adds a potion translation that matches the potion id.
+     * Also covers splash potion, lingering potion and tipped arrow translations.
+     *
+     * @param potion The potion to generate the translation for.
+     */
+    private void potionIdTranslation(RegistryObject<? extends Potion> potion) {
+        add("item.minecraft.potion.effect." + potion.getId().getPath(), "Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.splash_potion.effect." + potion.getId().getPath(), "Splash Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.lingering_potion.effect." + potion.getId().getPath(), "Lingering Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.tipped_arrow.effect." + potion.getId().getPath(), "Arrow of " + idToTranslation(potion.getId().getPath()));
     }
 
     /**
