@@ -96,6 +96,14 @@ class AMItemModelProvider extends ItemModelProvider {
         getBuilder(SPELL.getId().getPath());
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
+        itemGenerated(MAGE_HELMET);
+        itemGenerated(MAGE_CHESTPLATE);
+        itemGenerated(MAGE_LEGGINGS);
+        itemGenerated(MAGE_BOOTS);
+        itemGenerated(BATTLEMAGE_HELMET);
+        itemGenerated(BATTLEMAGE_CHESTPLATE);
+        itemGenerated(BATTLEMAGE_LEGGINGS);
+        itemGenerated(BATTLEMAGE_BOOTS);
     }
 
     /**

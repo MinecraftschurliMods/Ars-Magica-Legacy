@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:mage_boots"
+    ]
+  },
+  "criteria": {
+    "has_rune": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:black_rune"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:mage_boots"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rune",
+      "has_the_recipe"
+    ]
+  ]
+}

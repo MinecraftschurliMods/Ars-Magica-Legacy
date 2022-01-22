@@ -97,10 +97,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
-        itemIdTranslation(AMItems.SPELL_PARCHMENT);
-        itemIdTranslation(AMItems.SPELL);
-        itemIdTranslation(AMItems.MANA_CAKE);
-        itemIdTranslation(AMItems.MANA_MARTINI);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
@@ -110,6 +106,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
+        itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL);
+        itemIdTranslation(AMItems.MANA_CAKE);
+        itemIdTranslation(AMItems.MANA_MARTINI);
+        itemIdTranslation(AMItems.MAGE_HELMET);
+        itemIdTranslation(AMItems.MAGE_CHESTPLATE);
+        itemIdTranslation(AMItems.MAGE_LEGGINGS);
+        itemIdTranslation(AMItems.MAGE_BOOTS);
+        itemIdTranslation(AMItems.BATTLEMAGE_HELMET);
+        itemIdTranslation(AMItems.BATTLEMAGE_CHESTPLATE);
+        itemIdTranslation(AMItems.BATTLEMAGE_LEGGINGS);
+        itemIdTranslation(AMItems.BATTLEMAGE_BOOTS);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);

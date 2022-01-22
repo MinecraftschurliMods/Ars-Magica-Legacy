@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:battlemage_leggings"
+    ]
+  },
+  "criteria": {
+    "has_rune": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:red_rune"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:battlemage_leggings"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rune",
+      "has_the_recipe"
+    ]
+  ]
+}
