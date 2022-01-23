@@ -6,8 +6,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringUtil;
 
-class SelfClearingEditBox extends EditBox {
-
+public class SelfClearingEditBox extends EditBox {
     public SelfClearingEditBox(int x, int y, int width, int height, int maxTextLength, EditBox prev, Font font, Component label) {
         super(font, x, y, width, height, prev, label);
         if (StringUtil.isNullOrEmpty(getValue())) {
