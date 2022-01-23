@@ -1,5 +1,5 @@
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
 import net.minecraft.MethodsReturnNonnullByDefault;

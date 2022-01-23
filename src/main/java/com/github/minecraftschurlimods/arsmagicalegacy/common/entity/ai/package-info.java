@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
