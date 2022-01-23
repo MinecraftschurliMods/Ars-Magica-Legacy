@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -81,6 +83,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             item.shrink(min);
             count = count - min;
             if (count <= 0) {
+                level.playSound(null, pos.getX(), pos.getY() - 2, pos.getZ(), AMSounds.CRAFTING_ALTAR_ADD_INGREDIENT.get(), SoundSource.BLOCKS, 1f, 1f);
                 return null;
             }
         }
