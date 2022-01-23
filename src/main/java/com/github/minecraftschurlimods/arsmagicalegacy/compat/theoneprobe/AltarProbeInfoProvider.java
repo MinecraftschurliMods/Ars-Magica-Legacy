@@ -19,7 +19,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
-import java.util.Optional;
 
 class AltarProbeInfoProvider implements IProbeInfoProvider {
     @Override

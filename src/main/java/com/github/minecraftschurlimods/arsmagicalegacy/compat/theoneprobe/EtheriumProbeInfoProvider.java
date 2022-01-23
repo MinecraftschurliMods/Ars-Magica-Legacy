@@ -3,10 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.compat.theoneprobe;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlockEntity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import mcjty.theoneprobe.api.Color;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -19,13 +16,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.common.util.LazyOptional;
-
-import java.util.Optional;
 
 class EtheriumProbeInfoProvider implements IProbeInfoProvider {
     @Override

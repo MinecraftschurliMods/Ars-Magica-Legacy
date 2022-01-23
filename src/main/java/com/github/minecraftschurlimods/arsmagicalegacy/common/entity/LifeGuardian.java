@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class LifeGuardian extends AbstractBoss {
     public LifeGuardian(EntityType<? extends LifeGuardian> type, Level level) {

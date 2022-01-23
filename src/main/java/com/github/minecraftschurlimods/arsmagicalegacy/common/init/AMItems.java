@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 

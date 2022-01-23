@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
 
 class AMRecipeProvider extends RecipeProvider {
     public AMRecipeProvider(DataGenerator pGenerator) {

@@ -8,7 +8,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground;

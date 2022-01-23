@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class LightningGuardian extends AbstractBoss {
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {

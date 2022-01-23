@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 

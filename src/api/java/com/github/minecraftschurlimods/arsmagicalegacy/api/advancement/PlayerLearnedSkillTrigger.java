@@ -10,7 +10,6 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.Nullable;
 
 public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLearnedSkillTrigger.TriggerInstance> {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_learned_skill");
