@@ -24,7 +24,7 @@ public class Wall extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = new com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall(AMEntities.WALL.get(), level);
+            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall.create(level);
             float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
             boolean tns = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
             float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);

@@ -26,7 +26,7 @@ public class Wave extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave wave = new com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave(AMEntities.WAVE.get(), level);
+            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave wave = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave.create(level);
             wave.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             wave.setDeltaMovement(caster.getLookAngle());
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();

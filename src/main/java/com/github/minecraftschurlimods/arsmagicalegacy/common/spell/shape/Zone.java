@@ -21,10 +21,11 @@ public class Zone extends AbstractShape {
               SpellPartStats.GRAVITY,
               SpellPartStats.SIZE);
     }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone zone = new com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone(AMEntities.ZONE.get(), level);
+            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone zone = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone.create(level);
             zone.setPos(caster.getX(), caster.getY(), caster.getZ());
             zone.setDeltaMovement(caster.getDeltaMovement());
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
