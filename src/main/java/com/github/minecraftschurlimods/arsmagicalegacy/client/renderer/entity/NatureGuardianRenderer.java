@@ -17,8 +17,7 @@ public class NatureGuardianRenderer extends MobRenderer<NatureGuardian, NatureGu
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull NatureGuardian pEntity) {
+    public ResourceLocation getTextureLocation(final NatureGuardian pEntity) {
         return TEXTURE;
     }
 }

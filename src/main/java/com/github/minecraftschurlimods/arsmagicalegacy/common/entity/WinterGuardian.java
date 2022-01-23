@@ -31,7 +31,7 @@ public class WinterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.WINTER_GUARDIAN_HURT.get();
     }
 
@@ -51,7 +51,7 @@ public class WinterGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
         } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {

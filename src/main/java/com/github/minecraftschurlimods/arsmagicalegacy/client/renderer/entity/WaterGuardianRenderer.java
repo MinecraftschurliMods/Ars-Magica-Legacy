@@ -16,8 +16,7 @@ public class WaterGuardianRenderer extends MobRenderer<WaterGuardian, WaterGuard
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull WaterGuardian pEntity) {
+    public ResourceLocation getTextureLocation(final WaterGuardian pEntity) {
         return TEXTURE;
     }
 }

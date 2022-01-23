@@ -42,7 +42,7 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.NATURE_GUARDIAN_HURT.get();
     }
 
@@ -62,7 +62,7 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.FREEZE){

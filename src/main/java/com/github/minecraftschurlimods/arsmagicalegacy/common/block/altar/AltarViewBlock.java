@@ -14,7 +14,6 @@ public class AltarViewBlock extends AirBlock implements EntityBlock {
         super(BlockBehaviour.Properties.of(Material.AIR).noCollission().noDrops().air());
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new AltarViewBlockEntity(pPos, pState);

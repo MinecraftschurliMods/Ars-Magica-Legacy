@@ -20,7 +20,7 @@ public abstract class SpellEvent extends LivingEvent {
      */
     private final ISpell spell;
 
-    public SpellEvent(@Nullable LivingEntity entity, ISpell spell) {
+    public SpellEvent(LivingEntity entity, ISpell spell) {
         super(entity);
         this.spell = spell;
     }

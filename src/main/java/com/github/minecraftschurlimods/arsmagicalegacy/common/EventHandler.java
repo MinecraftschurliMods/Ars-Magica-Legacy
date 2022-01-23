@@ -191,7 +191,6 @@ public final class EventHandler {
 
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity livingEntity) {
-            //noinspection unchecked
             AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());
             if (attributes.hasAttribute(AMAttributes.MAX_MANA.get())) {
                 event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"), new CodecCapabilityProvider<>(

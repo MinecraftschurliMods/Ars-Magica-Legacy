@@ -33,7 +33,6 @@ public class BlackAuremBlock extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of(Material.AIR).color(MaterialColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
         return AMBlockEntities.BLACK_AUREM.get().create(pos, state);
@@ -44,7 +43,6 @@ public class BlackAuremBlock extends BaseEntityBlock {
         return BOX;
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final BlockEntityType<T> blockEntityType) {
         return level.isClientSide() ? null : createTickerHelper(blockEntityType, AMBlockEntities.BLACK_AUREM.get(), (pLevel, pPos, pState, pBlockEntity) -> pBlockEntity.tick(pLevel, pPos, pState));

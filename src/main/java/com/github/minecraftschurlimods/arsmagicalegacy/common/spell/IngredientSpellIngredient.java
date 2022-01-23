@@ -62,8 +62,8 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
         return false;
     }
 
-    @Override
     @Nullable
+    @Override
     public ISpellIngredient combine(ISpellIngredient other) {
         if (canCombine(other)) {
             return new IngredientSpellIngredient(ingredient(), ((IngredientSpellIngredient) other).count() + count());
@@ -71,8 +71,8 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
         return null;
     }
 
-    @Override
     @Nullable
+    @Override
     public ISpellIngredient consume(Level level, BlockPos pos) {
         int count = count();
         for (ItemEntity entity : level.getEntities(EntityTypeTest.forClass(ItemEntity.class), new AABB(pos).inflate(0.5, 1, 0.5).move(0, -2, 0), itemEntity -> ingredient().test(itemEntity.getItem()))) {

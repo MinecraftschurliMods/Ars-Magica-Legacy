@@ -31,10 +31,9 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        @Nullable
         private final ResourceLocation skill;
 
-        public TriggerInstance(EntityPredicate.Composite pPlayer, @Nullable ResourceLocation skill) {
+        public TriggerInstance(EntityPredicate.Composite pPlayer, ResourceLocation skill) {
             super(PlayerLearnedSkillTrigger.ID, pPlayer);
             this.skill = skill;
         }

@@ -65,9 +65,8 @@ public class CurioCompat implements ICompatHandler {
             inst = LazyOptional.of(() -> instance);
         }
 
-        @NotNull
         @Override
-        public <X> LazyOptional<X> getCapability(@NotNull Capability<X> cap, @Nullable Direction side) {
+        public <X> LazyOptional<X> getCapability(Capability<X> cap, @Nullable Direction side) {
             return capability.orEmpty(cap, inst);
         }
     }

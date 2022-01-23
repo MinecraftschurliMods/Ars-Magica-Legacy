@@ -137,7 +137,7 @@ public final class SpellHelper implements ISpellHelper {
         List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
         double d = 0;
         for (Entity entity : list) {
-            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));//world.rayTraceBlocks(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), targetWater, !targetWater, false);
+            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));
             if ((entity.canBeCollidedWith() || nonCollide) && hit.getType() == HitResult.Type.MISS) {
                 float f2 = Math.max(0.8F, entity.getBbWidth());
                 AABB aabb = entity.getBoundingBox().inflate(f2, f2, f2);

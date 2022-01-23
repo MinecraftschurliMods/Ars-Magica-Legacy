@@ -44,14 +44,12 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         return get(part.getRegistryName());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer) {
         CODECS.putIfAbsent(type, codec);
         RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Codec<T> networkCodec, Supplier<ISpellIngredientRenderer<T>> renderer) {
         CODECS.putIfAbsent(type, codec);
@@ -59,19 +57,16 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type) {
         return (Codec<ISpellIngredient>) CODECS.get(type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends ISpellIngredient> ISpellIngredientRenderer<T> getSpellIngredientRenderer(ResourceLocation type) {
         return (ISpellIngredientRenderer<T>) RENDERERS.get(type).get();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Codec<ISpellIngredient> getSpellIngredientNetworkCodec(ResourceLocation type) {
         if (NETWORK_CODECS.containsKey(type)) {

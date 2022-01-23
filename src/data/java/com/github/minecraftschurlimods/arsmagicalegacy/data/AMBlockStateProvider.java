@@ -37,7 +37,6 @@ import java.util.function.Supplier;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.*;
 
-@SuppressWarnings({"ConstantConditions", "SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
     AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);

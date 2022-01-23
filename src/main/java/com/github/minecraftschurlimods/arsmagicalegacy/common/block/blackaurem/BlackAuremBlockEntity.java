@@ -70,9 +70,8 @@ public class BlackAuremBlockEntity extends BlockEntity {
         // TODO spawn particles
     }
 
-    @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap, @Nullable final Direction side) {
+    public <T> LazyOptional<T> getCapability(final Capability<T> cap, @Nullable final Direction side) {
         return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHandler);
     }
 }

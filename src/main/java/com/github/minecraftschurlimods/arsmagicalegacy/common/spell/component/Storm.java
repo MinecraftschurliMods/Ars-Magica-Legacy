@@ -37,7 +37,6 @@ public class Storm extends AbstractComponent {
         return performStorm(caster, level, modifiers, spell, target);
     }
 
-    @NotNull
     private SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
         if (!level.isClientSide()) {
             if (level.getRainLevel(1f) > 0.9) {

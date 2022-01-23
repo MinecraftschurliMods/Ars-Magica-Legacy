@@ -210,7 +210,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public float mana(@Nullable LivingEntity caster) {
+    public float mana(LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
         ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
@@ -237,7 +237,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public float burnout(@Nullable LivingEntity caster) {
+    public float burnout(LivingEntity caster) {
         float cost = 0;
         for (ISpellPart part : parts()) {
             ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part);
@@ -251,7 +251,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public List<Either<Ingredient, ItemStack>> reagents(@Nullable LivingEntity caster) {
+    public List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster) {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
         for (ISpellPart part : parts()) {

@@ -14,9 +14,8 @@ public class ManaCreeperRenderer extends CreeperRenderer {
         super(p_173958_);
     }
 
-    @NotNull
     @Override
-    public ResourceLocation getTextureLocation(@NotNull final Creeper pEntity) {
+    public ResourceLocation getTextureLocation(final Creeper pEntity) {
         return TEXTURE;
     }
 }

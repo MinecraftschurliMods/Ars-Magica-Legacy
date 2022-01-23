@@ -76,8 +76,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private final ModelDataMap modelData = new ModelDataMap.Builder().withProperty(CAMO_STATE).build();
 
-    @Nullable private AltarStructureMaterial structureMaterial;
-    @Nullable private AltarCapMaterial       capMaterial;
+    private AltarStructureMaterial structureMaterial;
+    private AltarCapMaterial       capMaterial;
 
     private final BlockPattern MULTIBLOCK = BlockPatternBuilder.start()
      .aisle(
@@ -153,15 +153,15 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     private int     powerLevel = -1;
     public  int     checkCounter;
 
-    @Nullable private BlockPos  lecternPos;
-    @Nullable private BlockPos  leverPos;
-    @Nullable private BlockPos  viewPos;
-    @Nullable private Direction direction;
+    private BlockPos  lecternPos;
+    private BlockPos  leverPos;
+    private BlockPos  viewPos;
+    private Direction direction;
 
     public AltarCoreBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.ALTAR_CORE.get(), pWorldPosition, pBlockState);
     }
-    
+
     public void invalidateMultiblock() {
         if (this.viewPos != null &&
             getLevel() != null &&
@@ -180,7 +180,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         sync();
         setChanged();
     }
-    
+
     public void checkMultiblock() {
         if (getLevel() == null) return;
         boolean b = checkMultiblockInt();
@@ -258,7 +258,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return true;
     }
 
-    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
@@ -401,7 +400,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         }
     }
 
-    @NotNull
     @Override
     public ModelDataMap getModelData() {
         return modelData;
@@ -409,9 +407,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
 
-    @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap) {
         return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);
     }
 
@@ -438,7 +435,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                getLevel().getBlockState(this.leverPos).getValue(LeverBlock.POWERED);
     }
 
-    @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (this.recipe == null || this.recipe.isEmpty()) {
             Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>)Spell::isEmpty).negate()).ifPresentOrElse(spell -> {

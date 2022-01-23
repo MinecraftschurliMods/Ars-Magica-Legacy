@@ -34,7 +34,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class InscriptionTableBlock extends Block implements EntityBlock {
     public static final IntegerProperty TIER = IntegerProperty.create("tier", 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;

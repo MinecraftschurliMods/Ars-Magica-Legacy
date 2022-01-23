@@ -33,7 +33,7 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.EARTH_GUARDIAN_HURT.get();
     }
 
@@ -53,7 +53,7 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE){
             pAmount *= 2.0f;
         }else if (pSource == DamageSource.LIGHTNING_BOLT){
@@ -73,12 +73,12 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override
-    public void travel(@NotNull Vec3 pTravelVector) {
+    public void travel(Vec3 pTravelVector) {
         if (isEffectiveAi() && isInWater()) {
             moveRelative(0.1F, pTravelVector);
             move(MoverType.SELF, getDeltaMovement());

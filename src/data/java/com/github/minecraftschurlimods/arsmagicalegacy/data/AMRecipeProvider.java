@@ -671,12 +671,10 @@ class AMRecipeProvider extends RecipeProvider {
                 return id;
             }
 
-            @Nullable
             public JsonObject serializeAdvancement() {
                 return advancement.serializeToJson();
             }
 
-            @Nullable
             public ResourceLocation getAdvancementId() {
                 return advancementId;
             }
@@ -802,12 +800,10 @@ class AMRecipeProvider extends RecipeProvider {
                 return id;
             }
 
-            @Nullable
             public JsonObject serializeAdvancement() {
                 return advancement.serializeToJson();
             }
 
-            @Nullable
             public ResourceLocation getAdvancementId() {
                 return advancementId;
             }

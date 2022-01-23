@@ -40,7 +40,6 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
     private final ItemOverrides overrides = new ItemOverrides() {
-        @Nullable
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);

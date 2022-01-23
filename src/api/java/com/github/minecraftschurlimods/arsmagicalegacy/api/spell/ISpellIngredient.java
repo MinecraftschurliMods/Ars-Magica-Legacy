@@ -43,11 +43,13 @@ public interface ISpellIngredient {
      * Combine this with the other.
      * @return the combined ingredient
      */
-    @Nullable ISpellIngredient combine(ISpellIngredient other);
+    @Nullable
+    ISpellIngredient combine(ISpellIngredient other);
 
     /**
      * Consume this ingredient. Return the remainder of this.
      * @return the remainder of this
      */
-    @Nullable ISpellIngredient consume(Level level, BlockPos pos);
+    @Nullable
+    ISpellIngredient consume(Level level, BlockPos pos);
 }

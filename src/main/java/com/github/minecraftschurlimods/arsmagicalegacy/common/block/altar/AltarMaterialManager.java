@@ -26,12 +26,10 @@ public final class AltarMaterialManager {
         return INSTANCE.get();
     }
 
-    @NotNull
     public Optional<AltarStructureMaterial> getStructureMaterial(Block block) {
         return this.structure.values().stream().filter(mat -> mat.block() == block || mat.stair() == block).findFirst();
     }
 
-    @NotNull
     public Optional<AltarCapMaterial> getCapMaterial(Block cap) {
         return this.cap.values().stream().filter(mat -> mat.cap() == cap).findFirst();
     }

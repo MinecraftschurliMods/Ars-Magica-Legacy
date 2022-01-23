@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Drought extends AbstractComponent {
-    //TODO change this to a codec
+    //TODO
     private static final Map<Block, Block> TRANSITIONS = Util.make(new HashMap<>(), map -> {
         map.put(Blocks.STONE, Blocks.COBBLESTONE);
         map.put(Blocks.CLAY, Blocks.SAND);

@@ -41,7 +41,6 @@ public interface IMagicHelper {
 
     /**
      * Check if the player has magic vision.
-     * (this is mainly a check for the magitech goggles)
      *
      * @param player the player to check
      * @return true if the player has magic vision
@@ -50,7 +49,6 @@ public interface IMagicHelper {
 
     /**
      * Get the level of truesight the player has.
-     * (mainly through the potion effect)
      *
      * @param player the player to check
      * @return the level of truesight

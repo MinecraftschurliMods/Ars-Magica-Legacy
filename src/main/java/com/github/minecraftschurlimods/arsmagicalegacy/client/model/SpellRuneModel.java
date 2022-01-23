@@ -21,7 +21,6 @@ public class SpellRuneModel extends BakedModelWrapper<BakedModel> {
         super(originalModel);
     }
 
-    @NotNull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
         LocalPlayer player = Minecraft.getInstance().player;

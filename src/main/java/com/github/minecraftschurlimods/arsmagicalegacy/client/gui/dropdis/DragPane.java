@@ -71,7 +71,6 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
     public void updateNarration(NarrationElementOutput narrationElementOutput) {
     }
 
-    @Nullable
     @Override
     public GuiEventListener getFocused() {
         return getDragged();

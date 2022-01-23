@@ -24,7 +24,6 @@ public class Knockback extends AbstractComponent {
         Entity entity = target.getEntity();
         float velocity = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target);
         Vec3 delta = entity.getDeltaMovement();
-        // TODO ((LivingEntity) entity).knockback(); @IHH
         entity.setDeltaMovement(delta.x() + velocity * Math.cos(Math.atan2(entity.getZ() - caster.getZ(), entity.getX() - caster.getX())), delta.y() + velocity * 0.325f, delta.z() + velocity * Math.sin(Math.atan2(entity.getZ() - caster.getZ(), entity.getX() - caster.getX())));
         return SpellCastResult.SUCCESS;
     }

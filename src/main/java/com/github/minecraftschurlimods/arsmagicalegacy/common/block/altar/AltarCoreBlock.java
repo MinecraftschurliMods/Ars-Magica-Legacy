@@ -33,8 +33,6 @@ public class AltarCoreBlock extends Block implements EntityBlock {
         pBuilder.add(FORMED);
     }
 
-    @SuppressWarnings("unchecked")
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return !pLevel.isClientSide() && pBlockEntityType == AMBlockEntities.ALTAR_CORE.get() ? (BlockEntityTicker<T>) new AltarCoreTicker() : null;

@@ -17,8 +17,7 @@ public class WinterGuardianRenderer extends MobRenderer<WinterGuardian, WinterGu
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull WinterGuardian pEntity) {
+    public ResourceLocation getTextureLocation(final WinterGuardian pEntity) {
         return TEXTURE;
     }
 }

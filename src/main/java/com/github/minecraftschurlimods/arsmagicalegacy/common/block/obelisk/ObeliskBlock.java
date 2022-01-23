@@ -40,13 +40,11 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         builder.add(PART);
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide() || state.getValue(PART) != Part.LOWER ? null : createTickerHelper(blockEntityType, AMBlockEntities.OBELISK.get(), (level1, pos, state1, blockEntity) -> blockEntity.tick(level1, pos, state1));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return state.getValue(PART) == Part.LOWER ? AMBlockEntities.OBELISK.get().create(pos, state) : null;

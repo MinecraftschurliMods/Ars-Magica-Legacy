@@ -42,9 +42,8 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     private TierMapping() {
     }
 
-    @Nonnull
     @Override
-    protected JsonArray prepare(@Nonnull ResourceManager resourceManager, ProfilerFiller p) {
+    protected JsonArray prepare(ResourceManager resourceManager, ProfilerFiller p) {
         if (!resourceManager.hasResource(TIER_MAPPING)) {
             return new JsonArray();
         }
@@ -59,7 +58,7 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     }
 
     @Override
-    protected void apply(@Nonnull JsonArray data, @Nonnull ResourceManager resourceManager, ProfilerFiller p) {
+    protected void apply(JsonArray data, ResourceManager resourceManager, ProfilerFiller p) {
         tiers.clear();
         for (int i = 0; i < data.size(); i++) {
             tiers.add(ResourceLocation.tryParse(GsonHelper.convertToString(data.get(i), "tiers[" + i + "]")));

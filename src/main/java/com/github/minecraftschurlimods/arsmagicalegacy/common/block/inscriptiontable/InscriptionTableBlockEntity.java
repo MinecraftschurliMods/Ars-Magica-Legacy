@@ -81,7 +81,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
                        });
     }
 
-    @NotNull
     public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         SpellItem.saveSpell(book, spell);
@@ -89,13 +88,13 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         tag.putString(WrittenBookItem.TAG_TITLE, name);
         tag.putString(WrittenBookItem.TAG_AUTHOR, author);
         ListTag pages = new ListTag();
-        //makeSpellRecipePages(pages, player, spell);
+        makeSpellRecipePages(pages, spell);
         tag.put(WrittenBookItem.TAG_PAGES, pages);
         return book;
     }
 
-    private static void makeSpellRecipePages(ListTag pages, Player player, Spell spell) {
-        // TODO how to do this datadriven (re-resolve on reload)
+    private static void makeSpellRecipePages(ListTag pages, Spell spell) {
+        // TODO
     }
 
     @Override
@@ -111,7 +110,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         }
     }
 
-    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
@@ -127,7 +125,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return TITLE;
     }
 
-    @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
         if (isOpen()) return null;
@@ -210,10 +207,10 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public void setChanged() {
         super.setChanged();
-        // stub
+        // TODO
     }
 
     private void onRemove() {
-        // stub
+        // TODO
     }
 }

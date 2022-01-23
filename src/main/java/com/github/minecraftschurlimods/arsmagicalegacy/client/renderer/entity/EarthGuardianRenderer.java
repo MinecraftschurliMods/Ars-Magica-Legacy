@@ -17,8 +17,7 @@ public class EarthGuardianRenderer extends MobRenderer<EarthGuardian, EarthGuard
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull EarthGuardian pEntity) {
+    public ResourceLocation getTextureLocation(final EarthGuardian pEntity) {
         return TEXTURE;
     }
 }

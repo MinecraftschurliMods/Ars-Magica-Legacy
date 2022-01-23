@@ -80,7 +80,7 @@ public class SpellCustomizationScreen extends Screen {
         private final int elementsX;
         private ResourceLocation selected = null;
 
-        public SpellIconSelector(int x, int y, int width, int height, @Nullable SpellIconSelector spellIconSelector) {
+        public SpellIconSelector(int x, int y, int width, int height, SpellIconSelector spellIconSelector) {
             super(Minecraft.getInstance(), width, height, y, x, 2);
             elementsX = (width - border + 2) / (ICON_SIZE + 2 * ICON_MARGIN);
             if (spellIconSelector != null) {

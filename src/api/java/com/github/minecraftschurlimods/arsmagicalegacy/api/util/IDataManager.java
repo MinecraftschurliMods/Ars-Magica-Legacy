@@ -32,5 +32,5 @@ public interface IDataManager<T> extends Map<ResourceLocation, T> {
      * @param id the id of the requested value
      * @return the requested value or null if it is not loaded
      */
-    @Nullable T getNullable(ResourceLocation id);
+    T getNullable(ResourceLocation id);
 }

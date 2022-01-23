@@ -17,8 +17,7 @@ public class FireGuardianRenderer extends MobRenderer<FireGuardian, FireGuardian
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull FireGuardian pEntity) {
+    public ResourceLocation getTextureLocation(final FireGuardian pEntity) {
         return TEXTURE;
     }
 }

@@ -37,7 +37,6 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 @NonExtendable
 public interface AMItems {
     CreativeModeTab TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
-        @NotNull
         @Override
         public ItemStack makeIcon() {
             return ArsMagicaAPI.get().getBookStack();
@@ -118,12 +117,10 @@ public interface AMItems {
     RegistryObject<MageArmorItem>                BATTLEMAGE_LEGGINGS      = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 10));
     RegistryObject<MageArmorItem>                BATTLEMAGE_BOOTS         = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 10));
 
-    @SuppressWarnings("SameParameterValue")
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
 
-    @SuppressWarnings("unchecked")
     private static RegistryObject<BlockItem> registerBlockItem64(RegistryObject<? extends Block> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_64));
     }

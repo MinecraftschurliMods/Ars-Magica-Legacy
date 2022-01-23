@@ -177,12 +177,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
-    @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        //renderRatio = (float) Mth.clamp(renderRatio + pDelta / 100, width / (float) textureWidth, 1);
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
-    }
-
     private static int getColorForSkill(ISkill skill) {
         return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::getColor).orElse(ColorUtil.GRAY);
     }

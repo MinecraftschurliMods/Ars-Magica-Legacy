@@ -53,13 +53,11 @@ public class CelestialPrismBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
         return state.getValue(HALF) == DoubleBlockHalf.LOWER ? AMBlockEntities.CELESTIAL_PRISM.get().create(pos, state) : null;
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final BlockEntityType<T> blockEntityType) {
         return !level.isClientSide() && state.getValue(HALF) == DoubleBlockHalf.LOWER ? BaseEntityBlock.createTickerHelper(blockEntityType, AMBlockEntities.CELESTIAL_PRISM.get(), (pLevel, pPos, pState, pBlockEntity) -> pBlockEntity.tick(pLevel, pPos, pState)) : null;
@@ -83,7 +81,6 @@ public class CelestialPrismBlock extends BaseEntityBlock {
         }
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(final BlockPlaceContext context) {
         if (context.getLevel().isOutsideBuildHeight(context.getClickedPos())) return null;

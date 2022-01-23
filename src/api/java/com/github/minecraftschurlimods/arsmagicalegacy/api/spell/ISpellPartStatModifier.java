@@ -17,5 +17,5 @@ public interface ISpellPartStatModifier {
      * @param spell,caster,target the context
      * @return the new modified value
      */
-    float modify(float base, float modified, ISpell spell, LivingEntity caster, @Nullable HitResult target);
+    float modify(float base, float modified, ISpell spell, LivingEntity caster, HitResult target);
 }

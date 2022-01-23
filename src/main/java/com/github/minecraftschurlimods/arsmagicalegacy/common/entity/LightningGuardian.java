@@ -21,7 +21,7 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    public float getEyeHeight(@NotNull Pose pPose) {
+    public float getEyeHeight(Pose pPose) {
         return 2;
     }
 
@@ -36,7 +36,7 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.LIGHTNING_GUARDIAN_HURT.get();
     }
 
@@ -56,7 +56,7 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         return super.hurt(pSource, pAmount);
     }
 }

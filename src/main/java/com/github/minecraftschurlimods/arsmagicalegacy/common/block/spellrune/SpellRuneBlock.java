@@ -37,7 +37,6 @@ public class SpellRuneBlock extends Block implements EntityBlock {
         registerDefaultState(getStateDefinition().any().setValue(FACE, Direction.DOWN));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new SpellRuneBlockEntity(pPos, pState);
