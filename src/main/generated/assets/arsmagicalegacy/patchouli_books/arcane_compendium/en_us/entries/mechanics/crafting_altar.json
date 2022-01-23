@@ -38,8 +38,16 @@
     },
     {
       "type": "patchouli:text",
-      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page7.text",
-      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page7.title"
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page7.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page8.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page8.title"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.crafting_altar.page9.text"
     }
   ]
 }
