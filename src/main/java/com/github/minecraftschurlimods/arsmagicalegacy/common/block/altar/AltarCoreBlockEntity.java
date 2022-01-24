@@ -63,6 +63,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
@@ -155,7 +156,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     public void invalidateMultiblock() {
         if (this.viewPos != null && getLevel() != null && getLevel().getBlockState(this.viewPos).is(AMBlocks.ALTAR_VIEW.get())) {
-            getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+            getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_ALL);
         }
         this.lecternPos = null;
         this.leverPos = null;
@@ -175,7 +176,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             invalidateMultiblock();
         }
         if (getBlockState().getValue(AltarCoreBlock.FORMED) != b) {
-            getLevel().setBlock(getBlockPos(), getBlockState().setValue(AltarCoreBlock.FORMED, b), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+            getLevel().setBlock(getBlockPos(), getBlockState().setValue(AltarCoreBlock.FORMED, b), Block.UPDATE_ALL);
         }
     }
 
@@ -202,7 +203,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         BlockPos offset = getBlockPos().relative(this.direction, 2).relative(this.direction.getClockWise(), 2).below(4);
         BlockPattern.BlockPatternMatch x = MULTIBLOCK.matches(getLevel(), offset, Direction.UP, this.direction);
         if (x == null) return false;
-        getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+        getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_ALL);
         ((AltarViewBlockEntity) getLevel().getBlockEntity(this.viewPos)).setAltarPos(getBlockPos());
         if (getLevel().getBlockState(this.lecternPos).getValue(LecternBlock.HAS_BOOK)) {
             if (this.recipe == null || this.recipe.isEmpty()) {
@@ -352,11 +353,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         }
     }
 
+    @Nonnull
     @Override
     public ModelDataMap getModelData() {
         return modelData;
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap) {
         return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);
@@ -383,6 +386,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return getLevel() != null && this.leverPos != null && getLevel().getBlockState(this.leverPos).getValue(LeverBlock.POWERED);
     }
 
+    @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (this.recipe == null || this.recipe.isEmpty()) {
             Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>) Spell::isEmpty).negate()).ifPresentOrElse(spell -> {

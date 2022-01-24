@@ -29,7 +29,6 @@ import java.util.List;
 public final class TierMapping extends SimplePreparableReloadListener<JsonArray> {
     private static final ResourceLocation TIER_MAPPING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "tier_mapping.json");
     private static final Lazy<TierMapping> INSTANCE = Lazy.concurrentOf(TierMapping::new);
-
     private final Logger LOGGER = LogManager.getLogger();
     private final Gson gson = new GsonBuilder().create();
     private final List<ResourceLocation> tiers = new ArrayList<>();
@@ -46,9 +45,7 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
         if (!resourceManager.hasResource(TIER_MAPPING)) {
             return new JsonArray();
         }
-
-        try (Resource r = resourceManager.getResource(TIER_MAPPING); InputStream stream = r.getInputStream(); Reader reader = new BufferedReader(
-                new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+        try (Resource r = resourceManager.getResource(TIER_MAPPING); InputStream stream = r.getInputStream(); Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
             return gson.fromJson(reader, JsonArray.class);
         } catch (IOException e) {
             LOGGER.error("Could not read Tier sorting file " + TIER_MAPPING, e);

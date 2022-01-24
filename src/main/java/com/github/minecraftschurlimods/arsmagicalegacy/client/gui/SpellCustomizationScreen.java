@@ -75,7 +75,7 @@ public class SpellCustomizationScreen extends Screen {
         private final int elementsX;
         private ResourceLocation selected = null;
 
-        public SpellIconSelector(int x, int y, int width, int height, SpellIconSelector spellIconSelector) {
+        public SpellIconSelector(int x, int y, int width, int height, @Nullable SpellIconSelector spellIconSelector) {
             super(Minecraft.getInstance(), width, height, y, x, 2);
             elementsX = (width - border + 2) / (ICON_SIZE + 2 * ICON_MARGIN);
             if (spellIconSelector != null) {
@@ -90,11 +90,12 @@ public class SpellCustomizationScreen extends Screen {
             super.render(matrix, mouseX, mouseY, partialTicks);
         }
 
+        @Nullable
         public ResourceLocation getSelected() {
             return selected;
         }
 
-        public void setSelected(ResourceLocation id) {
+        public void setSelected(@Nullable ResourceLocation id) {
             selected = id;
         }
 

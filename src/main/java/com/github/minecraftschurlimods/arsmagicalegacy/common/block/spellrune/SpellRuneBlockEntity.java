@@ -68,7 +68,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
         SpellCastResult r1 = helper.invoke(this.spell, this.caster, level, new EntityHitResult(entity), 0, this.index, this.awardXp);
         SpellCastResult r2 = helper.invoke(this.spell, this.caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, this.index, this.awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 

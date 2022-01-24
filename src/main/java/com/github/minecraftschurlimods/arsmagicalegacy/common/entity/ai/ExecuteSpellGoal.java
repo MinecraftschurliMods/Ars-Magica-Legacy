@@ -4,10 +4,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class ExecuteSpellGoal extends Goal {
-    private final Mob guardian;
+    private final Mob mob;
 
-    public ExecuteSpellGoal(Mob guardian) {
-        this.guardian = guardian;
+    public ExecuteSpellGoal(Mob mob) {
+        this.mob = mob;
     }
 
     @Override

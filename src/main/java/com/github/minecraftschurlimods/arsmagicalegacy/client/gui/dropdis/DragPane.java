@@ -11,6 +11,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class DragPane extends AbstractContainerEventHandler implements NarratableEntry, Widget, DragHandler {
     private final List<DropArea> dropAreas = new ArrayList<>();
@@ -87,7 +88,7 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
     }
 
     @Override
-    public void setDragged(Draggable draggable, DropArea source) {
+    public void setDragged(@Nullable Draggable draggable, @Nullable DropArea source) {
         this.dragged = draggable;
         this.dragSource = source;
     }

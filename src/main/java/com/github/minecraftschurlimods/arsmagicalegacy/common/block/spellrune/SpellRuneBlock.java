@@ -53,8 +53,9 @@ public class SpellRuneBlock extends Block implements EntityBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (pLevel.isClientSide()) return;
-        ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        if (!pLevel.isClientSide()) {
+            ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        }
     }
 
     @Override

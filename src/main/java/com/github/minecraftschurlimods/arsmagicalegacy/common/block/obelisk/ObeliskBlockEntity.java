@@ -30,6 +30,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import javax.annotation.Nonnull;
 
 public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     private final SimpleEtheriumProvider etheriumProvider = new SimpleEtheriumProvider(EtheriumType.NEUTRAL, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(ObeliskBlockEntity::onConsume);
@@ -128,7 +129,6 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
             burnTimeRemaining--;
             setChanged();
         }
-
         if (burnTimeRemaining <= 0) {
             Optional<ObeliskFuelManager.ObeliskFuel> fuel = ObeliskFuelManager.instance().getFuelFor(slot);
             fuel.ifPresent(obeliskFuel -> {
@@ -147,7 +147,6 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
                 }
             });
         }
-
         if (state.getValue(BlockStateProperties.LIT) != burnTimeRemaining > 0) {
             level.setBlock(pos, state.setValue(BlockStateProperties.LIT, burnTimeRemaining > 0), Block.UPDATE_ALL);
         }
@@ -163,6 +162,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
         return new ObeliskMenu(containerId, inventory, this, this.data);
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {

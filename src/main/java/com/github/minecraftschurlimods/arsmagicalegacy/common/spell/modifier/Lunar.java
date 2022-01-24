@@ -5,6 +5,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.HEALING;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.RANGE;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.SIZE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.SPEED;
 
 public class Lunar extends GenericSpellModifier {
     private static final float MULTIPLIER = 1.625f; //1 + 15000 / 24000
@@ -13,8 +14,9 @@ public class Lunar extends GenericSpellModifier {
         addStatModifier(DAMAGE, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level.getDayTime()) * 2.5f);
         addStatModifier(DURATION, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level.getDayTime()) * 5);
         addStatModifier(HEALING, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level.getDayTime()) * 2);
-        addStatModifier(SIZE, (base, modified, spell, caster, target) -> modified + 2 * (caster.level.getDayTime() % 24000 > 13500 && caster.level.getDayTime() % 24000 < 22500 ? 1 + getMoonPhaseMultiplier(caster.level.getMoonPhase()) : 1));
-        addStatModifier(RANGE, modifiers.get(SIZE));
+        addStatModifier(RANGE, (base, modified, spell, caster, target) -> modified + 2 * (caster.level.getDayTime() % 24000 > 13500 && caster.level.getDayTime() % 24000 < 22500 ? 1 + getMoonPhaseMultiplier(caster.level.getMoonPhase()) : 1));
+        addStatModifier(SIZE, modifiers.get(RANGE));
+        addStatModifier(SPEED, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level.getDayTime()) * 0.5f);
     }
 
     /**

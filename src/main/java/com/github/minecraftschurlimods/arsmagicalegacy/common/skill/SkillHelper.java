@@ -37,8 +37,10 @@ import java.util.Set;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
-    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
+
+    private SkillHelper() {
+    }
 
     /**
      * @return The only instance of this class.
@@ -252,8 +254,6 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     public static final class SyncPacket extends CodecPacket<KnowledgeHolder> {
-
-
         public SyncPacket(KnowledgeHolder data) {
             super(data);
         }
@@ -271,7 +271,6 @@ public final class SkillHelper implements ISkillHelper {
         protected Codec<KnowledgeHolder> getCodec() {
             return KnowledgeHolder.CODEC;
         }
-
     }
 
     public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints) {

@@ -5,22 +5,22 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import net.minecraft.resources.ResourceLocation;
 
 public enum SpellPartStats implements ISpellPartStat {
-    SPEED,
-    SIZE,
-    DURATION,
-    POWER,
-    DAMAGE,
-    HEALING,
-    RANGE,
-    PIERCING,
-    COLOR,
-    GRAVITY,
     BOUNCE,
-    TARGET_NON_SOLID,
-    MINING_TIER,
+    COLOR,
+    DAMAGE,
+    DURATION,
     FORTUNE,
-    SILKTOUCH,
-    HOMING;
+    GRAVITY,
+    HEALING,
+    HOMING,
+    MINING_TIER,
+    PIERCING,
+    POWER,
+    RANGE,
+    SILK_TOUCH,
+    SIZE,
+    SPEED,
+    TARGET_NON_SOLID;
 
     private final ResourceLocation id;
 

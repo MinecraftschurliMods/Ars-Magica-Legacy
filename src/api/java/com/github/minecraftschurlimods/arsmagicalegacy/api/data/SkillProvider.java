@@ -41,7 +41,7 @@ public abstract class SkillProvider implements DataProvider {
 
     @Internal
     @Override
-    public final void run(HashCache pCache) {
+    public void run(HashCache pCache) {
         data = Sets.newHashSet();
         createSkills(skill -> {
             if (!data.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());

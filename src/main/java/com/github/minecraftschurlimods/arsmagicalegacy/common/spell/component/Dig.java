@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Dig extends AbstractComponent {
     public Dig() {
-        super(SpellPartStats.MINING_TIER, SpellPartStats.FORTUNE, SpellPartStats.SILKTOUCH);
+        super(SpellPartStats.FORTUNE, SpellPartStats.MINING_TIER, SpellPartStats.SILK_TOUCH);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Dig extends AbstractComponent {
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int) helper.getModifiedStat(0, SpellPartStats.SILKTOUCH, modifiers, spell, caster, target));
+            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int) helper.getModifiedStat(0, SpellPartStats.SILK_TOUCH, modifiers, spell, caster, target));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);

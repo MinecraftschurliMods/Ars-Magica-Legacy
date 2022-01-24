@@ -31,7 +31,6 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> CODECS = new HashMap<>();
     private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> NETWORK_CODECS = new HashMap<>();
     private static final Map<ResourceLocation, Lazy<ISpellIngredientRenderer<? extends ISpellIngredient>>> RENDERERS = new HashMap<>();
-
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
@@ -76,15 +75,10 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
 
     @Override
     public Codec<ISpellIngredient> getSpellIngredientNetworkCodec(ResourceLocation type) {
-        if (NETWORK_CODECS.containsKey(type)) {
-            return (Codec<ISpellIngredient>) NETWORK_CODECS.get(type);
-        }
-        return getSpellIngredientCodec(type);
+        return NETWORK_CODECS.containsKey(type) ? (Codec<ISpellIngredient>) NETWORK_CODECS.get(type) : getSpellIngredientCodec(type);
     }
 
-    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts,
-                                 List<Either<Ingredient, ItemStack>> reagents, float manaCost,
-                                 float burnout) implements ISpellPartData {
+    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
                 CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),

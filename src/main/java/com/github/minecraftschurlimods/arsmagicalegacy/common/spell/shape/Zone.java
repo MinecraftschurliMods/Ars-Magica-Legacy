@@ -14,10 +14,7 @@ import java.util.List;
 
 public class Zone extends AbstractShape {
     public Zone() {
-        super(SpellPartStats.TARGET_NON_SOLID,
-                SpellPartStats.DURATION,
-                SpellPartStats.GRAVITY,
-                SpellPartStats.SIZE);
+        super(SpellPartStats.DURATION, SpellPartStats.GRAVITY, SpellPartStats.SIZE, SpellPartStats.TARGET_NON_SOLID);
     }
 
     @Override
@@ -27,18 +24,14 @@ public class Zone extends AbstractShape {
             zone.setPos(caster.getX(), caster.getY(), caster.getZ());
             zone.setDeltaMovement(caster.getDeltaMovement());
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            boolean tns = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int duration = 200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            float gravity = 0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit);
-            float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
-            if (tns) {
+            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0) {
                 zone.setTargetNonSolid();
             }
-            zone.setDuration(duration);
+            zone.setDuration(200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit));
             zone.setIndex(index);
             zone.setOwner(caster);
-            zone.setGravity(gravity);
-            zone.setRadius(radius);
+            zone.setGravity(0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit));
+            zone.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit));
             zone.setStack(caster.getMainHandItem());
             level.addFreshEntity(zone);
         }

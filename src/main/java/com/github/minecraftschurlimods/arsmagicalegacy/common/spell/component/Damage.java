@@ -24,7 +24,7 @@ public class Damage extends AbstractComponent {
     private final Predicate<Entity> failIf;
 
     public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Float> damage, Predicate<Entity> failIf) {
-        super(SpellPartStats.HEALING, SpellPartStats.DAMAGE);
+        super(SpellPartStats.DAMAGE, SpellPartStats.HEALING);
         this.damageSourceFunction = damageSourceFunction;
         this.damage = damage;
         this.failIf = failIf;
@@ -48,11 +48,13 @@ public class Damage extends AbstractComponent {
         if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed())
             return SpellCastResult.EFFECT_FAILED;
         if (!failIf.test(living)) {
-            float damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(this.damage.apply(living), SpellPartStats.DAMAGE, modifiers, spell, caster, target);
+            float damage = this.damage.apply(living);
             if (damage < 0) {
+                damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.HEALING, modifiers, spell, caster, target);
                 living.heal(-damage);
                 return SpellCastResult.SUCCESS;
             }
+            damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.DAMAGE, modifiers, spell, caster, target);
             return living.hurt(damageSourceFunction.apply(caster), damage) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
         }
         return SpellCastResult.EFFECT_FAILED;

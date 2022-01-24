@@ -55,9 +55,7 @@ public class FilteredFilledDropArea<T> implements DropArea {
         this.items.clear();
         int x = this.x, y = this.y;
         for (T t : this.elements) {
-            if (!this.filter.test(t)) {
-                continue;
-            }
+            if (!this.filter.test(t)) continue;
             Pair<TextureAtlasSprite, Component> a = factory.apply(t);
             DraggableWithData<T> d = new DraggableWithData<>(x, y, elementWidth, elementHeight, a.getFirst(), a.getSecond(), t);
             this.items.add(d);

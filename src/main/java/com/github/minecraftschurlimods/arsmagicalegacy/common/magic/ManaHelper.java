@@ -19,8 +19,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
 
     private ManaHelper() {
     }
@@ -162,8 +161,7 @@ public final class ManaHelper implements IManaHelper {
     }
 
     public static final class ManaHolder {
-        public static final Codec<ManaHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("mana").forGetter(
-                ManaHolder::getMana)).apply(inst, mana -> {
+        public static final Codec<ManaHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("mana").forGetter(ManaHolder::getMana)).apply(inst, mana -> {
             ManaHolder manaHolder = new ManaHolder();
             manaHolder.setMana(mana);
             return manaHolder;

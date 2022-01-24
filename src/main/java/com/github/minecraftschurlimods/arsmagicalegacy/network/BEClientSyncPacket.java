@@ -11,7 +11,6 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Optional;
 
 public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPacket {
-
     public BEClientSyncPacket(BlockEntity blockEntity) {
         this(blockEntity.getBlockPos(), blockEntity.getUpdateTag());
     }

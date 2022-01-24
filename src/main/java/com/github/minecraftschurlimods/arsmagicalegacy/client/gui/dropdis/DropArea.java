@@ -14,7 +14,6 @@ public interface DropArea extends Widget, GuiEventListener {
             minX = maxX;
             maxX = i;
         }
-
         GuiComponent.fill(poseStack, minX, y, maxX + 1, y + 1, color);
     }
 
@@ -24,7 +23,6 @@ public interface DropArea extends Widget, GuiEventListener {
             minY = maxY;
             maxY = i;
         }
-
         GuiComponent.fill(poseStack, x, minY + 1, x + 1, maxY, color);
     }
 

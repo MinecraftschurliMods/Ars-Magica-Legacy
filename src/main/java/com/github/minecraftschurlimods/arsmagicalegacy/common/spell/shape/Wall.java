@@ -14,10 +14,7 @@ import java.util.List;
 
 public class Wall extends AbstractShape {
     public Wall() {
-        super(SpellPartStats.RANGE,
-                SpellPartStats.TARGET_NON_SOLID,
-                SpellPartStats.SIZE,
-                SpellPartStats.DURATION);
+        super(SpellPartStats.DURATION, SpellPartStats.RANGE, SpellPartStats.SIZE, SpellPartStats.TARGET_NON_SOLID);
     }
 
     @Override
@@ -25,16 +22,12 @@ public class Wall extends AbstractShape {
         if (!level.isClientSide()) {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall.create(level);
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            float range = helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
-            boolean tns = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            float radius = helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);
-            int duration = (int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            wall.setPos(helper.trace(caster, level, range, true, tns).getLocation());
+            wall.setPos(helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0).getLocation());
             wall.setYRot(caster.getYHeadRot());
-            wall.setDuration(duration);
+            wall.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit));
             wall.setIndex(index);
             wall.setOwner(caster);
-            wall.setRadius(radius);
+            wall.setRadius(helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit));
             wall.setStack(caster.getMainHandItem());
             level.addFreshEntity(wall);
         }

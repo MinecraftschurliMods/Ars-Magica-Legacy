@@ -14,12 +14,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import javax.annotation.Nonnull;
 
 public class SpellRuneModel extends BakedModelWrapper<BakedModel> {
     public SpellRuneModel(ResourceLocation id, BakedModel originalModel) {
         super(originalModel);
     }
 
+    @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
         LocalPlayer player = Minecraft.getInstance().player;

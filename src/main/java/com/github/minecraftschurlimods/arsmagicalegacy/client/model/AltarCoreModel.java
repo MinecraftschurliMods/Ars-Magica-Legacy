@@ -15,13 +15,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.annotation.Nonnull;
 
 public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
-
     public AltarCoreModel(BakedModel originalModel) {
         super(originalModel);
     }
 
+    @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
         if (state != null && state.hasProperty(AltarCoreBlock.FORMED) && state.getValue(AltarCoreBlock.FORMED)) {

@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public record RiftContainer(IItemHandlerModifiable handler) implements Container {
-
     @Override
     public int getContainerSize() {
         return handler.getSlots();

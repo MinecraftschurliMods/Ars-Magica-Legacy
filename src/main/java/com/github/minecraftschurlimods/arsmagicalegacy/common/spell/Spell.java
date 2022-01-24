@@ -59,7 +59,6 @@ public final class Spell implements ISpell {
     //@formatter:on
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
     private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
-
     private final List<ShapeGroup> shapeGroups;
     private final SpellStack spellStack;
     private final CompoundTag additionalData;
@@ -73,10 +72,7 @@ public final class Spell implements ISpell {
         this.additionalData = additionalData;
         this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
         this.empty = Lazy.concurrentOf(() -> (this.shapeGroups().isEmpty() || this.shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
-        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream()
-                                .map(ShapeGroup::parts)
-                                .flatMap(Collection::stream),
-                        this.spellStack().parts().stream())
+        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), this.spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
     }
@@ -103,9 +99,7 @@ public final class Spell implements ISpell {
     @Override
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
-            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
-                            .filter(parts -> !parts.isEmpty())
-                            .orElse(spellStack().parts()).get(0))
+            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts).filter(parts -> !parts.isEmpty()).orElse(spellStack().parts()).get(0))
                     .filter(ISpellShape.class::isInstance)
                     .map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
@@ -274,10 +268,9 @@ public final class Spell implements ISpell {
 
     @Override
     public List<ISpellIngredient> recipe() {
-        List<ISpellPartData> iSpellPartData = Stream.concat(
-                shapeGroups.stream().map(ShapeGroup::parts).flatMap(Collection::stream),
-                spellStack.parts().stream()
-        ).map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart).toList();
+        List<ISpellPartData> iSpellPartData = Stream.concat(shapeGroups.stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack.parts().stream())
+                .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
+                .toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
         ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.BLANK_RUNE.get()), 1)); // TODO make datadriven
         for (ISpellPartData data : iSpellPartData) {
@@ -315,7 +308,8 @@ public final class Spell implements ISpell {
 
     @Override
     public IAffinity primaryAffinity() {
-        return affinityShifts().entrySet().stream()
+        return affinityShifts().entrySet()
+                .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElseGet(AMAffinities.NONE);
@@ -323,8 +317,7 @@ public final class Spell implements ISpell {
 
     @Override
     public CompoundTag additionalData() {
-        if (isEmpty()) return new CompoundTag();
-        return additionalData;
+        return isEmpty() ? new CompoundTag() : additionalData;
     }
 
     @Override

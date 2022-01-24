@@ -13,10 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class Transplace extends AbstractComponent {
-    public Transplace() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))

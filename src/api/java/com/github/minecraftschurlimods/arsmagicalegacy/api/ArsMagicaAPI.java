@@ -168,7 +168,7 @@ public final class ArsMagicaAPI {
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
-    private static final class StubArsMagicaAPI implements IArsMagicaAPI {
+    private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
         @Override

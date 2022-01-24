@@ -44,7 +44,7 @@ public class RuneBagItem extends Item {
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 
-    private static final class InvProvider implements ICapabilityProvider {
+    private static class InvProvider implements ICapabilityProvider {
         private final LazyOptional<IItemHandler> lazy;
 
         public InvProvider(ItemStack stack) {

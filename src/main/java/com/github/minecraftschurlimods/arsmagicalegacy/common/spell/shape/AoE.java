@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class AoE extends AbstractShape {
-
     public AoE() {
         super(SpellPartStats.SIZE);
     }

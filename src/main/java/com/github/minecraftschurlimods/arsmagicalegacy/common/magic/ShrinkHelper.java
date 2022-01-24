@@ -17,8 +17,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class ShrinkHelper implements IShrinkHelper {
     private static final Lazy<ShrinkHelper> INSTANCE = Lazy.concurrentOf(ShrinkHelper::new);
-    private static final Capability<ShrinkHolder> SHRINK = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<ShrinkHolder> SHRINK = CapabilityManager.get(new CapabilityToken<>() {});
 
     private ShrinkHelper() {
     }
@@ -110,8 +109,7 @@ public final class ShrinkHelper implements IShrinkHelper {
     }
 
     public static final class ShrinkHolder {
-        public static final Codec<ShrinkHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.BOOL.fieldOf("shrunk").forGetter(
-                ShrinkHolder::isShrunk)).apply(inst, shrunk -> {
+        public static final Codec<ShrinkHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.BOOL.fieldOf("shrunk").forGetter(ShrinkHolder::isShrunk)).apply(inst, shrunk -> {
             ShrinkHolder holder = new ShrinkHolder();
             holder.setShrunk(shrunk);
             return holder;

@@ -136,7 +136,9 @@ public final class SpellHelper implements ISpellHelper {
         HitResult entityPos = null;
         if (includeEntities) {
             Entity pointedEntity = getPointedEntity(level, caster, range, 1, false, targetNonSolid);
-            if (pointedEntity != null) entityPos = new EntityHitResult(pointedEntity);
+            if (pointedEntity != null) {
+                entityPos = new EntityHitResult(pointedEntity);
+            }
         }
         float factor = 1;
         float interpPitch = caster.xRotO + (caster.getXRot() - caster.xRotO) * factor;

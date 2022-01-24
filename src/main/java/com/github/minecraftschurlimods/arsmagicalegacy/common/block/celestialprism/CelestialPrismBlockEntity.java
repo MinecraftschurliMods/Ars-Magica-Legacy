@@ -16,6 +16,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+
 public class CelestialPrismBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.LIGHT, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(CelestialPrismBlockEntity::onConsume);
     private final LazyOptional<IEtheriumProvider> etheriumHolder = LazyOptional.of(() -> provider);
@@ -53,6 +55,7 @@ public class CelestialPrismBlockEntity extends BlockEntity {
         provider.set(tag.getInt("etheriumValue"));
     }
 
+    @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHolder);

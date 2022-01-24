@@ -12,10 +12,6 @@ import java.util.List;
 
 //TODO
 public class Blizzard extends AbstractComponent {
-    public Blizzard() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

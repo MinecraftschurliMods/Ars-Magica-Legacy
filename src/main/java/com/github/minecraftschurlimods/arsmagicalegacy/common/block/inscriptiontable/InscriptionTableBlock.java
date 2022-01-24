@@ -70,9 +70,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        if (pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getCounterClockWise())).canBeReplaced(pContext))
-            return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, Half.RIGHT);
-        return null;
+        return pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getCounterClockWise())).canBeReplaced(pContext) ? defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, Half.RIGHT) : null;
     }
 
     @Override
@@ -113,8 +111,9 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
             pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
             return InteractionResult.FAIL;
         }
-        if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT)
+        if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) {
             pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
+        }
         NetworkHooks.openGui((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;

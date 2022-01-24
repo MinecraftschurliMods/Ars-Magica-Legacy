@@ -14,16 +14,13 @@ import java.util.List;
 
 public class Touch extends AbstractShape {
     public Touch() {
-        super(SpellPartStats.TARGET_NON_SOLID, SpellPartStats.RANGE);
+        super(SpellPartStats.RANGE, SpellPartStats.TARGET_NON_SOLID);
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        boolean targetNonSolid = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-        float range = helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
-        HitResult trace = helper.trace(caster, level, range, true, targetNonSolid);
-        return helper.invoke(spell, caster, level, trace, ticksUsed, index, awardXp);
+        return helper.invoke(spell, caster, level, helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0), ticksUsed, index, awardXp);
     }
 
     @Override

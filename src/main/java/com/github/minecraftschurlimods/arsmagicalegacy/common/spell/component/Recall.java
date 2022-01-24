@@ -23,10 +23,6 @@ public class Recall extends AbstractComponent {
     private static final String Z = ArsMagicaAPI.MOD_ID + ":recall_pos_z";
     private static final String DIMENSION = ArsMagicaAPI.MOD_ID + ":recall_dimension";
 
-    public Recall() {
-        super();
-    }
-
     private static boolean performRecall(LivingEntity caster, Level level, CompoundTag tag) {
         if (tag.contains(DIMENSION) && tag.getString(DIMENSION).equals(level.dimension().location().toString()) && tag.contains(X) && tag.contains(Y) && tag.contains(Z)) {
             caster.moveTo(tag.getInt(X) + 0.5f, tag.getInt(Y) + 0.5f, tag.getInt(Z) + 0.5f);

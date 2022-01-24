@@ -18,8 +18,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class BurnoutHelper implements IBurnoutHelper {
     private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
 
     private BurnoutHelper() {
     }
@@ -151,8 +150,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     public static final class BurnoutHolder {
-        public static final Codec<BurnoutHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("burnout").forGetter(
-                BurnoutHolder::getBurnout)).apply(inst, burnout -> {
+        public static final Codec<BurnoutHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("burnout").forGetter(BurnoutHolder::getBurnout)).apply(inst, burnout -> {
             BurnoutHolder manaHolder = new BurnoutHolder();
             manaHolder.setBurnout(burnout);
             return manaHolder;

@@ -55,7 +55,7 @@ class AMLootTableProvider extends LootTableProvider {
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
     }
 
-    private static final class BlockLootTableProvider extends BlockLoot {
+    private static class BlockLootTableProvider extends BlockLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
         @Override
@@ -131,7 +131,7 @@ class AMLootTableProvider extends LootTableProvider {
         }
     }
 
-    private static final class EntityLootTableProvider extends EntityLoot {
+    private static class EntityLootTableProvider extends EntityLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
         @Override

@@ -22,6 +22,7 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import java.util.UUID;
 import java.util.function.BiFunction;
+import javax.annotation.Nonnull;
 
 @CompatManager.ModCompat("curios")
 public class CurioCompat implements ICompatHandler {
@@ -69,6 +70,7 @@ public class CurioCompat implements ICompatHandler {
             inst = LazyOptional.of(() -> instance);
         }
 
+        @Nonnull
         @Override
         public <X> LazyOptional<X> getCapability(Capability<X> cap, @Nullable Direction side) {
             return capability.orEmpty(cap, inst);

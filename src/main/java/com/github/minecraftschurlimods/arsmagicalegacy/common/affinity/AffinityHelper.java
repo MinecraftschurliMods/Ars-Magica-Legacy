@@ -34,11 +34,13 @@ import java.util.Optional;
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
+
+    private AffinityHelper() {
+    }
 
     /**
      * @return The only instance of this class.

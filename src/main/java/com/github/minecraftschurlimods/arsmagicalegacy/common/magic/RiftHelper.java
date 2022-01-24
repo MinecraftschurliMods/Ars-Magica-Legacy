@@ -12,8 +12,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public final class RiftHelper implements IRiftHelper {
     private static final Lazy<RiftHelper> INSTANCE = Lazy.concurrentOf(RiftHelper::new);
-    private static final Capability<RiftHolder> RIFT = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<RiftHolder> RIFT = CapabilityManager.get(new CapabilityToken<>() {});
 
     private RiftHelper() {
     }

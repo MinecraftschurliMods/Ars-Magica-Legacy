@@ -38,7 +38,7 @@ public class Repel extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target);
+        float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target) * 2;
         Entity entity = target.getEntity();
         return performRepel(entity, entity.getBoundingBox().inflate(range, range, range), caster, target.getLocation(), modifiers, spell, target);
     }

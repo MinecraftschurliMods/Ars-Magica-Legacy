@@ -58,19 +58,13 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
 
     @Override
     public boolean canCombine(ISpellIngredient other) {
-        if (other instanceof IngredientSpellIngredient i) {
-            return Arrays.equals(i.ingredient().getItems(), this.ingredient().getItems());
-        }
-        return false;
+        return other instanceof IngredientSpellIngredient i && Arrays.equals(i.ingredient().getItems(), this.ingredient().getItems());
     }
 
     @Nullable
     @Override
     public ISpellIngredient combine(ISpellIngredient other) {
-        if (canCombine(other)) {
-            return new IngredientSpellIngredient(ingredient(), ((IngredientSpellIngredient) other).count() + count());
-        }
-        return null;
+        return canCombine(other) ? new IngredientSpellIngredient(ingredient(), ((IngredientSpellIngredient) other).count() + count()) : null;
     }
 
     @Nullable

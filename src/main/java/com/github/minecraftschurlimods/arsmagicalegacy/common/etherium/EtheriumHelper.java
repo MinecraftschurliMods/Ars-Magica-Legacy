@@ -15,10 +15,8 @@ import net.minecraftforge.common.util.LazyOptional;
 public final class EtheriumHelper implements IEtheriumHelper {
     private static final Lazy<EtheriumHelper> INSTANCE = Lazy.concurrentOf(EtheriumHelper::new);
 
-    private static final Capability<IEtheriumProvider> ETHERIUM_PROVIDER = CapabilityManager.get(new CapabilityToken<>() {
-    });
-    private static final Capability<IEtheriumConsumer> ETHERIUM_CONSUMER = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<IEtheriumProvider> ETHERIUM_PROVIDER = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<IEtheriumConsumer> ETHERIUM_CONSUMER = CapabilityManager.get(new CapabilityToken<>() {});
 
     private EtheriumHelper() {
     }

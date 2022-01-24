@@ -22,7 +22,7 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 public class MagitechGogglesCurioRenderer implements ICurioRenderer {
     public static final ResourceLocation LOCATION = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/models/armor/magitech_layer_1.png");
-    private HumanoidModel<LivingEntity> model = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
+    private final HumanoidModel<LivingEntity> model = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
 
     /**
      * Registers the curio renderer.

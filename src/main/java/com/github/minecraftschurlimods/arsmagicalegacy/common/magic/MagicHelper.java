@@ -18,8 +18,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
 
     private MagicHelper() {
     }
