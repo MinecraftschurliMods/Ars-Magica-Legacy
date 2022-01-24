@@ -15,9 +15,21 @@ public class AMMobEffect extends MobEffect {
         return true;
     }
 
+    /**
+     * Called when the given entity gets the effect.
+     *
+     * @param entity The entity to call this on.
+     * @param effect The effect instance the entity received.
+     */
     public void startEffect(LivingEntity entity, MobEffectInstance effect) {
     }
 
+    /**
+     * Called when the given entity loses the effect.
+     *
+     * @param entity The entity to call this on.
+     * @param effect The effect instance the entity got removed.
+     */
     public void stopEffect(LivingEntity entity, MobEffectInstance effect) {
     }
 }
