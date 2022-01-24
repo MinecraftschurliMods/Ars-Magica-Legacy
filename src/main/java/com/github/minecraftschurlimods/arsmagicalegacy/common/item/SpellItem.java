@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -152,13 +151,14 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
+        var api = ArsMagicaAPI.get();
         if (pLivingEntity instanceof Player player) {
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
+            if (!api.getMagicHelper().knowsMagic(player)) return;
             Optional<ResourceLocation> spellIcon = getSpellIcon(pStack);
             if (spellIcon.isPresent()) {
                 castSpell(pLevel, player, player.getUsedItemHand(), pStack);
             } else {
-                ArsMagicaAPI.get().openSpellCustomizationGui(pLevel, player, pStack);
+                api.openSpellCustomizationGui(pLevel, player, pStack);
             }
         } else {
             castSpell(pLevel, pLivingEntity, pLivingEntity.getUsedItemHand(), pStack);
@@ -167,8 +167,9 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        var api = ArsMagicaAPI.get();
         ItemStack heldItem = player.getItemInHand(hand);
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return InteractionResultHolder.fail(heldItem);
+        if (!api.getMagicHelper().knowsMagic(player)) return InteractionResultHolder.fail(heldItem);
         if (heldItem.hasTag()) {
             assert heldItem.getTag() != null;
             String icon = heldItem.getTag().getString(SPELL_ICON_KEY);
@@ -180,27 +181,28 @@ public class SpellItem extends Item implements ISpellItem {
                 }
             }
         }
-        ArsMagicaAPI.get().openSpellCustomizationGui(level, player, heldItem);
+        api.openSpellCustomizationGui(level, player, heldItem);
         return InteractionResultHolder.success(heldItem);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        var api = ArsMagicaAPI.get();
         Player player = context.getPlayer();
         if (player == null) return InteractionResult.FAIL;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return InteractionResult.FAIL;
+        if (!api.getMagicHelper().knowsMagic(player)) return InteractionResult.FAIL;
         ItemStack item = context.getItemInHand();
         Optional<ResourceLocation> spellIcon = getSpellIcon(item);
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
         } else {
-            ArsMagicaAPI.get().openSpellCustomizationGui(context.getLevel(), player, item);
+            api.openSpellCustomizationGui(context.getLevel(), player, item);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void fillItemCategory(final CreativeModeTab category, final NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PrefabSpellManager.ITEM_CATEGORY) {
             PrefabSpellManager.instance().values().stream().map(PrefabSpellManager.PrefabSpell::makeSpell).forEach(items::add);
         }

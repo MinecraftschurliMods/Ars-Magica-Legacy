@@ -40,25 +40,35 @@ public final class SkillHelper implements ISkillHelper {
     private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
+    /**
+     * @return The only instance of this class.
+     */
     public static SkillHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * Registers the required network packets.
+     */
     public static void init() {
         ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 
+    /**
+     * @return The knowledge capability.
+     */
     public static Capability<KnowledgeHolder> getCapability() {
         return KNOWLEDGE;
     }
 
-    private static void handleSync(KnowledgeHolder knowledgeHolder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE)
-                .ifPresent(holder -> holder.onSync(knowledgeHolder)));
-    }
-
-    public KnowledgeHolder getKnowledgeHolder(Player player) {
-        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleSync(KnowledgeHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -155,28 +165,28 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
         syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
-        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
+        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
         syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint) {
-        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
         syncToPlayer(player);
         return success;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint) {
-        var success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
+        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
         syncToPlayer(player);
         return success;
     }
@@ -217,16 +227,32 @@ public final class SkillHelper implements ISkillHelper {
         return getKnowledgeHolder(player).skills();
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(KNOWLEDGE).ifPresent(knowledgeHolder -> player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
         syncToPlayer(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncToPlayer(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getKnowledgeHolder(player)), player);
     }
 
+    private KnowledgeHolder getKnowledgeHolder(Player player) {
+        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+    }
+
     public static final class SyncPacket extends CodecPacket<KnowledgeHolder> {
+
 
         public SyncPacket(KnowledgeHolder data) {
             super(data);
@@ -261,14 +287,15 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         public synchronized boolean canLearn(ResourceLocation skill) {
-            ISkill iSkill = ArsMagicaAPI.get().getSkillManager().get(skill);
+            var skillManager = ArsMagicaAPI.get().getSkillManager();
+            ISkill iSkill = skillManager.get(skill);
             boolean canLearn = true;
             for (ResourceLocation rl : iSkill.getCost().keySet()) {
                 if (skillPoints.getOrDefault(rl, 0) < iSkill.getCost().get(rl)) {
                     canLearn = false;
                 }
             }
-            return canLearn && skills.containsAll(ArsMagicaAPI.get().getSkillManager().get(skill).getParents());
+            return canLearn && skills.containsAll(skillManager.get(skill).getParents());
         }
 
         public synchronized void learn(ResourceLocation skill) {

@@ -128,15 +128,16 @@ public final class ClientInit {
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
+            var api = ArsMagicaAPI.get();
             if (item instanceof IAffinityItem) {
-                for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+                for (IAffinity affinity : api.getAffinityRegistry()) {
                     if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
                         ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
             }
             if (item instanceof ISkillPointItem) {
-                for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
+                for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
                     ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }

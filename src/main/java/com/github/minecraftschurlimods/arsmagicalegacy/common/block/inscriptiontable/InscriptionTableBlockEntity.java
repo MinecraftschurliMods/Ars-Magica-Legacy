@@ -43,7 +43,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
     }
 
-    public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
+    public static ItemStack makeRecipe(String name, String author, Spell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         SpellItem.saveSpell(book, spell);
         CompoundTag tag = book.getOrCreateTag();

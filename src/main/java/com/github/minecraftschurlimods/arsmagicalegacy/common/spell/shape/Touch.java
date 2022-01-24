@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -20,11 +19,11 @@ public class Touch extends AbstractShape {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
-        ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-        boolean targetNonSolid = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-        float range = spellHelper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
-        HitResult trace = spellHelper.trace(caster, level, range, true, targetNonSolid);
-        return spellHelper.invoke(spell, caster, level, trace, ticksUsed, index, awardXp);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        boolean targetNonSolid = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
+        float range = helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
+        HitResult trace = helper.trace(caster, level, range, true, targetNonSolid);
+        return helper.invoke(spell, caster, level, trace, ticksUsed, index, awardXp);
     }
 
     @Override

@@ -24,11 +24,12 @@ public class Wall extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall.create(level);
-            float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
-            boolean tns = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);
-            int duration = (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            wall.setPos(ArsMagicaAPI.get().getSpellHelper().trace(caster, level, range, true, tns).getLocation());
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            float range = helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
+            boolean tns = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
+            float radius = helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+            int duration = (int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            wall.setPos(helper.trace(caster, level, range, true, tns).getLocation());
             wall.setYRot(caster.getYHeadRot());
             wall.setDuration(duration);
             wall.setIndex(index);

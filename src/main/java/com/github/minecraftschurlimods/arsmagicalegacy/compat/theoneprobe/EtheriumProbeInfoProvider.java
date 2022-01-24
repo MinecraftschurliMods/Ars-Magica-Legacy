@@ -28,7 +28,7 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
     @Override
     public void addProbeInfo(final ProbeMode probeMode, final IProbeInfo iProbeInfo, final Player player, final Level level, BlockState blockState, final IProbeHitData iProbeHitData) {
         BlockPos pos = iProbeHitData.getPos();
-        final int tier;
+        int tier;
         if (blockState.getBlock() instanceof ObeliskBlock obeliskBlock) {
             pos = pos.below(blockState.getValue(ObeliskBlock.PART).ordinal());
             blockState = level.getBlockState(pos);

@@ -71,8 +71,8 @@ public class SpellPartPage implements ICustomComponent {
         if (_part == null) return;
         List<ISpellIngredient> recipe = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(_part).recipe();
         if (recipe.isEmpty()) return;
-        final float angleStep = 360.0f / recipe.size();
-        final float dist = 45;
+        float angleStep = 360.0f / recipe.size();
+        float dist = 45;
         float lastAngle = (angleStep * (recipe.size() - 1) + (context.getTicksInBook() * 0.5f)) % 360f;
         float lastX = (float) (cx - Math.cos(Math.toRadians(lastAngle)) * dist);
         float lastY = (float) (cy - Math.sin(Math.toRadians(lastAngle)) * dist);

@@ -23,18 +23,18 @@ public record RiftContainer(IItemHandlerModifiable handler) implements Container
     }
 
     @Override
-    public ItemStack getItem(final int index) {
+    public ItemStack getItem(int index) {
         return handler.getStackInSlot(index);
     }
 
     @Override
-    public ItemStack removeItem(final int index, final int count) {
+    public ItemStack removeItem(int index, int count) {
         ItemStack stack = handler.getStackInSlot(index);
         return stack.isEmpty() ? ItemStack.EMPTY : stack.split(count);
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(final int index) {
+    public ItemStack removeItemNoUpdate(int index) {
         ItemStack s = getItem(index);
         if (s.isEmpty()) {
             return ItemStack.EMPTY;
@@ -44,7 +44,7 @@ public record RiftContainer(IItemHandlerModifiable handler) implements Container
     }
 
     @Override
-    public void setItem(final int index, final ItemStack stack) {
+    public void setItem(int index, ItemStack stack) {
         handler.setStackInSlot(index, stack);
     }
 
@@ -53,7 +53,7 @@ public record RiftContainer(IItemHandlerModifiable handler) implements Container
     }
 
     @Override
-    public boolean stillValid(final Player player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 

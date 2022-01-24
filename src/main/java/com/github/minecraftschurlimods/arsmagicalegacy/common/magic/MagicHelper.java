@@ -24,16 +24,28 @@ public final class MagicHelper implements IMagicHelper {
     private MagicHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static MagicHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The magic capability.
+     */
     public static Capability<MagicHolder> getMagicCapability() {
         return MAGIC;
     }
 
-    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleMagicSync(MagicHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -68,11 +80,22 @@ public final class MagicHelper implements IMagicHelper {
         return player.isCreative() || player.isSpectator() || getLevel(player) > 0;
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
         syncMagic(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncMagic(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
     }

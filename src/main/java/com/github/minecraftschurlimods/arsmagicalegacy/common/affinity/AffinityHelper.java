@@ -40,20 +40,35 @@ public final class AffinityHelper implements IAffinityHelper {
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
 
-    public static void init() {
-        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-    }
-
+    /**
+     * @return The only instance of this class.
+     */
     public static AffinityHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * Registers the required network packets.
+     */
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    /**
+     * @return The affinity capability.
+     */
     public static Capability<AffinityHolder> getCapability() {
         return AFFINITY;
     }
 
-    private static void handleSync(AffinityHolder affinityHolder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleSync(AffinityHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -140,11 +155,22 @@ public final class AffinityHelper implements IAffinityHelper {
         }
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
         syncToPlayer(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncToPlayer(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
     }
@@ -223,7 +249,7 @@ public final class AffinityHelper implements IAffinityHelper {
         public boolean equals(Object obj) {
             if (obj == this) return true;
             if (obj == null || obj.getClass() != this.getClass()) return false;
-            var that = (AffinityHolder) obj;
+            AffinityHolder that = (AffinityHolder) obj;
             return Objects.equals(this.depths, that.depths) && this.locked == that.locked;
         }
 

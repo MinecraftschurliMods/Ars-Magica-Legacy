@@ -7,10 +7,12 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SkillPointPanel extends Screen implements NarratableEntry {
@@ -22,13 +24,12 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
 
     @Override
     public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTicks) {
-        var player = getMinecraft().player;
+        LocalPlayer player = getMinecraft().player;
         if (player == null) return;
         stack.pushPose();
         stack.translate(width, 0, -1);
         var api = ArsMagicaAPI.get();
-        var knowledgeHelper = api.getSkillHelper();
-        var skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(new TextComponent(" : " + knowledgeHelper.getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());
+        List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(new TextComponent(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());
         int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
         setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);

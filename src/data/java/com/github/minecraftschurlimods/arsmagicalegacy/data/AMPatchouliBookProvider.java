@@ -40,7 +40,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setVersion("1").setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(api.getCreativeModeTab().getRecipeFolderName()).setUseResourcepack();
         builder.addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .setSortnum(0)
-                .addEntry("getting_started", "Getting Started", ArsMagicaAPI.get().getBookStack())
+                .addEntry("getting_started", "Getting Started", api.getBookStack())
                 .setPriority(true)
                 .addSimpleTextPage("Spellcrafting looks complex from a distance, but gets very easy when doing it more often.$(br2)You start by crafting an $(l:blocks/occulus)Occulus$(), placing it down and opening it. Through the Occulus, you can unlock new skills. Skills come in three categories, more on that in a minute.")
                 .addImagePage(new ResourceLocation(ArsMagicaAPI.MOD_ID, "patchouli_books/arcane_compendium/en_us/images/occulus.png")).setText("The Occulus has four tabs, the first three of which are skill tree tabs.").build()
@@ -56,7 +56,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("Now that you have your spell recipe, you can do the final step: crafting the spell at the $(l:mechanics/crafting_altar)Crafting Altar$().$(br2)To start crafting the spell, put the recipe onto the altar's lectern. The items you need to throw in will appear above it, always starting with a $(l:items/runes)Blank Rune$() and ending with a $(l:items/spell_parchment)Spell Parchment$().")
                 .addSimpleTextPage("When first using the spell, you can choose an icon and a name for the spell. After that, you're done!$(br2)It is heavily recommended to at least read the other chapters in this category, as they cover most things to know in magic.")
                 .build()
-                .addEntry("affinities", "Affinities", ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.WATER.get()))
+                .addEntry("affinities", "Affinities", api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()))
                 .addSimpleTextPage("Think of affinities like the elements of spell parts. There are ten affinities in total, seen on the right.$(br2)Every affinity has an essence that is used in intermediate spell crafting involving this affinity.")
                 .addSimpleTextPage("- Fire$(br)- Water$(br)- Earth$(br)- Air$(br)- Ice$(br)- Lightning$(br)- Nature$(br)- Life$(br)- Arcane$(br)- Ender")
                 .addSimpleTextPage("When you use spells with a certain affinity a lot, you will shift more and more into that affinity. Your affinity depth for all affinities can be seen in the affinity tab of the $(l:blocks/occulus)Occulus$().$(br2)While you don't notice anything yet, you suspect that being too deep in one affinity might cause some things to happen in the future.")

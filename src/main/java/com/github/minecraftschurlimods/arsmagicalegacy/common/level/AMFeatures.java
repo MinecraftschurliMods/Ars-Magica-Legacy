@@ -39,6 +39,7 @@ public final class AMFeatures {
     public static PlacedFeature DESERT_NOVA_PLACEMENT;
     public static PlacedFeature TARMA_ROOT_PLACEMENT;
     public static PlacedFeature WAKEBLOOM_PLACEMENT;
+
     private AMFeatures() {
     }
 

@@ -41,7 +41,7 @@ public class CelestialPrismBlock extends BaseEntityBlock {
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;
     }
 
@@ -51,35 +51,35 @@ public class CelestialPrismBlock extends BaseEntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return state.getValue(HALF) == DoubleBlockHalf.LOWER ? AMBlockEntities.CELESTIAL_PRISM.get().create(pos, state) : null;
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return !level.isClientSide() && state.getValue(HALF) == DoubleBlockHalf.LOWER ? BaseEntityBlock.createTickerHelper(blockEntityType, AMBlockEntities.CELESTIAL_PRISM.get(), (pLevel, pPos, pState, pBlockEntity) -> pBlockEntity.tick(pLevel, pPos, pState)) : null;
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(HALF);
     }
 
     @Override
-    public boolean propagatesSkylightDown(final BlockState state, final BlockGetter level, final BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return true;
     }
 
     @Override
-    public void onPlace(final BlockState state, final Level level, final BlockPos pos, final BlockState oldState, final boolean isMoving) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             level.setBlock(pos.above(), defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER), UPDATE_ALL);
         }
     }
 
     @Override
-    public BlockState getStateForPlacement(final BlockPlaceContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         if (context.getLevel().isOutsideBuildHeight(context.getClickedPos())) return null;
         if (context.getLevel().isOutsideBuildHeight(context.getClickedPos().above())) return null;
         if (!context.getLevel().getBlockState(context.getClickedPos()).canBeReplaced(context)) return null;
@@ -88,7 +88,7 @@ public class CelestialPrismBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         DoubleBlockHalf doubleblockhalf = state.getValue(HALF);
         BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
         BlockState blockstate = level.getBlockState(blockpos);

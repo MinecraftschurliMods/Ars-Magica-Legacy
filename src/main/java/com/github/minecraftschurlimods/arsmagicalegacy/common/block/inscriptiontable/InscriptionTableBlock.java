@@ -108,7 +108,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
             pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
             return InteractionResult.FAIL;

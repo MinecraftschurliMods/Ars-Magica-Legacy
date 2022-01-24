@@ -25,16 +25,28 @@ public final class ManaHelper implements IManaHelper {
     private ManaHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static ManaHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The mana capability.
+     */
     public static Capability<ManaHolder> getManaCapability() {
         return MANA;
     }
 
-    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(holder -> holder.onSync(data)));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleManaSync(ManaHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -97,12 +109,23 @@ public final class ManaHelper implements IManaHelper {
         }
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
         original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
         syncMana(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncMana(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
     }

@@ -23,16 +23,28 @@ public final class ShrinkHelper implements IShrinkHelper {
     private ShrinkHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static ShrinkHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The shrink capability.
+     */
     public static Capability<ShrinkHelper.ShrinkHolder> getShrinkCapability() {
         return SHRINK;
     }
 
-    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(data)));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -46,11 +58,22 @@ public final class ShrinkHelper implements IShrinkHelper {
         syncShrink(player);
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(SHRINK).ifPresent(shrinkHolder -> player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(shrinkHolder)));
         syncShrink(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncShrink(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ShrinkHelper.ShrinkSyncPacket(getShrinkHolder(player)), player);
     }

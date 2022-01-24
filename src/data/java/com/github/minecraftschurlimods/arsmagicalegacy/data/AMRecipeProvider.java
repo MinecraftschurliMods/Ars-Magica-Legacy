@@ -51,6 +51,7 @@ class AMRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        var helper = ArsMagicaAPI.get().getAffinityHelper();
         ShapelessRecipeBuilder.shapeless(Items.PINK_DYE)
                 .requires(AMItems.AUM.get())
                 .unlockedBy("item", has(AMItems.AUM.get()))
@@ -326,7 +327,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                 .save(consumer);
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -336,7 +337,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.WATER_BUCKET)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_water");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -346,7 +347,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.BLAZE_POWDER)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_fire");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -356,7 +357,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Tags.Items.STONE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_earth");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -366,7 +367,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', AMItems.TARMA_ROOT.get())
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_air");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ICE.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.ICE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -376,7 +377,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.ICE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_ice");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -386,7 +387,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Tags.Items.DUSTS_GLOWSTONE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_lightning");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.NATURE.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.NATURE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDK")
                 .pattern("ALA")
@@ -398,7 +399,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('L', Items.VINE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_nature");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIFE.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.LIFE.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -408,7 +409,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('J', Items.GOLDEN_APPLE)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_life");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.ARCANE.get()).getOrCreateTag())
                 .pattern("AAA")
                 .pattern("ADA")
                 .pattern("AAA")
@@ -416,7 +417,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('D', Items.DIAMOND)
                 .unlockedBy("has_arcane_ash", has(AMItems.ARCANE_ASH.get()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane");
-        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ENDER.get()).getOrCreateTag())
+        ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.ENDER.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
                 .pattern("AIA")
@@ -489,7 +490,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern(" E ")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -499,7 +500,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("OOO")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -509,7 +510,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("O O")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -518,7 +519,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("GRG")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);

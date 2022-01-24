@@ -4,12 +4,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
@@ -148,11 +144,10 @@ public final class Spell implements ISpell {
         float mana = mana(caster);
         float burnout = burnout(caster);
         Collection<Either<Ingredient, ItemStack>> reagents = reagents(caster);
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        IMagicHelper magicHelper = api.getMagicHelper();
-        IManaHelper manaHelper = api.getManaHelper();
-        IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
-        ISpellHelper spellHelper = api.getSpellHelper();
+        var api = ArsMagicaAPI.get();
+        var manaHelper = api.getManaHelper();
+        var burnoutHelper = api.getBurnoutHelper();
+        var spellHelper = api.getSpellHelper();
         if (consume && !(caster instanceof Player p && p.isCreative())) {
             if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
             if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
@@ -167,7 +162,7 @@ public final class Spell implements ISpell {
             spellHelper.consumeReagents(caster, reagents);
         }
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
-            boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
+            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
             Map<IAffinity, Double> affinityShifts = affinityShifts();
             for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
@@ -181,13 +176,13 @@ public final class Spell implements ISpell {
                 }
                 AffinityChangingEvent evt = new AffinityChangingEvent(player, affinity, shift.floatValue());
                 if (!evt.isCanceled()) {
-                    ArsMagicaAPI.get().getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
+                    api.getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
                 }
             }
             float xp = 0.05f * affinityShifts.size();
             if (continuous) xp /= 4;
             if (affinityGains) xp *= 0.9f;
-            magicHelper.awardXp(player, xp);
+            api.getMagicHelper().awardXp(player, xp);
         }
         return result;
     }
@@ -214,8 +209,7 @@ public final class Spell implements ISpell {
     public float mana(LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        ISpellDataManager spellDataManager = api.getSpellDataManager();
+        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         for (ISpellPart part : parts()) {
             ISpellPartData data = spellDataManager.getDataForPart(part);
             if (data == null) continue;
@@ -334,10 +328,10 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final Spell spell = (Spell) o;
+        Spell spell = (Spell) o;
         return shapeGroups().equals(spell.shapeGroups()) && spellStack().equals(spell.spellStack()) && additionalData().equals(spell.additionalData());
     }
 

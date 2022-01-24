@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -37,14 +36,15 @@ public class Dig extends AbstractComponent {
         BlockState state = level.getBlockState(blockPos);
         float hardness = state.getDestroySpeed(level, blockPos);
         if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
-        ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int) spellHelper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target)), state))
+        var api = ArsMagicaAPI.get();
+        var helper = api.getSpellHelper();
+        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int) helper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target)), state))
             return SpellCastResult.EFFECT_FAILED;
-        if (!(caster instanceof Player player && player.isCreative()) && !ArsMagicaAPI.get().getManaHelper().decreaseMana(caster, hardness * 1.28f))
+        if (!(caster instanceof Player player && player.isCreative()) && !api.getManaHelper().decreaseMana(caster, hardness * 1.28f))
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            ItemStack dummyStack = AMUtil.createDummyStack((int) spellHelper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int) spellHelper.getModifiedStat(0, SpellPartStats.SILKTOUCH, modifiers, spell, caster, target));
+            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int) helper.getModifiedStat(0, SpellPartStats.SILKTOUCH, modifiers, spell, caster, target));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);

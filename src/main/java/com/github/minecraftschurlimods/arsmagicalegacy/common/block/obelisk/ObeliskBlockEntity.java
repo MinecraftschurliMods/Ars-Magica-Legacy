@@ -111,7 +111,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
-    public boolean stillValid(final Player player) {
+    public boolean stillValid(Player player) {
         return getBlockPos().distSqr(player.blockPosition()) < 128D;
     }
 

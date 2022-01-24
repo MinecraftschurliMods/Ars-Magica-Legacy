@@ -39,6 +39,9 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static SpellDataManager instance() {
         return INSTANCE.get();
     }

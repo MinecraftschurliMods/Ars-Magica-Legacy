@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {

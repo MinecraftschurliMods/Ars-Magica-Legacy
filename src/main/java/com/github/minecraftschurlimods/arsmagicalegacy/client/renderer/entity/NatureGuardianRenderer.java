@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class NatureGuardianRenderer extends MobRenderer<NatureGuardian, NatureGuardianModel<NatureGuardian>> {
-
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/nature_guardian.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/nature_guardian.png");
 
     public NatureGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
         super(rendererManagerIn, new NatureGuardianModel<>(rendererManagerIn.bakeLayer(NatureGuardianModel.LAYER_LOCATION)), 0.7F);

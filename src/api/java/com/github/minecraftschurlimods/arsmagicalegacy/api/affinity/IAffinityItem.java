@@ -15,12 +15,12 @@ public interface IAffinityItem {
      * @return The affinity stored in the stack, or the NONE affinity if the stack does not contain one.
      */
     default IAffinity getAffinity(ItemStack stack) {
-        var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
-        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(affinityRegistry.getRegistryName().toString()));
+        var registry = ArsMagicaAPI.get().getAffinityRegistry();
+        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.getRegistryName().toString()));
         if (key == null) {
             key = IAffinity.NONE;
         }
-        return Objects.requireNonNull(affinityRegistry.getValue(key));
+        return Objects.requireNonNull(registry.getValue(key));
     }
 
     /**

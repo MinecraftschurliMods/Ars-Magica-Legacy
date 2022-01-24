@@ -18,10 +18,16 @@ public final class RiftHelper implements IRiftHelper {
     private RiftHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static RiftHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The rift capability.
+     */
     public static Capability<RiftHolder> getRiftCapability() {
         return RIFT;
     }
@@ -31,6 +37,12 @@ public final class RiftHelper implements IRiftHelper {
         return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(RIFT).ifPresent(rift -> player.getCapability(RIFT).ifPresent(holder -> holder.onSync(rift)));
     }

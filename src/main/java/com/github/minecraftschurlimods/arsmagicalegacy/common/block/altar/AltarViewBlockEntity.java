@@ -35,7 +35,7 @@ public class AltarViewBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        this.altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos)                 .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
+        this.altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
     }
 
     @Override

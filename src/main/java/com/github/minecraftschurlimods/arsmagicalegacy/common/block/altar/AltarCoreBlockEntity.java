@@ -225,7 +225,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     @Override
     public CompoundTag getUpdateTag() {
-        var tag = new CompoundTag();
+        CompoundTag tag = new CompoundTag();
         saveAltar(tag, true);
         return tag;
     }
@@ -327,13 +327,14 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     @Override
     public List<IEtheriumProvider> getBoundProviders() {
+        var helper = ArsMagicaAPI.get().getEtheriumHelper();
         Level level = getLevel();
         if (level != null) {
-            this.boundPositions.removeIf(blockPos -> !ArsMagicaAPI.get().getEtheriumHelper().hasEtheriumProvider(level, blockPos));
+            this.boundPositions.removeIf(blockPos -> !helper.hasEtheriumProvider(level, blockPos));
             return this.boundPositions
                     .stream()
                     .map(level::getBlockEntity)
-                    .map(ArsMagicaAPI.get().getEtheriumHelper()::getEtheriumProvider)
+                    .map(helper::getEtheriumProvider)
                     .map(opt -> opt.orElseThrow(() -> new RuntimeException("IEtheriumProvider not present!")))
                     .collect(Collectors.toList());
         }

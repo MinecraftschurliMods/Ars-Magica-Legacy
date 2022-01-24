@@ -23,7 +23,8 @@ public final class Config {
         SERVER = serverPair.getLeft();
     }
 
-    private Config() {}
+    private Config() {
+    }
 
     @Internal
     static synchronized void init() {
@@ -35,7 +36,7 @@ public final class Config {
     }
 
     /**
-     * Class holding the client config values
+     * Class holding the client config values.
      */
     public static final class Client {
         private Client(ForgeConfigSpec.Builder builder) {
@@ -43,7 +44,7 @@ public final class Config {
     }
 
     /**
-     * Class holding the server config values
+     * Class holding the server config values.
      */
     public static final class Server {
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;

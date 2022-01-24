@@ -7,7 +7,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 public class SimpleEtheriumProvider implements IEtheriumProvider {
-
     private final EtheriumType type;
     private final int maxValue;
     private int etheriumValue;
@@ -52,12 +51,12 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
         set(etheriumValue + value);
     }
 
-    public SimpleEtheriumProvider setCallback(final ConsumeCallback callback) {
+    public SimpleEtheriumProvider setCallback(ConsumeCallback callback) {
         this.callback = callback;
         return this;
     }
 
-    public boolean canStore(final int additional) {
+    public boolean canStore(int additional) {
         return etheriumValue + additional <= maxValue;
     }
 

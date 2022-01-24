@@ -21,7 +21,7 @@ public final class RenderUtil {
 
     public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {
         stack.pushPose();
-        var pose = stack.last().pose();
+        Matrix4f pose = stack.last().pose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableTexture();
@@ -69,7 +69,7 @@ public final class RenderUtil {
         } else {
             int mx = (int) ((xEnd + xStart) / 2);
             int my = (int) ((yEnd + yStart) / 2);
-            var random = Optional.ofNullable(Minecraft.getInstance().level).map(Level::getRandom).orElseGet(Random::new);
+            Random random = Optional.ofNullable(Minecraft.getInstance().level).map(Level::getRandom).orElseGet(Random::new);
             mx += (random.nextFloat() - 0.5) * displace;
             my += (random.nextFloat() - 0.5) * displace;
             fractalLine2df(stack, xStart, yStart, mx, my, zLevel, color, displace / 2f, fractalDetail);
@@ -78,7 +78,7 @@ public final class RenderUtil {
     }
 
     public static void drawBox(PoseStack stack, float minX, float minY, float maxX, float maxY, float zLevel, float minU, float minV, float maxU, float maxV) {
-        final Matrix4f pMatrix = stack.last().pose();
+        Matrix4f pMatrix = stack.last().pose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);

@@ -23,6 +23,9 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static OcculusTabManager instance() {
         return INSTANCE.get();
     }

@@ -40,6 +40,9 @@ public final class SpellHelper implements ISpellHelper {
     private SpellHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static SpellHelper instance() {
         return INSTANCE.get();
     }
@@ -75,7 +78,7 @@ public final class SpellHelper implements ISpellHelper {
     @Override
     public boolean hasReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagentsIn) {
         if (!(caster instanceof Player player)) return true;
-        var reagents = new ArrayList<>(reagentsIn);
+        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>(reagentsIn);
         for (ItemStack item : player.getInventory().items) {
             if (item.isEmpty()) continue;
             for (Iterator<Either<Ingredient, ItemStack>> iterator = reagents.iterator(); iterator.hasNext(); ) {
@@ -160,7 +163,7 @@ public final class SpellHelper implements ISpellHelper {
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
-                var component = (ISpellComponent) part.getFirst();
+                ISpellComponent component = (ISpellComponent) part.getFirst();
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
                 }
@@ -170,7 +173,7 @@ public final class SpellHelper implements ISpellHelper {
                 return result;
             }
             case SHAPE -> {
-                var shape = (ISpellShape) part.getFirst();
+                ISpellShape shape = (ISpellShape) part.getFirst();
                 return shape.invoke(spell, caster, level, part.getSecond(), target, castingTicks, index + 1, awardXp);
             }
             default -> {

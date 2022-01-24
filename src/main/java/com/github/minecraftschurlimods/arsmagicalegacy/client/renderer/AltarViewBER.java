@@ -88,7 +88,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         int j = (int) (f1 * 255) << 24;
         int i = 0;
         float offset = font.lineHeight * (components.size() - 1.5f);
-        for (final Component sibling : components) {
+        for (Component sibling : components) {
             float y = font.lineHeight * i++ - offset;
             float f2 = (float) (-font.width(sibling) / 2);
             font.drawInBatch(sibling, f2, y, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);

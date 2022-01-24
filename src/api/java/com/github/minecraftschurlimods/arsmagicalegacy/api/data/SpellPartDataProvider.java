@@ -256,18 +256,18 @@ public abstract class SpellPartDataProvider implements DataProvider {
         }
 
         JsonObject serialize() {
-            var json = new JsonObject();
+            JsonObject json = new JsonObject();
             json.addProperty("manaCost", manaCost);
             if (burnout != null) {
                 json.addProperty("burnout", burnout);
             }
-            var reagentsJson = new JsonArray();
+            JsonArray reagentsJson = new JsonArray();
             reagents.forEach(either -> reagentsJson.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
             json.add("reagents", reagentsJson);
-            var affinitiesJson = new JsonObject();
+            JsonObject affinitiesJson = new JsonObject();
             affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));
             json.add("affinities", affinitiesJson);
-            var recipeJson = new JsonArray();
+            JsonArray recipeJson = new JsonArray();
             recipe.forEach(ingredient -> recipeJson.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
             json.add("recipe", recipeJson);
             return json;

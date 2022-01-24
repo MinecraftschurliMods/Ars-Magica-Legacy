@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -27,11 +26,11 @@ public class Zone extends AbstractShape {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone zone = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone.create(level);
             zone.setPos(caster.getX(), caster.getY(), caster.getZ());
             zone.setDeltaMovement(caster.getDeltaMovement());
-            ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            boolean tns = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int duration = 200 + (int) spellHelper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            float gravity = 0.025f * spellHelper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit);
-            float radius = spellHelper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            boolean tns = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
+            int duration = 200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            float gravity = 0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit);
+            float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
             if (tns) {
                 zone.setTargetNonSolid();
             }

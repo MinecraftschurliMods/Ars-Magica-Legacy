@@ -53,7 +53,7 @@ public class ObeliskMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(final Player player, final int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {

@@ -32,21 +32,21 @@ public class BlackAuremBlock extends BaseEntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return AMBlockEntities.BLACK_AUREM.get().create(pos, state);
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide() ? null : createTickerHelper(blockEntityType, AMBlockEntities.BLACK_AUREM.get(), (pLevel, pPos, pState, pBlockEntity) -> pBlockEntity.tick(pLevel, pPos, pState));
     }
 
-    public int getTier(final BlockState state, final Level world, final BlockPos pos) {
+    public int getTier(BlockState state, Level world, BlockPos pos) {
         int tier = 0;
         if (CHALK.test(world, pos)) {
             if (PILLAR1.test(world, pos)) {

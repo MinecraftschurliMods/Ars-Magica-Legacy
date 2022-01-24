@@ -1,7 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;

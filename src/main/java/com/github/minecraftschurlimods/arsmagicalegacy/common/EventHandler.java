@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
@@ -174,7 +173,7 @@ public final class EventHandler {
     }
 
     public static void registerSpellIngredientTypes() {
-        ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         spellDataManager.registerSpellIngredientType(IngredientSpellIngredient.INGREDIENT, IngredientSpellIngredient.CODEC, IngredientSpellIngredient.NETWORK_CODEC, IngredientSpellIngredient.IngredientSpellIngredientRenderer::new);
         spellDataManager.registerSpellIngredientType(EtheriumSpellIngredient.ETHERIUM, EtheriumSpellIngredient.CODEC, EtheriumSpellIngredient.EtheriumSpellIngredientRenderer::new);
     }
@@ -261,17 +260,21 @@ public final class EventHandler {
     private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
-        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
-        if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getStack())) return;
-        ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
+        var api = ArsMagicaAPI.get();
+        var helper = api.getMagicHelper();
+        if (helper.knowsMagic(event.getPlayer())) return;
+        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
+        helper.awardXp(event.getPlayer(), 0);
     }
 
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
-        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
-        if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getCrafting())) return;
-        ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
+        var api = ArsMagicaAPI.get();
+        var helper = api.getMagicHelper();
+        if (helper.knowsMagic(event.getPlayer())) return;
+        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
+        helper.awardXp(event.getPlayer(), 0);
     }
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -279,8 +282,9 @@ public final class EventHandler {
         if (event.phase != TickEvent.Phase.START) return;
         Player player = event.player;
         if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
-        ArsMagicaAPI.get().getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        ArsMagicaAPI.get().getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        var api = ArsMagicaAPI.get();
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
@@ -371,7 +375,7 @@ public final class EventHandler {
     private static void playerLevelUp(PlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         int level = event.getLevel();
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         if (level == 1) {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_STARTING_BLUE_POINTS.get());
         }
@@ -403,14 +407,14 @@ public final class EventHandler {
         LivingEntity caster = event.getEntityLiving();
         float cost = event.getBase();
         if (caster instanceof Player player) {
-            ISpellDataManager iSpellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+            var api = ArsMagicaAPI.get();
             for (ISpellPart iSpellPart : event.getSpell().parts()) {
                 if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
-                ISpellPartData dataForPart = iSpellDataManager.getDataForPart(iSpellPart);
+                ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
                 if (dataForPart == null) continue;
                 Set<IAffinity> affinities = dataForPart.affinities();
                 for (IAffinity aff : affinities) {
-                    double value = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, aff);
+                    double value = api.getAffinityHelper().getAffinityDepth(player, aff);
                     if (value > 0) {
                         cost -= (float) (cost * (0.5f * value / 100f));
                     }

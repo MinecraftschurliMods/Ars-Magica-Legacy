@@ -118,11 +118,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Unmodifiable
     @Override
-    public IEtheriumHelper getEtheriumHelper() {
-        return EtheriumHelper.instance();
-    }
-
-    @Override
     public ISpellHelper getSpellHelper() {
         return SpellHelper.instance();
     }
@@ -137,6 +132,12 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public IShrinkHelper getShrinkHelper() {
         return ShrinkHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IEtheriumHelper getEtheriumHelper() {
+        return EtheriumHelper.instance();
     }
 
     @Override

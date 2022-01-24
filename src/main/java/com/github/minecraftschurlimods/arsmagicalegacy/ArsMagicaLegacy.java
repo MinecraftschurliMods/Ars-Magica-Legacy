@@ -42,9 +42,7 @@ public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 1);
-
     private static ArsMagicaLegacy INSTANCE;
-
     private final IModInfo modInfo;
 
     public ArsMagicaLegacy() {
@@ -69,7 +67,6 @@ public final class ArsMagicaLegacy {
         SkillManager.instance();
         SpellDataManager.instance();
         AltarMaterialManager.instance();
-
         CompatManager.preInit();
     }
 

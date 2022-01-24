@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -34,7 +33,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -91,9 +89,9 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     protected void init() {
         super.init();
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        ISkillManager skillManager = api.getSkillManager();
-        IForgeRegistry<ISpellPart> spellPartRegistry = api.getSpellPartRegistry();
+        var api = ArsMagicaAPI.get();
+        var skillManager = api.getSkillManager();
+        var spellPartRegistry = api.getSpellPartRegistry();
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
@@ -157,19 +155,19 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private boolean isValidInSpellStack(List<ISpellPart> items, ISpellPart item) {
-        final Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
-        final Function<BasicDropZone, List<Draggable>> itemGetter = BasicDropZone::items;
-        final Function<List<Draggable>, List<ResourceLocation>> draggableMapper = DraggableWithData::dataList;
-        final Function<List<ResourceLocation>, List<ISpellPart>> registryMapper = rls -> rls.stream().map(registryAccess).toList();
-        final Function<BasicDropZone, List<ISpellPart>> mapper = itemGetter.andThen(draggableMapper).andThen(registryMapper);
-        final Predicate<List<ISpellPart>> isValidInShapeGroup = iSpellParts -> isValidInShapeGroup(iSpellParts, item);
-        final boolean shapeGroupsEmpty = shapeGroupDropZones.stream().map(itemGetter).allMatch(List::isEmpty);
+        Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
+        Function<BasicDropZone, List<Draggable>> itemGetter = BasicDropZone::items;
+        Function<List<Draggable>, List<ResourceLocation>> draggableMapper = DraggableWithData::dataList;
+        Function<List<ResourceLocation>, List<ISpellPart>> registryMapper = rls -> rls.stream().map(registryAccess).toList();
+        Function<BasicDropZone, List<ISpellPart>> mapper = itemGetter.andThen(draggableMapper).andThen(registryMapper);
+        Predicate<List<ISpellPart>> isValidInShapeGroup = iSpellParts -> isValidInShapeGroup(iSpellParts, item);
+        boolean shapeGroupsEmpty = shapeGroupDropZones.stream().map(itemGetter).allMatch(List::isEmpty);
         return switch (item.getType()) {
             case COMPONENT -> true;
             case MODIFIER -> {
                 Deque<ISpellPart> deque = new ArrayDeque<>(items);
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
-                    final ISpellPart part = it.next();
+                    ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.MODIFIER) continue;
                     if (part.getType() == ISpellPart.SpellPartType.COMPONENT) {
                         HashSet<ISpellPartStat> stats = new HashSet<>(((ISpellComponent) part).getStatsUsed());
@@ -195,7 +193,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             case MODIFIER -> {
                 if (deque.isEmpty()) yield false;
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
-                    final ISpellPart part = it.next();
+                    ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.SHAPE) {
                         HashSet<ISpellPartStat> stats = new HashSet<>(((ISpellShape) part).getStatsUsed());
                         stats.retainAll(((ISpellModifier) item).getStatsModified());
@@ -208,7 +206,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 if (((ISpellShape) item).needsToComeFirst()) yield deque.isEmpty();
                 if (((ISpellShape) item).needsPrecedingShape() && deque.isEmpty()) yield false;
                 for (Iterator<ISpellPart> it = deque.descendingIterator(); it.hasNext(); ) {
-                    final ISpellPart part = it.next();
+                    ISpellPart part = it.next();
                     if (part.getType() == ISpellPart.SpellPartType.SHAPE) yield !((ISpellShape) part).isEndShape();
                 }
                 yield true;
@@ -285,7 +283,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void setFromRecipe(Spell spell) {
-        ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
+        var skillManager = ArsMagicaAPI.get().getSkillManager();
         spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0, spellStackDropZone != null ? spellStackDropZone.getY() : 0, 141, 18, ICON_SIZE, ICON_SIZE, 4, spellStackDropZone);
         spellStackDropZone.clear();
         for (ISpellPart iSpellPart : spell.spellStack().parts()) {

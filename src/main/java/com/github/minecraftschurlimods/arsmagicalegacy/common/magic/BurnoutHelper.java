@@ -24,16 +24,28 @@ public final class BurnoutHelper implements IBurnoutHelper {
     private BurnoutHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static BurnoutHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The burnout capability.
+     */
     public static Capability<BurnoutHolder> getBurnoutCapability() {
         return BURNOUT;
     }
 
-    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(data)));
+    /**
+     * Handles synchronization with the client.
+     *
+     * @param holder  The capability to sync.
+     * @param context The networking context.
+     */
+    private static void handleBurnoutSync(BurnoutHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -86,12 +98,23 @@ public final class BurnoutHelper implements IBurnoutHelper {
         return true;
     }
 
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         original.getCapability(BurnoutHelper.BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BurnoutHelper.BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
         syncBurnout(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncBurnout(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutHelper.BurnoutSyncPacket(getBurnoutHolder(player)), player);
     }

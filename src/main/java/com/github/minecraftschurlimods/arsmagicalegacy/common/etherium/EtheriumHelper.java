@@ -23,14 +23,23 @@ public final class EtheriumHelper implements IEtheriumHelper {
     private EtheriumHelper() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static EtheriumHelper instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The etherium provider capability.
+     */
     public Capability<IEtheriumProvider> getEtheriumProviderCapability() {
         return ETHERIUM_PROVIDER;
     }
 
+    /**
+     * @return The etherium consumer capability.
+     */
     public Capability<IEtheriumConsumer> getEtheriumConsumerCapability() {
         return ETHERIUM_CONSUMER;
     }

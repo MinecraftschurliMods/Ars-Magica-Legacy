@@ -2,8 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;

@@ -39,6 +39,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
 
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
+    private Optional<ResourceLocation> icon;
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
@@ -46,7 +47,6 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             return super.resolve(model, stack, level, entity, seed);
         }
     };
-    private Optional<ResourceLocation> icon;
     private ItemTransforms.TransformType cameraTransformType;
 
     public SpellItemModel(BakedModel originalModel) {

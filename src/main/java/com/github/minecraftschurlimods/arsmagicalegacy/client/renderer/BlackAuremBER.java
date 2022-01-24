@@ -17,7 +17,7 @@ public class BlackAuremBER implements BlockEntityRenderer<BlackAuremBlockEntity>
     }
 
     @Override
-    public void render(final BlackAuremBlockEntity blockEntity, final float partialTick, final PoseStack poseStack, final MultiBufferSource bufferSource, final int packedLight, final int packedOverlay) {
+    public void render(BlackAuremBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Minecraft instance = Minecraft.getInstance();
         poseStack.pushPose();
         poseStack.translate(0.5, 0.5, 0.5);

@@ -173,7 +173,7 @@ class AMItemModelProvider extends ItemModelProvider {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             if (affinity.getId().equals(IAffinity.NONE)) continue;
-            var rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
@@ -187,7 +187,7 @@ class AMItemModelProvider extends ItemModelProvider {
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
-            var rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }

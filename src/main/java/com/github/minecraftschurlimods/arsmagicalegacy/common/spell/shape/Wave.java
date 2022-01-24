@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -28,12 +27,12 @@ public class Wave extends AbstractShape {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave wave = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave.create(level);
             wave.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             wave.setDeltaMovement(caster.getLookAngle());
-            ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            boolean tns = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int duration = (int) spellHelper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            float gravity = spellHelper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f;
-            float radius = spellHelper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
-            float speed = 1 + spellHelper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit);
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            boolean tns = helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
+            int duration = (int) helper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            float gravity = helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f;
+            float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+            float speed = 1 + helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit);
             if (tns) {
                 wave.setTargetNonSolid();
             }

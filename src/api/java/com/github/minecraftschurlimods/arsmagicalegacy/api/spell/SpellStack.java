@@ -94,7 +94,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SpellStack that = (SpellStack) o;
+        SpellStack that = (SpellStack) o;
         return (isEmpty() && that.isEmpty()) || parts().equals(that.parts());
     }
 

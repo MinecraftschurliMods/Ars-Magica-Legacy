@@ -95,7 +95,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final ShapeGroup that = (ShapeGroup) o;
+        ShapeGroup that = (ShapeGroup) o;
         return (isEmpty() && that.isEmpty()) || parts().equals(that.parts());
     }
 

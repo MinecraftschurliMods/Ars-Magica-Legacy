@@ -102,7 +102,7 @@ public final class Skill implements ISkill {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != getClass()) return false;
-        var that = (Skill) obj;
+        Skill that = (Skill) obj;
         return Objects.equals(id, that.id) && Objects.equals(occulusTab, that.occulusTab) && Objects.equals(parents, that.parents) && x == that.x && y == that.y && Objects.equals(cost, that.cost) && hidden == that.hidden;
     }
 
