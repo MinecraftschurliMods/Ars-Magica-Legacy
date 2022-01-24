@@ -42,8 +42,8 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
             this.dragOffsetY = mouseY - this.y;
             dragOffsetSet = true;
         }
-        this.x = (int)(mouseX - this.dragOffsetX);
-        this.y = (int)(mouseY - this.dragOffsetY);
+        this.x = (int) (mouseX - this.dragOffsetX);
+        this.y = (int) (mouseY - this.dragOffsetY);
         return true;
     }
 
@@ -80,12 +80,12 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
         narrationElementOutput.add(NarratedElementType.TITLE, this.name);
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
     public boolean isVisible() {
         return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @Override

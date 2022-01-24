@@ -115,9 +115,6 @@ public abstract class AbstractBoss extends Monster {
         return null;
     }
 
-    /**
-     * Partially taken from {@link EndDragonFight#updatePlayers()}
-     */
     private void updatePlayers() {
         if (!level.isClientSide) {
             Set<ServerPlayer> newSet = new HashSet<>();

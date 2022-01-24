@@ -27,10 +27,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.function.BiPredicate;
 
 public class CelestialPrismBlock extends BaseEntityBlock {
-    private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);
-
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-
+    private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);
     public final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_CHALK);
     public final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR1);
     public final BiPredicate<Level, BlockPos> PILLAR2 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_PILLAR2);

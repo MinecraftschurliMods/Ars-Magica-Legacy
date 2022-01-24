@@ -24,18 +24,16 @@ public final class MagicHelper implements IMagicHelper {
     private MagicHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static MagicHelper instance() {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The magic capability.
-     */
     public static Capability<MagicHolder> getMagicCapability() {
         return MAGIC;
+    }
+
+    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
     }
 
     @Override
@@ -70,12 +68,6 @@ public final class MagicHelper implements IMagicHelper {
         return player.isCreative() || player.isSpectator() || getLevel(player) > 0;
     }
 
-    /**
-     * Called on player death, syncs the capability.
-     *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
-     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
         syncMagic(player);
@@ -99,10 +91,6 @@ public final class MagicHelper implements IMagicHelper {
     private float getXpForNextLevel(int level) {
         if (level == 0) return 0;
         return 2.5f * (float) Math.pow(1.2, level);
-    }
-
-    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {

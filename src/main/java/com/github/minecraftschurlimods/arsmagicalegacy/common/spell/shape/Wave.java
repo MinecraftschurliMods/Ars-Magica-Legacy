@@ -16,10 +16,10 @@ import java.util.List;
 public class Wave extends AbstractShape {
     public Wave() {
         super(SpellPartStats.TARGET_NON_SOLID,
-              SpellPartStats.DURATION,
-              SpellPartStats.GRAVITY,
-              SpellPartStats.SIZE,
-              SpellPartStats.SPEED);
+                SpellPartStats.DURATION,
+                SpellPartStats.GRAVITY,
+                SpellPartStats.SIZE,
+                SpellPartStats.SPEED);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Wave extends AbstractShape {
             wave.setDeltaMovement(caster.getLookAngle());
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
             boolean tns = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int duration = (int)spellHelper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            int duration = (int) spellHelper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit);
             float gravity = spellHelper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f;
             float radius = spellHelper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
             float speed = 1 + spellHelper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit);

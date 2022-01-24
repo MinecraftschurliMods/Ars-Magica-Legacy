@@ -16,9 +16,9 @@ import java.util.List;
 public class Zone extends AbstractShape {
     public Zone() {
         super(SpellPartStats.TARGET_NON_SOLID,
-              SpellPartStats.DURATION,
-              SpellPartStats.GRAVITY,
-              SpellPartStats.SIZE);
+                SpellPartStats.DURATION,
+                SpellPartStats.GRAVITY,
+                SpellPartStats.SIZE);
     }
 
     @Override

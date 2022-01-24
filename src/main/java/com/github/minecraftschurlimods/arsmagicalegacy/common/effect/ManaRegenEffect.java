@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
-/**
- * This class is required so that it doesn't cause classloading issues in {@link AMBlocks} and {@link AMItems}
- */
 public class ManaRegenEffect extends AMMobEffect {
     public ManaRegenEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x2222aa);

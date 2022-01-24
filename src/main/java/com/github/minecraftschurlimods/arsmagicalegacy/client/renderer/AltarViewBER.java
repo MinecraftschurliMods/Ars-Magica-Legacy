@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
-
     private final BlockEntityRenderDispatcher dispatcher;
     private final Font font;
 
@@ -68,10 +67,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         if (altar.hasEnoughPower()) {
             ISpellIngredient currentIngredient = altar.getCurrentIngredient();
             if (currentIngredient != null) {
-                ArsMagicaAPI.get()
-                            .getSpellDataManager()
-                            .getSpellIngredientRenderer(currentIngredient.getType())
-                            .renderInWorld(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
+                ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientRenderer(currentIngredient.getType()).renderInWorld(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
             }
         } else {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

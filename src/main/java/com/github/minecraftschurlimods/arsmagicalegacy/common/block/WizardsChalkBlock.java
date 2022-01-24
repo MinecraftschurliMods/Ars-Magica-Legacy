@@ -25,9 +25,6 @@ public class WizardsChalkBlock extends Block {
     public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 0.1, 14);
 
-    /**
-     * Creates a new WizardsChalkBlock. Sets the properties and default state.
-     */
     public WizardsChalkBlock() {
         super(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL));
         registerDefaultState(getStateDefinition().any().setValue(VARIANT, 0).setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));

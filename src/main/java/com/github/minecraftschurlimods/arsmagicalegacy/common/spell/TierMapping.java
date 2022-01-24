@@ -31,14 +31,14 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     private static final Lazy<TierMapping> INSTANCE = Lazy.concurrentOf(TierMapping::new);
 
     private final Logger LOGGER = LogManager.getLogger();
-    private final Gson gson = (new GsonBuilder()).create();
+    private final Gson gson = new GsonBuilder().create();
     private final List<ResourceLocation> tiers = new ArrayList<>();
+
+    private TierMapping() {
+    }
 
     public static TierMapping instance() {
         return INSTANCE.get();
-    }
-
-    private TierMapping() {
     }
 
     @Override

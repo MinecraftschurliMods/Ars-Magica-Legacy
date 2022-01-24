@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
@@ -25,9 +26,18 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
+    public static SkillManager instance() {
+        return INSTANCE.get();
+    }
+
     @Override
     public Set<ISkill> getSkillsForOcculusTab(ResourceLocation id) {
         return values().stream().filter(skill -> id.equals(skill.getOcculusTab())).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ISkill> getSkillsForOcculusTab(IOcculusTab tab) {
+        return getSkillsForOcculusTab(tab.getId());
     }
 
     @Override
@@ -48,10 +58,6 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
     @Override
     public Collection<ISkill> getSkills() {
         return values();
-    }
-
-    public static SkillManager instance() {
-        return INSTANCE.get();
     }
 
     private static void validateSkills(Map<ResourceLocation, ISkill> data, Logger logger) {

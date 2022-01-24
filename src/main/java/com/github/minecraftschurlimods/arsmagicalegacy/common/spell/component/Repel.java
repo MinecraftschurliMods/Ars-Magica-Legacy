@@ -21,6 +21,14 @@ public class Repel extends AbstractComponent {
         super(SpellPartStats.RANGE, SpellPartStats.SPEED);
     }
 
+    private static void performRepel(LivingEntity caster, Vec3 targetPos, Entity entity, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
+        Vec3 vec = entity.position();
+        double distance = targetPos.distanceTo(vec) + 0.1;
+        double factor = 0.9 / (double) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target);
+        Vec3 delta = vec.subtract(targetPos);
+        entity.setDeltaMovement(entity.getDeltaMovement().x() + delta.x() / factor / distance, entity.getDeltaMovement().y() + delta.y() / factor / distance, entity.getDeltaMovement().z() + delta.z() / factor / distance);
+    }
+
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target);
@@ -44,13 +52,5 @@ public class Repel extends AbstractComponent {
             performRepel(caster, target.getLocation(), e, modifiers, spell, target);
         }
         return success ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
-    }
-
-    private static void performRepel(LivingEntity caster, Vec3 targetPos, Entity entity, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
-        Vec3 vec = entity.position();
-        double distance = targetPos.distanceTo(vec) + 0.1;
-        double factor = 0.9 / (double) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target);
-        Vec3 delta = vec.subtract(targetPos);
-        entity.setDeltaMovement(entity.getDeltaMovement().x() + delta.x() / factor / distance, entity.getDeltaMovement().y() + delta.y() / factor / distance, entity.getDeltaMovement().z() + delta.z() / factor / distance);
     }
 }

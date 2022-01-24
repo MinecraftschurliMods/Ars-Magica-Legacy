@@ -15,8 +15,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 
 public class EarthGuardian extends AbstractBoss {
-    private float rodRotation = 0;
     public boolean leftArm = false;
+    private float rodRotation = 0;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
@@ -53,9 +53,9 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE){
+        if (pSource == DamageSource.FREEZE) {
             pAmount *= 2.0f;
-        }else if (pSource == DamageSource.LIGHTNING_BOLT){
+        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount /= 4.0f;
         }
         return super.hurt(pSource, pAmount);
@@ -68,7 +68,7 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int)(getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
     }
 
     @Override

@@ -79,9 +79,6 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                     box(8.5, 12, 6.5, 9.5, 14, 9.5))
     );
 
-    /**
-     * Creates a new OcculusBlock. Sets the properties and default state.
-     */
     public OcculusBlock() {
         super(Properties.of(Material.STONE).explosionResistance(5).destroyTime(3));
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));

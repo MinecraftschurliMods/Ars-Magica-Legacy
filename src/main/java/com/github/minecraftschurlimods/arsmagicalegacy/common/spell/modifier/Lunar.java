@@ -18,20 +18,6 @@ public class Lunar extends GenericSpellModifier {
     }
 
     /**
-     * Returns the value of the multiplier, amplified by the world time. The closer the time is to midnight, the higher this value is.
-     * Returns 1 if it is day.
-     *
-     * @param time the world time.
-     * @return the value of the multiplier, as described above
-     */
-    private float getTimeBasedMultiplier(long time) {
-        time %= 24000;
-        if (time < 13500 || time > 22500) return 1;
-        float multiplierFromTime = Math.abs(18000 - time);
-        return multiplierFromTime * MULTIPLIER / 4500f;
-    }
-
-    /**
      * @param phase the moon phase
      * @return a multiplier value. 0 is new moon, 0.5 is first quarter, 1 is full moon, 1.5 is last quarter, 2 is full moon
      */
@@ -44,5 +30,19 @@ public class Lunar extends GenericSpellModifier {
             case 4 -> 0f;
             default -> throw new IllegalStateException("Unexpected value: " + phase);
         };
+    }
+
+    /**
+     * Returns the value of the multiplier, amplified by the world time. The closer the time is to midnight, the higher this value is.
+     * Returns 1 if it is day.
+     *
+     * @param time the world time.
+     * @return the value of the multiplier, as described above
+     */
+    private float getTimeBasedMultiplier(long time) {
+        time %= 24000;
+        if (time < 13500 || time > 22500) return 1;
+        float multiplierFromTime = Math.abs(18000 - time);
+        return multiplierFromTime * MULTIPLIER / 4500f;
     }
 }

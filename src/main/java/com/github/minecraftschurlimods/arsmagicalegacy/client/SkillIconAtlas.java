@@ -28,9 +28,6 @@ public final class SkillIconAtlas extends TextureAtlasHolder {
         super(Minecraft.getInstance().textureManager, SKILL_ICON_ATLAS, PREFIX);
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static SkillIconAtlas instance() {
         return INSTANCE.get();
     }

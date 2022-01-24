@@ -35,11 +35,6 @@ public class SpellCustomizationScreen extends Screen {
     private SpellIconSelector spellIconSelector;
     private EditBox editBox;
 
-    /**
-     * Creates a new spell icon pick screen.
-     *
-     * @param stack The ItemStack to open this screen for.
-     */
     public SpellCustomizationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
         editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));

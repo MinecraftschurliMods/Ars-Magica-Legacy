@@ -48,6 +48,10 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         }
     }
 
+    public InscriptionTableMenu(int id, Inventory inv, FriendlyByteBuf data) {
+        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level.getBlockEntity(data.readBlockPos()))));
+    }
+
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack stack = ItemStack.EMPTY;
@@ -74,10 +78,6 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         table.stopOpen(player);
-    }
-
-    public InscriptionTableMenu(int id, Inventory inv, FriendlyByteBuf data) {
-        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level.getBlockEntity(data.readBlockPos()))));
     }
 
     @Override

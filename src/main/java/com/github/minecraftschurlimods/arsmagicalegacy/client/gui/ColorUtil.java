@@ -10,35 +10,19 @@ public final class ColorUtil {
     private ColorUtil() {
     }
 
-    /**
-     * @param color an RGB color value
-     * @return the blue value (from 0.0 to 1.0)
-     */
     public static float getBlue(int color) {
         return (0xFF & color) / 255f;
     }
 
-    /**
-     * @param color an RGB color value
-     * @return the green value (from 0.0 to 1.0)
-     */
     public static float getGreen(int color) {
         return (0xFF & (color >> 8)) / 255f;
     }
 
-    /**
-     * @param color an RGB color value
-     * @return the red value (from 0.0 to 1.0)
-     */
     public static float getRed(int color) {
         return (0xFF & (color >> 16)) / 255f;
     }
 
-    /**
-     * @param rgbColor an RGB color value
-     * @return the corresponding HSB value
-     */
-    public static float[] RGBToHSB(int rgbColor) {
+    public static float[] rgbToHsb(int rgbColor) {
         float hue, saturation, brightness;
         int r = (int) (getRed(rgbColor) * 255);
         int g = (int) (getGreen(rgbColor) * 255);
@@ -62,13 +46,7 @@ public final class ColorUtil {
         return new float[]{hue, saturation, brightness};
     }
 
-    /**
-     * @param hue        an HSB hue value
-     * @param saturation an HSB saturation value
-     * @param brightness an HSB brightness value
-     * @return the corresponding RGB color value
-     */
-    public static int HSBToRGB(float hue, float saturation, float brightness) {
+    public static int hsbToRgb(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255f + 0.5f);
@@ -114,20 +92,16 @@ public final class ColorUtil {
         return 0xff000000 | (r << 16) | (g << 8) | b;
     }
 
-    /**
-     * @param colors at least 1 RGB color value
-     * @return the average RGB value of all parameters passed in
-     */
     public static int calculateAverage(int... colors) {
         float hue = 0;
         float saturation = 0;
         float brightness = 0;
         for (int color : colors) {
-            float[] hsb = RGBToHSB(color);
+            float[] hsb = rgbToHsb(color);
             hue += hsb[0];
             saturation += hsb[1];
             brightness += hsb[2];
         }
-        return HSBToRGB(hue / colors.length, saturation / colors.length, brightness / colors.length);
+        return hsbToRgb(hue / colors.length, saturation / colors.length, brightness / colors.length);
     }
 }

@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class BasicDropZone implements DropArea {
-    private final int             x;
-    private final int             y;
-    private final int             width;
-    private final int             height;
-    private final int             elementWidth;
-    private final int             elementHeight;
-    private final int             elementPadding;
-    private final int             size;
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
+    private final int elementWidth;
+    private final int elementHeight;
+    private final int elementPadding;
+    private final int size;
     private final List<Draggable> items;
-    private       DragHandler     dragHandler;
-    private       DropValidator   validator;
+    private DragHandler dragHandler;
+    private DropValidator validator;
     private Consumer<Draggable> dropListener;
     private Consumer<Draggable> dragListener;
 

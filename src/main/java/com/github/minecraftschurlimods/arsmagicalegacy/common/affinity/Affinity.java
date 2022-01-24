@@ -25,6 +25,10 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         this.directOpposite = directOpposite;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @Override
     public int getColor() {
         return color;
@@ -50,88 +54,42 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         return directOpposite;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public static class Builder {
-        private Integer color;
         private final Set<ResourceLocation> minorOpposites = new HashSet<>();
         private final Set<ResourceLocation> majorOpposites = new HashSet<>();
+        private Integer color;
         private ResourceLocation directOpposite;
 
-        /**
-         * Sets the color for this builder.
-         *
-         * @param color The color to set.
-         * @return This builder, for chaining.
-         */
         public Builder setColor(int color) {
             this.color = color;
             return this;
         }
 
-        /**
-         * Adds a minor opposite to this builder.
-         *
-         * @param minorOpposite The minor opposite to add.
-         * @return This builder, for chaining.
-         */
         public Builder addMinorOpposite(ResourceLocation minorOpposite) {
             minorOpposites.add(minorOpposite);
             return this;
         }
 
-        /**
-         * Adds a minor opposite to this builder.
-         *
-         * @param majorOpposite The major opposite to add.
-         * @return This builder, for chaining.
-         */
         public Builder addMajorOpposite(ResourceLocation majorOpposite) {
             majorOpposites.add(majorOpposite);
             return this;
         }
 
-        /**
-         * Adds minor opposites to this builder.
-         *
-         * @param minorOpposite The minor opposites to add.
-         * @return This builder, for chaining.
-         */
         public Builder addMinorOpposites(ResourceLocation... minorOpposite) {
             minorOpposites.addAll(Arrays.asList(minorOpposite));
             return this;
         }
 
-        /**
-         * Adds major opposites to this builder.
-         *
-         * @param majorOpposite The major opposites to add.
-         * @return This builder, for chaining.
-         */
         public Builder addMajorOpposites(ResourceLocation... majorOpposite) {
             majorOpposites.addAll(Arrays.asList(majorOpposite));
             return this;
         }
 
-        /**
-         * Sets the direct opposite for this builder.
-         *
-         * @param directOpposite The direct opposite to set.
-         * @return This builder, for chaining.
-         */
         public Builder setDirectOpposite(ResourceLocation directOpposite) {
             this.directOpposite = directOpposite;
             return this;
         }
 
-        /**
-         * Builds the affinity.
-         *
-         * @return The affinity from this builder.
-         * @throws IllegalStateException If the color or direct opposite is not set.
-         */
         public Affinity build() {
             if (color == null) throw new IllegalStateException("color is required");
             if (directOpposite == null) throw new IllegalStateException("directOpposite is required");

@@ -40,11 +40,36 @@ public final class SpellHelper implements ISpellHelper {
     private SpellHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static SpellHelper instance() {
         return INSTANCE.get();
+    }
+
+    @Nullable
+    public static Entity getPointedEntity(Level world, Entity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
+        Entity pointedEntity = null;
+        Vec3 vec = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
+        Vec3 lookVec = player.getLookAngle();
+        List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
+        double d = 0;
+        for (Entity entity : list) {
+            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));
+            if ((entity.canBeCollidedWith() || nonCollide) && hit.getType() == HitResult.Type.MISS) {
+                float f2 = Math.max(0.8F, entity.getBbWidth());
+                AABB aabb = entity.getBoundingBox().inflate(f2, f2, f2);
+                Optional<Vec3> optional = aabb.clip(vec, lookVec);
+                if (aabb.contains(vec)) {
+                    pointedEntity = entity;
+                    d = 0;
+                } else if (optional.isPresent()) {
+                    double d3 = vec.distanceTo(optional.get());
+                    if ((d3 < d) || (d == 0)) {
+                        pointedEntity = entity;
+                        d = d3;
+                    }
+                }
+            }
+        }
+        return pointedEntity;
     }
 
     @Override
@@ -104,10 +129,10 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public HitResult trace(Entity caster, Level world, double range, boolean includeEntities, boolean targetWater) {
+    public HitResult trace(Entity caster, Level level, double range, boolean includeEntities, boolean targetNonSolid) {
         HitResult entityPos = null;
         if (includeEntities) {
-            Entity pointedEntity = getPointedEntity(world, caster, range, 1, false, targetWater);
+            Entity pointedEntity = getPointedEntity(level, caster, range, 1, false, targetNonSolid);
             if (pointedEntity != null) entityPos = new EntityHitResult(pointedEntity);
         }
         float factor = 1;
@@ -125,36 +150,8 @@ public final class SpellHelper implements ISpellHelper {
         float finalXOffset = offsetYawSin * offsetPitchCos;
         float finalZOffset = offsetYawCos * offsetPitchCos;
         Vec3 targetVector = vec3.add(finalXOffset * range, offsetPitchSin * range, finalZOffset * range);
-        HitResult mop = world.clip(new ClipContext(vec3, targetVector, ClipContext.Block.OUTLINE, targetWater ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, caster));
+        HitResult mop = level.clip(new ClipContext(vec3, targetVector, ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, caster));
         return entityPos == null || mop.getLocation().distanceTo(caster.position()) < entityPos.getLocation().distanceTo(caster.position()) ? mop : entityPos;
-    }
-
-    @Nullable
-    public static Entity getPointedEntity(Level world, Entity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
-        Entity pointedEntity = null;
-        Vec3 vec = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
-        Vec3 lookVec = player.getLookAngle();
-        List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
-        double d = 0;
-        for (Entity entity : list) {
-            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));
-            if ((entity.canBeCollidedWith() || nonCollide) && hit.getType() == HitResult.Type.MISS) {
-                float f2 = Math.max(0.8F, entity.getBbWidth());
-                AABB aabb = entity.getBoundingBox().inflate(f2, f2, f2);
-                Optional<Vec3> optional = aabb.clip(vec, lookVec);
-                if (aabb.contains(vec)) {
-                    pointedEntity = entity;
-                    d = 0;
-                } else if (optional.isPresent()) {
-                    double d3 = vec.distanceTo(optional.get());
-                    if ((d3 < d) || (d == 0)) {
-                        pointedEntity = entity;
-                        d = d3;
-                    }
-                }
-            }
-        }
-        return pointedEntity;
     }
 
     @Override

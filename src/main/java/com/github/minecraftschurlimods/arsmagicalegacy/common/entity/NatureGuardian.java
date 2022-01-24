@@ -64,7 +64,7 @@ public class NatureGuardian extends AbstractBoss {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE){
+        } else if (pSource == DamageSource.FREEZE) {
             pAmount *= 1.5f;
         }
         return super.hurt(pSource, pAmount);

@@ -32,7 +32,7 @@ public class AoE extends AbstractShape {
         if (hit == null) return SpellCastResult.EFFECT_FAILED;
         float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
         boolean appliedToAtLeastOneEntity = false;
-        for (Entity e : level.getEntities(caster, AABB.ofSize(hit.getLocation(), radius*2, radius*2, radius*2))) {
+        for (Entity e : level.getEntities(caster, AABB.ofSize(hit.getLocation(), radius * 2, radius * 2, radius * 2))) {
             if (e == caster || e instanceof ItemEntity || e instanceof Projectile) continue;
             if (e instanceof PartEntity && ((PartEntity<?>) e).getParent() != null) {
                 e = ((PartEntity<?>) e).getParent();

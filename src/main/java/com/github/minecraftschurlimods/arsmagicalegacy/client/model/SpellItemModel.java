@@ -46,7 +46,6 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             return super.resolve(model, stack, level, entity, seed);
         }
     };
-
     private Optional<ResourceLocation> icon;
     private ItemTransforms.TransformType cameraTransformType;
 

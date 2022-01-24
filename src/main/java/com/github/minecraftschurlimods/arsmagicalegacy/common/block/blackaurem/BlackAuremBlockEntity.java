@@ -27,12 +27,15 @@ import java.util.List;
 
 public class BlackAuremBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.DARK, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(BlackAuremBlockEntity::onConsume);
-
     private final LazyOptional<IEtheriumProvider> etheriumHandler = LazyOptional.of(() -> provider);
     private int timer;
 
     public BlackAuremBlockEntity(final BlockPos pWorldPosition, final BlockState pBlockState) {
         super(AMBlockEntities.BLACK_AUREM.get(), pWorldPosition, pBlockState);
+    }
+
+    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
+        // TODO spawn particles
     }
 
     void tick(final Level level, final BlockPos pos, final BlockState state) {
@@ -63,10 +66,6 @@ public class BlackAuremBlockEntity extends BlockEntity {
     public void load(final CompoundTag tag) {
         super.load(tag);
         provider.set(tag.getInt("etheriumValue"));
-    }
-
-    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
-        // TODO spawn particles
     }
 
     @Override

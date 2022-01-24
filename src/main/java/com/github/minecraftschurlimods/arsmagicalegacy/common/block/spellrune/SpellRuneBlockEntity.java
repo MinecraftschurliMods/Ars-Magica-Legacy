@@ -22,11 +22,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class SpellRuneBlockEntity extends BlockEntity {
-    public static final String SPELL_KEY    = ArsMagicaAPI.MOD_ID + ":spell";
-    public static final String INDEX_KEY    = ArsMagicaAPI.MOD_ID + ":index";
+    public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
+    public static final String INDEX_KEY = ArsMagicaAPI.MOD_ID + ":index";
     public static final String AWARD_XP_KEY = ArsMagicaAPI.MOD_ID + ":award_xp";
-
-    private ISpell  spell;
+    private ISpell spell;
     private Integer index;
     private LivingEntity caster;
     private Boolean awardXp;
@@ -65,23 +64,8 @@ public class SpellRuneBlockEntity extends BlockEntity {
 
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
         if (this.spell == null) return;
-        SpellCastResult r1 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
-                this.caster,
-                level,
-                new EntityHitResult(entity),
-                0,
-                this.index,
-                this.awardXp);
-        SpellCastResult r2 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
-                this.caster,
-                level,
-                new BlockHitResult(entity.position(),
-                        direction,
-                        pos,
-                        false),
-                0,
-                this.index,
-                this.awardXp);
+        SpellCastResult r1 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell, this.caster, level, new EntityHitResult(entity), 0, this.index, this.awardXp);
+        SpellCastResult r2 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell, this.caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, this.index, this.awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }

@@ -34,7 +34,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public static final String INVENTORY_KEY = ArsMagicaAPI.MOD_ID + ":inventory";
     public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
     private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
-
     private ItemStack stack = ItemStack.EMPTY;
     private @Nullable Spell spellRecipe;
     private @Nullable String spellName;
@@ -42,6 +41,22 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
+    }
+
+    public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        SpellItem.saveSpell(book, spell);
+        CompoundTag tag = book.getOrCreateTag();
+        tag.putString(WrittenBookItem.TAG_TITLE, name);
+        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
+        ListTag pages = new ListTag();
+        makeSpellRecipePages(pages, spell);
+        tag.put(WrittenBookItem.TAG_PAGES, pages);
+        return book;
+    }
+
+    private static void makeSpellRecipePages(ListTag pages, Spell spell) {
+        // TODO
     }
 
     @Override
@@ -74,26 +89,10 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
         return Optional.ofNullable(getSpellRecipe())
-                       .map(spell -> {
-                           if (spell.isEmpty()) return stack;
-                           return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
-                       });
-    }
-
-    public static ItemStack makeRecipe(final String name, final String author, final Spell spell) {
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        SpellItem.saveSpell(book, spell);
-        CompoundTag tag = book.getOrCreateTag();
-        tag.putString(WrittenBookItem.TAG_TITLE, name);
-        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
-        ListTag pages = new ListTag();
-        makeSpellRecipePages(pages, spell);
-        tag.put(WrittenBookItem.TAG_PAGES, pages);
-        return book;
-    }
-
-    private static void makeSpellRecipePages(ListTag pages, Spell spell) {
-        // TODO
+                .map(spell -> {
+                    if (spell.isEmpty()) return stack;
+                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
+                });
     }
 
     @Override
@@ -104,8 +103,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
             pCompound.putString(SPELL_NAME_KEY, this.spellName);
         }
         if (this.spellRecipe != null) {
-            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe)
-                                                       .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 

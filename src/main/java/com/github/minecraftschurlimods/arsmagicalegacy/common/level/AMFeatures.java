@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public final class AMFeatures {
-    private AMFeatures() {
-    }
-
     public static ConfiguredFeature<?, ?> CHIMERITE_FEATURE;
     public static ConfiguredFeature<?, ?> VINTEUM_FEATURE;
     public static ConfiguredFeature<?, ?> TOPAZ_FEATURE;
@@ -42,6 +39,8 @@ public final class AMFeatures {
     public static PlacedFeature DESERT_NOVA_PLACEMENT;
     public static PlacedFeature TARMA_ROOT_PLACEMENT;
     public static PlacedFeature WAKEBLOOM_PLACEMENT;
+    private AMFeatures() {
+    }
 
     public static ConfiguredFeature<?, ?> ore(String name, Supplier<? extends Block> ore, Supplier<? extends Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
         return FeatureUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, Feature.ORE.configured(new OreConfiguration(List.of(

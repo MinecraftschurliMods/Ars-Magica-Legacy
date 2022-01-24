@@ -71,10 +71,6 @@ public final class Spell implements ISpell {
     private final Lazy<Boolean> empty;
     private final Lazy<Boolean> valid;
 
-    public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
-        return new Spell(List.of(shapeGroups), spellStack, new CompoundTag());
-    }
-
     public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         this.shapeGroups = shapeGroups;
         this.spellStack = spellStack;
@@ -87,6 +83,10 @@ public final class Spell implements ISpell {
                         this.spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
+    }
+
+    public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
+        return new Spell(List.of(shapeGroups), spellStack, new CompoundTag());
     }
 
     @Override
@@ -108,10 +108,10 @@ public final class Spell implements ISpell {
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
             return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
-                                                                    .filter(parts -> !parts.isEmpty())
-                                                                    .orElse(spellStack().parts()).get(0))
-                           .filter(ISpellShape.class::isInstance)
-                           .map(ISpellShape.class::cast);
+                            .filter(parts -> !parts.isEmpty())
+                            .orElse(spellStack().parts()).get(0))
+                    .filter(ISpellShape.class::isInstance)
+                    .map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
             return Optional.empty();
         }
@@ -141,7 +141,8 @@ public final class Spell implements ISpell {
 
     @Override
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
-        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, Permissions.CAN_CAST_SPELL)) return SpellCastResult.NO_PERMISSION;
+        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, Permissions.CAN_CAST_SPELL))
+            return SpellCastResult.NO_PERMISSION;
         if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
         float mana = mana(caster);
@@ -154,7 +155,8 @@ public final class Spell implements ISpell {
         ISpellHelper spellHelper = api.getSpellHelper();
         if (consume && !(caster instanceof Player p && p.isCreative())) {
             if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);

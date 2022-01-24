@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -53,6 +54,31 @@ public class SpellItem extends Item implements ISpellItem {
         super(new Item.Properties().stacksTo(1));
     }
 
+    public static Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
+    }
+
+    public static void setSpellIcon(ItemStack stack, ResourceLocation icon) {
+        stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
+    }
+
+    public static Optional<String> getSpellName(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
+    }
+
+    public static void setSpellName(ItemStack stack, String name) {
+        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
+    }
+
+    public static void saveSpell(ItemStack stack, Spell spell) {
+        stack.getOrCreateTag().put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
+    }
+
+    public static Spell getSpell(ItemStack stack) {
+        if (stack.isEmpty()) return Spell.EMPTY;
+        return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(Spell.EMPTY);
+    }
+
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         Player player = null;
@@ -77,8 +103,8 @@ public class SpellItem extends Item implements ISpellItem {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
             for (Either<Ingredient, ItemStack> e : reagents) {
                 pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
-                                             .map(stack1 -> stack1.getHoverName().copy())
-                                             .collect(AMUtil.joiningComponents(" | ")));
+                        .map(stack1 -> stack1.getHoverName().copy())
+                        .collect(AMUtil.joiningComponents(" | ")));
             }
         } else {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
@@ -200,30 +226,5 @@ public class SpellItem extends Item implements ISpellItem {
             }
         }
         saveSpell(stack, spell);
-    }
-
-    public static Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
-    }
-
-    public static void setSpellIcon(ItemStack stack, ResourceLocation icon) {
-        stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
-    }
-
-    public static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
-    }
-
-    public static void setSpellName(ItemStack stack, String name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
-    }
-
-    public static void saveSpell(ItemStack stack, Spell spell) {
-        stack.getOrCreateTag().put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
-    }
-
-    public static Spell getSpell(ItemStack stack) {
-        if (stack.isEmpty()) return Spell.EMPTY;
-        return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(Spell.EMPTY);
     }
 }

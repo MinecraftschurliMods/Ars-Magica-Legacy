@@ -47,9 +47,6 @@ public final class ArsMagicaLegacy {
 
     private final IModInfo modInfo;
 
-    /**
-     * The mod constructor
-     */
     public ArsMagicaLegacy() {
         if (INSTANCE != null)
             throw LOGGER.throwing(new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!"));

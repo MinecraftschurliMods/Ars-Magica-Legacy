@@ -25,18 +25,16 @@ public final class ManaHelper implements IManaHelper {
     private ManaHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static ManaHelper instance() {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The mana capability.
-     */
     public static Capability<ManaHolder> getManaCapability() {
         return MANA;
+    }
+
+    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(holder -> holder.onSync(data)));
     }
 
     @Override
@@ -89,22 +87,16 @@ public final class ManaHelper implements IManaHelper {
     }
 
     @Override
-    public void setMana(LivingEntity livingEntity, float amount) {
+    public void setMana(LivingEntity entity, float amount) {
         if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
-        float max = getMaxMana(livingEntity);
-        ManaHolder magicHolder = getManaHolder(livingEntity);
+        float max = getMaxMana(entity);
+        ManaHolder magicHolder = getManaHolder(entity);
         magicHolder.setMana(Math.min(amount, max));
-        if (livingEntity instanceof Player player) {
+        if (entity instanceof Player player) {
             syncMana(player);
         }
     }
 
-    /**
-     * Called on player death, syncs the capability and the attribute.
-     *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
-     */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
         original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
@@ -124,10 +116,6 @@ public final class ManaHelper implements IManaHelper {
             livingEntity.invalidateCaps();
         }
         return manaHolder;
-    }
-
-    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class ManaSyncPacket extends CodecPacket<ManaHolder> {

@@ -23,11 +23,12 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static OcculusTabManager instance() {
         return INSTANCE.get();
+    }
+
+    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
+        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
     }
 
     @Override
@@ -53,9 +54,5 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     @Override
     public IOcculusTab getByIndex(int index) {
         return values().stream().sorted(Comparator.comparing(IOcculusTab::getOcculusIndex)).toArray(IOcculusTab[]::new)[index];
-    }
-
-    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
-        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
     }
 }

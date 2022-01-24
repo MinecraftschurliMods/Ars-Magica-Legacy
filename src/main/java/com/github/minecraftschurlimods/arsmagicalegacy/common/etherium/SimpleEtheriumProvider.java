@@ -8,10 +8,10 @@ import net.minecraft.world.level.Level;
 
 public class SimpleEtheriumProvider implements IEtheriumProvider {
 
-    private final EtheriumType    type;
-    private       int             etheriumValue;
-    private final int             maxValue;
-    private       ConsumeCallback callback;
+    private final EtheriumType type;
+    private final int maxValue;
+    private int etheriumValue;
+    private ConsumeCallback callback;
 
     public SimpleEtheriumProvider(EtheriumType type, int maxValue) {
         this.type = type;

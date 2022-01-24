@@ -65,70 +65,81 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
-    public static final Codec<Set<BlockPos>>      SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
-    public static final ModelProperty<BlockState> CAMO_STATE             = new ModelProperty<>();
-
-    public static final String PROVIDERS_KEY      = ArsMagicaAPI.MOD_ID + ":bound_providers";
-    public static final String RECIPE_KEY         = ArsMagicaAPI.MOD_ID + ":recipe";
-    public static final String CAMO_KEY           = ArsMagicaAPI.MOD_ID + ":camo";
-    public static final String ALTAR_POWER_KEY    = ArsMagicaAPI.MOD_ID + ":altar_power_key";
+    public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
+    public static final ModelProperty<BlockState> CAMO_STATE = new ModelProperty<>();
+    public static final String PROVIDERS_KEY = ArsMagicaAPI.MOD_ID + ":bound_providers";
+    public static final String RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":recipe";
+    public static final String CAMO_KEY = ArsMagicaAPI.MOD_ID + ":camo";
+    public static final String ALTAR_POWER_KEY = ArsMagicaAPI.MOD_ID + ":altar_power_key";
     public static final String REQUIRED_POWER_KEY = ArsMagicaAPI.MOD_ID + ":required_power_key";
-
     private final ModelDataMap modelData = new ModelDataMap.Builder().withProperty(CAMO_STATE).build();
-
+    private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
+    public int checkCounter;
     private AltarStructureMaterial structureMaterial;
-    private AltarCapMaterial       capMaterial;
-
+    private AltarCapMaterial capMaterial;
+    private Set<BlockPos> boundPositions = new HashSet<>();
+    private Deque<ISpellIngredient> recipe;
+    private int requiredPower = 0;
+    private boolean isCrafting;
+    private int powerLevel = -1;
+    private BlockPos lecternPos;
+    private BlockPos leverPos;
+    private BlockPos viewPos;
+    private Direction direction;
     private final BlockPattern MULTIBLOCK = BlockPatternBuilder.start()
-     .aisle(
-            "BBBBB",
-            "BBBBB",
-            "BBCBB",
-            "BBBBB",
-            "BBBBB"
-     )
-     .aisle(
-            "    L",
-            "B   B",
-            "M   M",
-            "B   B",
-            "     "
-     )
-     .aisle(
-            "I    ",
-            "B   B",
-            "M   M",
-            "B   B",
-            "     "
-     )
-     .aisle(
-            "     ",
-            "B6 5B",
-            "M   M",
-            "B6 5B",
-            "     "
-     )
-     .aisle(
-            "     ",
-            "C111C",
-            "2BOB4",
-            "C333C",
-            "     "
-     )
-     .where(' ', blockInWorld -> blockInWorld.getState().isAir())
-     .where('L', blockInWorld -> blockInWorld.getState().is(Blocks.LECTERN))
-     .where('I', blockInWorld -> blockInWorld.getState().is(Blocks.LEVER))
-     .where('O', blockInWorld -> blockInWorld.getState().is(AMBlocks.ALTAR_CORE.get()))
-     .where('M', blockInWorld -> blockInWorld.getState().is(AMBlocks.MAGIC_WALL.get()))
-     .where('C', blockInWorld -> capMaterial != null && blockInWorld.getState().is(capMaterial.cap()))
-     .where('B', blockInWorld -> structureMaterial != null && blockInWorld.getState().is(structureMaterial.block()))
-     .where('1', blockInWorld -> checkStair(blockInWorld, 0, Half.BOTTOM))
-     .where('2', blockInWorld -> checkStair(blockInWorld, 1, Half.BOTTOM))
-     .where('3', blockInWorld -> checkStair(blockInWorld, 2, Half.BOTTOM))
-     .where('4', blockInWorld -> checkStair(blockInWorld, 3, Half.BOTTOM))
-     .where('5', blockInWorld -> checkStair(blockInWorld, 1, Half.TOP))
-     .where('6', blockInWorld -> checkStair(blockInWorld, 3, Half.TOP))
-     .build();
+            .aisle(
+                    "BBBBB",
+                    "BBBBB",
+                    "BBCBB",
+                    "BBBBB",
+                    "BBBBB"
+            )
+            .aisle(
+                    "    L",
+                    "B   B",
+                    "M   M",
+                    "B   B",
+                    "     "
+            )
+            .aisle(
+                    "I    ",
+                    "B   B",
+                    "M   M",
+                    "B   B",
+                    "     "
+            )
+            .aisle(
+                    "     ",
+                    "B6 5B",
+                    "M   M",
+                    "B6 5B",
+                    "     "
+            )
+            .aisle(
+                    "     ",
+                    "C111C",
+                    "2BOB4",
+                    "C333C",
+                    "     "
+            )
+            .where(' ', blockInWorld -> blockInWorld.getState().isAir())
+            .where('L', blockInWorld -> blockInWorld.getState().is(Blocks.LECTERN))
+            .where('I', blockInWorld -> blockInWorld.getState().is(Blocks.LEVER))
+            .where('O', blockInWorld -> blockInWorld.getState().is(AMBlocks.ALTAR_CORE.get()))
+            .where('M', blockInWorld -> blockInWorld.getState().is(AMBlocks.MAGIC_WALL.get()))
+            .where('C', blockInWorld -> capMaterial != null && blockInWorld.getState().is(capMaterial.cap()))
+            .where('B', blockInWorld -> structureMaterial != null && blockInWorld.getState().is(structureMaterial.block()))
+            .where('1', blockInWorld -> checkStair(blockInWorld, 0, Half.BOTTOM))
+            .where('2', blockInWorld -> checkStair(blockInWorld, 1, Half.BOTTOM))
+            .where('3', blockInWorld -> checkStair(blockInWorld, 2, Half.BOTTOM))
+            .where('4', blockInWorld -> checkStair(blockInWorld, 3, Half.BOTTOM))
+            .where('5', blockInWorld -> checkStair(blockInWorld, 1, Half.TOP))
+            .where('6', blockInWorld -> checkStair(blockInWorld, 3, Half.TOP))
+            .build();
+
+    public AltarCoreBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+        super(AMBlockEntities.ALTAR_CORE.get(), pWorldPosition, pBlockState);
+    }
 
     public Collection<BlockPos> getBoundPositions() {
         return Collections.unmodifiableCollection(boundPositions);
@@ -139,36 +150,12 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         if (this.structureMaterial == null) return false;
         if (!state.is(this.structureMaterial.stair())) return false;
         if (this.direction == null) return false;
-        return state.getValue(StairBlock.FACING) == Rotation.values()[i].rotate(this.direction).getOpposite() &&
-               state.getValue(StairBlock.HALF) == half &&
-               state.getValue(StairBlock.SHAPE) == StairsShape.STRAIGHT &&
-               !state.getValue(StairBlock.WATERLOGGED);
-    }
-
-    private Set<BlockPos>           boundPositions = new HashSet<>();
-    private Deque<ISpellIngredient> recipe;
-
-    private int     requiredPower = 0;
-    private boolean isCrafting;
-    private int     powerLevel = -1;
-    public  int     checkCounter;
-
-    private BlockPos  lecternPos;
-    private BlockPos  leverPos;
-    private BlockPos  viewPos;
-    private Direction direction;
-
-    public AltarCoreBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(AMBlockEntities.ALTAR_CORE.get(), pWorldPosition, pBlockState);
+        return state.getValue(StairBlock.FACING) == Rotation.values()[i].rotate(this.direction).getOpposite() && state.getValue(StairBlock.HALF) == half && state.getValue(StairBlock.SHAPE) == StairsShape.STRAIGHT && !state.getValue(StairBlock.WATERLOGGED);
     }
 
     public void invalidateMultiblock() {
-        if (this.viewPos != null &&
-            getLevel() != null &&
-            getLevel().getBlockState(this.viewPos).is(AMBlocks.ALTAR_VIEW.get())) {
-            getLevel().setBlock(this.viewPos,
-                                AMBlocks.ALTAR_VIEW.get().defaultBlockState(),
-                                Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+        if (this.viewPos != null && getLevel() != null && getLevel().getBlockState(this.viewPos).is(AMBlocks.ALTAR_VIEW.get())) {
+            getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }
         this.lecternPos = null;
         this.leverPos = null;
@@ -188,60 +175,35 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             invalidateMultiblock();
         }
         if (getBlockState().getValue(AltarCoreBlock.FORMED) != b) {
-            getLevel().setBlock(getBlockPos(),
-                                getBlockState().setValue(AltarCoreBlock.FORMED, b),
-                                Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+            getLevel().setBlock(getBlockPos(), getBlockState().setValue(AltarCoreBlock.FORMED, b), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         }
     }
 
     private boolean checkMultiblockInt() {
         if (getLevel() == null) return false;
-
         AltarMaterialManager manager = AltarMaterialManager.instance();
-
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos relative = getBlockPos().relative(direction, 2)
-                                             .relative(direction.getCounterClockWise(), 2)
-                                             .below(3);
+            BlockPos relative = getBlockPos().relative(direction, 2).relative(direction.getCounterClockWise(), 2).below(3);
             BlockState blockState = getLevel().getBlockState(relative);
             if (blockState.is(Blocks.LECTERN)) {
                 this.direction = direction;
                 this.lecternPos = relative;
                 this.viewPos = relative.above();
-                this.structureMaterial = manager.getStructureMaterial(getLevel().getBlockState(
-                        getBlockPos().relative(direction.getClockWise())
-                ).getBlock()).orElse(null);
-                this.capMaterial = manager.getCapMaterial(getLevel().getBlockState(
-                        getBlockPos().relative(direction).relative(direction.getClockWise(), 2)
-                ).getBlock()).orElse(null);
+                this.structureMaterial = manager.getStructureMaterial(getLevel().getBlockState(getBlockPos().relative(direction.getClockWise())).getBlock()).orElse(null);
+                this.capMaterial = manager.getCapMaterial(getLevel().getBlockState(getBlockPos().relative(direction).relative(direction.getClockWise(), 2)).getBlock()).orElse(null);
                 this.leverPos = relative.relative(direction.getClockWise(), 4).above(1);
-                this.modelData.setData(
-                        CAMO_STATE,
-                        getLevel().getBlockState(getBlockPos().relative(this.direction.getClockWise()))
-                );
+                this.modelData.setData(CAMO_STATE, getLevel().getBlockState(getBlockPos().relative(this.direction.getClockWise())));
                 break;
             }
         }
-
-        if (this.capMaterial == null ||
-            this.structureMaterial == null ||
-            this.leverPos == null ||
-            this.viewPos == null ||
-            this.lecternPos == null ||
-            this.direction == null) return false;
-
+        if (this.capMaterial == null || this.structureMaterial == null || this.leverPos == null || this.viewPos == null || this.lecternPos == null || this.direction == null)
+            return false;
         if (!getLevel().getBlockState(this.leverPos).is(Blocks.LEVER)) return false;
-
         BlockPos offset = getBlockPos().relative(this.direction, 2).relative(this.direction.getClockWise(), 2).below(4);
         BlockPattern.BlockPatternMatch x = MULTIBLOCK.matches(getLevel(), offset, Direction.UP, this.direction);
-
         if (x == null) return false;
-
-        getLevel().setBlock(this.viewPos,
-                            AMBlocks.ALTAR_VIEW.get().defaultBlockState(),
-                            Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+        getLevel().setBlock(this.viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
         ((AltarViewBlockEntity) getLevel().getBlockEntity(this.viewPos)).setAltarPos(getBlockPos());
-
         if (getLevel().getBlockState(this.lecternPos).getValue(LecternBlock.HAS_BOOK)) {
             if (this.recipe == null || this.recipe.isEmpty()) {
                 getRecipe();
@@ -250,9 +212,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             this.recipe = null;
             this.isCrafting = false;
         }
-
         this.powerLevel = this.structureMaterial.power() + this.capMaterial.power();
-
         sync();
         setChanged();
         return true;
@@ -279,49 +239,42 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Override
     public void load(CompoundTag pTag) {
         this.boundPositions = SET_OF_POSITIONS_CODEC.decode(NbtOps.INSTANCE, pTag.get(PROVIDERS_KEY))
-                                                    .map(Pair::getFirst)
-                                                    .get()
-                                                    .mapRight(DataResult.PartialResult::message)
-                                                    .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                                                    .left()
-                                                    .orElse(Set.of());
+                .map(Pair::getFirst)
+                .get()
+                .mapRight(DataResult.PartialResult::message)
+                .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                .left()
+                .orElse(Set.of());
         this.recipe = Codec.either(ISpellIngredient.NETWORK_CODEC, ISpellIngredient.CODEC)
-                           .xmap(i -> i.map(Function.identity(), Function.identity()), Either::right)
-                           .listOf()
-                           .decode(NbtOps.INSTANCE, pTag.get(RECIPE_KEY))
-                           .map(Pair::getFirst)
-                           .get()
-                           .mapRight(DataResult.PartialResult::message)
-                           .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                           .left()
-                           .map(ArrayDeque::new)
-                           .orElse(null);
+                .xmap(i -> i.map(Function.identity(), Function.identity()), Either::right)
+                .listOf()
+                .decode(NbtOps.INSTANCE, pTag.get(RECIPE_KEY))
+                .map(Pair::getFirst)
+                .get()
+                .mapRight(DataResult.PartialResult::message)
+                .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                .left()
+                .map(ArrayDeque::new)
+                .orElse(null);
         this.powerLevel = pTag.getInt(ALTAR_POWER_KEY);
         this.requiredPower = pTag.getInt(REQUIRED_POWER_KEY);
         if (pTag.contains(CAMO_KEY)) {
             this.modelData.setData(CAMO_STATE, BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
-                                                               .map(Pair::getFirst)
-                                                               .get()
-                                                               .mapRight(DataResult.PartialResult::message)
-                                                               .ifRight(ArsMagicaLegacy.LOGGER::warn)
-                                                               .left()
-                                                               .orElse(null));
+                    .map(Pair::getFirst)
+                    .get()
+                    .mapRight(DataResult.PartialResult::message)
+                    .ifRight(ArsMagicaLegacy.LOGGER::warn)
+                    .left()
+                    .orElse(null));
         }
         super.load(pTag);
     }
 
     public void saveAltar(CompoundTag tag, boolean forNetwork) {
-        tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, this.boundPositions)
-                                                     .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf()
-                                                                                                  .encodeStart(NbtOps.INSTANCE,
-                                                                                                               this.recipe != null
-                                                                                                                       ? new ArrayList<>(this.recipe)
-                                                                                                                       : new ArrayList<>(0))
-                                                                                                  .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, this.boundPositions).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf().encodeStart(NbtOps.INSTANCE, this.recipe != null ? new ArrayList<>(this.recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (this.modelData.getData(CAMO_STATE) != null) {
-            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE))
-                                              .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.modelData.getData(CAMO_STATE)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 
@@ -358,11 +311,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         Level level = getLevel();
         if (level == null) return;
         BlockPos blockPos = getBlockPos();
-        ItemEntity entityitem = new ItemEntity(level,
-                                               blockPos.getX(),
-                                               blockPos.getY() - 2,
-                                               blockPos.getZ(),
-                                               makeSpell());
+        ItemEntity entityitem = new ItemEntity(level, blockPos.getX(), blockPos.getY() - 2, blockPos.getZ(), makeSpell());
         entityitem.setPickUpDelay(40);
         entityitem.setExtendedLifetime();
         level.addFreshEntity(entityitem);
@@ -381,11 +330,12 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         Level level = getLevel();
         if (level != null) {
             this.boundPositions.removeIf(blockPos -> !ArsMagicaAPI.get().getEtheriumHelper().hasEtheriumProvider(level, blockPos));
-            return this.boundPositions.stream()
-                                      .map(level::getBlockEntity)
-                                      .map(ArsMagicaAPI.get().getEtheriumHelper()::getEtheriumProvider)
-                                      .map(opt -> opt.orElseThrow(() -> new RuntimeException("IEtheriumProvider not present!")))
-                                      .collect(Collectors.toList());
+            return this.boundPositions
+                    .stream()
+                    .map(level::getBlockEntity)
+                    .map(ArsMagicaAPI.get().getEtheriumHelper()::getEtheriumProvider)
+                    .map(opt -> opt.orElseThrow(() -> new RuntimeException("IEtheriumProvider not present!")))
+                    .collect(Collectors.toList());
         }
         return List.of();
     }
@@ -405,8 +355,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public ModelDataMap getModelData() {
         return modelData;
     }
-
-    private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap) {
@@ -431,14 +379,12 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     public boolean isLeverActive() {
-        return getLevel() != null &&
-               this.leverPos != null &&
-               getLevel().getBlockState(this.leverPos).getValue(LeverBlock.POWERED);
+        return getLevel() != null && this.leverPos != null && getLevel().getBlockState(this.leverPos).getValue(LeverBlock.POWERED);
     }
 
     public Queue<ISpellIngredient> getRecipe() {
         if (this.recipe == null || this.recipe.isEmpty()) {
-            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>)Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>) Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 List<ISpellIngredient> recipe = spell.recipe();
                 this.recipe = new ArrayDeque<>(recipe);
                 this.requiredPower = spell.parts().size();
@@ -453,10 +399,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public ItemStack getBook() {
         if (this.getLevel() == null || this.lecternPos == null) return ItemStack.EMPTY;
         BlockState lecternState = this.getLevel().getBlockState(this.lecternPos);
-        if (lecternState.getBlock() instanceof LecternBlock &&
-            lecternState.hasProperty(LecternBlock.HAS_BOOK) &&
-            lecternState.getValue(LecternBlock.HAS_BOOK) &&
-            this.getLevel().getBlockEntity(this.lecternPos) instanceof LecternBlockEntity lecternBlockEntity)
+        if (lecternState.getBlock() instanceof LecternBlock && lecternState.hasProperty(LecternBlock.HAS_BOOK) && lecternState.getValue(LecternBlock.HAS_BOOK) && this.getLevel().getBlockEntity(this.lecternPos) instanceof LecternBlockEntity lecternBlockEntity)
             return lecternBlockEntity.getBook();
         return ItemStack.EMPTY;
     }

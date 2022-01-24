@@ -18,20 +18,6 @@ public class Solar extends GenericSpellModifier {
     }
 
     /**
-     * Returns the value of the multiplier, amplified by the world time. The closer the time is to noon, the higher this value is.
-     * Returns 1 if it is night.
-     *
-     * @param time the world time.
-     * @return the value of the multiplier, as described above
-     */
-    private float getTimeBasedMultiplier(long time) {
-        time %= 24000;
-        if (time > 13500 && time < 22500) return 1;
-        float multiplierFromTime = Math.abs(6000 - time);
-        return multiplierFromTime * MULTIPLIER / 7500f;
-    }
-
-    /**
      * @param phase the moon phase
      * @return a multiplier value. 2 is new moon, 1.5 is first quarter, 1 is full moon, 0.5 is last quarter, 0 is full moon
      */
@@ -44,5 +30,19 @@ public class Solar extends GenericSpellModifier {
             case 0 -> 0f;
             default -> throw new IllegalStateException("Unexpected value: " + phase);
         };
+    }
+
+    /**
+     * Returns the value of the multiplier, amplified by the world time. The closer the time is to noon, the higher this value is.
+     * Returns 1 if it is night.
+     *
+     * @param time the world time.
+     * @return the value of the multiplier, as described above
+     */
+    private float getTimeBasedMultiplier(long time) {
+        time %= 24000;
+        if (time > 13500 && time < 22500) return 1;
+        float multiplierFromTime = Math.abs(6000 - time);
+        return multiplierFromTime * MULTIPLIER / 7500f;
     }
 }

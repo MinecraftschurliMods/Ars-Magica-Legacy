@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
 /**
- * Mostly taken from the Botania mod.
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
  */
 public class RuneBagItem extends Item {

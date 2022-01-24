@@ -14,10 +14,6 @@ public class DraggableWithData<T> extends Draggable {
         this.data = data;
     }
 
-    public T getData() {
-        return data;
-    }
-
     public static <T> List<T> dataList(List<Draggable> draggables) {
         return draggables.stream().<T>map(DraggableWithData::data).toList();
     }
@@ -28,5 +24,9 @@ public class DraggableWithData<T> extends Draggable {
             return (T) withData.getData();
         }
         return null;
+    }
+
+    public T getData() {
+        return data;
     }
 }

@@ -24,18 +24,16 @@ public final class BurnoutHelper implements IBurnoutHelper {
     private BurnoutHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static BurnoutHelper instance() {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The burnout capability.
-     */
     public static Capability<BurnoutHolder> getBurnoutCapability() {
         return BURNOUT;
+    }
+
+    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(data)));
     }
 
     @Override
@@ -77,22 +75,17 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     @Override
-    public void setBurnout(LivingEntity livingEntity, float amount) {
+    public boolean setBurnout(LivingEntity entity, float amount) {
         if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
-        float max = getMaxBurnout(livingEntity);
-        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(livingEntity);
+        float max = getMaxBurnout(entity);
+        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(entity);
         magicHolder.setBurnout(Math.min(amount, max));
-        if (livingEntity instanceof Player player) {
+        if (entity instanceof Player player) {
             syncBurnout(player);
         }
+        return true;
     }
 
-    /**
-     * Called on player death, syncs the capability and the attribute.
-     *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
-     */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         original.getCapability(BurnoutHelper.BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BurnoutHelper.BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
@@ -112,10 +105,6 @@ public final class BurnoutHelper implements IBurnoutHelper {
             livingEntity.invalidateCaps();
         }
         return burnoutHolder;
-    }
-
-    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class BurnoutSyncPacket extends CodecPacket<BurnoutHolder> {

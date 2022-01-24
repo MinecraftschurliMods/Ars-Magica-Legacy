@@ -26,13 +26,13 @@ import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final ResourceLocation               ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
-    public static final Codec<EtheriumSpellIngredient> CODEC    = RecordCodecBuilder.create(inst -> inst.group(
+    public static final ResourceLocation ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class))
-                       .fieldOf("types")
-                       .forGetter(EtheriumSpellIngredient::types),
+                    .fieldOf("types")
+                    .forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount")
-                     .forGetter(EtheriumSpellIngredient::amount)
+                    .forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
 
     @Override
@@ -42,7 +42,8 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public List<Component> getTooltip() {
-        if (types.size() == 1) return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
+        if (types.size() == 1)
+            return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
         ArrayList<Component> components = new ArrayList<>(types.stream().map(ITranslatable::getDisplayName).toList());
         components.add(new TextComponent("x " + amount()));
         return components;

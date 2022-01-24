@@ -29,7 +29,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(ObeliskBlock::getLightLevel));
+        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 0));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 
@@ -47,10 +47,6 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return state.getValue(PART) == Part.LOWER ? AMBlockEntities.OBELISK.get().create(pos, state) : null;
-    }
-
-    private static int getLightLevel(BlockState state) {
-        return state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 0;
     }
 
     @Override
@@ -122,7 +118,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     }
 
     public enum Part implements StringRepresentable {
-        LOWER,MIDDLE,UPPER;
+        LOWER, MIDDLE, UPPER;
 
         @Override
         public String getSerializedName() {

@@ -8,6 +8,26 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import java.util.List;
 
 public interface DropArea extends Widget, GuiEventListener {
+    static void hLine(PoseStack poseStack, int minX, int maxX, int y, int color) {
+        if (maxX < minX) {
+            int i = minX;
+            minX = maxX;
+            maxX = i;
+        }
+
+        GuiComponent.fill(poseStack, minX, y, maxX + 1, y + 1, color);
+    }
+
+    static void vLine(PoseStack poseStack, int x, int minY, int maxY, int color) {
+        if (maxY < minY) {
+            int i = minY;
+            minY = maxY;
+            maxY = i;
+        }
+
+        GuiComponent.fill(poseStack, x, minY + 1, x + 1, maxY, color);
+    }
+
     List<Draggable> items();
 
     boolean add(Draggable d);
@@ -59,24 +79,4 @@ public interface DropArea extends Widget, GuiEventListener {
     DragHandler getDragHandler();
 
     void setDragHandler(DragHandler dragHandler);
-
-    static void hLine(PoseStack poseStack, int minX, int maxX, int y, int color) {
-        if (maxX < minX) {
-            int i = minX;
-            minX = maxX;
-            maxX = i;
-        }
-
-        GuiComponent.fill(poseStack, minX, y, maxX + 1, y + 1, color);
-    }
-
-    static void vLine(PoseStack poseStack, int x, int minY, int maxY, int color) {
-        if (maxY < minY) {
-            int i = minY;
-            minY = maxY;
-            maxY = i;
-        }
-
-        GuiComponent.fill(poseStack, x, minY + 1, x + 1, maxY, color);
-    }
 }

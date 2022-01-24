@@ -45,7 +45,8 @@ public class Damage extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
-        if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed()) return SpellCastResult.EFFECT_FAILED;
+        if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed())
+            return SpellCastResult.EFFECT_FAILED;
         if (!failIf.test(living)) {
             float damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(this.damage.apply(living), SpellPartStats.DAMAGE, modifiers, spell, caster, target);
             if (damage < 0) {

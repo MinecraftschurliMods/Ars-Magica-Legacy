@@ -28,8 +28,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
-    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>>                          CODECS    = new HashMap<>();
-    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>>                          NETWORK_CODECS    = new HashMap<>();
+    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> CODECS = new HashMap<>();
+    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> NETWORK_CODECS = new HashMap<>();
     private static final Map<ResourceLocation, Lazy<ISpellIngredientRenderer<? extends ISpellIngredient>>> RENDERERS = new HashMap<>();
 
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
@@ -37,6 +37,10 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private SpellDataManager() {
         super("spell_parts", SpellPartData.CODEC, SpellPartData.NETWORK_CODEC, LogManager.getLogger());
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+    }
+
+    public static SpellDataManager instance() {
+        return INSTANCE.get();
     }
 
     @Override
@@ -47,14 +51,14 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     @Override
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer) {
         CODECS.putIfAbsent(type, codec);
-        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
+        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>) (Object) renderer));
     }
 
     @Override
     public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Codec<T> networkCodec, Supplier<ISpellIngredientRenderer<T>> renderer) {
         CODECS.putIfAbsent(type, codec);
         NETWORK_CODECS.putIfAbsent(type, networkCodec);
-        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
+        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>) (Object) renderer));
     }
 
     @Override
@@ -75,14 +79,9 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         return getSpellIngredientCodec(type);
     }
 
-    /**
-     * @return The only instance of this class.
-     */
-    public static SpellDataManager instance() {
-        return INSTANCE.get();
-    }
-
-    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, float burnout) implements ISpellPartData {
+    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts,
+                                 List<Either<Ingredient, ItemStack>> reagents, float manaCost,
+                                 float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
                 CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),

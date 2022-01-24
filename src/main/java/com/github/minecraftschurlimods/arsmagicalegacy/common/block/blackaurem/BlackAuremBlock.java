@@ -20,8 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.function.BiPredicate;
 
 public class BlackAuremBlock extends BaseEntityBlock {
-    private static final VoxelShape BOX = Block.box(6,6,6,10,10,10);
-
+    private static final VoxelShape BOX = Block.box(6, 6, 6, 10, 10, 10);
     private static final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_CHALK);
     private static final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR1);
     private static final BiPredicate<Level, BlockPos> PILLAR2 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR2);

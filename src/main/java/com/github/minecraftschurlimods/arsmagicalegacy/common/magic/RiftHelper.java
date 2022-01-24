@@ -12,24 +12,23 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public final class RiftHelper implements IRiftHelper {
     private static final Lazy<RiftHelper> INSTANCE = Lazy.concurrentOf(RiftHelper::new);
-    private static final Capability<RiftHolder> RIFT = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<RiftHolder> RIFT = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
-    private RiftHelper() {}
-
-    @Override
-    public ItemStackHandler getRift(Player player) {
-        return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve burnout capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
+    private RiftHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static RiftHelper instance() {
         return INSTANCE.get();
     }
 
     public static Capability<RiftHolder> getRiftCapability() {
         return RIFT;
+    }
+
+    @Override
+    public ItemStackHandler getRift(Player player) {
+        return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
     }
 
     public void syncOnDeath(Player original, Player player) {

@@ -61,12 +61,12 @@ public class FilteredFilledDropArea<T> implements DropArea {
             Pair<TextureAtlasSprite, Component> a = factory.apply(t);
             DraggableWithData<T> d = new DraggableWithData<>(x, y, elementWidth, elementHeight, a.getFirst(), a.getSecond(), t);
             this.items.add(d);
-            x += this.elementWidth-1;
-            if (x > (this.x + this.width - this.elementWidth-1)) {
+            x += this.elementWidth - 1;
+            if (x > (this.x + this.width - this.elementWidth - 1)) {
                 x = this.x;
-                y += this.elementHeight-1;
+                y += this.elementHeight - 1;
             }
-            if (y > (this.y + this.height - this.elementHeight-1)) break;
+            if (y > (this.y + this.height - this.elementHeight - 1)) break;
         }
     }
 

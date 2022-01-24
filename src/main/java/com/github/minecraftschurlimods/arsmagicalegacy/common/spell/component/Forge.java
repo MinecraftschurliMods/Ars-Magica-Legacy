@@ -51,7 +51,8 @@ public class Forge extends AbstractComponent {
         if (recipe.isEmpty()) return SpellCastResult.EFFECT_FAILED;
         ItemStack smelted = recipe.get().getResultItem();
         if (!level.isClientSide()) {
-            if (smelted.getItem() instanceof BlockItem) level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);
+            if (smelted.getItem() instanceof BlockItem)
+                level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);
             else {
                 level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, smelted.copy()));
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);

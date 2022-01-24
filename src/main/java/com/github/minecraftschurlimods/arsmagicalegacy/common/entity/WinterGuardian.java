@@ -59,7 +59,7 @@ public class WinterGuardian extends AbstractBoss {
         return super.hurt(pSource, pAmount);
     }
 
-    public void returnOneArm(){
+    public void returnOneArm() {
         if (!this.hasLeftArm) {
             this.hasLeftArm = true;
         } else if (!this.hasRightArm) {
@@ -72,7 +72,7 @@ public class WinterGuardian extends AbstractBoss {
         super.registerGoals();
     }
 
-    public void launchOneArm(){
+    public void launchOneArm() {
         if (this.hasLeftArm) {
             this.hasLeftArm = false;
         } else if (this.hasRightArm) {
@@ -80,11 +80,11 @@ public class WinterGuardian extends AbstractBoss {
         }
     }
 
-    public boolean hasLeftArm(){
+    public boolean hasLeftArm() {
         return this.hasLeftArm;
     }
 
-    public boolean hasRightArm(){
+    public boolean hasRightArm() {
         return this.hasRightArm;
     }
 }

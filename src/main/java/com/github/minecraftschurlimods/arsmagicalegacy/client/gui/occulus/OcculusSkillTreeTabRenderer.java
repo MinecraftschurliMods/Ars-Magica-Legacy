@@ -43,6 +43,14 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         super(occulusTab, parent);
     }
 
+    private static int getColorForSkill(ISkill skill) {
+        return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::getColor).orElse(ColorUtil.GRAY);
+    }
+
+    private static int getColorForLine(ISkill parent, ISkill child) {
+        return ColorUtil.calculateAverage(getColorForSkill(parent), getColorForSkill(child));
+    }
+
     @Override
     protected void init() {
         offsetX = occulusTab.getStartX() - width / 2f;
@@ -79,7 +87,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         if (player == null) return;
         ISkillManager skillManager = ArsMagicaAPI.get().getSkillManager();
         ISkillHelper knowledgeHelper = ArsMagicaAPI.get().getSkillHelper();
-        Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab.getId());
+        Set<ISkill> skills = skillManager.getSkillsForOcculusTab(occulusTab);
         skills.removeIf(skill -> skill.isHidden() && !knowledgeHelper.knows(player, skill));
         stack.pushPose();
         stack.translate(-offsetX, -offsetY, 0);
@@ -175,13 +183,5 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    private static int getColorForSkill(ISkill skill) {
-        return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::getColor).orElse(ColorUtil.GRAY);
-    }
-
-    private static int getColorForLine(ISkill parent, ISkill child) {
-        return ColorUtil.calculateAverage(getColorForSkill(parent), getColorForSkill(child));
     }
 }

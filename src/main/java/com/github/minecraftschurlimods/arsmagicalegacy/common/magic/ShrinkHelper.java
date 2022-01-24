@@ -17,23 +17,22 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class ShrinkHelper implements IShrinkHelper {
     private static final Lazy<ShrinkHelper> INSTANCE = Lazy.concurrentOf(ShrinkHelper::new);
-    private static final Capability<ShrinkHolder> SHRINK = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<ShrinkHolder> SHRINK = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     private ShrinkHelper() {
     }
 
-    /**
-     * @return The only instance of this class.
-     */
     public static ShrinkHelper instance() {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The shrink capability.
-     */
     public static Capability<ShrinkHelper.ShrinkHolder> getShrinkCapability() {
         return SHRINK;
+    }
+
+    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder data, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(data)));
     }
 
     @Override
@@ -47,12 +46,6 @@ public final class ShrinkHelper implements IShrinkHelper {
         syncShrink(player);
     }
 
-    /**
-     * Called on player death, syncs the capability and the attribute.
-     *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
-     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(SHRINK).ifPresent(shrinkHolder -> player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(shrinkHolder)));
         syncShrink(player);
@@ -71,10 +64,6 @@ public final class ShrinkHelper implements IShrinkHelper {
             livingEntity.invalidateCaps();
         }
         return shrinkHolder;
-    }
-
-    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class ShrinkSyncPacket extends CodecPacket<ShrinkHelper.ShrinkHolder> {

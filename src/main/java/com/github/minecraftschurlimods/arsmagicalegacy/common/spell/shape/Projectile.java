@@ -20,11 +20,11 @@ import java.util.List;
 public class Projectile extends AbstractShape {
     public Projectile() {
         super(SpellPartStats.TARGET_NON_SOLID,
-              SpellPartStats.BOUNCE,
-              SpellPartStats.DURATION,
-              SpellPartStats.PIERCING,
-              SpellPartStats.GRAVITY,
-              SpellPartStats.SPEED);
+                SpellPartStats.BOUNCE,
+                SpellPartStats.DURATION,
+                SpellPartStats.PIERCING,
+                SpellPartStats.GRAVITY,
+                SpellPartStats.SPEED);
     }
 
     @Override
@@ -35,9 +35,9 @@ public class Projectile extends AbstractShape {
             projectile.setDeltaMovement(caster.getLookAngle());
             ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
             boolean tns = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int bounces = (int)spellHelper.getModifiedStat(0, SpellPartStats.BOUNCE, modifiers, spell, caster, hit);
-            int duration = (int)spellHelper.getModifiedStat(30, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            int pierces = (int)spellHelper.getModifiedStat(0, SpellPartStats.PIERCING, modifiers, spell, caster, hit);
+            int bounces = (int) spellHelper.getModifiedStat(0, SpellPartStats.BOUNCE, modifiers, spell, caster, hit);
+            int duration = (int) spellHelper.getModifiedStat(30, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            int pierces = (int) spellHelper.getModifiedStat(0, SpellPartStats.PIERCING, modifiers, spell, caster, hit);
             float gravity = spellHelper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f;
             float speed = spellHelper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit);
             if (tns) {

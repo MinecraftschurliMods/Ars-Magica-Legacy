@@ -59,21 +59,13 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        switch (pState.getValue(FACING)) {
-            case NORTH -> {
-                return pState.getValue(HALF) == Half.LEFT ? RIGHT_Z : LEFT_Z;
-            }
-            case EAST -> {
-                return pState.getValue(HALF) == Half.LEFT ? LEFT_X : RIGHT_X;
-            }
-            case SOUTH -> {
-                return pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
-            }
-            case WEST -> {
-                return pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
-            }
+        return switch (pState.getValue(FACING)) {
+            case NORTH -> pState.getValue(HALF) == Half.LEFT ? RIGHT_Z : LEFT_Z;
+            case EAST -> pState.getValue(HALF) == Half.LEFT ? LEFT_X : RIGHT_X;
+            case SOUTH -> pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
+            case WEST -> pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
             default -> throw new IllegalStateException("Unexpected value: " + pState.getValue(FACING));
-        }
+        };
     }
 
     @Override

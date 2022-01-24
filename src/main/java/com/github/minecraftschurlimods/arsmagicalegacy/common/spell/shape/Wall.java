@@ -15,9 +15,9 @@ import java.util.List;
 public class Wall extends AbstractShape {
     public Wall() {
         super(SpellPartStats.RANGE,
-              SpellPartStats.TARGET_NON_SOLID,
-              SpellPartStats.SIZE,
-              SpellPartStats.DURATION);
+                SpellPartStats.TARGET_NON_SOLID,
+                SpellPartStats.SIZE,
+                SpellPartStats.DURATION);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Wall extends AbstractShape {
             float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit);
             boolean tns = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
             float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit);
-            int duration = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
+            int duration = (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit);
             wall.setPos(ArsMagicaAPI.get().getSpellHelper().trace(caster, level, range, true, tns).getLocation());
             wall.setYRot(caster.getYHeadRot());
             wall.setDuration(duration);
