@@ -12,6 +12,7 @@ public final class Config {
     public static final Server SERVER;
     private static final ForgeConfigSpec clientSpec;
     private static final ForgeConfigSpec serverSpec;
+    private static boolean init;
 
     static {
         final Pair<Client, ForgeConfigSpec> clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
@@ -22,7 +23,7 @@ public final class Config {
         SERVER = serverPair.getLeft();
     }
 
-    private static boolean init;
+    private Config() {}
 
     @Internal
     static synchronized void init() {
@@ -31,9 +32,6 @@ public final class Config {
         ModLoadingContext context = ModLoadingContext.get();
         context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
         context.registerConfig(ModConfig.Type.SERVER, serverSpec);
-    }
-
-    private Config() {
     }
 
     /**
@@ -94,7 +92,7 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "damage")
                     .defineInRange("damage", 6, 1, 100);
             MAX_ETHERIUM_STORAGE = builder
-                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem. [ 3000 - "+Short.MAX_VALUE+" ]")
+                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.")
                     .translation(TranslationConstants.CONFIG + "max_etherium_storage")
                     .defineInRange("max_etherium_storage", 5000, 3000, Short.MAX_VALUE);
         }

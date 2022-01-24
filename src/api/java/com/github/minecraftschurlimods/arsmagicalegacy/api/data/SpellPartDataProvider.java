@@ -31,114 +31,104 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * Data provider for spell part data jsons
+ * Base class for spell part data generators.
  */
 public abstract class SpellPartDataProvider implements DataProvider {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
+    private final String namespace;
     private final DataGenerator generator;
 
-    public SpellPartDataProvider(DataGenerator generator) {
+    public SpellPartDataProvider(String namespace, DataGenerator generator) {
+        this.namespace = namespace;
         this.generator = generator;
-    }
-
-    @Override
-    public void run(HashCache pCache) {
-        Path path = generator.getOutputFolder();
-        createSpellPartData();
-        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, path.resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json")));
     }
 
     protected abstract void createSpellPartData();
 
+    @Override
+    public void run(HashCache pCache) {
+        createSpellPartData();
+        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json")));
+    }
+
+    @Override
+    public String getName() {
+        return "Spell Part Data";
+    }
+
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @return A new spell part entry.
+     * @param spellPart The id of the new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ResourceLocation spellPart, float manaCost) {
         return new SpellPartDataBuilder(spellPart, manaCost);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost) {
         return createSpellPartData(spellPart.getRegistryName(), manaCost);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost) {
         return createSpellPartData(spellPart.get(), manaCost);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
         return createSpellPartData(spellPart.getId(), manaCost);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @param burnout   The spell part burnout.
-     * @return A new spell part entry.
+     * @param spellPart The id of the new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @param burnout   The burnout for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ResourceLocation spellPart, float manaCost, float burnout) {
         return new SpellPartDataBuilder(spellPart, manaCost, burnout);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @param burnout   The spell part burnout.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @param burnout   The burnout for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost, float burnout) {
         return createSpellPartData(spellPart.getRegistryName(), manaCost, burnout);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @param burnout   The spell part burnout.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @param burnout   The burnout for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost, float burnout) {
         return createSpellPartData(spellPart.get(), manaCost, burnout);
     }
 
     /**
-     * Creates a new spell part entry.
-     *
-     * @param spellPart The spell part id.
-     * @param manaCost  The spell part mana cost.
-     * @param burnout   The spell part burnout.
-     * @return A new spell part entry.
+     * @param spellPart The new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @param burnout   The burnout for the new spell part.
+     * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
         return createSpellPartData(spellPart.getId(), manaCost, burnout);
@@ -164,8 +154,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
         private final ResourceLocation id;
         private final float manaCost;
         private final Float burnout;
-        private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
         private final List<ISpellIngredient> recipe = new ArrayList<>();
+        private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
         /**
@@ -180,6 +170,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
             this.manaCost = manaCost;
             this.burnout = burnout;
         }
+
         /**
          * Creates a new spell part builder entry.
          *
@@ -194,6 +185,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds a spell reagent.
+         *
          * @param ingredient The spell reagent to add.
          * @return This builder, for chaining.
          */
@@ -204,6 +196,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds a spell reagent.
+         *
          * @param stack The spell reagent to add.
          * @return This builder, for chaining.
          */
@@ -214,6 +207,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds a spell ingredient.
+         *
          * @param ingredient The spell ingredient to add.
          * @return This builder, for chaining.
          */
@@ -224,6 +218,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds an affinity.
+         *
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
@@ -233,6 +228,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds an affinity.
+         *
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
@@ -243,6 +239,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
         /**
          * Adds an affinity.
+         *
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
@@ -252,28 +249,28 @@ public abstract class SpellPartDataProvider implements DataProvider {
         }
 
         /**
-         * Builds the entry.
+         * Builds the spell part data object.
          */
         public void build() {
             data.put(id, serialize());
         }
 
-        protected JsonObject serialize() {
-            var out = new JsonObject();
-            out.addProperty("manaCost", manaCost);
+        JsonObject serialize() {
+            var json = new JsonObject();
+            json.addProperty("manaCost", manaCost);
             if (burnout != null) {
-                out.addProperty("burnout", burnout);
+                json.addProperty("burnout", burnout);
             }
-            var arr = new JsonArray();
-            reagents.forEach(either -> arr.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
-            out.add("reagents", arr);
-            var arr2 = new JsonObject();
-            affinities.forEach((resourceLocation, shift) -> arr2.addProperty(resourceLocation.toString(), shift));
-            out.add("affinities", arr2);
-            var arr3 = new JsonArray();
-            recipe.forEach(ingredient -> arr3.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
-            out.add("recipe", arr3);
-            return out;
+            var reagentsJson = new JsonArray();
+            reagents.forEach(either -> reagentsJson.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
+            json.add("reagents", reagentsJson);
+            var affinitiesJson = new JsonObject();
+            affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));
+            json.add("affinities", affinitiesJson);
+            var recipeJson = new JsonArray();
+            recipe.forEach(ingredient -> recipeJson.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));
+            json.add("recipe", recipeJson);
+            return json;
         }
     }
 }

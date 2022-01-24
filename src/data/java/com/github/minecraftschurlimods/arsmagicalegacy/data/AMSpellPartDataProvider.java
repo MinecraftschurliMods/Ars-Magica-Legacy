@@ -24,17 +24,11 @@ import java.util.Set;
 
 class AMSpellPartDataProvider extends SpellPartDataProvider {
     public AMSpellPartDataProvider(DataGenerator generator) {
-        super(generator);
-    }
-
-    @Override
-    public String getName() {
-        return "AMSpellPartData";
+        super(ArsMagicaAPI.MOD_ID, generator);
     }
 
     @Override
     protected void createSpellPartData() {
-
         createSpellPartData(AMSpellParts.AOE, 2f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(ArsMagicaAPI.get().getAffinityHelper().getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())){}, 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TNT), 1))

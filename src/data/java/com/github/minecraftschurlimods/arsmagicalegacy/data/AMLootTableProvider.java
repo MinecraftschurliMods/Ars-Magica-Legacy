@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 class AMLootTableProvider extends LootTableProvider {
-    public AMLootTableProvider(DataGenerator pGenerator) {
+    AMLootTableProvider(DataGenerator pGenerator) {
         super(pGenerator);
     }
 
@@ -155,7 +155,7 @@ class AMLootTableProvider extends LootTableProvider {
         public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
             addTables();
             Set<ResourceLocation> set = Sets.newHashSet();
-            for(EntityType<?> entitytype : getKnownEntities()) {
+            for (EntityType<?> entitytype : getKnownEntities()) {
                 ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
                 if (isNonLiving(entitytype)) {
                     if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)

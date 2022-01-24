@@ -1,6 +1,4 @@
 {
-  "advancement.arsmagicalegacy.root.description": "A renewed look into Minecraft with a splash of magic...",
-  "advancement.arsmagicalegacy.root.title": "Ars Magica: Legacy",
   "affinity.arsmagicalegacy.air": "Air",
   "affinity.arsmagicalegacy.arcane": "Arcane",
   "affinity.arsmagicalegacy.earth": "Earth",
@@ -76,6 +74,7 @@
   "config.arsmagicalegacy.effect_duration": "Effect duration of effect-based components, in ticks.",
   "config.arsmagicalegacy.extra_starting_blue_points": "The extra skill points a player gets on level 1.",
   "config.arsmagicalegacy.max_burnout": "The default maximum burnout for the player.",
+  "config.arsmagicalegacy.max_etherium_storage": "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.",
   "config.arsmagicalegacy.max_mana": "The default maximum mana for the player.",
   "config.arsmagicalegacy.max_shape_groups": "The maximum number of shape groups allowed for new spells.",
   "effect.arsmagicalegacy.agility": "Agility",

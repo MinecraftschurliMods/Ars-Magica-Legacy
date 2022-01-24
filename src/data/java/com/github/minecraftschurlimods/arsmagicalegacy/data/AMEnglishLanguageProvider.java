@@ -38,7 +38,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         itemGroupTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY,ArsMagicaLegacy.getModName() + " - Prefab Spells");
+        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY, ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
@@ -169,7 +169,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
-        advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -279,6 +278,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("extra_starting_blue_points", "The extra skill points a player gets on level 1.");
         configTranslation("effect_duration", "Effect duration of effect-based components, in ticks.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
+        configTranslation("max_etherium_storage", "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.CRYSTAL_WRENCH_TOO_FAR, "You cannot perform this action over such distance!");

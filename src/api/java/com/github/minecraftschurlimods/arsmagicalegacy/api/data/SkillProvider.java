@@ -23,53 +23,44 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Data provider for skill jsons
+ * Base class for skill data generators.
  */
 public abstract class SkillProvider implements DataProvider {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+    private final DataGenerator generator;
+    private final String namespace;
+    private Set<ResourceLocation> data;
 
-    private final DataGenerator      generator;
-    private final String             namespace;
-    private Set<ResourceLocation> ids;
-
-    /**
-     * Create a skill provider for the given namespace
-     *
-     * @param generator the data generator
-     * @param namespace the namespace to use in data generation
-     */
-    protected SkillProvider(DataGenerator generator, String namespace) {
-        this.generator = generator;
+    protected SkillProvider(String namespace, DataGenerator generator) {
         this.namespace = namespace;
+        this.generator = generator;
     }
+
+    protected abstract void createSkills(Consumer<SkillBuilder> consumer);
 
     @Internal
     @Override
     public final void run(HashCache pCache) {
-        Path path = generator.getOutputFolder();
-        ids = Sets.newHashSet();
+        data = Sets.newHashSet();
         createSkills(skill -> {
-            if (!ids.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
+            if (!data.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
             else {
-                saveSkill(pCache, skill.serialize(), path.resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
+                saveSkill(pCache, skill.serialize(), generator.getOutputFolder().resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
             }
         });
     }
 
+    @Override
+    public String getName() {
+        return "Skills";
+    }
+
     public Set<ResourceLocation> getSkills() {
-        return Collections.unmodifiableSet(ids);
+        return Collections.unmodifiableSet(data);
     }
 
     /**
-     * Implement to add your own skills
-     * @param consumer provided by the datagen
-     */
-    protected abstract void createSkills(Consumer<SkillBuilder> consumer);
-
-    /**
-     * Creates a new skill.
-     *
      * @param name       The skill name.
      * @param occulusTab The occulus tab to display the skill in.
      * @return A new skill.
@@ -79,8 +70,6 @@ public abstract class SkillProvider implements DataProvider {
     }
 
     /**
-     * Creates a new skill.
-     *
      * @param name       The skill name.
      * @param occulusTab The occulus tab to display the skill in.
      * @return A new skill.

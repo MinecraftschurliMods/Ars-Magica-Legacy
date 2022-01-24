@@ -25,7 +25,7 @@ public interface ISkillPointItem {
     /**
      * Set the {@link ISkillPoint} stored in the {@link ItemStack}
      *
-     * @param stack    the {@link ItemStack} to set the {@link ISkillPoint} for
+     * @param stack      the {@link ItemStack} to set the {@link ISkillPoint} for
      * @param skillPoint the {@link ISkillPoint} to set
      * @return the {@link ItemStack} with the {@link ISkillPoint} stored in it
      */

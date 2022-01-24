@@ -8,10 +8,8 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  */
 public interface IRiftHelper {
     /**
-     * Get the rift item handler for the given player.
-     *
-     * @param player the player to get the rift item handler for
-     * @return the rift item handler for the given player
+     * @param player The player to get the rift item handler for.
+     * @return The rift item handler for the given player.
      */
     IItemHandlerModifiable getRift(Player player);
 }

@@ -15,7 +15,6 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -30,17 +29,14 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class SkillCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
     private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(TranslationConstants.COMMAND_SKILL_UNKNOWN, message));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralCommandNode<CommandSourceStack> skill = dispatcher.register(Commands.literal("skill")
-                                                                                   .then(Commands.literal("learn").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                .then(Commands.literal("learn").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILLS)
@@ -169,12 +165,7 @@ public class SkillCommand {
     }
 
     private static int learnAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        ISkillHelper knowledgeHelper = api.getSkillHelper();
-        ISkillManager skillManager = api.getSkillManager();
-        for (ISkill iSkill : skillManager.getSkills()) {
-            knowledgeHelper.learn(player, iSkill);
-        }
+        ArsMagicaAPI.get().getSkillHelper().learnAll(player);
         context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_LEARN_ALL_SUCCESS, player.getDisplayName()), true);
         return Command.SINGLE_SUCCESS;
     }

@@ -17,23 +17,22 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 public final class SkillIconAtlas extends TextureAtlasHolder {
+    public static final ResourceLocation SKILL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/skill_icons.png");
     private static final Lazy<SkillIconAtlas> INSTANCE = Lazy.of(SkillIconAtlas::new);
     private static final String PREFIX = "icon/skill";
     private static final String SUFFIX = ".png";
     private static final Predicate<String> RESOURCE_PREDICATE = s -> s.endsWith(SUFFIX);
-    public static final ResourceLocation SKILL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/skill_icons.png");
-
     private Collection<ResourceLocation> resourceLocations;
+
+    private SkillIconAtlas() {
+        super(Minecraft.getInstance().textureManager, SKILL_ICON_ATLAS, PREFIX);
+    }
 
     /**
      * @return The only instance of this class.
      */
     public static SkillIconAtlas instance() {
         return INSTANCE.get();
-    }
-
-    private SkillIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SKILL_ICON_ATLAS, PREFIX);
     }
 
     @Override

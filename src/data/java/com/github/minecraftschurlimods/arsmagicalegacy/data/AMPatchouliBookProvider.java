@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 class AMPatchouliBookProvider extends PatchouliBookProvider {
     private final LanguageProvider lang;
 
-    AMPatchouliBookProvider(DataGenerator generator, String modid, final LanguageProvider lang, boolean includeClient, boolean includeServer) {
+    AMPatchouliBookProvider(DataGenerator generator, String modid, LanguageProvider lang, boolean includeClient, boolean includeServer) {
         super(generator, modid, includeClient, includeServer);
         this.lang = lang;
     }
@@ -198,6 +198,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 /*
         TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
                 .setSortnum(7);
+                .build();
 */
         Set<ResourceLocation> parts = new HashSet<>();
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {

@@ -10,39 +10,35 @@ import java.util.function.Consumer;
 
 public class OcculusTabBuilder {
     private final ResourceLocation id;
-    private       Integer index;
-    private       String  renderer;
-    private       Integer startX;
-    private       Integer startY;
+    private Integer index;
+    private Integer startX;
+    private Integer startY;
+    private String renderer;
 
     protected OcculusTabBuilder(ResourceLocation id) {
         this.id = id;
     }
 
     /**
-     * Create a new {@link OcculusTabBuilder} with the given id.
-     *
-     * @param id         the id for the occulus tab
-     * @return the new {@link OcculusTabBuilder} for the occulus tab
+     * @param id The id for the new occulus tab.
+     * @return A builder for a new occulus tab.
      */
     public static OcculusTabBuilder create(ResourceLocation id) {
         return new OcculusTabBuilder(id);
     }
 
     /**
-     * Get the id of this occulus tab.
-     *
-     * @return the id of this occulus tab
+     * @return The id of the occulus tab.
      */
     public ResourceLocation getId() {
         return id;
     }
 
     /**
-     * Set the index of this occulus tab.
+     * Sets the index of the occulus tab.
      *
-     * @param index the index
-     * @return the {@link OcculusTabBuilder}
+     * @param index The index to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public OcculusTabBuilder setIndex(int index) {
@@ -51,33 +47,10 @@ public class OcculusTabBuilder {
     }
 
     /**
-     * Set the renderer class of this occulus tab.
+     * Sets the initial X coordinate of the occulus tab.
      *
-     * @param renderer the renderer class
-     * @return the {@link OcculusTabBuilder}
-     */
-    @Contract("_ -> this")
-    public OcculusTabBuilder setRenderer(Class<? extends OcculusTabRenderer> renderer) {
-        return setRenderer(renderer.getName());
-    }
-
-    /**
-     * Set the renderer class name of this occulus tab.
-     *
-     * @param renderer the renderer class name
-     * @return the {@link OcculusTabBuilder}
-     */
-    @Contract("_ -> this")
-    public OcculusTabBuilder setRenderer(String renderer) {
-        this.renderer = renderer;
-        return this;
-    }
-
-    /**
-     * Set the initial X coordinate of this occulus tab.
-     *
-     * @param startX the initial X coordinate
-     * @return the {@link OcculusTabBuilder}
+     * @param startX The initial X coordinate to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public OcculusTabBuilder setStartX(int startX) {
@@ -86,10 +59,10 @@ public class OcculusTabBuilder {
     }
 
     /**
-     * Set the initial Y coordinate of this occulus tab.
+     * Sets the initial Y coordinate of the occulus tab.
      *
-     * @param startY the initial Y coordinate
-     * @return the {@link OcculusTabBuilder}
+     * @param startY The initial Y coordinate to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public OcculusTabBuilder setStartY(int startY) {
@@ -98,11 +71,33 @@ public class OcculusTabBuilder {
     }
 
     /**
-     * Build this {@link OcculusTabBuilder}.<br>
-     * This method accepts this builder to the provided consumer
+     * Sets the renderer class of the occulus tab.
      *
-     * @param consumer the consumer that will consume this builder
-     * @return the {@link OcculusTabBuilder}
+     * @param renderer The renderer class to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setRenderer(Class<? extends OcculusTabRenderer> renderer) {
+        return setRenderer(renderer.getName());
+    }
+
+    /**
+     * Sets the renderer class of the occulus tab.
+     *
+     * @param renderer The renderer class to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setRenderer(String renderer) {
+        this.renderer = renderer;
+        return this;
+    }
+
+    /**
+     * Builds the occulus tab.
+     *
+     * @param consumer The consumer that will consume the builder.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public OcculusTabBuilder build(Consumer<OcculusTabBuilder> consumer) {
@@ -110,6 +105,9 @@ public class OcculusTabBuilder {
         return this;
     }
 
+    /**
+     * @return The serialized occulus tab.
+     */
     JsonObject serialize() {
         JsonObject json = new JsonObject();
         if (index == null) throw new SerializationException("An occulus tab needs an index!");

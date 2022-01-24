@@ -7,18 +7,16 @@ import net.minecraft.world.entity.player.Player;
  */
 public interface IShrinkHelper {
     /**
-     * Whether the player is currently shrunk or not.
-     *
-     * @param player the player to get the shrink status for
-     * @return whether the player is currently shrunk or not
+     * @param player The player to get the shrink status for.
+     * @return Whether the player is currently shrunk or not.
      */
     boolean isShrunk(Player player);
 
     /**
      * Sets the given player's shrink status.
      *
-     * @param player the player to set the shrink status for
-     * @param shrunk true if the player should be shrunk, false otherwise
+     * @param player The player to set the shrink status for.
+     * @param shrunk True if the player should be shrunk, false otherwise.
      */
     void setShrunk(Player player, boolean shrunk);
 }

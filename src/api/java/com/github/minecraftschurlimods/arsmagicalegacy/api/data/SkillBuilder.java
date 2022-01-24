@@ -19,20 +19,22 @@ import java.util.function.Consumer;
  * Builder for skills. Used in SkillProviders for data generation.
  */
 public class SkillBuilder {
-    private final Set<ResourceLocation>          parents = new HashSet<>();
-    private final Map<ResourceLocation, Integer> cost    = new HashMap<>();
-    private final ResourceLocation               id;
-    private       ResourceLocation               occulusTab;
-    private       Boolean                        hidden;
-    private       Integer                        x;
-    private       Integer                        y;
+    private final Set<ResourceLocation> parents = new HashSet<>();
+    private final Map<ResourceLocation, Integer> cost = new HashMap<>();
+    private final ResourceLocation id;
+    private ResourceLocation occulusTab;
+    private Boolean hidden;
+    private Integer x;
+    private Integer y;
+
+    protected SkillBuilder(ResourceLocation id) {
+        this.id = id;
+    }
 
     /**
-     * Create a new {@link SkillBuilder} with the given id in the given occulusTab.
-     *
-     * @param id         the id for the skill
-     * @param occulusTab the occulus tab this skill belongs to
-     * @return the new {@link SkillBuilder} for the skill
+     * @param id         The id for the skill.
+     * @param occulusTab The id of the occulus tab for the skill.
+     * @return A new builder for the skill.
      */
     @Contract("_, _ -> new")
     public static SkillBuilder create(ResourceLocation id, ResourceLocation occulusTab) {
@@ -40,36 +42,28 @@ public class SkillBuilder {
     }
 
     /**
-     * Create a new {@link SkillBuilder} with the given id in the given occulusTab.
-     *
-     * @param id         the id for the skill
-     * @param occulusTab the occulus tab this skill belongs to
-     * @return the new {@link SkillBuilder} for the skill
+     * @param id         The id for the skill.
+     * @param occulusTab The occulus tab for the skill.
+     * @return A new builder for the skill.
      */
     @Contract("_, _ -> new")
     public static SkillBuilder create(ResourceLocation id, IOcculusTab occulusTab) {
         return new SkillBuilder(id).setOcculusTab(occulusTab);
     }
 
-    protected SkillBuilder(ResourceLocation id) {
-        this.id = id;
-    }
-
     /**
-     * Get the id of this skill.
-     *
-     * @return the id of this skill
+     * @return The id of the skill.
      */
     public ResourceLocation getId() {
         return id;
     }
 
     /**
-     * Add learning cost to this skill.
+     * Adds a learning cost to this skill.
      *
-     * @param point the point it should cost
-     * @param amt   the amount of points it should cost
-     * @return the {@link SkillBuilder}
+     * @param point The id of the skill point the skill should cost.
+     * @param amt   The amount of skill points the skill should cost.
+     * @return This builder, for chaining.
      */
     @Contract("_, _ -> this")
     public SkillBuilder addCost(ResourceLocation point, int amt) {
@@ -78,11 +72,11 @@ public class SkillBuilder {
     }
 
     /**
-     * Add learning cost to this skill.
+     * Adds a learning cost to this skill.
      *
-     * @param point the point it should cost
-     * @param amt   the amount of points it should cost
-     * @return the {@link SkillBuilder}
+     * @param point The skill point the skill should cost.
+     * @param amt   The amount of skill points the skill should cost.
+     * @return This builder, for chaining.
      */
     @Contract("_, _ -> this")
     public SkillBuilder addCost(ISkillPoint point, int amt) {
@@ -90,10 +84,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Add learning cost to this skill.
+     * Adds a learning cost to this skill.
      *
-     * @param point the point it should cost
-     * @return the {@link SkillBuilder}
+     * @param point The skill point the skill should cost.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder addCost(ResourceLocation point) {
@@ -101,10 +95,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Add learning cost to this skill.
+     * Adds a learning cost to this skill.
      *
-     * @param point the point it should cost
-     * @return the {@link SkillBuilder}
+     * @param point The skill point the skill should cost.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder addCost(ISkillPoint point) {
@@ -112,10 +106,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Add a parent to this skill that is required to learn first.
+     * Adds a parent skill that must be learned first.
      *
-     * @param parent the parent to add to this skill
-     * @return the {@link SkillBuilder}
+     * @param parent The id of the parent skill to add.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder addParent(ResourceLocation parent) {
@@ -124,10 +118,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Add a parent to this skill that is required to learn first.
+     * Adds a parent skill that must be learned first.
      *
-     * @param parent the parent to add to this skill
-     * @return the {@link SkillBuilder}
+     * @param parent The parent skill to add.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder addParent(ISkill parent) {
@@ -135,10 +129,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Add a parent to this skill that is required to learn first.
+     * Adds a parent skill that must be learned first.
      *
-     * @param parent the parent to add to this skill
-     * @return the {@link SkillBuilder}
+     * @param parent A builder for the parent skill to add.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder addParent(SkillBuilder parent) {
@@ -146,11 +140,11 @@ public class SkillBuilder {
     }
 
     /**
-     * Set the position this skill should be displayed at in the gui of the defined occulus tab.
+     * Sets the position this skill should be displayed at in the defined occulus tab.
      *
-     * @param x the X coordinate
-     * @param y the Y coordinate
-     * @return the {@link SkillBuilder}
+     * @param x The X coordinate.
+     * @param y The Y coordinate.
+     * @return This builder, for chaining.
      */
     @Contract("_, _ -> this")
     public SkillBuilder setPosition(int x, int y) {
@@ -160,10 +154,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Set if this skill should be hidden.
+     * Sets if this skill should be hidden or not. Default behavior is false.
      *
-     * @param hidden the hidden state to set
-     * @return the {@link SkillBuilder}
+     * @param hidden The hidden state to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder setHidden(boolean hidden) {
@@ -172,9 +166,9 @@ public class SkillBuilder {
     }
 
     /**
-     * Set that this skill should be hidden.
+     * Sets that this skill should be hidden.
      *
-     * @return the {@link SkillBuilder}
+     * @return This builder, for chaining.
      */
     @Contract("-> this")
     public SkillBuilder hidden() {
@@ -182,10 +176,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Set the occulus tab this skill should belong to.
+     * Sets the occulus tab this skill belongs to.
      *
-     * @param occulusTab the occulus tab this skill should belong to
-     * @return the {@link SkillBuilder}
+     * @param occulusTab The id of the occulus tab to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     protected SkillBuilder setOcculusTab(ResourceLocation occulusTab) {
@@ -194,10 +188,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Set the occulus tab this skill should belong to.
+     * Sets the occulus tab this skill belongs to.
      *
-     * @param occulusTab the occulus tab this skill should belong to
-     * @return the {@link SkillBuilder}
+     * @param occulusTab The occulus tab to set.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     protected SkillBuilder setOcculusTab(IOcculusTab occulusTab) {
@@ -205,11 +199,10 @@ public class SkillBuilder {
     }
 
     /**
-     * Build this {@link SkillBuilder}.<br>
-     * This method accepts this builder to the provided consumer
+     * Builds the skill.
      *
-     * @param consumer the consumer that will consume this builder
-     * @return the {@link SkillBuilder}
+     * @param consumer The consumer that will consume the builder.
+     * @return This builder, for chaining.
      */
     @Contract("_ -> this")
     public SkillBuilder build(Consumer<SkillBuilder> consumer) {
@@ -217,6 +210,9 @@ public class SkillBuilder {
         return this;
     }
 
+    /**
+     * @return The serialized occulus tab.
+     */
     JsonObject serialize() {
         JsonObject json = new JsonObject();
         json.addProperty("occulus_tab", occulusTab.toString());
@@ -227,23 +223,15 @@ public class SkillBuilder {
             json.addProperty("hidden", hidden);
         }
         if (!parents.isEmpty()) {
-            json.add("parents", serializeParents());
+            JsonArray parents = new JsonArray();
+            this.parents.forEach(id -> parents.add(id.toString()));
+            json.add("parents", parents);
         }
         if (!cost.isEmpty()) {
-            json.add("cost", serializeCost());
+            JsonObject cost = new JsonObject();
+            this.cost.forEach((id, amt) -> cost.addProperty(id.toString(), amt));
+            json.add("cost", cost);
         }
         return json;
-    }
-
-    private JsonObject serializeCost() {
-        JsonObject cost = new JsonObject();
-        this.cost.forEach((id, amt) -> cost.addProperty(id.toString(), amt));
-        return cost;
-    }
-
-    private JsonArray serializeParents() {
-        JsonArray parents = new JsonArray();
-        this.parents.forEach(id -> parents.add(id.toString()));
-        return parents;
     }
 }

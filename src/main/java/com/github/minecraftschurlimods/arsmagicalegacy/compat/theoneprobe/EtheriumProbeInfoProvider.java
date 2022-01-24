@@ -44,15 +44,7 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
         } else {
             tier = -1;
         }
-        ArsMagicaAPI.get()
-                    .getEtheriumHelper()
-                    .getEtheriumProvider(level, pos)
-                    .ifPresent(provider -> iProbeInfo.progress(provider.getAmount(),
-                                                               provider.getMax(),
-                                                               iProbeInfo.defaultProgressStyle()
-                                                                         .filledColor(provider.getType().getColor())
-                                                                         .alternateFilledColor(Color.darker(provider.getType().getColor(), .8))
-                                                                         .numberFormat(NumberFormat.FULL)));
+        ArsMagicaAPI.get().getEtheriumHelper().getEtheriumProvider(level, pos).ifPresent(provider -> iProbeInfo.progress(provider.getAmount(), provider.getMax(), iProbeInfo.defaultProgressStyle().filledColor(provider.getType().getColor()).alternateFilledColor(Color.darker(provider.getType().getColor(), .8)).numberFormat(NumberFormat.FULL)));
         if (tier > -1) {
             iProbeInfo.mcText(new TranslatableComponent(TranslationConstants.MULTIBLOCK_TIER, tier));
         }

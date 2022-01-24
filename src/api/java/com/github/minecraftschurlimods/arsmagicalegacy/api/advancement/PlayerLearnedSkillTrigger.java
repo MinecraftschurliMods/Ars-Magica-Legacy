@@ -11,6 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 
+/**
+ * Advancement trigger for when a player learns a new skill.
+ */
 public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLearnedSkillTrigger.TriggerInstance> {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_learned_skill");
 
@@ -25,6 +28,11 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
         return new TriggerInstance(pPlayer, skill);
     }
 
+    /**
+     * Triggers the advancement trigger.
+     * @param pPlayer The affected player.
+     * @param skill   The skill learned.
+     */
     public void trigger(ServerPlayer pPlayer, ResourceLocation skill) {
         this.trigger(pPlayer, (p_70648_) -> p_70648_.matches(skill));
     }
@@ -37,10 +45,6 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
             this.skill = skill;
         }
 
-        public boolean matches(ResourceLocation skill) {
-            return this.skill == null || this.skill.equals(skill);
-        }
-
         @Override
         public JsonObject serializeToJson(SerializationContext pConditions) {
             JsonObject jsonObject = super.serializeToJson(pConditions);
@@ -48,6 +52,14 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
                 jsonObject.addProperty("skill", this.skill.toString());
             }
             return jsonObject;
+        }
+
+        /**
+         * @param skill The skill id to check.
+         * @return Whether the given skill id matches this instance's skill id or not.
+         */
+        public boolean matches(ResourceLocation skill) {
+            return this.skill == null || this.skill.equals(skill);
         }
     }
 }

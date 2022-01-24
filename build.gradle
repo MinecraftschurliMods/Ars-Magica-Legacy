@@ -91,12 +91,12 @@ configurations {
             rcp = runtimeClasspath
             ccp = compileClasspath
         } else {
-            extLib = create(it.name+"ExternalLibrary")
-            impl = getByName(it.name+"Implementation")
-            compile = getByName(it.name+"CompileOnly")
-            runtime = getByName(it.name+"RuntimeOnly")
-            rcp = getByName(it.name+"RuntimeClasspath")
-            ccp = getByName(it.name+"CompileClasspath")
+            extLib = create(it.name + "ExternalLibrary")
+            impl = getByName(it.name + "Implementation")
+            compile = getByName(it.name + "CompileOnly")
+            runtime = getByName(it.name + "RuntimeOnly")
+            rcp = getByName(it.name + "RuntimeClasspath")
+            ccp = getByName(it.name + "CompileClasspath")
         }
         impl.extendsFrom(extLib)
         compile.extendsFrom(library)
@@ -218,7 +218,7 @@ dependencies {
     runtimeMod fg.deobf("curse.maven:catalogue-459701:3559402") // better mod menu
 
     // add internal libraries
-    var projects = subprojects.collect {it.path }
+    var projects = subprojects.collect { it.path }
     if (projects.contains(':projects:easyimclib')) {
         include project(path: ':projects:easyimclib', configuration: 'deobfJar')
     } else {
@@ -298,7 +298,7 @@ minecraft {
                 source sourceSets.main as SourceSet
                 source sourceSets.test as SourceSet
             }
-            lazyToken ('minecraft_classpath') {
+            lazyToken('minecraft_classpath') {
                 configurations.testExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
             }
         }
@@ -311,19 +311,19 @@ minecraft {
 
 def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
-        'version': project.version,
-        'mod_id': project.mod_id,
-        'mod_url': project.mod_url,
-        'mod_name': project.mod_name,
-        'mod_author': project.mod_author,
-        'mod_credits': project.mod_credits,
-        'mc_version_range': project.mc_version_range,
-        'jei_version_range': project.jei_version_range,
-        'forge_version_range': project.forge_version_range,
-        'loader_version_range': project.loader_version_range,
-        'curios_version_range': project.curios_version_range,
+        'version'                : project.version,
+        'mod_id'                 : project.mod_id,
+        'mod_url'                : project.mod_url,
+        'mod_name'               : project.mod_name,
+        'mod_author'             : project.mod_author,
+        'mod_credits'            : project.mod_credits,
+        'mc_version_range'       : project.mc_version_range,
+        'jei_version_range'      : project.jei_version_range,
+        'forge_version_range'    : project.forge_version_range,
+        'loader_version_range'   : project.loader_version_range,
+        'curios_version_range'   : project.curios_version_range,
         'patchouli_version_range': project.patchouli_version_range,
-        'issue_tracker_url': "https://github.com/${project.github}/issues"
+        'issue_tracker_url'      : "https://github.com/${project.github}/issues"
 ]
 
 processResources {
@@ -349,7 +349,7 @@ javadoc {
             'implSpec:a:Implementation Requirements:',
             'implNote:a:Implementation Note:'
     ]
-    if(JavaVersion.current().isJava9Compatible()) {
+    if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
 }
@@ -357,7 +357,7 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
-    from configurations.include.collect {it.isDirectory() ? it : zipTree(it) }, {
+    from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
         exclude 'LICENSE'
         exclude '**/META_INF/**'
     }
@@ -393,17 +393,17 @@ tasks.withType(Jar).configureEach {
     from 'LICENSE.md'
     manifest {
         mainAttributes([
-                'Maven-Artifact': "${project.mod_group}:${project.archivesBaseName}:${project.version}",
-                'Specification-Title': archivesBaseName,
-                'Specification-Vendor': "${project.vendor}",
-                'Specification-Version': '1',
-                'Implementation-Title': "${archivesBaseName}${extension}",
+                'Maven-Artifact'        : "${project.mod_group}:${project.archivesBaseName}:${project.version}",
+                'Specification-Title'   : archivesBaseName,
+                'Specification-Vendor'  : "${project.vendor}",
+                'Specification-Version' : '1',
+                'Implementation-Title'  : "${archivesBaseName}${extension}",
                 'Implementation-Version': "${project.mod_version}",
-                'Implementation-Vendor': "${project.vendor}",
-                'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On': "${project.mc_version}-${project.forge_version}",
-                'Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'FMLModType': 'MOD'
+                'Implementation-Vendor' : "${project.vendor}",
+                'Built-On-Java'         : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On'              : "${project.mc_version}-${project.forge_version}",
+                'Timestamp'             : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLModType'            : 'MOD'
         ])
     }
 
@@ -432,13 +432,13 @@ task setupGithubActions() {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
         println "##[set-output name=version;]${project.version}"
-        if(project.hasProperty('curse_project_id')) {
+        if (project.hasProperty('curse_project_id')) {
             println "##[set-output name=project_id;]${project.curse_project_id}"
             println "##[set-output name=curse_versions;]${project.curse_versions}"
-            if(project.hasProperty('curse_title')) {
+            if (project.hasProperty('curse_title')) {
                 println "##[set-output name=curse_title;]${project.curse_title}"
             }
-            if(project.hasProperty('curse_relations')) {
+            if (project.hasProperty('curse_relations')) {
                 println "##[set-output name=curse_relations;]${project.curse_relations}"
             }
         }
@@ -458,7 +458,7 @@ tasks.withType(GenerateModuleMetadata) {
 }
 
 publishing {
-    publications.create(project.archivesBaseName+'ToMaven', MavenPublication) {
+    publications.create(project.archivesBaseName + 'ToMaven', MavenPublication) {
         artifacts = [apiJar, deobfJar]
         groupId = project.group
         artifactId = project.archivesBaseName
@@ -509,7 +509,7 @@ publishing {
             }
             withXml {
                 asNode().dependencies.dependency.each { dep ->
-                    if(dep.version.last().value().last().contains('_mapped_')) {
+                    if (dep.version.last().value().last().contains('_mapped_')) {
                         assert dep.parent().remove(dep)
                     }
                 }
@@ -519,9 +519,9 @@ publishing {
     repositories {
         maven {
             if (
-                (System.getenv("MAVEN_USER") != null) &&
-                (System.getenv("MAVEN_PASSWORD") != null) &&
-                (System.getenv("MAVEN_URL") != null)
+            (System.getenv("MAVEN_USER") != null) &&
+                    (System.getenv("MAVEN_PASSWORD") != null) &&
+                    (System.getenv("MAVEN_URL") != null)
             ) {
                 url System.getenv("MAVEN_URL")
                 credentials {

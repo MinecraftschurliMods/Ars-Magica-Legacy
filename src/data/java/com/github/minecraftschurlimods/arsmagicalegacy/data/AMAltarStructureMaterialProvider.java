@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 
 class AMAltarStructureMaterialProvider extends AltarStructureMaterialProvider {
-    public AMAltarStructureMaterialProvider(DataGenerator generator) {
+    AMAltarStructureMaterialProvider(DataGenerator generator) {
         super(ArsMagicaAPI.MOD_ID, generator);
     }
 

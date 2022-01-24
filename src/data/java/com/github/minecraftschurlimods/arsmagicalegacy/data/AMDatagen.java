@@ -16,7 +16,7 @@ public class AMDatagen {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * @param evt the event object of the {@link GatherDataEvent}
+     * @param evt The event object of the {@link GatherDataEvent}.
      */
     @SubscribeEvent
     static void gatherData(GatherDataEvent evt) {
@@ -42,7 +42,7 @@ public class AMDatagen {
             generator.addProvider(new AMOcculusTabProvider(generator));
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMPrefabSpellProvider(generator));
-            generator.addProvider(new AMObeliskFuelProvider(generator, ArsMagicaAPI.MOD_ID));
+            generator.addProvider(new AMObeliskFuelProvider(generator));
         }
     }
 

@@ -7,59 +7,51 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.function.Supplier;
 
 /**
- * Interface representing a spell data manager
+ * Interface representing a spell data manager.
  */
 public interface ISpellDataManager {
     /**
-     * Get the data for the given spell part.
-     *
-     * @param part the part to get the data for
-     * @return the spell part data for the part or null if it is not available
+     * @param part The spell part to get the data for.
+     * @return The spell part data for the given part, or null if it is not available.
      */
     ISpellPartData getDataForPart(ISpellPart part);
 
     /**
-     * Register a spell ingredient type.
+     * Registers a spell ingredient type.
      *
-     * @param type the resource location to identify this type
-     * @param codec the codec to serialize/deserialize the spell ingredient
-     * @param renderer supplier of the renderer (value gets cached)
-     * @param <T> the type of the spell ingredient
+     * @param type     The id of the spell ingredient type.
+     * @param codec    The codec to serialize/deserialize the spell ingredient.
+     * @param renderer A supplier of the renderer (value gets cached).
+     * @param <T>      The type of the spell ingredient.
      */
     <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer);
 
     /**
-     * Register a spell ingredient type.
+     * Registers a spell ingredient type.
      *
-     * @param type the resource location to identify this type
-     * @param codec the codec to serialize/deserialize the spell ingredient
-     * @param networkCodec the network codec to serialize/deserialize the spell ingredient
-     * @param renderer supplier of the renderer (value gets cached)
-     * @param <T> the type of the spell ingredient
+     * @param type         The id of the spell ingredient type.
+     * @param codec        The codec to serialize/deserialize the spell ingredient.
+     * @param networkCodec The network codec to serialize/deserialize the spell ingredient.
+     * @param renderer     A supplier of the renderer (value gets cached).
+     * @param <T>          The type of the spell ingredient.
      */
     <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Codec<T> networkCodec, Supplier<ISpellIngredientRenderer<T>> renderer);
 
     /**
-     * Get the codec for the spell ingredient type.
-     *
-     * @param type the resource location identifying the spell ingredient type
-     * @return the codec for the spell ingredient
+     * @param type The id of the spell ingredient type.
+     * @return The codec for the spell ingredient type.
      */
     Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type);
 
     /**
-     * Get the network codec for the spell ingredient type.
-     *
-     * @param type the resource location identifying the spell ingredient type
-     * @return the network codec for the spell ingredient
+     * @param type The id of the spell ingredient type.
+     * @return The network codec for the spell ingredient type.
      */
     Codec<ISpellIngredient> getSpellIngredientNetworkCodec(ResourceLocation type);
 
     /**
-     * Get the renderer for the spell ingredient type.
-     *
-     * @param type the resource location identifying the spell ingredient type
-     * @return the renderer for the spell ingredient
+     * @param type The id of the spell ingredient type.
+     * @return The renderer for the spell ingredient type.
      */
     <T extends ISpellIngredient> ISpellIngredientRenderer<T> getSpellIngredientRenderer(ResourceLocation type);
 }

@@ -201,27 +201,27 @@ public final class EventHandler {
         }
         if (event.getObject() instanceof Player) {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"), new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC, SkillHelper.getCapability(), SkillHelper.KnowledgeHolder::empty));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),  new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),     new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"),      new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"),    new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"), new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"), new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"), new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
         }
     }
 
     private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(AMEntities.WATER_GUARDIAN.get(),     WaterGuardian.createAttributes().build());
-        event.put(AMEntities.FIRE_GUARDIAN.get(),      FireGuardian.createAttributes().build());
-        event.put(AMEntities.EARTH_GUARDIAN.get(),     EarthGuardian.createAttributes().build());
-        event.put(AMEntities.AIR_GUARDIAN.get(),       AirGuardian.createAttributes().build());
-        event.put(AMEntities.WINTER_GUARDIAN.get(),    WinterGuardian.createAttributes().build());
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
+        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
+        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
+        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
         event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
-        event.put(AMEntities.NATURE_GUARDIAN.get(),    NatureGuardian.createAttributes().build());
-        event.put(AMEntities.LIFE_GUARDIAN.get(),      LifeGuardian.createAttributes().build());
-        event.put(AMEntities.ARCANE_GUARDIAN.get(),    ArcaneGuardian.createAttributes().build());
-        event.put(AMEntities.ENDER_GUARDIAN.get(),     EnderGuardian.createAttributes().build());
-        event.put(AMEntities.DRYAD.get(),              Dryad.createAttributes().build());
-        event.put(AMEntities.MAGE.get(),               Mage.createAttributes().build());
-        event.put(AMEntities.MANA_CREEPER.get(),       ManaCreeper.createAttributes().build());
+        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
+        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
+        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
+        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
+        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
+        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {

@@ -36,9 +36,7 @@ class AltarProbeInfoProvider implements IProbeInfoProvider {
                 blockPos.forEach(pos -> horizontal.item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)));
             } else {
                 IProbeInfo vertical = iProbeInfo.vertical(iProbeInfo.defaultLayoutStyle().borderColor(0xffddddff).alignment(ElementAlignment.ALIGN_CENTER));
-                blockPos.forEach(pos -> vertical.horizontal(vertical.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(2))
-                                                .item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15))
-                                                .mcText(new TextComponent(pos.toShortString()), iProbeInfo.defaultTextStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(-2).rightPadding(5)));
+                blockPos.forEach(pos -> vertical.horizontal(vertical.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(2)).item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)).mcText(new TextComponent(pos.toShortString()), iProbeInfo.defaultTextStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(-2).rightPadding(5)));
             }
         }
     }

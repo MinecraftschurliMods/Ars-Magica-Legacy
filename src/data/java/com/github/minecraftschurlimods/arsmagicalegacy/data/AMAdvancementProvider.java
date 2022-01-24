@@ -24,10 +24,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 class AMAdvancementProvider extends AdvancementProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final DataGenerator generator;
+    private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
 
     AMAdvancementProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper, AMSkillProvider skillProvider) {
         super(pGenerator, existingFileHelper);
@@ -56,7 +56,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     }
 
     /**
-     * Contains all advancements that are relevant for book locking. Should be hidden.
+     * Contains all advancements that are relevant for book locking.
      */
     private record AMBookAdvancements(AMSkillProvider skillProvider) implements Consumer<Consumer<Advancement>> {
         @Override

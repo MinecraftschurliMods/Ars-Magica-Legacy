@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- *
+ * Interface that represents a spell.
  */
 public interface ISpell {
     String SHAPE_GROUPS_KEY = "shape_groups";
@@ -43,16 +43,12 @@ public interface ISpell {
     boolean isValid();
 
     /**
-     * Returns the first shape of the given shape group.
-     *
      * @param currentShapeGroup The shape group to get the shape for.
      * @return The first shape of the given shape group.
      */
     Optional<ISpellShape> firstShape(byte currentShapeGroup);
 
     /**
-     * Gets the shape group by the given shape group index.
-     *
      * @param shapeGroup The shape group index to get the shape group for.
      * @return The shape group by the given shape group index.
      */
@@ -88,28 +84,25 @@ public interface ISpell {
     SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp);
 
     /**
-     * @return An unmodifiable list that represents a part list with their corresponding modifiers
+     * @return An unmodifiable list that represents a part list with their corresponding modifiers.
      */
-    @UnmodifiableView List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers();
+    @UnmodifiableView
+    List<Pair<? extends ISpellPart, List<ISpellModifier>>> partsWithModifiers();
 
     /**
-     * How much mana the spell costs.
-     *
-     * @param caster The player that casts the spells.
-     * @return The amount of mana the spell costs.
+     * @param caster The player that casts this spell.
+     * @return The amount of mana this spell costs.
      */
     float mana(LivingEntity caster);
 
     /**
-     * How much burnout the spell causes.
-     *
-     * @return The burnout the spell causes.
-     * @param caster
+     * @param caster The player that casts this spell.
+     * @return The burnout this spell causes.
      */
     float burnout(LivingEntity caster);
 
     /**
-     * @return The spell reagents.
+     * @return The reagents of this spell.
      */
     List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster);
 
@@ -125,7 +118,7 @@ public interface ISpell {
     }
 
     /**
-     * @return The list of shape groups in the spell.
+     * @return The list of shape groups in this spell.
      */
     @UnmodifiableView
     @Contract(pure = true)
@@ -147,22 +140,18 @@ public interface ISpell {
     List<ISpellIngredient> recipe();
 
     /**
-     * Get a map of {@link IAffinity} to {@link Double} that represents
-     * the affinity shift of the spell for each affinity.
-     * @return a map of {@link IAffinity} to {@link Double} that represents
-     *         the affinity shift of the spell for each affinity
+     * @return A map from affinity to double, representing the affinity shift of the spell for each affinity.
      */
+    @UnmodifiableView
     Map<IAffinity, Double> affinityShifts();
 
     /**
-     * Get a set of {@link IAffinity} that contains the affinities of the spell.
-     * @return a set of {@link IAffinity} that contains the affinities of the spell
+     * @return A set of affinities containing the affinities of this spell.
      */
     Set<IAffinity> affinities();
 
     /**
-     * Get the {@link IAffinity} that the given spell has the greatest shift in.
-     * @return the {@link IAffinity} that the given spell has the greatest shift in
+     * @return The affinity that the given spell has the greatest shift in.
      */
     IAffinity primaryAffinity();
 }

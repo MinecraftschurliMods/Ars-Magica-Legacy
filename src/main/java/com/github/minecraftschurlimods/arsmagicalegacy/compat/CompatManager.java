@@ -72,21 +72,20 @@ public final class CompatManager {
 
     private static <T> List<Class<? extends T>> getClasses(Class<?> annotationClass, Class<T> instanceClass) {
         Type annotationType = Type.getType(annotationClass);
-        return ModList.get()
-                      .getAllScanData()
-                      .stream()
-                      .map(ModFileScanData::getAnnotations)
-                      .flatMap(Collection::stream)
-                      .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
-                      .map(ModFileScanData.AnnotationData::memberName)
-                      .<Class<? extends T>>map(memberName -> {
-                          try {
-                              return Class.forName(memberName).asSubclass(instanceClass);
-                          } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {
-                              LOGGER.error("Failed to load: {}", memberName, e);
-                          }
-                          return null;
-                      }).toList();
+        return ModList.get().getAllScanData()
+                .stream()
+                .map(ModFileScanData::getAnnotations)
+                .flatMap(Collection::stream)
+                .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
+                .map(ModFileScanData.AnnotationData::memberName)
+                .<Class<? extends T>>map(memberName -> {
+                    try {
+                        return Class.forName(memberName).asSubclass(instanceClass);
+                    } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {
+                        LOGGER.error("Failed to load: {}", memberName, e);
+                    }
+                    return null;
+                }).toList();
     }
 
     private static Supplier<ICompatHandler> supplierFromClass(Class<? extends ICompatHandler> clazz) {

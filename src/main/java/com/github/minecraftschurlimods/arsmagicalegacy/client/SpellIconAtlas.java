@@ -18,23 +18,22 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 public final class SpellIconAtlas extends TextureAtlasHolder {
-    private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
+    public static final ResourceLocation SPELL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");
     private static final String PREFIX = "icon/spell";
+    private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
     private static final String SUFFIX = ".png";
     private static final Predicate<String> RESOURCE_PREDICATE = s -> s.endsWith(SUFFIX);
-    public static final ResourceLocation SPELL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");
-
     private Collection<ResourceLocation> resourceLocations;
+
+    private SpellIconAtlas() {
+        super(Minecraft.getInstance().textureManager, SPELL_ICON_ATLAS, PREFIX);
+    }
 
     /**
      * @return The only instance of this class.
      */
     public static SpellIconAtlas instance() {
         return INSTANCE.get();
-    }
-
-    private SpellIconAtlas() {
-        super(Minecraft.getInstance().textureManager, SPELL_ICON_ATLAS, PREFIX);
     }
 
     /**

@@ -7,51 +7,40 @@ import net.minecraft.world.entity.player.Player;
  */
 public interface IMagicHelper {
     /**
-     * Get the current magic level for the given player.
-     *
-     * @param player the player to get the level for
-     * @return the level of the player
+     * @param player The player to get the magic level for.
+     * @return The magic level of the given player.
      */
     int getLevel(Player player);
 
     /**
-     * Get the current magic xp for the given player.
-     *
-     * @param player the player to get the xp for
-     * @return the xp of the player
+     * @param player The player to get the magic xp for.
+     * @return The magic xp of the given player.
      */
     float getXp(Player player);
 
     /**
-     * Award the given player the supplied amount of xp.
-     * (this method handles leveling automatically)
+     * Awards the given player the given amount of magic xp. Also handles leveling.
      *
-     * @param player the player to award the xp to
-     * @param amount the amount of xp to award
+     * @param player The player to award the xp to.
+     * @param amount The amount of xp to award.
      */
     void awardXp(Player player, float amount);
 
     /**
-     * Check if the given player knows what magic is.
-     *
-     * @param player the player to check
-     * @return true if the entity knows magic, false otherwise
+     * @param player The player to check.
+     * @return True if the player knows magic, false otherwise.
      */
     boolean knowsMagic(Player player);
 
     /**
-     * Check if the player has magic vision.
-     *
-     * @param player the player to check
-     * @return true if the player has magic vision
+     * @param player The player to check.
+     * @return True if the player has magic vision, false otherwise.
      */
     //boolean hasMagicVision(Player player);
 
     /**
-     * Get the level of truesight the player has.
-     *
-     * @param player the player to check
-     * @return the level of truesight
+     * @param player The player to check.
+     * @return The level of true sight the player has.
      */
     //int getTrueSightLevel(Player player);
 }

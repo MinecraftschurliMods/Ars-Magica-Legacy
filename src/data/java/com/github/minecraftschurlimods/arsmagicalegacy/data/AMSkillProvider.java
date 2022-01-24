@@ -22,12 +22,7 @@ class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation TALENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent");
 
     protected AMSkillProvider(DataGenerator generator) {
-        super(generator, ArsMagicaAPI.MOD_ID);
-    }
-
-    @Override
-    public String getName() {
-        return "AMSkillProvider";
+        super(ArsMagicaAPI.MOD_ID, generator);
     }
 
     @Override

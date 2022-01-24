@@ -13,8 +13,8 @@ import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.TriPredicate;
 
 class StairBlockStateMatcher implements IStateMatcher {
-    private final Direction                                       direction;
-    private final Half                                            half;
+    private final Direction direction;
+    private final Half half;
     private final TriPredicate<BlockGetter, BlockPos, BlockState> predicate;
 
     public StairBlockStateMatcher(Direction direction, Half half) {

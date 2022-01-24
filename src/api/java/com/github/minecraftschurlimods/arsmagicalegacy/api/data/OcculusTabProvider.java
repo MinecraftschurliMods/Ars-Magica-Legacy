@@ -21,48 +21,40 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Abstract base for occulus tab data generators
+ * Base class for occulus tab data generators.
  */
 public abstract class OcculusTabProvider implements DataProvider {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final DataGenerator generator;
     private final String namespace;
 
-    /**
-     * Create an occulus tab provider for the given namespace
-     *
-     * @param generator the data generator
-     * @param namespace the namespace to use in data generation
-     */
-    protected OcculusTabProvider(DataGenerator generator, String namespace) {
-        this.generator = generator;
+    protected OcculusTabProvider(String namespace, DataGenerator generator) {
         this.namespace = namespace;
+        this.generator = generator;
     }
+
+    protected abstract void createOcculusTabs(Consumer<OcculusTabBuilder> consumer);
 
     @Internal
     @Override
     public void run(HashCache pCache) {
-        Path path = generator.getOutputFolder();
-        Set<ResourceLocation> set = Sets.newHashSet();
+        Set<ResourceLocation> ids = Sets.newHashSet();
         createOcculusTabs(consumer -> {
-            if (!set.add(consumer.getId()))
+            if (!ids.add(consumer.getId()))
                 throw new IllegalStateException("Duplicate occulus tab " + consumer.getId());
             else {
-                save(pCache, consumer.serialize(), path.resolve("data/" + consumer.getId().getNamespace() + "/occulus_tabs/" + consumer.getId().getPath() + ".json"));
+                save(pCache, consumer.serialize(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/occulus_tabs/" + consumer.getId().getPath() + ".json"));
             }
         });
     }
 
-    /**
-     * Implement to add your own occulus tabs
-     * @param consumer provided by the datagen
-     */
-    protected abstract void createOcculusTabs(Consumer<OcculusTabBuilder> consumer);
+    @Override
+    public String getName() {
+        return "Occulus Tabs";
+    }
 
     /**
-     * Creates a new occulus tab.
-     *
      * @param name  The occulus tab name.
      * @param index The index of the occulus tab.
      * @return A new occulus tab.

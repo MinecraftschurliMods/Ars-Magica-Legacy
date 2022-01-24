@@ -25,9 +25,7 @@ public abstract class SpellEvent extends LivingEvent {
     }
 
     /**
-     * Get the spell of the event.
-     *
-     * @return the spell of the event
+     * @return The spell of the event.
      */
     public ISpell getSpell() {
         return spell;
@@ -44,7 +42,7 @@ public abstract class SpellEvent extends LivingEvent {
     }
 
     /**
-     * Event that fires when mana cost is retrieved. (has Pre and Post sub events)
+     * Event that fires when mana cost is retrieved. Has Pre and Post sub events.
      */
     public static abstract sealed class ManaCost extends SpellEvent {
         public ManaCost(LivingEntity entity, ISpell spell) {
@@ -52,7 +50,7 @@ public abstract class SpellEvent extends LivingEvent {
         }
 
         /**
-         * Event that lets one modify the base cost and the modifier for the mana cost.
+         * Event to modify the base cost and the modifier for the mana cost.
          */
         public static final class Pre extends ManaCost {
             private final float base;
@@ -68,54 +66,46 @@ public abstract class SpellEvent extends LivingEvent {
             }
 
             /**
-             * Get the base mana cost containing all previous modifications.
-             *
-             * @return the base mana cost containing all previous modifications
+             * @return The base mana cost, containing all previous modifications.
              */
             public float getModifiedBase() {
                 return modifiedBase;
             }
 
             /**
-             * Get the unmodified base mana cost.
-             *
-             * @return the unmodified base mana cost
+             * @return The unmodified base mana cost.
              */
             public float getBase() {
                 return base;
             }
 
             /**
-             * Set the base mana cost.
+             * Sets the base mana cost.
              *
-             * @param base the new value for the base mana cost
+             * @param base The new value for the base mana cost.
              */
             public void setBase(float base) {
                 this.modifiedBase = base;
             }
 
             /**
-             * Get the mana cost multiplier containing all previous modifications.
-             *
-             * @return the mana cost multiplier containing all previous modifications
+             * @return The mana cost multiplier, containing all previous modifications.
              */
             public float getModifiedMultiplier() {
                 return modifiedMultiplier;
             }
 
             /**
-             * Get the unmodified mana cost multiplier.
-             *
-             * @return the unmodified mana cost multiplier
+             * @return The unmodified mana cost multiplier.
              */
             public float getMultiplier() {
                 return multiplier;
             }
 
             /**
-             * Set the mana cost multiplier.
+             * Sets the mana cost multiplier.
              *
-             * @param multiplier the new value for the mana cost multiplier
+             * @param multiplier The new value for the mana cost multiplier.
              */
             public void setMultiplier(float multiplier) {
                 this.modifiedMultiplier = multiplier;
@@ -123,7 +113,7 @@ public abstract class SpellEvent extends LivingEvent {
         }
 
         /**
-         * Event that lets one modify the calculated mana cost.
+         * Event to modify the calculated mana cost.
          */
         public static final class Post extends ManaCost {
             private final float mana;
@@ -136,27 +126,23 @@ public abstract class SpellEvent extends LivingEvent {
             }
 
             /**
-             * Get the calculated mana cost containing all previous modifications.
-             *
-             * @return the calculated mana cost containing all previous modifications
+             * @return The calculated mana cost, containing all previous modifications.
              */
             public float getModifiedMana() {
                 return modifiedMana;
             }
 
             /**
-             * Get the unmodified calculated mana cost.
-             *
-             * @return the unmodified calculated mana cost
+             * @return The unmodified calculated mana cost.
              */
             public float getMana() {
                 return mana;
             }
 
             /**
-             * Set the calculated mana cost.
+             * Sets the calculated mana cost.
              *
-             * @param mana the new value for the calculated mana cost
+             * @param mana The new value for the calculated mana cost.
              */
             public void setMana(float mana) {
                 this.modifiedMana = mana;
@@ -165,7 +151,7 @@ public abstract class SpellEvent extends LivingEvent {
     }
 
     /**
-     * Event that lets one modify the burnout cost of the spell.
+     * Event to modify the burnout cost of the spell.
      */
     public static final class BurnoutCost extends SpellEvent {
         private final float burnout;
@@ -178,27 +164,23 @@ public abstract class SpellEvent extends LivingEvent {
         }
 
         /**
-         * Get the burnout cost containing all previous modifications.
-         *
-         * @return the burnout cost containing all previous modifications
+         * @return The burnout cost, containing all previous modifications.
          */
         public float getModifiedBurnout() {
             return modifiedBurnout;
         }
 
         /**
-         * Get the unmodified burnout cost.
-         *
-         * @return the unmodified burnout cost
+         * @return The unmodified burnout cost.
          */
         public float getBurnout() {
             return burnout;
         }
 
         /**
-         * Set the burnout cost.
+         * Sets the burnout cost.
          *
-         * @param burnout the new value for the burnout cost
+         * @param burnout The new value for the burnout cost.
          */
         public void setBurnout(float burnout) {
             this.modifiedBurnout = burnout;
@@ -206,12 +188,9 @@ public abstract class SpellEvent extends LivingEvent {
     }
 
     /**
-     * Event that lets one modify the reagents required by the spell.
+     * Event to modify the reagents required by the spell.
      */
     public static final class ReagentCost extends SpellEvent {
-        /**
-         * The reagents for the spell. (can be modified)
-         */
         public List<Either<Ingredient, ItemStack>> reagents;
 
         public ReagentCost(LivingEntity entity, ISpell spell, List<Either<Ingredient, ItemStack>> reagents) {

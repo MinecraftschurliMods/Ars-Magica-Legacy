@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 
 /**
- * Interface representing a tab inside the occulus
+ * Interface representing a tab inside the occulus.
  */
 public interface IOcculusTab extends ITranslatable {
     String OCCULUS_TAB = "occulus_tab";
@@ -18,66 +18,49 @@ public interface IOcculusTab extends ITranslatable {
     int TEXTURE_HEIGHT = 1024;
 
     /**
-     * Get the {@link ResourceLocation} of the background texture for this skill tree
-     *
-     * @return the {@link ResourceLocation} of the background texture for this skill tree
+     * @return The location of the background texture for this skill tree.
      */
     ResourceLocation getBackground();
 
     /**
-     * Get the {@link ResourceLocation} of the icon texture for this skill tree
-     *
-     * @return the {@link ResourceLocation} of the icon texture for this skill tree
+     * @return The location of the icon texture for this skill tree.
      */
     ResourceLocation getIcon();
 
     /**
-     * Get the index this skill tree should appear at in the occulus
-     *
-     * @return the index this skill tree should appear at in the occulus
+     * @return The index this tab should appear at in the occulus.
      */
     int getOcculusIndex();
 
     /**
-     * Get the width of the background texture of this occulus tab.
-     *
-     * @return the width of the background texture
+     * @return The width of the background texture.
      */
     int getWidth();
 
     /**
-     * Get the height of the background texture of this occulus tab.
-     *
-     * @return the height of the background texture
+     * @return The height of the background texture.
      */
     int getHeight();
 
     /**
-     * Get the initial x coord of the background texture.
-     *
-     * @return the height of the background texture
+     * @return The initial X coordinate of the background texture.
      */
     int getStartX();
 
     /**
-     * Get the initial y coord of the background texture.
-     *
-     * @return the height of the background texture
+     * @return The initial Y coordinate of the background texture.
      */
     int getStartY();
 
     /**
-     * Get the path of the renderer class.
-     *
-     * @return the path of the renderer class
+     * @return The path of the renderer class.
      */
     String getRenderer();
 
     /**
-     * Get the lazy renderer factory.
-     * <p>WARNING! only call on client</p>
+     * Only call this on the client.
      *
-     * @return the lazy renderer factory
+     * @return The lazy renderer factory.
      */
     Supplier<OcculusTabRendererFactory> getRendererFactory();
 
@@ -86,7 +69,16 @@ public interface IOcculusTab extends ITranslatable {
         return OCCULUS_TAB;
     }
 
+    /**
+     * Factory interface to create occulus tab renderers.
+     */
     interface OcculusTabRendererFactory {
+        /**
+         * Helper method to create occulus tab renderers.
+         *
+         * @param clazz The renderer class to use.
+         * @return A new occulus tab renderer.
+         */
         static Supplier<OcculusTabRendererFactory> of(String clazz) {
             return () -> {
                 try {
@@ -104,6 +96,13 @@ public interface IOcculusTab extends ITranslatable {
             };
         }
 
+        /**
+         * Creates a new occulus tab renderer. Functional method of this interface.
+         *
+         * @param tab    The occulus tab to create the renderer for.
+         * @param parent The parent screen to create the renderer for.
+         * @return A new occulus tab renderer.
+         */
         OcculusTabRenderer create(IOcculusTab tab, Screen parent);
     }
 }

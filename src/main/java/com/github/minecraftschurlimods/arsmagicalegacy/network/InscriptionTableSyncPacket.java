@@ -21,6 +21,6 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, String name, Spell s
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity)context.getSender().getLevel().getBlockEntity(blockPos)).onSync(name, spell));
+        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(blockPos)).onSync(name, spell));
     }
 }
