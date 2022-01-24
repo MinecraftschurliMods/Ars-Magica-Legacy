@@ -11,11 +11,11 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 @NonExtendable
 public interface AMAttributes {
-    RegistryObject<Attribute> MAX_MANA = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
-    RegistryObject<Attribute> MAX_BURNOUT = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
-    RegistryObject<Attribute> MANA_REGEN = registerRanged("mana_regen", 0.1, 0d, Short.MAX_VALUE, false);
+    RegistryObject<Attribute> MAX_MANA      = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
+    RegistryObject<Attribute> MAX_BURNOUT   = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
+    RegistryObject<Attribute> MANA_REGEN    = registerRanged("mana_regen", 0.1, 0d, Short.MAX_VALUE, false);
     RegistryObject<Attribute> BURNOUT_REGEN = registerRanged("burnout_regen", 0.2, 0d, Short.MAX_VALUE, false);
-    RegistryObject<Attribute> MAGIC_VISION = registerBool("magic_vision", false, true);
+    RegistryObject<Attribute> MAGIC_VISION  = registerBool("magic_vision", false, true);
 
     private static RegistryObject<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
@@ -25,13 +25,6 @@ public interface AMAttributes {
     private static RegistryObject<Attribute> registerBool(String id, boolean defaultValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
         return AMRegistries.ATTRIBUTES.register(id, () -> new BooleanAttribute(key, defaultValue).setSyncable(syncable));
-    }
-
-    /**
-     * Empty method that is required for classloading
-     */
-    @Internal
-    static void register() {
     }
 
     class BooleanAttribute extends RangedAttribute {
@@ -44,4 +37,10 @@ public interface AMAttributes {
             return ((int) value) > 0 ? 1 : 0;
         }
     }
+
+    /**
+     * Empty method that is required for classloading
+     */
+    @Internal
+    static void register() {}
 }

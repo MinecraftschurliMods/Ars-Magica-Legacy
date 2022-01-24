@@ -15,10 +15,10 @@ import java.util.Map;
 @NonExtendable
 public interface AMStats {
     Map<ResourceLocation, StatFormatter> STAT_REGISTER = new HashMap<>();
-    ResourceLocation INTERACT_WITH_OBELISK = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_obelisk"), StatFormatter.DEFAULT);
-    ResourceLocation INTERACT_WITH_OCCULUS = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_occulus"), StatFormatter.DEFAULT);
+    ResourceLocation INTERACT_WITH_OBELISK           = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_obelisk"),           StatFormatter.DEFAULT);
+    ResourceLocation INTERACT_WITH_OCCULUS           = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_occulus"),           StatFormatter.DEFAULT);
     ResourceLocation INTERACT_WITH_INSCRIPTION_TABLE = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_inscription_table"), StatFormatter.DEFAULT);
-    ResourceLocation SPELL_CAST = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_cast"), StatFormatter.DEFAULT);
+    ResourceLocation SPELL_CAST                      = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_cast"),                      StatFormatter.DEFAULT);
 
     private static ResourceLocation register(ResourceLocation location, StatFormatter formatter) {
         STAT_REGISTER.put(location, formatter);
@@ -36,6 +36,5 @@ public interface AMStats {
      * Empty method that is required for classloading
      */
     @Internal
-    static void register() {
-    }
+    static void register() {}
 }
