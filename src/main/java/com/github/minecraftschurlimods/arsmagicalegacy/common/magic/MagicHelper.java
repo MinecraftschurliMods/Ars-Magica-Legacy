@@ -146,7 +146,7 @@ public final class MagicHelper implements IMagicHelper {
         private int level;
 
         public float getXp() {
-            return this.xp;
+            return xp;
         }
 
         public void setXp(float xp) {
@@ -154,7 +154,7 @@ public final class MagicHelper implements IMagicHelper {
         }
 
         public int getLevel() {
-            return this.level;
+            return level;
         }
 
         public void setLevel(int level) {
@@ -162,8 +162,8 @@ public final class MagicHelper implements IMagicHelper {
         }
 
         public void onSync(MagicHolder data) {
-            this.xp = data.xp;
-            this.level = data.level;
+            xp = data.xp;
+            level = data.level;
         }
     }
 }

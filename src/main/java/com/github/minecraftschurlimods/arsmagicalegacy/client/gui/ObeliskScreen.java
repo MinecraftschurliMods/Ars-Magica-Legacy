@@ -20,9 +20,9 @@ public class ObeliskScreen extends AbstractContainerScreen<ObeliskMenu> {
     protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderTexture(0, LOCATION);
         blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        if (this.menu.isLit()) {
-            int k = this.menu.getLitProgress();
-            this.blit(poseStack, leftPos + 80, topPos + 31 + 12 - k, 176, 12 - k, 14, k + 1);
+        if (menu.isLit()) {
+            int k = menu.getLitProgress();
+            blit(poseStack, leftPos + 80, topPos + 31 + 12 - k, 176, 12 - k, 14, k + 1);
         }
     }
 }

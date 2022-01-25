@@ -31,7 +31,7 @@ public class BasicDropZone implements DropArea {
         this.elementHeight = elementHeight;
         this.elementPadding = elementPadding;
         this.size = size;
-        this.items = new ArrayList<>(this.size);
+        items = new ArrayList<>(size);
         if (prev != null) {
             for (Draggable element : prev.items) {
                 add(element);
@@ -45,17 +45,17 @@ public class BasicDropZone implements DropArea {
 
     @Override
     public List<Draggable> items() {
-        return this.items;
+        return items;
     }
 
     @Override
     public boolean add(Draggable d) {
-        if (this.validator != null && !this.validator.validate(this.items, d)) return false;
-        if (this.items.size() + 1 > this.size) return false;
-        boolean add = this.items.add(d);
+        if (validator != null && !validator.validate(items, d)) return false;
+        if (items.size() + 1 > size) return false;
+        boolean add = items.add(d);
         setPositionAndSize(d);
-        if (this.dropListener != null) {
-            this.dropListener.accept(d);
+        if (dropListener != null) {
+            dropListener.accept(d);
         }
         return add;
     }
@@ -63,10 +63,10 @@ public class BasicDropZone implements DropArea {
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         DropArea.super.render(poseStack, mouseX, mouseY, partialTicks);
-//        DropArea.vLine(poseStack, this.x, this.y, this.y + this.height, 0xffff0000);
-//        DropArea.vLine(poseStack, this.x + this.width, this.y, this.y + this.height, 0xffff0000);
-//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y, 0xffff0000);
-//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y + this.height, 0xffff0000);
+//        DropArea.vLine(poseStack, x, y, y + height, 0xffff0000);
+//        DropArea.vLine(poseStack, x + width, y, y + height, 0xffff0000);
+//        DropArea.hLine(poseStack, x, x + width, y, 0xffff0000);
+//        DropArea.hLine(poseStack, x, x + width, y + height, 0xffff0000);
     }
 
     @Override
@@ -96,15 +96,15 @@ public class BasicDropZone implements DropArea {
     }
 
     public void clear() {
-        if (this.items == null) return;
-        new ArrayList<>(this.items()).forEach(this::remove);
+        if (items == null) return;
+        new ArrayList<>(items).forEach(this::remove);
     }
 
     private void setPositionAndSize(Draggable d) {
-        int i = this.items.indexOf(d);
+        int i = items.indexOf(d);
         int j = 0;
-        int rows = (this.height - this.elementPadding) / (this.elementHeight + this.elementPadding);
-        int cols = (this.width - this.elementPadding) / (this.elementWidth + this.elementPadding);
+        int rows = (height - elementPadding) / (elementHeight + elementPadding);
+        int cols = (width - elementPadding) / (elementWidth + elementPadding);
         while (i > cols) {
             i -= cols;
             j++;
@@ -112,17 +112,17 @@ public class BasicDropZone implements DropArea {
         if (j > rows) {
             throw new RuntimeException("Encountered an issue with drag & drop!");
         }
-        d.x = this.x + (i * (this.elementWidth + this.elementPadding)) + this.elementPadding;
-        d.y = this.y + (j * (this.elementHeight + this.elementPadding)) + this.elementPadding;
-        d.width = this.elementWidth;
-        d.height = this.elementHeight;
+        d.x = x + (i * (elementWidth + elementPadding)) + elementPadding;
+        d.y = y + (j * (elementHeight + elementPadding)) + elementPadding;
+        d.width = elementWidth;
+        d.height = elementHeight;
     }
 
     @Override
     public void remove(Draggable d) {
-        this.items.remove(d);
-        if (this.dragListener != null) {
-            this.dragListener.accept(d);
+        items.remove(d);
+        if (dragListener != null) {
+            dragListener.accept(d);
         }
     }
 

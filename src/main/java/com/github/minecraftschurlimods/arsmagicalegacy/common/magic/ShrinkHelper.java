@@ -125,7 +125,7 @@ public final class ShrinkHelper implements IShrinkHelper {
         }
 
         public void onSync(ShrinkHolder data) {
-            this.shrunk = data.shrunk;
+            shrunk = data.shrunk;
         }
     }
 }

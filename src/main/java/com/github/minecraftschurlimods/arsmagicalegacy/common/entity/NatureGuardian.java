@@ -12,23 +12,16 @@ import net.minecraft.world.level.Level;
 
 public class NatureGuardian extends AbstractBoss {
     private float tendrilRotation;
-    private boolean hasSickle;
-    private float last_rotation_x_main;
-    private float last_rotation_x_shield;
-    private float last_rotation_y_main;
-    private float last_rotation_y_shield;
-    private float last_rotation_z_main;
-    private float last_rotation_z_shield;
+    private boolean hasSickle = true;
+    private float last_rotation_x_main = 0;
+    private float last_rotation_x_shield = 0;
+    private float last_rotation_y_main = 0;
+    private float last_rotation_y_shield = 0;
+    private float last_rotation_z_main = 0;
+    private float last_rotation_z_shield = 0;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.hasSickle = true;
-        this.last_rotation_x_main = 0;
-        this.last_rotation_x_shield = 0;
-        this.last_rotation_y_main = 0;
-        this.last_rotation_y_shield = 0;
-        this.last_rotation_z_main = 0;
-        this.last_rotation_z_shield = 0;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -10,14 +10,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class WinterGuardian extends AbstractBoss {
-    private boolean hasRightArm;
-    private boolean hasLeftArm;
+    private boolean hasRightArm = true;
+    private boolean hasLeftArm = true;
     private float orbitRotation;
 
     public WinterGuardian(EntityType<? extends WinterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.hasRightArm = true;
-        this.hasLeftArm = true;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -60,10 +58,10 @@ public class WinterGuardian extends AbstractBoss {
     }
 
     public void returnOneArm() {
-        if (!this.hasLeftArm) {
-            this.hasLeftArm = true;
-        } else if (!this.hasRightArm) {
-            this.hasRightArm = true;
+        if (!hasLeftArm) {
+            hasLeftArm = true;
+        } else if (!hasRightArm) {
+            hasRightArm = true;
         }
     }
 
@@ -73,18 +71,18 @@ public class WinterGuardian extends AbstractBoss {
     }
 
     public void launchOneArm() {
-        if (this.hasLeftArm) {
-            this.hasLeftArm = false;
-        } else if (this.hasRightArm) {
-            this.hasRightArm = false;
+        if (hasLeftArm) {
+            hasLeftArm = false;
+        } else if (hasRightArm) {
+            hasRightArm = false;
         }
     }
 
     public boolean hasLeftArm() {
-        return this.hasLeftArm;
+        return hasLeftArm;
     }
 
     public boolean hasRightArm() {
-        return this.hasRightArm;
+        return hasRightArm;
     }
 }

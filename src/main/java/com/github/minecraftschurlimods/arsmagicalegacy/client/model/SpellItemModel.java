@@ -57,7 +57,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
         Player player = Minecraft.getInstance().player;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || this.icon.isEmpty()) {
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || icon.isEmpty()) {
             return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
@@ -80,7 +80,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     private boolean isHand() {
-        return this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        if (this.cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
+        if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
             ResourceLocation key = icon.get();
             try {
                 return CACHE.get(key, () -> {
@@ -105,7 +105,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public boolean isLayered() {
-        return this.cameraTransformType == ItemTransforms.TransformType.GUI;
+        return cameraTransformType == ItemTransforms.TransformType.GUI;
     }
 
     @Override

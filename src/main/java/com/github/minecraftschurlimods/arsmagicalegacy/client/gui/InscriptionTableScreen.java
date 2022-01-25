@@ -115,7 +115,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                     .map(spellPartRegistry::getValue)
                     .toList(), value);
         };
-        nameBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 93 + this.topPos, 141, 12, 64, this.nameBar, this.font, NAME_LABEL));
+        nameBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 93 + topPos, 141, 12, 64, nameBar, font, NAME_LABEL));
         menu.getSpellName().ifPresent(name -> {
             nameBar.setValue(name);
             nameBar.setTextColor(0xffffff);
@@ -124,9 +124,9 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             nameBar.setValue(DEFAULT_NAME.getString());
             nameBar.setTextColor(0xffffff);
         }
-        searchBar = addRenderableWidget(new SelfClearingEditBox(39 + this.leftPos, 59 + this.topPos, 141, 12, 64, this.searchBar, this.font, SEARCH_LABEL));
-        dragPane = new DragPane(this.leftPos, this.topPos, this.width, this.height);
-        FilteredFilledDropArea<ResourceLocation> sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + this.leftPos, 5 + this.topPos, 138, 48, ICON_SIZE, ICON_SIZE, knowsFilter.and(searchFilter).and(hasValidPlace), spellPartRegistry.getValues()
+        searchBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 59 + topPos, 141, 12, 64, searchBar, font, SEARCH_LABEL));
+        dragPane = new DragPane(leftPos, topPos, width, height);
+        FilteredFilledDropArea<ResourceLocation> sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + leftPos, 5 + topPos, 138, 48, ICON_SIZE, ICON_SIZE, knowsFilter.and(searchFilter).and(hasValidPlace), spellPartRegistry.getValues()
                 .stream()
                 .sorted(Comparator.comparing(ISpellPart::getType).thenComparing(IForgeRegistryEntry::getRegistryName))
                 .map(IForgeRegistryEntry::getRegistryName)
@@ -263,22 +263,22 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        return this.dragPane.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return dragPane.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == InputConstants.KEY_ESCAPE && this.shouldCloseOnEsc()) {
-            this.onClose();
+        if (keyCode == InputConstants.KEY_ESCAPE && shouldCloseOnEsc()) {
+            onClose();
             return true;
         } else if (keyCode == InputConstants.KEY_TAB) {
             boolean flag = !hasShiftDown();
-            if (!this.changeFocus(flag)) {
-                this.changeFocus(flag);
+            if (!changeFocus(flag)) {
+                changeFocus(flag);
             }
             return false;
         } else {
-            return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
+            return getFocused() != null && getFocused().keyPressed(keyCode, scanCode, modifiers);
         }
     }
 

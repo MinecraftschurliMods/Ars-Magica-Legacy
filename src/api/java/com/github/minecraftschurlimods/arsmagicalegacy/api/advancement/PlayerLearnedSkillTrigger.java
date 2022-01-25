@@ -34,7 +34,7 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
      * @param skill   The skill learned.
      */
     public void trigger(ServerPlayer pPlayer, ResourceLocation skill) {
-        this.trigger(pPlayer, (p_70648_) -> p_70648_.matches(skill));
+        this.trigger(pPlayer, t -> t.matches(skill));
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
@@ -48,8 +48,8 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
         @Override
         public JsonObject serializeToJson(SerializationContext pConditions) {
             JsonObject jsonObject = super.serializeToJson(pConditions);
-            if (this.skill != null) {
-                jsonObject.addProperty("skill", this.skill.toString());
+            if (skill != null) {
+                jsonObject.addProperty("skill", skill.toString());
             }
             return jsonObject;
         }

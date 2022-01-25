@@ -77,26 +77,26 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
     }
 
     public <T extends DropArea> T addDropArea(T dropArea) {
-        this.dropAreas.add(dropArea);
+        dropAreas.add(dropArea);
         dropArea.setDragHandler(this);
         return dropArea;
     }
 
     @Override
     public Draggable getDragged() {
-        return this.dragged;
+        return dragged;
     }
 
     @Override
     public void setDragged(@Nullable Draggable draggable, @Nullable DropArea source) {
-        this.dragged = draggable;
-        this.dragSource = source;
+        dragged = draggable;
+        dragSource = source;
     }
 
     @Override
     public void returnToSource() {
-        this.dragSource.add(this.dragged);
-        this.dragged.setVisible(false);
-        this.dragged = null;
+        dragSource.add(dragged);
+        dragged.setVisible(false);
+        dragged = null;
     }
 }

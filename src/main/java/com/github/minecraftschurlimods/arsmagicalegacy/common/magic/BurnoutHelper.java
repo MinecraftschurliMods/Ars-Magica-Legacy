@@ -158,15 +158,15 @@ public final class BurnoutHelper implements IBurnoutHelper {
         private float burnout;
 
         public float getBurnout() {
-            return this.burnout;
+            return burnout;
         }
 
         public void setBurnout(float amount) {
-            this.burnout = amount;
+            burnout = amount;
         }
 
         public void onSync(BurnoutHolder data) {
-            this.burnout = data.burnout;
+            burnout = data.burnout;
         }
     }
 }

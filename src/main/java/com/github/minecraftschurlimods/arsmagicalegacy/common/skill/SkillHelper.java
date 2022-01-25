@@ -264,7 +264,7 @@ public final class SkillHelper implements ISkillHelper {
 
         @Override
         public void handle(NetworkEvent.Context context) {
-            SkillHelper.handleSync(this.data, context);
+            SkillHelper.handleSync(data, context);
         }
 
         @Override
@@ -340,10 +340,10 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         public void onSync(KnowledgeHolder knowledgeHolder) {
-            this.skills.clear();
-            this.skills.addAll(knowledgeHolder.skills());
-            this.skillPoints.clear();
-            this.skillPoints.putAll(knowledgeHolder.skillPoints());
+            skills.clear();
+            skills.addAll(knowledgeHolder.skills());
+            skillPoints.clear();
+            skillPoints.putAll(knowledgeHolder.skillPoints());
         }
 
         public boolean knows(ResourceLocation skill) {

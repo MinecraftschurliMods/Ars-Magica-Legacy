@@ -10,14 +10,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class FireGuardian extends AbstractBoss {
-    private boolean isUnderground;
+    private boolean isUnderground = false;
     private int hitCount = 0;
 
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.isUnderground = false;
-        this.hitCount = 0;
-        this.fireImmune();
+        fireImmune();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -67,14 +65,14 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public boolean getIsUnderground() {
-        return this.isUnderground;
+        return isUnderground;
     }
 
     public boolean isBurning() {
-        return !this.isUnderground;
+        return !isUnderground;
     }
 
     public int getHitCount() {
-        return this.hitCount;
+        return hitCount;
     }
 }

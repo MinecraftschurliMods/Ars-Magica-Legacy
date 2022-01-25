@@ -13,7 +13,7 @@ class MainBlockStateMatcher implements IStateMatcher {
     private final TriPredicate<BlockGetter, BlockPos, BlockState> predicate;
 
     MainBlockStateMatcher() {
-        this.predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getStructureMaterial(state.getBlock()).map(AltarStructureMaterial::block).filter(state::is).isPresent();
+        predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getStructureMaterial(state.getBlock()).map(AltarStructureMaterial::block).filter(state::is).isPresent();
     }
 
     @Override
@@ -25,6 +25,6 @@ class MainBlockStateMatcher implements IStateMatcher {
 
     @Override
     public TriPredicate<BlockGetter, BlockPos, BlockState> getStatePredicate() {
-        return this.predicate;
+        return predicate;
     }
 }

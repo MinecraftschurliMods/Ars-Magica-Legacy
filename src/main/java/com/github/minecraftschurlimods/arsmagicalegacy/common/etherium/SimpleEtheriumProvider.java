@@ -14,8 +14,8 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
 
     public SimpleEtheriumProvider(EtheriumType type, int maxValue) {
         this.type = type;
-        this.etheriumValue = 0;
         this.maxValue = maxValue;
+        etheriumValue = 0;
     }
 
     @Override
@@ -32,8 +32,8 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
     public int consume(Level level, BlockPos consumerPos, int amount) {
         int min = Math.min(etheriumValue, amount);
         etheriumValue -= min;
-        if (this.callback != null) {
-            this.callback.onConsume(level, consumerPos, amount);
+        if (callback != null) {
+            callback.onConsume(level, consumerPos, amount);
         }
         return min;
     }
@@ -44,7 +44,7 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
     }
 
     public void set(int value) {
-        this.etheriumValue = Mth.clamp(value, 0, maxValue);
+        etheriumValue = Mth.clamp(value, 0, maxValue);
     }
 
     public void add(int value) {

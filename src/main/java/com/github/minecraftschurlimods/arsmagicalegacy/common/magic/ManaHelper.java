@@ -169,15 +169,15 @@ public final class ManaHelper implements IManaHelper {
         private float mana;
 
         public float getMana() {
-            return this.mana;
+            return mana;
         }
 
         public void setMana(float amount) {
-            this.mana = amount;
+            mana = amount;
         }
 
         public void onSync(ManaHolder data) {
-            this.mana = data.mana;
+            mana = data.mana;
         }
     }
 }

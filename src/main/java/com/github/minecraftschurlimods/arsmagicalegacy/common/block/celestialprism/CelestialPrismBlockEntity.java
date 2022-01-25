@@ -46,7 +46,7 @@ public class CelestialPrismBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt("etheriumValue", this.provider.getAmount());
+        tag.putInt("etheriumValue", provider.getAmount());
     }
 
     @Override

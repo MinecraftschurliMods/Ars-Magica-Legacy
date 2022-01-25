@@ -58,7 +58,7 @@ public final class RiftHelper implements IRiftHelper {
         }
 
         public void onSync(RiftHolder rift) {
-            this.deserializeNBT(rift.serializeNBT());
+            deserializeNBT(rift.serializeNBT());
         }
     }
 }

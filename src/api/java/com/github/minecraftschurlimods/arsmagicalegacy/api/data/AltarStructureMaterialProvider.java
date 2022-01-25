@@ -63,7 +63,7 @@ public abstract class AltarStructureMaterialProvider implements DataProvider {
      * @param power The power of the new cap material.
      */
     protected void addCapMaterial(String name, Block cap, int power) {
-        addCapMaterial(new ResourceLocation(this.namespace, name), cap, power);
+        addCapMaterial(new ResourceLocation(namespace, name), cap, power);
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class AltarStructureMaterialProvider implements DataProvider {
      * @param power The power of the new cap material.
      */
     protected void addStructureMaterial(String name, Block block, StairBlock stair, int power) {
-        addStructureMaterial(new ResourceLocation(this.namespace, name), block, stair, power);
+        addStructureMaterial(new ResourceLocation(namespace, name), block, stair, power);
     }
 
     /**

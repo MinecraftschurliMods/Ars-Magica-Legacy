@@ -33,7 +33,7 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
      * @param level   The new level.
      */
     public void trigger(ServerPlayer pPlayer, int level) {
-        this.trigger(pPlayer, (p_70648_) -> p_70648_.matches(level));
+        trigger(pPlayer, (p_70648_) -> p_70648_.matches(level));
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
@@ -47,7 +47,7 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
         @Override
         public JsonObject serializeToJson(SerializationContext pConditions) {
             JsonObject jsonobject = super.serializeToJson(pConditions);
-            jsonobject.add("level", this.level.serializeToJson());
+            jsonobject.add("level", level.serializeToJson());
             return jsonobject;
         }
 

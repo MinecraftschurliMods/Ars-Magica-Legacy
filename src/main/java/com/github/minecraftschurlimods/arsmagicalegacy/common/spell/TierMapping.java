@@ -62,7 +62,7 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     }
 
     public Tier getTierForPower(int tier) {
-        if (this.tiers.size() == 0) {
+        if (tiers.size() == 0) {
             return switch (tier) {
                 case 0 -> Tiers.WOOD;
                 case 1 -> Tiers.STONE;

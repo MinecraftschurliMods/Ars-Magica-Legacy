@@ -119,7 +119,7 @@ public final class CompatManager {
         @Override
         default T get() {
             try {
-                return this.getThrowing();
+                return getThrowing();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

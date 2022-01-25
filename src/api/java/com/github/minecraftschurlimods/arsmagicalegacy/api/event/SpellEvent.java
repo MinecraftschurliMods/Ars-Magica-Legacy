@@ -61,8 +61,8 @@ public abstract class SpellEvent extends LivingEvent {
             public Pre(LivingEntity entity, ISpell spell, float base, float multiplier) {
                 super(entity, spell);
                 this.base = base;
-                this.modifiedBase = base;
                 this.multiplier = multiplier;
+                modifiedBase = base;
             }
 
             /**
@@ -85,7 +85,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param base The new value for the base mana cost.
              */
             public void setBase(float base) {
-                this.modifiedBase = base;
+                modifiedBase = base;
             }
 
             /**
@@ -108,7 +108,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param multiplier The new value for the mana cost multiplier.
              */
             public void setMultiplier(float multiplier) {
-                this.modifiedMultiplier = multiplier;
+                modifiedMultiplier = multiplier;
             }
         }
 
@@ -122,7 +122,7 @@ public abstract class SpellEvent extends LivingEvent {
             public Post(LivingEntity entity, ISpell spell, float mana) {
                 super(entity, spell);
                 this.mana = mana;
-                this.modifiedMana = mana;
+                modifiedMana = mana;
             }
 
             /**
@@ -145,7 +145,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param mana The new value for the calculated mana cost.
              */
             public void setMana(float mana) {
-                this.modifiedMana = mana;
+                modifiedMana = mana;
             }
         }
     }
@@ -160,7 +160,7 @@ public abstract class SpellEvent extends LivingEvent {
         public BurnoutCost(LivingEntity entity, ISpell spell, float burnout) {
             super(entity, spell);
             this.burnout = burnout;
-            this.modifiedBurnout = burnout;
+            modifiedBurnout = burnout;
         }
 
         /**
@@ -183,7 +183,7 @@ public abstract class SpellEvent extends LivingEvent {
          * @param burnout The new value for the burnout cost.
          */
         public void setBurnout(float burnout) {
-            this.modifiedBurnout = burnout;
+            modifiedBurnout = burnout;
         }
     }
 

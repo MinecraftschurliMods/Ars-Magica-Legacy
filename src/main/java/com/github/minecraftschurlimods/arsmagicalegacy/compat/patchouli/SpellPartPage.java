@@ -29,7 +29,7 @@ public class SpellPartPage implements ICustomComponent {
     public void build(int x, int y, int page) {
         this.x = x;
         this.y = y;
-        this._part = ArsMagicaAPI.get().getSpellPartRegistry().getValue(ResourceLocation.tryParse(part));
+        _part = ArsMagicaAPI.get().getSpellPartRegistry().getValue(ResourceLocation.tryParse(part));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SpellPartPage implements ICustomComponent {
 //        else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
-        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(this._part.getRegistryName());
+        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(_part.getRegistryName());
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, sprite.atlas().location());
         RenderSystem.setShaderFogColor(1, 1, 1, 1);

@@ -30,8 +30,8 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
     private final Font font;
 
     public AltarViewBER(BlockEntityRendererProvider.Context pContext) {
-        this.dispatcher = pContext.getBlockEntityRenderDispatcher();
-        this.font = pContext.getFont();
+        dispatcher = pContext.getBlockEntityRenderDispatcher();
+        font = pContext.getFont();
     }
 
     @Override

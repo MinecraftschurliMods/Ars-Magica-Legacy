@@ -70,9 +70,9 @@ public final class Spell implements ISpell {
         this.shapeGroups = shapeGroups;
         this.spellStack = spellStack;
         this.additionalData = additionalData;
-        this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
-        this.empty = Lazy.concurrentOf(() -> (this.shapeGroups().isEmpty() || this.shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
-        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), this.spellStack().parts().stream())
+        continuous = Lazy.concurrentOf(() -> firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
+        empty = Lazy.concurrentOf(() -> (shapeGroups().isEmpty() || shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
+        valid = Lazy.concurrentOf(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
     }

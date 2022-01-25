@@ -250,9 +250,9 @@ public final class AffinityHelper implements IAffinityHelper {
         @Override
         public boolean equals(Object obj) {
             if (obj == this) return true;
-            if (obj == null || obj.getClass() != this.getClass()) return false;
+            if (obj == null || obj.getClass() != getClass()) return false;
             AffinityHolder that = (AffinityHolder) obj;
-            return Objects.equals(this.depths, that.depths) && this.locked == that.locked;
+            return Objects.equals(depths, that.depths) && locked == that.locked;
         }
 
         @Override

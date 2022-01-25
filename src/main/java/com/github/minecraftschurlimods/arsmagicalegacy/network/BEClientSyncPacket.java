@@ -21,8 +21,8 @@ public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPack
 
     @Override
     public void serialize(FriendlyByteBuf buf) {
-        buf.writeBlockPos(this.pos);
-        buf.writeNbt(this.tag);
+        buf.writeBlockPos(pos);
+        buf.writeNbt(tag);
     }
 
     @Override

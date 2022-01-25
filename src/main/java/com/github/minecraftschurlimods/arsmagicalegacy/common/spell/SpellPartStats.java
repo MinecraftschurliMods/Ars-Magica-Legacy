@@ -25,7 +25,7 @@ public enum SpellPartStats implements ISpellPartStat {
     private final ResourceLocation id;
 
     SpellPartStats() {
-        this.id = new ResourceLocation(ArsMagicaAPI.MOD_ID, name().toLowerCase());
+        id = new ResourceLocation(ArsMagicaAPI.MOD_ID, name().toLowerCase());
     }
 
     @Override

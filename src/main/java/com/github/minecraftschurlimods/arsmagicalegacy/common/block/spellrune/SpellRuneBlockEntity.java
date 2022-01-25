@@ -36,14 +36,14 @@ public class SpellRuneBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        if (this.spell instanceof Spell) {
-            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) this.spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        if (spell instanceof Spell) {
+            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
-        if (this.index != null) {
-            pTag.putInt(INDEX_KEY, this.index);
+        if (index != null) {
+            pTag.putInt(INDEX_KEY, index);
         }
-        if (this.awardXp != null) {
-            pTag.putBoolean(AWARD_XP_KEY, this.awardXp);
+        if (awardXp != null) {
+            pTag.putBoolean(AWARD_XP_KEY, awardXp);
         }
         super.save(pTag);
     }
@@ -51,22 +51,22 @@ public class SpellRuneBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         if (pTag.contains(SPELL_KEY)) {
-            this.spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
+            spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
         }
         if (pTag.contains(INDEX_KEY)) {
-            this.index = pTag.getInt(INDEX_KEY);
+            index = pTag.getInt(INDEX_KEY);
         }
         if (pTag.contains(AWARD_XP_KEY)) {
-            this.awardXp = pTag.getBoolean(AWARD_XP_KEY);
+            awardXp = pTag.getBoolean(AWARD_XP_KEY);
         }
         super.load(pTag);
     }
 
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        if (this.spell == null) return;
-        SpellCastResult r1 = helper.invoke(this.spell, this.caster, level, new EntityHitResult(entity), 0, this.index, this.awardXp);
-        SpellCastResult r2 = helper.invoke(this.spell, this.caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, this.index, this.awardXp);
+        if (spell == null) return;
+        SpellCastResult r1 = helper.invoke(spell, caster, level, new EntityHitResult(entity), 0, index, awardXp);
+        SpellCastResult r2 = helper.invoke(spell, caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }

@@ -82,11 +82,11 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return this.table.stillValid(player);
+        return table.stillValid(player);
     }
 
     public Optional<String> getSpellName() {
-        return Optional.ofNullable(this.table).map(InscriptionTableBlockEntity::getSpellName);
+        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
     }
 
     public int allowedShapeGroups() {
@@ -101,7 +101,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     public Optional<Spell> getSpellRecipe() {
-        return Optional.ofNullable(this.table).map(InscriptionTableBlockEntity::getSpellRecipe);
+        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);
     }
 
     private static class InscriptionTableSlot extends Slot {
@@ -141,7 +141,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
                 Spell spell = SpellItem.getSpell(stack);
-                this.table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
+                table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
             }
         }
     }

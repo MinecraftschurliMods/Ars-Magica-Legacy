@@ -62,29 +62,29 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        this.stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
+        stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
         if (pTag.contains(SPELL_RECIPE_KEY)) {
-            this.spellRecipe = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
+            spellRecipe = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
         if (pTag.contains(SPELL_NAME_KEY)) {
-            this.spellName = pTag.getString(SPELL_NAME_KEY);
+            spellName = pTag.getString(SPELL_NAME_KEY);
         }
     }
 
     public void onSync(@Nullable String name, @Nullable Spell spell) {
-        this.spellName = name;
-        this.spellRecipe = spell;
-        this.setChanged();
+        spellName = name;
+        spellRecipe = spell;
+        setChanged();
     }
 
     @Nullable
     public String getSpellName() {
-        return this.spellName;
+        return spellName;
     }
 
     @Nullable
     public Spell getSpellRecipe() {
-        return this.spellRecipe;
+        return spellRecipe;
     }
 
     public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
@@ -98,12 +98,12 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     protected void saveAdditional(CompoundTag pCompound) {
         super.saveAdditional(pCompound);
-        pCompound.put(INVENTORY_KEY, this.stack.save(new CompoundTag()));
-        if (this.spellName != null) {
-            pCompound.putString(SPELL_NAME_KEY, this.spellName);
+        pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
+        if (spellName != null) {
+            pCompound.putString(SPELL_NAME_KEY, spellName);
         }
-        if (this.spellRecipe != null) {
-            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        if (spellRecipe != null) {
+            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 
@@ -149,7 +149,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public boolean isEmpty() {
-        return this.stack.isEmpty();
+        return stack.isEmpty();
     }
 
     @Override
@@ -160,8 +160,8 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public ItemStack removeItem(int pIndex, int pCount) {
         if (pIndex == 0) {
-            ItemStack split = this.stack.split(pCount);
-            if (this.stack.isEmpty()) {
+            ItemStack split = stack.split(pCount);
+            if (stack.isEmpty()) {
                 onRemove();
             }
             return split;
@@ -172,9 +172,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public ItemStack removeItemNoUpdate(int pIndex) {
         if (pIndex == 0) {
-            ItemStack itemstack = this.stack;
-            this.stack = ItemStack.EMPTY;
-            this.onRemove();
+            ItemStack itemstack = stack;
+            stack = ItemStack.EMPTY;
+            onRemove();
             return itemstack;
         }
         return ItemStack.EMPTY;
@@ -187,7 +187,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void setItem(int pIndex, ItemStack pStack) {
-        this.stack = pStack;
+        stack = pStack;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void clearContent() {
-        this.stack = ItemStack.EMPTY;
+        stack = ItemStack.EMPTY;
     }
 
     @Override

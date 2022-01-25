@@ -27,24 +27,24 @@ public class ObeliskMenu extends AbstractContainerMenu {
         addSlot(new ObeliskFuelSlot(container, 79, 47));
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
         for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
+            addSlot(new Slot(inventory, k, 8 + k * 18, 142));
         }
     }
 
     public int getLitProgress() {
-        int i = this.data.get(1);
+        int i = data.get(1);
         if (i == 0) {
             i = 200;
         }
-        return this.data.get(0) * 13 / i;
+        return data.get(0) * 13 / i;
     }
 
     public boolean isLit() {
-        return this.data.get(0) > 0;
+        return data.get(0) > 0;
     }
 
     @Override
@@ -55,19 +55,19 @@ public class ObeliskMenu extends AbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+        Slot slot = slots.get(index);
         if (slot.hasItem()) {
             ItemStack stack = slot.getItem();
             itemstack = stack.copy();
             if (index == 0) {
-                if (!this.moveItemStackTo(stack, 1, 37, true)) return ItemStack.EMPTY;
+                if (!moveItemStackTo(stack, 1, 37, true)) return ItemStack.EMPTY;
                 slot.onQuickCraft(stack, itemstack);
             } else {
-                if (this.getSlot(0).mayPlace(stack)) {
-                    if (!this.moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
+                if (getSlot(0).mayPlace(stack)) {
+                    if (!moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
                 } else if (index < 28) {
-                    if (!this.moveItemStackTo(stack, 28, 37, false)) return ItemStack.EMPTY;
-                } else if (index < 37 && !this.moveItemStackTo(stack, 1, 28, false)) return ItemStack.EMPTY;
+                    if (!moveItemStackTo(stack, 28, 37, false)) return ItemStack.EMPTY;
+                } else if (index < 37 && !moveItemStackTo(stack, 1, 28, false)) return ItemStack.EMPTY;
             }
             if (stack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);

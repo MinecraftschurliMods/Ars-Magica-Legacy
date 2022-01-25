@@ -66,7 +66,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos()).canBeReplaced(pContext)) return null;
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above()).canBeReplaced(pContext)) return null;
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above(2)).canBeReplaced(pContext)) return null;
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+        return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override

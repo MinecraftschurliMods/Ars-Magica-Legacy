@@ -108,7 +108,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     @Override
     public void setItem(int index, ItemStack stack) {
         if (index != 0) throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
-        this.slot = stack;
+        slot = stack;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     public void clearContent() {
-        this.slot = ItemStack.EMPTY;
+        slot = ItemStack.EMPTY;
     }
 
     void tick(Level level, BlockPos pos, BlockState state) {
@@ -159,17 +159,17 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-        return new ObeliskMenu(containerId, inventory, this, this.data);
+        return new ObeliskMenu(containerId, inventory, this, data);
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return this.inventoryHolder.cast();
+            return inventoryHolder.cast();
         }
         if (cap == EtheriumHelper.instance().getEtheriumProviderCapability()) {
-            return this.etheriumProviderHolder.cast();
+            return etheriumProviderHolder.cast();
         }
         return super.getCapability(cap, side);
     }
@@ -178,10 +178,10 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inv", slot.save(new CompoundTag()));
-        tag.putInt("burnTime", this.burnTimeRemaining);
-        tag.putInt("burnTimeMax", this.maxBurnTime);
-        tag.putInt("etheriumValue", this.etheriumProvider.getAmount());
-        tag.putInt("etheriumPerTick", this.etheriumPerTick);
+        tag.putInt("burnTime", burnTimeRemaining);
+        tag.putInt("burnTimeMax", maxBurnTime);
+        tag.putInt("etheriumValue", etheriumProvider.getAmount());
+        tag.putInt("etheriumPerTick", etheriumPerTick);
     }
 
     @Override

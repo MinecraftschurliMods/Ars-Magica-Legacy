@@ -20,22 +20,22 @@ public class AltarViewBlockEntity extends BlockEntity {
     }
 
     void setAltarPos(BlockPos pos) {
-        this.altar = Optional.of(pos);
+        altar = Optional.of(pos);
     }
 
     public Optional<AltarCoreBlockEntity> getAltar() {
-        return this.altar.map(blockPos -> this.level != null && this.level.getBlockEntity(blockPos) instanceof AltarCoreBlockEntity ca ? ca : null);
+        return altar.map(blockPos -> level != null && level.getBlockEntity(blockPos) instanceof AltarCoreBlockEntity ca ? ca : null);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+        return saveWithoutMetadata();
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        this.altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
+        altar.ifPresent(blockPos -> tag.put("altar", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, blockPos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn)));
     }
 
     @Override
