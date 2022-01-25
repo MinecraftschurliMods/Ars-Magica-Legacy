@@ -43,7 +43,7 @@ public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISp
         boolean first = true;
         for (ISpellPart part : parts) {
             if (part instanceof ISpellComponent)
-                throw new MalformedShapeGroupException("Shape groups can not contain components!", parts);
+                throw new MalformedShapeGroupException("Shape groups cannot contain components!", parts);
             if (part instanceof ISpellShape shape) {
                 if (locked) throw new MalformedShapeGroupException("A shape cannot come after an end shape!", parts);
                 if (first && shape.needsPrecedingShape())

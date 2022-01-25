@@ -87,7 +87,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
 
     @Override
     public boolean setBurnout(LivingEntity entity, float amount) {
-        if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
+        if (amount < 0) throw new IllegalArgumentException("Burnout cannot be negative!");
         float max = getMaxBurnout(entity);
         BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(entity);
         magicHolder.setBurnout(Math.min(amount, max));

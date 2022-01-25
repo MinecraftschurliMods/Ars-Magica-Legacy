@@ -559,7 +559,7 @@ class AMRecipeProvider extends RecipeProvider {
             if (key.containsKey(symbol)) {
                 throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
             } else if (symbol == ' ') {
-                throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
+                throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined!");
             } else {
                 key.put(symbol, item);
                 return this;
@@ -587,7 +587,7 @@ class AMRecipeProvider extends RecipeProvider {
         public void save(Consumer<FinishedRecipe> consumer, String save) {
             ResourceLocation saveTo = new ResourceLocation(save);
             if (saveTo.equals(ForgeRegistries.ITEMS.getKey(result.asItem()))) {
-                throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
+                throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument!");
             } else {
                 save(consumer, saveTo);
             }
@@ -608,17 +608,17 @@ class AMRecipeProvider extends RecipeProvider {
                     for (int i = 0; i < s.length(); ++i) {
                         char c0 = s.charAt(i);
                         if (!key.containsKey(c0) && c0 != ' ') {
-                            throw new IllegalStateException("Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'");
+                            throw new IllegalStateException("Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'!");
                         }
                         set.remove(c0);
                     }
                 }
                 if (!set.isEmpty())
-                    throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id);
+                    throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id + "!");
                 else if (rows.size() == 1 && rows.get(0).length() == 1)
                     throw new IllegalStateException("Shaped recipe " + id + " only takes in a single item - should it be a shapeless recipe instead?");
                 else if (advancement.getCriteria().isEmpty())
-                    throw new IllegalStateException("No way of obtaining recipe " + id);
+                    throw new IllegalStateException("No way of obtaining recipe " + id + "!");
             }
         }
 
@@ -740,7 +740,7 @@ class AMRecipeProvider extends RecipeProvider {
         public void save(Consumer<FinishedRecipe> consumer, String save) {
             ResourceLocation saveTo = new ResourceLocation(save);
             if (saveTo.equals(ForgeRegistries.ITEMS.getKey(result.asItem()))) {
-                throw new IllegalStateException("Shapeless Recipe " + save + " should remove its 'save' argument");
+                throw new IllegalStateException("Shapeless Recipe " + save + " should remove its 'save' argument!");
             } else {
                 save(consumer, saveTo);
             }
@@ -754,7 +754,7 @@ class AMRecipeProvider extends RecipeProvider {
 
         private void ensureValid(ResourceLocation id) {
             if (advancement.getCriteria().isEmpty()) {
-                throw new IllegalStateException("No way of obtaining recipe " + id);
+                throw new IllegalStateException("No way of obtaining recipe " + id + "!");
             }
         }
 

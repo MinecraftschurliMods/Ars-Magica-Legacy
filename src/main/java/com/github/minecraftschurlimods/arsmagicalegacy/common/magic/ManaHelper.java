@@ -99,7 +99,7 @@ public final class ManaHelper implements IManaHelper {
 
     @Override
     public void setMana(LivingEntity entity, float amount) {
-        if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
+        if (amount < 0) throw new IllegalArgumentException("Mana cannot be negative!");
         float max = getMaxMana(entity);
         ManaHolder magicHolder = getManaHolder(entity);
         magicHolder.setMana(Math.min(amount, max));

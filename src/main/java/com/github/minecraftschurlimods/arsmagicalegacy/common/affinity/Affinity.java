@@ -91,8 +91,8 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         }
 
         public Affinity build() {
-            if (color == null) throw new IllegalStateException("color is required");
-            if (directOpposite == null) throw new IllegalStateException("directOpposite is required");
+            if (color == null) throw new IllegalStateException("An affinity needs a color!");
+            if (directOpposite == null) throw new IllegalStateException("An affinity needs a direct opposite!");
             return new Affinity(color, minorOpposites, majorOpposites, directOpposite);
         }
     }

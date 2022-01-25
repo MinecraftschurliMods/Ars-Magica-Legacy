@@ -28,7 +28,7 @@ public final class CompatManager {
     private static final Map<String, Lazy<ICompatHandler>> compatHandlers = new HashMap<>();
 
     public static void register(Class<? extends ICompatHandler> clazz) {
-        if (!clazz.isAnnotationPresent(ModCompat.class)) throw new IllegalArgumentException();
+        if (!clazz.isAnnotationPresent(ModCompat.class)) throw new IllegalArgumentException("Tried to register an invalid mod compatibility handler!");
         register(clazz.getAnnotation(ModCompat.class).value(), clazz);
     }
 
