@@ -18,7 +18,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.server.Permissions;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -131,7 +131,7 @@ public final class Spell implements ISpell {
 
     @Override
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
-        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, Permissions.CAN_CAST_SPELL))
+        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
             return SpellCastResult.NO_PERMISSION;
         if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
