@@ -38,13 +38,13 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         table.startOpen(inventory.player);
         this.table = table;
         addSlot(new InscriptionTableSlot(table));
+        for (int i = 0; i < 9; i++) {
+            addSlot(new Slot(inventory, i, 30 + i * 18, 228));
+        }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new Slot(inventory, i * 9 + j + 9, 30 + j * 18, 170 + i * 18));
             }
-        }
-        for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, 30 + i * 18, 228));
         }
     }
 
@@ -54,24 +54,30 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack stack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot.hasItem()) {
-            ItemStack slotstack = slot.getItem();
-            stack = slotstack.copy();
-            if (pIndex > 0) {
-                if (slots.get(0).mayPlace(slotstack)) {
-                    if (!moveItemStackTo(slotstack, 0, 1, false)) return ItemStack.EMPTY;
-                } else if (!moveItemStackTo(slotstack, 1, slots.size(), pIndex < 10)) return ItemStack.EMPTY;
-            } else if (!moveItemStackTo(slotstack, 1, slots.size(), true))
-                return ItemStack.EMPTY;
-            if (slotstack.isEmpty()) {
+            Slot tableSlot = slots.get(0);
+            ItemStack stack = slot.getItem();
+            ItemStack originalStack = stack.copy();
+            if (pIndex == 0) {
+                if (!moveItemStackTo(stack, 1, 37, false)) return ItemStack.EMPTY;
+            } else if (pIndex > 0 && pIndex < 10) {
+                if (tableSlot.getItem() == ItemStack.EMPTY && tableSlot.mayPlace(stack) && !moveItemStackTo(stack, 0, 1, false))
+                    return ItemStack.EMPTY;
+                else if (!moveItemStackTo(stack, 10, slots.size(), false)) return ItemStack.EMPTY;
+            } else if (pIndex > 9 && pIndex < slots.size()) {
+                if (tableSlot.getItem() == ItemStack.EMPTY && tableSlot.mayPlace(stack) && !moveItemStackTo(stack, 0, 1, false))
+                    return ItemStack.EMPTY;
+                else if (!moveItemStackTo(stack, 1, 10, true)) return ItemStack.EMPTY;
+            }
+            if (stack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
+            return originalStack;
         }
-        return stack;
+        return ItemStack.EMPTY;
     }
 
     @Override

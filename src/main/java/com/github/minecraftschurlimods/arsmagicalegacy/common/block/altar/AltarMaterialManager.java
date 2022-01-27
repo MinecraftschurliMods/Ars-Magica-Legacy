@@ -28,8 +28,8 @@ public final class AltarMaterialManager {
         return structure.values().stream().filter(mat -> mat.block() == block || mat.stair() == block).findFirst();
     }
 
-    public Optional<AltarCapMaterial> getCapMaterial(Block cap) {
-        return cap.values().stream().filter(mat -> mat.cap() == cap).findFirst();
+    public Optional<AltarCapMaterial> getCapMaterial(Block block) {
+        return cap.values().stream().filter(mat -> mat.cap() == block).findFirst();
     }
 
     @Nullable
