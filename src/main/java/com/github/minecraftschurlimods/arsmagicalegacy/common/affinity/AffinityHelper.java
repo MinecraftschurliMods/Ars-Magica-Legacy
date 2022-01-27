@@ -73,6 +73,10 @@ public final class AffinityHelper implements IAffinityHelper {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(cap -> cap.onSync(holder)));
     }
 
+    public AffinityHolder getAffinityHolder(Player player) {
+        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
+    }
+
     @Override
     public ItemStack getEssenceForAffinity(ResourceLocation affinity) {
         return getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), affinity);
@@ -116,13 +120,22 @@ public final class AffinityHelper implements IAffinityHelper {
         return getAffinityHolder(player).getAffinityDepth(affinity);
     }
 
-    public AffinityHolder getAffinityHolder(Player player) {
-        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
-    }
-
     @Override
     public double getAffinityDepth(Player player, IAffinity affinity) {
         return getAffinityDepth(player, affinity.getId());
+    }
+
+    @Override
+    public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+        getAffinityHolder(player).subtractFromAffinity(affinity, (float) getAffinityHolder(player).getAffinityDepth(affinity) - amount);
+        if (player instanceof ServerPlayer sp) {
+            syncToPlayer(sp);
+        }
+    }
+
+    @Override
+    public void setAffinityDepth(Player player, IAffinity affinity, float amount) {
+        setAffinityDepth(player, affinity.getId(), amount);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class SkillCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("skill")
+                .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                 .then(Commands.literal("learn")
-                        .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILLS)
@@ -47,7 +47,6 @@ public class SkillCommand {
                         .then(Commands.literal("*")
                                 .executes(SkillCommand::learnAllSelf)))
                 .then(Commands.literal("forget")
-                        .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILLS)
@@ -70,8 +69,7 @@ public class SkillCommand {
                         .then(Commands.literal("unknown")
                                 .executes(SkillCommand::listUnknownSelf))
                         .then(Commands.literal("all")
-                                .executes(SkillCommand::listAll))
-                )
+                                .executes(SkillCommand::listAll)))
         );
     }
 
@@ -205,10 +203,10 @@ public class SkillCommand {
     }
 
     private static ISkill getSkill(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        ResourceLocation skill = ResourceLocationArgument.getId(context, "skill");
-        Optional<ISkill> optional = ArsMagicaAPI.get().getSkillManager().getOptional(skill);
-        if (optional.isEmpty()) throw ERROR_UNKNOWN_SKILL.create(skill);
-        return optional.get();
+        ResourceLocation rl = ResourceLocationArgument.getId(context, "skill");
+        Optional<ISkill> skill = ArsMagicaAPI.get().getSkillManager().getOptional(rl);
+        if (skill.isEmpty()) throw ERROR_UNKNOWN_SKILL.create(rl);
+        return skill.get();
     }
 
     private static Component createListComponent(Stream<ISkill> resourceLocationStream) {

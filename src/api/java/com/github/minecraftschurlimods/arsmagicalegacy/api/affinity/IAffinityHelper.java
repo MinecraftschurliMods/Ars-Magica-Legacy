@@ -70,6 +70,20 @@ public interface IAffinityHelper {
     double getAffinityDepth(Player player, IAffinity affinity);
 
     /**
+     * @param player   The player to set the affinity depth for.
+     * @param affinity The id of the affinity to set the depth for.
+     * @param amount   The amount the affinity should have.
+     */
+    void setAffinityDepth(Player player, ResourceLocation affinity, float amount);
+
+    /**
+     * @param player   The player to set the affinity depth for.
+     * @param affinity The affinity to set the depth for.
+     * @param amount   The amount the affinity should have.
+     */
+    void setAffinityDepth(Player player, IAffinity affinity, float amount);
+
+    /**
      * Applies the affinity shift for the given player and affinity.
      *
      * @param player   The player to shift the affinity for.

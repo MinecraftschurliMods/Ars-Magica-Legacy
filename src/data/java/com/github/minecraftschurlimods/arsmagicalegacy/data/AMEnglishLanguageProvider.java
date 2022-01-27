@@ -291,6 +291,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
+        add(TranslationConstants.COMMAND_AFFINITY_GET_SUCCESS, "Affinity depth of %s for player %s is %f");
+        add(TranslationConstants.COMMAND_AFFINITY_SET_SUCCESS, "Set affinity depth of %s for player %s to %f");
+        add(TranslationConstants.COMMAND_AFFINITY_RESET_SUCCESS, "Reset all affinity depths for player %s");
+        add(TranslationConstants.COMMAND_AFFINITY_UNKNOWN, "Could not find affinity %s");
         add(TranslationConstants.COMMAND_SKILL_ALREADY_KNOWN, "Skill %s has already been learned");
         add(TranslationConstants.COMMAND_SKILL_EMPTY, "");
         add(TranslationConstants.COMMAND_SKILL_FORGET_ALL_SUCCESS, "Forgot all skills");

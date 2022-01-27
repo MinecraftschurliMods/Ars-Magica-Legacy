@@ -18,6 +18,10 @@ public interface TranslationConstants {
     String SPELL_UNKNOWN                    = "item."       + ArsMagicaAPI.MOD_ID + ".spell.unknown";
     String SPELL_UNKNOWN_DESCRIPTION        = "item."       + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
     String SPELL_UNNAMED                    = "item."       + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
+    String COMMAND_AFFINITY_GET_SUCCESS     = "commands."   + ArsMagicaAPI.MOD_ID + ".affinity.get.success";
+    String COMMAND_AFFINITY_SET_SUCCESS     = "commands."   + ArsMagicaAPI.MOD_ID + ".affinity.set.success";
+    String COMMAND_AFFINITY_RESET_SUCCESS   = "commands."   + ArsMagicaAPI.MOD_ID + ".affinity.reset.success";
+    String COMMAND_AFFINITY_UNKNOWN         = "commands."   + ArsMagicaAPI.MOD_ID + ".affinity.unknown";
     String COMMAND_SKILL_ALREADY_KNOWN      = "commands."   + ArsMagicaAPI.MOD_ID + ".skill.already_known";
     String COMMAND_SKILL_EMPTY              = "commands."   + ArsMagicaAPI.MOD_ID + ".skill.empty";
     String COMMAND_SKILL_FORGET_ALL_SUCCESS = "commands."   + ArsMagicaAPI.MOD_ID + ".skill.forget_all.success";
