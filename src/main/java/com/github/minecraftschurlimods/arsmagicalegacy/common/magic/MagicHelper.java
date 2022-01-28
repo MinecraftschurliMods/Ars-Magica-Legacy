@@ -18,7 +18,8 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     private MagicHelper() {
     }
@@ -58,20 +59,47 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     @Override
+    public float getXpForNextLevel(int level) {
+        return level == 0 ? 0 : 2.4f * (float) Math.pow(1.2, level);
+    }
+
+    @Override
     public void awardXp(Player player, float amount) {
+        setXp(player, getXp(player) + amount);
+    }
+
+    @Override
+    public void setXp(Player player, float amount) {
         MagicHolder magicHolder = getMagicHolder(player);
-        float n = magicHolder.getXp() + amount;
-        int l = magicHolder.getLevel();
+        int oldLevel = magicHolder.getLevel();
+        float xp = Math.max(0, amount);
+        int level = 1;
         while (true) {
-            float xpForNextLevel = getXpForNextLevel(l);
-            if (n < xpForNextLevel) break;
-            n -= xpForNextLevel;
-            l++;
-            MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, l));
+            float xpForNextLevel = getXpForNextLevel(level);
+            if (xp < xpForNextLevel) break;
+            xp -= xpForNextLevel;
+            level++;
+            if (level > oldLevel) {
+                MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            }
         }
-        magicHolder.setXp(n);
-        magicHolder.setLevel(l);
+        magicHolder.setXp(xp);
+        magicHolder.setLevel(level);
         syncMagic(player);
+    }
+
+    @Override
+    public void awardLevel(Player player, int level) {
+        setLevel(player, getLevel(player) + level);
+    }
+
+    @Override
+    public void setLevel(Player player, int level) {
+        float xp = 0;
+        for (int i = 1; i <= level; i++) {
+            xp += getXpForNextLevel(i);
+        }
+        setXp(player, xp);
     }
 
     @Override
@@ -108,11 +136,6 @@ public final class MagicHelper implements IMagicHelper {
             player.invalidateCaps();
         }
         return magicHolder;
-    }
-
-    private float getXpForNextLevel(int level) {
-        if (level == 0) return 0;
-        return 2.5f * (float) Math.pow(1.2, level);
     }
 
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {

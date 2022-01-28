@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -23,17 +22,29 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 public class SkillCommand {
+    public static final String ALREADY_KNOWN       = "commands." + ArsMagicaAPI.MOD_ID + ".skill.already_known";
+    public static final String FORGET_ALL_MULTIPLE = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget_all.multiple.success";
+    public static final String FORGET_ALL_SINGLE   = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget_all.single.success";
+    public static final String FORGET_MULTIPLE     = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget.multiple.success";
+    public static final String FORGET_SINGLE       = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget.single.success";
+    public static final String LEARN_ALL_MULTIPLE  = "commands." + ArsMagicaAPI.MOD_ID + ".skill.learn_all.multiple.success";
+    public static final String LEARN_ALL_SINGLE    = "commands." + ArsMagicaAPI.MOD_ID + ".skill.learn_all.single.success";
+    public static final String LEARN_MULTIPLE      = "commands." + ArsMagicaAPI.MOD_ID + ".skill.learn.multiple.success";
+    public static final String LEARN_SINGLE        = "commands." + ArsMagicaAPI.MOD_ID + ".skill.learn.single.success";
+    public static final String NOT_YET_KNOWN       = "commands." + ArsMagicaAPI.MOD_ID + ".skill.not_yet_known";
+    public static final String UNKNOWN             = "commands." + ArsMagicaAPI.MOD_ID + ".skill.unknown";
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(TranslationConstants.COMMAND_SKILL_UNKNOWN, message));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(UNKNOWN, message));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("skill")
-                .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                .requires(p -> p.hasPermission(2))
                 .then(Commands.literal("learn")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
@@ -59,7 +70,9 @@ public class SkillCommand {
                         .then(Commands.literal("*")
                                 .executes(SkillCommand::forgetAllSelf)))
                 .then(Commands.literal("list")
+                        .executes(SkillCommand::listKnownSelf)
                         .then(Commands.argument("target", EntityArgument.player())
+                                .executes(SkillCommand::listKnown)
                                 .then(Commands.literal("known")
                                         .executes(SkillCommand::listKnown))
                                 .then(Commands.literal("unknown")
@@ -74,7 +87,7 @@ public class SkillCommand {
     }
 
     private static int listAll(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(createListComponent(ArsMagicaAPI.get().getSkillManager().getSkills().stream()), false);
+        context.getSource().sendSuccess(createSkillListComponent(ArsMagicaAPI.get().getSkillManager().getSkills().stream()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -98,7 +111,7 @@ public class SkillCommand {
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getSkillHelper();
         var skillManager = api.getSkillManager();
-        context.getSource().sendSuccess(createListComponent(skillManager.getSkills().stream().filter(iSkill -> knowledgeHelper.knows(player, iSkill))), false);
+        context.getSource().sendSuccess(createSkillListComponent(skillManager.getSkills().stream().filter(skill -> knowledgeHelper.knows(player, skill))), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -106,12 +119,12 @@ public class SkillCommand {
         var api = ArsMagicaAPI.get();
         var skillManager = api.getSkillManager();
         var knowledgeHelper = api.getSkillHelper();
-        context.getSource().sendSuccess(createListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(location -> skillManager.getOptional(location).stream())), false);
+        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> skillManager.getOptional(skill).stream())), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int forgetAllSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return forgetAll(context.getSource().getPlayerOrException(), context);
+        return forgetAll(List.of(context.getSource().getPlayerOrException()), context);
     }
 
     private static int forgetAll(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -119,17 +132,19 @@ public class SkillCommand {
     }
 
     private static int forgetAll(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
-        return players.stream().mapToInt(player -> forgetAll(player, context)).sum();
-    }
-
-    private static int forgetAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
-        ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_FORGET_ALL_SUCCESS, player.getDisplayName()), true);
-        return Command.SINGLE_SUCCESS;
+        for (ServerPlayer player : players) {
+            ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(FORGET_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(FORGET_ALL_MULTIPLE, players.size()), true);
+        }
+        return players.size();
     }
 
     private static int forgetSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return forget(context.getSource().getPlayerOrException(), context);
+        return forget(List.of(context.getSource().getPlayerOrException()), context);
     }
 
     private static int forget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -137,27 +152,28 @@ public class SkillCommand {
     }
 
     private static int forget(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        ISkill skill = getSkill(context);
-        return players.stream().mapToInt(player -> forget(player, skill, context)).sum();
-    }
-
-    private static int forget(ServerPlayer player, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return forget(player, getSkill(context), context);
-    }
-
-    private static int forget(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
         var helper = ArsMagicaAPI.get().getSkillHelper();
-        if (!helper.knows(player, skill)) {
-            context.getSource().sendFailure(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_NOT_YET_KNOWN, skill.getDisplayName(), player.getDisplayName()));
-            return 0;
+        ISkill skill = getSkill(context);
+        if (players.size() == 1) {
+            ServerPlayer player = players.iterator().next();
+            if (!helper.knows(player, skill)) {
+                context.getSource().sendFailure(new TranslatableComponent(NOT_YET_KNOWN, skill.getDisplayName(), player.getDisplayName()));
+                return 0;
+            }
         }
-        helper.forget(player, skill);
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_FORGET_SUCCESS, skill.getDisplayName(), player.getDisplayName()), true);
-        return Command.SINGLE_SUCCESS;
+        for (ServerPlayer player : players) {
+            helper.forget(player, skill);
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(FORGET_MULTIPLE, skill.getDisplayName(), players.size()), true);
+        }
+        return players.size();
     }
 
     private static int learnAllSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return learnAll(context.getSource().getPlayerOrException(), context);
+        return learnAll(List.of(context.getSource().getPlayerOrException()), context);
     }
 
     private static int learnAll(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -165,17 +181,19 @@ public class SkillCommand {
     }
 
     private static int learnAll(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
-        return players.stream().mapToInt(player -> learnAll(player, context)).sum();
-    }
-
-    private static int learnAll(ServerPlayer player, CommandContext<CommandSourceStack> context) {
-        ArsMagicaAPI.get().getSkillHelper().learnAll(player);
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_LEARN_ALL_SUCCESS, player.getDisplayName()), true);
-        return Command.SINGLE_SUCCESS;
+        for (ServerPlayer player : players) {
+            ArsMagicaAPI.get().getSkillHelper().learnAll(player);
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(LEARN_ALL_MULTIPLE, players.size()), true);
+        }
+        return players.size();
     }
 
     private static int learnSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return learn(context.getSource().getPlayerOrException(), context);
+        return learn(List.of(context.getSource().getPlayerOrException()), context);
     }
 
     private static int learn(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -183,23 +201,24 @@ public class SkillCommand {
     }
 
     private static int learn(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        ISkill skill = getSkill(context);
-        return players.stream().mapToInt(player -> learn(player, skill, context)).sum();
-    }
-
-    private static int learn(ServerPlayer player, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return learn(player, getSkill(context), context);
-    }
-
-    private static int learn(ServerPlayer player, ISkill skill, CommandContext<CommandSourceStack> context) {
         var helper = ArsMagicaAPI.get().getSkillHelper();
-        if (helper.knows(player, skill)) {
-            context.getSource().sendFailure(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
-            return 0;
+        ISkill skill = getSkill(context);
+        if (players.size() == 1) {
+            ServerPlayer player = players.iterator().next();
+            if (helper.knows(player, skill)) {
+                context.getSource().sendFailure(new TranslatableComponent(ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
+                return 0;
+            }
         }
-        helper.learn(player, skill);
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_LEARN_SUCCESS, skill.getDisplayName(), player.getDisplayName()), true);
-        return Command.SINGLE_SUCCESS;
+        for (ServerPlayer player : players) {
+            helper.learn(player, skill);
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
+        }
+        return players.size();
     }
 
     private static ISkill getSkill(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -209,8 +228,8 @@ public class SkillCommand {
         return skill.get();
     }
 
-    private static Component createListComponent(Stream<ISkill> resourceLocationStream) {
-        return resourceLocationStream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(new TranslatableComponent(TranslationConstants.COMMAND_SKILL_EMPTY));
+    private static Component createSkillListComponent(Stream<ISkill> stream) {
+        return stream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(new TranslatableComponent(""));
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {

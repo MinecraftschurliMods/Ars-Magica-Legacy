@@ -19,12 +19,42 @@ public interface IMagicHelper {
     float getXp(Player player);
 
     /**
-     * Awards the given player the given amount of magic xp. Also handles leveling.
+     * @param level The current magic level.
+     * @return The magic xp required to level from the given level to the next magic level.
+     */
+    float getXpForNextLevel(int level);
+
+    /**
+     * Awards the given amount of magic xp to the given player. Also handles leveling.
      *
-     * @param player The player to award the xp to.
-     * @param amount The amount of xp to award.
+     * @param player The player to award the magic xp to.
+     * @param amount The amount of magic xp to award.
      */
     void awardXp(Player player, float amount);
+
+    /**
+     * Sets the given amount of magic xp for the given player. Also handles leveling.
+     *
+     * @param player The player to set the magic xp for.
+     * @param amount The amount of magic xp to set.
+     */
+    void setXp(Player player, float amount);
+
+    /**
+     * Awards the given amount of magic levels to the given player. Also handles leveling.
+     *
+     * @param player The player to award the magic levels to.
+     * @param amount The amount of magic levels to award.
+     */
+    void awardLevel(Player player, int levels);
+
+    /**
+     * Sets the given magic level for the given player. Also handles leveling.
+     *
+     * @param player The player to set the magic level for.
+     * @param level  The magic level to set.
+     */
+    void setLevel(Player player, int level);
 
     /**
      * @param player The player to check.

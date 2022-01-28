@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -22,15 +21,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class AffinityCommand {
+    public static final String GET            = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.get.success";
+    public static final String SET_MULTIPLE   = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.set.multiple.success";
+    public static final String SET_SINGLE     = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.set.single.success";
+    public static final String RESET_MULTIPLE = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.reset.multiple.success";
+    public static final String RESET_SINGLE   = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.reset.single.success";
+    public static final String UNKNOWN        = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.unknown";
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinityCommand::suggestAffinities;
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN_AFFINITY = new DynamicCommandExceptionType(message -> new TranslatableComponent(TranslationConstants.COMMAND_AFFINITY_UNKNOWN, message));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN_AFFINITY = new DynamicCommandExceptionType(message -> new TranslatableComponent(UNKNOWN, message));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("affinity")
-                .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                .requires(p -> p.hasPermission(2))
                 .then(Commands.literal("get")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("affinity", ResourceLocationArgument.id())
@@ -57,53 +63,43 @@ public class AffinityCommand {
     }
 
     private static int getSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return get(context.getSource().getPlayerOrException(), context);
+        return get(List.of(context.getSource().getPlayerOrException()), getAffinity(context), context);
     }
 
     private static int get(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return get(EntityArgument.getPlayers(context, "target"), context);
+        return get(EntityArgument.getPlayers(context, "target"), getAffinity(context), context);
     }
 
-    private static int get(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        IAffinity affinity = getAffinity(context);
-        return players.stream().mapToInt(player -> get(player, affinity, context)).sum();
-    }
-
-    private static int get(ServerPlayer player, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return get(player, getAffinity(context), context);
-    }
-
-    private static int get(ServerPlayer player, IAffinity affinity, CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_AFFINITY_GET_SUCCESS, affinity.getDisplayName(), player.getDisplayName(), (float) ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
-        return Command.SINGLE_SUCCESS;
+    private static int get(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+        for (ServerPlayer player : players) {
+            context.getSource().sendSuccess(new TranslatableComponent(GET, affinity.getDisplayName(), player.getDisplayName(), (float) ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
+        }
+        return players.size();
     }
 
     private static int setSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return set(context.getSource().getPlayerOrException(), context);
+        return set(List.of(context.getSource().getPlayerOrException()), getAffinity(context), context);
     }
 
     private static int set(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return set(EntityArgument.getPlayers(context, "target"), context);
+        return set(EntityArgument.getPlayers(context, "target"), getAffinity(context), context);
     }
 
-    private static int set(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        IAffinity affinity = getAffinity(context);
-        return players.stream().mapToInt(player -> set(player, affinity, context)).sum();
-    }
-
-    private static int set(ServerPlayer player, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return set(player, getAffinity(context), context);
-    }
-
-    private static int set(ServerPlayer player, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+    private static int set(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
         double amount = DoubleArgumentType.getDouble(context, "amount");
-        ArsMagicaAPI.get().getAffinityHelper().setAffinityDepth(player, affinity, (float) amount);
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_AFFINITY_SET_SUCCESS, affinity.getDisplayName(), player.getDisplayName(), (float) amount), true);
-        return Command.SINGLE_SUCCESS;
+        for (ServerPlayer player : players) {
+            ArsMagicaAPI.get().getAffinityHelper().setAffinityDepth(player, affinity, (float) amount);
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), (float) amount), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(SET_MULTIPLE, affinity.getDisplayName(), players.size(), (float) amount), true);
+        }
+        return players.size();
     }
 
     private static int resetSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return reset(context.getSource().getPlayerOrException(), context);
+        return reset(List.of(context.getSource().getPlayerOrException()), context);
     }
 
     private static int reset(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -111,17 +107,19 @@ public class AffinityCommand {
     }
 
     private static int reset(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
-        return players.stream().mapToInt(player -> reset(player, context)).sum();
-    }
-
-    private static int reset(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         var helper = api.getAffinityHelper();
-        for (IAffinity affinity : api.getAffinityRegistry()) {
-            helper.setAffinityDepth(player, affinity, 0f);
+        for (ServerPlayer player : players) {
+            for (IAffinity affinity : api.getAffinityRegistry()) {
+                helper.setAffinityDepth(player, affinity, 0f);
+            }
         }
-        context.getSource().sendSuccess(new TranslatableComponent(TranslationConstants.COMMAND_AFFINITY_RESET_SUCCESS, player.getDisplayName()), true);
-        return Command.SINGLE_SUCCESS;
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(RESET_SINGLE, players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(RESET_MULTIPLE, players.size()), true);
+        }
+        return players.size();
     }
 
     private static IAffinity getAffinity(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
