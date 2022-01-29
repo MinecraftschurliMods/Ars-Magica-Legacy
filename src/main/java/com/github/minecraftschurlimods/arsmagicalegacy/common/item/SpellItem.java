@@ -20,6 +20,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -138,6 +140,10 @@ public class SpellItem extends Item implements ISpellItem {
         Spell spell = getSpell(stack);
         if (!spell.isContinuous()) return;
         SpellCastResult result = spell.cast(entity, entity.level, count - 1, true, true);
+        SoundEvent sound = getSpell(stack).primaryAffinity().getLoopSound();
+        if (sound != null) {
+            entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+        }
         if (entity instanceof Player player) {
             if (result.isConsume()) {
                 player.awardStat(AMStats.SPELL_CAST);
@@ -218,6 +224,10 @@ public class SpellItem extends Item implements ISpellItem {
             LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
             LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
+            SoundEvent sound = getSpell(stack).primaryAffinity().getCastSound();
+            if (sound != null) {
+                entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+            }
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
                     player.awardStat(AMStats.SPELL_CAST);

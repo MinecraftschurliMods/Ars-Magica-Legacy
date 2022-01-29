@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAffinity {
@@ -17,12 +19,16 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
     private final Set<ResourceLocation> minorOpposites;
     private final Set<ResourceLocation> majorOpposites;
     private final ResourceLocation directOpposite;
+    private final Supplier<SoundEvent> castSound;
+    private final Supplier<SoundEvent> loopSound;
 
-    public Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite) {
+    public Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound) {
         this.color = color;
         this.minorOpposites = minorOpposites;
         this.majorOpposites = majorOpposites;
         this.directOpposite = directOpposite;
+        this.castSound = castSound;
+        this.loopSound = loopSound;
     }
 
     public static Builder builder() {
@@ -54,11 +60,23 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         return directOpposite;
     }
 
+    @Override
+    public SoundEvent getCastSound() {
+        return castSound.get();
+    }
+
+    @Override
+    public SoundEvent getLoopSound() {
+        return loopSound.get();
+    }
+
     public static class Builder {
         private final Set<ResourceLocation> minorOpposites = new HashSet<>();
         private final Set<ResourceLocation> majorOpposites = new HashSet<>();
         private Integer color;
         private ResourceLocation directOpposite;
+        private Supplier<SoundEvent> castSound;
+        private Supplier<SoundEvent> loopSound;
 
         public Builder setColor(int color) {
             this.color = color;
@@ -90,10 +108,20 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
             return this;
         }
 
+        public Builder setCastSound(Supplier<SoundEvent> castSound) {
+            this.castSound = castSound;
+            return this;
+        }
+
+        public Builder setLoopSound(Supplier<SoundEvent> loopSound) {
+            this.loopSound = loopSound;
+            return this;
+        }
+
         public Affinity build() {
             if (color == null) throw new IllegalStateException("An affinity needs a color!");
             if (directOpposite == null) throw new IllegalStateException("An affinity needs a direct opposite!");
-            return new Affinity(color, minorOpposites, majorOpposites, directOpposite);
+            return new Affinity(color, minorOpposites, majorOpposites, directOpposite, castSound, loopSound);
         }
     }
 }

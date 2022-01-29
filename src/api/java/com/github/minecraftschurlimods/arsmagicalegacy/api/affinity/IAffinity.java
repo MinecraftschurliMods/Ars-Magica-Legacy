@@ -3,7 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
@@ -49,6 +51,18 @@ public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IA
      * @return The direct opposing affinity for this affinity.
      */
     ResourceLocation getDirectOpposingAffinity();
+
+    /**
+     * @return The sound that should be played when casting a spell with this affinity.
+     */
+    @Nullable
+    SoundEvent getCastSound();
+
+    /**
+     * @return The sound that should be played when casting a continuous spell with this affinity.
+     */
+    @Nullable
+    SoundEvent getLoopSound();
 
     @Override
     default String getType() {

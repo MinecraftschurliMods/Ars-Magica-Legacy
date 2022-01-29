@@ -11,10 +11,6 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMSounds {
-    RegistryObject<SoundEvent> AIR_GUARDIAN_AMBIENT             = register("entity.air_guardian.ambient");
-    RegistryObject<SoundEvent> AIR_GUARDIAN_ATTACK              = register("entity.air_guardian.attack");
-    RegistryObject<SoundEvent> AIR_GUARDIAN_DEATH               = register("entity.air_guardian.death");
-    RegistryObject<SoundEvent> AIR_GUARDIAN_HURT                = register("entity.air_guardian.hurt");
     RegistryObject<SoundEvent> ARCANE_GUARDIAN_AMBIENT          = register("entity.arcane_guardian.ambient");
     RegistryObject<SoundEvent> ARCANE_GUARDIAN_ATTACK           = register("entity.arcane_guardian.attack");
     RegistryObject<SoundEvent> ARCANE_GUARDIAN_DEATH            = register("entity.arcane_guardian.death");
@@ -48,9 +44,7 @@ public interface AMSounds {
     RegistryObject<SoundEvent> WATER_GUARDIAN_DEATH             = register("entity.water_guardian.death");
     RegistryObject<SoundEvent> WATER_GUARDIAN_HURT              = register("entity.water_guardian.hurt");
     RegistryObject<SoundEvent> WINTER_GUARDIAN_AMBIENT          = register("entity.winter_guardian.ambient");
-    RegistryObject<SoundEvent> WINTER_GUARDIAN_ATTACK           = register("entity.winter_guardian.attack");
     RegistryObject<SoundEvent> WINTER_GUARDIAN_DEATH            = register("entity.winter_guardian.death");
-    RegistryObject<SoundEvent> WINTER_GUARDIAN_HURT             = register("entity.winter_guardian.hurt");
     RegistryObject<SoundEvent> ENDER_GUARDIAN_FLAP              = register("entity.ender_guardian.flap");
     RegistryObject<SoundEvent> ENDER_GUARDIAN_ROAR              = register("entity.ender_guardian.roar");
     RegistryObject<SoundEvent> FIRE_GUARDIAN_FLAMETHROWER       = register("entity.fire_guardian.flamethrower");
@@ -78,7 +72,6 @@ public interface AMSounds {
     RegistryObject<SoundEvent> LOOP_LIFE                        = register("spell.loop.life");
     RegistryObject<SoundEvent> LOOP_LIGHTNING                   = register("spell.loop.lightning");
     RegistryObject<SoundEvent> LOOP_NATURE                      = register("spell.loop.nature");
-    RegistryObject<SoundEvent> LOOP_NONE                        = register("spell.loop.none");
     RegistryObject<SoundEvent> LOOP_WATER                       = register("spell.loop.water");
     RegistryObject<SoundEvent> LOOP_WINTER                      = register("spell.loop.winter");
     RegistryObject<SoundEvent> CONTINGENCY                      = register("spell.contingency");

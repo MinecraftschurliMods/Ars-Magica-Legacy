@@ -25,22 +25,22 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AMSounds.AIR_GUARDIAN_AMBIENT.get();
+        return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.AIR_GUARDIAN_HURT.get();
+        return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AMSounds.AIR_GUARDIAN_DEATH.get();
+        return null;
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.AIR_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override

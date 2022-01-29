@@ -29,7 +29,7 @@ public class WinterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.WINTER_GUARDIAN_HURT.get();
+        return null;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class WinterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.WINTER_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override
