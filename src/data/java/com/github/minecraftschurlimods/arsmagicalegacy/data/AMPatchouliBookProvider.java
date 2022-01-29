@@ -36,8 +36,13 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 
     @Override
     protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang).setVersion("1").setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium")).setCreativeTab(api.getCreativeModeTab().getRecipeFolderName()).setUseResourcepack();
+        var api = ArsMagicaAPI.get();
+        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang)
+                .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
+                .setCreativeTab(api.getCreativeModeTab().getRecipeFolderName())
+                .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
+                .setUseResourcepack()
+                .setVersion("1");
         builder.addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .setSortnum(0)
                 .addEntry("getting_started", "Getting Started", api.getBookStack())
