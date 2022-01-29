@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
