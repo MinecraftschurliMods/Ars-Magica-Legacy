@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -38,7 +39,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     @Override
     public void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
-        Set<ResourceLocation> set = Sets.newHashSet();
+        Set<ResourceLocation> set = new HashSet<>();
         Consumer<Advancement> consumer = a -> {
             if (!set.add(a.getId())) throw new IllegalStateException("Duplicate advancement " + a.getId());
             else {

@@ -16,6 +16,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -39,7 +40,7 @@ public abstract class OcculusTabProvider implements DataProvider {
     @Internal
     @Override
     public void run(HashCache pCache) {
-        Set<ResourceLocation> ids = Sets.newHashSet();
+        Set<ResourceLocation> ids = new HashSet<>();
         createOcculusTabs(consumer -> {
             if (!ids.add(consumer.getId()))
                 throw new IllegalStateException("Duplicate occulus tab " + consumer.getId());

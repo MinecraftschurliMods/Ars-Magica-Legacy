@@ -155,7 +155,7 @@ class AMLootTableProvider extends LootTableProvider {
         @Override
         public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
             addTables();
-            Set<ResourceLocation> set = Sets.newHashSet();
+            Set<ResourceLocation> set = new HashSet<>();
             for (EntityType<?> entitytype : getKnownEntities()) {
                 ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
                 if (isNonLiving(entitytype)) {

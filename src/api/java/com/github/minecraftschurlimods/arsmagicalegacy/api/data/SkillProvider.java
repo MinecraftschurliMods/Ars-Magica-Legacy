@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -42,7 +43,7 @@ public abstract class SkillProvider implements DataProvider {
     @Internal
     @Override
     public void run(HashCache pCache) {
-        data = Sets.newHashSet();
+        data = new HashSet<>();
         createSkills(skill -> {
             if (!data.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
             else {
