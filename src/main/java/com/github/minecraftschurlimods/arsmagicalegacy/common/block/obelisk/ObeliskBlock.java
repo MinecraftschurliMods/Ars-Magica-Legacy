@@ -29,7 +29,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 0));
+        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 

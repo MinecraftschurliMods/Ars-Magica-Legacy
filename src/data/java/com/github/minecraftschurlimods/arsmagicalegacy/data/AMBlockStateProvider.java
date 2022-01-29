@@ -339,7 +339,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         String texture = block.get().getRegistryName().getPath();
         getVariantBuilder(block.get()).forAllStates(state -> {
             if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
-                return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture + (state.getValue(AbstractFurnaceBlock.LIT) ? "_lit" : ""))
                         .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
                         .customLoader(OBJLoaderBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))

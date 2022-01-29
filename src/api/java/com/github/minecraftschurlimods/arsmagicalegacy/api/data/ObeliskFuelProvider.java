@@ -73,7 +73,7 @@ public abstract class ObeliskFuelProvider implements DataProvider {
      * @param valuepertick How much etherium is generated per burning tick.
      */
     protected void forIngredient(String name, Ingredient ingredient, int burntime, int valuepertick) {
-        new ObeliskFuelBuilder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurntime(burntime).setValuePerTick(valuepertick).serialize();
+        new ObeliskFuelBuilder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurntime(burntime).setValuePerTick(valuepertick).build();
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

@@ -1,0 +1,7 @@
+{
+  "input": {
+    "tag": "forge:dusts/vinteum"
+  },
+  "burn_time": 200,
+  "etherium_per_tick": 1
+}
