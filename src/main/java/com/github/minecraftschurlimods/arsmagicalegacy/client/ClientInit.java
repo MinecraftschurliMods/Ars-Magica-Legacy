@@ -23,7 +23,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Earth
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.FireGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WinterGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
@@ -33,7 +33,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Ma
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WinterGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.IceGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
@@ -166,7 +166,7 @@ public final class ClientInit {
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(WinterGuardianModel.LAYER_LOCATION, WinterGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
         event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
     }
@@ -178,7 +178,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.WINTER_GUARDIAN.get(), WinterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), IceGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);

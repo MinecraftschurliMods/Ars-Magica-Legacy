@@ -9,12 +9,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-public class WinterGuardian extends AbstractBoss {
+public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
     private boolean hasLeftArm = true;
     private float orbitRotation;
 
-    public WinterGuardian(EntityType<? extends WinterGuardian> type, Level level) {
+    public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
     }
 
@@ -24,7 +24,7 @@ public class WinterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AMSounds.WINTER_GUARDIAN_AMBIENT.get();
+        return AMSounds.ICE_GUARDIAN_AMBIENT.get();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class WinterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AMSounds.WINTER_GUARDIAN_DEATH.get();
+        return AMSounds.ICE_GUARDIAN_DEATH.get();
     }
 
     @Override

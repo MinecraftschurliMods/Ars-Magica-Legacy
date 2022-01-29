@@ -118,6 +118,31 @@
       "arsmagicalegacy:entity/fire_guardian/nova"
     ]
   },
+  "entity.ice_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/ambient"
+    ]
+  },
+  "entity.ice_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/attack"
+    ]
+  },
+  "entity.ice_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/death"
+    ]
+  },
+  "entity.ice_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/hurt"
+    ]
+  },
+  "entity.ice_guardian.launch_arm": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/launch_arm"
+    ]
+  },
   "entity.life_guardian.ambient": {
     "sounds": [
       "arsmagicalegacy:entity/life_guardian/ambient"
@@ -205,31 +230,6 @@
       "arsmagicalegacy:entity/water_guardian/death"
     ]
   },
-  "entity.winter_guardian.ambient": {
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/ambient"
-    ]
-  },
-  "entity.winter_guardian.attack": {
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/attack"
-    ]
-  },
-  "entity.winter_guardian.death": {
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/death"
-    ]
-  },
-  "entity.winter_guardian.hurt": {
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/hurt"
-    ]
-  },
-  "entity.winter_guardian.launch_arm": {
-    "sounds": [
-      "arsmagicalegacy:entity/winter_guardian/launch_arm"
-    ]
-  },
   "misc.get_knowledge_point": {
     "sounds": [
       "arsmagicalegacy:misc/get_knowledge_point"
@@ -265,6 +265,11 @@
       "arsmagicalegacy:spell/cast/fire"
     ]
   },
+  "spell.cast.ice": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/ice"
+    ]
+  },
   "spell.cast.life": {
     "sounds": [
       "arsmagicalegacy:spell/cast/life"
@@ -288,11 +293,6 @@
   "spell.cast.water": {
     "sounds": [
       "arsmagicalegacy:spell/cast/water"
-    ]
-  },
-  "spell.cast.winter": {
-    "sounds": [
-      "arsmagicalegacy:spell/cast/winter"
     ]
   },
   "spell.contingency": {
@@ -325,6 +325,11 @@
       "arsmagicalegacy:spell/loop/fire"
     ]
   },
+  "spell.loop.ice": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/ice"
+    ]
+  },
   "spell.loop.life": {
     "sounds": [
       "arsmagicalegacy:spell/loop/life"
@@ -343,11 +348,6 @@
   "spell.loop.water": {
     "sounds": [
       "arsmagicalegacy:spell/loop/water"
-    ]
-  },
-  "spell.loop.winter": {
-    "sounds": [
-      "arsmagicalegacy:spell/loop/winter"
     ]
   },
   "spell.mana_shield": {

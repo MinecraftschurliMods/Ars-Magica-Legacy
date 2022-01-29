@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WinterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -15,14 +15,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
 
-public class WinterGuardianModel<T extends WinterGuardian> extends EntityModel<T> {
+public class IceGuardianModel<T extends IceGuardian> extends EntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "winter_guardian"), "main");
     private final ModelPart head;
     private final ModelPart torso;
     private final ModelPart arm;
     private final ModelPart lower_body;
 
-    public WinterGuardianModel(ModelPart root) {
+    public IceGuardianModel(ModelPart root) {
         head = root.getChild("head");
         torso = root.getChild("torso");
         arm = root.getChild("arm");

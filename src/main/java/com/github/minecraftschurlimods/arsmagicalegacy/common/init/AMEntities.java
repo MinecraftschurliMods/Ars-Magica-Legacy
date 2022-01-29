@@ -15,7 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WinterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -33,7 +33,7 @@ public interface AMEntities {
     RegistryObject<EntityType<FireGuardian>>      FIRE_GUARDIAN      = ENTITIES.register("fire_guardian",      () -> EntityType.Builder.of(FireGuardian::new,      MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     4).build("fire_guardian"));
     RegistryObject<EntityType<EarthGuardian>>     EARTH_GUARDIAN     = ENTITIES.register("earth_guardian",     () -> EntityType.Builder.of(EarthGuardian::new,     MobCategory.MONSTER).clientTrackingRange(8).sized( 1.5F,  3.5F).build("earth_guardian"));
     RegistryObject<EntityType<AirGuardian>>       AIR_GUARDIAN       = ENTITIES.register("air_guardian",       () -> EntityType.Builder.of(AirGuardian::new,       MobCategory.MONSTER).clientTrackingRange(8).sized( 0.6F,  2.5F).build("air_guardian"));
-    RegistryObject<EntityType<WinterGuardian>>    WINTER_GUARDIAN    = ENTITIES.register("winter_guardian",    () -> EntityType.Builder.of(WinterGuardian::new,    MobCategory.MONSTER).clientTrackingRange(8).sized(1.25F, 3.25F).build("winter_guardian"));
+    RegistryObject<EntityType<IceGuardian>>       ICE_GUARDIAN       = ENTITIES.register("ice_guardian",       () -> EntityType.Builder.of(IceGuardian::new,       MobCategory.MONSTER).clientTrackingRange(8).sized(1.25F, 3.25F).build("ice_guardian"));
     RegistryObject<EntityType<LightningGuardian>> LIGHTNING_GUARDIAN = ENTITIES.register("lightning_guardian", () -> EntityType.Builder.of(LightningGuardian::new, MobCategory.MONSTER).clientTrackingRange(8).sized(1.75F,     3).build("lightning_guardian"));
     RegistryObject<EntityType<NatureGuardian>>    NATURE_GUARDIAN    = ENTITIES.register("nature_guardian",    () -> EntityType.Builder.of(NatureGuardian::new,    MobCategory.MONSTER).clientTrackingRange(8).sized(1.65F, 4.75F).build("nature_guardian"));
     RegistryObject<EntityType<LifeGuardian>>      LIFE_GUARDIAN      = ENTITIES.register("life_guardian",      () -> EntityType.Builder.of(LifeGuardian::new,      MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("life_guardian"));

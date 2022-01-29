@@ -26,7 +26,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WinterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
@@ -212,7 +212,7 @@ public final class EventHandler {
         event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
         event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
         event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
-        event.put(AMEntities.WINTER_GUARDIAN.get(), WinterGuardian.createAttributes().build());
+        event.put(AMEntities.ICE_GUARDIAN.get(), IceGuardian.createAttributes().build());
         event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
         event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
         event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());

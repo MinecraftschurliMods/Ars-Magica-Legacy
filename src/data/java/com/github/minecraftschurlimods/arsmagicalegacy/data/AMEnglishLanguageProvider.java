@@ -161,7 +161,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.FIRE_GUARDIAN);
         entityIdTranslation(AMEntities.EARTH_GUARDIAN);
         entityIdTranslation(AMEntities.AIR_GUARDIAN);
-        entityIdTranslation(AMEntities.WINTER_GUARDIAN);
+        entityIdTranslation(AMEntities.ICE_GUARDIAN);
         entityIdTranslation(AMEntities.LIGHTNING_GUARDIAN);
         entityIdTranslation(AMEntities.NATURE_GUARDIAN);
         entityIdTranslation(AMEntities.LIFE_GUARDIAN);
