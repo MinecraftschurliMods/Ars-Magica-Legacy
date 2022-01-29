@@ -34,7 +34,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -447,7 +446,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(Tags.Items.CROPS_POTATO)
                 .requires(Items.ICE)
                 .requires(Items.SUGAR)
-                .requires(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
+                .requires(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
                 .unlockedBy("has_ice", has(Items.ICE))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.MAGE_HELMET.get())
@@ -490,7 +489,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern(" E ")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
+                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -500,7 +499,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("OOO")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -510,7 +509,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("O O")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
+                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -519,12 +518,18 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("GRG")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
+                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
     }
 
+    private static class NBTIngredient extends net.minecraftforge.common.crafting.NBTIngredient {
+        protected NBTIngredient(ItemStack stack) {
+            super(stack);
+        }
+    }
+    
     private static class ShapedNBTRecipeBuilder {
         private final Item result;
         private final int count;
