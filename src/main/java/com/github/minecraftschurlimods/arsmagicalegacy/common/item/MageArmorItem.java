@@ -18,7 +18,7 @@ public class MageArmorItem extends ArmorItem {
     public static final ArmorMaterial MAGE_ARMOR_MATERIAL = new ArmorMaterial() {
         @Override
         public int getDurabilityForSlot(EquipmentSlot pSlot) {
-            return 33 * HEALTH_PER_SLOT[pSlot.getIndex()];
+            return 8 * HEALTH_PER_SLOT[pSlot.getIndex()];
         }
 
         @Override
@@ -64,7 +64,7 @@ public class MageArmorItem extends ArmorItem {
     public static final ArmorMaterial BATTLEMAGE_ARMOR_MATERIAL = new ArmorMaterial() {
         @Override
         public int getDurabilityForSlot(EquipmentSlot pSlot) {
-            return 48 * HEALTH_PER_SLOT[pSlot.getIndex()];
+            return 12 * HEALTH_PER_SLOT[pSlot.getIndex()];
         }
 
         @Override
