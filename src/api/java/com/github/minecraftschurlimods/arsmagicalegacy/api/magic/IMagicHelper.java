@@ -44,7 +44,7 @@ public interface IMagicHelper {
      * Awards the given amount of magic levels to the given player. Also handles leveling.
      *
      * @param player The player to award the magic levels to.
-     * @param amount The amount of magic levels to award.
+     * @param levels The amount of magic levels to award.
      */
     void awardLevel(Player player, int levels);
 

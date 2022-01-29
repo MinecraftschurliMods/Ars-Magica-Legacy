@@ -6,9 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
-import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.AffinityCommand;
-import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.MagicXPCommand;
-import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.SkillCommand;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.ArsMagicaLegacyCommand;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,9 +18,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 public final class AMCommands {
     static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        AffinityCommand.register(dispatcher);
-        MagicXPCommand.register(dispatcher);
-        SkillCommand.register(dispatcher);
+        ArsMagicaLegacyCommand.register(dispatcher);
         if (!FMLEnvironment.production) {
             dispatcher.register(Commands.literal("givetestspell1").executes(context -> {
                 ItemStack stack = new ItemStack(AMItems.SPELL.get());
