@@ -67,10 +67,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -163,9 +162,9 @@ public final class EventHandler {
         AMFeatures.DESERT_NOVA_PLACEMENT = AMFeatures.flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA_FEATURE, 32);
         AMFeatures.TARMA_ROOT_PLACEMENT = AMFeatures.flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT_FEATURE, 32);
         AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
-        AMFeatures.WITCHWOOD_TREE_FEATURE = AMFeatures.tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new StraightTrunkPlacer(7, 3, 0), AMBlocks.WITCHWOOD_LEAVES, new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1));
+        AMFeatures.WITCHWOOD_TREE_FEATURE = AMFeatures.tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
         AMFeatures.WITCHWOOD_TREE_PLACEMENT = AMFeatures.treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE_FEATURE, AMBlocks.WITCHWOOD_SAPLING);
-        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), AMBlocks.WITCHWOOD_SAPLING);
+        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
     }
 
     public static void registerSpellIngredientTypes() {

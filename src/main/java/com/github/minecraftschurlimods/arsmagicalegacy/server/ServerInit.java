@@ -1,20 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.SkillCommand;
-import com.mojang.brigadier.Command;
-import net.minecraft.commands.Commands;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -37,6 +31,7 @@ public final class ServerInit {
     @SubscribeEvent(priority = EventPriority.HIGH)
     static void biomeLoading(BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
+        ResourceLocation biome = event.getName();
         Biome.BiomeCategory category = event.getCategory();
         if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AMFeatures.CHIMERITE_PLACEMENT);
@@ -58,7 +53,7 @@ public final class ServerInit {
             if (category == Biome.BiomeCategory.MOUNTAIN || category == Biome.BiomeCategory.EXTREME_HILLS || category == Biome.BiomeCategory.UNDERGROUND) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.TARMA_ROOT_PLACEMENT);
             }
-            if (category == Biome.BiomeCategory.SWAMP) {
+            if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.WITCHWOOD_TREE_VEGETATION);
             }
         }
