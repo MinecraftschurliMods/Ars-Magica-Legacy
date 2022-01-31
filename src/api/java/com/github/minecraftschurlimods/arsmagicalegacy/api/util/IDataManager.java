@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.util;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
@@ -25,5 +26,5 @@ public interface IDataManager<T> extends Map<ResourceLocation, T> {
      * @param id The id of the requested value.
      * @return An optional of the requested value, or null if it is not loaded.
      */
-    T getNullable(ResourceLocation id);
+    @Nullable T getNullable(ResourceLocation id);
 }

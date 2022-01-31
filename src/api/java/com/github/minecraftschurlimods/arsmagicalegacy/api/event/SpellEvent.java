@@ -62,7 +62,7 @@ public abstract class SpellEvent extends LivingEvent {
                 super(entity, spell);
                 this.base = base;
                 this.multiplier = multiplier;
-                modifiedBase = base;
+                this.modifiedBase = base;
             }
 
             /**
@@ -85,7 +85,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param base The new value for the base mana cost.
              */
             public void setBase(float base) {
-                modifiedBase = base;
+                this.modifiedBase = base;
             }
 
             /**
@@ -108,7 +108,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param multiplier The new value for the mana cost multiplier.
              */
             public void setMultiplier(float multiplier) {
-                modifiedMultiplier = multiplier;
+                this.modifiedMultiplier = multiplier;
             }
         }
 
@@ -122,7 +122,7 @@ public abstract class SpellEvent extends LivingEvent {
             public Post(LivingEntity entity, ISpell spell, float mana) {
                 super(entity, spell);
                 this.mana = mana;
-                modifiedMana = mana;
+                this.modifiedMana = mana;
             }
 
             /**
@@ -145,7 +145,7 @@ public abstract class SpellEvent extends LivingEvent {
              * @param mana The new value for the calculated mana cost.
              */
             public void setMana(float mana) {
-                modifiedMana = mana;
+                this.modifiedMana = mana;
             }
         }
     }
@@ -160,7 +160,7 @@ public abstract class SpellEvent extends LivingEvent {
         public BurnoutCost(LivingEntity entity, ISpell spell, float burnout) {
             super(entity, spell);
             this.burnout = burnout;
-            modifiedBurnout = burnout;
+            this.modifiedBurnout = burnout;
         }
 
         /**
@@ -183,7 +183,7 @@ public abstract class SpellEvent extends LivingEvent {
          * @param burnout The new value for the burnout cost.
          */
         public void setBurnout(float burnout) {
-            modifiedBurnout = burnout;
+            this.modifiedBurnout = burnout;
         }
     }
 

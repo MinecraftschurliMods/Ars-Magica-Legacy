@@ -149,6 +149,7 @@ public final class ArsMagicaAPI {
         /**
          * @return The etherium helper instance.
          */
+        @Unmodifiable
         IEtheriumHelper getEtheriumHelper();
 
         /**

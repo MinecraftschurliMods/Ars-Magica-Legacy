@@ -217,10 +217,10 @@ public class SkillBuilder {
         JsonObject json = new JsonObject();
         json.addProperty("occulus_tab", occulusTab.toString());
         if (x == null || y == null) throw new SerializationException("A skill needs a position!");
-        json.addProperty("x", x);
-        json.addProperty("y", y);
+        json.addProperty("x", this.x);
+        json.addProperty("y", this.y);
         if (hidden != null) {
-            json.addProperty("hidden", hidden);
+            json.addProperty("hidden", this.hidden);
         }
         if (!parents.isEmpty()) {
             JsonArray parents = new JsonArray();

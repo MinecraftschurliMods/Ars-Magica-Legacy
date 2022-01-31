@@ -51,6 +51,27 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * @param name  The display name of the prefab spell.
      * @param spell The prefab spell.
      */
+    public void addPrefabSpell(String id, String name, IPrefabSpell spell) {
+        new PrefabSpellBuilder(new ResourceLocation(this.namespace, id), name, spell).build();
+    }
+
+    /**
+     * Adds a new prefab spell.
+     *
+     * @param id    The id of the prefab spell.
+     * @param spell The prefab spell.
+     */
+    public void addPrefabSpell(String id, IPrefabSpell spell) {
+        new PrefabSpellBuilder(new ResourceLocation(this.namespace, id), spell).build();
+    }
+
+    /**
+     * Adds a new prefab spell.
+     *
+     * @param id    The id of the prefab spell.
+     * @param name  The display name of the prefab spell.
+     * @param spell The prefab spell.
+     */
     public void addPrefabSpell(ResourceLocation id, String name, IPrefabSpell spell) {
         new PrefabSpellBuilder(id, name, spell).build();
     }
@@ -87,9 +108,9 @@ public abstract class PrefabSpellProvider implements DataProvider {
 
         JsonObject serialize() {
             JsonObject json = new JsonObject();
-            json.add("spell", spell.getEncodedSpell().getOrThrow(false, LOGGER::warn));
+            json.add("spell", this.spell.getEncodedSpell().getOrThrow(false, LOGGER::warn));
             if (name != null) {
-                json.addProperty("name", name);
+                json.addProperty("name", this.name);
             }
             return json;
         }

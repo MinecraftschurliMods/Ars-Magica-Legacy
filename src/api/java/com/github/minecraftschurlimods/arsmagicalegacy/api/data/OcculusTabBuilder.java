@@ -111,10 +111,10 @@ public class OcculusTabBuilder {
     JsonObject serialize() {
         JsonObject json = new JsonObject();
         if (index == null) throw new SerializationException("An occulus tab needs an index!");
-        json.addProperty("index", index);
-        json.addProperty("renderer", renderer);
-        json.addProperty("start_x", startX);
-        json.addProperty("start_y", startY);
+        json.addProperty("index", this.index);
+        json.addProperty("renderer", this.renderer);
+        json.addProperty("start_x", this.startX);
+        json.addProperty("start_y", this.startY);
         return json;
     }
 }
