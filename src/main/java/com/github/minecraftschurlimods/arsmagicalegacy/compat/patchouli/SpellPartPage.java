@@ -29,7 +29,7 @@ public class SpellPartPage implements ICustomComponent {
     public void build(int x, int y, int page) {
         this.x = x;
         this.y = y;
-        _part = ArsMagicaAPI.get().getSpellPartRegistry().getValue(ResourceLocation.tryParse(part));
+        this._part = ArsMagicaAPI.get().getSpellPartRegistry().getValue(ResourceLocation.tryParse(part));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SpellPartPage implements ICustomComponent {
 //        else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
-        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(_part.getRegistryName());
+        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(this._part.getRegistryName());
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, sprite.atlas().location());
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
@@ -68,8 +68,8 @@ public class SpellPartPage implements ICustomComponent {
     }
 
     private void renderRecipe(PoseStack poseStack, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
-        if (_part == null) return;
-        List<ISpellIngredient> recipe = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(_part).recipe();
+        if (this._part == null) return;
+        List<ISpellIngredient> recipe = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part).recipe();
         if (recipe.isEmpty()) return;
         float angleStep = 360.0f / recipe.size();
         float dist = 45;

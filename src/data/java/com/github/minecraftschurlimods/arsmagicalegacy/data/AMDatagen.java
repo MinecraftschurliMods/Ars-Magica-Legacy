@@ -30,6 +30,7 @@ public class AMDatagen {
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
             generator.addProvider(lang);
+            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
         }
         if (evt.includeServer()) {
             AMSkillProvider skillProvider = new AMSkillProvider(generator);

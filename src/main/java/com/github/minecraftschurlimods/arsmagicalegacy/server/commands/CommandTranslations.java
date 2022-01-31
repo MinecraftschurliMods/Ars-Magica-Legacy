@@ -4,7 +4,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 @NonExtendable
-public interface ArsMagicaLegacyCommandTranslations {
+public interface CommandTranslations {
+    String AFFINITY_ADD_MULTIPLE        = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.add.multiple.success";
+    String AFFINITY_ADD_SINGLE          = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.add.single.success";
     String AFFINITY_GET                 = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.get.success";
     String AFFINITY_RESET_MULTIPLE      = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.reset.multiple.success";
     String AFFINITY_RESET_SINGLE        = "commands." + ArsMagicaAPI.MOD_ID + ".affinity.reset.single.success";
@@ -21,8 +23,6 @@ public interface ArsMagicaLegacyCommandTranslations {
     String MAGIC_XP_SET_LEVELS_SINGLE   = "commands." + ArsMagicaAPI.MOD_ID + ".magic_xp.set.levels.single.success";
     String MAGIC_XP_SET_POINTS_MULTIPLE = "commands." + ArsMagicaAPI.MOD_ID + ".magic_xp.set.points.multiple.success";
     String MAGIC_XP_SET_POINTS_SINGLE   = "commands." + ArsMagicaAPI.MOD_ID + ".magic_xp.set.points.single.success";
-    String RESET_MULTIPLE               = "commands." + ArsMagicaAPI.MOD_ID + ".reset.multiple.success";
-    String RESET_SINGLE                 = "commands." + ArsMagicaAPI.MOD_ID + ".reset.single.success";
     String SKILL_ALREADY_KNOWN          = "commands." + ArsMagicaAPI.MOD_ID + ".skill.already_known";
     String SKILL_FORGET_ALL_MULTIPLE    = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget_all.multiple.success";
     String SKILL_FORGET_ALL_SINGLE      = "commands." + ArsMagicaAPI.MOD_ID + ".skill.forget_all.single.success";
@@ -38,6 +38,8 @@ public interface ArsMagicaLegacyCommandTranslations {
     String SKILL_POINT_CONSUME_MULTIPLE = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.consume.multiple.success";
     String SKILL_POINT_CONSUME_SINGLE   = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.consume.single.success";
     String SKILL_POINT_GET              = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.get.success";
+    String SKILL_POINT_RESET_MULTIPLE   = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.reset.multiple.success";
+    String SKILL_POINT_RESET_SINGLE     = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.reset.single.success";
     String SKILL_POINT_SET_MULTIPLE     = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.set.multiple.success";
     String SKILL_POINT_SET_SINGLE       = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.set.single.success";
     String SKILL_POINT_UNKNOWN          = "commands." + ArsMagicaAPI.MOD_ID + ".skill_point.unknown";

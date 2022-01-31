@@ -42,9 +42,7 @@ public interface AMSounds {
     RegistryObject<SoundEvent> NATURE_GUARDIAN_DEATH            = register("entity.nature_guardian.death");
     RegistryObject<SoundEvent> NATURE_GUARDIAN_HURT             = register("entity.nature_guardian.hurt");
     RegistryObject<SoundEvent> WATER_GUARDIAN_AMBIENT           = register("entity.water_guardian.ambient");
-    RegistryObject<SoundEvent> WATER_GUARDIAN_ATTACK            = register("entity.water_guardian.attack");
     RegistryObject<SoundEvent> WATER_GUARDIAN_DEATH             = register("entity.water_guardian.death");
-    RegistryObject<SoundEvent> WATER_GUARDIAN_HURT              = register("entity.water_guardian.hurt");
     RegistryObject<SoundEvent> ENDER_GUARDIAN_FLAP              = register("entity.ender_guardian.flap");
     RegistryObject<SoundEvent> ENDER_GUARDIAN_ROAR              = register("entity.ender_guardian.roar");
     RegistryObject<SoundEvent> FIRE_GUARDIAN_FLAMETHROWER       = register("entity.fire_guardian.flamethrower");

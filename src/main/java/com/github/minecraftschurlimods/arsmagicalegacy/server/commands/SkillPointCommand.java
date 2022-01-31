@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -18,61 +19,67 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.ArsMagicaLegacyCommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
-public class SkillPointSubcommand {
-    private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILL_POINTS = SkillPointSubcommand::suggestSkillPoints;
+public class SkillPointCommand {
+    private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILL_POINTS = SkillPointCommand::suggestSkillPoints;
     private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL_POINT = new DynamicCommandExceptionType(message -> new TranslatableComponent(SKILL_POINT_UNKNOWN, message));
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("skill_point")
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILL_POINTS)
-                                        .executes(SkillPointSubcommand::addOneSkillPoint)
+                                        .executes(SkillPointCommand::addOneSkillPoint)
                                         .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(SkillPointSubcommand::addSkillPoint))))
+                                                .executes(SkillPointCommand::addSkillPoint))))
                         .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILL_POINTS)
-                                .executes(SkillPointSubcommand::addOneSkillPointSelf)
+                                .executes(SkillPointCommand::addOneSkillPointSelf)
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(SkillPointSubcommand::addSkillPointSelf))))
+                                        .executes(SkillPointCommand::addSkillPointSelf))))
                 .then(Commands.literal("consume")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILL_POINTS)
-                                        .executes(SkillPointSubcommand::consumeOneSkillPoint)
+                                        .executes(SkillPointCommand::consumeOneSkillPoint)
                                         .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(SkillPointSubcommand::consumeSkillPoint))))
+                                                .executes(SkillPointCommand::consumeSkillPoint))))
                         .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILL_POINTS)
-                                .executes(SkillPointSubcommand::consumeOneSkillPointSelf)
+                                .executes(SkillPointCommand::consumeOneSkillPointSelf)
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(SkillPointSubcommand::consumeSkillPointSelf))))
+                                        .executes(SkillPointCommand::consumeSkillPointSelf))))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILL_POINTS)
                                         .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(SkillPointSubcommand::setSkillPoint))))
+                                                .executes(SkillPointCommand::setSkillPoint))))
                         .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILL_POINTS)
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(SkillPointSubcommand::setSkillPointSelf))))
+                                        .executes(SkillPointCommand::setSkillPointSelf))))
+                .then(Commands.literal("reset")
+                        .executes(SkillPointCommand::resetSkillPointsSelf)
+                        .then(Commands.argument("target", EntityArgument.players())
+                                .executes(SkillPointCommand::resetSkillPoints)))
                 .then(Commands.literal("get")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILL_POINTS)
-                                        .executes(SkillPointSubcommand::getSkillPoint)))
+                                        .executes(SkillPointCommand::getSkillPoint)))
                         .then(Commands.argument("skill_point", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILL_POINTS)
-                                .executes(SkillPointSubcommand::getSkillPointSelf))));
+                                .executes(SkillPointCommand::getSkillPointSelf))));
     }
 
     private static int addOneSkillPointSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -154,6 +161,31 @@ public class SkillPointSubcommand {
             context.getSource().sendSuccess(new TranslatableComponent(SKILL_POINT_SET_SINGLE, players.iterator().next().getDisplayName(), amount, skillPoint.getDisplayName()), true);
         } else {
             context.getSource().sendSuccess(new TranslatableComponent(SKILL_POINT_SET_MULTIPLE, players.size(), amount, skillPoint.getDisplayName()), true);
+        }
+        return players.size();
+    }
+
+    private static int resetSkillPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return resetSkillPoints(List.of(context.getSource().getPlayerOrException()), context);
+    }
+
+    private static int resetSkillPoints(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return resetSkillPoints(EntityArgument.getPlayers(context, "target"), context);
+    }
+
+    private static int resetSkillPoints(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
+        var api = ArsMagicaAPI.get();
+        var helper = api.getSkillHelper();
+        var registry = api.getSkillPointRegistry();
+        for (ServerPlayer player : players) {
+            for (ISkillPoint skillPoint : registry) {
+                helper.consumeSkillPoint(player, skillPoint, helper.getSkillPoint(player, skillPoint));
+            }
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(SKILL_POINT_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(SKILL_POINT_RESET_MULTIPLE, players.size()), true);
         }
         return players.size();
     }

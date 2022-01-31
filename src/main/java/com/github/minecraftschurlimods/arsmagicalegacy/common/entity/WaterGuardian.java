@@ -46,7 +46,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.WATER_GUARDIAN_HURT.get();
+        return null;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.WATER_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override

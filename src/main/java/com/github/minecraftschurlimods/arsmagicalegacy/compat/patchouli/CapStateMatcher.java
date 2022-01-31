@@ -13,7 +13,7 @@ class CapStateMatcher implements IStateMatcher {
     private final TriPredicate<BlockGetter, BlockPos, BlockState> predicate;
 
     CapStateMatcher() {
-        predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getCapMaterial(state.getBlock()).map(AltarCapMaterial::cap).filter(state::is).isPresent();
+        this.predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getCapMaterial(state.getBlock()).map(AltarCapMaterial::cap).filter(state::is).isPresent();
     }
 
     @Override

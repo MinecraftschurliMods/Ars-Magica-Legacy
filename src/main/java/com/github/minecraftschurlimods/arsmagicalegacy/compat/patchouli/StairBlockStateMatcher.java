@@ -20,7 +20,7 @@ class StairBlockStateMatcher implements IStateMatcher {
     public StairBlockStateMatcher(Direction direction, Half half) {
         this.direction = direction;
         this.half = half;
-        predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getStructureMaterial(state.getBlock()).map(AltarStructureMaterial::stair).filter(state::is).isPresent() && state.getValue(StairBlock.FACING) == direction && state.getValue(StairBlock.HALF) == half;
+        this.predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getStructureMaterial(state.getBlock()).map(AltarStructureMaterial::stair).filter(state::is).isPresent() && state.getValue(StairBlock.FACING) == direction && state.getValue(StairBlock.HALF) == half;
     }
 
     @Override

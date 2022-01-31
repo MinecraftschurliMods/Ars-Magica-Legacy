@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
@@ -22,7 +23,6 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import java.util.UUID;
 import java.util.function.BiFunction;
-import javax.annotation.Nonnull;
 
 @CompatManager.ModCompat("curios")
 public class CurioCompat implements ICompatHandler {
@@ -70,7 +70,7 @@ public class CurioCompat implements ICompatHandler {
             inst = LazyOptional.of(() -> instance);
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public <X> LazyOptional<X> getCapability(Capability<X> cap, @Nullable Direction side) {
             return capability.orEmpty(cap, inst);

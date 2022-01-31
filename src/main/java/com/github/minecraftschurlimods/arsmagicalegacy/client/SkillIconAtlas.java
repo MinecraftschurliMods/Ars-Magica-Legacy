@@ -47,7 +47,7 @@ public final class SkillIconAtlas extends TextureAtlasHolder {
     protected TextureAtlas.Preparations prepare(ResourceManager resourceManager, ProfilerFiller pProfiler) {
         int pathLength = ("textures/" + PREFIX + "/").length();
         int suffixLength = SUFFIX.length();
-        resourceLocations = resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE).stream().map(resourceLocation -> {
+        this.resourceLocations = resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE).stream().map(resourceLocation -> {
             String path = resourceLocation.getPath();
             path = path.substring(pathLength, path.length() - suffixLength);
             return new ResourceLocation(resourceLocation.getNamespace(), path);

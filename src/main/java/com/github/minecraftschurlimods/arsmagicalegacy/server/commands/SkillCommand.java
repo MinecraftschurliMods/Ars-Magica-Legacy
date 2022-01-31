@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,52 +29,53 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.ArsMagicaLegacyCommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
-public class SkillSubcommand {
-    private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillSubcommand::suggestSkills;
+public class SkillCommand {
+    private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
     private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(SKILL_UNKNOWN, message));
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("skill")
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("learn")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILLS)
-                                        .executes(SkillSubcommand::learnSkill))
+                                        .executes(SkillCommand::learnSkill))
                                 .then(Commands.literal("*")
-                                        .executes(SkillSubcommand::learnAllSkills)))
+                                        .executes(SkillCommand::learnAllSkills)))
                         .then(Commands.argument("skill", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILLS)
-                                .executes(SkillSubcommand::learnSkillSelf))
+                                .executes(SkillCommand::learnSkillSelf))
                         .then(Commands.literal("*")
-                                .executes(SkillSubcommand::learnAllSkillsSelf)))
+                                .executes(SkillCommand::learnAllSkillsSelf)))
                 .then(Commands.literal("forget")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_SKILLS)
-                                        .executes(SkillSubcommand::forgetSkill))
+                                        .executes(SkillCommand::forgetSkill))
                                 .then(Commands.literal("*")
-                                        .executes(SkillSubcommand::forgetAllSkills)))
+                                        .executes(SkillCommand::forgetAllSkills)))
                         .then(Commands.argument("skill", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_SKILLS)
-                                .executes(SkillSubcommand::forgetSkillSelf))
+                                .executes(SkillCommand::forgetSkillSelf))
                         .then(Commands.literal("*")
-                                .executes(SkillSubcommand::forgetAllSkillsSelf)))
+                                .executes(SkillCommand::forgetAllSkillsSelf)))
                 .then(Commands.literal("list")
-                        .executes(SkillSubcommand::listKnownSkillsSelf)
+                        .executes(SkillCommand::listKnownSkillsSelf)
                         .then(Commands.argument("target", EntityArgument.player())
-                                .executes(SkillSubcommand::listKnownSkills)
+                                .executes(SkillCommand::listKnownSkills)
                                 .then(Commands.literal("known")
-                                        .executes(SkillSubcommand::listKnownSkills))
+                                        .executes(SkillCommand::listKnownSkills))
                                 .then(Commands.literal("unknown")
-                                        .executes(SkillSubcommand::listUnknownSkills)))
+                                        .executes(SkillCommand::listUnknownSkills)))
                         .then(Commands.literal("known")
-                                .executes(SkillSubcommand::listKnownSkillsSelf))
+                                .executes(SkillCommand::listKnownSkillsSelf))
                         .then(Commands.literal("unknown")
-                                .executes(SkillSubcommand::listUnknownSkillsSelf))
+                                .executes(SkillCommand::listUnknownSkillsSelf))
                         .then(Commands.literal("all")
-                                .executes(SkillSubcommand::listAllSkills))));
+                                .executes(SkillCommand::listAllSkills))));
     }
 
     private static int listAllSkills(CommandContext<CommandSourceStack> context) {

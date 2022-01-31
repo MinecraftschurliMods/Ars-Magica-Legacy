@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -11,56 +12,58 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ToFloatFunction;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.ArsMagicaLegacyCommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
-public class MagicXpSubcommand {
+public class MagicXpCommand {
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("magic_xp")
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                        .executes(MagicXpSubcommand::addMagicXpPoints)
+                                        .executes(MagicXpCommand::addMagicXpPoints)
                                         .then(Commands.literal("points")
-                                                .executes(MagicXpSubcommand::addMagicXpPoints))
+                                                .executes(MagicXpCommand::addMagicXpPoints))
                                         .then(Commands.literal("levels")
-                                                .executes(MagicXpSubcommand::addMagicXpLevels))))
+                                                .executes(MagicXpCommand::addMagicXpLevels))))
                         .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                .executes(MagicXpSubcommand::addMagicXpPointsSelf)
+                                .executes(MagicXpCommand::addMagicXpPointsSelf)
                                 .then(Commands.literal("points")
-                                        .executes(MagicXpSubcommand::addMagicXpPointsSelf))
+                                        .executes(MagicXpCommand::addMagicXpPointsSelf))
                                 .then(Commands.literal("levels")
-                                        .executes(MagicXpSubcommand::addMagicXpLevelsSelf))))
+                                        .executes(MagicXpCommand::addMagicXpLevelsSelf))))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(MagicXpSubcommand::setMagicXpPoints)
+                                        .executes(MagicXpCommand::setMagicXpPoints)
                                         .then(Commands.literal("points")
-                                                .executes(MagicXpSubcommand::setMagicXpPoints))
+                                                .executes(MagicXpCommand::setMagicXpPoints))
                                         .then(Commands.literal("levels")
-                                                .executes(MagicXpSubcommand::setMagicXpLevels))))
+                                                .executes(MagicXpCommand::setMagicXpLevels))))
                         .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                .executes(MagicXpSubcommand::setMagicXpPointsSelf)
+                                .executes(MagicXpCommand::setMagicXpPointsSelf)
                                 .then(Commands.literal("points")
-                                        .executes(MagicXpSubcommand::setMagicXpPointsSelf))
+                                        .executes(MagicXpCommand::setMagicXpPointsSelf))
                                 .then(Commands.literal("levels")
-                                        .executes(MagicXpSubcommand::setMagicXpLevelsSelf))))
+                                        .executes(MagicXpCommand::setMagicXpLevelsSelf))))
                 .then(Commands.literal("get")
-                        .executes(MagicXpSubcommand::getMagicXpPointsSelf)
+                        .executes(MagicXpCommand::getMagicXpPointsSelf)
                         .then(Commands.argument("target", EntityArgument.player())
-                                .executes(MagicXpSubcommand::getMagicXpPoints)
+                                .executes(MagicXpCommand::getMagicXpPoints)
                                 .then(Commands.literal("points")
-                                        .executes(MagicXpSubcommand::getMagicXpPoints))
+                                        .executes(MagicXpCommand::getMagicXpPoints))
                                 .then(Commands.literal("levels")
-                                        .executes(MagicXpSubcommand::getMagicXpLevels)))
+                                        .executes(MagicXpCommand::getMagicXpLevels)))
                         .then(Commands.literal("points")
-                                .executes(MagicXpSubcommand::getMagicXpPointsSelf))
+                                .executes(MagicXpCommand::getMagicXpPointsSelf))
                         .then(Commands.literal("levels")
-                                .executes(MagicXpSubcommand::getMagicXpLevelsSelf))));
+                                .executes(MagicXpCommand::getMagicXpLevelsSelf))));
     }
 
     private static int addMagicXpPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -19,41 +20,75 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.ArsMagicaLegacyCommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
-public class AffinitySubcommand {
-    private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinitySubcommand::suggestAffinities;
+public class AffinityCommand {
+    private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinityCommand::suggestAffinities;
     private static final DynamicCommandExceptionType ERROR_UNKNOWN_AFFINITY = new DynamicCommandExceptionType(message -> new TranslatableComponent(AFFINITY_UNKNOWN, message));
-    
+
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("affinity")
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
+                .then(Commands.literal("add")
+                        .then(Commands.argument("target", EntityArgument.players())
+                                .then(Commands.argument("affinity", ResourceLocationArgument.id())
+                                        .suggests(SUGGEST_AFFINITIES)
+                                        .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
+                                                .executes(AffinityCommand::addAffinity))))
+                        .then(Commands.argument("affinity", ResourceLocationArgument.id())
+                                .suggests(SUGGEST_AFFINITIES)
+                                .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
+                                        .executes(AffinityCommand::addAffinitySelf))))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("affinity", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_AFFINITIES)
                                         .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
-                                                .executes(AffinitySubcommand::setAffinity))))
+                                                .executes(AffinityCommand::setAffinity))))
                         .then(Commands.argument("affinity", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_AFFINITIES)
                                 .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
-                                        .executes(AffinitySubcommand::setAffinitySelf))))
+                                        .executes(AffinityCommand::setAffinitySelf))))
                 .then(Commands.literal("reset")
-                        .executes(AffinitySubcommand::resetAffinitiesSelf)
+                        .executes(AffinityCommand::resetAffinitiesSelf)
                         .then(Commands.argument("target", EntityArgument.players())
-                                .executes(AffinitySubcommand::resetAffinities)))
+                                .executes(AffinityCommand::resetAffinities)))
                 .then(Commands.literal("get")
                         .then(Commands.argument("target", EntityArgument.player())
                                 .then(Commands.argument("affinity", ResourceLocationArgument.id())
                                         .suggests(SUGGEST_AFFINITIES)
-                                        .executes(AffinitySubcommand::getAffinity)))
+                                        .executes(AffinityCommand::getAffinity)))
                         .then(Commands.argument("affinity", ResourceLocationArgument.id())
                                 .suggests(SUGGEST_AFFINITIES)
-                                .executes(AffinitySubcommand::getAffinitySelf))));
+                                .executes(AffinityCommand::getAffinitySelf))));
+    }
+
+    private static int addAffinitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return addAffinity(List.of(context.getSource().getPlayerOrException()), getAffinityFromRegistry(context), context);
+    }
+
+    private static int addAffinity(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return addAffinity(EntityArgument.getPlayers(context, "target"), getAffinityFromRegistry(context), context);
+    }
+
+    private static int addAffinity(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+        double amount = DoubleArgumentType.getDouble(context, "amount");
+        var helper = ArsMagicaAPI.get().getAffinityHelper();
+        for (ServerPlayer player : players) {
+            helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepth(player, affinity) + amount));
+        }
+        if (players.size() == 1) {
+            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
+        } else {
+            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_ADD_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
+        }
+        return players.size();
     }
 
     private static int setAffinitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -112,7 +147,7 @@ public class AffinitySubcommand {
         context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
         return Command.SINGLE_SUCCESS;
     }
-    
+
     private static IAffinity getAffinityFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "affinity");
         IAffinity affinity = ArsMagicaAPI.get().getAffinityRegistry().getValue(rl);
