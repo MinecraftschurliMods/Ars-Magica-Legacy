@@ -42,8 +42,8 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
             dragOffsetY = mouseY - y;
             dragOffsetSet = true;
         }
-        x = (int) (mouseX - dragOffsetX);
-        y = (int) (mouseY - dragOffsetY);
+        this.x = (int) (mouseX - this.dragOffsetX);
+        this.y = (int) (mouseY - this.dragOffsetY);
         return true;
     }
 
