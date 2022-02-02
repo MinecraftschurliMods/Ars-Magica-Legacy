@@ -121,6 +121,9 @@ public final class OcculusTab implements IOcculusTab {
         this.id = id;
     }
 
+    /**
+     * @return The name of this occulus tab's renderer class.
+     */
     public String getRenderer() {
         return rendererClass;
     }

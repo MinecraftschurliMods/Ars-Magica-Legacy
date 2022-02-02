@@ -51,6 +51,9 @@ public class FilteredFilledDropArea<T> implements DropArea {
         update();
     }
 
+    /**
+     * Updates this drop area.
+     */
     public void update() {
         items.clear();
         int x = this.x, y = this.y;

@@ -48,6 +48,7 @@ import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
@@ -63,7 +64,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.NotNull;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
@@ -148,6 +148,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         super(AMBlockEntities.ALTAR_CORE.get(), pWorldPosition, pBlockState);
     }
 
+    /**
+     * @return An unmodifiable list of all bound etherium provider positions.
+     */
     public Collection<BlockPos> getBoundPositions() {
         return Collections.unmodifiableCollection(boundPositions);
     }
@@ -160,6 +163,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return state.getValue(StairBlock.FACING) == Rotation.values()[i].rotate(direction).getOpposite() && state.getValue(StairBlock.HALF) == half && state.getValue(StairBlock.SHAPE) == StairsShape.STRAIGHT && !state.getValue(StairBlock.WATERLOGGED);
     }
 
+    /**
+     * Invalidates the multiblock.
+     */
     public void invalidateMultiblock() {
         if (viewPos != null && getLevel() != null && getLevel().getBlockState(viewPos).is(AMBlocks.ALTAR_VIEW.get())) {
             getLevel().setBlock(viewPos, AMBlocks.ALTAR_VIEW.get().defaultBlockState(), Block.UPDATE_ALL);
@@ -175,9 +181,12 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         setChanged();
     }
 
+    /**
+     * Checks for a valid multiblock.
+     */
     public void checkMultiblock() {
         if (getLevel() == null) return;
-        boolean b = checkMultiblockInt();
+        boolean b = checkMultiblockInternal();
         if (!b) {
             invalidateMultiblock();
         }
@@ -186,7 +195,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         }
     }
 
-    private boolean checkMultiblockInt() {
+    private boolean checkMultiblockInternal() {
         if (getLevel() == null) return false;
         AltarMaterialManager manager = AltarMaterialManager.instance();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -277,6 +286,12 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         super.load(pTag);
     }
 
+    /**
+     * Saves the altar to the given tag.
+     *
+     * @param tag        The tag to save to.
+     * @param forNetwork Whether the tag is meant for network transfer or not.
+     */
     public void saveAltar(CompoundTag tag, boolean forNetwork) {
         tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, boundPositions).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf().encodeStart(NbtOps.INSTANCE, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
@@ -371,10 +386,16 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);
     }
 
+    /**
+     * @return Whether the multiblock is formed or not.
+     */
     public boolean isMultiblockFormed() {
         return getBlockState().hasProperty(AltarCoreBlock.FORMED) && getBlockState().getValue(AltarCoreBlock.FORMED);
     }
 
+    /**
+     * @return Whether the altar has enough power or not.
+     */
     public boolean hasEnoughPower() {
         return getRequiredPower() <= powerLevel;
     }
@@ -388,6 +409,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return recipe.peekFirst();
     }
 
+    /**
+     * @return Whether the altar's lever is down or not.
+     */
     public boolean isLeverActive() {
         return getLevel() != null && leverPos != null && getLevel().getBlockState(leverPos).getValue(LeverBlock.POWERED);
     }
@@ -406,6 +430,9 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return recipe;
     }
 
+    /**
+     * @return The book in the altar's lectern.
+     */
     public ItemStack getBook() {
         if (getLevel() == null || lecternPos == null) return ItemStack.EMPTY;
         BlockState lecternState = getLevel().getBlockState(lecternPos);

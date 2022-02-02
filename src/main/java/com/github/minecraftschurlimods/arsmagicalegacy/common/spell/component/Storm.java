@@ -26,17 +26,7 @@ public class Storm extends AbstractComponent {
         super(SpellPartStats.DURATION);
     }
 
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
-    }
-
-    private SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
+    private static SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
         if (!level.isClientSide()) {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
@@ -73,5 +63,15 @@ public class Storm extends AbstractComponent {
             }
         }
         return SpellCastResult.EFFECT_FAILED;
+    }
+
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+        return performStorm(caster, level, modifiers, spell, target);
+    }
+
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
+        return performStorm(caster, level, modifiers, spell, target);
     }
 }

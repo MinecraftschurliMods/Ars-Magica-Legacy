@@ -36,12 +36,6 @@ public final class ShrinkHelper implements IShrinkHelper {
         return SHRINK;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleShrinkSync(ShrinkHelper.ShrinkHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(cap -> cap.onSync(holder)));
     }
@@ -124,6 +118,11 @@ public final class ShrinkHelper implements IShrinkHelper {
             this.shrunk = shrunk;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(ShrinkHolder data) {
             shrunk = data.shrunk;
         }

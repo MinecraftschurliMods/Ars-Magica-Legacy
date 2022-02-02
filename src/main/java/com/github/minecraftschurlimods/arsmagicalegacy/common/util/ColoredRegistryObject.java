@@ -19,14 +19,26 @@ public class ColoredRegistryObject<B extends IForgeRegistryEntry<B>, T extends B
         }
     }
 
+    /**
+     * @param color The color to get the rune item's registry object for.
+     * @return The registry object of the rune item of the given color.
+     */
     public RegistryObject<T> registryObject(DyeColor color) {
         return map.get(color);
     }
 
+    /**
+     * @param color The color to get the registry object's value for.
+     * @return The registry object's value of the given color.
+     */
     public T get(DyeColor color) {
         return map.get(color).get();
     }
 
+    /**
+     * @param color The color to get the registry object's id for.
+     * @return The registry object's id of the given color.
+     */
     public ResourceLocation getId(DyeColor color) {
         return map.get(color).getId();
     }

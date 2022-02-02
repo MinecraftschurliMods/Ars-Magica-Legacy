@@ -20,6 +20,13 @@ public class GenericSpellModifier extends AbstractModifier {
         return modifiers.keySet();
     }
 
+    /**
+     * Adds a stat modifier to this spell modifier.
+     *
+     * @param stat     The stat to add the stat modifier for.
+     * @param modifier The stat modifier to add.
+     * @return This modifier, for chaining.
+     */
     public GenericSpellModifier addStatModifier(ISpellPartStat stat, ISpellPartStatModifier modifier) {
         modifiers.put(stat, modifier);
         return this;

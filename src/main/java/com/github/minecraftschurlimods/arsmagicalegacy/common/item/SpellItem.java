@@ -55,26 +55,56 @@ public class SpellItem extends Item implements ISpellItem {
         super(new Item.Properties().stacksTo(1));
     }
 
+    /**
+     * @param stack The stack to get the spell icon for.
+     * @return An optional containing the spell icon id, or an empty optional if the given stack does not have a spell icon.
+     */
     public static Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
         return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
     }
 
+    /**
+     * Sets the given icon to the given stack.
+     *
+     * @param stack The stack to set the icon on.
+     * @param icon  The icon to set.
+     */
     public static void setSpellIcon(ItemStack stack, ResourceLocation icon) {
         stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
     }
 
+    /**
+     * @param stack The stack to get the spell name for.
+     * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
+     */
     public static Optional<String> getSpellName(ItemStack stack) {
         return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
     }
 
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name to set.
+     */
     public static void setSpellName(ItemStack stack, String name) {
         stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
     }
 
+    /**
+     * Sets the given spell to the given stack.
+     *
+     * @param stack The stack to set the spell on.
+     * @param spell The spell to set.
+     */
     public static void saveSpell(ItemStack stack, Spell spell) {
         stack.getOrCreateTag().put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
     }
 
+    /**
+     * @param stack The stack to get the spell for.
+     * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
+     */
     public static Spell getSpell(ItemStack stack) {
         if (stack.isEmpty()) return Spell.EMPTY;
         return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(Spell.EMPTY);

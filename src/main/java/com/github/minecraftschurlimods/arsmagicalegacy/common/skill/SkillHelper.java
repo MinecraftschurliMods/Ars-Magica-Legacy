@@ -63,12 +63,6 @@ public final class SkillHelper implements ISkillHelper {
         return KNOWLEDGE;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleSync(KnowledgeHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(cap -> cap.onSync(holder)));
     }
@@ -285,6 +279,72 @@ public final class SkillHelper implements ISkillHelper {
             return new KnowledgeHolder(new HashSet<>(), new HashMap<>());
         }
 
+        @Override
+        public synchronized Set<ResourceLocation> skills() {
+            return Collections.unmodifiableSet(skills);
+        }
+
+        @Override
+        public synchronized Map<ResourceLocation, Integer> skillPoints() {
+            return Collections.unmodifiableMap(skillPoints);
+        }
+
+        /**
+         * Adds the given skill to the list of known skills.
+         *
+         * @param skill The id of the skill to add.
+         */
+        public synchronized void learn(ResourceLocation skill) {
+            skills.add(skill);
+        }
+
+        /**
+         * Adds the given skill to the list of known skills.
+         *
+         * @param skill The skill to add.
+         */
+        public void learn(ISkill skill) {
+            learn(skill.getId());
+        }
+
+        /**
+         * Adds all skills in the registry to the known skills list.
+         */
+        public synchronized void learnAll() {
+            for (ISkill skill : ArsMagicaAPI.get().getSkillManager().getSkills()) {
+                skills.add(skill.getId());
+            }
+        }
+
+        /**
+         * Removes the given skill from the list of known skills.
+         *
+         * @param skill The id of the skill to remove.
+         */
+        public synchronized void forget(ResourceLocation skill) {
+            skills.remove(skill);
+        }
+
+        /**
+         * Removes the given skill from the list of known skills.
+         *
+         * @param skill The skill to remove.
+         */
+        public void forget(ISkill skill) {
+            forget(skill.getId());
+        }
+
+        /**
+         * Clears the known skills list.
+         */
+        public synchronized void forgetAll() {
+            skills.clear();
+        }
+
+        /**
+         * @param skill The id of the skill to check.
+         * @return Whether the given skill can be learned or not.
+         */
         public synchronized boolean canLearn(ResourceLocation skill) {
             var skillManager = ArsMagicaAPI.get().getSkillManager();
             ISkill iSkill = skillManager.get(skill);
@@ -297,20 +357,77 @@ public final class SkillHelper implements ISkillHelper {
             return canLearn && skills.containsAll(skillManager.get(skill).getParents());
         }
 
-        public synchronized void learn(ResourceLocation skill) {
-            skills.add(skill);
+        /**
+         * @param skill The skill to check.
+         * @return Whether the given skill can be learned or not.
+         */
+        public boolean canLearn(ISkill skill) {
+            return canLearn(skill.getId());
         }
 
-        public synchronized void forget(ResourceLocation skill) {
-            skills.remove(skill);
+        /**
+         * @param skill The id of the skill to check.
+         * @return Whether the given skill is in the known skills list or not.
+         */
+        public synchronized boolean knows(ResourceLocation skill) {
+            return skills().contains(skill);
         }
 
+        /**
+         * @param skill The skill to check.
+         * @return Whether the given skill is in the known skills list or not.
+         */
+        public boolean knows(ISkill skill) {
+            return knows(skill.getId());
+        }
+
+        /**
+         * Adds the given amount of the given skill point to the list of skill points.
+         *
+         * @param skillPoint The id of the skill point to add.
+         * @param amount     The amount to add.
+         */
         public synchronized void addSkillPoint(ResourceLocation skillPoint, int amount) {
             skillPoints.putIfAbsent(skillPoint, 0);
             int amt = skillPoints.get(skillPoint);
             skillPoints.put(skillPoint, amt + amount);
         }
 
+        /**
+         * Adds the given amount of the given skill point to the list of skill points.
+         *
+         * @param skillPoint The skill point to add.
+         * @param amount     The amount to add.
+         */
+        public void addSkillPoint(ISkillPoint skillPoint, int amount) {
+            addSkillPoint(skillPoint.getId(), amount);
+        }
+
+        /**
+         * Adds one of the given skill point to the list of skill points.
+         *
+         * @param skillPoint The id of the skill point to add.
+         */
+        public void addSkillPoint(ResourceLocation skillPoint) {
+            addSkillPoint(skillPoint, 1);
+        }
+
+        /**
+         * Adds one of the given skill point to the list of skill points.
+         *
+         * @param skillPoint The skill point to add.
+         */
+        public void addSkillPoint(ISkillPoint skillPoint) {
+            addSkillPoint(skillPoint, 1);
+        }
+
+        /**
+         * Removes the given amount of the given skill point from the list of skill points.
+         *
+         * @param skillPoint The id of the skill point to remove.
+         * @param amount     The amount to remove.
+         * @return True if the operation succeeded, false otherwise.
+         */
         public synchronized boolean consumeSkillPoint(ResourceLocation skillPoint, int amount) {
             if (!skillPoints.containsKey(skillPoint)) return false;
             int amt = skillPoints.get(skillPoint);
@@ -319,83 +436,63 @@ public final class SkillHelper implements ISkillHelper {
             return true;
         }
 
-        public void forgetAll() {
-            skills.clear();
-        }
-
-        public void learnAll() {
-            for (ISkill skill : ArsMagicaAPI.get().getSkillManager().getSkills()) {
-                skills.add(skill.getId());
-            }
-        }
-
-        @Override
-        public synchronized Set<ResourceLocation> skills() {
-            return Collections.unmodifiableSet(skills);
-        }
-
-        @Override
-        public synchronized Map<ResourceLocation, Integer> skillPoints() {
-            return Collections.unmodifiableMap(skillPoints);
-        }
-
-        public void onSync(KnowledgeHolder knowledgeHolder) {
-            skills.clear();
-            skills.addAll(knowledgeHolder.skills());
-            skillPoints.clear();
-            skillPoints.putAll(knowledgeHolder.skillPoints());
-        }
-
-        public boolean knows(ResourceLocation skill) {
-            return skills().contains(skill);
-        }
-
-        public boolean knows(ISkill skill) {
-            return knows(skill.getId());
-        }
-
-        public boolean canLearn(ISkill skill) {
-            return canLearn(skill.getId());
-        }
-
-        public void learn(ISkill skill) {
-            learn(skill.getId());
-        }
-
-        public void forget(ISkill skill) {
-            forget(skill.getId());
-        }
-
-        public int getSkillPoint(ResourceLocation skillPoint) {
-            return skillPoints().getOrDefault(skillPoint, 0);
-        }
-
-        public int getSkillPoint(ISkillPoint skillPoint) {
-            return getSkillPoint(skillPoint.getId());
-        }
-
-        public void addSkillPoint(ISkillPoint skillPoint, int amount) {
-            addSkillPoint(skillPoint.getId(), amount);
-        }
-
+        /**
+         * Removes the given amount of the given skill point from the list of skill points.
+         *
+         * @param skillPoint The skill point to remove.
+         * @param amount     The amount to remove.
+         * @return True if the operation succeeded, false otherwise.
+         */
         public boolean consumeSkillPoint(ISkillPoint skillPoint, int amount) {
             return consumeSkillPoint(skillPoint.getId(), amount);
         }
 
-        public void addSkillPoint(ISkillPoint skillPoint) {
-            addSkillPoint(skillPoint, 1);
+        /**
+         * Removes the given amount of the given skill point from the list of skill points.
+         *
+         * @param skillPoint The id of the skill point to remove.
+         * @return True if the operation succeeded, false otherwise.
+         */
+        public boolean consumeSkillPoint(ResourceLocation skillPoint) {
+            return consumeSkillPoint(skillPoint, 1);
         }
 
+        /**
+         * Removes the given amount of the given skill point from the list of skill points.
+         *
+         * @param skillPoint The skill point to remove.
+         * @return True if the operation succeeded, false otherwise.
+         */
         public boolean consumeSkillPoint(ISkillPoint skillPoint) {
             return consumeSkillPoint(skillPoint, 1);
         }
 
-        public void addSkillPoint(ResourceLocation skillPoint) {
-            addSkillPoint(skillPoint, 1);
+        /**
+         * @param skillPoint The id of the skill point type to check.
+         * @return The amount of skill points of the given type that are present in this holder.
+         */
+        public int getSkillPoint(ResourceLocation skillPoint) {
+            return skillPoints().getOrDefault(skillPoint, 0);
         }
 
-        public boolean consumeSkillPoint(ResourceLocation skillPoint) {
-            return consumeSkillPoint(skillPoint, 1);
+        /**
+         * @param skillPoint The skill point type to check.
+         * @return The amount of skill points of the given type that are present in this holder.
+         */
+        public int getSkillPoint(ISkillPoint skillPoint) {
+            return getSkillPoint(skillPoint.getId());
+        }
+
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
+        public void onSync(KnowledgeHolder data) {
+            skills.clear();
+            skills.addAll(data.skills());
+            skillPoints.clear();
+            skillPoints.putAll(data.skillPoints());
         }
     }
 }

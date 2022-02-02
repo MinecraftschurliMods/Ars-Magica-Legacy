@@ -80,6 +80,7 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true);
     }
 
+    @Override
     public void init(FMLCommonSetupEvent event) {
         PatchouliAPI.IPatchouliAPI api = PatchouliAPI.get();
         IStateMatcher capStateMatcher = new CapStateMatcher();

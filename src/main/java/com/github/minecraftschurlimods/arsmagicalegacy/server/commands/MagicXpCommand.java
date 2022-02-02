@@ -21,6 +21,11 @@ import java.util.function.BiConsumer;
 import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
 public class MagicXpCommand {
+    /**
+     * Registers the command to the given builder.
+     *
+     * @param builder The builder to register the command to.
+     */
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("magic_xp")
                 .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))

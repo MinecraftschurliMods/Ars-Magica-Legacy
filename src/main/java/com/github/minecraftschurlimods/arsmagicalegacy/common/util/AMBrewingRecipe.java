@@ -8,6 +8,9 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 
+/**
+ * Represents a brewing recipe. Required as vanilla has a weird implementation of this.
+ */
 public record AMBrewingRecipe(Potion inputPotion, Ingredient ingredient, Potion outputPotion) implements IBrewingRecipe {
     @Override
     public boolean isInput(ItemStack input) {

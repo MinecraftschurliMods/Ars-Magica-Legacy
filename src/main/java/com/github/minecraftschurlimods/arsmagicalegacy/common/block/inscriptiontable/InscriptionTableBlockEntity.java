@@ -43,6 +43,12 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
     }
 
+    /**
+     * @param name   The spell name.
+     * @param author The spell author.
+     * @param spell  The spell.
+     * @return A written book with the spell written onto it.
+     */
     public static ItemStack makeRecipe(String name, String author, Spell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         SpellItem.saveSpell(book, spell);
@@ -71,6 +77,12 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         }
     }
 
+    /**
+     * Synchronizes the block entity.
+     *
+     * @param name  The spell name.
+     * @param spell The spell.
+     */
     public void onSync(@Nullable String name, @Nullable Spell spell) {
         spellName = name;
         spellRecipe = spell;
@@ -87,6 +99,11 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return spellRecipe;
     }
 
+    /**
+     * @param player The player creating the spell.
+     * @param stack  The written book item stack.
+     * @return The given item stack with the spell written onto it, or just the given item stack if there is no spell laid out yet.
+     */
     public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
         return Optional.ofNullable(getSpellRecipe())
                 .map(spell -> {

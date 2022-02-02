@@ -10,18 +10,34 @@ public final class ColorUtil {
     private ColorUtil() {
     }
 
+    /**
+     * @param color The color to get the blue value for.
+     * @return The blue value of the given color.
+     */
     public static float getBlue(int color) {
         return (0xFF & color) / 255f;
     }
 
+    /**
+     * @param color The color to get the green value for.
+     * @return The green value of the given color.
+     */
     public static float getGreen(int color) {
         return (0xFF & (color >> 8)) / 255f;
     }
 
+    /**
+     * @param color The color to get the red value for.
+     * @return The red value of the given color.
+     */
     public static float getRed(int color) {
         return (0xFF & (color >> 16)) / 255f;
     }
 
+    /**
+     * @param rgbColor The rgb color to be converted.
+     * @return A float array representing the hue, saturation and brightness of the given rgb color.
+     */
     public static float[] rgbToHsb(int rgbColor) {
         float hue, saturation, brightness;
         int r = (int) (getRed(rgbColor) * 255);
@@ -46,6 +62,12 @@ public final class ColorUtil {
         return new float[]{hue, saturation, brightness};
     }
 
+    /**
+     * @param hue        The hue value to be converted.
+     * @param saturation The saturation value to be converted.
+     * @param brightness The brightness value to be converted.
+     * @return An rgb color, created from the hsb parameters of this method.
+     */
     public static int hsbToRgb(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
@@ -92,6 +114,10 @@ public final class ColorUtil {
         return 0xff000000 | (r << 16) | (g << 8) | b;
     }
 
+    /**
+     * @param colors The colors to average.
+     * @return The average of the given colors.
+     */
     public static int calculateAverage(int... colors) {
         float hue = 0;
         float saturation = 0;

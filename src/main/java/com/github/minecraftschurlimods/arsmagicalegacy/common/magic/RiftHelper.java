@@ -57,8 +57,13 @@ public final class RiftHelper implements IRiftHelper {
             deserializeNBT(tag);
         }
 
-        public void onSync(RiftHolder rift) {
-            deserializeNBT(rift.serializeNBT());
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
+        public void onSync(RiftHolder data) {
+            deserializeNBT(data.serializeNBT());
         }
     }
 }

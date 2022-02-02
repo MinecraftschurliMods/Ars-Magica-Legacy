@@ -14,9 +14,6 @@ import java.util.List;
  * The base class for all spell events.
  */
 public abstract class SpellEvent extends LivingEvent {
-    /**
-     * The spell.
-     */
     private final ISpell spell;
 
     public SpellEvent(LivingEntity entity, ISpell spell) {

@@ -35,6 +35,9 @@ public class ObeliskMenu extends AbstractContainerMenu {
         }
     }
 
+    /**
+     * @return How much of the burn time has already passed.
+     */
     public int getLitProgress() {
         int i = data.get(1);
         if (i == 0) {
@@ -43,6 +46,9 @@ public class ObeliskMenu extends AbstractContainerMenu {
         return data.get(0) * 13 / i;
     }
 
+    /**
+     * @return Whether the obelisk is lit or not.
+     */
     public boolean isLit() {
         return data.get(0) > 0;
     }

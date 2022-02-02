@@ -70,6 +70,9 @@ public final class ArsMagicaLegacy {
         CompatManager.preInit();
     }
 
+    /**
+     * @return The mod display name.
+     */
     public static String getModName() {
         return INSTANCE.modInfo.getDisplayName();
     }

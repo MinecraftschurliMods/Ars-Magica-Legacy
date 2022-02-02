@@ -43,6 +43,14 @@ public final class AMFeatures {
     private AMFeatures() {
     }
 
+    /**
+     * @param name                     The name of the feature.
+     * @param ore                      The ore block to use.
+     * @param deepslateOre             The deepslate ore block to use.
+     * @param veinSize                 The vein size of this ore.
+     * @param airExposureDiscardChance A 0..1 float that represents the probability of the feature being discarded if the vein touches air.
+     * @return A configured ore feature based on the given parameters.
+     */
     public static ConfiguredFeature<?, ?> ore(String name, Supplier<? extends Block> ore, Supplier<? extends Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
         return FeatureUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, Feature.ORE.configured(new OreConfiguration(List.of(
                 OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()),
@@ -50,6 +58,13 @@ public final class AMFeatures {
         ), veinSize, airExposureDiscardChance)));
     }
 
+    /**
+     * @param name                 The name of the feature.
+     * @param feature              The configured feature to use.
+     * @param veinCount            The amount of veins for this feature.
+     * @param heightRangePlacement The height distribution of this feature.
+     * @return A placed feature based on the given parameters.
+     */
     public static PlacedFeature orePlacement(String name, ConfiguredFeature<?, ?> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
         return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.placed(List.of(
                 CountPlacement.of(veinCount),
@@ -59,10 +74,22 @@ public final class AMFeatures {
         )));
     }
 
+    /**
+     * @param name   The name of the feature.
+     * @param tries  How many tries for this feature will be performed.
+     * @param flower The flower block to use.
+     * @return A configured flower feature based on the given parameters.
+     */
     public static ConfiguredFeature<?, ?> flower(String name, int tries, Supplier<? extends Block> flower) {
         return FeatureUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, Feature.RANDOM_PATCH.configured(FeatureUtils.simpleRandomPatchConfiguration(tries, Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(flower.get()))).onlyWhenEmpty())));
     }
 
+    /**
+     * @param name    The name of the feature.
+     * @param feature The configured feature to use.
+     * @param rarity  The rarity of this feature.
+     * @return A placed feature based on the given parameters.
+     */
     public static PlacedFeature flowerPlacement(String name, ConfiguredFeature<?, ?> feature, int rarity) {
         return PlacementUtils.register(name, feature.placed(
                 RarityFilter.onAverageOnceEvery(rarity),

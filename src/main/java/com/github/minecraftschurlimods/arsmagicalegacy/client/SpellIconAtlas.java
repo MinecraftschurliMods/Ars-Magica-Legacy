@@ -29,10 +29,16 @@ public final class SpellIconAtlas extends TextureAtlasHolder {
         super(Minecraft.getInstance().textureManager, SPELL_ICON_ATLAS, PREFIX);
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static SpellIconAtlas instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @return A collection of all registered spell icons.
+     */
     public Collection<ResourceLocation> getRegisteredIcons() {
         return resourceLocations;
     }

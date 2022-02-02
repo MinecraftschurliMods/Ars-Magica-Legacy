@@ -31,6 +31,9 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         this.loopSound = loopSound;
     }
 
+    /**
+     * @return A new affinity builder.
+     */
     public static Builder builder() {
         return new Builder();
     }
@@ -78,46 +81,81 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
         private Supplier<SoundEvent> castSound;
         private Supplier<SoundEvent> loopSound;
 
+        /**
+         * @param color The color to set.
+         * @return This builder, for chaining.
+         */
         public Builder setColor(int color) {
             this.color = color;
             return this;
         }
 
+        /**
+         * @param minorOpposite The minor opposite to add.
+         * @return This builder, for chaining.
+         */
         public Builder addMinorOpposite(ResourceLocation minorOpposite) {
             minorOpposites.add(minorOpposite);
             return this;
         }
 
+        /**
+         * @param majorOpposite The major opposite to add.
+         * @return This builder, for chaining.
+         */
         public Builder addMajorOpposite(ResourceLocation majorOpposite) {
             majorOpposites.add(majorOpposite);
             return this;
         }
 
+        /**
+         * @param minorOpposite The minor opposite(s) to add.
+         * @return This builder, for chaining.
+         */
         public Builder addMinorOpposites(ResourceLocation... minorOpposite) {
             minorOpposites.addAll(Arrays.asList(minorOpposite));
             return this;
         }
 
+        /**
+         * @param majorOpposite The major opposite(s) to add.
+         * @return This builder, for chaining.
+         */
         public Builder addMajorOpposites(ResourceLocation... majorOpposite) {
             majorOpposites.addAll(Arrays.asList(majorOpposite));
             return this;
         }
 
+        /**
+         * @param directOpposite The direct opposite to set.
+         * @return This builder, for chaining.
+         */
         public Builder setDirectOpposite(ResourceLocation directOpposite) {
             this.directOpposite = directOpposite;
             return this;
         }
 
+        /**
+         * @param castSound The cast sound to set.
+         * @return This builder, for chaining.
+         */
         public Builder setCastSound(Supplier<SoundEvent> castSound) {
             this.castSound = castSound;
             return this;
         }
 
+        /**
+         * @param loopSound The loop sound to set.
+         * @return This builder, for chaining.
+         */
         public Builder setLoopSound(Supplier<SoundEvent> loopSound) {
             this.loopSound = loopSound;
             return this;
         }
 
+        /**
+         * @return The affinity created from this builder.
+         */
         public Affinity build() {
             if (color == null) throw new IllegalStateException("An affinity needs a color!");
             if (directOpposite == null) throw new IllegalStateException("An affinity needs a direct opposite!");

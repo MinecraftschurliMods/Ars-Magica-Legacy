@@ -38,12 +38,6 @@ public final class ManaHelper implements IManaHelper {
         return MANA;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleManaSync(ManaHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(cap -> cap.onSync(holder)));
     }
@@ -177,6 +171,11 @@ public final class ManaHelper implements IManaHelper {
             mana = amount;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(ManaHolder data) {
             mana = data.mana;
         }

@@ -95,6 +95,9 @@ public class BasicDropZone implements DropArea {
         this.dragListener = listener;
     }
 
+    /**
+     * Removes all items from this drop zone.
+     */
     public void clear() {
         if (items == null) return;
         new ArrayList<>(items).forEach(this::remove);

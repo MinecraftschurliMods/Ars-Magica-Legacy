@@ -14,10 +14,20 @@ public class DraggableWithData<T> extends Draggable {
         this.data = data;
     }
 
+    /**
+     * @param draggables A list of draggables to get as a draggable-with-data list.
+     * @param <T>        The type of the list.
+     * @return A list of draggables-with-data, created from the given list.
+     */
     public static <T> List<T> dataList(List<Draggable> draggables) {
         return draggables.stream().<T>map(DraggableWithData::data).toList();
     }
 
+    /**
+     * @param draggable A draggable to get as a draggable-with-data.
+     * @param <T>       The type of the draggable.
+     * @return A draggable-with-data, created from the given draggable.
+     */
     @SuppressWarnings("unchecked")
     @Nullable
     public static <T> T data(Draggable draggable) {

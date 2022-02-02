@@ -24,6 +24,9 @@ public class AltarViewBlockEntity extends BlockEntity {
         altar = Optional.of(pos);
     }
 
+    /**
+     * @return The altar core block entity this altar view belongs to.
+     */
     public Optional<AltarCoreBlockEntity> getAltar() {
         return altar.map(blockPos -> level != null && level.getBlockEntity(blockPos) instanceof AltarCoreBlockEntity ca ? ca : null);
     }

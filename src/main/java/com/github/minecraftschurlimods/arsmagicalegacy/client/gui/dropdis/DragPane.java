@@ -76,6 +76,13 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
         return getDragged();
     }
 
+    /**
+     * Adds a new drop area to this pane.
+     *
+     * @param dropArea The drop area to add.
+     * @param <T>      The type of the drop area-
+     * @return The given drop area, with the required drag handlers set on ít.
+     */
     public <T extends DropArea> T addDropArea(T dropArea) {
         dropAreas.add(dropArea);
         dropArea.setDragHandler(this);

@@ -74,6 +74,9 @@ public final class ClientInit {
     public static IIngameOverlay SHAPE_GROUP_HUD;
     public static IIngameOverlay SPELL_BOOK_HUD;
 
+    /**
+     * Registers the client event handlers.
+     */
     @Internal
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

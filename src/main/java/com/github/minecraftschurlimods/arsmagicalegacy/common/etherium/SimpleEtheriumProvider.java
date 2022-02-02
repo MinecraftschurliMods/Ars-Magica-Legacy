@@ -43,19 +43,38 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
         return etheriumValue;
     }
 
+    /**
+     * Sets the given value for this etherium provider's storage.
+     *
+     * @param value The etherium to add.
+     */
     public void set(int value) {
         etheriumValue = Mth.clamp(value, 0, maxValue);
     }
 
+    /**
+     * Adds the given value to this etherium provider's storage.
+     *
+     * @param value The etherium to add.
+     */
     public void add(int value) {
         set(etheriumValue + value);
     }
 
+    /**
+     * Sets a consumer callback.
+     * @param callback The callback to set.
+     * @return This provider, for chaining.
+     */
     public SimpleEtheriumProvider setCallback(ConsumeCallback callback) {
         this.callback = callback;
         return this;
     }
 
+    /**
+     * @param additional The etherium that would be added.
+     * @return Whether this storage can store the given additional amount of etherium or not.
+     */
     public boolean canStore(int additional) {
         return etheriumValue + additional <= maxValue;
     }

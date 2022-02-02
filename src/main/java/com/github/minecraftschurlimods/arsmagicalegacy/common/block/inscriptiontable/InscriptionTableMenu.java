@@ -91,14 +91,27 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         return table.stillValid(player);
     }
 
+    /**
+     * @return The spell name, or null if there is no name.
+     */
     public Optional<String> getSpellName() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
     }
 
+    /**
+     * @return The max allowed shape groups.
+     */
     public int allowedShapeGroups() {
         return Config.SERVER.MAX_SHAPE_GROUPS.get();
     }
 
+    /**
+     * Sends the menu data to the server.
+     *
+     * @param name        The name of the spell.
+     * @param spellStack  The spell stack.
+     * @param shapeGroups The shape groups.
+     */
     public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
         Spell spell = Spell.of(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
@@ -106,6 +119,9 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }
 
+    /**
+     * @return An optional containing the spell recipe, or an empty optional if there is no spell recipe laid out yet.
+     */
     public Optional<Spell> getSpellRecipe() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);
     }

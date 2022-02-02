@@ -100,6 +100,11 @@ public final class EventHandler {
     private EventHandler() {
     }
 
+    /**
+     * Registers the common event handlers.
+     *
+     * @param modBus The mod event bus to register the mod events to.
+     */
     @Internal
     public static void register(IEventBus modBus) {
         modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);

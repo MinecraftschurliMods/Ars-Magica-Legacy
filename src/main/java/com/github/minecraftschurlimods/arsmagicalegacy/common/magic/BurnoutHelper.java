@@ -37,12 +37,6 @@ public final class BurnoutHelper implements IBurnoutHelper {
         return BURNOUT;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleBurnoutSync(BurnoutHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(cap -> cap.onSync(holder)));
     }
@@ -165,6 +159,11 @@ public final class BurnoutHelper implements IBurnoutHelper {
             burnout = amount;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(BurnoutHolder data) {
             burnout = data.burnout;
         }

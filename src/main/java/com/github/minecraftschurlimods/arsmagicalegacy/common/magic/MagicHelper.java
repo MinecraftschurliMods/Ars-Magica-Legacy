@@ -38,12 +38,6 @@ public final class MagicHelper implements IMagicHelper {
         return MAGIC;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleMagicSync(MagicHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(cap -> cap.onSync(holder)));
     }
@@ -184,6 +178,11 @@ public final class MagicHelper implements IMagicHelper {
             this.level = level;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(MagicHolder data) {
             xp = data.xp;
             level = data.level;

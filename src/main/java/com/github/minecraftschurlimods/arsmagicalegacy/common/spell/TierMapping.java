@@ -16,6 +16,7 @@ import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +37,9 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     private TierMapping() {
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static TierMapping instance() {
         return INSTANCE.get();
     }
@@ -61,15 +65,19 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
         }
     }
 
+    /**
+     * @param tier The number to get the tier for.
+     * @return The harvest tier for the given number.
+     */
+    @Nullable
     public Tier getTierForPower(int tier) {
         if (tiers.size() == 0) {
             return switch (tier) {
-                case 0 -> Tiers.WOOD;
                 case 1 -> Tiers.STONE;
                 case 2 -> Tiers.IRON;
                 case 3 -> Tiers.DIAMOND;
                 case 4 -> Tiers.NETHERITE;
-                default -> null;
+                default -> Tiers.WOOD;
             };
         }
         return TierSortingRegistry.byName(tiers.get(Math.min(tier, tiers.size() - 1)));

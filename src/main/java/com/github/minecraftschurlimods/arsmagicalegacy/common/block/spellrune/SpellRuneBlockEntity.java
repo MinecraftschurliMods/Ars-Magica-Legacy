@@ -62,6 +62,14 @@ public class SpellRuneBlockEntity extends BlockEntity {
         super.load(pTag);
     }
 
+    /**
+     * Called when an entity collides with this block.
+     *
+     * @param level     The level of this block.
+     * @param pos       The position of this block.
+     * @param entity    The entity that cóllided with this block.
+     * @param direction The direction the collision occured on.
+     */
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         if (spell == null) return;
@@ -72,6 +80,14 @@ public class SpellRuneBlockEntity extends BlockEntity {
         }
     }
 
+    /**
+     * Sets this block's spell.
+     *
+     * @param spell   The spell.
+     * @param caster  The original caster.
+     * @param index   The shape group index to use.
+     * @param awardXp Whether to grant xp to the original caster or not.
+     */
     public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
         this.spell = spell;
         this.index = index;

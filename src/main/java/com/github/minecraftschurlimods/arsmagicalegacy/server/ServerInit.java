@@ -9,6 +9,9 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 
 public final class ServerInit {
+    /**
+     * Registers the server event handlers.
+     */
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(AMPermissions::registerPermissionNodes);
         MinecraftForge.EVENT_BUS.addListener(AMCommands::registerCommands);

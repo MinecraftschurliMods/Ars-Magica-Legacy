@@ -16,6 +16,10 @@ public class ColoredRuneItem extends Item {
         ITEM_BY_COLOR.put(dyeColor, this);
     }
 
+    /**
+     * @param pColor The color to get the rune item for.
+     * @return The rune item of the given color.
+     */
     public static ColoredRuneItem byColor(DyeColor pColor) {
         return ITEM_BY_COLOR.get(pColor);
     }

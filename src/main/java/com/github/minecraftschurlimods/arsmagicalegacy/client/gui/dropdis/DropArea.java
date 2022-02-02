@@ -8,28 +8,23 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import java.util.List;
 
 public interface DropArea extends Widget, GuiEventListener {
-    static void hLine(PoseStack poseStack, int minX, int maxX, int y, int color) {
-        if (maxX < minX) {
-            int i = minX;
-            minX = maxX;
-            maxX = i;
-        }
-        GuiComponent.fill(poseStack, minX, y, maxX + 1, y + 1, color);
-    }
-
-    static void vLine(PoseStack poseStack, int x, int minY, int maxY, int color) {
-        if (maxY < minY) {
-            int i = minY;
-            minY = maxY;
-            maxY = i;
-        }
-        GuiComponent.fill(poseStack, x, minY + 1, x + 1, maxY, color);
-    }
-
+    /**
+     * @return A list of all elements in this drop area.
+     */
     List<Draggable> items();
 
+    /**
+     * Adds a new element to this drop area.
+     *
+     * @param d The element to add.
+     */
     boolean add(Draggable d);
 
+    /**
+     * Removes a new element from this drop area.
+     *
+     * @param d The element to remove.
+     */
     void remove(Draggable d);
 
     @Override
@@ -74,7 +69,15 @@ public interface DropArea extends Widget, GuiEventListener {
     @Override
     boolean isMouseOver(double mouseX, double mouseY);
 
+    /**
+     * @return The drag handler of this drop area.
+     */
     DragHandler getDragHandler();
 
+    /**
+     * Sets the drag handler of this drop area.
+     *
+     * @param dragHandler The drag handler to set.
+     */
     void setDragHandler(DragHandler dragHandler);
 }

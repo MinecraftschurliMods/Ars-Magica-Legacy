@@ -107,6 +107,12 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         super.playerWillDestroy(level, pos, state, player);
     }
 
+    /**
+     * @param state The state of the core block.
+     * @param world The world this block is in.
+     * @param pos   The position of the core block.
+     * @return The tier of the surrounding multiblock.
+     */
     public int getTier(BlockState state, Level world, BlockPos pos) {
         int tier = 0;
         if (OBELISK_CHALK.test(world, pos)) {

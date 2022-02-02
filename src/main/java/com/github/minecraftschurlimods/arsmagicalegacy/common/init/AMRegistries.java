@@ -53,6 +53,11 @@ public interface AMRegistries {
     Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry("affinity",      () -> new RegistryBuilder<IAffinity>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
     Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part",   RegistryBuilder::new);
 
+    /**
+     * Registers the registries to the given event bus.
+     *
+     * @param bus The event bus to register to.
+     */
     @Internal
     static void init(IEventBus bus) {
         AMBlocks.register();

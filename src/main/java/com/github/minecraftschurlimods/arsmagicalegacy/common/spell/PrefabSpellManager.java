@@ -38,6 +38,9 @@ public class PrefabSpellManager extends CodecDataManager<PrefabSpellManager.Pref
         super("prefab_spells", PrefabSpell.CODEC, LogManager.getLogger());
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static PrefabSpellManager instance() {
         return INSTANCE.get();
     }

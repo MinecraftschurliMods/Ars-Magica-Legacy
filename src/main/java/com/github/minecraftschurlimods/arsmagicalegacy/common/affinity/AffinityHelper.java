@@ -63,16 +63,14 @@ public final class AffinityHelper implements IAffinityHelper {
         return AFFINITY;
     }
 
-    /**
-     * Handles synchronization with the client.
-     *
-     * @param holder  The capability to sync.
-     * @param context The networking context.
-     */
     private static void handleSync(AffinityHolder holder, NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(cap -> cap.onSync(holder)));
     }
 
+    /**
+     * @param player The player to get the affinity holder for.
+     * @return The affinity holder for the given player.
+     */
     public AffinityHolder getAffinityHolder(Player player) {
         return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
     }
@@ -215,7 +213,6 @@ public final class AffinityHelper implements IAffinityHelper {
                 CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
-
         private final Map<ResourceLocation, Double> depths;
         private boolean locked = false;
 
@@ -223,35 +220,68 @@ public final class AffinityHelper implements IAffinityHelper {
             this.depths = depths;
         }
 
+        /**
+         * @return An affinity holder.
+         */
         public static AffinityHolder empty() {
             return new AffinityHolder(new HashMap<>(), false);
         }
 
+        /**
+         * @return An unmodifiable list of all affinity depths in this holder.
+         */
         public Map<ResourceLocation, Double> depths() {
             return Collections.unmodifiableMap(depths);
         }
 
+        /**
+         * @return Whether this affinity holder is locked or not.
+         */
         public boolean locked() {
             return locked;
         }
 
+        /**
+         * Synchronizes the affinity holder.
+         * @param affinityHolder The affinity holder to synchronize.
+         */
         public void onSync(AffinityHolder affinityHolder) {
             depths.clear();
             depths.putAll(affinityHolder.depths());
         }
 
+        /**
+         * @param affinity The id of the affinity to get the depth for.
+         * @return The depth for the given affinity.
+         */
         public double getAffinityDepth(ResourceLocation affinity) {
             return depths().getOrDefault(affinity, 0d);
         }
 
+        /**
+         * @param affinity The affinity to get the depth for.
+         * @return The depth for the given affinity.
+         */
         public double getAffinityDepth(IAffinity affinity) {
             return getAffinityDepth(affinity.getId());
         }
 
+        /**
+         * Adds the given shift to the given affinity.
+         *
+         * @param affinity The id of the affinity to add the given shift to.
+         * @param shift    The shift to add.
+         */
         public void addToAffinity(ResourceLocation affinity, float shift) {
             depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) + shift, 0, MAX_DEPTH));
         }
 
+        /**
+         * Subtracts the given shift from the given affinity.
+         *
+         * @param affinity The id of the affinity to add the given shift to.
+         * @param shift    The shift to subtract.
+         */
         public void subtractFromAffinity(ResourceLocation affinity, float shift) {
             depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) - shift, 0, MAX_DEPTH));
         }
