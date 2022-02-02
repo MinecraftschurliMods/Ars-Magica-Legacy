@@ -41,7 +41,7 @@ public class AMSoundDefinitionsProvider extends SoundDefinitionsProvider {
             add(supplier, definition().with(sound(sound)).subtitle(subtitle));
         } else {
             SoundDefinition def = definition();
-            for (int value = 1; value < sounds - 1; value++) {
+            for (int value = 1; value <= sounds; value++) {
                 def.with(sound(sound + "_" + value));
             }
             add(supplier, def.subtitle(subtitle));

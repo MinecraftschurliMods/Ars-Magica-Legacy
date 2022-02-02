@@ -53,7 +53,7 @@ public abstract class SkillProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Skills";
+        return "Skills[" + namespace + "]";
     }
 
     public Set<ResourceLocation> getSkills() {

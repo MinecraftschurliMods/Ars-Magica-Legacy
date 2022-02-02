@@ -191,7 +191,7 @@ public abstract class SpellEvent extends LivingEvent {
      * Event to modify the reagents required by the spell.
      */
     public static final class ReagentCost extends SpellEvent {
-        public List<Either<Ingredient, ItemStack>> reagents;
+        public final List<Either<Ingredient, ItemStack>> reagents;
 
         public ReagentCost(LivingEntity entity, ISpell spell, List<Either<Ingredient, ItemStack>> reagents) {
             super(entity, spell);

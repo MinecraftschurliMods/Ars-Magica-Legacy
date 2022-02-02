@@ -43,7 +43,7 @@ public abstract class ObeliskFuelProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Obelisk Fuels";
+        return "Obelisk Fuels[" + namespace + "]";
     }
 
     /**

@@ -41,7 +41,7 @@ public abstract class PrefabSpellProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Prefab Spells";
+        return "Prefab Spells[" + namespace + "]";
     }
 
     /**

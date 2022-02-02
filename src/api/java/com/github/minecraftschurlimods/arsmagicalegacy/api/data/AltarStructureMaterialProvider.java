@@ -52,7 +52,7 @@ public abstract class AltarStructureMaterialProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Altar Structure Materials";
+        return "Altar Structure Materials[" + namespace + "]";
     }
 
     /**

@@ -68,10 +68,10 @@ public class SkillPointCommand {
                                 .suggests(SUGGEST_SKILL_POINTS)
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
                                         .executes(SkillPointCommand::setSkillPointSelf))))
-                .then(Commands.literal("reset")
-                        .executes(SkillPointCommand::resetSkillPointsSelf)
+                .then(Commands.literal("clear")
+                        .executes(SkillPointCommand::clearSkillPointsSelf)
                         .then(Commands.argument("target", EntityArgument.players())
-                                .executes(SkillPointCommand::resetSkillPoints)))
+                                .executes(SkillPointCommand::clearSkillPoints)))
                 .then(Commands.literal("get")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())
@@ -165,15 +165,15 @@ public class SkillPointCommand {
         return players.size();
     }
 
-    private static int resetSkillPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return resetSkillPoints(List.of(context.getSource().getPlayerOrException()), context);
+    private static int clearSkillPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return clearSkillPoints(List.of(context.getSource().getPlayerOrException()), context);
     }
 
-    private static int resetSkillPoints(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return resetSkillPoints(EntityArgument.getPlayers(context, "target"), context);
+    private static int clearSkillPoints(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return clearSkillPoints(EntityArgument.getPlayers(context, "target"), context);
     }
 
-    private static int resetSkillPoints(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
+    private static int clearSkillPoints(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         var helper = api.getSkillHelper();
         var registry = api.getSkillPointRegistry();

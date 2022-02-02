@@ -51,5 +51,5 @@ public interface IManaHelper {
      * @param entity The entity to set the mana value for.
      * @param amount The amount to set the mana value to.
      */
-    void setMana(LivingEntity entity, float amount);
+    boolean setMana(LivingEntity entity, float amount);
 }

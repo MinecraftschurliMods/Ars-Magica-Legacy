@@ -13,7 +13,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SkillPointPanel extends Screen implements NarratableEntry {
     private static final ResourceLocation SKILL_POINT_BG = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/skill_points.png");
@@ -29,7 +28,7 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         stack.pushPose();
         stack.translate(width, 0, -1);
         var api = ArsMagicaAPI.get();
-        List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(new TextComponent(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.getColor())).collect(Collectors.toList());
+        List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(new TextComponent(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.getColor())).toList();
         int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
         setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);

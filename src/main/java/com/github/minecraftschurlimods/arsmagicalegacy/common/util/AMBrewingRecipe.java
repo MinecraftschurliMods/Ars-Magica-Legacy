@@ -8,17 +8,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 
-public class AMBrewingRecipe implements IBrewingRecipe {
-    private final Potion inputPotion;
-    private final Ingredient ingredient;
-    private final Potion outputPotion;
-
-    public AMBrewingRecipe(Potion inputPotion, Ingredient ingredient, Potion outputPotion) {
-        this.inputPotion = inputPotion;
-        this.ingredient = ingredient;
-        this.outputPotion = outputPotion;
-    }
-
+public record AMBrewingRecipe(Potion inputPotion, Ingredient ingredient, Potion outputPotion) implements IBrewingRecipe {
     @Override
     public boolean isInput(ItemStack input) {
         Item item = input.getItem();

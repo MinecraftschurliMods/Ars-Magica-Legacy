@@ -51,7 +51,7 @@ public abstract class OcculusTabProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Occulus Tabs";
+        return "Occulus Tabs[" + namespace + "]";
     }
 
     /**

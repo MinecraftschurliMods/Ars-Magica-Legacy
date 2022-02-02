@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class GenericSpellModifier extends AbstractModifier {
-    protected Map<ISpellPartStat, ISpellPartStatModifier> modifiers = new HashMap<>();
+    protected final Map<ISpellPartStat, ISpellPartStatModifier> modifiers = new HashMap<>();
 
     @Override
     public ISpellPartStatModifier getStatModifier(ISpellPartStat stat) {

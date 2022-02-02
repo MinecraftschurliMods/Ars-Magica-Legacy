@@ -55,7 +55,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "Spell Part Data";
+        return "Spell Part Data[" + namespace + "]";
     }
 
     /**
