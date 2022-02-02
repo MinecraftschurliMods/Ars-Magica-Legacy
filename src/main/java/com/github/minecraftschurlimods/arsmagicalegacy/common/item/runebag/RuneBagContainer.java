@@ -7,6 +7,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
 /**
+ * Mostly taken from McJty's tutorials and the Botania mod.
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemBackedInventory.java}
  */
 public class RuneBagContainer extends SimpleContainer {
