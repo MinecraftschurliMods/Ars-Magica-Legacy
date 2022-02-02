@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unchecked")
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
     private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> CODECS = new HashMap<>();
     private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> NETWORK_CODECS = new HashMap<>();

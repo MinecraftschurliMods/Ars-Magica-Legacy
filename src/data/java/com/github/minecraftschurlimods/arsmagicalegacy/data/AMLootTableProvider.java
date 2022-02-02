@@ -133,6 +133,7 @@ class AMLootTableProvider extends LootTableProvider {
     private static class EntityLootTableProvider extends EntityLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void addTables() {
             var helper = ArsMagicaAPI.get().getAffinityHelper();

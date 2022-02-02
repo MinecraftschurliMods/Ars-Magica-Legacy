@@ -63,7 +63,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
@@ -76,16 +76,22 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     private final ModelDataMap modelData = new ModelDataMap.Builder().withProperty(CAMO_STATE).build();
     private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
     public int checkCounter;
+    @Nullable
     private AltarStructureMaterial structureMaterial;
+    @Nullable
     private AltarCapMaterial capMaterial;
     private Set<BlockPos> boundPositions = new HashSet<>();
     private Deque<ISpellIngredient> recipe;
     private int requiredPower = 0;
     private boolean isCrafting;
     private int powerLevel = -1;
+    @Nullable
     private BlockPos lecternPos;
+    @Nullable
     private BlockPos leverPos;
+    @Nullable
     private BlockPos viewPos;
+    @Nullable
     private Direction direction;
     private final BlockPattern MULTIBLOCK = BlockPatternBuilder.start()
             .aisle(
@@ -353,13 +359,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ModelDataMap getModelData() {
         return modelData;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap) {
         return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);

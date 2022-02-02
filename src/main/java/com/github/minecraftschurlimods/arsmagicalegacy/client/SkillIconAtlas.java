@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.Lazy;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public final class SkillIconAtlas extends TextureAtlasHolder {
     public static final ResourceLocation SKILL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/skill_icons.png");

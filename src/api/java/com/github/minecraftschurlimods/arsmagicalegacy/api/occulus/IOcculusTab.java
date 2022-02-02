@@ -79,6 +79,7 @@ public interface IOcculusTab extends ITranslatable {
          * @param clazz The renderer class to use.
          * @return A new occulus tab renderer.
          */
+        @SuppressWarnings("unchecked")
         static Supplier<OcculusTabRendererFactory> of(String clazz) {
             return () -> {
                 try {

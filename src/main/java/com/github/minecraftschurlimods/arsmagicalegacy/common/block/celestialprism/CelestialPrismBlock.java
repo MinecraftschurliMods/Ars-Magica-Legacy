@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.function.BiPredicate;
 
+@SuppressWarnings("deprecation")
 public class CelestialPrismBlock extends BaseEntityBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);

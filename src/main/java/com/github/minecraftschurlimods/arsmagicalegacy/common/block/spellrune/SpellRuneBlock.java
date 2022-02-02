@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class SpellRuneBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACE = BlockStateProperties.FACING;
     public static final Map<Direction, VoxelShape> COLLISION_SHAPES = Map.of(

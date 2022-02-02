@@ -32,8 +32,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON = RenderType.itemEntityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);

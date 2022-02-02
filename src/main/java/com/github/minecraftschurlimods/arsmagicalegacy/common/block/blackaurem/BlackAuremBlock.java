@@ -36,6 +36,7 @@ public class BlackAuremBlock extends BaseEntityBlock {
         return AMBlockEntities.BLACK_AUREM.get().create(pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;

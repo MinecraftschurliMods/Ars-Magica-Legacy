@@ -69,6 +69,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (state.getValue(PART) == Part.LOWER) {

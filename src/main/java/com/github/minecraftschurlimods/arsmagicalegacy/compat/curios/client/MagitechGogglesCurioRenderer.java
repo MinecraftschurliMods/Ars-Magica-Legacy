@@ -31,6 +31,7 @@ public class MagitechGogglesCurioRenderer implements ICurioRenderer {
         CuriosRendererRegistry.register(AMItems.MAGITECH_GOGGLES.get(), MagitechGogglesCurioRenderer::new);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ((HumanoidModel<T>) renderLayerParent.getModel()).copyPropertiesTo((HumanoidModel<T>) model);

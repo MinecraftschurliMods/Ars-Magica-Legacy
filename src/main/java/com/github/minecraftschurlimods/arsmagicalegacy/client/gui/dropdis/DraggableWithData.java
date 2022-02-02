@@ -18,6 +18,7 @@ public class DraggableWithData<T> extends Draggable {
         return draggables.stream().<T>map(DraggableWithData::data).toList();
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     public static <T> T data(Draggable draggable) {
         if (draggable instanceof DraggableWithData<?> withData) {

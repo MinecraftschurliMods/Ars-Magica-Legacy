@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class BlackAuremBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.DARK, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(BlackAuremBlockEntity::onConsume);
@@ -69,7 +69,7 @@ public class BlackAuremBlockEntity extends BlockEntity {
         provider.set(tag.getInt("etheriumValue"));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHandler);

@@ -186,6 +186,7 @@ public final class EventHandler {
         event.register(BurnoutHelper.BurnoutHolder.class);
     }
 
+    @SuppressWarnings("unchecked")
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity livingEntity) {
             AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());

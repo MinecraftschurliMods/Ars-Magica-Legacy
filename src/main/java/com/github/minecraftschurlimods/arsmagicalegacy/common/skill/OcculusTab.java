@@ -57,6 +57,7 @@ public final class OcculusTab implements IOcculusTab {
         rendererFactory = Lazy.concurrentOf(OcculusTabRendererFactory.of(getRenderer()));
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private OcculusTab(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon, int width, int height, int startX, int startY, int index) {
         this(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index);
     }

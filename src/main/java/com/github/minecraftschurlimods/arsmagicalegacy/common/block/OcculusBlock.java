@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class OcculusBlock extends HorizontalDirectionalBlock {
     private static final VoxelShape SOCKET = AMUtil.joinShapes(
             box(0, 0, 0, 16, 1, 16),

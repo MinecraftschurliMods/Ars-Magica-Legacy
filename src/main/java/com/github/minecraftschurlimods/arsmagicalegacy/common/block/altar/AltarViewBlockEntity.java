@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class AltarViewBlockEntity extends BlockEntity {
     public int itemRotation;
     private Optional<BlockPos> altar = Optional.empty();

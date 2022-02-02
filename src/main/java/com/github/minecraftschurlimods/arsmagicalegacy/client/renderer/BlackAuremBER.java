@@ -16,6 +16,7 @@ public class BlackAuremBER implements BlockEntityRenderer<BlackAuremBlockEntity>
     public BlackAuremBER(BlockEntityRendererProvider.Context context) {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void render(BlackAuremBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Minecraft instance = Minecraft.getInstance();

@@ -120,6 +120,7 @@ public interface AMItems {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
 
+    @SuppressWarnings("unchecked")
     private static RegistryObject<BlockItem> registerBlockItem64(RegistryObject<? extends Block> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_64));
     }

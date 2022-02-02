@@ -71,6 +71,7 @@ public class EarthGuardian extends AbstractBoss {
         return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
