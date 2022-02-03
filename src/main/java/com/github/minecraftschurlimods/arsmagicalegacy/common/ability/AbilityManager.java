@@ -61,6 +61,9 @@ public class AbilityManager extends CodecDataManager<IAbilityData> implements IA
         return super.get(id);
     }
 
+    /**
+     * @return The instance of the ability manager.
+     */
     public static AbilityManager instance() {
         return INSTANCE.get();
     }
