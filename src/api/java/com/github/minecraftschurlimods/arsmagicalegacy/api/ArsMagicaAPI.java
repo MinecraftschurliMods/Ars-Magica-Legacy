@@ -1,5 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
@@ -84,6 +86,11 @@ public final class ArsMagicaAPI {
         IForgeRegistry<ISpellPart> getSpellPartRegistry();
 
         /**
+         * @return The registry for abilities.
+         */
+        IForgeRegistry<IAbility> getAbilityRegistry();
+
+        /**
          * @return The skill manager instance.
          */
         ISkillManager getSkillManager();
@@ -97,6 +104,11 @@ public final class ArsMagicaAPI {
          * @return The spell data manager instance.
          */
         ISpellDataManager getSpellDataManager();
+
+        /**
+         * @return The ability manager instance.
+         */
+        IAbilityManager getAbilityManager();
 
         /**
          * @return The skill helper instance.
@@ -199,6 +211,11 @@ public final class ArsMagicaAPI {
         }
 
         @Override
+        public IForgeRegistry<IAbility> getAbilityRegistry() {
+            return null;
+        }
+
+        @Override
         public ISkillManager getSkillManager() {
             return null;
         }
@@ -210,6 +227,11 @@ public final class ArsMagicaAPI {
 
         @Override
         public ISpellDataManager getSpellDataManager() {
+            return null;
+        }
+
+        @Override
+        public IAbilityManager getAbilityManager() {
             return null;
         }
 

@@ -23,6 +23,8 @@ public interface TranslationConstants {
     String INSCRIPTION_TABLE_TITLE        = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.title";
     String OBELISK_TITLE                  = "screen."  + ArsMagicaAPI.MOD_ID + ".obelisk.title";
     String OCCULUS_MISSING_REQUIREMENTS   = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.missing_requirements";
+    String RANGE_LOWER                    = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.affinity.ability.range.min";
+    String RANGE_UPPER                    = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.affinity.ability.range.max";
     String RIFT_TITLE                     = "screen."  + ArsMagicaAPI.MOD_ID + ".rift.title";
     String SPELL_CUSTOMIZATION_TITLE      = "screen."  + ArsMagicaAPI.MOD_ID + ".spell_customization.title";
     String CONFIG                         = "config."  + ArsMagicaAPI.MOD_ID + ".";
