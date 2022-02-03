@@ -4,13 +4,17 @@
     "sounds": [
       "arsmagicalegacy:entity/arcane_guardian/attack_1",
       "arsmagicalegacy:entity/arcane_guardian/attack_2",
-      "arsmagicalegacy:entity/arcane_guardian/attack_3"
+      "arsmagicalegacy:entity/arcane_guardian/attack_3",
+      "arsmagicalegacy:entity/arcane_guardian/attack_4",
+      "arsmagicalegacy:entity/arcane_guardian/attack_5"
     ]
   },
   "entity.lightning_guardian.lightning_rod": {
     "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.lightning_rod",
     "sounds": [
-      "arsmagicalegacy:entity/lightning_guardian/lightning_rod_1"
+      "arsmagicalegacy:entity/lightning_guardian/lightning_rod_1",
+      "arsmagicalegacy:entity/lightning_guardian/lightning_rod_2",
+      "arsmagicalegacy:entity/lightning_guardian/lightning_rod_3"
     ]
   },
   "entity.arcane_guardian.ambient": {

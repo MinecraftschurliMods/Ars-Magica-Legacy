@@ -1,11 +1,16 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.level;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -23,6 +28,10 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +106,37 @@ public final class AMFeatures {
         return placement(name, feature, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
     }
 
+    /**
+     * @param name    The name of the feature.
+     * @param log     The log block to use.
+     * @param trunk   The trunk placer to use.
+     * @param leaves  The leaves block to use.
+     * @param foliage The foliage placer to use.
+     * @param size    The feature size to use.
+     * @return A configured tree feature based on the given parameters.
+     */
     public static ConfiguredFeature<?, ?> tree(String name, Supplier<? extends Block> log, TrunkPlacer trunk, Supplier<? extends Block> leaves, FoliagePlacer foliage, FeatureSize size) {
         return feature(name, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(log.get()), trunk, BlockStateProvider.simple(leaves.get()), foliage, size).ignoreVines().build());
     }
 
+    /**
+     * @param name    The name of the feature.
+     * @param feature The configured feature to use.
+     * @param sapling The sapling associated with this tree feature.
+     * @return A placed feature based on the given parameters.
+     */
     public static PlacedFeature treePlacement(String name, ConfiguredFeature<?, ?> feature, Supplier<? extends Block> sapling) {
         return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.filteredByBlockSurvival(sapling.get()));
     }
 
+    /**
+     * @param name     The name of the feature.
+     * @param feature  The configured feature to use.
+     * @param modifier The tree placement modifier to use.
+     * @param rarity   The rarity of this feature.
+     * @param sapling  The sapling associated with this tree feature.
+     * @return A placed feature based on the given parameters.
+     */
     public static PlacedFeature treeVegetation(String name, ConfiguredFeature<?, ?> feature, PlacementModifier modifier, int rarity, Supplier<? extends Block> sapling) {
         List<PlacementModifier> list = new ArrayList<>(VegetationPlacements.treePlacement(modifier, sapling.get()));
         list.add(RarityFilter.onAverageOnceEvery(rarity));
@@ -117,5 +149,41 @@ public final class AMFeatures {
 
     private static PlacedFeature placement(String name, ConfiguredFeature<?, ?> feature, PlacementModifier... modifiers) {
         return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.placed(modifiers));
+    }
+
+    /**
+     * Called for each biome, adds this mod's features to biomes.
+     *
+     * @param event The biome loading event provided by the event bus.
+     */
+    @Internal
+    public static void biomeLoading(BiomeLoadingEvent event) {
+        BiomeGenerationSettingsBuilder builder = event.getGeneration();
+        ResourceLocation biome = event.getName();
+        Biome.BiomeCategory category = event.getCategory();
+        if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
+            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CHIMERITE_PLACEMENT);
+            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, VINTEUM_PLACEMENT);
+            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_PLACEMENT);
+            if (category == Biome.BiomeCategory.MOUNTAIN) {
+                builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_EXTRA_PLACEMENT);
+            }
+            if (category == Biome.BiomeCategory.FOREST) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AUM_PLACEMENT);
+            }
+            if (category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.SWAMP) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CERUBLOSSOM_PLACEMENT);
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WAKEBLOOM_PLACEMENT);
+            }
+            if (category == Biome.BiomeCategory.DESERT || category == Biome.BiomeCategory.MESA) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, DESERT_NOVA_PLACEMENT);
+            }
+            if (category == Biome.BiomeCategory.MOUNTAIN || category == Biome.BiomeCategory.EXTREME_HILLS || category == Biome.BiomeCategory.UNDERGROUND) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TARMA_ROOT_PLACEMENT);
+            }
+            if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
+                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_VEGETATION);
+            }
+        }
     }
 }
