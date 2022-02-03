@@ -8,6 +8,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -192,7 +193,7 @@ public abstract class SpellEvent extends LivingEvent {
 
         public ReagentCost(LivingEntity entity, ISpell spell, List<Either<Ingredient, ItemStack>> reagents) {
             super(entity, spell);
-            this.reagents = reagents;
+            this.reagents = new ArrayList<>(reagents);
         }
     }
 }
