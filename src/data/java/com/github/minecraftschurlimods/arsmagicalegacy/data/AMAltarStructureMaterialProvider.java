@@ -52,7 +52,7 @@ class AMAltarStructureMaterialProvider extends AltarStructureMaterialProvider {
         addStructureMaterial("dark_prismarine", Blocks.DARK_PRISMARINE, (StairBlock) Blocks.DARK_PRISMARINE_STAIRS, 4);
         addStructureMaterial("crimson_planks", Blocks.CRIMSON_PLANKS, (StairBlock) Blocks.CRIMSON_STAIRS, 4);
         addStructureMaterial("warped_planks", Blocks.WARPED_PLANKS, (StairBlock) Blocks.WARPED_STAIRS, 4);
-//        addStructureMaterial("witchwood_planks", AMBlocks.WITCHWOOD_PLANKS.get(), AMBlocks.WITCHWOOD_STAIRS.get(), 4);
+        addStructureMaterial("witchwood_planks", AMBlocks.WITCHWOOD_PLANKS.get(), AMBlocks.WITCHWOOD_STAIRS.get(), 4);
         addStructureMaterial("blackstone", Blocks.BLACKSTONE, (StairBlock) Blocks.BLACKSTONE_STAIRS, 4);
         addStructureMaterial("quartz_block", Blocks.QUARTZ_BLOCK, (StairBlock) Blocks.QUARTZ_STAIRS, 4);
         addStructureMaterial("nether_bricks", Blocks.NETHER_BRICKS, (StairBlock) Blocks.NETHER_BRICK_STAIRS, 5);
