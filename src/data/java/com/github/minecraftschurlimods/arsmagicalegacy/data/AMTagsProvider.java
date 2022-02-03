@@ -17,7 +17,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMTagsProvider {
-    static void add(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
+    static void add(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
         generator.addProvider(blocks);
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
@@ -26,7 +26,7 @@ class AMTagsProvider {
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -45,7 +45,6 @@ class AMTagsProvider {
             tag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE).add(AMBlocks.SUNSTONE_BLOCK.get());
             tag(Tags.Blocks.ORES).addTag(AMTags.Blocks.ORES_CHIMERITE).addTag(AMTags.Blocks.ORES_TOPAZ).addTag(AMTags.Blocks.ORES_VINTEUM).addTag(AMTags.Blocks.ORES_MOONSTONE).addTag(AMTags.Blocks.ORES_SUNSTONE);
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(AMTags.Blocks.STORAGE_BLOCKS_CHIMERITE).addTag(AMTags.Blocks.STORAGE_BLOCKS_TOPAZ).addTag(AMTags.Blocks.STORAGE_BLOCKS_VINTEUM).addTag(AMTags.Blocks.STORAGE_BLOCKS_MOONSTONE).addTag(AMTags.Blocks.STORAGE_BLOCKS_SUNSTONE);
-
             tag(BlockTags.LOGS).addTag(AMTags.Blocks.WITCHWOOD_LOGS);
             tag(BlockTags.LEAVES).add(AMBlocks.WITCHWOOD_LEAVES.get());
             tag(BlockTags.SAPLINGS).add(AMBlocks.WITCHWOOD_SAPLING.get());
@@ -60,11 +59,11 @@ class AMTagsProvider {
             tag(BlockTags.WOODEN_BUTTONS).add(AMBlocks.WITCHWOOD_BUTTON.get());
             tag(BlockTags.WOODEN_PRESSURE_PLATES).add(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get(), AMBlocks.CERUBLOSSOM.get(), AMBlocks.DESERT_NOVA.get(), AMBlocks.TARMA_ROOT.get(), AMBlocks.WAKEBLOOM.get());
-
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.MAGIC_WALL.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get(), AMBlocks.SUNSTONE_BLOCK.get(), AMBlocks.SUNSTONE_ORE.get());
-            tag(BlockTags.MINEABLE_WITH_SHOVEL);
+            tag(BlockTags.FLOWER_POTS).add(AMBlocks.POTTED_AUM.get(), AMBlocks.POTTED_CERUBLOSSOM.get(), AMBlocks.POTTED_DESERT_NOVA.get(), AMBlocks.POTTED_TARMA_ROOT.get(), AMBlocks.POTTED_WAKEBLOOM.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.MAGIC_WALL.get(), AMBlocks.OBELISK.get(), AMBlocks.CELESTIAL_PRISM.get(), AMBlocks.BLACK_AUREM.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get(), AMBlocks.SUNSTONE_BLOCK.get(), AMBlocks.SUNSTONE_ORE.get());
+//            tag(BlockTags.MINEABLE_WITH_SHOVEL);
             tag(BlockTags.MINEABLE_WITH_AXE).add(AMBlocks.INSCRIPTION_TABLE.get(), AMBlocks.WITCHWOOD_FENCE_GATE.get());
-            tag(BlockTags.MINEABLE_WITH_HOE);
+//            tag(BlockTags.MINEABLE_WITH_HOE);
             tag(BlockTags.NEEDS_STONE_TOOL).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.SUNSTONE_BLOCK.get());
             tag(BlockTags.NEEDS_IRON_TOOL).add(AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get());
             tag(BlockTags.NEEDS_DIAMOND_TOOL).add(AMBlocks.SUNSTONE_ORE.get());
@@ -72,7 +71,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, final ExistingFileHelper existingFileHelper) {
+        Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -102,7 +101,6 @@ class AMTagsProvider {
             tag(AMTags.Items.DUSTS_PURIFIED_VINTEUM).add(AMItems.PURIFIED_VINTEUM_DUST.get());
             tag(Tags.Items.GEMS).addTag(AMTags.Items.GEMS_CHIMERITE).addTag(AMTags.Items.GEMS_TOPAZ).addTag(AMTags.Items.GEMS_MOONSTONE).addTag(AMTags.Items.GEMS_SUNSTONE);
             tag(Tags.Items.DUSTS).addTag(AMTags.Items.DUSTS_VINTEUM).addTag(AMTags.Items.DUSTS_ARCANE_COMPOUND).addTag(AMTags.Items.DUSTS_ARCANE_ASH).addTag(AMTags.Items.DUSTS_PURIFIED_VINTEUM);
-
             tag(AMTags.Items.RUNES_COLORLESS).add(AMItems.BLANK_RUNE.get());
             tag(AMTags.Items.RUNES_WHITE).add(AMItems.COLORED_RUNE.get(DyeColor.WHITE));
             tag(AMTags.Items.RUNES_ORANGE).add(AMItems.COLORED_RUNE.get(DyeColor.ORANGE));
@@ -121,7 +119,6 @@ class AMTagsProvider {
             tag(AMTags.Items.RUNES_RED).add(AMItems.COLORED_RUNE.get(DyeColor.RED));
             tag(AMTags.Items.RUNES_BLACK).add(AMItems.COLORED_RUNE.get(DyeColor.BLACK));
             tag(AMTags.Items.RUNES).addTag(AMTags.Items.RUNES_COLORLESS).addTag(AMTags.Items.RUNES_BLACK).addTag(AMTags.Items.RUNES_BLUE).addTag(AMTags.Items.RUNES_BROWN).addTag(AMTags.Items.RUNES_CYAN).addTag(AMTags.Items.RUNES_GRAY).addTag(AMTags.Items.RUNES_GREEN).addTag(AMTags.Items.RUNES_LIGHT_BLUE).addTag(AMTags.Items.RUNES_LIGHT_GRAY).addTag(AMTags.Items.RUNES_LIME).addTag(AMTags.Items.RUNES_MAGENTA).addTag(AMTags.Items.RUNES_ORANGE).addTag(AMTags.Items.RUNES_PINK).addTag(AMTags.Items.RUNES_PURPLE).addTag(AMTags.Items.RUNES_RED).addTag(AMTags.Items.RUNES_WHITE).addTag(AMTags.Items.RUNES_YELLOW);
-
             tag(ItemTags.LOGS).addTag(AMTags.Items.WITCHWOOD_LOGS);
             tag(ItemTags.LEAVES).add(AMItems.WITCHWOOD_LEAVES.get());
             tag(ItemTags.SAPLINGS).add(AMItems.WITCHWOOD_SAPLING.get());
@@ -140,7 +137,7 @@ class AMTagsProvider {
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -151,7 +148,7 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 

@@ -13,6 +13,7 @@ public class TemporalAnchorEffect extends AMMobEffect {
 
     @Override
     public void startEffect(LivingEntity entity, MobEffectInstance effect) {
+        var api = ArsMagicaAPI.get();
         CompoundTag tag = new CompoundTag();
         tag.putDouble("X", entity.getX());
         tag.putDouble("Y", entity.getY());
@@ -20,8 +21,8 @@ public class TemporalAnchorEffect extends AMMobEffect {
         tag.putFloat("RotationPitch", entity.getXRot());
         tag.putFloat("RotationYaw", entity.getYRot());
         tag.putFloat("RotationYawHead", entity.getYHeadRot());
-        tag.putFloat("Mana", ArsMagicaAPI.get().getManaHelper().getMana(entity));
-        tag.putFloat("Burnout", ArsMagicaAPI.get().getBurnoutHelper().getBurnout(entity));
+        tag.putFloat("Mana", api.getManaHelper().getMana(entity));
+        tag.putFloat("Burnout", api.getBurnoutHelper().getBurnout(entity));
         tag.putFloat("Health", entity.getHealth());
         entity.getPersistentData().put(ArsMagicaAPI.MOD_ID, new CompoundTag());
         entity.getPersistentData().getCompound(ArsMagicaAPI.MOD_ID).put("TemporalAnchor", tag);
@@ -29,13 +30,14 @@ public class TemporalAnchorEffect extends AMMobEffect {
 
     @Override
     public void stopEffect(LivingEntity entity, MobEffectInstance effect) {
+        var api = ArsMagicaAPI.get();
         CompoundTag tag = entity.getPersistentData().getCompound(ArsMagicaAPI.MOD_ID).getCompound("TemporalAnchor");
         entity.setPos(tag.getDouble("X"), tag.getDouble("Y"), tag.getDouble("Z"));
         entity.setXRot(tag.getFloat("RotationPitch"));
         entity.setYRot(tag.getFloat("RotationYaw"));
         entity.setYHeadRot(tag.getFloat("RotationYawHead"));
-        ArsMagicaAPI.get().getManaHelper().setMana(entity, tag.getFloat("Mana"));
-        ArsMagicaAPI.get().getBurnoutHelper().setBurnout(entity, tag.getFloat("Burnout"));
+        api.getManaHelper().setMana(entity, tag.getFloat("Mana"));
+        api.getBurnoutHelper().setBurnout(entity, tag.getFloat("Burnout"));
         entity.setHealth(tag.getFloat("Health"));
     }
 }

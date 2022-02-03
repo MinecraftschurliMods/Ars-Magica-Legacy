@@ -31,18 +31,20 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        var affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
-        int affNum = affinityRegistry.getValues().size() - 1;
+        var api = ArsMagicaAPI.get();
+        var helper = api.getAffinityHelper();
+        var registry = api.getAffinityRegistry();
+        int affNum = registry.getValues().size() - 1;
         int portion = 360 / affNum;
         int currentID = 0;
         int cX = width / 2;
         int cY = height / 2;
         List<Component> drawString = new ArrayList<>();
-        List<IAffinity> affinities = new ArrayList<>(affinityRegistry.getValues());
+        List<IAffinity> affinities = new ArrayList<>(registry.getValues());
         affinities.sort(null);
         for (IAffinity aff : affinities) {
             if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
-            double depth = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(getPlayer(), aff) / 100;
+            double depth = helper.getAffinityDepth(getPlayer(), aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
             double var3 = Math.toRadians(portion * currentID - portion / 2.);
@@ -73,7 +75,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            getItemRenderer().renderAndDecorateFakeItem(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(aff), drawX + posX, drawY + posY);
+            getItemRenderer().renderAndDecorateFakeItem(helper.getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.getColor())));
 /*

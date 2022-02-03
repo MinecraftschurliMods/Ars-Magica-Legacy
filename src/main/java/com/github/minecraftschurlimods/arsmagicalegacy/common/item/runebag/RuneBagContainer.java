@@ -7,18 +7,13 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Mostly taken from the Botania mod.
+ * Mostly taken from McJty's tutorials and the Botania mod.
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemBackedInventory.java}
  */
 public class RuneBagContainer extends SimpleContainer {
     private static final String KEY = "Items";
     private final ItemStack stack;
 
-    /**
-     * Creates a new RuneBagContainer.
-     *
-     * @param stack The ItemStack to create the container for.
-     */
     public RuneBagContainer(ItemStack stack) {
         super(DyeColor.values().length);
         this.stack = stack;

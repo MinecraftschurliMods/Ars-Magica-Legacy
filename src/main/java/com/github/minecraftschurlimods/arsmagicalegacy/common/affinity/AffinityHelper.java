@@ -34,37 +34,12 @@ import java.util.Optional;
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
 
-    public static final class SyncPacket extends CodecPacket<AffinityHolder> {
-        public SyncPacket(AffinityHolder data) {
-            super(data);
-        }
-
-        public SyncPacket(FriendlyByteBuf buf) {
-            super(buf);
-        }
-
-        @Override
-        public void handle(NetworkEvent.Context context) {
-            AffinityHelper.handleSync(data, context);
-        }
-
-        @Override
-        protected Codec<AffinityHolder> getCodec() {
-            return AffinityHolder.CODEC;
-        }
-    }
-
-    /**
-     * Registers the network packet to the network handler.
-     */
-    public static void init() {
-        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    private AffinityHelper() {
     }
 
     /**
@@ -75,10 +50,29 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     /**
-     * @return The default capability
+     * Registers the required network packets.
+     */
+    public static void init() {
+        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    /**
+     * @return The affinity capability.
      */
     public static Capability<AffinityHolder> getCapability() {
         return AFFINITY;
+    }
+
+    private static void handleSync(AffinityHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(cap -> cap.onSync(holder)));
+    }
+
+    /**
+     * @param player The player to get the affinity holder for.
+     * @return The affinity holder for the given player.
+     */
+    public AffinityHolder getAffinityHolder(Player player) {
+        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
     }
 
     @Override
@@ -124,19 +118,22 @@ public final class AffinityHelper implements IAffinityHelper {
         return getAffinityHolder(player).getAffinityDepth(affinity);
     }
 
-    /**
-     * Gets the affinity capability for the given player.
-     *
-     * @param player The player to get the affinity capability for.
-     * @return The affinity capability for the given player.
-     */
-    public AffinityHolder getAffinityHolder(Player player) {
-        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
-    }
-
     @Override
     public double getAffinityDepth(Player player, IAffinity affinity) {
         return getAffinityDepth(player, affinity.getId());
+    }
+
+    @Override
+    public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+        getAffinityHolder(player).subtractFromAffinity(affinity, (float) getAffinityHolder(player).getAffinityDepth(affinity) - amount);
+        if (player instanceof ServerPlayer sp) {
+            syncToPlayer(sp);
+        }
+    }
+
+    @Override
+    public void setAffinityDepth(Player player, IAffinity affinity, float amount) {
+        setAffinityDepth(player, affinity.getId(), amount);
     }
 
     @Override
@@ -172,35 +169,50 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     /**
-     * Called upon player death, syncs the capabilites.
+     * Called on player death, syncs the capability.
      *
-     * @param original The old player entity from the event.
-     * @param player   The new player entity from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+        syncToPlayer(player);
     }
 
     /**
-     * Called upon player join, syncs the capabilites.
+     * Syncs the capability to the client.
      *
-     * @param player The player entity from the event.
+     * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
     }
 
-    private static void handleSync(AffinityHolder affinityHolder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+    public static final class SyncPacket extends CodecPacket<AffinityHolder> {
+        public SyncPacket(AffinityHolder data) {
+            super(data);
+        }
+
+        public SyncPacket(FriendlyByteBuf buf) {
+            super(buf);
+        }
+
+        @Override
+        public void handle(NetworkEvent.Context context) {
+            AffinityHelper.handleSync(data, context);
+        }
+
+        @Override
+        protected Codec<AffinityHolder> getCodec() {
+            return AffinityHolder.CODEC;
+        }
     }
 
     public static final class AffinityHolder {
-        public static final Codec<AffinityHolder> CODEC =
-                RecordCodecBuilder.create(inst -> inst.group(
-                        CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
-                        Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
-                ).apply(inst, AffinityHolder::new));
-
+        public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
+                Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
+        ).apply(inst, AffinityHolder::new));
         private final Map<ResourceLocation, Double> depths;
         private boolean locked = false;
 
@@ -209,29 +221,29 @@ public final class AffinityHelper implements IAffinityHelper {
         }
 
         /**
-         * @return A new empty AffinityHolder.
+         * @return An affinity holder.
          */
         public static AffinityHolder empty() {
             return new AffinityHolder(new HashMap<>(), false);
         }
 
         /**
-         * Get the depths map for this affinity holder.
-         *
-         * @return the unmodifiable view of the affinity depths map
+         * @return An unmodifiable list of all affinity depths in this holder.
          */
         public Map<ResourceLocation, Double> depths() {
             return Collections.unmodifiableMap(depths);
         }
 
+        /**
+         * @return Whether this affinity holder is locked or not.
+         */
         public boolean locked() {
             return locked;
         }
 
         /**
-         * Runs the synchronization logic.
-         *
-         * @param affinityHolder The affinity capability to sync.
+         * Synchronizes the affinity holder.
+         * @param affinityHolder The affinity holder to synchronize.
          */
         public void onSync(AffinityHolder affinityHolder) {
             depths.clear();
@@ -239,29 +251,37 @@ public final class AffinityHelper implements IAffinityHelper {
         }
 
         /**
-         * Get the depth for a given affinity.
-         *
-         * @param affinity the affinity to get the depth for
-         * @return the depth of the requested affinity or 0 if not available
+         * @param affinity The id of the affinity to get the depth for.
+         * @return The depth for the given affinity.
          */
         public double getAffinityDepth(ResourceLocation affinity) {
             return depths().getOrDefault(affinity, 0d);
         }
 
         /**
-         * Get the depth for a given affinity.
-         *
-         * @param affinity the affinity to get the depth for
-         * @return the depth of the requested affinity or 0 if not available
+         * @param affinity The affinity to get the depth for.
+         * @return The depth for the given affinity.
          */
         public double getAffinityDepth(IAffinity affinity) {
             return getAffinityDepth(affinity.getId());
         }
 
+        /**
+         * Adds the given shift to the given affinity.
+         *
+         * @param affinity The id of the affinity to add the given shift to.
+         * @param shift    The shift to add.
+         */
         public void addToAffinity(ResourceLocation affinity, float shift) {
             depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) + shift, 0, MAX_DEPTH));
         }
 
+        /**
+         * Subtracts the given shift from the given affinity.
+         *
+         * @param affinity The id of the affinity to add the given shift to.
+         * @param shift    The shift to subtract.
+         */
         public void subtractFromAffinity(ResourceLocation affinity, float shift) {
             depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) - shift, 0, MAX_DEPTH));
         }
@@ -273,9 +293,9 @@ public final class AffinityHelper implements IAffinityHelper {
         @Override
         public boolean equals(Object obj) {
             if (obj == this) return true;
-            if (obj == null || obj.getClass() != this.getClass()) return false;
-            var that = (AffinityHolder) obj;
-            return Objects.equals(this.depths, that.depths) && this.locked == that.locked;
+            if (obj == null || obj.getClass() != getClass()) return false;
+            AffinityHolder that = (AffinityHolder) obj;
+            return Objects.equals(depths, that.depths) && locked == that.locked;
         }
 
         @Override

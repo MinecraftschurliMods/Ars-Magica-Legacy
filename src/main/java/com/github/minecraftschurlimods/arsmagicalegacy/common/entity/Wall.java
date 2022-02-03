@@ -1,7 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 public class Wall extends Entity implements ItemSupplier {
@@ -30,8 +33,22 @@ public class Wall extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.ITEM_STACK);
 
-    public Wall(EntityType<? extends Wall> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    /**
+     * Use {@link Wall#create(Level)} instead.
+     */
+    @Internal
+    public Wall(EntityType<? extends Wall> entityEntityType, Level level) {
+        super(entityEntityType, level);
+    }
+
+    /**
+     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
+     *
+     * @param level the level to create the new instance in
+     * @return a new instance of this class in the given level
+     */
+    public static Wall create(Level level) {
+        return new Wall(AMEntities.WALL.get(), level);
     }
 
     @Override
@@ -108,7 +125,7 @@ public class Wall extends Entity implements ItemSupplier {
                 }
                 Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
                 closest = new Vec3(closest.x, getY(), closest.z);
-                if (e instanceof LivingEntity && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
+                if (e instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
                     ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
                 }
             }

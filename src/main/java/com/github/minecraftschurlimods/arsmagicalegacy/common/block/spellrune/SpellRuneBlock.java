@@ -17,10 +17,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class SpellRuneBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACE = BlockStateProperties.FACING;
     public static final Map<Direction, VoxelShape> COLLISION_SHAPES = Map.of(
@@ -37,7 +37,6 @@ public class SpellRuneBlock extends Block implements EntityBlock {
         registerDefaultState(getStateDefinition().any().setValue(FACE, Direction.DOWN));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new SpellRuneBlockEntity(pPos, pState);
@@ -55,8 +54,9 @@ public class SpellRuneBlock extends Block implements EntityBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (pLevel.isClientSide()) return;
-        ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        if (!pLevel.isClientSide()) {
+            ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        }
     }
 
     @Override

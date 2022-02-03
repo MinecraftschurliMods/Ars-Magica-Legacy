@@ -22,11 +22,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class SpellRuneBlockEntity extends BlockEntity {
-    public static final String SPELL_KEY    = ArsMagicaAPI.MOD_ID + ":spell";
-    public static final String INDEX_KEY    = ArsMagicaAPI.MOD_ID + ":index";
+    public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
+    public static final String INDEX_KEY = ArsMagicaAPI.MOD_ID + ":index";
     public static final String AWARD_XP_KEY = ArsMagicaAPI.MOD_ID + ":award_xp";
-
-    private ISpell  spell;
+    private ISpell spell;
     private Integer index;
     private LivingEntity caster;
     private Boolean awardXp;
@@ -37,14 +36,14 @@ public class SpellRuneBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        if (this.spell instanceof Spell) {
-            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) this.spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        if (spell instanceof Spell) {
+            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
-        if (this.index != null) {
-            pTag.putInt(INDEX_KEY, this.index);
+        if (index != null) {
+            pTag.putInt(INDEX_KEY, index);
         }
-        if (this.awardXp != null) {
-            pTag.putBoolean(AWARD_XP_KEY, this.awardXp);
+        if (awardXp != null) {
+            pTag.putBoolean(AWARD_XP_KEY, awardXp);
         }
         super.save(pTag);
     }
@@ -52,41 +51,43 @@ public class SpellRuneBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         if (pTag.contains(SPELL_KEY)) {
-            this.spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
+            spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
         }
         if (pTag.contains(INDEX_KEY)) {
-            this.index = pTag.getInt(INDEX_KEY);
+            index = pTag.getInt(INDEX_KEY);
         }
         if (pTag.contains(AWARD_XP_KEY)) {
-            this.awardXp = pTag.getBoolean(AWARD_XP_KEY);
+            awardXp = pTag.getBoolean(AWARD_XP_KEY);
         }
         super.load(pTag);
     }
 
+    /**
+     * Called when an entity collides with this block.
+     *
+     * @param level     The level of this block.
+     * @param pos       The position of this block.
+     * @param entity    The entity that cóllided with this block.
+     * @param direction The direction the collision occured on.
+     */
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
-        if (this.spell == null) return;
-        SpellCastResult r1 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
-                this.caster,
-                level,
-                new EntityHitResult(entity),
-                0,
-                this.index,
-                this.awardXp);
-        SpellCastResult r2 = ArsMagicaAPI.get().getSpellHelper().invoke(this.spell,
-                this.caster,
-                level,
-                new BlockHitResult(entity.position(),
-                        direction,
-                        pos,
-                        false),
-                0,
-                this.index,
-                this.awardXp);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        if (spell == null) return;
+        SpellCastResult r1 = helper.invoke(spell, caster, level, new EntityHitResult(entity), 0, index, awardXp);
+        SpellCastResult r2 = helper.invoke(spell, caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
+    /**
+     * Sets this block's spell.
+     *
+     * @param spell   The spell.
+     * @param caster  The original caster.
+     * @param index   The shape group index to use.
+     * @param awardXp Whether to grant xp to the original caster or not.
+     */
     public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
         this.spell = spell;
         this.index = index;

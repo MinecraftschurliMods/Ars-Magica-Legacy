@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
-/**
- * Ugly hack to prevent unwanted classloading.
- */
-public class DistProxy {
+public final class DistProxy {
+    /**
+     * Runs client initialization. Needs a separate class to prevent unwanted classloading.
+     */
     public static void init() {
         ClientInit.init();
     }

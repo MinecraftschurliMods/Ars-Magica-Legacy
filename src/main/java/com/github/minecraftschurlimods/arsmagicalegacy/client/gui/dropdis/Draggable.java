@@ -38,12 +38,12 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (!dragOffsetSet) {
-            this.dragOffsetX = mouseX - this.x;
-            this.dragOffsetY = mouseY - this.y;
+            dragOffsetX = mouseX - x;
+            dragOffsetY = mouseY - y;
             dragOffsetSet = true;
         }
-        this.x = (int)(mouseX - this.dragOffsetX);
-        this.y = (int)(mouseY - this.dragOffsetY);
+        this.x = (int) (mouseX - this.dragOffsetX);
+        this.y = (int) (mouseY - this.dragOffsetY);
         return true;
     }
 
@@ -58,6 +58,13 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
         poseStack.popPose();
     }
 
+    /**
+     * Renders the tooltip of the given pose stack.
+     *
+     * @param poseStack The pose stack to render the tooltip of.
+     * @param x         The x to render the tooltip at.
+     * @param y         The y to render the tooltip at.
+     */
     public void renderTooltip(PoseStack poseStack, int x, int y) {
         Minecraft.getInstance().screen.renderTooltip(poseStack, name, x, y);
     }
@@ -77,15 +84,15 @@ public class Draggable extends AbstractContainerEventHandler implements Widget, 
 
     @Override
     public void updateNarration(NarrationElementOutput narrationElementOutput) {
-        narrationElementOutput.add(NarratedElementType.TITLE, this.name);
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+        narrationElementOutput.add(NarratedElementType.TITLE, name);
     }
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @Override

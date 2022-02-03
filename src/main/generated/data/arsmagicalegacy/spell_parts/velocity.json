@@ -1,14 +1,14 @@
 {
-  "manaCost": 1.2,
+  "manaCost": 1.25,
   "reagents": [],
   "affinities": {},
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
+        "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -29,10 +29,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:swiftness\"}",
+        "type": "forge:nbt",
         "item": "minecraft:potion",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Potion:\"minecraft:swiftness\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

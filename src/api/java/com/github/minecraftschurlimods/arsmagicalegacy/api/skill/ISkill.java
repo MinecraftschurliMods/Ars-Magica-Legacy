@@ -7,58 +7,38 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interface representing a skill
+ * Interface representing a skill.
  */
 public interface ISkill extends ITranslatable.WithDescription {
     String SKILL = "skill";
 
     /**
-     * Get the id for this skill.
-     *
-     * @return the id for this skill
-     */
-    @Override
-    ResourceLocation getId();
-
-    /**
-     * Get the id of the occulus tab this skill belongs to.
-     *
-     * @return the id of the occulus tab this skill belongs to
+     * @return The id of the occulus tab this skill belongs to.
      */
     ResourceLocation getOcculusTab();
 
     /**
-     * Get the ids of this' skills parents.
-     *
-     * @return the ids of this' skills parents
+     * @return The ids of this skill's parents.
      */
     Set<ResourceLocation> getParents();
 
     /**
-     * Get the x coordinate of the drawing position.
-     *
-     * @return the x coordinate of the drawing position
+     * @return The x coordinate of this skill.
      */
     int getX();
 
     /**
-     * Get the y coordinate of the drawing position.
-     *
-     * @return the y coordinate of the drawing position
+     * @return The y coordinate of this skill.
      */
     int getY();
 
     /**
-     * Get the cost for learning this skill.
-     *
-     * @return the cost for learning this skill
+     * @return The cost for learning this skill.
      */
     Map<ResourceLocation, Integer> getCost();
 
     /**
-     * Get whether this skill is hidden or not.
-     *
-     * @return whether this skill is hidden
+     * @return Whether this skill is hidden or not.
      */
     boolean isHidden();
 

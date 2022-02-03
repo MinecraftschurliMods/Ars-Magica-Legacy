@@ -10,48 +10,36 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interface representing spell part data
+ * Interface representing spell part data.
  */
 public interface ISpellPartData {
     /**
-     * Get the recipe for the associated spell part.
-     *
-     * @return the recipe for the associated spell part
+     * @return The recipe for this spell part.
      */
     List<ISpellIngredient> recipe();
 
     /**
-     * Get the affinity shifts for the associated spell part.
-     *
-     * @return the affinity shifts for the associated spell part
+     * @return The affinity shifts for this spell part.
      */
     Map<IAffinity, Float> affinityShifts();
 
     /**
-     * Get the affinities for the associated spell part.
-     *
-     * @return the affinities for the associated spell part
+     * @return The affinities for this spell part.
      */
     Set<IAffinity> affinities();
 
     /**
-     * Get the reagents consumed when casting the spell.
-     *
-     * @return the reagents consumed when casting the spell
+     * @return The reagents for this spell part.
      */
     List<Either<Ingredient, ItemStack>> reagents();
 
     /**
-     * Get the mana cost of the associated spell part.
-     *
-     * @return the mana cost of the associated spell part
+     * @return The mana cost for this spell part.
      */
     float manaCost();
 
     /**
-     * Get the burnout of the associated spell part.
-     *
-     * @return the burnout of the associated spell part
+     * @return The burnout for this spell part.
      */
     float burnout();
 }

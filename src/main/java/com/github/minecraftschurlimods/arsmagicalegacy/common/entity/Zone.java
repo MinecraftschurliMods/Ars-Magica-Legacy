@@ -1,7 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,6 +25,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -37,9 +40,23 @@ public class Zone extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.ITEM_STACK);
 
+    /**
+     * Use {@link Zone#create(Level)} instead.
+     */
+    @Internal
     public Zone(EntityType<? extends Zone> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         setBoundingBox(new AABB(getX() - 0.1, getY() - 0.1, getZ() - 0.1, getX() + 0.1, getY() + 0.1, getZ() + 0.1));
+    }
+
+    /**
+     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
+     *
+     * @param level the level to create the new instance in
+     * @return a new instance of this class in the given level
+     */
+    public static Zone create(Level level) {
+        return new Zone(AMEntities.ZONE.get(), level);
     }
 
     @Override
@@ -102,7 +119,7 @@ public class Zone extends Entity implements ItemSupplier {
                 if (entity instanceof PartEntity) {
                     entity = ((PartEntity<?>) entity).getParent();
                 }
-                if (entity instanceof LivingEntity) {
+                if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
                     ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
                 }
             }

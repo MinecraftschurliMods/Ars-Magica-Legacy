@@ -19,13 +19,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardian extends AbstractBoss {
+    private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
     private WaterGuardian clone2 = null;
-    private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
     //private float spinRotation = 0;
     //private unerSpinAvailable = false;
 
@@ -46,8 +45,8 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return AMSounds.WATER_GUARDIAN_HURT.get();
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return null;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.WATER_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override
@@ -66,7 +65,7 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (!(pSource.getEntity() instanceof WaterGuardian)) {
             return false;
         }
@@ -80,15 +79,13 @@ public class WaterGuardian extends AbstractBoss {
             level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
             return false;
         }
-
-        //modifyDamageAmount
-        if(pSource == DamageSource.LIGHTNING_BOLT) {
+        if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2.0f;
         }
-        if(pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
+        if (pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
             pAmount = 0;
         }
-        if(pSource == DamageSource.FREEZE) {
+        if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
@@ -119,16 +116,17 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int)(getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override
-    public void travel(@NotNull Vec3 pTravelVector) {
+    public void travel(Vec3 pTravelVector) {
         if (isEffectiveAi() && isInWater()) {
             moveRelative(0.1F, pTravelVector);
             move(MoverType.SELF, getDeltaMovement());
@@ -138,36 +136,36 @@ public class WaterGuardian extends AbstractBoss {
         }
     }
 
-    public void setClones(WaterGuardian clone1, WaterGuardian clone2){
+    public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
         this.clone1 = clone1;
         this.clone2 = clone2;
     }
 
-    private boolean hasClones(){
+    private boolean hasClones() {
         return clone1 != null || clone2 != null;
     }
 
-    public void clearClones(){
-        if (clone1 != null){
+    public void clearClones() {
+        if (clone1 != null) {
             clone1.setRemoved(RemovalReason.DISCARDED);
             clone1 = null;
         }
-        if (clone2 != null){
+        if (clone2 != null) {
             clone2.setRemoved(RemovalReason.DISCARDED);
             clone2 = null;
         }
     }
 
-    public boolean isClone(){
+    public boolean isClone() {
         return entityData.get(IS_CLONE);
     }
 
-    public void setMaster(WaterGuardian master){
+    public void setMaster(WaterGuardian master) {
         entityData.set(IS_CLONE, true);
         this.master = master;
     }
 
-    public void clearMaster(){
+    public void clearMaster() {
         master = null;
     }
 }

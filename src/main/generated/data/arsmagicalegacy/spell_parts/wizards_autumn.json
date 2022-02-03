@@ -1,5 +1,5 @@
 {
-  "manaCost": 15.0,
+  "manaCost": 4.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:nature": 0.01
@@ -8,13 +8,6 @@
     {
       "ingredient": {
         "item": "arsmagicalegacy:green_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:ingots/iron"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

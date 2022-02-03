@@ -2,9 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -22,22 +25,20 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Optional;
 import java.util.ServiceLoader;
 
 public final class ArsMagicaAPI {
-    /**
-     * The modid of the mod
-     */
     public static final String MOD_ID = "arsmagicalegacy";
     private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
         Optional<IArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), IArsMagicaAPI.class).findFirst();
         if (!FMLEnvironment.production) {
-            return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI")));
+            return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI!")));
         }
         return impl.orElseGet(() -> {
-            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
+            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy!");
             return StubArsMagicaAPI.INSTANCE;
         });
     });
@@ -46,133 +47,130 @@ public final class ArsMagicaAPI {
     }
 
     /**
-     * Get the API Instance
-     *
-     * @return the API Instance
+     * @return The API onstance.
      */
     public static IArsMagicaAPI get() {
         return LAZY_INSTANCE.get();
     }
 
     /**
-     * The Interface representing the API
+     * Interface representing the API.
      */
     @NonExtendable
     public interface IArsMagicaAPI {
         /**
-         * Get the {@link CreativeModeTab} of the mod
-         *
-         * @return the {@link CreativeModeTab} of the mod
+         * @return The creative mode tab of the mod.
          */
         CreativeModeTab getCreativeModeTab();
 
         /**
-         * Get the Arcane Compendium {@link ItemStack}
-         *
-         * @return the {@link ItemStack} for the Arcane Compendium
+         * @return The arcane compendium item stack.
          */
         ItemStack getBookStack();
 
         /**
-         * Get the registry for skill points.
-         *
-         * @return the registry for skill points
+         * @return The registry for skill points.
          */
         IForgeRegistry<ISkillPoint> getSkillPointRegistry();
 
         /**
-         * Get the registry for affinities.
-         *
-         * @return the registry for affinities
+         * @return The registry for affinities.
          */
         IForgeRegistry<IAffinity> getAffinityRegistry();
 
         /**
-         * Get the registry for spell parts.
-         *
-         * @return the registry for spell parts
+         * @return The registry for spell parts.
          */
         IForgeRegistry<ISpellPart> getSpellPartRegistry();
 
         /**
-         * Get the {@link ISkillManager} instance.
-         *
-         * @return the {@link ISkillManager} instance
+         * @return The skill manager instance.
          */
         ISkillManager getSkillManager();
 
         /**
-         * Get the {@link IOcculusTabManager} instance.
-         *
-         * @return the {@link IOcculusTabManager} instance
+         * @return The occulus tab manager instance.
          */
         IOcculusTabManager getOcculusTabManager();
 
         /**
-         * Get the {@link ISpellDataManager} instance.
-         *
-         * @return the {@link ISpellDataManager} instance
+         * @return The spell data manager instance.
          */
         ISpellDataManager getSpellDataManager();
 
         /**
-         * Get the {@link ISkillHelper} instance.
-         *
-         * @return the {@link ISkillHelper} instance
+         * @return The skill helper instance.
          */
+        @Unmodifiable
         ISkillHelper getSkillHelper();
 
         /**
-         * Get the {@link IAffinityHelper} instance.
-         *
-         * @return the {@link IAffinityHelper} instance
+         * @return The affinity helper instance.
          */
+        @Unmodifiable
         IAffinityHelper getAffinityHelper();
 
         /**
-         * Get the {@link IMagicHelper} instance.
-         *
-         * @return the {@link IMagicHelper} instance
+         * @return The magic helper instance.
          */
+        @Unmodifiable
         IMagicHelper getMagicHelper();
 
         /**
-         * Get the {@link IManaHelper} instance.
-         *
-         * @return the {@link IManaHelper} instance
+         * @return The mana helper instance.
          */
+        @Unmodifiable
         IManaHelper getManaHelper();
 
         /**
-         * Get the {@link IBurnoutHelper} instance.
-         *
-         * @return the {@link IBurnoutHelper} instance
+         * @return The burnout helper instance.
          */
+        @Unmodifiable
         IBurnoutHelper getBurnoutHelper();
 
         /**
-         * Open the occulus gui for the given player.
+         * @return The spell helper instance.
+         */
+        @Unmodifiable
+        ISpellHelper getSpellHelper();
+
+        /**
+         * @return The rift helper instance.
+         */
+        @Unmodifiable
+        IRiftHelper getRiftHelper();
+
+        /**
+         * @return The shrink helper instance.
+         */
+        @Unmodifiable
+        IShrinkHelper getShrinkHelper();
+
+        /**
+         * @return The etherium helper instance.
+         */
+        @Unmodifiable
+        IEtheriumHelper getEtheriumHelper();
+
+        /**
+         * Opens the occulus gui for the given player.
          *
-         * @param player the player to open the gui for
+         * @param player The player to open the gui for.
          */
         void openOcculusGui(Player player);
 
         /**
-         * Get the {@link ISpellHelper} instance.
+         * Opens the spell customization gui for the given player.
          *
-         * @return the {@link ISpellHelper} instance
-         */
-        ISpellHelper getSpellHelper();
-
-        /**
-         * Open the spell customization gui for the given spell (the given stack).<br>
-         * Only works on the client.
+         * @param level  The level to open the gui in.
+         * @param player The player to open the gui for.
+         * @param stack  The spell item stack to open the gui for.
          */
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static final class StubArsMagicaAPI implements IArsMagicaAPI {
+    private static class StubArsMagicaAPI implements IArsMagicaAPI {
         private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
 
         @Override
@@ -241,12 +239,27 @@ public final class ArsMagicaAPI {
         }
 
         @Override
-        public void openOcculusGui(final Player pPlayer) {
+        public IEtheriumHelper getEtheriumHelper() {
+            return null;
         }
 
         @Override
         public ISpellHelper getSpellHelper() {
             return null;
+        }
+
+        @Override
+        public IRiftHelper getRiftHelper() {
+            return null;
+        }
+
+        @Override
+        public IShrinkHelper getShrinkHelper() {
+            return null;
+        }
+
+        @Override
+        public void openOcculusGui(final Player pPlayer) {
         }
 
         @Override

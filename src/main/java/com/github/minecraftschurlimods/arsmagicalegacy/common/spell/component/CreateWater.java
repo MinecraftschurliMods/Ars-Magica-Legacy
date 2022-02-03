@@ -28,10 +28,10 @@ public class CreateWater extends AbstractComponent {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
         if (block == Blocks.CAULDRON || block == Blocks.WATER_CAULDRON && !((AbstractCauldronBlock) block).isFull(state)) {
-            level.setBlock(pos, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, LayeredCauldronBlock.MAX_FILL_LEVEL), 3);
+            level.setBlock(pos, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, LayeredCauldronBlock.MAX_FILL_LEVEL), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (level.getBlockState(pos.offset(target.getDirection().getNormal())).isAir()) {
-            level.setBlock(pos.offset(target.getDirection().getNormal()), Blocks.WATER.defaultBlockState(), 3);
+            level.setBlock(pos.offset(target.getDirection().getNormal()), Blocks.WATER.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;

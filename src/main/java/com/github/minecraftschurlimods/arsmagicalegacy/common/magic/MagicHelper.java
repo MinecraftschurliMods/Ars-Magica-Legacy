@@ -38,6 +38,10 @@ public final class MagicHelper implements IMagicHelper {
         return MAGIC;
     }
 
+    private static void handleMagicSync(MagicHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(cap -> cap.onSync(holder)));
+    }
+
     @Override
     public int getLevel(Player player) {
         return getMagicHolder(player).getLevel();
@@ -49,20 +53,47 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     @Override
+    public float getXpForNextLevel(int level) {
+        return level == 0 ? 0 : 2.4f * (float) Math.pow(1.2, level);
+    }
+
+    @Override
     public void awardXp(Player player, float amount) {
+        setXp(player, getXp(player) + amount);
+    }
+
+    @Override
+    public void setXp(Player player, float amount) {
         MagicHolder magicHolder = getMagicHolder(player);
-        float n = magicHolder.getXp() + amount;
-        int l = magicHolder.getLevel();
+        int oldLevel = magicHolder.getLevel();
+        float xp = Math.max(0, amount);
+        int level = 1;
         while (true) {
-            float xpForNextLevel = getXpForNextLevel(l);
-            if (n < xpForNextLevel) break;
-            n -= xpForNextLevel;
-            l++;
-            MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, l));
+            float xpForNextLevel = getXpForNextLevel(level);
+            if (xp < xpForNextLevel) break;
+            xp -= xpForNextLevel;
+            level++;
+            if (level > oldLevel) {
+                MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            }
         }
-        magicHolder.setXp(n);
-        magicHolder.setLevel(l);
+        magicHolder.setXp(xp);
+        magicHolder.setLevel(level);
         syncMagic(player);
+    }
+
+    @Override
+    public void awardLevel(Player player, int level) {
+        setLevel(player, getLevel(player) + level);
+    }
+
+    @Override
+    public void setLevel(Player player, int level) {
+        float xp = 0;
+        for (int i = 1; i <= level; i++) {
+            xp += getXpForNextLevel(i);
+        }
+        setXp(player, xp);
     }
 
     @Override
@@ -73,13 +104,19 @@ public final class MagicHelper implements IMagicHelper {
     /**
      * Called on player death, syncs the capability.
      *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
+        syncMagic(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncMagic(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
     }
@@ -93,15 +130,6 @@ public final class MagicHelper implements IMagicHelper {
             player.invalidateCaps();
         }
         return magicHolder;
-    }
-
-    private float getXpForNextLevel(int level) {
-        if (level == 0) return 0;
-        return 2.5f * (float) Math.pow(1.2, level);
-    }
-
-    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
@@ -135,7 +163,7 @@ public final class MagicHelper implements IMagicHelper {
         private int level;
 
         public float getXp() {
-            return this.xp;
+            return xp;
         }
 
         public void setXp(float xp) {
@@ -143,16 +171,21 @@ public final class MagicHelper implements IMagicHelper {
         }
 
         public int getLevel() {
-            return this.level;
+            return level;
         }
 
         public void setLevel(int level) {
             this.level = level;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(MagicHolder data) {
-            this.xp = data.xp;
-            this.level = data.level;
+            xp = data.xp;
+            level = data.level;
         }
     }
 }

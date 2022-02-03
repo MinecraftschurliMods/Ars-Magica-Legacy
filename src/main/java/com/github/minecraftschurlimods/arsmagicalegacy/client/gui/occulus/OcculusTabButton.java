@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class OcculusTabButton extends Button {
     private static final int SIZE = 22;
-    private final int         index;
+    private final int index;
     private final IOcculusTab tab;
 
     public OcculusTabButton(int index, int x, int y, IOcculusTab tab, OnPress pOnPress) {
@@ -29,9 +29,6 @@ public class OcculusTabButton extends Button {
         RenderUtil.drawBox(pMatrixStack, x + 2f, y + 2f, 18, 18, getBlitOffset(), 0, 0, 1, 1);
     }
 
-    /**
-     * @return The index of this OcculusTabButton.
-     */
     public int getIndex() {
         return index;
     }

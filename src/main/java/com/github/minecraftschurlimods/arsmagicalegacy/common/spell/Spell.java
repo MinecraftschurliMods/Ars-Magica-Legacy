@@ -2,15 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellCastEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
@@ -23,7 +18,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -40,7 +35,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.server.permission.PermissionAPI;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
@@ -65,7 +59,6 @@ public final class Spell implements ISpell {
     //@formatter:on
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
     private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
-
     private final List<ShapeGroup> shapeGroups;
     private final SpellStack spellStack;
     private final CompoundTag additionalData;
@@ -73,22 +66,19 @@ public final class Spell implements ISpell {
     private final Lazy<Boolean> empty;
     private final Lazy<Boolean> valid;
 
-    public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
-        return new Spell(List.of(shapeGroups), spellStack, new CompoundTag());
-    }
-
     public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         this.shapeGroups = shapeGroups;
         this.spellStack = spellStack;
         this.additionalData = additionalData;
-        this.continuous = Lazy.concurrentOf(() -> this.firstShape(this.currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
-        this.empty = Lazy.concurrentOf(() -> (this.shapeGroups().isEmpty() || this.shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
-        this.valid = Lazy.concurrentOf(() -> Stream.concat(this.shapeGroups().stream()
-                                .map(ShapeGroup::parts)
-                                .flatMap(Collection::stream),
-                        this.spellStack().parts().stream())
+        continuous = Lazy.concurrentOf(() -> firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
+        empty = Lazy.concurrentOf(() -> (shapeGroups().isEmpty() || shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
+        valid = Lazy.concurrentOf(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
+    }
+
+    public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
+        return new Spell(List.of(shapeGroups), spellStack, new CompoundTag());
     }
 
     @Override
@@ -109,11 +99,9 @@ public final class Spell implements ISpell {
     @Override
     public Optional<ISpellShape> firstShape(byte currentShapeGroup) {
         try {
-            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts)
-                                                                    .filter(parts -> !parts.isEmpty())
-                                                                    .orElse(spellStack().parts()).get(0))
-                           .filter(ISpellShape.class::isInstance)
-                           .map(ISpellShape.class::cast);
+            return Optional.ofNullable(shapeGroup(currentShapeGroup).map(ShapeGroup::parts).filter(parts -> !parts.isEmpty()).orElse(spellStack().parts()).get(0))
+                    .filter(ISpellShape.class::isInstance)
+                    .map(ISpellShape.class::cast);
         } catch (IndexOutOfBoundsException exception) {
             return Optional.empty();
         }
@@ -137,28 +125,27 @@ public final class Spell implements ISpell {
 
     @Override
     public void currentShapeGroupIndex(byte shapeGroup) {
-        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) throw new IllegalArgumentException();
+        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) throw new IndexOutOfBoundsException("Invalid shape group index!");
         additionalData().putByte(CURRENT_SHAPE_GROUP_KEY, shapeGroup);
     }
 
     @Override
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
-        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, ServerInit.CAN_CAST_SPELL)) return SpellCastResult.NO_PERMISSION;
-        SpellCastEvent event = new SpellCastEvent(caster, this);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.isCanceled()) return SpellCastResult.CANCELLED;
+        if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
+            return SpellCastResult.NO_PERMISSION;
+        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
-        float mana = event.mana;
-        float burnout = event.burnout;
-        Collection<Either<Ingredient, ItemStack>> reagents = event.reagents;
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        IMagicHelper magicHelper = api.getMagicHelper();
-        IManaHelper manaHelper = api.getManaHelper();
-        IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
-        ISpellHelper spellHelper = api.getSpellHelper();
+        float mana = mana(caster);
+        float burnout = burnout(caster);
+        Collection<Either<Ingredient, ItemStack>> reagents = reagents(caster);
+        var api = ArsMagicaAPI.get();
+        var manaHelper = api.getManaHelper();
+        var burnoutHelper = api.getBurnoutHelper();
+        var spellHelper = api.getSpellHelper();
         if (consume && !(caster instanceof Player p && p.isCreative())) {
             if (manaHelper.getMana(caster) < mana) return SpellCastResult.NOT_ENOUGH_MANA;
-            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout) return SpellCastResult.BURNED_OUT;
+            if (burnoutHelper.getMaxBurnout(caster) - burnoutHelper.getBurnout(caster) < burnout)
+                return SpellCastResult.BURNED_OUT;
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
@@ -169,7 +156,7 @@ public final class Spell implements ISpell {
             spellHelper.consumeReagents(caster, reagents);
         }
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
-            boolean affinityGains = ArsMagicaAPI.get().getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
+            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
             Map<IAffinity, Double> affinityShifts = affinityShifts();
             for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
@@ -183,13 +170,13 @@ public final class Spell implements ISpell {
                 }
                 AffinityChangingEvent evt = new AffinityChangingEvent(player, affinity, shift.floatValue());
                 if (!evt.isCanceled()) {
-                    ArsMagicaAPI.get().getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
+                    api.getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
                 }
             }
             float xp = 0.05f * affinityShifts.size();
             if (continuous) xp /= 4;
             if (affinityGains) xp *= 0.9f;
-            magicHelper.awardXp(player, xp);
+            api.getMagicHelper().awardXp(player, xp);
         }
         return result;
     }
@@ -213,60 +200,58 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public float manaCost(@Nullable LivingEntity caster) {
+    public float mana(LivingEntity caster) {
         float cost = 0;
         float multiplier = 1;
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
-        ISpellDataManager spellDataManager = api.getSpellDataManager();
-        IAffinityHelper affinityHelper = api.getAffinityHelper();
+        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         for (ISpellPart part : parts()) {
+            ISpellPartData data = spellDataManager.getDataForPart(part);
+            if (data == null) continue;
             switch (part.getType()) {
-                case SHAPE, MODIFIER -> multiplier *= spellDataManager.getDataForPart(part).manaCost();
-                case COMPONENT -> {
-                    ISpellPartData data = spellDataManager.getDataForPart(part);
-                    cost += data.manaCost();
-                    if (caster instanceof Player player) {
-                        for (IAffinity aff : data.affinities()) {
-                            if (affinityHelper.getAffinityDepth(player, aff) > 0) {
-                                cost -= (float) (cost * (0.5f * affinityHelper.getAffinityDepth(player, aff) / 100f));
-                            }// else {
-                            //cost = cost + (cost * (0.10f));
-                            //}
-                        }
-                    }
-                }
+                case SHAPE, MODIFIER -> multiplier *= data.manaCost();
+                case COMPONENT -> cost += data.manaCost();
             }
         }
+        SpellEvent.ManaCost.Pre pre = new SpellEvent.ManaCost.Pre(caster, this, cost, multiplier);
+        MinecraftForge.EVENT_BUS.post(pre);
+        cost = pre.getModifiedBase();
+        multiplier = pre.getModifiedMultiplier();
         if (multiplier == 0) {
             multiplier = 1;
         }
         cost *= multiplier;
-        if (caster instanceof Player player && affinityHelper.getAffinityDepth(player, IAffinity.ARCANE) > 0.5f) {
-            float reduction = (float) (1 - (0.5 * affinityHelper.getAffinityDepth(player, IAffinity.ARCANE)));
-            cost *= reduction;
-        }
-        return cost;
+        SpellEvent.ManaCost.Post post = new SpellEvent.ManaCost.Post(caster, this, cost);
+        MinecraftForge.EVENT_BUS.post(post);
+        return post.getModifiedMana();
     }
 
     @Override
-    public float burnout() {
+    public float burnout(LivingEntity caster) {
         float cost = 0;
         for (ISpellPart part : parts()) {
-            if (part.getType() == ISpellPart.SpellPartType.COMPONENT) {
-                cost += ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part).burnout();
+            ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part);
+            if (data != null && part.getType() == ISpellPart.SpellPartType.COMPONENT) {
+                cost += data.burnout();
             }
         }
-        return cost;
+        SpellEvent.BurnoutCost event = new SpellEvent.BurnoutCost(caster, this, cost);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.getModifiedBurnout();
     }
 
     @Override
-    public List<Either<Ingredient, ItemStack>> reagents() {
+    public List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster) {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
-        return parts().stream()
-                .filter(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT)
-                .map(spellDataManager::getDataForPart)
-                .flatMap(data -> data.reagents().stream())
-                .toList();
+        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        for (ISpellPart part : parts()) {
+            if (part.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
+            ISpellPartData dataForPart = spellDataManager.getDataForPart(part);
+            if (dataForPart == null) continue;
+            reagents.addAll(dataForPart.reagents());
+        }
+        SpellEvent.ReagentCost event = new SpellEvent.ReagentCost(caster, this, reagents);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.reagents;
     }
 
     @Override
@@ -287,11 +272,12 @@ public final class Spell implements ISpell {
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.BLANK_RUNE.get()), 1)); // TODO make datadriven
         for (ISpellPartData data : iSpellPartData) {
             if (data == null) return List.of();
             ingredients.addAll(data.recipe());
         }
-        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_PARCHMENT.get()), 1)); // todo make datadriven
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_PARCHMENT.get()), 1)); // TODO make datadriven
         return ingredients;
     }
 
@@ -322,7 +308,8 @@ public final class Spell implements ISpell {
 
     @Override
     public IAffinity primaryAffinity() {
-        return affinityShifts().entrySet().stream()
+        return affinityShifts().entrySet()
+                .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElseGet(AMAffinities.NONE);
@@ -330,15 +317,14 @@ public final class Spell implements ISpell {
 
     @Override
     public CompoundTag additionalData() {
-        if (isEmpty()) return new CompoundTag();
-        return additionalData;
+        return isEmpty() ? new CompoundTag() : additionalData;
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final Spell spell = (Spell) o;
+        Spell spell = (Spell) o;
         return shapeGroups().equals(spell.shapeGroups()) && spellStack().equals(spell.spellStack()) && additionalData().equals(spell.additionalData());
     }
 

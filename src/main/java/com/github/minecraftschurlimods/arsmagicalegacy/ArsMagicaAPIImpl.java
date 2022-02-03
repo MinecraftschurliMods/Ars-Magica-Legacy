@@ -3,9 +3,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -15,11 +18,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
@@ -34,6 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.Unmodifiable;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
@@ -44,7 +51,8 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public ItemStack getBookStack() {
-        if (ModList.get().isLoaded("patchouli")) return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+        if (ModList.get().isLoaded("patchouli"))
+            return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
         return ItemStack.EMPTY;
     }
 
@@ -78,34 +86,58 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
         return SpellDataManager.instance();
     }
 
+    @Unmodifiable
     @Override
     public ISkillHelper getSkillHelper() {
         return SkillHelper.instance();
     }
 
+    @Unmodifiable
     @Override
     public IAffinityHelper getAffinityHelper() {
         return AffinityHelper.instance();
     }
 
+    @Unmodifiable
     @Override
     public IMagicHelper getMagicHelper() {
         return MagicHelper.instance();
     }
 
+    @Unmodifiable
     @Override
     public IManaHelper getManaHelper() {
         return ManaHelper.instance();
     }
 
+    @Unmodifiable
     @Override
     public IBurnoutHelper getBurnoutHelper() {
         return BurnoutHelper.instance();
     }
 
+    @Unmodifiable
     @Override
     public ISpellHelper getSpellHelper() {
         return SpellHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IRiftHelper getRiftHelper() {
+        return RiftHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IShrinkHelper getShrinkHelper() {
+        return ShrinkHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IEtheriumHelper getEtheriumHelper() {
+        return EtheriumHelper.instance();
     }
 
     @Override

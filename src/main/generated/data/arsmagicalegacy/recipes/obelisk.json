@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "VSV",
+    "SBS",
+    "VSV"
+  ],
+  "key": {
+    "V": {
+      "tag": "forge:dusts/vinteum"
+    },
+    "S": {
+      "tag": "forge:stone"
+    },
+    "B": {
+      "tag": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:obelisk"
+  }
+}

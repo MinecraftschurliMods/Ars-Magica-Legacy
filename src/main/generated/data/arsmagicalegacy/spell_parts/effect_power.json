@@ -5,6 +5,16 @@
   "recipe": [
     {
       "ingredient": {
+        "type": "forge:nbt",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "tag": "forge:crops/nether_wart"
       },
       "count": 1,
@@ -26,21 +36,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/emerald"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "tag": "forge:gunpowder"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:ghast_tear"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

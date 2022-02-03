@@ -6,30 +6,29 @@ import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.SkillComm
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.server.permission.events.PermissionGatherEvent;
-import net.minecraftforge.server.permission.nodes.PermissionNode;
-import net.minecraftforge.server.permission.nodes.PermissionTypes;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = ArsMagicaAPI.MOD_ID)
 public final class ServerInit {
-    public static final PermissionNode<Boolean> CAN_CAST_SPELL = new PermissionNode<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "can_cast_spell"), PermissionTypes.BOOLEAN, (player, playerUUID, context) -> true);
-
-    @SubscribeEvent
-    static void registerCommands(RegisterCommandsEvent event) {
-        SkillCommand.register(event.getDispatcher());
+    /**
+     * Registers the server event handlers.
+     */
+    public static void init() {
+        MinecraftForge.EVENT_BUS.addListener(AMPermissions::registerPermissionNodes);
+        MinecraftForge.EVENT_BUS.addListener(AMCommands::registerCommands);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, ServerInit::biomeLoading);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    static void biomeLoading(BiomeLoadingEvent event) {
+    private static void biomeLoading(BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         ResourceLocation biome = event.getName();
         Biome.BiomeCategory category = event.getCategory();
@@ -57,10 +56,5 @@ public final class ServerInit {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AMFeatures.WITCHWOOD_TREE_VEGETATION);
             }
         }
-    }
-
-    @SubscribeEvent
-    static void registerPermissionNodes(PermissionGatherEvent.Nodes event) {
-        event.addNodes(CAN_CAST_SPELL);
     }
 }

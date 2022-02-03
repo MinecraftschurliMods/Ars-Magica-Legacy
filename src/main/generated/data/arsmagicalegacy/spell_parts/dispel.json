@@ -1,25 +1,13 @@
 {
-  "manaCost": 200.0,
+  "manaCost": 40.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.01
+  },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:purple_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:gems/topaz"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:dusts/arcane_ash"
+        "item": "arsmagicalegacy:magenta_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

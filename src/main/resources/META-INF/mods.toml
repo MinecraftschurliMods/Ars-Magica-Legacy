@@ -5,48 +5,48 @@ license = "\"Don't Be a Jerk\" License"
 issueTrackerURL = "${issue_tracker_url}"
 
 [[mods]]
-modId = "${mod_id}"
-version = "${version}"
-displayName = "${mod_name}"
-displayURL = "${mod_url}"
-logoFile = "logo.png"
-credits = "${mod_credits}"
-authors = "${mod_author}"
-description = '''
-Continuation of ArsMagica 2 by Mithion
+    modId = "${mod_id}"
+    version = "${version}"
+    displayName = "${mod_name}"
+    displayURL = "${mod_url}"
+    logoFile = "logo.png"
+    credits = "${mod_credits}"
+    authors = "${mod_author}"
+    description = '''
+Continuation of Ars Magica 2 by Mithion
 '''
 
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
     modId = "patchouli"
     mandatory = true
     versionRange = "${patchouli_version_range}"
     ordering = "BEFORE"
     side = "BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
     modId = "curios"
     mandatory = false
     versionRange = "${curios_version_range}"
     side = "BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
     modId = "jei"
     mandatory = false
     versionRange = "${jei_version_range}"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
     modId = "forge"
     mandatory = true
     versionRange = "${forge_version_range}"
     ordering = "NONE"
     side = "BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${ mod_id }]]
     modId = "minecraft"
     mandatory = true
     versionRange = "${mc_version_range}"
     ordering = "NONE"
     side = "BOTH"
 
-[modproperties.${mod_id}]
-    catalogueItemIcon="${mod_id}:occulus"
+[modproperties.${ mod_id }]
+    catalogueItemIcon = "${mod_id}:occulus"

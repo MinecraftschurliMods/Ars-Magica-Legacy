@@ -10,8 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -25,10 +26,22 @@ class AMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
+        skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
+        blockItem(OBELISK).transforms()
+                .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+                .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
+                .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
+                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
+        blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+        itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
+        itemGenerated(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);
+        itemGenerated(CRYSTAL_WRENCH);
         blockItem(CHIMERITE_ORE);
         blockItem(DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);
@@ -77,12 +90,20 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(TARMA_ROOT, "block/tarma_root");
         itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
-        itemGenerated(WIZARDS_CHALK);
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
-        skillPointItem(INFINITY_ORB);
+        itemGenerated(MANA_CAKE);
+        itemGenerated(MANA_MARTINI);
+        itemGenerated(MAGE_HELMET);
+        itemGenerated(MAGE_CHESTPLATE);
+        itemGenerated(MAGE_LEGGINGS);
+        itemGenerated(MAGE_BOOTS);
+        itemGenerated(BATTLEMAGE_HELMET);
+        itemGenerated(BATTLEMAGE_CHESTPLATE);
+        itemGenerated(BATTLEMAGE_LEGGINGS);
+        itemGenerated(BATTLEMAGE_BOOTS);
     }
 
     /**
@@ -129,31 +150,21 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item   The item to generate the model for.
      * @param parent The parent model to use.
      */
-    private void withExistingParent(RegistryObject<? extends Item> item, String parent) {
-        withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
-    }
-
-    /**
-     * Adds an item model that uses the corresponding block model as the parent model.
-     *
-     * @param item  The item to generate the model for.
-     * @param block The block model to use.
-     */
-    private void blockItem(RegistryObject<? extends Item> item, Block block) {
-        withExistingParent(item, block.getRegistryName().getPath());
+    private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, String parent) {
+        return withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
     }
 
     /**
      * Adds a block item model that uses the corresponding block model as the parent model.
      *
-     * @param blockItem The item to generate the model for.
+     * @param item The item to generate the model for.
      */
-    private void blockItem(RegistryObject<? extends BlockItem> blockItem) {
-        blockItem(blockItem, blockItem.get().getBlock());
+    private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
+        return withExistingParent(item, item.get().getBlock().getRegistryName().getPath());
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity.NONE}.
+     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
      *
      * @param item The affinity item to add this for.
      * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
@@ -162,7 +173,7 @@ class AMItemModelProvider extends ItemModelProvider {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             if (affinity.getId().equals(IAffinity.NONE)) continue;
-            var rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
@@ -176,7 +187,7 @@ class AMItemModelProvider extends ItemModelProvider {
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
-            var rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }

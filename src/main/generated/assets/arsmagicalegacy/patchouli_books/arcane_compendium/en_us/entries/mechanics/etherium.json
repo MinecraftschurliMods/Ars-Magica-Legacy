@@ -1,0 +1,20 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.name",
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "arsmagicalegacy:crystal_wrench",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:crystal_wrench",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.page1.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.page2.text"
+    }
+  ]
+}

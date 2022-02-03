@@ -24,6 +24,10 @@ public class WizardsChalkItem extends BlockItem {
         super(AMBlocks.WIZARDS_CHALK.get(), pProperties);
     }
 
+    private static <T extends Comparable<T>> BlockState updateState(BlockState pState, Property<T> pProperty, String pValueIdentifier) {
+        return pProperty.getValue(pValueIdentifier).map(property -> pState.setValue(pProperty, property)).orElse(pState);
+    }
+
     @Override
     public InteractionResult place(BlockPlaceContext pContext) {
         if (!pContext.canPlace()) return InteractionResult.FAIL;
@@ -73,9 +77,5 @@ public class WizardsChalkItem extends BlockItem {
             pLevel.setBlock(pPos, blockstate, 2);
         }
         return blockstate;
-    }
-
-    private static <T extends Comparable<T>> BlockState updateState(BlockState pState, Property<T> pProperty, String pValueIdentifier) {
-        return pProperty.getValue(pValueIdentifier).map(property -> pState.setValue(pProperty, property)).orElse(pState);
     }
 }

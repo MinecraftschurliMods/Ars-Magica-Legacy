@@ -15,9 +15,7 @@ public final class PlayerLevelUpEvent extends PlayerEvent {
     }
 
     /**
-     * Get the level the player leveled up to.
-     *
-     * @return the level the player leveled up to
+     * @return The level the player leveled up to.
      */
     public int getLevel() {
         return level;

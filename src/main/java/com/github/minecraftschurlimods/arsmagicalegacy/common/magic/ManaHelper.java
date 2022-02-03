@@ -19,8 +19,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
 
     private ManaHelper() {
     }
@@ -37,6 +36,10 @@ public final class ManaHelper implements IManaHelper {
      */
     public static Capability<ManaHolder> getManaCapability() {
         return MANA;
+    }
+
+    private static void handleManaSync(ManaHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -89,27 +92,34 @@ public final class ManaHelper implements IManaHelper {
     }
 
     @Override
-    public void setMana(LivingEntity livingEntity, float amount) {
-        if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
-        float max = getMaxMana(livingEntity);
-        ManaHolder magicHolder = getManaHolder(livingEntity);
+    public boolean setMana(LivingEntity entity, float amount) {
+        if (amount < 0) return false;
+        float max = getMaxMana(entity);
+        ManaHolder magicHolder = getManaHolder(entity);
         magicHolder.setMana(Math.min(amount, max));
-        if (livingEntity instanceof Player player) {
+        if (entity instanceof Player player) {
             syncMana(player);
         }
+        return true;
     }
 
     /**
-     * Called on player death, syncs the capability and the attribute.
+     * Called on player death, syncs the capability.
      *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
         original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
+        syncMana(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncMana(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
     }
@@ -123,10 +133,6 @@ public final class ManaHelper implements IManaHelper {
             livingEntity.invalidateCaps();
         }
         return manaHolder;
-    }
-
-    private static void handleManaSync(ManaHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class ManaSyncPacket extends CodecPacket<ManaHolder> {
@@ -150,8 +156,7 @@ public final class ManaHelper implements IManaHelper {
     }
 
     public static final class ManaHolder {
-        public static final Codec<ManaHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("mana").forGetter(
-                ManaHolder::getMana)).apply(inst, mana -> {
+        public static final Codec<ManaHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("mana").forGetter(ManaHolder::getMana)).apply(inst, mana -> {
             ManaHolder manaHolder = new ManaHolder();
             manaHolder.setMana(mana);
             return manaHolder;
@@ -159,15 +164,20 @@ public final class ManaHelper implements IManaHelper {
         private float mana;
 
         public float getMana() {
-            return this.mana;
+            return mana;
         }
 
         public void setMana(float amount) {
-            this.mana = amount;
+            mana = amount;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(ManaHolder data) {
-            this.mana = data.mana;
+            mana = data.mana;
         }
     }
 }

@@ -18,8 +18,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public final class BurnoutHelper implements IBurnoutHelper {
     private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
-    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {
-    });
+    private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
 
     private BurnoutHelper() {
     }
@@ -36,6 +35,10 @@ public final class BurnoutHelper implements IBurnoutHelper {
      */
     public static Capability<BurnoutHolder> getBurnoutCapability() {
         return BURNOUT;
+    }
+
+    private static void handleBurnoutSync(BurnoutHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(cap -> cap.onSync(holder)));
     }
 
     @Override
@@ -77,27 +80,34 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     @Override
-    public void setBurnout(LivingEntity livingEntity, float amount) {
-        if (amount < 0) throw new IllegalArgumentException("amount must not be negative!");
-        float max = getMaxBurnout(livingEntity);
-        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(livingEntity);
+    public boolean setBurnout(LivingEntity entity, float amount) {
+        if (amount < 0) throw new IllegalArgumentException("Burnout cannot be negative!");
+        float max = getMaxBurnout(entity);
+        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(entity);
         magicHolder.setBurnout(Math.min(amount, max));
-        if (livingEntity instanceof Player player) {
+        if (entity instanceof Player player) {
             syncBurnout(player);
         }
+        return true;
     }
 
     /**
-     * Called on player death, syncs the capability and the attribute.
+     * Called on player death, syncs the capability.
      *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         original.getCapability(BurnoutHelper.BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BurnoutHelper.BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
+        syncBurnout(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncBurnout(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutHelper.BurnoutSyncPacket(getBurnoutHolder(player)), player);
     }
@@ -111,10 +121,6 @@ public final class BurnoutHelper implements IBurnoutHelper {
             livingEntity.invalidateCaps();
         }
         return burnoutHolder;
-    }
-
-    private static void handleBurnoutSync(BurnoutHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class BurnoutSyncPacket extends CodecPacket<BurnoutHolder> {
@@ -138,8 +144,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     public static final class BurnoutHolder {
-        public static final Codec<BurnoutHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("burnout").forGetter(
-                BurnoutHolder::getBurnout)).apply(inst, burnout -> {
+        public static final Codec<BurnoutHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("burnout").forGetter(BurnoutHolder::getBurnout)).apply(inst, burnout -> {
             BurnoutHolder manaHolder = new BurnoutHolder();
             manaHolder.setBurnout(burnout);
             return manaHolder;
@@ -147,15 +152,20 @@ public final class BurnoutHelper implements IBurnoutHelper {
         private float burnout;
 
         public float getBurnout() {
-            return this.burnout;
+            return burnout;
         }
 
         public void setBurnout(float amount) {
-            this.burnout = amount;
+            burnout = amount;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(BurnoutHolder data) {
-            this.burnout = data.burnout;
+            burnout = data.burnout;
         }
     }
 }

@@ -7,13 +7,6 @@
       "ingredient": {
         "tag": "forge:gems/topaz"
       },
-      "count": 2,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:dusts/purified_vinteum"
-      },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
@@ -23,6 +16,13 @@
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "types": [
+        "LIGHT"
+      ],
+      "amount": 2500,
+      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

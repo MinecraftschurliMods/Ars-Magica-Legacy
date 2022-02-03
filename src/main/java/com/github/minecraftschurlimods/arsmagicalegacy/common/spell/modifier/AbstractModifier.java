@@ -11,6 +11,6 @@ public abstract class AbstractModifier extends ForgeRegistryEntry<ISpellPart> im
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof IForgeRegistryEntry<?> other)) return false;
-        return Objects.equals(this.getRegistryName(), other.getRegistryName());
+        return Objects.equals(getRegistryName(), other.getRegistryName());
     }
 }

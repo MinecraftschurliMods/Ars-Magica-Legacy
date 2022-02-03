@@ -5,7 +5,7 @@
   "recipe": [
     {
       "ingredient": {
-        "tag": "forge:ingots/iron"
+        "tag": "forge:gems/chimerite"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

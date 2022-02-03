@@ -10,8 +10,10 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.Nullable;
 
+/**
+ * Advancement trigger for when a player learns a new skill.
+ */
 public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLearnedSkillTrigger.TriggerInstance> {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_learned_skill");
 
@@ -26,30 +28,38 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
         return new TriggerInstance(pPlayer, skill);
     }
 
+    /**
+     * Triggers the advancement trigger.
+     * @param pPlayer The affected player.
+     * @param skill   The skill learned.
+     */
     public void trigger(ServerPlayer pPlayer, ResourceLocation skill) {
-        this.trigger(pPlayer, (p_70648_) -> p_70648_.matches(skill));
+        this.trigger(pPlayer, t -> t.matches(skill));
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        @Nullable
         private final ResourceLocation skill;
 
-        public TriggerInstance(EntityPredicate.Composite pPlayer, @Nullable ResourceLocation skill) {
+        public TriggerInstance(EntityPredicate.Composite pPlayer, ResourceLocation skill) {
             super(PlayerLearnedSkillTrigger.ID, pPlayer);
             this.skill = skill;
-        }
-
-        public boolean matches(ResourceLocation skill) {
-            return this.skill == null || this.skill.equals(skill);
         }
 
         @Override
         public JsonObject serializeToJson(SerializationContext pConditions) {
             JsonObject jsonObject = super.serializeToJson(pConditions);
-            if (this.skill != null) {
-                jsonObject.addProperty("skill", this.skill.toString());
+            if (skill != null) {
+                jsonObject.addProperty("skill", skill.toString());
             }
             return jsonObject;
+        }
+
+        /**
+         * @param skill The skill id to check.
+         * @return Whether the given skill id matches this instance's skill id or not.
+         */
+        public boolean matches(ResourceLocation skill) {
+            return this.skill == null || this.skill.equals(skill);
         }
     }
 }

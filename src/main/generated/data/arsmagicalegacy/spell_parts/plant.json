@@ -14,14 +14,14 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:saplings"
+        "item": "minecraft:wheat_seeds"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:wheat_seeds"
+        "tag": "minecraft:saplings"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

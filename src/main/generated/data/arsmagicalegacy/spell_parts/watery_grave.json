@@ -1,7 +1,9 @@
 {
   "manaCost": 80.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:water": 0.05
+  },
   "recipe": [
     {
       "ingredient": {
@@ -19,10 +21,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:leather_boots",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

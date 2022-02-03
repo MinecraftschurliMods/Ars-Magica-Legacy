@@ -7,14 +7,14 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
+        "item": "arsmagicalegacy:magenta_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:tarma_root"
+        "item": "minecraft:popped_chorus_fruit"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

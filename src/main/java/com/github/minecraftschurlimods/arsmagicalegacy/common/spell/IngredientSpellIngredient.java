@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -25,7 +27,9 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
     public static final ResourceLocation INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
@@ -44,31 +48,27 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
     }
 
     @Override
-    public Component getTooltip() {
+    public List<Component> getTooltip() {
         ItemStack[] items = ingredient().getItems();
-        if (items.length == 1) return items[0].getDisplayName().copy().append(" x " + count());
-        return new TextComponent("(").append(Arrays.stream(items).map(ItemStack::getDisplayName).map(Component::copy).collect(AMUtil.joiningComponents(" | "))).append(") x " + count());
+        if (items.length == 1) return List.of(items[0].getDisplayName(), new TextComponent("x " + count()));
+        ArrayList<Component> components = new ArrayList<>(Arrays.stream(items).map(ItemStack::getDisplayName).toList());
+        components.add(new TextComponent("x " + count()));
+        return components;
     }
 
     @Override
     public boolean canCombine(ISpellIngredient other) {
-        if (other instanceof IngredientSpellIngredient i) {
-            return Arrays.equals(i.ingredient().getItems(), this.ingredient().getItems());
-        }
-        return false;
+        return other instanceof IngredientSpellIngredient i && Arrays.equals(i.ingredient().getItems(), ingredient().getItems());
     }
 
-    @Override
     @Nullable
+    @Override
     public ISpellIngredient combine(ISpellIngredient other) {
-        if (canCombine(other)) {
-            return new IngredientSpellIngredient(ingredient(), ((IngredientSpellIngredient) other).count() + count());
-        }
-        return null;
+        return canCombine(other) ? new IngredientSpellIngredient(ingredient(), ((IngredientSpellIngredient) other).count() + count()) : null;
     }
 
-    @Override
     @Nullable
+    @Override
     public ISpellIngredient consume(Level level, BlockPos pos) {
         int count = count();
         for (ItemEntity entity : level.getEntities(EntityTypeTest.forClass(ItemEntity.class), new AABB(pos).inflate(0.5, 1, 0.5).move(0, -2, 0), itemEntity -> ingredient().test(itemEntity.getItem()))) {
@@ -77,6 +77,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             item.shrink(min);
             count = count - min;
             if (count <= 0) {
+                level.playSound(null, pos.getX(), pos.getY() - 2, pos.getZ(), AMSounds.CRAFTING_ALTAR_ADD_INGREDIENT.get(), SoundSource.BLOCKS, 1f, 1f);
                 return null;
             }
         }

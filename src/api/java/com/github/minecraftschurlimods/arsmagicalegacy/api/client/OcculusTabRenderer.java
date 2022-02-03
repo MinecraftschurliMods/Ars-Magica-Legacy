@@ -18,14 +18,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Base class for all occulus tab renderers<br>
- * <p>To register a tab renderer you need to call <br>
- * {@code ArsMagicaAPI.get().registerOcculusTabRenderer(<registered occulus tab>, (occulusTab, player) -> <create your tab renderer>)}</p>
+ * Base class for all occulus tab renderers.
+ * To register a tab renderer, call {@code ArsMagicaAPI.get().registerOcculusTabRenderer(<registered occulus tab>, (occulusTab, player) -> <create your tab renderer>);}
  */
 public abstract class OcculusTabRenderer extends AbstractContainerEventHandler implements Widget, NarratableEntry {
-    protected final IOcculusTab occulusTab;
     protected final int textureHeight;
     protected final int textureWidth;
+    protected final IOcculusTab occulusTab;
     protected final Screen parent;
     protected int screenWidth;
     protected int screenHeight;
@@ -34,26 +33,19 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     protected int posX;
     protected int posY;
 
-    /**
-     * Constructor for a {@link OcculusTabRenderer}.
-     *
-     * @param occulusTab the occulus tab of this renderer
-     * @param parent
-     */
-    protected OcculusTabRenderer(IOcculusTab occulusTab, final Screen parent) {
-        this.occulusTab = occulusTab;
+    protected OcculusTabRenderer(IOcculusTab occulusTab, Screen parent) {
         textureHeight = occulusTab.getHeight();
         textureWidth = occulusTab.getWidth();
+        this.occulusTab = occulusTab;
         this.parent = parent;
     }
 
     /**
-     * Don't call or override this method use {@link OcculusTabRenderer#renderBg(PoseStack, int, int, float)}
-     * and {@link OcculusTabRenderer#renderFg(PoseStack, int, int, float)} for rendering instead.
+     * Don't call this method, use {@link OcculusTabRenderer#renderBg(PoseStack, int, int, float)} and {@link OcculusTabRenderer#renderFg(PoseStack, int, int, float)} instead.
      */
     @Internal
     @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    public final void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         pMatrixStack.pushPose();
         pMatrixStack.translate(7, 7, 0);
         pMouseX -= posX;
@@ -64,7 +56,7 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     }
 
     /**
-     * Never call this method yourself it is used to initialize the values from the parent gui.
+     * Don't call this method, it is used to initialize the values from the parent gui.
      */
     @Internal
     public final void init(int width, int height, int screenWidth, int screenHeight, int posX, int posY) {
@@ -78,33 +70,31 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     }
 
     /**
-     * Override to do your own initialisation.
-     */
-    protected void init() {
-    }
-
-    /**
-     * Render your background in this method.
+     * Render the background in this method.
      */
     protected abstract void renderBg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
 
     /**
-     * Render your foreground in this method.
+     * Render the foreground in this method.
      */
     protected abstract void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
 
-    /**
-     * @see NarratableEntry#narrationPriority()
-     */
+    @Override
+    public List<? extends GuiEventListener> children() {
+        return List.of();
+    }
+
     @Override
     public NarrationPriority narrationPriority() {
         return NarrationPriority.NONE;
     }
 
+    @Override
+    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    }
+
     /**
-     * Get the current player.
-     *
-     * @return the current player
+     * @return The current player.
      */
     @Nullable
     protected Player getPlayer() {
@@ -112,41 +102,29 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     }
 
     /**
-     * Get the current font.
-     *
-     * @return the current font
+     * @return The current font.
      */
     protected Font getFont() {
         return getMinecraft().font;
     }
 
     /**
-     * Get the minecraft instance.
-     *
-     * @return the minecraft instance
+     * @return The current item renderer.
+     */
+    protected ItemRenderer getItemRenderer() {
+        return getMinecraft().getItemRenderer();
+    }
+
+    /**
+     * @return The current minecraft instance.
      */
     protected Minecraft getMinecraft() {
         return Minecraft.getInstance();
     }
 
     /**
-     * Get the current item renderer.
-     *
-     * @return the current item renderer
+     * Called while initialization.
      */
-    protected ItemRenderer getItemRenderer() {
-        return Minecraft.getInstance().getItemRenderer();
-    }
-
-    @Override
-    public List<? extends GuiEventListener> children() {
-        return List.of();
-    }
-
-    /**
-     * Override this method if you want to provide narrations.
-     */
-    @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    protected void init() {
     }
 }

@@ -7,14 +7,14 @@
   "recipe": [
     {
       "ingredient": {
-        "tag": "minecraft:wool"
+        "item": "arsmagicalegacy:brown_rune"
       },
-      "count": 2,
+      "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:arcane_ash"
+        "tag": "minecraft:wool"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

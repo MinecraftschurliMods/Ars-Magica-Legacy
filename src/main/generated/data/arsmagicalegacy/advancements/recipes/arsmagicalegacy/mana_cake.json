@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:mana_cake"
+    ]
+  },
+  "criteria": {
+    "has_cerublossom": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:cerublossom"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:mana_cake"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cerublossom",
+      "has_the_recipe"
+    ]
+  ]
+}

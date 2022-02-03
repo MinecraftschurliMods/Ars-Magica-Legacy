@@ -27,11 +27,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unchecked")
 public final class SpellDataManager extends CodecDataManager<ISpellPartData> implements ISpellDataManager {
-    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>>                          CODECS    = new HashMap<>();
-    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>>                          NETWORK_CODECS    = new HashMap<>();
+    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> CODECS = new HashMap<>();
+    private static final Map<ResourceLocation, Codec<? extends ISpellIngredient>> NETWORK_CODECS = new HashMap<>();
     private static final Map<ResourceLocation, Lazy<ISpellIngredientRenderer<? extends ISpellIngredient>>> RENDERERS = new HashMap<>();
-
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
@@ -39,52 +39,44 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
-    @Override
-    public ISpellPartData getDataForPart(ISpellPart part) {
-        return get(part.getRegistryName());
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer) {
-        CODECS.putIfAbsent(type, codec);
-        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Codec<T> networkCodec, Supplier<ISpellIngredientRenderer<T>> renderer) {
-        CODECS.putIfAbsent(type, codec);
-        NETWORK_CODECS.putIfAbsent(type, networkCodec);
-        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>)(Object) renderer));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type) {
-        return (Codec<ISpellIngredient>) CODECS.get(type);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ISpellIngredient> ISpellIngredientRenderer<T> getSpellIngredientRenderer(ResourceLocation type) {
-        return (ISpellIngredientRenderer<T>) RENDERERS.get(type).get();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Codec<ISpellIngredient> getSpellIngredientNetworkCodec(ResourceLocation type) {
-        if (NETWORK_CODECS.containsKey(type)) {
-            return (Codec<ISpellIngredient>) NETWORK_CODECS.get(type);
-        }
-        return getSpellIngredientCodec(type);
-    }
-
     /**
      * @return The only instance of this class.
      */
     public static SpellDataManager instance() {
         return INSTANCE.get();
+    }
+
+    @Override
+    public ISpellPartData getDataForPart(ISpellPart part) {
+        return get(part.getRegistryName());
+    }
+
+    @Override
+    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Supplier<ISpellIngredientRenderer<T>> renderer) {
+        CODECS.putIfAbsent(type, codec);
+        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>) (Object) renderer));
+    }
+
+    @Override
+    public <T extends ISpellIngredient> void registerSpellIngredientType(ResourceLocation type, Codec<T> codec, Codec<T> networkCodec, Supplier<ISpellIngredientRenderer<T>> renderer) {
+        CODECS.putIfAbsent(type, codec);
+        NETWORK_CODECS.putIfAbsent(type, networkCodec);
+        RENDERERS.putIfAbsent(type, Lazy.of((Supplier<ISpellIngredientRenderer<? extends ISpellIngredient>>) (Object) renderer));
+    }
+
+    @Override
+    public Codec<ISpellIngredient> getSpellIngredientCodec(ResourceLocation type) {
+        return (Codec<ISpellIngredient>) CODECS.get(type);
+    }
+
+    @Override
+    public <T extends ISpellIngredient> ISpellIngredientRenderer<T> getSpellIngredientRenderer(ResourceLocation type) {
+        return (ISpellIngredientRenderer<T>) RENDERERS.get(type).get();
+    }
+
+    @Override
+    public Codec<ISpellIngredient> getSpellIngredientNetworkCodec(ResourceLocation type) {
+        return NETWORK_CODECS.containsKey(type) ? (Codec<ISpellIngredient>) NETWORK_CODECS.get(type) : getSpellIngredientCodec(type);
     }
 
     private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, float burnout) implements ISpellPartData {

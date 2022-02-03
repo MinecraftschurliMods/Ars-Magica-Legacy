@@ -4,12 +4,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityEssenceItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.CrystalWrenchItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ColoredRegistryObject;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -22,7 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -31,22 +36,25 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 @NonExtendable
 public interface AMItems {
     CreativeModeTab TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
-        @NotNull
         @Override
         public ItemStack makeIcon() {
             return ArsMagicaAPI.get().getBookStack();
         }
     };
-    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
     Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
+    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
 
     RegistryObject<InfinityOrbItem>              INFINITY_ORB             = ITEMS.register("infinity_orb", InfinityOrbItem::new);
     RegistryObject<BlockItem>                    OCCULUS                  = registerBlockItem64(AMBlocks.OCCULUS);
     RegistryObject<BlockItem>                    INSCRIPTION_TABLE        = registerBlockItem64(AMBlocks.INSCRIPTION_TABLE);
     RegistryObject<BlockItem>                    ALTAR_CORE               = registerBlockItem64(AMBlocks.ALTAR_CORE);
     RegistryObject<BlockItem>                    MAGIC_WALL               = registerBlockItem64(AMBlocks.MAGIC_WALL);
+    RegistryObject<BlockItem>                    OBELISK                  = registerBlockItem64(AMBlocks.OBELISK);
+    RegistryObject<BlockItem>                    CELESTIAL_PRISM          = registerBlockItem64(AMBlocks.CELESTIAL_PRISM);
+    RegistryObject<BlockItem>                    BLACK_AUREM              = registerBlockItem64(AMBlocks.BLACK_AUREM);
     RegistryObject<WizardsChalkItem>             WIZARDS_CHALK            = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
     RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES         = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
+    RegistryObject<CrystalWrenchItem>            CRYSTAL_WRENCH           = ITEMS.register("crystal_wrench", CrystalWrenchItem::new);
     RegistryObject<BlockItem>                    CHIMERITE_ORE            = registerBlockItem64(AMBlocks.CHIMERITE_ORE);
     RegistryObject<BlockItem>                    DEEPSLATE_CHIMERITE_ORE  = registerBlockItem64(AMBlocks.DEEPSLATE_CHIMERITE_ORE);
     RegistryObject<Item>                         CHIMERITE                = registerItem64("chimerite");
@@ -97,8 +105,17 @@ public interface AMItems {
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME            = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<Item>                         SPELL_PARCHMENT          = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                    = ITEMS.register("spell", SpellItem::new);
+    RegistryObject<Item>                         MANA_CAKE                = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<ManaMartiniItem>              MANA_MARTINI             = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
+    RegistryObject<MageArmorItem>                MAGE_HELMET              = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 5));
+    RegistryObject<MageArmorItem>                MAGE_CHESTPLATE          = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 5));
+    RegistryObject<MageArmorItem>                MAGE_LEGGINGS            = ITEMS.register("mage_leggings", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 5));
+    RegistryObject<MageArmorItem>                MAGE_BOOTS               = ITEMS.register("mage_boots", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 5));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_HELMET        = ITEMS.register("battlemage_helmet", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_CHESTPLATE    = ITEMS.register("battlemage_chestplate", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_LEGGINGS      = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_BOOTS         = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 10));
 
-    @SuppressWarnings("SameParameterValue")
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
