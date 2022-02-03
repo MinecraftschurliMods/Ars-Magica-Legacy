@@ -15,6 +15,6 @@ public final class AMPermissions {
     public static final PermissionNode<Integer> MAX_RIFT_SIZE                   = new PermissionNode<>(new ResourceLocation(ArsMagicaAPI.MOD_ID, "max_rift_size"), PermissionTypes.INTEGER, (player, playerUUID, context) -> 54);
 
     static void registerPermissionNodes(PermissionGatherEvent.Nodes event) {
-        event.addNodes(CAN_CAST_SPELL, MAX_RIFT_SIZE);
+        event.addNodes(CAN_CAST_SPELL, CAN_EXECUTE_AFFINITY_COMMAND, CAN_EXECUTE_MAGIC_XP_COMMAND, CAN_EXECUTE_SKILL_COMMAND, CAN_EXECUTE_SKILL_POINT_COMMAND, MAX_RIFT_SIZE);
     }
 }
