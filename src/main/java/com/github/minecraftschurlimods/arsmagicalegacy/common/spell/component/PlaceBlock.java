@@ -26,10 +26,6 @@ import java.util.List;
 public class PlaceBlock extends AbstractComponent {
     private static final String KEY = ArsMagicaAPI.MOD_ID + ":place_block_id";
 
-    public PlaceBlock() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
@@ -51,7 +47,7 @@ public class PlaceBlock extends AbstractComponent {
             Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
             if (block == null) return SpellCastResult.EFFECT_FAILED;
             BlockPos pos = target.getBlockPos();
-            if (!level.getBlockState(pos).canBeReplaced(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, stack,target))) {
+            if (!level.getBlockState(pos).canBeReplaced(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, stack, target))) {
                 pos = pos.offset(target.getDirection().getNormal());
             }
             ItemStack itemStack = new ItemStack(block);

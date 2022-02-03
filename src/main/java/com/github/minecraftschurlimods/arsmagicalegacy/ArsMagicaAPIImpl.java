@@ -51,7 +51,8 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public ItemStack getBookStack() {
-        if (ModList.get().isLoaded("patchouli")) return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+        if (ModList.get().isLoaded("patchouli"))
+            return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
         return ItemStack.EMPTY;
     }
 
@@ -117,11 +118,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Unmodifiable
     @Override
-    public IEtheriumHelper getEtheriumHelper() {
-        return EtheriumHelper.instance();
-    }
-
-    @Override
     public ISpellHelper getSpellHelper() {
         return SpellHelper.instance();
     }
@@ -136,6 +132,12 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public IShrinkHelper getShrinkHelper() {
         return ShrinkHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IEtheriumHelper getEtheriumHelper() {
+        return EtheriumHelper.instance();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -8,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class AirGuardian extends AbstractBoss {
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
@@ -26,22 +24,22 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AMSounds.AIR_GUARDIAN_AMBIENT.get();
+        return null;
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return AMSounds.AIR_GUARDIAN_HURT.get();
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AMSounds.AIR_GUARDIAN_DEATH.get();
+        return null;
     }
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.AIR_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         return super.hurt(pSource, pAmount);
     }
 }

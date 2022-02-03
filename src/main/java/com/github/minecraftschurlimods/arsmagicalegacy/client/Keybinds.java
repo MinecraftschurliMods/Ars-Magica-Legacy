@@ -32,6 +32,11 @@ public final class Keybinds {
                 return true;
             }).build();
 
+    /**
+     * Registers the keybind manager to the given mod event bus.
+     *
+     * @param modBus The mod event bus to register the keybind manager to.
+     */
     static void init(IEventBus modBus) {
         KEYBIND_MANAGER.register(modBus);
     }

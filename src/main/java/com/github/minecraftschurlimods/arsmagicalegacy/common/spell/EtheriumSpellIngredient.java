@@ -26,13 +26,10 @@ import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final ResourceLocation               ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
-    public static final Codec<EtheriumSpellIngredient> CODEC    = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class))
-                       .fieldOf("types")
-                       .forGetter(EtheriumSpellIngredient::types),
-            Codec.INT.fieldOf("amount")
-                     .forGetter(EtheriumSpellIngredient::amount)
+    public static final ResourceLocation ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
+            Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
 
     @Override
@@ -42,7 +39,8 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public List<Component> getTooltip() {
-        if (types.size() == 1) return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
+        if (types.size() == 1)
+            return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
         ArrayList<Component> components = new ArrayList<>(types.stream().map(ITranslatable::getDisplayName).toList());
         components.add(new TextComponent("x " + amount()));
         return components;
@@ -50,19 +48,13 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
 
     @Override
     public boolean canCombine(ISpellIngredient other) {
-        if (other instanceof EtheriumSpellIngredient eth) {
-            return Objects.equals(eth.types(), types());
-        }
-        return false;
+        return other instanceof EtheriumSpellIngredient e && Objects.equals(e.types(), types());
     }
 
     @Nullable
     @Override
     public ISpellIngredient combine(ISpellIngredient other) {
-        if (canCombine(other)) {
-            return new EtheriumSpellIngredient(types(), ((EtheriumSpellIngredient) other).amount() + amount());
-        }
-        return null;
+        return canCombine(other) ? new EtheriumSpellIngredient(types(), ((EtheriumSpellIngredient) other).amount() + amount()) : null;
     }
 
     @Nullable

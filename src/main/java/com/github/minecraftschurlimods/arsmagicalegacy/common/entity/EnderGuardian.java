@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class EnderGuardian extends AbstractBoss {
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
@@ -21,7 +20,7 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     @Override
-    public float getEyeHeight(@NotNull Pose pPose) {
+    public float getEyeHeight(Pose pPose) {
         return 2.5F;
     }
 
@@ -36,7 +35,7 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.ENDER_GUARDIAN_HURT.get();
     }
 
@@ -56,7 +55,7 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         return super.hurt(pSource, pAmount);
     }
 }

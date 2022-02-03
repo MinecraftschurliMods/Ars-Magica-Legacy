@@ -17,9 +17,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class RuneBagScreen extends AbstractContainerScreen<RuneBagMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/rune_bag.png");
 
-    /**
-     * Creates a new rune bag screen.
-     */
     public RuneBagScreen(RuneBagMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         inventoryLabelY = inventoryLabelY - 16;

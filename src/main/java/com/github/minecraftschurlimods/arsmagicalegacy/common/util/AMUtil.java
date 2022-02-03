@@ -17,27 +17,22 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
     /**
-     * Returns whether the player can anger endermen by looking at them, based on the ender affinity depth.
-     *
-     * @param player The player to check the affinity on
-     * @return Whether the player can anger endermen by looking at them or not
+     * @param player The player to check this for.
+     * @return Whether an enderman can get angry at the given player.
      */
     public static boolean canEndermanGetAngryAt(Player player) {
         return true;
     }
 
     /**
-     * Returns the position that is on the line a - b and is the closest to the view vector.
-     *
-     * @param view The viewpoint that is assumed.
-     * @param a    The first point of the line.
-     * @param b    The second point of the line.
-     * @return The position that is on the line a - b and is the closest to the view vector
+     * @param view The view vector to which the resulting point is the closest.
+     * @param a    The first coordinate of the line.
+     * @param b    The second coordinate of the line.
+     * @return The point on the line a..b that is the closest to the given view vector.
      */
     public static Vec3 closestPointOnLine(Vec3 view, Vec3 a, Vec3 b) {
         Vec3 c = view.subtract(a);
@@ -47,37 +42,34 @@ public final class AMUtil {
     }
 
     /**
-     * Creates a dummy item stack for situations where you have the spell, but not the ItemStack.
-     * @param fortune    The fortune level of the stack.
-     * @param silk_touch The silk touch level of the stack.
-     * @return A dummy item stack, enchanted with fortune and silk touch if necessary
+     * @param fortune   The fortune level to enchant the stack with.
+     * @param silkTouch The silk touch level to enchant the stack with.
+     * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
      */
-    public static ItemStack createDummyStack(int fortune, int silk_touch) {
+    public static ItemStack createDummyStack(int fortune, int silkTouch) {
         ItemStack stack = new ItemStack(null);
         stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
-        stack.enchant(Enchantments.SILK_TOUCH, silk_touch);
+        stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;
     }
 
     /**
-     * Returns the tick'th element from the given array. If tick is greater than the array size, a modulo operation is performed.
-     *
-     * @param array The array.
-     * @param tick  The tick index.
-     * @param <T>   The type of array. Works on any type; there are no restrictions.
-     * @return the tick'th element from the array
+     * @param array The array to get the element from.
+     * @param tick  The tick to get the element for.
+     * @param <T>   The type of the array.
+     * @return The tickth element of the array, wrapping around.
      */
     public static <T> T getByTick(T[] array, int tick) {
         return array[tick % array.length];
     }
 
     /**
-     * Performs a ray trace from "from" to "to". Modified version of {@link ProjectileUtil#getHitResult(Entity, Predicate)}
-     *
-     * @param entity       the entity that causes this ray trace
-     * @param blockContext the block clipping context to use
-     * @param fluidContext the fluid clipping context to use
-     * @return A hit result, representing the ray trace.
+     * @param from Starting point of the ray trace.
+     * @param to   Ending point of the ray trace.
+     * @param entity The entity causing this ray trace.
+     * @param blockContext The block clipping context.
+     * @param fluidContext The fluid clipping context.
+     * @return The hit result (ray trace result).
      */
     public static HitResult getHitResult(Vec3 from, Vec3 to, Entity entity, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
         HitResult hitResult = entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
@@ -92,9 +84,8 @@ public final class AMUtil {
     }
 
     /**
-     * Returns the entity's main hand stack if it has a spell, otherwise the entity's off hand stack if it has a spell, otherwise an empty stack.
-     * @param entity The entity to get the spell stack from.
-     * @return the entity's main hand stack if it has a spell, otherwise the entity's off hand stack if it has a spell, otherwise an empty stack
+     * @param entity The entity to get this for.
+     * @return The item stack with the spell in the given entity's main hand or, if absent, in the given entity's off hand instead.
      */
     public static ItemStack getSpellStack(LivingEntity entity) {
         ItemStack stack = entity.getMainHandItem();
@@ -104,10 +95,8 @@ public final class AMUtil {
     }
 
     /**
-     * Joins multiple components into one, returning a collector.
-     *
      * @param delimiter The delimiter to use.
-     * @return The collector to join multiple components into one.
+     * @return A collector that joins multiple components together, using the given delimiter.
      */
     public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String delimiter) {
         TextComponent del = new TextComponent(delimiter);
@@ -115,12 +104,10 @@ public final class AMUtil {
     }
 
     /**
-     * Joins multiple VoxelShapes into one. If only two VoxelShapes need to be joined, use {@link Shapes#join} instead.
-     *
-     * @param first  VoxelShape #1
-     * @param second VoxelShape #2
-     * @param others other VoxelShapes
-     * @return A new VoxelShape, consisting of all given VoxelShapes.
+     * @param first  VoxelShape #1.
+     * @param second VoxelShape #2.
+     * @param others All other VoxelShapes.
+     * @return All given shapes, joined into a single VoxelShape.
      */
     public static VoxelShape joinShapes(VoxelShape first, VoxelShape second, VoxelShape... others) {
         VoxelShape result = Shapes.join(first, second, BooleanOp.OR);

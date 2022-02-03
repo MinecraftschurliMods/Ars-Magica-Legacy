@@ -17,15 +17,15 @@ public interface ISkillPointItem {
      * @return the stored {@link ISkillPoint}
      */
     default ISkillPoint getSkillPoint(ItemStack stack) {
-        var skillPointRegistry = ArsMagicaAPI.get().getSkillPointRegistry();
-        var key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(skillPointRegistry.getRegistryName().toString()));
-        return Objects.requireNonNull(skillPointRegistry.getValue(key));
+        var registry = ArsMagicaAPI.get().getSkillPointRegistry();
+        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.getRegistryName().toString()));
+        return Objects.requireNonNull(registry.getValue(key));
     }
 
     /**
      * Set the {@link ISkillPoint} stored in the {@link ItemStack}
      *
-     * @param stack    the {@link ItemStack} to set the {@link ISkillPoint} for
+     * @param stack      the {@link ItemStack} to set the {@link ISkillPoint} for
      * @param skillPoint the {@link ISkillPoint} to set
      * @return the {@link ItemStack} with the {@link ISkillPoint} stored in it
      */

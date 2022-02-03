@@ -18,11 +18,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
- * Mostly taken from the Botania mod.
+ * Mostly taken from McJty's tutorials and the Botania mod.
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
  */
 public class RuneBagItem extends Item {
@@ -44,7 +45,7 @@ public class RuneBagItem extends Item {
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }
 
-    private static final class InvProvider implements ICapabilityProvider {
+    private static class InvProvider implements ICapabilityProvider {
         private final LazyOptional<IItemHandler> lazy;
 
         public InvProvider(ItemStack stack) {

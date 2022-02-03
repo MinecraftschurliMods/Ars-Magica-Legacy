@@ -22,10 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Plant extends AbstractComponent {
-    public Plant() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

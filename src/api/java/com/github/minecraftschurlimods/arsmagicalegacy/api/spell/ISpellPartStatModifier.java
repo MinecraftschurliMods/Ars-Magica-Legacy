@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -10,12 +11,14 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface ISpellPartStatModifier {
     /**
-     * Modify the stat value.
+     * Modifies the stat value.
      *
-     * @param base                the base value being modified
-     * @param modified            the value with all previous modifications
-     * @param spell,caster,target the context
-     * @return the new modified value
+     * @param base     The base value being modified.
+     * @param modified The value with all previous modifications.
+     * @param spell    The spell this is calculated for.
+     * @param caster   The entity casting the spell.
+     * @param target   The target of the spell.
+     * @return The modified value.
      */
     float modify(float base, float modified, ISpell spell, LivingEntity caster, @Nullable HitResult target);
 }

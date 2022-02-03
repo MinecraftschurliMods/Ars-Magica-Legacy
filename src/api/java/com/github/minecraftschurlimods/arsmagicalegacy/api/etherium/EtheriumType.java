@@ -5,14 +5,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * The etherium types.
+ * Enum for etherium type.
  */
 public enum EtheriumType implements ITranslatable {
-    LIGHT(0xff79a5ed), NEUTRAL(0xff2effab), DARK(0xff800000);
+    LIGHT(0xff7fa7ef), NEUTRAL(0xff3fffbf), DARK(0xff800000);
 
     private final int color;
 
-    EtheriumType(final int color) {
+    EtheriumType(int color) {
         this.color = color;
     }
 
@@ -26,6 +26,9 @@ public enum EtheriumType implements ITranslatable {
         return "etherium";
     }
 
+    /**
+     * @return This etherium type's color.
+     */
     public int getColor() {
         return color;
     }

@@ -14,9 +14,8 @@ class AltarCoreTicker implements BlockEntityTicker<AltarCoreBlockEntity> {
             pBlockEntity.checkMultiblock();
             pBlockEntity.checkCounter = Config.SERVER.CRAFTING_ALTAR_CHECK_TIME.get();
         }
-        if (!pBlockEntity.isMultiblockFormed()) {
-            return;
+        if (pBlockEntity.isMultiblockFormed()) {
+            pBlockEntity.consumeTick();
         }
-        pBlockEntity.consumeTick();
     }
 }

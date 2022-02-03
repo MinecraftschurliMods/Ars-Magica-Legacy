@@ -105,12 +105,6 @@ public interface AMBlocks {
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
 
-    /**
-     * Empty method that is required for classloading
-     */
-    @Internal
-    static void register() {}
-
     private static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
         RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(flower.getId(), register);
@@ -124,4 +118,10 @@ public interface AMBlocks {
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos) {
         return false;
     }
+
+    /**
+     * Empty method that is required for classloading
+     */
+    @Internal
+    static void register() {}
 }

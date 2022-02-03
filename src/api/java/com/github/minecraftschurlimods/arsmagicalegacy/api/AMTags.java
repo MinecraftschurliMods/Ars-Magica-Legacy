@@ -13,7 +13,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 /**
- * Class holding the reference classes for all non forge/vanilla tags used by this mod
+ * Class holding the references for all tags added by this mod.
  */
 public final class AMTags {
     private static final String FORGE = "forge";
@@ -22,7 +22,7 @@ public final class AMTags {
     }
 
     /**
-     * Holder class for all {@link Item} {@link Tag Tags}
+     * Holds the mod's item tags.
      */
     public static final class Items {
         public static final Tag.Named<Item> WITCHWOOD_LOGS = tag("witchwood_logs");
@@ -73,7 +73,7 @@ public final class AMTags {
     }
 
     /**
-     * Holder class for all {@link Block} {@link Tag Tags}
+     * Holds the mod's block tags.
      */
     public static final class Blocks {
         public static final Tag.Named<Block> WITCHWOOD_LOGS = tag("witchwood_logs");
@@ -98,7 +98,7 @@ public final class AMTags {
     }
 
     /**
-     * Holder class for all {@link Fluid} {@link Tag Tags}
+     * Holds the mod's fluid tags.
      */
     public static final class Fluids {
         private static IOptionalNamedTag<Fluid> forgeTag(String name) {
@@ -111,7 +111,7 @@ public final class AMTags {
     }
 
     /**
-     * Holder class for all {@link EntityType} {@link Tag Tags}
+     * Holds the mod's entity type tags.
      */
     public static final class EntityTypes {
         private static IOptionalNamedTag<EntityType<?>> forgeTag(String name) {

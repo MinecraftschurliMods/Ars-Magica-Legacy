@@ -21,19 +21,19 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemMod
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellRuneModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.FireGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WinterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.IceGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WinterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
@@ -74,6 +74,9 @@ public final class ClientInit {
     public static IIngameOverlay SHAPE_GROUP_HUD;
     public static IIngameOverlay SPELL_BOOK_HUD;
 
+    /**
+     * Registers the client event handlers.
+     */
     @Internal
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -128,15 +131,16 @@ public final class ClientInit {
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
+            var api = ArsMagicaAPI.get();
             if (item instanceof IAffinityItem) {
-                for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+                for (IAffinity affinity : api.getAffinityRegistry()) {
                     if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
                         ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
             }
             if (item instanceof ISkillPointItem) {
-                for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
+                for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
                     ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }
@@ -165,7 +169,7 @@ public final class ClientInit {
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(WinterGuardianModel.LAYER_LOCATION, WinterGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
         event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
     }
@@ -177,7 +181,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.WINTER_GUARDIAN.get(), WinterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), IceGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);

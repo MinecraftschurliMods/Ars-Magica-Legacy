@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LRL",
+    "W W",
+    "W W"
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:wool"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "R": {
+      "item": "arsmagicalegacy:yellow_rune"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:mage_leggings"
+  }
+}

@@ -35,11 +35,6 @@ public class SpellCustomizationScreen extends Screen {
     private SpellIconSelector spellIconSelector;
     private EditBox editBox;
 
-    /**
-     * Creates a new spell icon pick screen.
-     *
-     * @param stack The ItemStack to open this screen for.
-     */
     public SpellCustomizationScreen(ItemStack stack) {
         super(TextComponent.EMPTY);
         editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
@@ -95,11 +90,12 @@ public class SpellCustomizationScreen extends Screen {
             super.render(matrix, mouseX, mouseY, partialTicks);
         }
 
+        @Nullable
         public ResourceLocation getSelected() {
             return selected;
         }
 
-        public void setSelected(ResourceLocation id) {
+        public void setSelected(@Nullable ResourceLocation id) {
             selected = id;
         }
 
@@ -114,7 +110,7 @@ public class SpellCustomizationScreen extends Screen {
 
         @Override
         protected boolean clickPanel(double mouseX, double mouseY, int button) {
-            var hovered = getHovered(mouseX - 2 * ICON_MARGIN, mouseY + border - 2 * ICON_MARGIN);
+            ResourceLocation hovered = getHovered(mouseX - 2 * ICON_MARGIN, mouseY + border - 2 * ICON_MARGIN);
             if (hovered != null) {
                 selected = hovered;
                 return true;
@@ -125,7 +121,7 @@ public class SpellCustomizationScreen extends Screen {
         @Override
         protected void drawPanel(PoseStack mStack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
             int i = 0;
-            var hovered = getHovered(mouseX - left - 2 * ICON_MARGIN, mouseY - top + (int) scrollDistance - 2 * ICON_MARGIN);
+            ResourceLocation hovered = getHovered(mouseX - left - 2 * ICON_MARGIN, mouseY - top + (int) scrollDistance - 2 * ICON_MARGIN);
             RenderSystem.setShaderTexture(0, SpellIconAtlas.SPELL_ICON_ATLAS);
             for (ResourceLocation icon : icons) {
                 int x = i % elementsX;

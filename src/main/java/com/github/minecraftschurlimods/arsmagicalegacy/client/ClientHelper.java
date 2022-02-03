@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ClientHelper {
     /**
-     * @return The player of the current Minecraft instance.
+     * @return The player logged into the current Minecraft instance.
      */
     @Nullable
     public static Player getLocalPlayer() {
@@ -18,33 +18,31 @@ public final class ClientHelper {
     }
 
     /**
-     * Opens a new OcculusScreen.
+     * Opens an occulus GUI on the client.
      */
     public static void openOcculusGui() {
         Minecraft.getInstance().setScreen(new OcculusScreen());
     }
 
     /**
-     * Opens a new SpellIconPickScreen.
-     *
-     * @param stack The icon to pass in the SpellIconPickScreen constructor.
+     * Opens a spell customization GUI on the client.
      */
     public static void openSpellCustomizationGui(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellCustomizationScreen(stack));
     }
 
     /**
-     * @return Whether to show advanced spell tooltips or not.
+     * @return Whether to show advanced tooltips or not.
      */
     public static boolean showAdvancedTooltips() {
         return Screen.hasShiftDown();
     }
 
     /**
-     * Sets the player's step height.
+     * Updates the player's step height.
      *
-     * @param player     The player to set the step height for.
-     * @param stepHeight The step height to set.
+     * @param player     The player to update the step height for.
+     * @param stepHeight The new step height.
      */
     public static void updateStepHeight(Player player, float stepHeight) {
         player.maxUpStep = stepHeight;

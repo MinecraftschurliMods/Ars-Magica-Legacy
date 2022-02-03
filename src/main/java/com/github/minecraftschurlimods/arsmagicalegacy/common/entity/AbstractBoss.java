@@ -19,8 +19,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.end.EndDragonFight;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +49,7 @@ public abstract class AbstractBoss extends Monster {
     }
 
     @Override
-    public boolean canBeLeashed(@NotNull Player pPlayer) {
+    public boolean canBeLeashed(Player pPlayer) {
         return false;
     }
 
@@ -85,7 +84,7 @@ public abstract class AbstractBoss extends Monster {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.IN_WALL) {
             if (!level.isClientSide) {
                 int width = Math.round(getBbWidth());
@@ -112,13 +111,11 @@ public abstract class AbstractBoss extends Monster {
         updatePlayers();
     }
 
+    @Nullable
     protected SoundEvent getAttackSound() {
         return null;
     }
 
-    /**
-     * Partially taken from {@link EndDragonFight#updatePlayers()}
-     */
     private void updatePlayers() {
         if (!level.isClientSide) {
             Set<ServerPlayer> newSet = new HashSet<>();

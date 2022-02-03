@@ -9,7 +9,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
@@ -42,7 +41,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 class AMLootTableProvider extends LootTableProvider {
-    public AMLootTableProvider(DataGenerator pGenerator) {
+    AMLootTableProvider(DataGenerator pGenerator) {
         super(pGenerator);
     }
 
@@ -55,7 +54,7 @@ class AMLootTableProvider extends LootTableProvider {
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
     }
 
-    private static final class BlockLootTableProvider extends BlockLoot {
+    private static class BlockLootTableProvider extends BlockLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
         @Override
@@ -131,21 +130,23 @@ class AMLootTableProvider extends LootTableProvider {
         }
     }
 
-    private static final class EntityLootTableProvider extends EntityLoot {
+    private static class EntityLootTableProvider extends EntityLoot {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void addTables() {
-            add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())))));
-            add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())))));
-            add(AMEntities.EARTH_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())))));
-            add(AMEntities.AIR_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag())))));
-            add(AMEntities.WINTER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ICE.get()).getOrCreateTag())))));
-            add(AMEntities.LIGHTNING_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getOrCreateTag())))));
-            add(AMEntities.LIFE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.LIFE.get()).getOrCreateTag())))));
-            add(AMEntities.NATURE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.NATURE.get()).getOrCreateTag())))));
-            add(AMEntities.ARCANE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ARCANE.get()).getOrCreateTag())))));
-            add(AMEntities.ENDER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(AMAffinities.ENDER.get()).getOrCreateTag())))));
+            var helper = ArsMagicaAPI.get().getAffinityHelper();
+            add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())))));
+            add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())))));
+            add(AMEntities.EARTH_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag())))));
+            add(AMEntities.AIR_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag())))));
+            add(AMEntities.ICE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.ICE.get()).getOrCreateTag())))));
+            add(AMEntities.LIGHTNING_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.LIGHTNING.get()).getOrCreateTag())))));
+            add(AMEntities.LIFE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.LIFE.get()).getOrCreateTag())))));
+            add(AMEntities.NATURE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.NATURE.get()).getOrCreateTag())))));
+            add(AMEntities.ARCANE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.ARCANE.get()).getOrCreateTag())))));
+            add(AMEntities.ENDER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.ENDER.get()).getOrCreateTag())))));
             add(AMEntities.DRYAD.get(), LootTable.lootTable());
             add(AMEntities.MAGE.get(), LootTable.lootTable());
             add(AMEntities.MANA_CREEPER.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0F, 2F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F))))));
@@ -154,8 +155,8 @@ class AMLootTableProvider extends LootTableProvider {
         @Override
         public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
             addTables();
-            Set<ResourceLocation> set = Sets.newHashSet();
-            for(EntityType<?> entitytype : getKnownEntities()) {
+            Set<ResourceLocation> set = new HashSet<>();
+            for (EntityType<?> entitytype : getKnownEntities()) {
                 ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
                 if (isNonLiving(entitytype)) {
                     if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)

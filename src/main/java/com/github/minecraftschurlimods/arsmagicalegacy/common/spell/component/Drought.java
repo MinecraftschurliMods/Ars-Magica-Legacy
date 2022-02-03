@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Drought extends AbstractComponent {
-    //TODO change this to a codec
+    //TODO
     private static final Map<Block, Block> TRANSITIONS = Util.make(new HashMap<>(), map -> {
         map.put(Blocks.STONE, Blocks.COBBLESTONE);
         map.put(Blocks.CLAY, Blocks.SAND);
@@ -34,10 +34,6 @@ public class Drought extends AbstractComponent {
         map.put(Blocks.RED_SANDSTONE, Blocks.SMOOTH_RED_SANDSTONE);
         map.put(Blocks.SANDSTONE, Blocks.SMOOTH_SANDSTONE);
     });
-
-    public Drought() {
-        super();
-    }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {

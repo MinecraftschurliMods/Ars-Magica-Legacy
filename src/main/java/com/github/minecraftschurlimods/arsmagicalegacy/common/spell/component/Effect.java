@@ -32,13 +32,13 @@ public class Effect extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
-        int duration = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(Config.SERVER.EFFECT_DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target);
-        int amplifier = (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(0, SpellPartStats.POWER, modifiers, spell, caster, target);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        int amplifier = (int) helper.getModifiedStat(0, SpellPartStats.POWER, modifiers, spell, caster, target);
         if (effect.get().isInstantenous()) {
             effect.get().applyInstantenousEffect(caster, caster, living, amplifier, 1);
             return SpellCastResult.SUCCESS;
         }
-        MobEffectInstance instance = new MobEffectInstance(effect.get(), duration, amplifier);
+        MobEffectInstance instance = new MobEffectInstance(effect.get(), (int) helper.getModifiedStat(Config.SERVER.EFFECT_DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target), amplifier);
         return living.addEffect(instance) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 

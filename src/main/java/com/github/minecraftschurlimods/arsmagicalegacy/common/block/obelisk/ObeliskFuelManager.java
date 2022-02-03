@@ -20,14 +20,25 @@ public final class ObeliskFuelManager extends CodecDataManager<ObeliskFuelManage
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
+    /**
+     * @return The only instance of this class.
+     */
     public static ObeliskFuelManager instance() {
         return INSTANCE.get();
     }
 
+    /**
+     * @param stack The item stack to get the fuel for.
+     * @return An optional containing the fuel, or an empty optional if there is no fuel associated with the given stack.
+     */
     public Optional<ObeliskFuel> getFuelFor(ItemStack stack) {
         return values().stream().filter(obeliskFuel -> obeliskFuel.ingredient.test(stack)).findFirst();
     }
 
+    /**
+     * @param stack The item stack to test the fuel for.
+     * @return Whether the given stack is a valid obelisk fuel or not.
+     */
     public boolean isFuel(ItemStack stack) {
         return getFuelFor(stack).isPresent();
     }

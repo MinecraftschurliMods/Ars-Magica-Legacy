@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class Forge extends AbstractComponent {
-    public Forge() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof Villager villager) {
@@ -51,8 +47,9 @@ public class Forge extends AbstractComponent {
         if (recipe.isEmpty()) return SpellCastResult.EFFECT_FAILED;
         ItemStack smelted = recipe.get().getResultItem();
         if (!level.isClientSide()) {
-            if (smelted.getItem() instanceof BlockItem) level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);
-            else {
+            if (smelted.getItem() instanceof BlockItem) {
+                level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);
+            } else {
                 level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, smelted.copy()));
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
             }

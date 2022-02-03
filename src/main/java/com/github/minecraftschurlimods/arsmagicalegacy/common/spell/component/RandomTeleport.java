@@ -23,7 +23,8 @@ public class RandomTeleport extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))
+            return SpellCastResult.EFFECT_FAILED;
         float range = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(5, SpellPartStats.RANGE, modifiers, spell, caster, target) * 4;
         Entity entity = target.getEntity();
         boolean validPosition;

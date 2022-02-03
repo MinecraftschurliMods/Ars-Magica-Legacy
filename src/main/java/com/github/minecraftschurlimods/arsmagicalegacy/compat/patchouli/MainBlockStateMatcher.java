@@ -25,6 +25,6 @@ class MainBlockStateMatcher implements IStateMatcher {
 
     @Override
     public TriPredicate<BlockGetter, BlockPos, BlockState> getStatePredicate() {
-        return this.predicate;
+        return predicate;
     }
 }

@@ -1,5 +1,5 @@
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import net.minecraft.MethodsReturnNonnullByDefault;

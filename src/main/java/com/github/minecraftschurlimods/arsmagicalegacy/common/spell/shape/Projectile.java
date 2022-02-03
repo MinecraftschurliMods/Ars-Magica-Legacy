@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
@@ -19,12 +18,7 @@ import java.util.List;
 
 public class Projectile extends AbstractShape {
     public Projectile() {
-        super(SpellPartStats.TARGET_NON_SOLID,
-              SpellPartStats.BOUNCE,
-              SpellPartStats.DURATION,
-              SpellPartStats.PIERCING,
-              SpellPartStats.GRAVITY,
-              SpellPartStats.SPEED);
+        super(SpellPartStats.BOUNCE, SpellPartStats.DURATION, SpellPartStats.GRAVITY, SpellPartStats.PIERCING, SpellPartStats.SPEED, SpellPartStats.TARGET_NON_SOLID);
     }
 
     @Override
@@ -33,25 +27,20 @@ public class Projectile extends AbstractShape {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile projectile = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile.create(level);
             projectile.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             projectile.setDeltaMovement(caster.getLookAngle());
-            ISpellHelper spellHelper = ArsMagicaAPI.get().getSpellHelper();
-            boolean tns = spellHelper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0;
-            int bounces = (int)spellHelper.getModifiedStat(0, SpellPartStats.BOUNCE, modifiers, spell, caster, hit);
-            int duration = (int)spellHelper.getModifiedStat(30, SpellPartStats.DURATION, modifiers, spell, caster, hit);
-            int pierces = (int)spellHelper.getModifiedStat(0, SpellPartStats.PIERCING, modifiers, spell, caster, hit);
-            float gravity = spellHelper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f;
-            float speed = spellHelper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit);
-            if (tns) {
+            var api = ArsMagicaAPI.get();
+            var helper = api.getSpellHelper();
+            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0) {
                 projectile.setTargetNonSolid();
             }
-            projectile.setBounces(bounces);
-            projectile.setDuration(duration);
+            projectile.setBounces((int) helper.getModifiedStat(0, SpellPartStats.BOUNCE, modifiers, spell, caster, hit));
+            projectile.setDuration((int) helper.getModifiedStat(30, SpellPartStats.DURATION, modifiers, spell, caster, hit));
             projectile.setIndex(index);
-            projectile.setPierces(pierces);
             projectile.setOwner(caster);
-            projectile.setGravity(gravity);
-            projectile.setSpeed(speed);
+            projectile.setPierces((int) helper.getModifiedStat(0, SpellPartStats.PIERCING, modifiers, spell, caster, hit));
+            projectile.setGravity(helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f);
+            projectile.setSpeed(helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit));
             IAffinity affinity = spell.primaryAffinity();
-            projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(affinity));
+            projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : api.getAffinityHelper().getEssenceForAffinity(affinity));
             projectile.setStack(caster.getMainHandItem());
             level.addFreshEntity(projectile);
         }

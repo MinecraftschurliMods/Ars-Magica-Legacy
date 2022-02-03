@@ -22,9 +22,8 @@ public class Fling extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();
-        float velocity = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target);
         Vec3 delta = entity.getDeltaMovement();
-        entity.setDeltaMovement(delta.x(), delta.y() + velocity * 1.05f, delta.z());
+        entity.setDeltaMovement(delta.x(), delta.y() + ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target) * 1.05f, delta.z());
         return SpellCastResult.SUCCESS;
     }
 

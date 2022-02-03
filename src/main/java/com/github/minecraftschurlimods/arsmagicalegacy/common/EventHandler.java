@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
@@ -21,17 +20,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Dryad;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WinterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -49,6 +49,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMBrewingRecipe;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -64,10 +65,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -96,6 +100,11 @@ public final class EventHandler {
     private EventHandler() {
     }
 
+    /**
+     * Registers the common event handlers.
+     *
+     * @param modBus The mod event bus to register the mod events to.
+     */
     @Internal
     public static void register(IEventBus modBus) {
         modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);
@@ -132,6 +141,7 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
+        registerBrewingRecipes();
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
         CompatManager.init(event);
@@ -158,8 +168,17 @@ public final class EventHandler {
         AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
     }
 
+    private static void registerBrewingRecipes() {
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.CHIMERITE.get()), AMMobEffects.LESSER_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.WAKEBLOOM.get()), AMMobEffects.STANDARD_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.VINTEUM_DUST.get()), AMMobEffects.GREATER_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.ARCANE_ASH.get()), AMMobEffects.EPIC_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), AMMobEffects.LEGENDARY_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.TARMA_ROOT.get()), AMMobEffects.INFUSED_MANA.get()));
+    }
+
     public static void registerSpellIngredientTypes() {
-        ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
         spellDataManager.registerSpellIngredientType(IngredientSpellIngredient.INGREDIENT, IngredientSpellIngredient.CODEC, IngredientSpellIngredient.NETWORK_CODEC, IngredientSpellIngredient.IngredientSpellIngredientRenderer::new);
         spellDataManager.registerSpellIngredientType(EtheriumSpellIngredient.ETHERIUM, EtheriumSpellIngredient.CODEC, EtheriumSpellIngredient.EtheriumSpellIngredientRenderer::new);
     }
@@ -172,9 +191,9 @@ public final class EventHandler {
         event.register(BurnoutHelper.BurnoutHolder.class);
     }
 
+    @SuppressWarnings("unchecked")
     private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity livingEntity) {
-            //noinspection unchecked
             AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());
             if (attributes.hasAttribute(AMAttributes.MAX_MANA.get())) {
                 event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana"), new CodecCapabilityProvider<>(
@@ -187,27 +206,27 @@ public final class EventHandler {
         }
         if (event.getObject() instanceof Player) {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"), new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC, SkillHelper.getCapability(), SkillHelper.KnowledgeHolder::empty));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),  new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"),     new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"),      new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"),    new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"), new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"), new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"), new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
         }
     }
 
     private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(AMEntities.WATER_GUARDIAN.get(),     WaterGuardian.createAttributes().build());
-        event.put(AMEntities.FIRE_GUARDIAN.get(),      FireGuardian.createAttributes().build());
-        event.put(AMEntities.EARTH_GUARDIAN.get(),     EarthGuardian.createAttributes().build());
-        event.put(AMEntities.AIR_GUARDIAN.get(),       AirGuardian.createAttributes().build());
-        event.put(AMEntities.WINTER_GUARDIAN.get(),    WinterGuardian.createAttributes().build());
+        event.put(AMEntities.WATER_GUARDIAN.get(), WaterGuardian.createAttributes().build());
+        event.put(AMEntities.FIRE_GUARDIAN.get(), FireGuardian.createAttributes().build());
+        event.put(AMEntities.EARTH_GUARDIAN.get(), EarthGuardian.createAttributes().build());
+        event.put(AMEntities.AIR_GUARDIAN.get(), AirGuardian.createAttributes().build());
+        event.put(AMEntities.ICE_GUARDIAN.get(), IceGuardian.createAttributes().build());
         event.put(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardian.createAttributes().build());
-        event.put(AMEntities.NATURE_GUARDIAN.get(),    NatureGuardian.createAttributes().build());
-        event.put(AMEntities.LIFE_GUARDIAN.get(),      LifeGuardian.createAttributes().build());
-        event.put(AMEntities.ARCANE_GUARDIAN.get(),    ArcaneGuardian.createAttributes().build());
-        event.put(AMEntities.ENDER_GUARDIAN.get(),     EnderGuardian.createAttributes().build());
-        event.put(AMEntities.DRYAD.get(),              Dryad.createAttributes().build());
-        event.put(AMEntities.MAGE.get(),               Mage.createAttributes().build());
-        event.put(AMEntities.MANA_CREEPER.get(),       ManaCreeper.createAttributes().build());
+        event.put(AMEntities.NATURE_GUARDIAN.get(), NatureGuardian.createAttributes().build());
+        event.put(AMEntities.LIFE_GUARDIAN.get(), LifeGuardian.createAttributes().build());
+        event.put(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardian.createAttributes().build());
+        event.put(AMEntities.ENDER_GUARDIAN.get(), EnderGuardian.createAttributes().build());
+        event.put(AMEntities.DRYAD.get(), Dryad.createAttributes().build());
+        event.put(AMEntities.MAGE.get(), Mage.createAttributes().build());
+        event.put(AMEntities.MANA_CREEPER.get(), ManaCreeper.createAttributes().build());
     }
 
     private static void entityAttributeModification(EntityAttributeModificationEvent event) {
@@ -247,17 +266,21 @@ public final class EventHandler {
     private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
-        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
-        if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getStack())) return;
-        ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
+        var api = ArsMagicaAPI.get();
+        var helper = api.getMagicHelper();
+        if (helper.knowsMagic(event.getPlayer())) return;
+        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
+        helper.awardXp(event.getPlayer(), 0);
     }
 
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
-        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(event.getPlayer())) return;
-        if (!ItemStack.isSameItemSameTags(ArsMagicaAPI.get().getBookStack(), event.getCrafting())) return;
-        ArsMagicaAPI.get().getMagicHelper().awardXp(event.getPlayer(), 0);
+        var api = ArsMagicaAPI.get();
+        var helper = api.getMagicHelper();
+        if (helper.knowsMagic(event.getPlayer())) return;
+        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
+        helper.awardXp(event.getPlayer(), 0);
     }
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -265,8 +288,9 @@ public final class EventHandler {
         if (event.phase != TickEvent.Phase.START) return;
         Player player = event.player;
         if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
-        ArsMagicaAPI.get().getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        ArsMagicaAPI.get().getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        var api = ArsMagicaAPI.get();
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
@@ -357,7 +381,7 @@ public final class EventHandler {
     private static void playerLevelUp(PlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         int level = event.getLevel();
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         if (level == 1) {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_STARTING_BLUE_POINTS.get());
         }
@@ -365,6 +389,7 @@ public final class EventHandler {
             int minEarnLevel = iSkillPoint.getMinEarnLevel();
             if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
                 api.getSkillHelper().addSkillPoint(player, iSkillPoint);
+                event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }
         }
         float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
@@ -381,21 +406,21 @@ public final class EventHandler {
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
         }
-        event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.MASTER, 1f, 1f);
+        event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
     private static void manaCostPre(SpellEvent.ManaCost.Pre event) {
         LivingEntity caster = event.getEntityLiving();
         float cost = event.getBase();
         if (caster instanceof Player player) {
-            ISpellDataManager iSpellDataManager = ArsMagicaAPI.get().getSpellDataManager();
+            var api = ArsMagicaAPI.get();
             for (ISpellPart iSpellPart : event.getSpell().parts()) {
                 if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
-                ISpellPartData dataForPart = iSpellDataManager.getDataForPart(iSpellPart);
+                ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
                 if (dataForPart == null) continue;
                 Set<IAffinity> affinities = dataForPart.affinities();
                 for (IAffinity aff : affinities) {
-                    double value = ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, aff);
+                    double value = api.getAffinityHelper().getAffinityDepth(player, aff);
                     if (value > 0) {
                         cost -= (float) (cost * (0.5f * value / 100f));
                     }

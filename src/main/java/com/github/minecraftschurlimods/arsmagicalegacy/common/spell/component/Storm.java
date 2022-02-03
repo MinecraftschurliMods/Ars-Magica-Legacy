@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,18 +26,7 @@ public class Storm extends AbstractComponent {
         super(SpellPartStats.DURATION);
     }
 
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
-    }
-
-    @Override
-    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
-    }
-
-    @NotNull
-    private SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
+    private static SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
         if (!level.isClientSide()) {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
@@ -71,9 +59,19 @@ public class Storm extends AbstractComponent {
                     }
                 }
             } else {
-                ((ServerLevel) level).setWeatherParameters(0, (int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target), true, true);
+                ((ServerLevel) level).setWeatherParameters(0, (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target), true, true);
             }
         }
         return SpellCastResult.EFFECT_FAILED;
+    }
+
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+        return performStorm(caster, level, modifiers, spell, target);
+    }
+
+    @Override
+    public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
+        return performStorm(caster, level, modifiers, spell, target);
     }
 }

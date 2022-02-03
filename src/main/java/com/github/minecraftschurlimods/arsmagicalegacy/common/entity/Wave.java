@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
@@ -24,6 +25,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,8 +41,22 @@ public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.ITEM_STACK);
 
-    public Wave(EntityType<? extends Wave> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    /**
+     * Use {@link Wave#create(Level)} instead.
+     */
+    @Internal
+    public Wave(EntityType<? extends Wave> entityEntityType, Level level) {
+        super(entityEntityType, level);
+    }
+
+    /**
+     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
+     *
+     * @param level the level to create the new instance in
+     * @return a new instance of this class in the given level
+     */
+    public static Wave create(Level level) {
+        return new Wave(AMEntities.WAVE.get(), level);
     }
 
     @Override

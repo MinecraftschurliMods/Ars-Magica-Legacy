@@ -42,7 +42,6 @@ public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation BLACK_AUREM_PILLAR2 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar2");
     public static final ResourceLocation BLACK_AUREM_PILLAR3 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar3");
     public static final ResourceLocation BLACK_AUREM_PILLAR4 = new ResourceLocation(ArsMagicaAPI.MOD_ID, "black_aurem_pillar4");
-
     private static final String[][] CRAFTING_ALTAR_STRUCTURE = new String[][]{
             {" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
             {" BMB ", " 6 6 ", "     ", " 5 5 ", " BMB "},
@@ -63,8 +62,11 @@ public class PatchouliCompat implements ICompatHandler {
     private static final String[][] BLACK_AUREM_CHALK_STRUCTURE = new String[][]{
             {"   ", " B ", "   "},
             {"CCC", "C0C", "CCC"}};
-
     private static final String SPELL_PART_TEMPLATE = "{\"components\": [{\"type\": \"custom\",\"class\": \"com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.SpellPartPage\",\"part\": \"#part\"}]}";
+
+    public static BiPredicate<Level, BlockPos> getMultiblockMatcher(ResourceLocation location) {
+        return (level, pos) -> PatchouliAPI.get().getMultiblock(location).validate(level, pos) != null;
+    }
 
     private IMultiblock makePillarsMultiblock(PatchouliAPI.IPatchouliAPI api, IStateMatcher pillar, IStateMatcher cap, IStateMatcher lower, IStateMatcher middle, IStateMatcher upper, IStateMatcher chalk) {
         return api.makeMultiblock(
@@ -78,9 +80,9 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true);
     }
 
+    @Override
     public void init(FMLCommonSetupEvent event) {
         PatchouliAPI.IPatchouliAPI api = PatchouliAPI.get();
-
         IStateMatcher capStateMatcher = new CapStateMatcher();
         IStateMatcher chalk = api.looseBlockMatcher(AMBlocks.WIZARDS_CHALK.get());
         IStateMatcher obeliskLower = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState());
@@ -100,7 +102,6 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher moonstoneBlock = api.strictBlockMatcher(AMBlocks.MOONSTONE_BLOCK.get());
         IStateMatcher sunstoneBlock = api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get());
         IStateMatcher air = api.airMatcher();
-
         api.registerMultiblock(CRAFTING_ALTAR, api.makeMultiblock(
                 CRAFTING_ALTAR_STRUCTURE,
                 'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH),
@@ -115,7 +116,8 @@ public class PatchouliCompat implements ICompatHandler {
                 '3', new StairBlockStateMatcher(Direction.SOUTH, Half.BOTTOM),
                 '4', new StairBlockStateMatcher(Direction.WEST, Half.BOTTOM),
                 '5', new StairBlockStateMatcher(Direction.EAST, Half.TOP),
-                '6', new StairBlockStateMatcher(Direction.WEST, Half.TOP)));
+                '6', new StairBlockStateMatcher(Direction.WEST, Half.TOP)
+        ));
         api.registerMultiblock(OBELISK_CHALK, api.makeMultiblock(
                 OBELISK_CHALK_STRUCTURE,
                 '0', obeliskLower,
@@ -143,10 +145,6 @@ public class PatchouliCompat implements ICompatHandler {
         api.registerMultiblock(BLACK_AUREM_PILLAR2, makePillarsMultiblock(api, netherBricks, goldBlock, air, blackAurem, air, chalk));
         api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, netherBricks, diamondBlock, air, blackAurem, air, chalk));
         api.registerMultiblock(BLACK_AUREM_PILLAR4, makePillarsMultiblock(api, netherBricks, sunstoneBlock, air, blackAurem, air, chalk));
-    }
-
-    public static BiPredicate<Level, BlockPos> getMultiblockMatcher(ResourceLocation location) {
-        return (level, pos) -> PatchouliAPI.get().getMultiblock(location).validate(level, pos) != null;
     }
 
     @Override

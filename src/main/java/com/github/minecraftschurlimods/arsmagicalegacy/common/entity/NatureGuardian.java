@@ -9,27 +9,19 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class NatureGuardian extends AbstractBoss {
     private float tendrilRotation;
-    private boolean hasSickle;
-    private float last_rotation_x_main;
-    private float last_rotation_x_shield;
-    private float last_rotation_y_main;
-    private float last_rotation_y_shield;
-    private float last_rotation_z_main;
-    private float last_rotation_z_shield;
+    private boolean hasSickle = true;
+    private float last_rotation_x_main = 0;
+    private float last_rotation_x_shield = 0;
+    private float last_rotation_y_main = 0;
+    private float last_rotation_y_shield = 0;
+    private float last_rotation_z_main = 0;
+    private float last_rotation_z_shield = 0;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.hasSickle = true;
-        this.last_rotation_x_main = 0;
-        this.last_rotation_x_shield = 0;
-        this.last_rotation_y_main = 0;
-        this.last_rotation_y_shield = 0;
-        this.last_rotation_z_main = 0;
-        this.last_rotation_z_shield = 0;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -42,7 +34,7 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.NATURE_GUARDIAN_HURT.get();
     }
 
@@ -62,10 +54,10 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE){
+        } else if (pSource == DamageSource.FREEZE) {
             pAmount *= 1.5f;
         }
         return super.hurt(pSource, pAmount);

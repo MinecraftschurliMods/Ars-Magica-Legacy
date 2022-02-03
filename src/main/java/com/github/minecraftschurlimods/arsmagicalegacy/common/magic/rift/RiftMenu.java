@@ -13,10 +13,23 @@ public class RiftMenu extends ChestMenu {
         super(AMMenuTypes.RIFT.get(), id, inv, container, rows);
     }
 
+    /**
+     * @param windowId The window id to use.
+     * @param inv      The inventory to use.
+     * @param buf      The buffer to read the uuid and the rift size from.
+     * @return A rift menu.
+     */
     public static RiftMenu rift(int windowId, Inventory inv, FriendlyByteBuf buf) {
         return rift(windowId, inv, inv.player.level.getPlayerByUUID(buf.readUUID()), buf.readInt());
     }
 
+    /**
+     * @param windowId The window id to use.
+     * @param inv      The inventory to use.
+     * @param player   The player this rift belongs to.
+     * @param size     The size to use.
+     * @return A rift menu.
+     */
     public static RiftMenu rift(int windowId, Inventory inv, Player player, int size) {
         return new RiftMenu(windowId, inv, new RiftContainer(ArsMagicaAPI.get().getRiftHelper().getRift(player)), size);
     }

@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class AoE extends AbstractShape {
-
     public AoE() {
         super(SpellPartStats.SIZE);
     }
@@ -30,14 +29,15 @@ public class AoE extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (hit == null) return SpellCastResult.EFFECT_FAILED;
-        float radius = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
         boolean appliedToAtLeastOneEntity = false;
-        for (Entity e : level.getEntities(caster, AABB.ofSize(hit.getLocation(), radius*2, radius*2, radius*2))) {
+        for (Entity e : level.getEntities(caster, AABB.ofSize(hit.getLocation(), radius * 2, radius * 2, radius * 2))) {
             if (e == caster || e instanceof ItemEntity || e instanceof Projectile) continue;
             if (e instanceof PartEntity && ((PartEntity<?>) e).getParent() != null) {
                 e = ((PartEntity<?>) e).getParent();
             }
-            if (ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp) == SpellCastResult.SUCCESS) {
+            if (helper.invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp) == SpellCastResult.SUCCESS) {
                 appliedToAtLeastOneEntity = true;
             }
         }
@@ -55,7 +55,7 @@ public class AoE extends AbstractShape {
                             case Z -> pos.offset(x, y, offset);
                         };
                         if (!level.getBlockState(lookPos).isAir()) {
-                            ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
+                            helper.invoke(spell, caster, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
                         }
                     }
                 }

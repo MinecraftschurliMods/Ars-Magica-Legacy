@@ -1,0 +1,31 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.items.mage_armor.name",
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:mage_helmet{\"Damage\":0}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.mage_armor.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:mage_helmet",
+      "recipe2": "arsmagicalegacy:mage_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:mage_leggings",
+      "recipe2": "arsmagicalegacy:mage_boots"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:battlemage_helmet",
+      "recipe2": "arsmagicalegacy:battlemage_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:battlemage_leggings",
+      "recipe2": "arsmagicalegacy:battlemage_boots"
+    }
+  ]
+}

@@ -16,13 +16,11 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiPredicate;
 
 public class BlackAuremBlock extends BaseEntityBlock {
-    private static final VoxelShape BOX = Block.box(6,6,6,10,10,10);
-
+    private static final VoxelShape BOX = Block.box(6, 6, 6, 10, 10, 10);
     private static final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_CHALK);
     private static final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR1);
     private static final BiPredicate<Level, BlockPos> PILLAR2 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR2);
@@ -33,24 +31,29 @@ public class BlackAuremBlock extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of(Material.AIR).color(MaterialColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return AMBlockEntities.BLACK_AUREM.get().create(pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;
     }
 
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level level, final BlockState state, final BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide() ? null : createTickerHelper(blockEntityType, AMBlockEntities.BLACK_AUREM.get(), (pLevel, pPos, pState, pBlockEntity) -> pBlockEntity.tick(pLevel, pPos, pState));
     }
 
-    public int getTier(final BlockState state, final Level world, final BlockPos pos) {
+    /**
+     * @param state The state of the core block.
+     * @param world The world this block is in.
+     * @param pos   The position of the core block.
+     * @return The tier of the surrounding multiblock.
+     */
+    public int getTier(BlockState state, Level world, BlockPos pos) {
         int tier = 0;
         if (CHALK.test(world, pos)) {
             if (PILLAR1.test(world, pos)) {

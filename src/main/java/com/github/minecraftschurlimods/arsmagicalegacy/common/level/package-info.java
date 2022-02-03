@@ -1,5 +1,5 @@
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package com.github.minecraftschurlimods.arsmagicalegacy.common.level;
 
 import net.minecraft.MethodsReturnNonnullByDefault;

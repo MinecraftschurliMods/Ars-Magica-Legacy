@@ -21,8 +21,9 @@ public record NextShapeGroupPacket(InteractionHand hand) implements IPacket {
     public void handle(NetworkEvent.Context context) {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            if (player == null) return;
-            ArsMagicaAPI.get().getSpellHelper().nextShapeGroup(player.getItemInHand(hand));
+            if (player != null) {
+                ArsMagicaAPI.get().getSpellHelper().nextShapeGroup(player.getItemInHand(hand));
+            }
         });
     }
 }

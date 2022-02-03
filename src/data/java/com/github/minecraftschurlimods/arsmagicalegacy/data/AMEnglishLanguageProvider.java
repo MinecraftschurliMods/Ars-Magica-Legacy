@@ -15,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
+import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -37,7 +39,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     @Override
     protected void addTranslations() {
         itemGroupTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY,ArsMagicaLegacy.getModName() + " - Prefab Spells");
+        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY, ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
@@ -96,8 +98,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
-        itemIdTranslation(AMItems.SPELL_PARCHMENT);
-        itemIdTranslation(AMItems.SPELL);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
@@ -107,6 +107,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
+        itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL);
+        itemIdTranslation(AMItems.MANA_CAKE);
+        itemIdTranslation(AMItems.MANA_MARTINI);
+        itemIdTranslation(AMItems.MAGE_HELMET);
+        itemIdTranslation(AMItems.MAGE_CHESTPLATE);
+        itemIdTranslation(AMItems.MAGE_LEGGINGS);
+        itemIdTranslation(AMItems.MAGE_BOOTS);
+        itemIdTranslation(AMItems.BATTLEMAGE_HELMET);
+        itemIdTranslation(AMItems.BATTLEMAGE_CHESTPLATE);
+        itemIdTranslation(AMItems.BATTLEMAGE_LEGGINGS);
+        itemIdTranslation(AMItems.BATTLEMAGE_BOOTS);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
@@ -130,6 +142,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         effectIdTranslation(AMMobEffects.TEMPORAL_ANCHOR);
         effectIdTranslation(AMMobEffects.TRUE_SIGHT);
         effectIdTranslation(AMMobEffects.WATERY_GRAVE);
+        potionIdTranslation(AMMobEffects.LESSER_MANA);
+        potionIdTranslation(AMMobEffects.STANDARD_MANA);
+        potionIdTranslation(AMMobEffects.GREATER_MANA);
+        potionIdTranslation(AMMobEffects.EPIC_MANA);
+        potionIdTranslation(AMMobEffects.LEGENDARY_MANA);
+        potionIdTranslation(AMMobEffects.INFUSED_MANA);
         addAttribute(AMAttributes.BURNOUT_REGEN, "Burnout Regeneration");
         addAttribute(AMAttributes.MANA_REGEN, "Mana Regeneration");
         attributeIdTranslation(AMAttributes.MAGIC_VISION);
@@ -143,7 +161,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.FIRE_GUARDIAN);
         entityIdTranslation(AMEntities.EARTH_GUARDIAN);
         entityIdTranslation(AMEntities.AIR_GUARDIAN);
-        entityIdTranslation(AMEntities.WINTER_GUARDIAN);
+        entityIdTranslation(AMEntities.ICE_GUARDIAN);
         entityIdTranslation(AMEntities.LIGHTNING_GUARDIAN);
         entityIdTranslation(AMEntities.NATURE_GUARDIAN);
         entityIdTranslation(AMEntities.LIFE_GUARDIAN);
@@ -152,7 +170,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
-        advancementTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "root"), ArsMagicaLegacy.getModName(), "A renewed look into Minecraft with a splash of magic...");
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -262,8 +279,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("extra_starting_blue_points", "The extra skill points a player gets on level 1.");
         configTranslation("effect_duration", "Effect duration of effect-based components, in ticks.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
+        configTranslation("max_etherium_storage", "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
-        add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.CRYSTAL_WRENCH_TOO_FAR, "You cannot perform this action over such distance!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
         add(TranslationConstants.SPELL_INVALID, "[Invalid Spell]");
@@ -274,19 +291,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
-        add(TranslationConstants.COMMAND_SKILL_ALREADY_KNOWN, "Skill %s has already been learned");
-        add(TranslationConstants.COMMAND_SKILL_EMPTY, "");
-        add(TranslationConstants.COMMAND_SKILL_FORGET_ALL_SUCCESS, "Forgot all skills");
-        add(TranslationConstants.COMMAND_SKILL_FORGET_SUCCESS, "Forgot skill %s");
-        add(TranslationConstants.COMMAND_SKILL_LEARN_ALL_SUCCESS, "Learned all skills");
-        add(TranslationConstants.COMMAND_SKILL_LEARN_SUCCESS, "Learned skill %s");
-        add(TranslationConstants.COMMAND_SKILL_NOT_YET_KNOWN, "Skill %s must be learned first");
-        add(TranslationConstants.COMMAND_SKILL_UNKNOWN, "Could not find skill %s");
         add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
         add(TranslationConstants.OBELISK_TITLE, "Obelisk");
+        add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.RIFT_TITLE, "Rift Storage");
         add(TranslationConstants.SPELL_CUSTOMIZATION_TITLE, "Spell Customization");
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
@@ -300,8 +310,52 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "no_permission", "No permission!");
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
-        add(TranslationConstants.MULTIBLOCK_TIER, "Tier: %s");
+        add(TranslationConstants.TIER, "Tier: %s");
+        add(CommandTranslations.AFFINITY_ADD_MULTIPLE, "Added %s affinity depth for %s players to %f");
+        add(CommandTranslations.AFFINITY_ADD_SINGLE, "Added %s affinity depth for player %s to %f");
+        add(CommandTranslations.AFFINITY_GET, "Affinity depth of %s for player %s is %f");
+        add(CommandTranslations.AFFINITY_RESET_MULTIPLE, "Reset all affinity depths for %s players");
+        add(CommandTranslations.AFFINITY_RESET_SINGLE, "Reset all affinity depths for player %s");
+        add(CommandTranslations.AFFINITY_SET_MULTIPLE, "Set affinity depth of %s for %s players to %f");
+        add(CommandTranslations.AFFINITY_SET_SINGLE, "Set affinity depth of %s for player %s to %f");
+        add(CommandTranslations.AFFINITY_UNKNOWN, "Could not find affinity %s");
+        add(CommandTranslations.MAGIC_XP_ADD_LEVELS_MULTIPLE, "Gave %s magic xp levels to %s players");
+        add(CommandTranslations.MAGIC_XP_ADD_LEVELS_SINGLE, "Gave %s magic xp levels to %s");
+        add(CommandTranslations.MAGIC_XP_ADD_POINTS_MULTIPLE, "Gave %s magic xp to %s players");
+        add(CommandTranslations.MAGIC_XP_ADD_POINTS_SINGLE, "Gave %s magic xp to %s");
+        add(CommandTranslations.MAGIC_XP_GET_LEVELS, "%s has %s magic xp levels");
+        add(CommandTranslations.MAGIC_XP_GET_POINTS, "%s has %s magic xp points");
+        add(CommandTranslations.MAGIC_XP_SET_LEVELS_MULTIPLE, "Set %s magic xp levels on %s players");
+        add(CommandTranslations.MAGIC_XP_SET_LEVELS_SINGLE, "Set %s magic xp levels on %s");
+        add(CommandTranslations.MAGIC_XP_SET_POINTS_MULTIPLE, "Set %s magic xp on %s players");
+        add(CommandTranslations.MAGIC_XP_SET_POINTS_SINGLE, "Set %s magic xp on %s");
+        add(CommandTranslations.SKILL_ALREADY_KNOWN, "Skill %s has already been learned");
+        add(CommandTranslations.SKILL_FORGET_ALL_MULTIPLE, "Took all skill knowledge from %s players");
+        add(CommandTranslations.SKILL_FORGET_ALL_SINGLE, "Took all skill knowledge from player %s");
+        add(CommandTranslations.SKILL_FORGET_MULTIPLE, "Took knowledge of skill %s from %s players");
+        add(CommandTranslations.SKILL_FORGET_SINGLE, "Took knowledge of skill %s from player %s");
+        add(CommandTranslations.SKILL_LEARN_ALL_MULTIPLE, "Gave all skill knowledge to %s players");
+        add(CommandTranslations.SKILL_LEARN_ALL_SINGLE, "Gave all skill knowledge to player %s");
+        add(CommandTranslations.SKILL_LEARN_MULTIPLE, "Gave knowledge of skill %s to %s players");
+        add(CommandTranslations.SKILL_LEARN_SINGLE, "Gave knowledge of skill %s to player %s");
+        add(CommandTranslations.SKILL_NOT_YET_KNOWN, "Skill %s must be learned first");
+        add(CommandTranslations.SKILL_POINT_ADD_MULTIPLE, "Added %s skill points of type %s to %s players");
+        add(CommandTranslations.SKILL_POINT_ADD_SINGLE, "Added %s skill points of type %s to player %s");
+        add(CommandTranslations.SKILL_POINT_CONSUME_MULTIPLE, "Consumed %s skill points of type %s from %s players");
+        add(CommandTranslations.SKILL_POINT_CONSUME_SINGLE, "Consumed %s skill points of type %s from player %s");
+        add(CommandTranslations.SKILL_POINT_GET, "Player %s has %d skill points of type %s");
+        add(CommandTranslations.SKILL_POINT_RESET_MULTIPLE, "Reset all skill points for %s players");
+        add(CommandTranslations.SKILL_POINT_RESET_SINGLE, "Reset all skill points for player %s");
+        add(CommandTranslations.SKILL_POINT_SET_MULTIPLE, "%s players now have %d skill points of type %s");
+        add(CommandTranslations.SKILL_POINT_SET_SINGLE, "Player %s now has %d skill points of type %s");
+        add(CommandTranslations.SKILL_POINT_UNKNOWN, "Could not find skill point type %s");
+        add(CommandTranslations.SKILL_UNKNOWN, "Could not find skill %s");
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
+        add("potion.potency.5", "VI");
+        add("potion.potency.6", "VII");
+        add("potion.potency.7", "VII");
+        add("potion.potency.8", "IX");
+        add("potion.potency.9", "X");
     }
 
     /**
@@ -347,6 +401,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
         addEffect(effect, idToTranslation(effect.getId().getPath()));
+    }
+
+    /**
+     * Adds a potion translation that matches the potion id.
+     * Also covers splash potion, lingering potion and tipped arrow translations.
+     *
+     * @param potion The potion to generate the translation for.
+     */
+    private void potionIdTranslation(RegistryObject<? extends Potion> potion) {
+        add("item.minecraft.potion.effect." + potion.getId().getPath(), "Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.splash_potion.effect." + potion.getId().getPath(), "Splash Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.lingering_potion.effect." + potion.getId().getPath(), "Lingering Potion of " + idToTranslation(potion.getId().getPath()));
+        add("item.minecraft.tipped_arrow.effect." + potion.getId().getPath(), "Arrow of " + idToTranslation(potion.getId().getPath()));
     }
 
     /**

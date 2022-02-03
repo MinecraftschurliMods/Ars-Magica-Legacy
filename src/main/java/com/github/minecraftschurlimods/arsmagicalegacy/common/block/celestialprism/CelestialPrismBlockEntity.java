@@ -14,20 +14,24 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 public class CelestialPrismBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.LIGHT, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(CelestialPrismBlockEntity::onConsume);
-
     private final LazyOptional<IEtheriumProvider> etheriumHolder = LazyOptional.of(() -> provider);
     private int time;
 
-    public CelestialPrismBlockEntity(final BlockPos pWorldPosition, final BlockState pBlockState) {
+    public CelestialPrismBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.CELESTIAL_PRISM.get(), pWorldPosition, pBlockState);
     }
 
-    void tick(final Level level, final BlockPos pos, final BlockState state) {
+    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
+        // TODO spawn particles
+    }
+
+    void tick(Level level, BlockPos pos, BlockState state) {
         int tier = state.getBlock() instanceof CelestialPrismBlock block ? block.getTier(state, level, pos) : 0;
         if (level.canSeeSky(pos) && (level.isDay() || tier == 5)) {
             if (time > 0) {
@@ -40,24 +44,20 @@ public class CelestialPrismBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag tag) {
+    protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt("etheriumValue", this.provider.getAmount());
+        tag.putInt("etheriumValue", provider.getAmount());
     }
 
     @Override
-    public void load(final CompoundTag tag) {
+    public void load(CompoundTag tag) {
         super.load(tag);
         provider.set(tag.getInt("etheriumValue"));
     }
 
-    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
-        // TODO spawn particles
-    }
-
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap, @Nullable final Direction side) {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHolder);
     }
 }

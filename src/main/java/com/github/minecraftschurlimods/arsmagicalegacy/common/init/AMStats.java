@@ -20,13 +20,11 @@ public interface AMStats {
     ResourceLocation INTERACT_WITH_INSCRIPTION_TABLE = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_inscription_table"), StatFormatter.DEFAULT);
     ResourceLocation SPELL_CAST                      = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_cast"),                      StatFormatter.DEFAULT);
 
-    @SuppressWarnings("SameParameterValue")
     private static ResourceLocation register(ResourceLocation location, StatFormatter formatter) {
         STAT_REGISTER.put(location, formatter);
         return location;
     }
 
-    @SuppressWarnings("unused")
     static void onRegister(FMLCommonSetupEvent event) {
         STAT_REGISTER.forEach((location, formatter) -> {
             Registry.register(Registry.CUSTOM_STAT, location, location);

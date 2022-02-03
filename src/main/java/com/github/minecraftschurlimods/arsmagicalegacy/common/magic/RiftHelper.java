@@ -14,11 +14,7 @@ public final class RiftHelper implements IRiftHelper {
     private static final Lazy<RiftHelper> INSTANCE = Lazy.concurrentOf(RiftHelper::new);
     private static final Capability<RiftHolder> RIFT = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private RiftHelper() {}
-
-    @Override
-    public ItemStackHandler getRift(Player player) {
-        return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve burnout capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
+    private RiftHelper() {
     }
 
     /**
@@ -28,10 +24,24 @@ public final class RiftHelper implements IRiftHelper {
         return INSTANCE.get();
     }
 
+    /**
+     * @return The rift capability.
+     */
     public static Capability<RiftHolder> getRiftCapability() {
         return RIFT;
     }
 
+    @Override
+    public ItemStackHandler getRift(Player player) {
+        return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
+    }
+
+    /**
+     * Called on player death, syncs the capability.
+     *
+     * @param original The now-dead player.
+     * @param player   The respawning player.
+     */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(RIFT).ifPresent(rift -> player.getCapability(RIFT).ifPresent(holder -> holder.onSync(rift)));
     }
@@ -47,8 +57,13 @@ public final class RiftHelper implements IRiftHelper {
             deserializeNBT(tag);
         }
 
-        public void onSync(RiftHolder rift) {
-            this.deserializeNBT(rift.serializeNBT());
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
+        public void onSync(RiftHolder data) {
+            deserializeNBT(data.serializeNBT());
         }
     }
 }

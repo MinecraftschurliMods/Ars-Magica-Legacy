@@ -26,13 +26,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
-
     private final BlockEntityRenderDispatcher dispatcher;
     private final Font font;
 
     public AltarViewBER(BlockEntityRendererProvider.Context pContext) {
-        this.dispatcher = pContext.getBlockEntityRenderDispatcher();
-        this.font = pContext.getFont();
+        dispatcher = pContext.getBlockEntityRenderDispatcher();
+        font = pContext.getFont();
     }
 
     @Override
@@ -68,10 +67,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         if (altar.hasEnoughPower()) {
             ISpellIngredient currentIngredient = altar.getCurrentIngredient();
             if (currentIngredient != null) {
-                ArsMagicaAPI.get()
-                            .getSpellDataManager()
-                            .getSpellIngredientRenderer(currentIngredient.getType())
-                            .renderInWorld(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
+                ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientRenderer(currentIngredient.getType()).renderInWorld(currentIngredient, poseStack, bufferSource, packedLight, packedOverlay);
             }
         } else {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -92,7 +88,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         int j = (int) (f1 * 255) << 24;
         int i = 0;
         float offset = font.lineHeight * (components.size() - 1.5f);
-        for (final Component sibling : components) {
+        for (Component sibling : components) {
             float y = font.lineHeight * i++ - offset;
             float f2 = (float) (-font.width(sibling) / 2);
             font.drawInBatch(sibling, f2, y, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);

@@ -51,32 +51,33 @@ public class FilteredFilledDropArea<T> implements DropArea {
         update();
     }
 
+    /**
+     * Updates this drop area.
+     */
     public void update() {
-        this.items.clear();
+        items.clear();
         int x = this.x, y = this.y;
-        for (T t : this.elements) {
-            if (!this.filter.test(t)) {
-                continue;
-            }
+        for (T t : elements) {
+            if (!filter.test(t)) continue;
             Pair<TextureAtlasSprite, Component> a = factory.apply(t);
             DraggableWithData<T> d = new DraggableWithData<>(x, y, elementWidth, elementHeight, a.getFirst(), a.getSecond(), t);
-            this.items.add(d);
-            x += this.elementWidth-1;
-            if (x > (this.x + this.width - this.elementWidth-1)) {
+            items.add(d);
+            x += elementWidth - 1;
+            if (x > (this.x + width - elementWidth - 1)) {
                 x = this.x;
-                y += this.elementHeight-1;
+                y += elementHeight - 1;
             }
-            if (y > (this.y + this.height - this.elementHeight-1)) break;
+            if (y > (this.y + height - elementHeight - 1)) break;
         }
     }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         DropArea.super.render(poseStack, mouseX, mouseY, partialTicks);
-//        DropArea.vLine(poseStack, this.x, this.y, this.y + this.height, 0xffff0000);
-//        DropArea.vLine(poseStack, this.x + this.width, this.y, this.y + this.height, 0xffff0000);
-//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y, 0xffff0000);
-//        DropArea.hLine(poseStack, this.x, this.x + this.width, this.y + this.height, 0xffff0000);
+//        DropArea.vLine(poseStack, x, y, y + height, 0xffff0000);
+//        DropArea.vLine(poseStack, x + width, y, y + height, 0xffff0000);
+//        DropArea.hLine(poseStack, x, x + width, y, 0xffff0000);
+//        DropArea.hLine(poseStack, x, x + width, y + height, 0xffff0000);
     }
 
     @Override

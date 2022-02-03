@@ -28,9 +28,6 @@ public class OcculusScreen extends Screen {
     private Button nextPage;
     private OcculusTabRenderer activeTab;
 
-    /**
-     * Creates the occulus screen. Sets the correct size and sets the first tab as the active one.
-     */
     public OcculusScreen() {
         super(TITLE);
         tabWidth = 196;

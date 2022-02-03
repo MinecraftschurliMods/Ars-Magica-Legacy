@@ -16,10 +16,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class Grow extends AbstractComponent {
-    public Grow() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;

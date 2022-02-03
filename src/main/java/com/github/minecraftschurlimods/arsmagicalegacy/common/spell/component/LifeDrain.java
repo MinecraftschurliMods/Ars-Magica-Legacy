@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LifeDrain extends AbstractComponent {
     public LifeDrain() {
-        super(SpellPartStats.HEALING, SpellPartStats.DAMAGE);
+        super(SpellPartStats.DAMAGE, SpellPartStats.HEALING);
     }
 
     @Override

@@ -78,7 +78,6 @@ public class MagitechGogglesItem extends ArmorItem {
         return ImmutableMultimap.of(AMAttributes.MAGIC_VISION.get(), new AttributeModifier(UUID, "magic_vision", 1, AttributeModifier.Operation.ADDITION));
     }
 
-    @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return CompatManager.<CurioCompat>getHandler("curios").lazyMap(curioCompat -> curioCompat.makeCurioCap(stack, (s, stack1) -> getAttributeModifiers(EquipmentSlot.HEAD, stack1))).orElse(super.initCapabilities(stack, nbt));
