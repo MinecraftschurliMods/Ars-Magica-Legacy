@@ -16,13 +16,6 @@
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "NEUTRAL"
-      ],
-      "amount": 500,
-      "type": "arsmagicalegacy:etherium"
     }
   ]
 }
