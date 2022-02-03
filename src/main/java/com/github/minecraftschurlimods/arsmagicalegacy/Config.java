@@ -39,7 +39,18 @@ public final class Config {
      * Class holding the client config values.
      */
     public static final class Client {
+        public final ForgeConfigSpec.IntValue HUD_HORIZONTAL_OFFSET;
+        public final ForgeConfigSpec.IntValue HUD_VERTICAL_OFFSET;
+
         private Client(ForgeConfigSpec.Builder builder) {
+            HUD_HORIZONTAL_OFFSET = builder
+                    .comment("Horizontal offset of the hud, from the center of the screen.")
+                    .translation(TranslationConstants.CONFIG + "hud_horizontal_offset")
+                    .defineInRange("hud_horizontal_offset", 120, Short.MIN_VALUE, Short.MAX_VALUE);
+            HUD_VERTICAL_OFFSET = builder
+                    .comment("Vertical offset of the hud, from the bottom of the screen.")
+                    .translation(TranslationConstants.CONFIG + "hud_vertical_offset")
+                    .defineInRange("hud_vertical_offset", 3, 0, Short.MAX_VALUE);
         }
     }
 
