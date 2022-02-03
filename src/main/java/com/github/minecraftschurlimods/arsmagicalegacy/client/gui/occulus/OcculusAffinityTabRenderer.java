@@ -1,9 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,14 +14,22 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
+    private static final NumberFormat RANGE_FORMAT = NumberFormat.getPercentInstance();
+
     public OcculusAffinityTabRenderer(IOcculusTab occulusTab, Screen parent) {
         super(occulusTab, parent);
     }
@@ -42,9 +53,11 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         List<Component> drawString = new ArrayList<>();
         List<IAffinity> affinities = new ArrayList<>(registry.getValues());
         affinities.sort(null);
+        Player player = getPlayer();
+        assert player != null;
         for (IAffinity aff : affinities) {
             if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
-            double depth = helper.getAffinityDepth(getPlayer(), aff) / 100;
+            double depth = helper.getAffinityDepth(player, aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
             double var3 = Math.toRadians(portion * currentID - portion / 2.);
@@ -78,22 +91,37 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             getItemRenderer().renderAndDecorateFakeItem(helper.getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.getColor())));
-/*
-                    List<AbstractAffinityAbility> abilites = Lists.newArrayList(ArsMagicaAPI.getAffinityAbilityRegistry().getValues());
-                    abilites.sort(new Comparator<AbstractAffinityAbility>() {
-                        @Override
-                        public int compare(AbstractAffinityAbility o1, AbstractAffinityAbility o2) {
-                            return (int) ((o1.getMinimumDepth() * 100) - (o2.getMinimumDepth() * 100));
-                        }
-                    });
-                    for (AbstractAffinityAbility ability : abilites) {
-                        if (ability.getAffinity() == aff) {
-                            String advancedTooltip = "";
-                            if (isShiftDown) advancedTooltip = " (Min. : " + Math.round(ability.getMinimumDepth() * 100) + "%" + (ability.hasMax() ?(", Max. : " + Math.round(ability.getMaximumDepth() * 100) + "%")  : "") + ")";
-                            drawString.add(TextFormatting.RESET.toString() + (ability.isEligible(player) ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + I18n.translateToLocal("affinityability." + ability.getRegistryName().toString().replaceAll("arsmagica2:", "") + ".name") + advancedTooltip);
+                var abilityManager = api.getAbilityManager();
+                List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
+                IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();
+                abilities.sort((o1, o2) -> (int)((abilityManager.get(o1).range().min() * 100) - (abilityManager.get(o2).range().min() * 100)));
+                abilities.forEach(resourceLocation -> {
+                    IAbilityData abilityData = abilityManager.get(resourceLocation);
+                    boolean test = abilityData.test(player);
+                    IAbility value = abilityRegistry.getValue(resourceLocation);
+                    assert value != null;
+                    MutableComponent component = value.getDisplayName().copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
+                    if (Screen.hasShiftDown()) {
+                        Range range = abilityData.range();
+                        boolean lower = range.hasLowerBound();
+                        boolean upper = range.hasUpperBound();
+                        if (lower || upper) {
+                            TextComponent cmp = new TextComponent("(");
+                            if (lower) {
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(range.min())));
+                                if (upper) {
+                                    cmp.append(", ");
+                                }
+                            }
+                            if (upper) {
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(range.max())));
+                            }
+                            cmp.append(")");
+                            component.append(cmp);
                         }
                     }
-*/
+                    drawString.add(component);
+                });
             }
         }
         if (!drawString.isEmpty()) {
