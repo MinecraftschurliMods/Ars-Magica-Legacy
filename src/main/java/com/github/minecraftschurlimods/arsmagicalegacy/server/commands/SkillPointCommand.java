@@ -38,7 +38,7 @@ public class SkillPointCommand {
      */
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("skill_point")
-                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_SKILL_POINT_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("skill_point", ResourceLocationArgument.id())

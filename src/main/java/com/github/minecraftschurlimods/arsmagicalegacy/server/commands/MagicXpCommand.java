@@ -28,7 +28,7 @@ public class MagicXpCommand {
      */
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder.then(Commands.literal("magic_xp")
-                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_AFFINITY_COMMAND) : p.hasPermission(2))
+                .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_MAGIC_XP_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.players())
                                 .then(Commands.argument("amount", IntegerArgumentType.integer())
