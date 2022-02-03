@@ -21,7 +21,7 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:saplings"
+        "item": "arsmagicalegacy:witchwood_sapling"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

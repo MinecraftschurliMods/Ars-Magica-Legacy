@@ -91,7 +91,6 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .build();
-
         createSpellPartData(AMSpellParts.DROWNING_DAMAGE, 80f)
                 .withAffinity(AMAffinities.WATER, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLACK)), 1))
@@ -234,8 +233,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_GRAY)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.RODS_BLAZE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.GLASS), 1))
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.WITCHWOOD_LOGS), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.LOGS), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.WITCHWOOD_LOGS), 1))
                 .build();
         createSpellPartData(AMSpellParts.SCRAMBLE_SYNAPSES, 6000f)
                 .build();
@@ -384,8 +382,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withAffinity(AMAffinities.NATURE, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.BONE_MEAL), 1))
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.WITCHWOOD_LOGS), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.LOGS), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.WITCHWOOD_LOGS), 1))
                 .build();
         createSpellPartData(AMSpellParts.HARVEST, 80f)
                 .withAffinity(AMAffinities.NATURE, 0.01f)
@@ -458,8 +455,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withAffinity(AMAffinities.NATURE, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.WHEAT_SEEDS), 1))
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WITCHWOOD_SAPLING.get()), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.SAPLINGS), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WITCHWOOD_SAPLING.get()), 1))
                 .build();
         createSpellPartData(AMSpellParts.PLOW, 80f)
                 .withAffinity(AMAffinities.EARTH, 0.01f)
@@ -513,10 +509,8 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withAffinity(AMAffinities.NATURE, 0.01f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.RODS_WOODEN), 1))
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WITCHWOOD_SAPLING.get()), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.SAPLINGS), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WITCHWOOD_SAPLING.get()), 1))
                 .build();
-
         createSpellPartData(AMSpellParts.BOUNCE, 1.25f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())){}, 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.SLIMEBALLS), 1))
