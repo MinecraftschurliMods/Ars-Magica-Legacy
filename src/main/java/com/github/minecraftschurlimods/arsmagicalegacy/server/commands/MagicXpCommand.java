@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -31,13 +31,13 @@ public class MagicXpCommand {
                 .requires(p -> p.getEntity() instanceof ServerPlayer player ? PermissionAPI.getPermission(player, AMPermissions.CAN_EXECUTE_MAGIC_XP_COMMAND) : p.hasPermission(2))
                 .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.players())
-                                .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
                                         .executes(MagicXpCommand::addMagicXpPoints)
                                         .then(Commands.literal("points")
                                                 .executes(MagicXpCommand::addMagicXpPoints))
                                         .then(Commands.literal("levels")
                                                 .executes(MagicXpCommand::addMagicXpLevels))))
-                        .then(Commands.argument("amount", IntegerArgumentType.integer())
+                        .then(Commands.argument("amount", DoubleArgumentType.doubleArg())
                                 .executes(MagicXpCommand::addMagicXpPointsSelf)
                                 .then(Commands.literal("points")
                                         .executes(MagicXpCommand::addMagicXpPointsSelf))
@@ -45,13 +45,13 @@ public class MagicXpCommand {
                                         .executes(MagicXpCommand::addMagicXpLevelsSelf))))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.players())
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
                                         .executes(MagicXpCommand::setMagicXpPoints)
                                         .then(Commands.literal("points")
                                                 .executes(MagicXpCommand::setMagicXpPoints))
                                         .then(Commands.literal("levels")
                                                 .executes(MagicXpCommand::setMagicXpLevels))))
-                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                        .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
                                 .executes(MagicXpCommand::setMagicXpPointsSelf)
                                 .then(Commands.literal("points")
                                         .executes(MagicXpCommand::setMagicXpPointsSelf))
@@ -72,22 +72,22 @@ public class MagicXpCommand {
     }
 
     private static int addMagicXpPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return addMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.POINTS);
+        return addMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.POINTS);
     }
 
     private static int addMagicXpLevelsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return addMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.LEVELS);
+        return addMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.LEVELS);
     }
 
     private static int addMagicXpPoints(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return addMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.POINTS);
+        return addMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.POINTS);
     }
 
     private static int addMagicXpLevels(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return addMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.LEVELS);
+        return addMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.LEVELS);
     }
 
-    private static int addMagicXp(CommandSourceStack source, Collection<ServerPlayer> players, int amount, MagicXpCommandType type) {
+    private static int addMagicXp(CommandSourceStack source, Collection<ServerPlayer> players, double amount, MagicXpCommandType type) {
         for (ServerPlayer sp : players) {
             type.add.accept(sp, amount);
         }
@@ -100,22 +100,22 @@ public class MagicXpCommand {
     }
 
     private static int setMagicXpPointsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return setMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.POINTS);
+        return setMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.POINTS);
     }
 
     private static int setMagicXpLevelsSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return setMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.LEVELS);
+        return setMagicXp(context.getSource(), List.of(context.getSource().getPlayerOrException()), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.LEVELS);
     }
 
     private static int setMagicXpPoints(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return setMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.POINTS);
+        return setMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.POINTS);
     }
 
     private static int setMagicXpLevels(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        return setMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), IntegerArgumentType.getInteger(context, "amount"), MagicXpCommandType.LEVELS);
+        return setMagicXp(context.getSource(), EntityArgument.getPlayers(context, "target"), DoubleArgumentType.getDouble(context, "amount"), MagicXpCommandType.LEVELS);
     }
 
-    private static int setMagicXp(CommandSourceStack source, Collection<ServerPlayer> players, int amount, MagicXpCommandType type) {
+    private static int setMagicXp(CommandSourceStack source, Collection<ServerPlayer> players, double amount, MagicXpCommandType type) {
         for (ServerPlayer sp : players) {
             type.set.accept(sp, amount);
         }
@@ -150,14 +150,14 @@ public class MagicXpCommand {
     }
 
     private enum MagicXpCommandType {
-        POINTS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardXp(player, value), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setXp(player, value), player -> ArsMagicaAPI.get().getMagicHelper().getXp(player)),
-        LEVELS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardLevel(player, value), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setLevel(player, value), player -> ArsMagicaAPI.get().getMagicHelper().getLevel(player));
+        POINTS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardXp(player, value.floatValue()), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setXp(player, value.floatValue()), player -> ArsMagicaAPI.get().getMagicHelper().getXp(player)),
+        LEVELS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardLevel(player, value.intValue()), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setLevel(player, value.intValue()), player -> ArsMagicaAPI.get().getMagicHelper().getLevel(player));
 
-        final BiConsumer<ServerPlayer, Integer> add;
-        final BiConsumer<ServerPlayer, Integer> set;
+        final BiConsumer<ServerPlayer, Double> add;
+        final BiConsumer<ServerPlayer, Double> set;
         final ToFloatFunction<ServerPlayer> get;
 
-        MagicXpCommandType(BiConsumer<ServerPlayer, Integer> add, BiConsumer<ServerPlayer, Integer> set, ToFloatFunction<ServerPlayer> get) {
+        MagicXpCommandType(BiConsumer<ServerPlayer, Double> add, BiConsumer<ServerPlayer, Double> set, ToFloatFunction<ServerPlayer> get) {
             this.add = add;
             this.set = set;
             this.get = get;
