@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -311,6 +312,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.TIER, "Tier: %s");
+        add(TranslationConstants.RANGE_LOWER, "Min: %s");
+        add(TranslationConstants.RANGE_UPPER, "Max: %s");
         add(CommandTranslations.AFFINITY_ADD_MULTIPLE, "Added %s affinity depth for %s players to %f");
         add(CommandTranslations.AFFINITY_ADD_SINGLE, "Added %s affinity depth for player %s to %f");
         add(CommandTranslations.AFFINITY_GET, "Affinity depth of %s for player %s is %f");
@@ -356,6 +359,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add("potion.potency.7", "VII");
         add("potion.potency.8", "IX");
         add("potion.potency.9", "X");
+        add(EtheriumType.DARK.getTranslationKey(), "Dark Etherium");
+        add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
+        add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
     }
 
     /**

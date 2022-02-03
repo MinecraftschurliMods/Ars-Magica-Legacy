@@ -66,7 +66,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.SELF, 0.5f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
-                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.NEUTRAL), 500))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.NEUTRAL), 500))
                 .build();
         createSpellPartData(AMSpellParts.TOUCH, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
