@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.Tags;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Drought extends AbstractComponent {
         BlockPos pos = target.getBlockPos();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (Tags.Blocks.DIRT.contains(block)) {
+        if (BlockTags.DIRT.contains(block)) {
             level.setBlock(pos, Blocks.SAND.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (BlockTags.FLOWERS.contains(block)) {

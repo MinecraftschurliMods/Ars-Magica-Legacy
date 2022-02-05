@@ -45,7 +45,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
         if (awardXp != null) {
             pTag.putBoolean(AWARD_XP_KEY, awardXp);
         }
-        super.save(pTag);
+        super.saveAdditional(pTag);
     }
 
     @Override

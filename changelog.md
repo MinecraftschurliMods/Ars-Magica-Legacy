@@ -1,3 +1,11 @@
+# Version 1.18.1-0.1.1
+
+## Fixes
+
+- fixt issue with latest forge
+
+**!! WARNING !! This version now requires forge 39.0.66 or above**
+
 # Version 1.18.1-0.1
 
 ## Additions
