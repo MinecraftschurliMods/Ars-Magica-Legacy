@@ -18,7 +18,7 @@ plugins {
     id 'maven-publish'
     id 'org.ec4j.editorconfig'
     id 'net.minecraftforge.gradle'
-//    id 'org.spongepowered.mixin'
+    id 'org.spongepowered.mixin'
     id 'org.parchmentmc.librarian.forgegradle'
 }
 
