@@ -278,7 +278,7 @@ public final class EventHandler {
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
-        helper.awardLevel(event.getPlayer(), 1);
+        helper.awardXp(event.getPlayer(), 0);
 */
     }
 
@@ -289,7 +289,7 @@ public final class EventHandler {
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
-        helper.awardLevel(event.getPlayer(), 1);
+        helper.awardXp(event.getPlayer(), 0);
     }
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
