@@ -271,13 +271,15 @@ public final class EventHandler {
     }
 
     private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
+/*
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
         var api = ArsMagicaAPI.get();
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
-        helper.awardXp(event.getPlayer(), 0);
+        helper.awardLevel(event.getPlayer(), 1);
+*/
     }
 
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
@@ -287,7 +289,7 @@ public final class EventHandler {
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
-        helper.awardXp(event.getPlayer(), 0);
+        helper.awardLevel(event.getPlayer(), 1);
     }
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
