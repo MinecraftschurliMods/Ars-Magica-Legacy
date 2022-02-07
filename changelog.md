@@ -3,6 +3,7 @@
 ## Fixes
 
 - Fixed mana not regenerating when obtaining the compendium (fixes #258)
+- Fixed brewing recipes not displaying in JEI
 
 # Version 1.18.1-0.1.1
 
