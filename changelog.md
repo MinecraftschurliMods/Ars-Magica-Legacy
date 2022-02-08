@@ -1,8 +1,15 @@
+# Version 1.18.1-0.1.3
+
+## Fixes
+
+- Fixed mana not regenerating when obtaining the compendium (fixes #258)
+- Fixed brewing recipes not displaying in JEI
+
 # Version 1.18.1-0.1.1
 
 ## Fixes
 
-- fixt issue with latest forge
+- Fixed issue with latest forge
 
 **!! WARNING !! This version now requires forge 39.0.66 or above**
 

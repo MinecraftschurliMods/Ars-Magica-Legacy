@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -524,12 +525,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private static class NBTIngredient extends net.minecraftforge.common.crafting.NBTIngredient {
-        protected NBTIngredient(ItemStack stack) {
-            super(stack);
-        }
-    }
-    
     private static class ShapedNBTRecipeBuilder {
         private final Item result;
         private final int count;

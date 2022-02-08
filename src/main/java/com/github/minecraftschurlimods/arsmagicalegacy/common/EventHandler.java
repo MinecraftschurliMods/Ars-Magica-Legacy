@@ -49,7 +49,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMBrewingRecipe;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -67,6 +67,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -76,6 +78,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliageP
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -178,12 +181,12 @@ public final class EventHandler {
     }
 
     private static void registerBrewingRecipes() {
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.CHIMERITE.get()), AMMobEffects.LESSER_MANA.get()));
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.WAKEBLOOM.get()), AMMobEffects.STANDARD_MANA.get()));
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.VINTEUM_DUST.get()), AMMobEffects.GREATER_MANA.get()));
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.ARCANE_ASH.get()), AMMobEffects.EPIC_MANA.get()));
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), AMMobEffects.LEGENDARY_MANA.get()));
-        BrewingRecipeRegistry.addRecipe(new AMBrewingRecipe(Potions.AWKWARD, Ingredient.of(AMItems.TARMA_ROOT.get()), AMMobEffects.INFUSED_MANA.get()));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LESSER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.STANDARD_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.GREATER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.EPIC_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LEGENDARY_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.INFUSED_MANA.get())));
     }
 
     public static void registerSpellIngredientTypes() {
@@ -271,6 +274,7 @@ public final class EventHandler {
     }
 
     private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
+/*
         if (event.getPlayer().isCreative()) return;
         if (event.getPlayer().isSpectator()) return;
         var api = ArsMagicaAPI.get();
@@ -278,6 +282,7 @@ public final class EventHandler {
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
         helper.awardXp(event.getPlayer(), 0);
+*/
     }
 
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
