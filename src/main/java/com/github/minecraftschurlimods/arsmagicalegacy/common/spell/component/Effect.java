@@ -38,7 +38,7 @@ public class Effect extends AbstractComponent {
             effect.get().applyInstantenousEffect(caster, caster, living, amplifier, 1);
             return SpellCastResult.SUCCESS;
         }
-        MobEffectInstance instance = new MobEffectInstance(effect.get(), (int) helper.getModifiedStat(Config.SERVER.EFFECT_DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target), amplifier);
+        MobEffectInstance instance = new MobEffectInstance(effect.get(), (int) helper.getModifiedStat(Config.SERVER.DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target), amplifier);
         return living.addEffect(instance) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
