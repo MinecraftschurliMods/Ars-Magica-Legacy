@@ -55,7 +55,7 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public float getXpForNextLevel(int level) {
-        return level <= 1 ? 0 : Config.SERVER.LEVELING_MULTIPLIER.get().floatValue() * (float) Math.pow(Config.SERVER.LEVELING_BASE.get().floatValue(), level);
+        return level == 0 ? 0 : Config.SERVER.LEVELING_MULTIPLIER.get().floatValue() * (float) Math.pow(Config.SERVER.LEVELING_BASE.get().floatValue(), level);
     }
 
     @Override
@@ -66,17 +66,14 @@ public final class MagicHelper implements IMagicHelper {
     @Override
     public void setXp(Player player, float amount) {
         MagicHolder magicHolder = getMagicHolder(player);
-        int oldLevel = magicHolder.getLevel();
+        int level = magicHolder.getLevel();
         float xp = Math.max(0, amount);
-        int level = 1;
-        while (true) {
-            float xpForNextLevel = getXpForNextLevel(level);
-            if (xp < xpForNextLevel) break;
+        float xpForNextLevel = getXpForNextLevel(level);
+        while (xp >= xpForNextLevel) {
             xp -= xpForNextLevel;
             level++;
-            if (level > oldLevel) {
-                MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
-            }
+            MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            xpForNextLevel = getXpForNextLevel(level);
         }
         magicHolder.setXp(xp);
         magicHolder.setLevel(level);
