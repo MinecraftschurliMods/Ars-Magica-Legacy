@@ -1,3 +1,9 @@
+# Version 1.18.1-0.1.4
+
+## Fixes
+
+- Fixed missing extra skill points on level 1 (fixes #260)
+
 # Version 1.18.1-0.1.3
 
 ## Fixes
