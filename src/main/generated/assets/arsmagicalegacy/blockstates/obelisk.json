@@ -16,18 +16,18 @@
       "y": 90
     },
     "facing=north,lit=true,part=lower": {
-      "model": "arsmagicalegacy:block/obelisk"
+      "model": "arsmagicalegacy:block/obelisk_lit"
     },
     "facing=south,lit=true,part=lower": {
-      "model": "arsmagicalegacy:block/obelisk",
+      "model": "arsmagicalegacy:block/obelisk_lit",
       "y": 180
     },
     "facing=west,lit=true,part=lower": {
-      "model": "arsmagicalegacy:block/obelisk",
+      "model": "arsmagicalegacy:block/obelisk_lit",
       "y": 270
     },
     "facing=east,lit=true,part=lower": {
-      "model": "arsmagicalegacy:block/obelisk",
+      "model": "arsmagicalegacy:block/obelisk_lit",
       "y": 90
     },
     "facing=north,lit=false,part=middle": {

@@ -340,7 +340,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         String texture = block.get().getRegistryName().getPath();
         getVariantBuilder(block.get()).forAllStates(state -> {
             if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
-                return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
+                return ConfiguredModel.builder().modelFile(models().getBuilder(texture + (state.getValue(AbstractFurnaceBlock.LIT) ? "_lit" : ""))
                         .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
                         .customLoader(OBJLoaderBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
@@ -355,7 +355,7 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     /**
-     * Adds an obelisk model. Uses the block id as the texture name.
+     * Adds a celestial prism model. Uses the block id as the texture name.
      *
      * @param block The block to generate the model for.
      */
@@ -377,6 +377,11 @@ class AMBlockStateProvider extends BlockStateProvider {
         });
     }
 
+    /**
+     * Adds a black aurem model. Uses the block id as the texture name.
+     *
+     * @param block The block to generate the model for.
+     */
     private void blackAuremBlock(Supplier<? extends BlackAuremBlock> block) {
         getVariantBuilder(block.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(block.get().getRegistryName().getPath()).texture("particle", blockTexture(block.get()))).build());
     }

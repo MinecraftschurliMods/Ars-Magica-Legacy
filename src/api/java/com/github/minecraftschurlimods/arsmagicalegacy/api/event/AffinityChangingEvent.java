@@ -6,18 +6,17 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
 /**
- * Event fired before applying the affinity shift. Can be cancelled.
+ * Event fired before applying an affinity shift.
  */
 @Cancelable
 public class AffinityChangingEvent extends PlayerEvent {
-
     /**
-     * The Affinity being shifted.
+     * The affinity being shifted.
      */
     public final IAffinity affinity;
 
     /**
-     * The amount the Affinity is shifted. Can be modified.
+     * The amount by which the affinity is shifted. Can be modified.
      */
     public float shift;
 

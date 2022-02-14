@@ -23,13 +23,18 @@ public class Recall extends AbstractComponent {
     private static final String Z = ArsMagicaAPI.MOD_ID + ":recall_pos_z";
     private static final String DIMENSION = ArsMagicaAPI.MOD_ID + ":recall_dimension";
 
-    public Recall() {
-        super();
+    private static boolean performRecall(LivingEntity caster, Level level, CompoundTag tag) {
+        if (tag.contains(DIMENSION) && tag.getString(DIMENSION).equals(level.dimension().location().toString()) && tag.contains(X) && tag.contains(Y) && tag.contains(Z)) {
+            caster.moveTo(tag.getInt(X) + 0.5f, tag.getInt(Y) + 0.5f, tag.getInt(Z) + 0.5f);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))
+            return SpellCastResult.EFFECT_FAILED;
         return performRecall(caster, level, AMUtil.getSpellStack(caster).getOrCreateTag()) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
@@ -52,13 +57,5 @@ public class Recall extends AbstractComponent {
             stack.setTag(tag);
             return SpellCastResult.SUCCESS;
         } else return performRecall(caster, level, tag) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
-    }
-
-    private static boolean performRecall(LivingEntity caster, Level level, CompoundTag tag) {
-        if (tag.contains(DIMENSION) && tag.getString(DIMENSION).equals(level.dimension().location().toString()) && tag.contains(X) && tag.contains(Y) && tag.contains(Z)) {
-            caster.moveTo(tag.getInt(X) + 0.5f, tag.getInt(Y) + 0.5f, tag.getInt(Z) + 0.5f);
-            return true;
-        }
-        return false;
     }
 }

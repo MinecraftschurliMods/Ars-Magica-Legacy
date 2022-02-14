@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
@@ -45,18 +46,20 @@ public interface AMRegistries {
     DeferredRegister<MenuType<?>>         MENU_TYPES           = DeferredRegister.create(ForgeRegistries.CONTAINERS,         ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class,                  ArsMagicaAPI.MOD_ID);
+    DeferredRegister<IAffinity>           AFFINITIES           = DeferredRegister.create(IAffinity.class,                    ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(ISpellPart.class,                   ArsMagicaAPI.MOD_ID);
+    DeferredRegister<IAbility>            ABILITIES            = DeferredRegister.create(IAbility.class,                     ArsMagicaAPI.MOD_ID);
 
-    DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class, ArsMagicaAPI.MOD_ID);
     Supplier<IForgeRegistry<ISkillPoint>> SKILL_POINT_REGISTRY = SKILL_POINTS.makeRegistry("skill_point", () -> new RegistryBuilder<ISkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
-
-    DeferredRegister<IAffinity>           AFFINITIES           = DeferredRegister.create(IAffinity.class, ArsMagicaAPI.MOD_ID);
-    Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry("affinity", () -> new RegistryBuilder<IAffinity>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
-
-    DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(ISpellPart.class, ArsMagicaAPI.MOD_ID);
-    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part", RegistryBuilder::new);
+    Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry("affinity",      () -> new RegistryBuilder<IAffinity>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
+    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part",   RegistryBuilder::new);
+    Supplier<IForgeRegistry<IAbility>>    ABILITY_REGISTRY     = ABILITIES.makeRegistry("ability",        RegistryBuilder::new);
 
     /**
-     * @param bus the mods event bus
+     * Registers the registries to the given event bus.
+     *
+     * @param bus The event bus to register to.
      */
     @Internal
     static void init(IEventBus bus) {
@@ -90,5 +93,6 @@ public interface AMRegistries {
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
         SPELL_PARTS.register(bus);
+        ABILITIES.register(bus);
     }
 }

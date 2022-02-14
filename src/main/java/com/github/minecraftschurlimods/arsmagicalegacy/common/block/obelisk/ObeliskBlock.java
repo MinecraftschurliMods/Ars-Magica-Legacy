@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Material;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.function.BiPredicate;
@@ -30,30 +29,24 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(ObeliskBlock::getLightLevel));
+        super(BlockBehaviour.Properties.of(Material.STONE).lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(PART);
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide() || state.getValue(PART) != Part.LOWER ? null : createTickerHelper(blockEntityType, AMBlockEntities.OBELISK.get(), (level1, pos, state1, blockEntity) -> blockEntity.tick(level1, pos, state1));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return state.getValue(PART) == Part.LOWER ? AMBlockEntities.OBELISK.get().create(pos, state) : null;
-    }
-
-    private static int getLightLevel(BlockState state) {
-        return state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 0;
     }
 
     @Override
@@ -73,9 +66,10 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos()).canBeReplaced(pContext)) return null;
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above()).canBeReplaced(pContext)) return null;
         if (!pContext.getLevel().getBlockState(pContext.getClickedPos().above(2)).canBeReplaced(pContext)) return null;
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+        return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (state.getValue(PART) == Part.LOWER) {
@@ -113,6 +107,12 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         super.playerWillDestroy(level, pos, state, player);
     }
 
+    /**
+     * @param state The state of the core block.
+     * @param world The world this block is in.
+     * @param pos   The position of the core block.
+     * @return The tier of the surrounding multiblock.
+     */
     public int getTier(BlockState state, Level world, BlockPos pos) {
         int tier = 0;
         if (OBELISK_CHALK.test(world, pos)) {
@@ -125,7 +125,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     }
 
     public enum Part implements StringRepresentable {
-        LOWER,MIDDLE,UPPER;
+        LOWER, MIDDLE, UPPER;
 
         @Override
         public String getSerializedName() {

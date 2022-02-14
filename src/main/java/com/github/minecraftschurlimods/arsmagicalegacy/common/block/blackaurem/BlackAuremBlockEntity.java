@@ -20,23 +20,26 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class BlackAuremBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.DARK, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(BlackAuremBlockEntity::onConsume);
-
     private final LazyOptional<IEtheriumProvider> etheriumHandler = LazyOptional.of(() -> provider);
     private int timer;
 
-    public BlackAuremBlockEntity(final BlockPos pWorldPosition, final BlockState pBlockState) {
+    public BlackAuremBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.BLACK_AUREM.get(), pWorldPosition, pBlockState);
     }
 
-    void tick(final Level level, final BlockPos pos, final BlockState state) {
+    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
+        // TODO spawn particles
+    }
+
+    void tick(Level level, BlockPos pos, BlockState state) {
         if (timer <= 0) {
             int tier = state.getBlock() instanceof BlackAuremBlock block ? block.getTier(state, level, pos) : 0;
             List<LivingEntity> entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), AABB.ofSize(Vec3.atCenterOf(pos), 5, 5, 5), livingEntity -> !(livingEntity instanceof Player));
@@ -55,24 +58,20 @@ public class BlackAuremBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag tag) {
+    protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt("etheriumValue", this.provider.getAmount());
+        tag.putInt("etheriumValue", provider.getAmount());
     }
 
     @Override
-    public void load(final CompoundTag tag) {
+    public void load(CompoundTag tag) {
         super.load(tag);
         provider.set(tag.getInt("etheriumValue"));
     }
 
-    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
-        // TODO spawn particles
-    }
-
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull final Capability<T> cap, @Nullable final Direction side) {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHandler);
     }
 }

@@ -7,23 +7,19 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class IceGuardian extends AbstractBoss {
-    private boolean hasRightArm;
-    private boolean hasLeftArm;
+    private boolean hasRightArm = true;
+    private boolean hasLeftArm = true;
     private float orbitRotation;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.hasRightArm = true;
-        this.hasLeftArm = true;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 290D).add(Attributes.ARMOR, 23);
+        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 290D).add(Attributes.ARMOR, 23);
     }
 
     @Override
@@ -32,8 +28,8 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return AMSounds.ICE_GUARDIAN_HURT.get();
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return null;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.ICE_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override
@@ -52,7 +48,7 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
         } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
@@ -61,11 +57,11 @@ public class IceGuardian extends AbstractBoss {
         return super.hurt(pSource, pAmount);
     }
 
-    public void returnOneArm(){
-        if (!this.hasLeftArm) {
-            this.hasLeftArm = true;
-        } else if (!this.hasRightArm) {
-            this.hasRightArm = true;
+    public void returnOneArm() {
+        if (!hasLeftArm) {
+            hasLeftArm = true;
+        } else if (!hasRightArm) {
+            hasRightArm = true;
         }
     }
 
@@ -74,19 +70,19 @@ public class IceGuardian extends AbstractBoss {
         super.registerGoals();
     }
 
-    public void launchOneArm(){
-        if (this.hasLeftArm) {
-            this.hasLeftArm = false;
-        } else if (this.hasRightArm) {
-            this.hasRightArm = false;
+    public void launchOneArm() {
+        if (hasLeftArm) {
+            hasLeftArm = false;
+        } else if (hasRightArm) {
+            hasRightArm = false;
         }
     }
 
-    public boolean hasLeftArm(){
-        return this.hasLeftArm;
+    public boolean hasLeftArm() {
+        return hasLeftArm;
     }
 
-    public boolean hasRightArm(){
-        return this.hasRightArm;
+    public boolean hasRightArm() {
+        return hasRightArm;
     }
 }

@@ -21,9 +21,6 @@ public class WakebloomBlock extends FlowerBlock {
         return level.getBlockState(pos.below()).getBlock() == Blocks.WATER;
     }
 
-    /**
-     * {@see net.minecraft.world.level.block.WaterlilyBlock#mayPlaceOn(BlockState, BlockGetter, BlockPos)}
-     */
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return (level.getFluidState(pos).getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;

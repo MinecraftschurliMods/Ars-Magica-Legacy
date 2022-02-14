@@ -28,7 +28,7 @@ public class Ignition extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity().isOnFire()) return SpellCastResult.EFFECT_FAILED;
-        target.getEntity().setSecondsOnFire((int)ArsMagicaAPI.get().getSpellHelper().getModifiedStat(3, SpellPartStats.DURATION, modifiers, spell, caster, target));
+        target.getEntity().setSecondsOnFire((int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(3, SpellPartStats.DURATION, modifiers, spell, caster, target));
         return SpellCastResult.SUCCESS;
     }
 

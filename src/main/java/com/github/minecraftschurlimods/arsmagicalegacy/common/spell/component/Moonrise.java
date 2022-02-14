@@ -12,10 +12,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 
 public class Moonrise extends AbstractComponent {
-    public Moonrise() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (level.getDayTime() % 24000 < 12000 && level instanceof ServerLevel server) {

@@ -72,11 +72,11 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_PLANKS);
         blockItem(WITCHWOOD_SLAB);
         blockItem(WITCHWOOD_STAIRS);
-        withExistingParent(WITCHWOOD_FENCE, "arsmagicalegacy:block/witchwood_fence_inventory");
+        withExistingParent(WITCHWOOD_FENCE, "witchwood_fence_inventory");
         blockItem(WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
-        withExistingParent(WITCHWOOD_TRAPDOOR, "arsmagicalegacy:block/witchwood_trapdoor_bottom");
-        withExistingParent(WITCHWOOD_BUTTON, "arsmagicalegacy:block/witchwood_button_inventory");
+        withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
+        withExistingParent(WITCHWOOD_BUTTON, "witchwood_button_inventory");
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
@@ -96,6 +96,16 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         getBuilder(SPELL.getId().getPath());
+        itemGenerated(MANA_CAKE);
+        itemGenerated(MANA_MARTINI);
+        itemGenerated(MAGE_HELMET);
+        itemGenerated(MAGE_CHESTPLATE);
+        itemGenerated(MAGE_LEGGINGS);
+        itemGenerated(MAGE_BOOTS);
+        itemGenerated(BATTLEMAGE_HELMET);
+        itemGenerated(BATTLEMAGE_CHESTPLATE);
+        itemGenerated(BATTLEMAGE_LEGGINGS);
+        itemGenerated(BATTLEMAGE_BOOTS);
         spawnEggItem(AMItems.DRYAD_SPAWN_EGG);
         spawnEggItem(AMItems.MAGE_SPAWN_EGG);
         spawnEggItem(AMItems.MANA_CREEPER_SPAWN_EGG);
@@ -156,7 +166,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param parent The parent model to use.
      */
     private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, String parent) {
-        return withExistingParent(item.getId().getPath(), new ResourceLocation(parent));
+        return withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
     }
 
     /**
@@ -165,7 +175,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
-        return withExistingParent(item, ArsMagicaAPI.MOD_ID + ":block/" + item.get().getBlock().getRegistryName().getPath());
+        return withExistingParent(item, item.get().getBlock().getRegistryName().getPath());
     }
 
     /**
@@ -187,7 +197,7 @@ class AMItemModelProvider extends ItemModelProvider {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             if (affinity.getId().equals(IAffinity.NONE)) continue;
-            var rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
@@ -201,7 +211,7 @@ class AMItemModelProvider extends ItemModelProvider {
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
-            var rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }

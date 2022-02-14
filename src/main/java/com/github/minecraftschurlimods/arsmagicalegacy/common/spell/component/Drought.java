@@ -13,14 +13,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.Tags;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Drought extends AbstractComponent {
-    //TODO change this to a codec
+    //TODO
     private static final Map<Block, Block> TRANSITIONS = Util.make(new HashMap<>(), map -> {
         map.put(Blocks.STONE, Blocks.COBBLESTONE);
         map.put(Blocks.CLAY, Blocks.SAND);
@@ -35,10 +34,6 @@ public class Drought extends AbstractComponent {
         map.put(Blocks.SANDSTONE, Blocks.SMOOTH_SANDSTONE);
     });
 
-    public Drought() {
-        super();
-    }
-
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         return SpellCastResult.EFFECT_FAILED;
@@ -49,7 +44,7 @@ public class Drought extends AbstractComponent {
         BlockPos pos = target.getBlockPos();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (Tags.Blocks.DIRT.contains(block)) {
+        if (BlockTags.DIRT.contains(block)) {
             level.setBlock(pos, Blocks.SAND.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (BlockTags.FLOWERS.contains(block)) {

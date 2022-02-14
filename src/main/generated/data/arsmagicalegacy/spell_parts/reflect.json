@@ -28,7 +28,7 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:logs"
+        "tag": "arsmagicalegacy:witchwood_logs"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

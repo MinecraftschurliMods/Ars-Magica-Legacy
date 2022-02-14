@@ -36,6 +36,10 @@ public final class ShrinkHelper implements IShrinkHelper {
         return SHRINK;
     }
 
+    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(cap -> cap.onSync(holder)));
+    }
+
     @Override
     public boolean isShrunk(Player player) {
         return getShrinkHolder(player).isShrunk();
@@ -48,16 +52,21 @@ public final class ShrinkHelper implements IShrinkHelper {
     }
 
     /**
-     * Called on player death, syncs the capability and the attribute.
+     * Called on player death, syncs the capability.
      *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(SHRINK).ifPresent(shrinkHolder -> player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(shrinkHolder)));
         syncShrink(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncShrink(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ShrinkHelper.ShrinkSyncPacket(getShrinkHolder(player)), player);
     }
@@ -71,10 +80,6 @@ public final class ShrinkHelper implements IShrinkHelper {
             livingEntity.invalidateCaps();
         }
         return shrinkHolder;
-    }
-
-    private static void handleShrinkSync(ShrinkHelper.ShrinkHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(SHRINK).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class ShrinkSyncPacket extends CodecPacket<ShrinkHelper.ShrinkHolder> {
@@ -98,8 +103,7 @@ public final class ShrinkHelper implements IShrinkHelper {
     }
 
     public static final class ShrinkHolder {
-        public static final Codec<ShrinkHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.BOOL.fieldOf("shrunk").forGetter(
-                ShrinkHolder::isShrunk)).apply(inst, shrunk -> {
+        public static final Codec<ShrinkHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.BOOL.fieldOf("shrunk").forGetter(ShrinkHolder::isShrunk)).apply(inst, shrunk -> {
             ShrinkHolder holder = new ShrinkHolder();
             holder.setShrunk(shrunk);
             return holder;
@@ -114,8 +118,13 @@ public final class ShrinkHelper implements IShrinkHelper {
             this.shrunk = shrunk;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(ShrinkHolder data) {
-            this.shrunk = data.shrunk;
+            shrunk = data.shrunk;
         }
     }
 }

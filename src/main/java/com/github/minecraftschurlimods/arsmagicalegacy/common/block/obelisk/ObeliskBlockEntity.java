@@ -30,9 +30,15 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     private final SimpleEtheriumProvider etheriumProvider = new SimpleEtheriumProvider(EtheriumType.NEUTRAL, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(ObeliskBlockEntity::onConsume);
+    private final LazyOptional<IEtheriumProvider> etheriumProviderHolder = LazyOptional.of(() -> etheriumProvider);
+    private final LazyOptional<IItemHandler> inventoryHolder = LazyOptional.of(() -> new InvWrapper(this));
+    private ItemStack slot = ItemStack.EMPTY;
+    private int maxBurnTime = 0;
+    private int burnTimeRemaining = 0;
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
@@ -59,17 +65,14 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
             return 4;
         }
     };
-
-    private final LazyOptional<IEtheriumProvider> etheriumProviderHolder = LazyOptional.of(() -> etheriumProvider);
-    private final LazyOptional<IItemHandler>      inventoryHolder        = LazyOptional.of(() -> new InvWrapper(this));
-
-    private ItemStack slot = ItemStack.EMPTY;
-    private int maxBurnTime = 0;
-    private int burnTimeRemaining = 0;
     private int etheriumPerTick = 0;
 
     public ObeliskBlockEntity(BlockPos p_155077_, BlockState p_155078_) {
         super(AMBlockEntities.OBELISK.get(), p_155077_, p_155078_);
+    }
+
+    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
+        // TODO spawn particles
     }
 
     @Override
@@ -84,19 +87,19 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     public ItemStack getItem(int index) {
-        if (index != 0) throw new IndexOutOfBoundsException("Index "+ index + " is out of bounds!");
+        if (index != 0) throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
         return slot;
     }
 
     @Override
     public ItemStack removeItem(int index, int count) {
-        if (index != 0) throw new IndexOutOfBoundsException("Index "+ index + " is out of bounds!");
+        if (index != 0) throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
         return slot.split(count);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
-        if (index != 0) throw new IndexOutOfBoundsException("Index "+ index + " is out of bounds!");
+        if (index != 0) throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
         ItemStack slot = this.slot;
         this.slot = ItemStack.EMPTY;
         return slot;
@@ -104,18 +107,18 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     public void setItem(int index, ItemStack stack) {
-        if (index != 0) throw new IndexOutOfBoundsException("Index "+ index + " is out of bounds!");
-        this.slot = stack;
+        if (index != 0) throw new IndexOutOfBoundsException("Index " + index + " is out of bounds!");
+        slot = stack;
     }
 
     @Override
-    public boolean stillValid(final Player player) {
+    public boolean stillValid(Player player) {
         return getBlockPos().distSqr(player.blockPosition()) < 128D;
     }
 
     @Override
     public void clearContent() {
-        this.slot = ItemStack.EMPTY;
+        slot = ItemStack.EMPTY;
     }
 
     void tick(Level level, BlockPos pos, BlockState state) {
@@ -126,13 +129,12 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
             burnTimeRemaining--;
             setChanged();
         }
-
         if (burnTimeRemaining <= 0) {
             Optional<ObeliskFuelManager.ObeliskFuel> fuel = ObeliskFuelManager.instance().getFuelFor(slot);
             fuel.ifPresent(obeliskFuel -> {
                 int burnTime = obeliskFuel.burnTime();
                 int perTick = obeliskFuel.etheriumPerTick();
-                if (burnTime > 0 && perTick > 0 && etheriumProvider.canStore(perTick*burnTime)) {
+                if (burnTime > 0 && perTick > 0 && etheriumProvider.canStore(perTick * burnTime)) {
                     if (slot.hasContainerItem()) {
                         slot = slot.getContainerItem();
                     } else {
@@ -145,7 +147,6 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
                 }
             });
         }
-
         if (state.getValue(BlockStateProperties.LIT) != burnTimeRemaining > 0) {
             level.setBlock(pos, state.setValue(BlockStateProperties.LIT, burnTimeRemaining > 0), Block.UPDATE_ALL);
         }
@@ -158,16 +159,17 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-        return new ObeliskMenu(containerId, inventory, this, this.data);
+        return new ObeliskMenu(containerId, inventory, this, data);
     }
 
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return this.inventoryHolder.cast();
+            return inventoryHolder.cast();
         }
         if (cap == EtheriumHelper.instance().getEtheriumProviderCapability()) {
-            return this.etheriumProviderHolder.cast();
+            return etheriumProviderHolder.cast();
         }
         return super.getCapability(cap, side);
     }
@@ -176,10 +178,10 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Inv", slot.save(new CompoundTag()));
-        tag.putInt("burnTime", this.burnTimeRemaining);
-        tag.putInt("burnTimeMax", this.maxBurnTime);
-        tag.putInt("etheriumValue", this.etheriumProvider.getAmount());
-        tag.putInt("etheriumPerTick", this.etheriumPerTick);
+        tag.putInt("burnTime", burnTimeRemaining);
+        tag.putInt("burnTimeMax", maxBurnTime);
+        tag.putInt("etheriumValue", etheriumProvider.getAmount());
+        tag.putInt("etheriumPerTick", etheriumPerTick);
     }
 
     @Override
@@ -190,9 +192,5 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
         maxBurnTime = tag.getInt("burnTimeMax");
         etheriumProvider.set(tag.getInt("etheriumValue"));
         etheriumPerTick = tag.getInt("etheriumPerTick");
-    }
-
-    private static void onConsume(Level level, BlockPos consumerPos, int amount) {
-        // TODO spawn particles
     }
 }

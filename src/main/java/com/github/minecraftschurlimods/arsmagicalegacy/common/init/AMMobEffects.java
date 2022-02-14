@@ -15,19 +15,22 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.ShrinkEffec
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.TemporalAnchorEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.MOB_EFFECTS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.POTIONS;
 
 @NonExtendable
 public interface AMMobEffects {
     MobEffect burnout_reduction = new BurnoutReduction();
-    MobEffect mana_regen = new ManaRegenEffect();
+    MobEffect mana_regen        = new ManaRegenEffect();
 
     RegistryObject<MobEffect> AGILITY           = MOB_EFFECTS.register("agility",           AgilityEffect::new);
     RegistryObject<MobEffect> ASTRAL_DISTORTION = MOB_EFFECTS.register("astral_distortion", () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0x6c0000));
@@ -52,6 +55,13 @@ public interface AMMobEffects {
     RegistryObject<MobEffect> TEMPORAL_ANCHOR   = MOB_EFFECTS.register("temporal_anchor",   TemporalAnchorEffect::new);
     RegistryObject<MobEffect> TRUE_SIGHT        = MOB_EFFECTS.register("true_sight",        () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xc400ff));
     RegistryObject<MobEffect> WATERY_GRAVE      = MOB_EFFECTS.register("watery_grave",      () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0x0000a2));
+
+    RegistryObject<Potion> LESSER_MANA    = POTIONS.register("lesser_mana",    () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 0), new MobEffectInstance(MANA_REGEN.get(),  600, 0)));
+    RegistryObject<Potion> STANDARD_MANA  = POTIONS.register("standard_mana",  () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 1), new MobEffectInstance(MANA_REGEN.get(), 1200, 1)));
+    RegistryObject<Potion> GREATER_MANA   = POTIONS.register("greater_mana",   () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 2), new MobEffectInstance(MANA_REGEN.get(), 1800, 2)));
+    RegistryObject<Potion> EPIC_MANA      = POTIONS.register("epic_mana",      () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 3), new MobEffectInstance(MANA_REGEN.get(), 1800, 2), new MobEffectInstance(MANA_BOOST.get(),  600, 0)));
+    RegistryObject<Potion> LEGENDARY_MANA = POTIONS.register("legendary_mana", () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 4), new MobEffectInstance(MANA_REGEN.get(), 1800, 2), new MobEffectInstance(MANA_BOOST.get(), 1200, 1)));
+    RegistryObject<Potion> INFUSED_MANA   = POTIONS.register("infused_mana",   () -> new Potion(new MobEffectInstance(INSTANT_MANA.get(), 1, 9)));
 
     /**
      * Empty method that is required for classloading

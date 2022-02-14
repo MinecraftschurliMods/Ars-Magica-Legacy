@@ -1,6 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
@@ -17,6 +19,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManag
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -51,7 +54,8 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Override
     public ItemStack getBookStack() {
-        if (ModList.get().isLoaded("patchouli")) return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+        if (ModList.get().isLoaded("patchouli"))
+            return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
         return ItemStack.EMPTY;
     }
 
@@ -71,6 +75,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     }
 
     @Override
+    public IForgeRegistry<IAbility> getAbilityRegistry() {
+        return AMRegistries.ABILITY_REGISTRY.get();
+    }
+
+    @Override
     public ISkillManager getSkillManager() {
         return SkillManager.instance();
     }
@@ -83,6 +92,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public ISpellDataManager getSpellDataManager() {
         return SpellDataManager.instance();
+    }
+
+    @Override
+    public IAbilityManager getAbilityManager() {
+        return AbilityManager.instance();
     }
 
     @Unmodifiable
@@ -117,11 +131,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
 
     @Unmodifiable
     @Override
-    public IEtheriumHelper getEtheriumHelper() {
-        return EtheriumHelper.instance();
-    }
-
-    @Override
     public ISpellHelper getSpellHelper() {
         return SpellHelper.instance();
     }
@@ -136,6 +145,12 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
     public IShrinkHelper getShrinkHelper() {
         return ShrinkHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IEtheriumHelper getEtheriumHelper() {
+        return EtheriumHelper.instance();
     }
 
     @Override

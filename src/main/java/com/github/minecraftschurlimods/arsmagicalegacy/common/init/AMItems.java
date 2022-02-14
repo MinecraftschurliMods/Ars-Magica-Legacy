@@ -6,11 +6,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeI
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.CrystalWrenchItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ColoredRegistryObject;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -24,7 +29,6 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -33,7 +37,6 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 @NonExtendable
 public interface AMItems {
     CreativeModeTab TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
-        @NotNull
         @Override
         public ItemStack makeIcon() {
             return ArsMagicaAPI.get().getBookStack();
@@ -103,6 +106,16 @@ public interface AMItems {
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                        = ITEMS.register("spell", SpellItem::new);
+    RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<ManaMartiniItem>              MANA_MARTINI                 = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
+    RegistryObject<MageArmorItem>                MAGE_HELMET                  = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 5));
+    RegistryObject<MageArmorItem>                MAGE_CHESTPLATE              = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 5));
+    RegistryObject<MageArmorItem>                MAGE_LEGGINGS                = ITEMS.register("mage_leggings", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 5));
+    RegistryObject<MageArmorItem>                MAGE_BOOTS                   = ITEMS.register("mage_boots", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 5));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_HELMET            = ITEMS.register("battlemage_helmet", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_CHESTPLATE        = ITEMS.register("battlemage_chestplate", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_LEGGINGS          = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 10));
+    RegistryObject<MageArmorItem>                BATTLEMAGE_BOOTS             = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 10));
     RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG              = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG               = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG       = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
@@ -117,7 +130,6 @@ public interface AMItems {
     RegistryObject<ForgeSpawnEggItem>            ARCANE_GUARDIAN_SPAWN_EGG    = ITEMS.register("arcane_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ARCANE_GUARDIAN, 0x7f3280, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ENDER_GUARDIAN_SPAWN_EGG     = ITEMS.register("ender_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ENDER_GUARDIAN, 0x000000, 0xc9bc2f, ITEM_64));
 
-    @SuppressWarnings("SameParameterValue")
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }

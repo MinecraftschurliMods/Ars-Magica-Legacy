@@ -36,6 +36,11 @@ public class CurioCompat implements ICompatHandler {
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("head").build());
     }
 
+    /**
+     * @param stack Curio stack, provided by vanilla.
+     * @param proxy The proxy, provided by vanilla.
+     * @return A new curio capability.
+     */
     public ICapabilityProvider makeCurioCap(ItemStack stack, BiFunction<String, ItemStack, Multimap<Attribute, AttributeModifier>> proxy) {
         return new AttributeModCapabilityProvider(stack, proxy);
     }
@@ -67,7 +72,7 @@ public class CurioCompat implements ICompatHandler {
 
         @NotNull
         @Override
-        public <X> LazyOptional<X> getCapability(@NotNull Capability<X> cap, @Nullable Direction side) {
+        public <X> LazyOptional<X> getCapability(Capability<X> cap, @Nullable Direction side) {
             return capability.orEmpty(cap, inst);
         }
     }

@@ -7,16 +7,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 public class SimpleEtheriumProvider implements IEtheriumProvider {
-
-    private final EtheriumType    type;
-    private       int             etheriumValue;
-    private final int             maxValue;
-    private       ConsumeCallback callback;
+    private final EtheriumType type;
+    private final int maxValue;
+    private int etheriumValue;
+    private ConsumeCallback callback;
 
     public SimpleEtheriumProvider(EtheriumType type, int maxValue) {
         this.type = type;
-        this.etheriumValue = 0;
         this.maxValue = maxValue;
+        etheriumValue = 0;
     }
 
     @Override
@@ -33,8 +32,8 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
     public int consume(Level level, BlockPos consumerPos, int amount) {
         int min = Math.min(etheriumValue, amount);
         etheriumValue -= min;
-        if (this.callback != null) {
-            this.callback.onConsume(level, consumerPos, amount);
+        if (callback != null) {
+            callback.onConsume(level, consumerPos, amount);
         }
         return min;
     }
@@ -44,20 +43,39 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
         return etheriumValue;
     }
 
+    /**
+     * Sets the given value for this etherium provider's storage.
+     *
+     * @param value The etherium to add.
+     */
     public void set(int value) {
-        this.etheriumValue = Mth.clamp(value, 0, maxValue);
+        etheriumValue = Mth.clamp(value, 0, maxValue);
     }
 
+    /**
+     * Adds the given value to this etherium provider's storage.
+     *
+     * @param value The etherium to add.
+     */
     public void add(int value) {
         set(etheriumValue + value);
     }
 
-    public SimpleEtheriumProvider setCallback(final ConsumeCallback callback) {
+    /**
+     * Sets a consumer callback.
+     * @param callback The callback to set.
+     * @return This provider, for chaining.
+     */
+    public SimpleEtheriumProvider setCallback(ConsumeCallback callback) {
         this.callback = callback;
         return this;
     }
 
-    public boolean canStore(final int additional) {
+    /**
+     * @param additional The etherium that would be added.
+     * @return Whether this storage can store the given additional amount of etherium or not.
+     */
+    public boolean canStore(int additional) {
         return etheriumValue + additional <= maxValue;
     }
 

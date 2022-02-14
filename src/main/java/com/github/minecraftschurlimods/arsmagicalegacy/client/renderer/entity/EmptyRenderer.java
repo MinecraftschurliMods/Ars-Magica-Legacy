@@ -12,6 +12,6 @@ public class EmptyRenderer extends EntityRenderer<Entity> {
 
     @Override
     public ResourceLocation getTextureLocation(Entity p_114482_) {
-        return null;
+        return new ResourceLocation("missingno");
     }
 }

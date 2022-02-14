@@ -12,6 +12,7 @@ public final class Config {
     public static final Server SERVER;
     private static final ForgeConfigSpec clientSpec;
     private static final ForgeConfigSpec serverSpec;
+    private static boolean init;
 
     static {
         final Pair<Client, ForgeConfigSpec> clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
@@ -22,7 +23,8 @@ public final class Config {
         SERVER = serverPair.getLeft();
     }
 
-    private static boolean init;
+    private Config() {
+    }
 
     @Internal
     static synchronized void init() {
@@ -33,19 +35,27 @@ public final class Config {
         context.registerConfig(ModConfig.Type.SERVER, serverSpec);
     }
 
-    private Config() {
-    }
-
     /**
-     * Class holding the client config values
+     * Class holding the client config values.
      */
     public static final class Client {
+        public final ForgeConfigSpec.IntValue HUD_HORIZONTAL_OFFSET;
+        public final ForgeConfigSpec.IntValue HUD_VERTICAL_OFFSET;
+
         private Client(ForgeConfigSpec.Builder builder) {
+            HUD_HORIZONTAL_OFFSET = builder
+                    .comment("Horizontal offset of the hud, from the center of the screen.")
+                    .translation(TranslationConstants.CONFIG + "hud_horizontal_offset")
+                    .defineInRange("hud_horizontal_offset", 120, Short.MIN_VALUE, Short.MAX_VALUE);
+            HUD_VERTICAL_OFFSET = builder
+                    .comment("Vertical offset of the hud, from the bottom of the screen.")
+                    .translation(TranslationConstants.CONFIG + "hud_vertical_offset")
+                    .defineInRange("hud_vertical_offset", 3, 0, Short.MAX_VALUE);
         }
     }
 
     /**
-     * Class holding the server config values
+     * Class holding the server config values.
      */
     public static final class Server {
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
@@ -94,7 +104,7 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "damage")
                     .defineInRange("damage", 6, 1, 100);
             MAX_ETHERIUM_STORAGE = builder
-                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem. [ 3000 - "+Short.MAX_VALUE+" ]")
+                    .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.")
                     .translation(TranslationConstants.CONFIG + "max_etherium_storage")
                     .defineInRange("max_etherium_storage", 5000, 3000, Short.MAX_VALUE);
         }

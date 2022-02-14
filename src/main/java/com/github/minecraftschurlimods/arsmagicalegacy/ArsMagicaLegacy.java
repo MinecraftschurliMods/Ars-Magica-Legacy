@@ -42,14 +42,9 @@ public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
     public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 1);
-
     private static ArsMagicaLegacy INSTANCE;
-
     private final IModInfo modInfo;
 
-    /**
-     * The mod constructor
-     */
     public ArsMagicaLegacy() {
         if (INSTANCE != null)
             throw LOGGER.throwing(new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!"));
@@ -72,10 +67,12 @@ public final class ArsMagicaLegacy {
         SkillManager.instance();
         SpellDataManager.instance();
         AltarMaterialManager.instance();
-
         CompatManager.preInit();
     }
 
+    /**
+     * @return The mod display name.
+     */
     public static String getModName() {
         return INSTANCE.modInfo.getDisplayName();
     }

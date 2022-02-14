@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LifeTap extends AbstractComponent {
     public LifeTap() {
-        super(SpellPartStats.HEALING, SpellPartStats.DAMAGE);
+        super(SpellPartStats.DAMAGE, SpellPartStats.HEALING);
     }
 
     @Override

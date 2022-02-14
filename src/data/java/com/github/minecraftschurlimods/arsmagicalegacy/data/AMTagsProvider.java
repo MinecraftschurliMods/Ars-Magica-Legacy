@@ -17,7 +17,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMTagsProvider {
-    static void add(final DataGenerator generator, final ExistingFileHelper existingFileHelper) {
+    static void add(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
         generator.addProvider(blocks);
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
@@ -26,7 +26,7 @@ class AMTagsProvider {
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -71,7 +71,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(final DataGenerator generator, final BlockTagsProvider blockTagsProvider, final String modId, final ExistingFileHelper existingFileHelper) {
+        Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -137,7 +137,7 @@ class AMTagsProvider {
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -148,7 +148,7 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(final DataGenerator generator, final String modId, final ExistingFileHelper existingFileHelper) {
+        EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 

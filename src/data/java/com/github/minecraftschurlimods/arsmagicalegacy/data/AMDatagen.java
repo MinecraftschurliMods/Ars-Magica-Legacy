@@ -16,7 +16,7 @@ public class AMDatagen {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * @param evt the event object of the {@link GatherDataEvent}
+     * @param evt The event object of the {@link GatherDataEvent}.
      */
     @SubscribeEvent
     static void gatherData(GatherDataEvent evt) {
@@ -30,6 +30,7 @@ public class AMDatagen {
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
             generator.addProvider(lang);
+            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
         }
         if (evt.includeServer()) {
             AMSkillProvider skillProvider = new AMSkillProvider(generator);
@@ -42,7 +43,7 @@ public class AMDatagen {
             generator.addProvider(new AMOcculusTabProvider(generator));
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMPrefabSpellProvider(generator));
-            generator.addProvider(new AMObeliskFuelProvider(generator, ArsMagicaAPI.MOD_ID));
+            generator.addProvider(new AMObeliskFuelProvider(generator));
         }
     }
 

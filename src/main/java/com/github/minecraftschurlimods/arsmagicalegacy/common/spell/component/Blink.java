@@ -22,7 +22,8 @@ public class Blink extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) return SpellCastResult.EFFECT_FAILED;
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))
+            return SpellCastResult.EFFECT_FAILED;
         Entity entity = target.getEntity();
         double oldX = entity.getX(), oldY = entity.getEyeY(), oldZ = entity.getZ();
         for (int range = Math.round(ArsMagicaAPI.get().getSpellHelper().getModifiedStat(12, SpellPartStats.RANGE, modifiers, spell, caster, target) * 12); range > 0; range--) {

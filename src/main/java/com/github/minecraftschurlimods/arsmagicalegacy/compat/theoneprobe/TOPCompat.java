@@ -13,12 +13,10 @@ import java.util.function.Supplier;
 public class TOPCompat implements ICompatHandler {
     @Override
     public void imcEnqueue(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("theoneprobe", "getTheOneProbe", (Supplier<Function<ITheOneProbe, Void>>) (() -> api -> {initTOP(api);return null;}));
+        InterModComms.sendTo("theoneprobe", "getTheOneProbe", (Supplier<Function<ITheOneProbe, Void>>) (() -> api -> {
+            api.registerProvider(new EtheriumProbeInfoProvider());
+            api.registerProvider(new AltarProbeInfoProvider());
+            return null;
+        }));
     }
-
-    private void initTOP(final ITheOneProbe api) {
-        api.registerProvider(new EtheriumProbeInfoProvider());
-        api.registerProvider(new AltarProbeInfoProvider());
-    }
-
 }

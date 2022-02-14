@@ -12,6 +12,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialpri
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.WitchwoodTreeGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -80,8 +82,7 @@ public interface AMBlocks {
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD_LOG   = BLOCKS.register("stripped_witchwood_log",   () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<RotatedPillarBlock>    STRIPPED_WITCHWOOD       = BLOCKS.register("stripped_witchwood",       () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<LeavesBlock>           WITCHWOOD_LEAVES         = BLOCKS.register("witchwood_leaves",         () -> new LeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.QUARTZ).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> d == EntityType.OCELOT || d == EntityType.PARROT).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));
-    //    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",              () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
-    RegistryObject<BushBlock>             WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new BushBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING))); // TODO tree type
+    RegistryObject<SaplingBlock>          WITCHWOOD_SAPLING        = BLOCKS.register("witchwood_sapling",        () -> new SaplingBlock(new WitchwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     RegistryObject<FlowerPotBlock>        POTTED_WITCHWOOD_SAPLING = flowerPot(WITCHWOOD_SAPLING);
     RegistryObject<Block>                 WITCHWOOD_PLANKS         = BLOCKS.register("witchwood_planks",         () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_LIGHT_BLUE).strength(2F).sound(SoundType.WOOD)));
     RegistryObject<SlabBlock>             WITCHWOOD_SLAB           = BLOCKS.register("witchwood_slab",           () -> new SlabBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
@@ -105,12 +106,6 @@ public interface AMBlocks {
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
 
-    /**
-     * Empty method that is required for classloading
-     */
-    @Internal
-    static void register() {}
-
     private static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
         RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(flower.getId(), register);
@@ -124,4 +119,10 @@ public interface AMBlocks {
     private static boolean never(BlockState state, BlockGetter level, BlockPos pos) {
         return false;
     }
+
+    /**
+     * Empty method that is required for classloading
+     */
+    @Internal
+    static void register() {}
 }

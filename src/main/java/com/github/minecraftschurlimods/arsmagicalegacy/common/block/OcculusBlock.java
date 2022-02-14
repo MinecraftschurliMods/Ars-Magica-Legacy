@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class OcculusBlock extends HorizontalDirectionalBlock {
     private static final VoxelShape SOCKET = AMUtil.joinShapes(
             box(0, 0, 0, 16, 1, 16),
@@ -79,9 +80,6 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
                     box(8.5, 12, 6.5, 9.5, 14, 9.5))
     );
 
-    /**
-     * Creates a new OcculusBlock. Sets the properties and default state.
-     */
     public OcculusBlock() {
         super(Properties.of(Material.STONE).explosionResistance(5).destroyTime(3));
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));

@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.advancement.PlayerLearnedSkillTrigger;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.advancements.Advancement;
@@ -20,14 +19,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
 class AMAdvancementProvider extends AdvancementProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final DataGenerator generator;
+    private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
 
     AMAdvancementProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper, AMSkillProvider skillProvider) {
         super(pGenerator, existingFileHelper);
@@ -38,7 +38,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     @Override
     public void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
-        Set<ResourceLocation> set = Sets.newHashSet();
+        Set<ResourceLocation> set = new HashSet<>();
         Consumer<Advancement> consumer = a -> {
             if (!set.add(a.getId())) throw new IllegalStateException("Duplicate advancement " + a.getId());
             else {
@@ -56,7 +56,7 @@ class AMAdvancementProvider extends AdvancementProvider {
     }
 
     /**
-     * Contains all advancements that are relevant for book locking. Should be hidden.
+     * Contains all advancements that are relevant for book locking.
      */
     private record AMBookAdvancements(AMSkillProvider skillProvider) implements Consumer<Consumer<Advancement>> {
         @Override

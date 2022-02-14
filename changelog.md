@@ -1,3 +1,155 @@
+# Version 1.18.1-0.1.4
+
+## Fixes
+
+- Fixed missing extra skill points on level 1 (fixes #260)
+
+# Version 1.18.1-0.1.3
+
+## Fixes
+
+- Fixed mana not regenerating when obtaining the compendium (fixes #258)
+- Fixed brewing recipes not displaying in JEI
+
+# Version 1.18.1-0.1.1
+
+## Fixes
+
+- Fixed issue with latest forge
+
+**!! WARNING !! This version now requires forge 39.0.66 or above**
+
+# Version 1.18.1-0.1
+
+## Additions
+
+### Etherium
+
+- Etherium is an invisible magical substance that is required for spellcrafting and will be required for other things in
+  the future
+- It comes in three types: neutral, light and dark
+
+### Obelisk
+
+- Added the Obelisk
+- Opening the obelisk opens a simple GUI with a fuel slot, you can put vinteum dust or vinteum blocks in the slot
+- The obelisk will burn fuel to neutral etherium
+- The fuels can be altered via datapacks
+- Upgradeable via a multiblock, see the compendium entry for more info
+
+### Celestial Prism
+
+- Added the Celestial Prism
+- Works similar to the obelisk, except that it generates light instead of neutral etherium and uses daylight instead of
+  vinteum
+- Currently unobtainable in survival
+- Upgradeable via a multiblock, see the compendium entry for more info
+
+### Black Aurem
+
+- Added the Black Aurem
+- Works similar to the obelisk, except that it generates light instead of neutral etherium and uses hitpoints of nearby
+  living things instead of vinteum
+- Currently unobtainable in survival
+- Upgradeable via a multiblock, see the compendium entry for more info
+
+### Crystal Wrench
+
+- Added the Crystal Wrench
+- Used to link an Obelisk/Celestial Prism/Black Aurem to a Crafting Altar
+
+### Mana Cake
+
+- Added the Mana Cake: a food item that gives a mana regen effect when eaten
+
+### Mana Martini
+
+- Added the Mana Martini: a drink that gives a burnout reduction effect when drank
+
+### Mage Armor
+
+- Added mage armor
+- Has low durability, but repairs itself using mana
+- Added battlemage armor, which is an improved but more expensive variant of the normal mage armor
+
+### Potions
+
+- Added Lesser Mana Potion
+- Brewed with Chimerite
+- Added Standard Mana Potion
+- Brewed with Wakebloom
+- Added Greater Mana Potion
+- Brewed with Vinteum Dust
+- Added Epic Mana Potion
+- Brewed with Arcane Ash
+- Added Legendary Mana Potion
+- Brewed with Purified Vinteum Dust
+- Added Infused Mana Potion
+- Brewed with Tarma Root
+
+### Magic XP HUD
+
+- The player's magic xp level and progress is now shown above the mana and burnout bars
+
+### Spell Parts
+
+- Added all missing spell parts to the occulus
+- Implemented functionality for:
+    - Channel
+    - Scramble Synapses
+    - True Sight
+    - Attract
+    - Blink
+    - Daylight
+    - Divine Intervention
+    - Ender Intervention
+    - Life Drain
+    - Life Tip
+    - Mana Drain
+    - Melt Armor
+    - Moonrise
+    - Place Block
+    - Recall
+    - Reflect
+    - Rift
+    - Transplace
+- Removed Mark component (was merged with Recall)
+- Marked all work in progress spell parts as [WIP]
+- Reworked all spell part recipes to be more balanced
+
+### Altar Materials
+
+- Added copper, chimerite, topaz, vinteum and netherite blocks as cap materials; netherite is now the strongest (
+  material strength of 13)
+- Added many more altar structure materials, end stone bricks or purpur blocks are now the strongest (material strength
+  of 6)
+
+### Witchwood
+
+- Witchwood trees now rarely generate in dark forests (and other biomes marked as SPOOKY)
+- They generate as a bit larger dark oak trees
+- Witchwood is now used instead of "any wood" in spell recipes
+- Witchwood planks are an altar structure material
+
+### Prefab Spells
+
+- Added a system for prefab spells
+- Prefab spells show in a separate creative tab
+- This is currently an unused system
+
+### Affinity Ability API
+
+- Added a system for affinity abilities
+- This is currently an unused system
+
+## Fixes
+
+- Fixed flower pot rendering and drops
+- Fixed dupe bug with Inscription Table
+- Fixed crash when dying or travelling back from the end
+- Reworked the spell modifier system, solar and lunar modifiers should now work as they should
+- Fixed a few other minor bugs
+
 # Version 1.18.1-0.0.5
 
 ## Fixes
@@ -46,7 +198,8 @@
 
 ### Components
 
-- Physical Damage, Fire Damage, Frost Damage, Lightning Damage, Magic Damage and Drowning Damage now respect the server PvP setting
+- Physical Damage, Fire Damage, Frost Damage, Lightning Damage, Magic Damage and Drowning Damage now respect the server
+  PvP setting
 
 # Version 1.18.1-0.0.1
 
