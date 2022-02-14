@@ -1,32 +1,26 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
 
-public class ExecuteSpellGoal extends Goal {
-    private final Mob mob;
-    private int cooldownTicks = 0;
+public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
+    private final T caster;
+    private final ISpell spell;
     private boolean hasCasted = false;
     private int castTicks = 0;
-
-    private ItemStack stack;
-    private int castPoint;
+    private int cooldownTicks = 0;
     private int duration;
     private int cooldown;
-    private int bossAction;
-    private boolean hasAction;
-    //private ISpellCastCallback<Mob> callback;
+    private SpellCastResult result;
 
-    public ExecuteSpellGoal(Mob mob, ItemStack spell, int castPoint, int duration, int cooldown, int bossAction) {
-        this.mob = mob;
-        this.stack = spell;
-        this.castPoint = castPoint;
+    public ExecuteSpellGoal(T caster, ISpell spell, int duration, int cooldown) {
+        this.caster = caster;
+        this.spell = spell;
         this.duration = duration;
         this.cooldown = cooldown;
-        this.bossAction = bossAction;
-        //this.callback = null;
-        //this.setMutexBits(3);
+        this.result = SpellCastResult.EFFECT_FAILED;
     }
 
     @Override
@@ -47,10 +41,6 @@ public class ExecuteSpellGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         return super.canContinueToUse();
-    }
-
-    public void resetTask() {
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -87,5 +88,20 @@ public class EarthGuardian extends AbstractBoss {
         } else {
             super.travel(pTravelVector);
         }
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return false;
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return false;
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+
     }
 }

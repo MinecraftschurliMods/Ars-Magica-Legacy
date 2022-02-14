@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
@@ -18,7 +19,6 @@ public class FireGuardian extends AbstractBoss {
         super(type, level, BossEvent.BossBarColor.RED);
         fireImmune();
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
@@ -81,5 +81,20 @@ public class FireGuardian extends AbstractBoss {
     @Override
     public boolean fireImmune() {
         return true;
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return false;
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return false;
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+
     }
 }

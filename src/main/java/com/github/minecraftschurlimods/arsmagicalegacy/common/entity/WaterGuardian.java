@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 //TODO WaterGuadian registerGoals()
-//TODO WaterGuadian isWaterGuadianActionValid() Network Handler
+//TODO WaterGuadian isWaterGuardianActionValid() Network Handler
 
 public class WaterGuardian extends AbstractBoss {
     private WaterGuardian master = null;
@@ -52,7 +53,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        return AMSounds.WATER_GUARDIAN_HURT.get();
+        return null;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.WATER_GUARDIAN_ATTACK.get();
+        return null;
     }
 
     @Override
@@ -218,6 +219,21 @@ public class WaterGuardian extends AbstractBoss {
 
     public void clearMaster(){
         master = null;
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return false;
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return false;
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+
     }
 
     public enum WaterGuardianAction {

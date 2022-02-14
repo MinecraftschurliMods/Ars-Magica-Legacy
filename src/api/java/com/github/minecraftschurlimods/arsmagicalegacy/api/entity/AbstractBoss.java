@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractBoss extends Monster {
+public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
     private final ServerBossEvent bossEvent;
     private int ticksSinceLastPlayerScan = 0;
 
