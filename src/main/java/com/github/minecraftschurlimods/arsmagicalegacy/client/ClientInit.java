@@ -19,21 +19,29 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreMod
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellRuneModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EnderGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.FireGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LifeGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ArcaneGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EnderGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.IceGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.IceGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.LifeGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
@@ -172,6 +180,9 @@ public final class ClientInit {
         event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
         event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -184,6 +195,9 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), IceGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), LifeGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), EnderGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);

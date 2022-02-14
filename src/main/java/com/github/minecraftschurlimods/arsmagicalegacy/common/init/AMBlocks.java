@@ -53,8 +53,8 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 public interface AMBlocks {
     BlockBehaviour.Properties FLOWER_POT = BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion();
 
-    RegistryObject<OcculusBlock>          OCCULUS                  = BLOCKS.register("occulus",                  OcculusBlock::new);
-    RegistryObject<InscriptionTableBlock> INSCRIPTION_TABLE        = BLOCKS.register("inscription_table",        InscriptionTableBlock::new);
+    RegistryObject<OcculusBlock>          OCCULUS           = BLOCKS.register("occulus", OcculusBlock::new);
+    RegistryObject<InscriptionTableBlock> INSCRIPTION_TABLE = BLOCKS.register("inscription_table",        InscriptionTableBlock::new);
     RegistryObject<AltarCoreBlock>        ALTAR_CORE               = BLOCKS.register("altar_core",               AltarCoreBlock::new);
     RegistryObject<AltarViewBlock>        ALTAR_VIEW               = BLOCKS.register("altar_view",               AltarViewBlock::new);
     RegistryObject<Block>                 MAGIC_WALL               = BLOCKS.register("magic_wall",               () -> new GlassBlock(BlockBehaviour.Properties.of(Material.ICE).strength(3F).noOcclusion().noOcclusion().isValidSpawn(AMBlocks::never).isRedstoneConductor(AMBlocks::never).isSuffocating(AMBlocks::never).isViewBlocking(AMBlocks::never)));

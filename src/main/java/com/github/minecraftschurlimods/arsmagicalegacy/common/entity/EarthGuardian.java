@@ -14,10 +14,15 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
+
+// Wie heißen ticksInCurrentAction in der jetzigen Version von Minecraft
+// TODO
 public class EarthGuardian extends AbstractBoss {
-    public boolean leftArm = false;
     private float rodRotation = 0;
+    public boolean leftArm = false;
+    private EarthGuardianAction earthGuardianAction;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
@@ -33,7 +38,7 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
         return AMSounds.EARTH_GUARDIAN_HURT.get();
     }
 
@@ -53,10 +58,10 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE) {
+    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+        if (pSource == DamageSource.FREEZE){
             pAmount *= 2.0f;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+        }else if (pSource == DamageSource.LIGHTNING_BOLT){
             pAmount /= 4.0f;
         }
         return super.hurt(pSource, pAmount);
@@ -69,23 +74,61 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int)(getHealth() - 1.0F);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+    public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override
-    public void travel(Vec3 pTravelVector) {
+    public void travel(@NotNull Vec3 pTravelVector) {
         if (isEffectiveAi() && isInWater()) {
             moveRelative(0.1F, pTravelVector);
             move(MoverType.SELF, getDeltaMovement());
             setDeltaMovement(getDeltaMovement().scale(0.9D));
         } else {
             super.travel(pTravelVector);
+        }
+    }
+
+    public EarthGuardianAction getEarthGuardianAction() {
+        return this.earthGuardianAction;
+    }
+
+    public void setEarthGuardianAction(final EarthGuardianAction earthGuardianAction) {
+        if (this.getEarthGuardianAction() != earthGuardianAction && earthGuardianAction == EarthGuardianAction.STRIKE && level.isClientSide()) {
+            this.leftArm = !this.leftArm;
+        } else if (!level.isClientSide()) {
+            // AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
+        }
+        this.earthGuardianAction = earthGuardianAction;
+    }
+
+    public boolean isEarthGuardianActionValid(EarthGuardianAction action) {
+        // nothing to validate i think
+        return true;
+    }
+
+    public boolean shouldRenderRock(){
+        return true;
+        //return this.getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && ticksInCurrentAction > 5 && tick < 27;
+    }
+
+    public enum EarthGuardianAction {
+        IDLE(-1),
+        STRIKE(15),
+        THROWING_ROCK(30);
+
+        private final int maxActionTime;
+
+        private EarthGuardianAction(int maxTime){
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime(){
+            return maxActionTime;
         }
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground = false;
@@ -16,7 +17,9 @@ public class FireGuardian extends AbstractBoss {
 
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        fireImmune();
+        this.isUnderground = false;
+        this.hitCount = 0;
+        this.fireImmune();
     }
 
 
@@ -30,7 +33,7 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
         return AMSounds.FIRE_GUARDIAN_HURT.get();
     }
 
@@ -50,13 +53,11 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.DROWN) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.FREEZE) {
             pAmount /= 3f;
-        } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
-            pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -67,15 +68,15 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public boolean getIsUnderground() {
-        return isUnderground;
+        return this.isUnderground;
     }
 
     public boolean isBurning() {
-        return !isUnderground;
+        return !this.isUnderground;
     }
 
     public int getHitCount() {
-        return hitCount;
+        return this.hitCount;
     }
 
     @Override

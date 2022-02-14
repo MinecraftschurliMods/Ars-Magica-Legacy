@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,7 @@ public class ExecuteSpellGoal extends Goal {
     private int cooldown;
     private int bossAction;
     private boolean hasAction;
-    //private ISpellCastCallback<Mob> callback;
+    private SpellCastResult callback;
 
     public ExecuteSpellGoal(Mob mob, ItemStack spell, int castPoint, int duration, int cooldown, int bossAction) {
         this.mob = mob;
@@ -25,22 +26,23 @@ public class ExecuteSpellGoal extends Goal {
         this.duration = duration;
         this.cooldown = cooldown;
         this.bossAction = bossAction;
-        //this.callback = null;
+        this.callback = SpellCastResult.EFFECT_FAILED;
         //this.setMutexBits(3);
     }
 
     @Override
     public boolean canUse() {
         cooldownTicks--;
-//        boolean execute = mob.getCurrentAction() == -1 && mob.getTarget() != null && cooldownTicks <= 0;
-//        if (execute){
-//            if (callback == null || callback.shouldCast(mob, stack)) {
-//                hasCasted = false;
-//            } else {
-//                execute = false;
-//            }
-//        }
-//        return execute;
+
+        boolean execute = mob.getCurrentAction() == -1 && mob.getTarget() != null && cooldownTicks <= 0;
+        if (execute){
+            if (callback != SpellCastResult.SUCCESS || callback.shouldCast(mob, stack)) {
+                hasCasted = false;
+            } else {
+                execute = false;
+            }
+        }
+        return execute;
         return true;
     }
 
