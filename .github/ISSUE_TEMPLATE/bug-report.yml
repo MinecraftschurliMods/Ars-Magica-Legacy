@@ -1,0 +1,78 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened!
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the bug.
+      placeholder: |
+        1. Do '...'
+        2. Then do '....'
+        4. See error
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+  - type: textarea
+    id: images
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of the mod are you running?
+      options:
+        - 1.18.1-0.0.1
+        - 1.18.1-0.0.2
+        - 1.18.1-0.0.3
+        - 1.18.1-0.0.4
+        - 1.18.1-0.0.5
+        - 1.18.1-0.1.0
+        - 1.18.1-0.1.1
+        - 1.18.1-0.1.2
+        - 1.18.1-0.1.3
+        - 1.18.1-0.1.4
+    validations:
+      required: true
+  - type: input
+    id: forge-version
+    attributes:
+      label: Forge Version
+      description: The version of forge you are using.
+    validations:
+      required: true
+  - type: textarea
+    id: other-mods
+    attributes:
+      label: Other Mods
+      description: The other mods you are using.
+      placeholder: |
+        - patchouli 1.18.1-65
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log
+      description: Please provide the content of your `debug.log`. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
