@@ -395,7 +395,7 @@ public final class EventHandler {
         int level = event.getLevel();
         var api = ArsMagicaAPI.get();
         if (level == 1) {
-            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_POINTS.get());
+            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
         }
         for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
             int minEarnLevel = iSkillPoint.getMinEarnLevel();

@@ -68,13 +68,7 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue BURNOUT_MULTIPLIER;
         public final ForgeConfigSpec.DoubleValue LEVELING_BASE;
         public final ForgeConfigSpec.DoubleValue LEVELING_MULTIPLIER;
-        public final ForgeConfigSpec.IntValue BLUE_POINTS_MIN_LEVEL;
-        public final ForgeConfigSpec.IntValue BLUE_POINTS_INTERVAL;
-        public final ForgeConfigSpec.IntValue EXTRA_BLUE_POINTS;
-        public final ForgeConfigSpec.IntValue GREEN_POINTS_MIN_LEVEL;
-        public final ForgeConfigSpec.IntValue GREEN_POINTS_INTERVAL;
-        public final ForgeConfigSpec.IntValue RED_POINTS_MIN_LEVEL;
-        public final ForgeConfigSpec.IntValue RED_POINTS_INTERVAL;
+        public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
         public final ForgeConfigSpec.IntValue DAMAGE;
         public final ForgeConfigSpec.IntValue DURATION;
 
@@ -130,42 +124,10 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "leveling._base")
                     .worldRestart()
                     .defineInRange("multiplier", 2.4, 0., 10000);
-            builder.pop();
-            builder.push("skill_points");
-            builder.push("blue");
-            BLUE_POINTS_MIN_LEVEL = builder
-                    .comment("Minimum level for earning blue skill points.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.blue.min_level")
-                    .defineInRange("min_level", 0, 0, Short.MAX_VALUE);
-            BLUE_POINTS_INTERVAL = builder
-                    .comment("Once every x levels, the player will get a blue skill point, if they are above the min level.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.blue.interval")
-                    .defineInRange("interval", 1, 1, Short.MAX_VALUE);
-            EXTRA_BLUE_POINTS = builder
+            EXTRA_BLUE_SKILL_POINTS = builder
                     .comment("The extra blue skill points a player gets on level 1.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.blue.extra")
-                    .defineInRange("extra", 2, 0, Short.MAX_VALUE);
-            builder.pop();
-            builder.push("green");
-            GREEN_POINTS_MIN_LEVEL = builder
-                    .comment("Minimum level for earning green skill points.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.green.min_level")
-                    .defineInRange("min_level", 10, 0, Short.MAX_VALUE);
-            GREEN_POINTS_INTERVAL = builder
-                    .comment("Once every x levels, the player will get a green skill point, if they are above the min level.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.green.interval")
-                    .defineInRange("interval", 2, 1, Short.MAX_VALUE);
-            builder.pop();
-            builder.push("red");
-            RED_POINTS_MIN_LEVEL = builder
-                    .comment("Minimum level for earning red skill points.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.red.min_level")
-                    .defineInRange("min_level", 20, 0, Short.MAX_VALUE);
-            RED_POINTS_INTERVAL = builder
-                    .comment("Once every x levels, the player will get a red skill point, if they are above the min level.")
-                    .translation(TranslationConstants.CONFIG + "skill_points.red.interval")
-                    .defineInRange("interval", 3, 1, Short.MAX_VALUE);
-            builder.pop();
+                    .translation(TranslationConstants.CONFIG + "leveling.extra_blue_skill_points")
+                    .defineInRange("extra_blue_skill_points", 2, 0, Short.MAX_VALUE);
             builder.pop();
             builder.push("spell_parts");
             DAMAGE = builder

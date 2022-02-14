@@ -282,13 +282,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("burnout.multiplier", "The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).");
         configTranslation("leveling.base", "The base value for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
         configTranslation("leveling.multiplier", "The multiplier for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
-        configTranslation("skill_points.blue.min_level", "Minimum level for earning blue skill points.");
-        configTranslation("skill_points.blue.interval", "Once every x levels, the player will get a blue skill point, if they are above the min level.");
-        configTranslation("skill_points.blue.extra", "The extra blue skill points a player gets on level 1.");
-        configTranslation("skill_points.green.min_level", "Minimum level for earning green skill points.");
-        configTranslation("skill_points.green.interval", "Once every x levels, the player will get a green skill point, if they are above the min level.");
-        configTranslation("skill_points.red.min_level", "Minimum level for earning red skill points.");
-        configTranslation("skill_points.red.interval", "Once every x levels, the player will get a red skill point, if they are above the min level.");
+        configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         configTranslation("duration", "Duration of effect-based components, in ticks.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
