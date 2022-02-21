@@ -136,7 +136,7 @@ key_key.jei.previousRecipePage:key.keyboard.page.up
 key_key.jei.nextRecipePage:key.keyboard.page.down
 key_key.jei.previousCategory:key.keyboard.page.up:SHIFT
 key_key.jei.nextCategory:key.keyboard.page.down:SHIFT
-soundCategory_master:0.01986755
+soundCategory_master:0.44481236
 soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0
