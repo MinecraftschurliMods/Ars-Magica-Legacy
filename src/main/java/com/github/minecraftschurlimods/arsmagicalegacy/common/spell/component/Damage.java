@@ -20,26 +20,18 @@ import java.util.function.Predicate;
 
 public class Damage extends AbstractComponent {
     private final Function<LivingEntity, DamageSource> damageSourceFunction;
-    private final Function<LivingEntity, Float> damage;
+    private final float damage;
     private final Predicate<Entity> failIf;
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Float> damage, Predicate<Entity> failIf) {
+    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage, Predicate<Entity> failIf) {
         super(SpellPartStats.DAMAGE, SpellPartStats.HEALING);
         this.damageSourceFunction = damageSourceFunction;
         this.damage = damage;
         this.failIf = failIf;
     }
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage, Predicate<Entity> failIf) {
-        this(damageSourceFunction, e -> damage, failIf);
-    }
-
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Float> damage) {
-        this(damageSourceFunction, damage, e -> false);
-    }
-
     public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage) {
-        this(damageSourceFunction, e -> damage, e -> false);
+        this(damageSourceFunction, damage, e -> false);
     }
 
     @Override
@@ -48,13 +40,7 @@ public class Damage extends AbstractComponent {
         if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed())
             return SpellCastResult.EFFECT_FAILED;
         if (!failIf.test(living)) {
-            float damage = this.damage.apply(living);
-            if (damage < 0) {
-                damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.HEALING, modifiers, spell, caster, target);
-                living.heal(-damage);
-                return SpellCastResult.SUCCESS;
-            }
-            damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.DAMAGE, modifiers, spell, caster, target);
+            float damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(this.damage, SpellPartStats.DAMAGE, modifiers, spell, caster, target);
             return living.hurt(damageSourceFunction.apply(caster), damage) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
         }
         return SpellCastResult.EFFECT_FAILED;
