@@ -1,6 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
@@ -10,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Option;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -26,13 +29,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.ItemTextureQuadConverter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
@@ -41,10 +44,12 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
     private Optional<ResourceLocation> icon;
+    private ResourceLocation affinity;
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);
+            affinity = SpellItem.getSpell(stack).primaryAffinity().getId();
             return super.resolve(model, stack, level, entity, seed);
         }
     };
@@ -57,9 +62,12 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     @Override
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
-        Player player = Minecraft.getInstance().player;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || icon.isEmpty()) {
+        Player player = ClientHelper.getLocalPlayer();
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || cameraTransformType == ItemTransforms.TransformType.FIXED || icon.isEmpty()) {
             return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
+        }
+        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && (cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND)) {
+            return Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(affinity.getNamespace(), "item/spell_" + affinity.getPath())).handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return this;

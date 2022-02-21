@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -93,7 +94,7 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
-        getBuilder(SPELL.getId().getPath());
+        spellItem(SPELL);
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
         itemGenerated(MAGE_HELMET);
@@ -167,7 +168,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
      *
      * @param item The affinity item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
+     * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}.
      */
     private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
@@ -182,13 +183,27 @@ class AMItemModelProvider extends ItemModelProvider {
      * Adds an item model for this item for each skill point.
      *
      * @param item The skill point item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link ISkillPointItem}
+     * @param <T>  An {@link Item} that must also implement {@link ISkillPointItem}.
      */
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+        }
+    }
+
+    /**
+     * Adds an item model for this item for each affinity.
+     *
+     * @param item The spell item to add this for.
+     * @param <T>  An {@link Item} that must also implement {@link ISpellItem}.
+     */
+    private <T extends Item & ISpellItem> void spellItem(RegistryObject<T> item) {
+        getBuilder(item.getId().getPath());
+        for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
+            singleTexture(rl.toString(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/spell_handheld"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
 }

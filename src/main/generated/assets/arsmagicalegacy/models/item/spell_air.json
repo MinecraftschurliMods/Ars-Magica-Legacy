@@ -1,0 +1,6 @@
+{
+  "parent": "arsmagicalegacy:item/spell_handheld",
+  "textures": {
+    "layer0": "arsmagicalegacy:item/spell_air"
+  }
+}
