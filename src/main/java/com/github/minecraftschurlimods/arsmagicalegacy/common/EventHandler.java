@@ -10,6 +10,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
@@ -383,6 +384,7 @@ public final class EventHandler {
         event.addListener(OcculusTabManager.instance());
         event.addListener(SkillManager.instance());
         event.addListener(SpellDataManager.instance());
+        event.addListener(AbilityManager.instance());
         event.addListener(AltarMaterialManager.instance().cap);
         event.addListener(AltarMaterialManager.instance().structure);
         event.addListener(TierMapping.instance());

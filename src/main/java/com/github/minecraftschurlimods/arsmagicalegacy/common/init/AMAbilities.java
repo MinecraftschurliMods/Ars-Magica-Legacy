@@ -19,8 +19,8 @@ public interface AMAbilities {
     RegistryObject<AbstractAbility> JUMP_BOOST             = AMRegistries.ABILITIES.register("jump_boost",             () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> FEATHER_FALLING        = AMRegistries.ABILITIES.register("feather_falling",        () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> GRAVITY                = AMRegistries.ABILITIES.register("gravity",                () -> new AbstractAbility() {});
-    RegistryObject<AbstractAbility> FROST_WALKER           = AMRegistries.ABILITIES.register("frost_walker",           () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> FROST_PUNCH            = AMRegistries.ABILITIES.register("frost_punch",            () -> new AbstractAbility() {});
+    RegistryObject<AbstractAbility> FROST_WALKER           = AMRegistries.ABILITIES.register("frost_walker",           () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> SLOWNESS               = AMRegistries.ABILITIES.register("slowness",               () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> SPEED                  = AMRegistries.ABILITIES.register("speed",                  () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> STEP_ASSIST            = AMRegistries.ABILITIES.register("step_assist",            () -> new AbstractAbility() {});
