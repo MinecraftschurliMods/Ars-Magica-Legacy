@@ -11,11 +11,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 // TODO aiStep() IceGuardian
-// TODO registerGoal
-// TODO spawnParticles()
+// TODO registerGoal()
+// TODO spawnParticles() missing
 // TODO setIceGuardianAction() Network Handler?
-// TODO setIsCastingSpell() IDLE wird nicht verwendet
-// TODO isIceGuardianActionValid() do something else to validate
+// TODO setIsCastingSpell() IDLE is not being used
 
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
@@ -117,10 +116,6 @@ public class IceGuardian extends AbstractBoss {
             //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
         this.iceGuardianAction = action;
-    }
-
-    public boolean isIceGuardianActionValid(IceGuardianAction action) {
-        return true;
     }
     
     @Override

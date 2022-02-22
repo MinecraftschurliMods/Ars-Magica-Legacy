@@ -20,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 // TODO registerGoal()
 // TODO shouldRenderRock()
 // TODO setEarthGuardianAction() Network Handler?
-// TODO isEarthGuardianActionValid() do something else to validate
 // TODO setIsCastingSpell() STRIKE or THROWING_ROCK
 
 public class EarthGuardian extends AbstractBoss {
@@ -136,11 +135,6 @@ public class EarthGuardian extends AbstractBoss {
         //            AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         //        }
         this.earthGuardianAction = action;
-    }
-
-    public boolean isEarthGuardianActionValid(EarthGuardianAction action) {
-        // nothing to validate i think
-        return true;
     }
 
     @Override

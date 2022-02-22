@@ -6,18 +6,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-// TODO aiStep()
-// TODO nova(), flamethrower() & doFlameShield() missing
+import java.util.List;
+
+// TODO aiStep() fix errors
+// TODO nova(), flamethrower() & doFlameShield() fix errors
 // TODO registerGoal()
 // TODO fall()
 // TODO setFireGuardianAction() Particles and Network Handler?
-// TODO isFireGuardianActionValid() do something else to validate
 // TODO setIsCastingSpell() SPINNING or IDLE
 
 public class FireGuardian extends AbstractBoss {
@@ -56,18 +60,20 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-//        if (ticksInCurrentAction == 30 && this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
-//            nova();
-//        }
-//
-//        if (ticksInCurrentAction > 13 && this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
-//            if (this.getTarget() != null) {
-//                this.lookAt(this.getTarget(), 10, 10);
-//            }
-//            flamethrower();
-//        }
-//
-//        doFlameShield();
+        //if (ticksInCurrentAction == 30 && this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
+            nova();
+        }
+
+        //if (ticksInCurrentAction > 13 && this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
+        if (this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
+            if (this.getTarget() != null) {
+                this.lookAt(this.getTarget(), 10, 10);
+            }
+            flamethrower();
+        }
+
+        doFlameShield();
         super.aiStep();
     }
 
@@ -108,6 +114,45 @@ public class FireGuardian extends AbstractBoss {
 //        super.fall(par1, par2);
 //    }
 
+    public void nova() {
+        if (this.level.isClientSide()) {
+            // Particle stuff
+        } else {
+            List<LivingEntity> entities = this.level.getNearestEntity(LivingEntity.class, this.getBoundingBox().expandTowards(2.5, 2.5 , 2.5).addCoord(0, -3, 0));  // what is .addCoord
+            for (LivingEntity e : entities) {
+                if (e != this) {
+                    //e.hurt(DamageSource.causeFireDamage(this), 5);
+                    e.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+                }
+            }
+        }
+    }
+
+    public void flamethrower() {
+        Vec3 look = this.getEyePosition(1.0f); // this.getLook() --> this.getEyePosition()
+        if (this.level.isClientSide()) {
+            // Particle stuff
+        } else {
+            List<LivingEntity> entities = this.level.getNearestEntity(LivingEntity.class, this.getBoundingBox().expandTowards(2.5, 2.5 , 2.5).addCoord(look.x * 3, 0, look.z * 3));  // what is .addCoord
+            for (LivingEntity e : entities) {
+                if (e != this) {
+                    e.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+                }
+            }
+        }
+    }
+
+    public void doFlameShield() {
+        if(!this.level.isClientSide()) {
+            for (Object p: this.level.players()) {
+                Player player = (Player) p;
+                if (this.distanceToSqr(player) < 9) {
+                    player.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+                }
+            }
+        }
+    }
+
     public boolean getIsUnderground() {
         return this.isUnderground;
     }
@@ -142,10 +187,6 @@ public class FireGuardian extends AbstractBoss {
             //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
         this.fireGuardianAction = fireGuardianAction;
-    }
-
-    public boolean isFireGuardianActionValid(FireGuardianAction action) {
-        return true;
     }
 
     @Override
