@@ -11,6 +11,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
+// TODO aiStep()
+// TODO spawnParticles() missing
+// TODO registerGoal()
+// TODO getHeldItem() missing
+// TODO setItemStackToSlot() missing
+
 public class NatureGuardian extends AbstractBoss {
     private float tendrilRotation;
     private boolean hasSickle = true;
@@ -20,6 +26,8 @@ public class NatureGuardian extends AbstractBoss {
     private float last_rotation_y_shield = 0;
     private float last_rotation_z_main = 0;
     private float last_rotation_z_shield = 0;
+    private float spinRotation = 0;
+    private NatureGuardianAction natureGuardianAction;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
@@ -51,6 +59,10 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        if (this.level.isClientSide()) {
+            this.updateMovementAngles();
+            //this.spawnParticles();
+        }
         super.aiStep();
     }
 
@@ -67,6 +79,50 @@ public class NatureGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // ExecuteSpellGoal (dispel)
+        // PlantGuardianThrowSickle
+        // SpinAttack
+        // StrikeAttack
+        // ShieldBash
+    }
+
+    private void updateMovementAngles(){
+        this.tendrilRotation += 0.2f;
+        this.tendrilRotation %= 360;
+
+        switch (this.getNatureGuardianAction()){
+            case IDLE:
+                break;
+            case SPINNING:
+                this.spinRotation = (this.spinRotation - 40) % 360;
+                break;
+            case STRIKE:
+                break;
+            case THROWING_SICKLE:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public NatureGuardianAction getNatureGuardianAction() {
+        return this.natureGuardianAction;
+    }
+
+    public void setNatureGuardianAction(final NatureGuardianAction action) {
+        this.spinRotation = 0;
+
+        if (!level.isClientSide()) {
+            //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
+        }
+        this.natureGuardianAction = action;
+    }
+
+    public boolean isNatureGuardianActionValid(NatureGuardianAction action) {
+        if (action == NatureGuardianAction.STRIKE || action == NatureGuardianAction.SPINNING || action == NatureGuardianAction.THROWING_SICKLE) {
+            return this.hasSickle;
+        }
+        return true;
     }
 
     @Override
@@ -81,6 +137,28 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
+        if(isCastingSpell) {
+            this.natureGuardianAction = NatureGuardianAction.CASTING;
+        } else {
+            this.natureGuardianAction = NatureGuardianAction.IDLE;
+        }
+    }
 
+    public enum NatureGuardianAction {
+        IDLE(-1),
+        STRIKE(15),
+        THROWING_SICKLE(15),
+        SPINNING(160),
+        CASTING(-1);
+
+        private final int maxActionTime;
+
+        private NatureGuardianAction(int maxTime){
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime(){
+            return maxActionTime;
+        }
     }
 }

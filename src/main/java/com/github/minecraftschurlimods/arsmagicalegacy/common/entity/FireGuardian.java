@@ -12,6 +12,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+// TODO aiStep()
+// TODO nova(), flamethrower() & doFlameShield() missing
+// TODO registerGoal()
+// TODO fall()
+// TODO setFireGuardianAction() Particles and Network Handler?
+// TODO isFireGuardianActionValid() do something else to validate
+// TODO setIsCastingSpell() SPINNING or IDLE
+
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground = false;
     private int hitCount = 0;

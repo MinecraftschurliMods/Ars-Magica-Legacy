@@ -10,10 +10,18 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
+// TODO aiStep() IceGuardian
+// TODO registerGoal
+// TODO spawnParticles()
+// TODO setIceGuardianAction() Network Handler?
+// TODO setIsCastingSpell() IDLE wird nicht verwendet
+// TODO isIceGuardianActionValid() do something else to validate
+
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
     private boolean hasLeftArm = true;
     private float orbitRotation;
+    private IceGuardianAction iceGuardianAction;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
@@ -58,35 +66,63 @@ public class IceGuardian extends AbstractBoss {
         return super.hurt(pSource, pAmount);
     }
 
-    public void returnOneArm() {
-        if (!hasLeftArm) {
-            hasLeftArm = true;
-        } else if (!hasRightArm) {
-            hasRightArm = true;
-        }
-    }
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // ExecuteSpellGoal (dispel)
+        // Smash
+        // StrikeAttack
+        // WinterGuardianLaunchArm
+    }
+
+    public void returnOneArm() {
+        if (!this.hasLeftArm) {
+            this.hasLeftArm = true;
+        } else if (!this.hasRightArm) {
+            this.hasRightArm = true;
+        }
     }
 
     public void launchOneArm() {
-        if (hasLeftArm) {
-            hasLeftArm = false;
-        } else if (hasRightArm) {
-            hasRightArm = false;
+        if (this.hasLeftArm) {
+            this.hasLeftArm = false;
+        } else if (this.hasRightArm) {
+            this.hasRightArm = false;
         }
     }
 
     public boolean hasLeftArm() {
-        return hasLeftArm;
+        return this.hasLeftArm;
     }
 
     public boolean hasRightArm() {
-        return hasRightArm;
+        return this.hasRightArm;
     }
 
+    private void updateRotations(){
+        this.orbitRotation += 2f;
+        this.orbitRotation %= 360;
+    }
+
+    public float getOrbitRotation(){
+        return this.orbitRotation;
+    }
+
+    public IceGuardianAction getIceGuardianAction() {
+        return this.iceGuardianAction;
+    }
+
+    public void setIceGuardianAction(final IceGuardianAction action) {
+        if (!this.level.isClientSide()) {
+            //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
+        }
+        this.iceGuardianAction = action;
+    }
+
+    public boolean isIceGuardianActionValid(IceGuardianAction action) {
+        return true;
+    }
+    
     @Override
     public boolean canCastSpell() {
         return false;
@@ -99,6 +135,25 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
+        if(isCastingSpell) {
+            this.iceGuardianAction = IceGuardianAction.CASTING;
+        } else {
+            this.iceGuardianAction = IceGuardianAction.IDLE;
+        }
+    }
 
+    public enum IceGuardianAction {
+        IDLE(-1),
+        CASTING(-1);
+
+        private final int maxActionTime;
+
+        private IceGuardianAction(int maxTime){
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime(){
+            return maxActionTime;
+        }
     }
 }

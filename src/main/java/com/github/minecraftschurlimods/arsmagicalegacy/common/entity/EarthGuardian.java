@@ -16,6 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 
+// TODO aiStep() condition with ticksInCurrentAction
+// TODO registerGoal()
+// TODO shouldRenderRock()
+// TODO setEarthGuardianAction() Network Handler?
+// TODO isEarthGuardianActionValid() do something else to validate
+// TODO setIsCastingSpell() STRIKE or THROWING_ROCK
+
 public class EarthGuardian extends AbstractBoss {
     private float rodRotation = 0;
     public boolean leftArm = false;
