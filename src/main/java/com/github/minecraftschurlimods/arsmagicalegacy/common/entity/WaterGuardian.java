@@ -27,7 +27,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 //TODO WaterGuadian registerGoals()
-//TODO WaterGuadian isWaterGuardianActionValid() Network Handler
 
 public class WaterGuardian extends AbstractBoss {
     private WaterGuardian master = null;
@@ -97,7 +96,6 @@ public class WaterGuardian extends AbstractBoss {
             return false;
         }
 
-        //modifyDamageAmount
         if(pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2.0f;
         } else if(pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
@@ -111,31 +109,10 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // ExecuteSpellGoal
         // ChaosWaterBolt
         // CloneSelf
         // SpinAttack
         //goalSelector.addGoal(4, new ExecuteSpellGoal<WaterGuardian>(this, new ISpell(), 12, 23));
-    }
-
-    public WaterGuardianAction getWaterGuardianAction() {
-        return this.waterGuardianAction;
-    }
-
-    public void setWaterGuardianAction(final WaterGuardianAction waterGuardianAction) {
-        this.waterGuardianAction = waterGuardianAction;
-        this.spinRotation = 0;  //idk why? war im alten mod
-    }
-
-    public boolean isWaterGuardianActionValid(WaterGuardianAction action) {
-        if (this.uberSpinAvailable && action != WaterGuardianAction.CASTING) {
-            return false;
-        } else if (action == WaterGuardianAction.CASTING) {
-            return this.uberSpinAvailable;
-        } else if (action == WaterGuardianAction.CLONE) {
-            return !this.isClone();
-        }
-        return true;
     }
 
     @Override
@@ -227,6 +204,26 @@ public class WaterGuardian extends AbstractBoss {
 
     public void clearMaster(){
         master = null;
+    }
+
+    public WaterGuardianAction getWaterGuardianAction() {
+        return this.waterGuardianAction;
+    }
+
+    public void setWaterGuardianAction(final WaterGuardianAction action) {
+        this.waterGuardianAction = action;
+        this.spinRotation = 0;
+    }
+
+    public boolean isWaterGuardianActionValid(WaterGuardianAction action) {
+        if (this.uberSpinAvailable && action != WaterGuardianAction.CASTING) {
+            return false;
+        } else if (action == WaterGuardianAction.CASTING) {
+            return this.uberSpinAvailable;
+        } else if (action == WaterGuardianAction.CLONE) {
+            return !this.isClone();
+        }
+        return true;
     }
 
     @Override

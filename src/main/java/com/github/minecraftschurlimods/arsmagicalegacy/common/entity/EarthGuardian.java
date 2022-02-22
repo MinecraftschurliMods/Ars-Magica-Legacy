@@ -51,6 +51,13 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        // if (ticksInCurrentAction > 40 && !level.isClientSide()) {
+        if (!level.isClientSide()) { // missing condition
+            this.setEarthGuardianAction(EarthGuardianAction.IDLE);
+        } else if (level.isClientSide()) {
+            this.updateRotations();
+        }
+
         super.aiStep();
     }
 
@@ -67,6 +74,10 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // Dispel
+        // ThrowRock
+        // Smash
+        // StrikeAttack
     }
 
     @Override
@@ -74,7 +85,6 @@ public class EarthGuardian extends AbstractBoss {
         return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
@@ -91,43 +101,39 @@ public class EarthGuardian extends AbstractBoss {
         }
     }
 
+    public boolean shouldRenderRock(){
+        return true;
+
+        // frag david
+        //return this.getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && ticksInCurrentAction > 5 && tick < 27;
+    }
+
+    public float getRodRotations(){
+        return this.rodRotation;
+    }
+
+    private void updateRotations(){
+        this.rodRotation += 0.02f;
+        this.rodRotation %= 360;
+    }
+
     public EarthGuardianAction getEarthGuardianAction() {
         return this.earthGuardianAction;
     }
 
-    public void setEarthGuardianAction(final EarthGuardianAction earthGuardianAction) {
-        if (this.getEarthGuardianAction() != earthGuardianAction && earthGuardianAction == EarthGuardianAction.STRIKE && level.isClientSide()) {
+    public void setEarthGuardianAction(final EarthGuardianAction action) {
+        if (this.getEarthGuardianAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
             this.leftArm = !this.leftArm;
-        } else if (!level.isClientSide()) {
-            // AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
-        this.earthGuardianAction = earthGuardianAction;
+        //        } else if (!level.isClientSide()) {
+        //            AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
+        //        }
+        this.earthGuardianAction = action;
     }
 
     public boolean isEarthGuardianActionValid(EarthGuardianAction action) {
         // nothing to validate i think
         return true;
-    }
-
-    public boolean shouldRenderRock(){
-        return true;
-        //return this.getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && ticksInCurrentAction > 5 && tick < 27;
-    }
-
-    public enum EarthGuardianAction {
-        IDLE(-1),
-        STRIKE(15),
-        THROWING_ROCK(30);
-
-        private final int maxActionTime;
-
-        private EarthGuardianAction(int maxTime){
-            maxActionTime = maxTime;
-        }
-
-        public int getMaxActionTime(){
-            return maxActionTime;
-        }
     }
 
     @Override
@@ -142,6 +148,27 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
+        if(isCastingSpell) {
+            // STRIKE oder THROWING_ROCK
+            this.earthGuardianAction = EarthGuardianAction.STRIKE;
+        } else {
+            this.earthGuardianAction = EarthGuardianAction.IDLE;
+        }
+    }
+
+    public enum EarthGuardianAction {
+        IDLE(-1),
+        STRIKE(15),
+        THROWING_ROCK(30);
+
+        private final int maxActionTime;
+
+        private EarthGuardianAction(int maxTime){
+            maxActionTime = maxTime;
+        }
+        public int getMaxActionTime(){
+            return maxActionTime;
+        }
 
     }
 }
