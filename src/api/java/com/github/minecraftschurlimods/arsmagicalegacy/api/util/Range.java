@@ -2,15 +2,18 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.function.DoublePredicate;
 
 /**
  * A double range with inclusive upper and lower bounds.
  */
-public record Range(Double min, Double max) implements DoublePredicate {
-    public static Codec<Range> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.DOUBLE.optionalFieldOf("min", null).forGetter(Range::min), Codec.DOUBLE.optionalFieldOf("max", null).forGetter(Range::max)).apply(inst, Range::new));
+public record Range(Optional<Double> min, Optional<Double> max) implements DoublePredicate {
+    public static Codec<Range> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            Codec.DOUBLE.optionalFieldOf("min").forGetter(Range::min),
+            Codec.DOUBLE.optionalFieldOf("max").forGetter(Range::max)
+    ).apply(inst, Range::new));
 
     /**
      * Creates a range with a lower and upper bound.
@@ -20,7 +23,7 @@ public record Range(Double min, Double max) implements DoublePredicate {
      * @return A range with a lower bound of min and an upper bound of max.
      */
     public static Range ofBounds(double min, double max) {
-        return new Range(min, max);
+        return new Range(Optional.of(min), Optional.of(max));
     }
 
     /**
@@ -30,7 +33,7 @@ public record Range(Double min, Double max) implements DoublePredicate {
      * @return A range with a lower bound of min and no upper bound.
      */
     public static Range ofLowerBound(double min) {
-        return new Range(min, null);
+        return new Range(Optional.of(min), Optional.empty());
     }
 
     /**
@@ -40,29 +43,19 @@ public record Range(Double min, Double max) implements DoublePredicate {
      * @return A range with an upper bound of max and no lower bound.
      */
     public static Range ofUpperBound(double max) {
-        return new Range(null, max);
-    }
-
-    @Override
-    public Double min() {
-        return min == null ? 0 : min;
-    }
-
-    @Override
-    public Double max() {
-        return max == null ? 0 : max;
+        return new Range(Optional.empty(), Optional.of(max));
     }
 
     public boolean hasLowerBound() {
-        return min != null;
+        return min.isPresent();
     }
 
     public boolean hasUpperBound() {
-        return max != null;
+        return max.isPresent();
     }
 
     @Override
     public boolean test(double value) {
-        return (!hasLowerBound() || value >= min()) && (!hasUpperBound() || value <= max());
+        return min().map(min -> value >= min).orElse(true) && max().map(max -> value <= max).orElse(true);
     }
 }
