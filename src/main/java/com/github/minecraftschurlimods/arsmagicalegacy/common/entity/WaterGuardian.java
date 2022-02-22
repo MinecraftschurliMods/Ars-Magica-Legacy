@@ -1,6 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ISpellCasterEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -108,6 +111,11 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // ExecuteSpellGoal
+        // ChaosWaterBolt
+        // CloneSelf
+        // SpinAttack
+        //goalSelector.addGoal(4, new ExecuteSpellGoal<WaterGuardian>(this, new ISpell(), 12, 23));
     }
 
     public WaterGuardianAction getWaterGuardianAction() {
@@ -233,7 +241,11 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-
+        if(isCastingSpell) {
+            this.waterGuardianAction = WaterGuardianAction.CASTING;
+        } else {
+            this.waterGuardianAction = WaterGuardianAction.IDLE;
+        }
     }
 
     public enum WaterGuardianAction {
