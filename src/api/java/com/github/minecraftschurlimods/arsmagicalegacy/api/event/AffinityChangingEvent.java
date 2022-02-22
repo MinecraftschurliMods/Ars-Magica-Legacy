@@ -5,24 +5,46 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
-/**
- * Event fired before applying an affinity shift.
- */
-@Cancelable
-public class AffinityChangingEvent extends PlayerEvent {
+public abstract class AffinityChangingEvent extends PlayerEvent {
     /**
      * The affinity being shifted.
      */
     public final IAffinity affinity;
 
-    /**
-     * The amount by which the affinity is shifted. Can be modified.
-     */
-    public float shift;
-
-    public AffinityChangingEvent(Player player, IAffinity affinity, float shift) {
+    public AffinityChangingEvent(Player player, IAffinity affinity) {
         super(player);
         this.affinity = affinity;
-        this.shift = shift;
+    }
+
+    /**
+     * Event fired before applying an affinity shift.
+     */
+    @Cancelable
+    public static final class Pre extends AffinityChangingEvent {
+        /**
+         * The amount by which the affinity is shifted. Can be modified.
+         */
+        public float shift;
+
+        public Pre(Player player, IAffinity affinity, float shift) {
+            super(player, affinity);
+            this.shift = shift;
+        }
+    }
+
+    /**
+     * Event fired after applying an affinity shift.
+     */
+    @Cancelable
+    public static final class Post extends AffinityChangingEvent {
+        /**
+         * The amount by which the affinity has been shifted.
+         */
+        public final float shift;
+
+        public Post(Player player, IAffinity affinity, float shift) {
+            super(player, affinity);
+            this.shift = shift;
+        }
     }
 }

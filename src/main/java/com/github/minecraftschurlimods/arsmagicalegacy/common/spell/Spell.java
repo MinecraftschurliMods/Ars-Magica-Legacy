@@ -168,10 +168,11 @@ public final class Spell implements ISpell {
                 if (affinityGains) {
                     shift *= 1.1;
                 }
-                AffinityChangingEvent evt = new AffinityChangingEvent(player, affinity, shift.floatValue());
-                if (!evt.isCanceled()) {
-                    api.getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
+                AffinityChangingEvent.Pre eventPre = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue());
+                if (!eventPre.isCanceled()) {
+                    api.getAffinityHelper().applyAffinityShift(eventPre.getPlayer(), eventPre.affinity, eventPre.shift);
                 }
+                AffinityChangingEvent.Post eventPost = new AffinityChangingEvent.Post(player, affinity, shift.floatValue());
             }
             float xp = 0.05f * affinityShifts.size();
             if (continuous) xp /= 4;
