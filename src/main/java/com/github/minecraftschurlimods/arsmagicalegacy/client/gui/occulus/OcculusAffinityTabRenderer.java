@@ -94,7 +94,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 var abilityManager = api.getAbilityManager();
                 List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
                 IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();
-                abilities.sort((o1, o2) -> (int)((abilityManager.get(o1).range().min() * 100) - (abilityManager.get(o2).range().min() * 100)));
+                abilities.sort((o1, o2) -> (int)((abilityManager.get(o1).range().min().orElse(0d) * 100) - (abilityManager.get(o2).range().min().orElse(0d) * 100)));
                 abilities.forEach(resourceLocation -> {
                     IAbilityData abilityData = abilityManager.get(resourceLocation);
                     boolean test = abilityData.test(player);

@@ -90,10 +90,10 @@ public class AbilityBuilder {
         if (range == null) throw new SerializationException("An ability needs a range!");
         JsonObject range = new JsonObject();
         if (this.range.hasLowerBound()) {
-            range.addProperty("min", this.range.min());
+            range.addProperty("min", this.range.min().get());
         }
         if (this.range.hasUpperBound()) {
-            range.addProperty("max", this.range.max());
+            range.addProperty("max", this.range.max().get());
         }
         json.add("range", range);
         return json;
