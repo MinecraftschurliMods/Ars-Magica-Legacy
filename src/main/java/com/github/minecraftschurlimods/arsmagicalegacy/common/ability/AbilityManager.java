@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ability;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AbilityManager extends CodecDataManager<IAbilityData> implements IAbilityManager {
+public final class AbilityManager extends CodecDataManager<IAbilityData> implements IAbilityManager {
     private static final Lazy<AbilityManager> INSTANCE = Lazy.concurrentOf(AbilityManager::new);
 
     private AbilityManager() {
@@ -28,6 +29,7 @@ public class AbilityManager extends CodecDataManager<IAbilityData> implements IA
             IForgeRegistry<IAffinity> affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
             data.keySet().removeIf(key -> !affinityRegistry.containsKey(key));
         }, LogManager.getLogger());
+        subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class AbilityManager extends CodecDataManager<IAbilityData> implements IA
     }
 
     /**
-     * @return The instance of the ability manager.
+     * @return The only instance of this class.
      */
     public static AbilityManager instance() {
         return INSTANCE.get();

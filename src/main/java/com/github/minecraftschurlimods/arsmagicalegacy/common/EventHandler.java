@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
@@ -28,6 +29,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
@@ -310,6 +312,19 @@ public final class EventHandler {
         LivingEntity entity = event.getEntityLiving();
         if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
+        }
+        if (entity instanceof Player player) {
+            var api = ArsMagicaAPI.get();
+            var manager = api.getAbilityManager();
+            var helper = api.getAffinityHelper();
+            IAbilityData ability;
+            ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getRandom().nextInt(20) == 0) {
+                float health = player.getHealth() - 1;
+                if (health / player.getMaxHealth() >= 0.75) {
+                    player.setHealth(health);
+                }
+            }
         }
     }
 
