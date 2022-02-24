@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ability;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
@@ -26,8 +27,8 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
 
     private AbilityManager() {
         super("affinity_abilities", AbilityData.CODEC, (data, logger) -> {
-            IForgeRegistry<IAffinity> affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
-            data.keySet().removeIf(key -> !affinityRegistry.containsKey(key));
+            IForgeRegistry<IAbility> affinityRegistry = ArsMagicaAPI.get().getAbilityRegistry();
+            data.keySet().removeIf(ability -> !affinityRegistry.containsKey(ability));
         }, LogManager.getLogger());
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
