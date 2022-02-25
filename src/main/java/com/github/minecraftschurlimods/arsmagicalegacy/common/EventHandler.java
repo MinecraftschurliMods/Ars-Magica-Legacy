@@ -306,25 +306,32 @@ public final class EventHandler {
         var api = ArsMagicaAPI.get();
         api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
         api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        if (!player.isCreative()) {
+            var manager = api.getAbilityManager();
+            var helper = api.getAffinityHelper();
+            IAbilityData ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+        }
     }
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
-        }
-        if (entity instanceof Player player) {
-            var api = ArsMagicaAPI.get();
-            var manager = api.getAbilityManager();
-            var helper = api.getAffinityHelper();
-            IAbilityData ability;
-            ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getRandom().nextInt(20) == 0) {
-                float health = player.getHealth() - 1;
-                if (health / player.getMaxHealth() >= 0.75) {
-                    player.setHealth(health);
-                }
-            }
         }
     }
 
