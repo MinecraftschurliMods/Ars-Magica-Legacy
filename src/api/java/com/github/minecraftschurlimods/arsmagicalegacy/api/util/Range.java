@@ -61,22 +61,6 @@ public record Range(Optional<Double> min, Optional<Double> max) implements Doubl
         return max.isPresent();
     }
 
-    /**
-     * @param other The default min value.
-     * @return The min value of this range, or the given default value if the min value is not present.
-     */
-    public double minOrElse(double other) {
-        return min.orElse(other);
-    }
-
-    /**
-     * @param other The default max value.
-     * @return The max value of this range, or the given default value if the max value is not present.
-     */
-    public double maxOrElse(double other) {
-        return max.orElse(other);
-    }
-
     @Override
     public boolean test(double value) {
         return min().map(min -> value >= min).orElse(true) && max().map(max -> value <= max).orElse(true);
