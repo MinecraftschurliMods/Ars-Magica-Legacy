@@ -74,6 +74,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
@@ -109,6 +110,8 @@ import java.util.OptionalInt;
 import java.util.Set;
 
 public final class EventHandler {
+    private static int ticks;
+    
     private EventHandler() {
     }
 
@@ -127,6 +130,7 @@ public final class EventHandler {
         modBus.addListener(EventHandler::enqueueIMC);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
+        forgeBus.addListener(EventHandler::tick);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
@@ -248,6 +252,13 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
     }
+    
+    private static void tick(TickEvent event) {
+        ticks--;
+        if (ticks < 0) {
+            ticks += 20;
+        }
+    }
 
     private static void entityJoinWorld(EntityJoinWorldEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -310,19 +321,19 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
         }
