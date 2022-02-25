@@ -47,12 +47,34 @@ public record Range(Optional<Double> min, Optional<Double> max) implements Doubl
         return new Range(Optional.empty(), Optional.of(max));
     }
 
+    /**
+     * @return Whether this range has a lower bound or not.
+     */
     public boolean hasLowerBound() {
         return min.isPresent();
     }
 
+    /**
+     * @return Whether this range has an upper bound or not.
+     */
     public boolean hasUpperBound() {
         return max.isPresent();
+    }
+
+    /**
+     * @param other The default min value.
+     * @return The min value of this range, or the given default value if the min value is not present.
+     */
+    public double minOrElse(double other) {
+        return min.orElse(other);
+    }
+
+    /**
+     * @param other The default max value.
+     * @return The max value of this range, or the given default value if the max value is not present.
+     */
+    public double maxOrElse(double other) {
+        return max.orElse(other);
     }
 
     @Override

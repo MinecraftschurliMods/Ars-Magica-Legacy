@@ -310,19 +310,19 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.isInWater() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE.getId());
-            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().min().orElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && player.getLevel().dimensionType().ultraWarm() && player.getLevel().getGameTime() % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
         }
@@ -346,6 +346,19 @@ public final class EventHandler {
         LivingEntity entity = event.getEntityLiving();
         if (event.getSource() != DamageSource.OUT_OF_WORLD && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
             event.setAmount(event.getAmount() / (float) entity.getEffect(AMMobEffects.MAGIC_SHIELD.get()).getAmplifier());
+        }
+        if (event.getSource().getEntity() instanceof Player player) {
+            var api = ArsMagicaAPI.get();
+            var manager = api.getAbilityManager();
+            var helper = api.getAffinityHelper();
+            IAbilityData ability = manager.get(AMAbilities.FIRE_PUNCH.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && !entity.fireImmune()) {
+                entity.setSecondsOnFire(5);
+            }
+            ability = manager.get(AMAbilities.FROST_PUNCH.getId());
+            if (helper.getAffinityDepth(player, ability.affinity()) >= ability.range().minOrElse(0d) && !entity.canFreeze()) {
+                entity.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 100));
+            }
         }
     }
 
