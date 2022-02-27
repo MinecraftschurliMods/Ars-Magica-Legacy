@@ -69,11 +69,11 @@ body:
       label: Log
       description: Please provide the content of your `debug.log`. This will be automatically formatted into code, so no need for backticks.
       render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+#  - type: checkboxes
+#    id: terms
+#    attributes:
+#      label: Code of Conduct
+#      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+#      options:
+#        - label: I agree to follow this project's Code of Conduct
+#          required: true
