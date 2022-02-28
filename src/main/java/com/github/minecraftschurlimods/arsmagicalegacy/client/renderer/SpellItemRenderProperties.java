@@ -31,10 +31,10 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
             PoseStack.Pose pose = poseStack.last();
             Matrix4f matrix = pose.pose();
             Matrix3f normal = pose.normal();
-            consumer.vertex(matrix, 0, 1, 0).color(1, 1, 1, 1).uv(0, 0).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
-            consumer.vertex(matrix, 0, 1, 1).color(1, 1, 1, 1).uv(0, 1).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
-            consumer.vertex(matrix, 1, 1, 0).color(1, 1, 1, 1).uv(1, 0).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
-            consumer.vertex(matrix, 1, 1, 1).color(1, 1, 1, 1).uv(1, 1).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
+            consumer.vertex(matrix, 0, 1, 0).color(255, 255, 255, 255).uv(0, 0).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
+            consumer.vertex(matrix, 0, 1, 1).color(255, 255, 255, 255).uv(0, 1).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
+            consumer.vertex(matrix, 1, 1, 1).color(255, 255, 255, 255).uv(1, 1).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
+            consumer.vertex(matrix, 1, 1, 0).color(255, 255, 255, 255).uv(1, 0).overlayCoords(packedOverlay).uv2(packedLight).normal(normal, 0, 1, 0).endVertex();
         }
     }
 }
