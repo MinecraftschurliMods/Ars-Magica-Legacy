@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
@@ -52,6 +53,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
@@ -61,6 +63,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -74,7 +77,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
@@ -99,6 +101,7 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
@@ -110,8 +113,6 @@ import java.util.OptionalInt;
 import java.util.Set;
 
 public final class EventHandler {
-    private static int ticks;
-    
     private EventHandler() {
     }
 
@@ -130,7 +131,6 @@ public final class EventHandler {
         modBus.addListener(EventHandler::enqueueIMC);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
-        forgeBus.addListener(EventHandler::tick);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
@@ -144,6 +144,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::enderEntityTeleport);
         forgeBus.addListener(EventHandler::enderPearlTeleport);
         forgeBus.addListener(EventHandler::chorusFruitTeleport);
+        forgeBus.addListener(EventHandler::potionApplicable);
         forgeBus.addListener(EventHandler::potionAdded);
         forgeBus.addListener(EventHandler::potionExpiry);
         forgeBus.addListener(EventHandler::potionRemove);
@@ -252,13 +253,6 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
     }
-    
-    private static void tick(TickEvent event) {
-        ticks--;
-        if (ticks < 0) {
-            ticks += 20;
-        }
-    }
 
     private static void entityJoinWorld(EntityJoinWorldEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -317,25 +311,38 @@ public final class EventHandler {
         var api = ArsMagicaAPI.get();
         api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
         api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        var manager = api.getAbilityManager();
+        var helper = api.getAffinityHelper();
+        IAbilityData ability;
         if (!player.isCreative()) {
-            var manager = api.getAbilityManager();
-            var helper = api.getAffinityHelper();
-            IAbilityData ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
+            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && player.tickCount % 20 - (int) AMUtil.getAbilityValue(ability, player, 0, 19) == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && player.tickCount % 20 - (int) AMUtil.getAbilityValue(ability, player, 0, 19) == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 - (int) AMUtil.getAbilityValue(ability, player, 0, 19) == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && ticks == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 - (int) AMUtil.getAbilityValue(ability, player, 0, 19) == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
                 player.hurt(DamageSource.OUT_OF_WORLD, 1);
             }
+        }
+        ability = manager.get(AMAbilities.SATURATION.getId());
+        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, 20));
+        }
+        ability = manager.get(AMAbilities.REGENERATION.getId());
+        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20));
+        }
+        ability = manager.get(AMAbilities.NIGHT_VISION.getId());
+        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20));
         }
     }
 
@@ -405,6 +412,14 @@ public final class EventHandler {
     private static void chorusFruitTeleport(EntityTeleportEvent.ChorusFruit event) {
         if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
             event.setCanceled(true);
+        }
+    }
+
+    private static void potionApplicable(PotionEvent.PotionApplicableEvent event) {
+        var api = ArsMagicaAPI.get();
+        IAbilityData ability = api.getAbilityManager().get(AMAbilities.POISON_RESISTANCE.getId());
+        if (event.getEntityLiving() instanceof Player player && event.getPotionEffect().getEffect() == MobEffects.POISON && ability.range().test(api.getAffinityHelper().getAffinityDepth(player, ability.affinity()))) {
+            event.setResult(Event.Result.DENY);
         }
     }
 
