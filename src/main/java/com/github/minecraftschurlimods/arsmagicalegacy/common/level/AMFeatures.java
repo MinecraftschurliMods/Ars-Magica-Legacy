@@ -71,9 +71,9 @@ public final class AMFeatures {
      * @param airExposureDiscardChance A 0..1 float that represents the probability of the feature being discarded if the vein touches air.
      * @return A configured ore feature based on the given parameters.
      */
-    public static ConfiguredFeature<?, ?> ore(String name, Supplier<? extends Block> ore, Supplier<? extends Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
+    /*public static ConfiguredFeature<?, ?> ore(String name, Supplier<? extends Block> ore, Supplier<? extends Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
         return feature(name, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())), veinSize, airExposureDiscardChance));
-    }
+    }*/
 
     /**
      * @param name                 The name of the feature.
@@ -82,9 +82,9 @@ public final class AMFeatures {
      * @param heightRangePlacement The height distribution of this feature.
      * @return A placed feature based on the given parameters.
      */
-    public static PlacedFeature orePlacement(String name, ConfiguredFeature<?, ?> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
+    /*public static PlacedFeature orePlacement(String name, ConfiguredFeature<?, ?> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
         return placement(name, feature, CountPlacement.of(veinCount), InSquarePlacement.spread(), heightRangePlacement, BiomeFilter.biome());
-    }
+    }*/
 
     /**
      * @param name   The name of the feature.
@@ -92,9 +92,9 @@ public final class AMFeatures {
      * @param flower The flower block to use.
      * @return A configured flower feature based on the given parameters.
      */
-    public static ConfiguredFeature<?, ?> flower(String name, int tries, Supplier<? extends Block> flower) {
+    /*public static ConfiguredFeature<?, ?> flower(String name, int tries, Supplier<? extends Block> flower) {
         return feature(name, Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(tries, Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(flower.get()))).onlyWhenEmpty()));
-    }
+    }*/
 
     /**
      * @param name    The name of the feature.
@@ -102,9 +102,9 @@ public final class AMFeatures {
      * @param rarity  The rarity of this feature.
      * @return A placed feature based on the given parameters.
      */
-    public static PlacedFeature flowerPlacement(String name, ConfiguredFeature<?, ?> feature, int rarity) {
+    /*public static PlacedFeature flowerPlacement(String name, ConfiguredFeature<?, ?> feature, int rarity) {
         return placement(name, feature, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
-    }
+    }*/
 
     /**
      * @param name    The name of the feature.
@@ -115,9 +115,9 @@ public final class AMFeatures {
      * @param size    The feature size to use.
      * @return A configured tree feature based on the given parameters.
      */
-    public static ConfiguredFeature<?, ?> tree(String name, Supplier<? extends Block> log, TrunkPlacer trunk, Supplier<? extends Block> leaves, FoliagePlacer foliage, FeatureSize size) {
+    /*public static ConfiguredFeature<?, ?> tree(String name, Supplier<? extends Block> log, TrunkPlacer trunk, Supplier<? extends Block> leaves, FoliagePlacer foliage, FeatureSize size) {
         return feature(name, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(log.get()), trunk, BlockStateProvider.simple(leaves.get()), foliage, size).ignoreVines().build());
-    }
+    }*/
 
     /**
      * @param name    The name of the feature.
@@ -125,9 +125,9 @@ public final class AMFeatures {
      * @param sapling The sapling associated with this tree feature.
      * @return A placed feature based on the given parameters.
      */
-    public static PlacedFeature treePlacement(String name, ConfiguredFeature<?, ?> feature, Supplier<? extends Block> sapling) {
+    /*public static PlacedFeature treePlacement(String name, ConfiguredFeature<?, ?> feature, Supplier<? extends Block> sapling) {
         return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.filteredByBlockSurvival(sapling.get()));
-    }
+    }*/
 
     /**
      * @param name     The name of the feature.
@@ -137,19 +137,19 @@ public final class AMFeatures {
      * @param sapling  The sapling associated with this tree feature.
      * @return A placed feature based on the given parameters.
      */
-    public static PlacedFeature treeVegetation(String name, ConfiguredFeature<?, ?> feature, PlacementModifier modifier, int rarity, Supplier<? extends Block> sapling) {
+    /*public static PlacedFeature treeVegetation(String name, ConfiguredFeature<?, ?> feature, PlacementModifier modifier, int rarity, Supplier<? extends Block> sapling) {
         List<PlacementModifier> list = new ArrayList<>(VegetationPlacements.treePlacement(modifier, sapling.get()));
         list.add(RarityFilter.onAverageOnceEvery(rarity));
         return placement(name, feature, list.toArray(new PlacementModifier[0]));
-    }
+    }*/
 
-    private static <T extends FeatureConfiguration> ConfiguredFeature<T, ?> feature(String name, Feature<T> feature, T configuration) {
+    /*private static <T extends FeatureConfiguration> ConfiguredFeature<T, ?> feature(String name, Feature<T> feature, T configuration) {
         return FeatureUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.configured(configuration));
     }
 
     private static PlacedFeature placement(String name, ConfiguredFeature<?, ?> feature, PlacementModifier... modifiers) {
         return PlacementUtils.register(ArsMagicaAPI.MOD_ID + ":" + name, feature.placed(modifiers));
-    }
+    }*/
 
     /**
      * Called for each biome, adds this mod's features to biomes.
@@ -158,7 +158,7 @@ public final class AMFeatures {
      */
     @Internal
     public static void biomeLoading(BiomeLoadingEvent event) {
-        BiomeGenerationSettingsBuilder builder = event.getGeneration();
+        /*BiomeGenerationSettingsBuilder builder = event.getGeneration();
         ResourceLocation biome = event.getName();
         Biome.BiomeCategory category = event.getCategory();
         if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
@@ -184,6 +184,6 @@ public final class AMFeatures {
             if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_VEGETATION);
             }
-        }
+        }*/
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.apache.logging.log4j.LogManager;
@@ -62,7 +63,7 @@ public abstract class ObeliskFuelProvider implements DataProvider {
      * @param burntime     How many ticks the ingredient burns.
      * @param valuepertick How much etherium is generated per burning tick.
      */
-    protected void forTag(String name, Tag.Named<Item> tag, int burntime, int valuepertick) {
+    protected void forTag(String name, TagKey<Item> tag, int burntime, int valuepertick) {
         forIngredient(name, Ingredient.of(tag), burntime, valuepertick);
     }
 

@@ -44,10 +44,10 @@ public class Drought extends AbstractComponent {
         BlockPos pos = target.getBlockPos();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (BlockTags.DIRT.contains(block)) {
+        if (state.is(BlockTags.DIRT)) {
             level.setBlock(pos, Blocks.SAND.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
-        } else if (BlockTags.FLOWERS.contains(block)) {
+        } else if (state.is(BlockTags.FLOWERS)) {
             level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else if (level.getBlockState(pos.offset(target.getDirection().getNormal())).getBlock() == Blocks.WATER) {

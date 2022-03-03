@@ -157,7 +157,7 @@ public final class EventHandler {
     }
 
     private static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-        AMFeatures.CHIMERITE_FEATURE = AMFeatures.ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
+        /*AMFeatures.CHIMERITE_FEATURE = AMFeatures.ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
         AMFeatures.VINTEUM_FEATURE = AMFeatures.ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
         AMFeatures.TOPAZ_FEATURE = AMFeatures.ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
         AMFeatures.TOPAZ_EXTRA_FEATURE = AMFeatures.ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
@@ -177,7 +177,7 @@ public final class EventHandler {
         AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
         AMFeatures.WITCHWOOD_TREE_FEATURE = AMFeatures.tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
         AMFeatures.WITCHWOOD_TREE_PLACEMENT = AMFeatures.treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE_FEATURE, AMBlocks.WITCHWOOD_SAPLING);
-        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
+        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);*/
     }
 
     private static void registerBrewingRecipes() {
