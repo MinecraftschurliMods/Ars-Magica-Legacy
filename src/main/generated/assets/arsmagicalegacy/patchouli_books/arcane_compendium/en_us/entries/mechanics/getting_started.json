@@ -12,7 +12,7 @@
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/occulus.png"
       ],
-      "text": "The Occulus has four tabs, the first three of which are skill tree tabs."
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page1.text"
     },
     {
       "type": "patchouli:text",
@@ -38,7 +38,7 @@
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_1.png"
       ],
-      "text": "Once placed and opened, you are presented with a GUI that consists of four major sections:"
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page6.text"
     },
     {
       "type": "patchouli:text",
@@ -49,14 +49,14 @@
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_2.png"
       ],
-      "text": "Drag the skills down to the shape groups and the spell grammar section."
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page8.text"
     },
     {
       "type": "patchouli:image",
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_3.png"
       ],
-      "text": "The shown spell recipe is $(l:shapes/projectile)Projectile$()-$(l:components/dig)Dig$(), which is recommended for beginners."
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.page9.text"
     },
     {
       "type": "patchouli:text",
