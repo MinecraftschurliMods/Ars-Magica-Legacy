@@ -42,6 +42,7 @@ public class WaterGuardian extends AbstractBoss {
         super(type, level, BossEvent.BossBarColor.BLUE);
         setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.waterGuardianAction = WaterGuardianAction.IDLE;
+        this.entityData.define(IS_CLONE, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
