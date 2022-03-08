@@ -200,7 +200,6 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param <T>  An {@link Item} that must also implement {@link ISpellItem}.
      */
     private <T extends Item & ISpellItem> void spellItem(RegistryObject<T> item) {
-        getBuilder(item.getId().getPath());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/spell_handheld"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));

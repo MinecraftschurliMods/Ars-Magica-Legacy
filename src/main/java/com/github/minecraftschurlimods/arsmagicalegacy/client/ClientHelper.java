@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellCustomiza
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +14,7 @@ public final class ClientHelper {
      * @return The player logged into the current Minecraft instance.
      */
     @Nullable
-    public static Player getLocalPlayer() {
+    public static LocalPlayer getLocalPlayer() {
         return Minecraft.getInstance().player;
     }
 

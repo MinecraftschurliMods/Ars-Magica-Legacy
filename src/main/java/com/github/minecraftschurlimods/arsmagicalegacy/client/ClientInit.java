@@ -42,6 +42,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -49,20 +50,23 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -70,6 +74,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
@@ -222,13 +227,13 @@ public final class ClientInit {
 
     private static void renderHand(RenderHandEvent event) {
         if (event.getItemStack().is(AMItems.SPELL.get())) {
-            Player player = ClientHelper.getLocalPlayer();
-            if (!(player instanceof AbstractClientPlayer acp)) return;
+            LocalPlayer player = ClientHelper.getLocalPlayer();
+            if (player == null) return;
             boolean isMainHand = event.getHand() == InteractionHand.MAIN_HAND;
             HumanoidArm arm = isMainHand ? player.getMainArm() : player.getMainArm().getOpposite();
             float armMultiplier = arm == HumanoidArm.RIGHT ? 1f : -1f;
             PoseStack stack = event.getPoseStack();
-            PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(acp);
+            PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             float equipProgress = event.getEquipProgress();
             if (equipProgress == 0) {
                 equipProgress = event.getSwingProgress();
@@ -239,16 +244,16 @@ public final class ClientInit {
             stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * 45f));
             stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI) * 70f));
             stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * Mth.sin(swingProgress * swingProgress * (float) Math.PI) * -20f));
-            RenderSystem.setShaderTexture(0, acp.getSkinTextureLocation());
+            RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
             stack.translate(-armMultiplier, 3.6f, 3.5f);
             stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * 120f));
             stack.mulPose(Vector3f.XP.rotationDegrees(200f));
             stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * -135f));
             stack.translate(armMultiplier * 5.6f, 0, 0);
             if (isMainHand) {
-                renderer.renderRightHand(stack, event.getMultiBufferSource(), event.getPackedLight(), acp);
+                renderer.renderRightHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
             } else {
-                renderer.renderLeftHand(stack, event.getMultiBufferSource(), event.getPackedLight(), acp);
+                renderer.renderLeftHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
             }
         }
     }
