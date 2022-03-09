@@ -17,12 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-// TODO aiStep() fix errors
-// TODO nova(), flamethrower() & doFlameShield() fix errors
+// TODO nova(), flamethrower() & doFlameShield() maybe Particles
 // TODO registerGoal()
-// TODO fall()
 // TODO setFireGuardianAction() Particles and Network Handler?
-// TODO setIsCastingSpell() SPINNING or IDLE
 
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground = false;
@@ -60,13 +57,11 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        //if (ticksInCurrentAction == 30 && this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
-        if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (this.ticksInAction == 30 && this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
             nova();
         }
 
-        //if (ticksInCurrentAction > 13 && this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
-        if (this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
+        if (this.ticksInAction > 13 && this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
             if (this.getTarget() != null) {
                 this.lookAt(this.getTarget(), 10, 10);
             }
@@ -98,45 +93,44 @@ public class FireGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // FireRain
-        // Dispel
+        // ExecuteSpellGoal (FireRain)
+        // ExecuteSpellGoal (Dispel)
         // Dive
         // ExecuteSpellGoal (meltAmor)
         // Flamethrower
         // ExecuteSpellGoal (fireBolt)
     }
 
-//    public void fall(float par1, float par2) {
-//        if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
-//            this.isUnderground = true;
-//            return;
-//        }
-//        super.fall(par1, par2);
-//    }
+    @Override
+    protected int calculateFallDamage(final float pDistance, final float pDamageMultiplier) {
+        if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
+            this.isUnderground = true;
+        }
+        return super.calculateFallDamage(pDistance, pDamageMultiplier);
+    }
 
     public void nova() {
         if (this.level.isClientSide()) {
             // Particle stuff
         } else {
-            List<LivingEntity> entities = this.level.getNearestEntity(LivingEntity.class, this.getBoundingBox().expandTowards(2.5, 2.5 , 2.5).addCoord(0, -3, 0));  // what is .addCoord
+            List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(0, -3, 0));
             for (LivingEntity e : entities) {
                 if (e != this) {
-                    //e.hurt(DamageSource.causeFireDamage(this), 5);
-                    e.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+                    e.hurt(DamageSource.ON_FIRE, 5);
                 }
             }
         }
     }
 
     public void flamethrower() {
-        Vec3 look = this.getEyePosition(1.0f); // this.getLook() --> this.getEyePosition()
+        Vec3 look = this.getLookAngle();
         if (this.level.isClientSide()) {
             // Particle stuff
         } else {
-            List<LivingEntity> entities = this.level.getNearestEntity(LivingEntity.class, this.getBoundingBox().expandTowards(2.5, 2.5 , 2.5).addCoord(look.x * 3, 0, look.z * 3));  // what is .addCoord
+            List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(look.x * 3, 0, look.z * 3));
             for (LivingEntity e : entities) {
                 if (e != this) {
-                    e.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+                    e.hurt(DamageSource.ON_FIRE, 5);
                 }
             }
         }
@@ -144,10 +138,9 @@ public class FireGuardian extends AbstractBoss {
 
     public void doFlameShield() {
         if(!this.level.isClientSide()) {
-            for (Object p: this.level.players()) {
-                Player player = (Player) p;
-                if (this.distanceToSqr(player) < 9) {
-                    player.hurt(DamageSource.explosion(this), 5); // explosion wahrscheinlich falsch
+            for (Player p: this.level.players()) {
+                if (this.distanceToSqr(p) < 9) {
+                    p.hurt(DamageSource.ON_FIRE, 5);
                 }
             }
         }
@@ -186,7 +179,8 @@ public class FireGuardian extends AbstractBoss {
         if (!level.isClientSide()) {
             //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
-        this.fireGuardianAction = fireGuardianAction;
+        this.fireGuardianAction = action;
+        this.ticksInAction = 0;
     }
 
     @Override
@@ -204,12 +198,12 @@ public class FireGuardian extends AbstractBoss {
         if(isCastingSpell) {
             this.fireGuardianAction = FireGuardianAction.CASTING;
         } else {
-            // SPINNING statt IDLE?
-            this.fireGuardianAction = FireGuardianAction.SPINNING;
+            this.fireGuardianAction = FireGuardianAction.IDLE;
         }
     }
 
     public enum FireGuardianAction {
+        IDLE(-1),
         SPINNING(160),
         CASTING(-1),
         LONG_CASTING(-1);

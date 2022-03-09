@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 // TODO aiStep() Particle
-// TODO hurt() Random minion line
-// registerGoal()
+// TODO registerGoal()
+
 public class LifeGuardian extends AbstractBoss {
-    private ArrayList<LivingEntity> minions = new ArrayList<LivingEntity>();
-    private ArrayList<LivingEntity> queuedMinions = new ArrayList<LivingEntity>();
+    private ArrayList<LivingEntity> minions = new ArrayList<>();
+    private ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
     private LifeGuardianAction lifeGuardianAction;
     private static final EntityDataAccessor<Integer> DATA_MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
 
@@ -80,13 +80,9 @@ public class LifeGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (this.minions.size() > 0) {
-            pAmount = 0;
-            LivingEntity minion = this.minions.get(random.nextInt(this.minions.size()));  // probabily wrong
-        }
         if (pSource.getEntity() != null && pSource.getEntity() instanceof LivingEntity) {
-            for (LivingEntity minion : this.minions.toArray((new LivingEntity[minions.size()]))) {
-                ((LivingEntity)minion).doHurtTarget((LivingEntity)pSource.getEntity());
+            for (LivingEntity minion : this.minions) {
+                minion.setLastHurtByMob((LivingEntity) pSource.getEntity());
             }
         }
         return super.hurt(pSource, pAmount);
@@ -95,7 +91,7 @@ public class LifeGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // Dispel
+        // ExecuteSpellGoal (Dispel)
         // ExecuteSpellGoal (healSelf)
         // ExecuteSpellGoal (nauseate)
         // SummonAllies
@@ -116,6 +112,7 @@ public class LifeGuardian extends AbstractBoss {
 
     public void setLifeGuardianAction(final LifeGuardianAction action) {
         this.lifeGuardianAction = action;
+        this.ticksInAction = 0;
     }
 
     @Override

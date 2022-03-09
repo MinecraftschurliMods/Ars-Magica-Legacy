@@ -113,7 +113,7 @@ public class WaterGuardian extends AbstractBoss {
         // ChaosWaterBolt
         // CloneSelf
         // SpinAttack
-        //goalSelector.addGoal(4, new ExecuteSpellGoal<WaterGuardian>(this, new ISpell(), 12, 23));
+        // goalSelector.addGoal(4, new ExecuteSpellGoal<WaterGuardian>(this, new ISpell(), 12, 23));
     }
 
     @Override
@@ -214,6 +214,7 @@ public class WaterGuardian extends AbstractBoss {
     public void setWaterGuardianAction(final WaterGuardianAction action) {
         this.waterGuardianAction = action;
         this.spinRotation = 0;
+        this.ticksInAction = 0;
     }
 
     public boolean isWaterGuardianActionValid(WaterGuardianAction action) {

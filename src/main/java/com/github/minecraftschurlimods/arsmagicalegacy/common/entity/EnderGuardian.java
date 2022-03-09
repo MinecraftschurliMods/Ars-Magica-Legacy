@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.mojang.math.Vector3f;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,16 +27,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import org.jetbrains.annotations.Nullable;
 
-// TODO aiStep() (motionY, playSound(), Particles)
-// TODO hurt() (wftboom, .damageType, setDead())
+// TODO hurt() addDeferredTargetSet()
 // TODO registerGoal()
-// TODO What is ticksInCurrentAction
-// TODO hasEffect()
 
 public class EnderGuardian extends AbstractBoss {
     private int wingFlapTime = 0;
     private int ticksSinceLastAttack = 0;
-    private String lastDamageType = "";
     private int hitCount = 0;
     private Vector3f spawn;
     private EnderGuardianAction enderGuardianAction;
@@ -81,20 +78,19 @@ public class EnderGuardian extends AbstractBoss {
         this.wingFlapTime++;
         this.ticksSinceLastAttack++;
 
-//        if (this.motionY < 0) {
-//            this.motionY *= 0.7999999f;
-//        }
+        if (this.getDeltaMovement().y() < 0) {
+            this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() * 0.7999999f, this.getDeltaMovement().z());
+        }
 
         switch (this.getEnderGuardianAction()) {
             case LONG_CASTING:
-                if (this.getNoActionTime() == 32) {  // is ticksInCurrentAction --> noActionTime
-                    //this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR, SoundSource.HOSTILE, 1.0f, 1.0f);
+                if (this.ticksInAction == 32) {
+                    this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
                 }
                 break;
             case CHARGE:
                 if (this.getNoActionTime() == 0) {
-                    // Particle
-                    // this.addVelocity(0, 1.5f, 0);
+                    this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() + 1.5f, this.getDeltaMovement().z());
                 }
                 break;
             default:
@@ -102,7 +98,7 @@ public class EnderGuardian extends AbstractBoss {
         }
 
         if (this.shouldFlapWings() && this.wingFlapTime % (50 * this.getWingFlapSpeed()) == 0) {
-            //this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP, SoundSource.HOSTILE, 1.0f, 1.0f);
+            this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
         }
     }
 
@@ -113,12 +109,12 @@ public class EnderGuardian extends AbstractBoss {
         }
 
         if (pSource.getEntity() instanceof EnderMan) {
-            pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);  // is DamageSource.wtfBoom --> DamageSource.OUT_OF_WORLD
+            pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
             this.heal(10);
             return false;
         }
 
-        if (pSource.getMsgId().equals("outOfWorld")) {  // is .damageType --> .getMsgId()
+        if (pSource == DamageSource.OUT_OF_WORLD) {
             if (this.spawn != null) {
                 this.setPos(this.spawn.x(), this.spawn.y(), this.spawn.z());
                 this.setEnderGuardianAction(EnderGuardianAction.IDLE);
@@ -126,7 +122,7 @@ public class EnderGuardian extends AbstractBoss {
                     //ArsMagica2.proxy.addDeferredTargetSet(this, null);
                 }
             } else {
-                this.die(DamageSource.OUT_OF_WORLD);   // is setDead --> die(DamageSource.OUT_OF_WORLD)
+                this.removeAfterChangingDimensions();
             }
             return false;
         }
@@ -134,14 +130,13 @@ public class EnderGuardian extends AbstractBoss {
         this.ticksSinceLastAttack = 0;
 
         if (!level.isClientSide() && pSource.getEntity() != null && pSource.getEntity() instanceof Player) {
-            if (pSource.getMsgId() == this.lastDamageType) {  // is .damageType --> .getMsgId()
+            if (pSource == this.getLastDamageSource()) {
                 this.hitCount++;
                 if (this.hitCount > 5) {
                     this.heal(pAmount / 4);
                 }
                 return false;
             } else {
-                this.lastDamageType = pSource.getMsgId();
                 this.hitCount = 1;
             }
         }
@@ -201,7 +196,7 @@ public class EnderGuardian extends AbstractBoss {
             case STRIKE:
                 return 0.4f;
             case CHARGE:
-                if (getNoActionTime() < 15) {  // is ticksInCurrentAction --> getNoActionTime()
+                if (this.getTicksInAction() < 15) {
                     return 0.25f;
                 }
                 return 0.75f;
@@ -216,31 +211,31 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public boolean hasEffect(final MobEffect pPotion) {
-//        if (pPotion == PotionEffectsDefs.spellReflect && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
-//            return true;
-//        }
-//        if (pPotion == PotionEffectsDefs.magicShield && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
-//            return true;
-//        }
+        if (pPotion == AMMobEffects.REFLECT.get() && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
+            return true;
+        }
+        if (pPotion == AMMobEffects.MAGIC_SHIELD.get() && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
+            return true;
+        }
         return super.hasEffect(pPotion);
     }
 
-    public void setAnimID(int id) {
-        this.setEnderGuardianAction(EnderGuardianAction.values()[id]);
-        this.noActionTime = 0;  // is ticksInCurrentAction --> noActionTime
-    }
-
-    public void setAnimTick(int tick) {
-        this.noActionTime = tick;  // is ticksInCurrentAction --> noActionTime
-    }
-
-    public int getAnimID() {
-        return this.getEnderGuardianAction().ordinal();
-    }
-
-    public int getAnimTick() {
-        return this.noActionTime;  // is ticksInCurrentAction --> noActionTime
-    }
+//    public void setAnimID(int id) {
+//        this.setEnderGuardianAction(EnderGuardianAction.values()[id]);
+//        this.noActionTime = 0;  // is ticksInCurrentAction --> noActionTime
+//    }
+//
+//    public void setAnimTick(int tick) {
+//        this.noActionTime = tick;  // is ticksInCurrentAction --> noActionTime
+//    }
+//
+//    public int getAnimID() {
+//        return this.getEnderGuardianAction().ordinal();
+//    }
+//
+//    public int getAnimTick() {
+//        return this.noActionTime;  // is ticksInCurrentAction --> noActionTime
+//    }
 
     public EnderGuardianAction getEnderGuardianAction() {
         return this.enderGuardianAction;
@@ -251,6 +246,7 @@ public class EnderGuardian extends AbstractBoss {
         if (action == EnderGuardianAction.LONG_CASTING) {
             this.wingFlapTime = 0;
         }
+        this.ticksInAction = 0;
     }
 
     @Override

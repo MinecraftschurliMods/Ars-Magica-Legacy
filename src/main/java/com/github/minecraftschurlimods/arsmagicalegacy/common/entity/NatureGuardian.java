@@ -11,21 +11,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-// TODO aiStep()
+// TODO aiStep() maybe spawnParticles()
 // TODO spawnParticles() missing
 // TODO registerGoal()
-// TODO getHeldItem() missing
-// TODO setItemStackToSlot() missing
 
 public class NatureGuardian extends AbstractBoss {
     private float tendrilRotation;
     private boolean hasSickle = true;
-    private float last_rotation_x_main = 0;
-    private float last_rotation_x_shield = 0;
-    private float last_rotation_y_main = 0;
-    private float last_rotation_y_shield = 0;
-    private float last_rotation_z_main = 0;
-    private float last_rotation_z_shield = 0;
+//    private float last_rotation_x_main = 0;
+//    private float last_rotation_x_shield = 0;
+//    private float last_rotation_y_main = 0;
+//    private float last_rotation_y_shield = 0;
+//    private float last_rotation_z_main = 0;
+//    private float last_rotation_z_shield = 0;
     private float spinRotation = 0;
     private NatureGuardianAction natureGuardianAction;
 
@@ -116,6 +114,7 @@ public class NatureGuardian extends AbstractBoss {
             //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
         this.natureGuardianAction = action;
+        this.ticksInAction = 0;
     }
 
     public boolean isNatureGuardianActionValid(NatureGuardianAction action) {

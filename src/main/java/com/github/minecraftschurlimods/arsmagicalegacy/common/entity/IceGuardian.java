@@ -6,15 +6,17 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-// TODO aiStep() IceGuardian
+import java.util.List;
+
+// TODO aiStep() maybe spawnParticles()
 // TODO registerGoal()
 // TODO spawnParticles() missing
 // TODO setIceGuardianAction() Network Handler?
-// TODO setIsCastingSpell() IDLE is not being used
 
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
@@ -52,6 +54,20 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        if (this.level.isClientSide()) {
+            this.updateRotations();
+            //this.spawnParticles();
+        } else {
+            if (this.tickCount % 100 == 0) {
+                List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(0, -3, 0));
+                for (LivingEntity e : entities) {
+                    if (e != this) {
+                        e.hurt(DamageSource.ON_FIRE, 5);
+                    }
+                }
+            }
+        }
+
         super.aiStep();
     }
 
@@ -116,6 +132,7 @@ public class IceGuardian extends AbstractBoss {
             //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
         }
         this.iceGuardianAction = action;
+        this.ticksInAction = 0;
     }
     
     @Override

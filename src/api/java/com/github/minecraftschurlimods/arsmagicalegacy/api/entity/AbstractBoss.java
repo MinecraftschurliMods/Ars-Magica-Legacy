@@ -27,6 +27,7 @@ import java.util.Set;
 public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
     private final ServerBossEvent bossEvent;
     private int ticksSinceLastPlayerScan = 0;
+    protected int ticksInAction = 0;
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level) {
         this(type, level, BossEvent.BossBarColor.PINK);
@@ -81,6 +82,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 }
             }
         }
+        ticksInAction++;
     }
 
     @Override
@@ -114,6 +116,10 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Nullable
     protected SoundEvent getAttackSound() {
         return null;
+    }
+
+    public int getTicksInAction() {
+        return ticksInAction;
     }
 
     private void updatePlayers() {
