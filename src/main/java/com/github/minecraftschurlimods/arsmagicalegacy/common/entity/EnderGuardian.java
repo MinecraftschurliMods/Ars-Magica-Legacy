@@ -222,11 +222,11 @@ public class EnderGuardian extends AbstractBoss {
 
 //    public void setAnimID(int id) {
 //        this.setEnderGuardianAction(EnderGuardianAction.values()[id]);
-//        this.noActionTime = 0;  // is ticksInCurrentAction --> noActionTime
+//        this.ticksInAction = 0;
 //    }
 //
 //    public void setAnimTick(int tick) {
-//        this.noActionTime = tick;  // is ticksInCurrentAction --> noActionTime
+//        this.ticksInAction = tick;
 //    }
 //
 //    public int getAnimID() {
@@ -234,7 +234,7 @@ public class EnderGuardian extends AbstractBoss {
 //    }
 //
 //    public int getAnimTick() {
-//        return this.noActionTime;  // is ticksInCurrentAction --> noActionTime
+//        return this.ticksInAction;
 //    }
 
     public EnderGuardianAction getEnderGuardianAction() {
