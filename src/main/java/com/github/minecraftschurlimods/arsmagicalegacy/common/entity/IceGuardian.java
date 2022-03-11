@@ -73,7 +73,7 @@ public class IceGuardian extends AbstractBoss {
         if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
         } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
-            pAmount *= 2.0f;
+            pAmount *= 2f;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -81,7 +81,7 @@ public class IceGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         // LaunchArm
         // Smash
         // StrikeAttack

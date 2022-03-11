@@ -38,9 +38,8 @@ public class WaterGuardian extends AbstractBoss {
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
-        setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        setPathfindingMalus(BlockPathTypes.WATER, 0F);
         waterGuardianAction = WaterGuardianAction.IDLE;
-        entityData.define(IS_CLONE, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -91,11 +90,11 @@ public class WaterGuardian extends AbstractBoss {
         } else if (hasClones()) {
             clearClones();
         } else if (!isClone() && random.nextInt(10) < 6) {
-            level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1.0f, 0.4f + random.nextFloat() * 0.6f);
+            level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
             return false;
         }
         if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount *= 2.0f;
+            pAmount *= 2f;
         } else if (pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
             pAmount = 0;
         } else if (pSource == DamageSource.FREEZE) {
@@ -107,7 +106,8 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
+        goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
         // ChaosWaterBolt
         // CloneSelf
         // SpinAttack
@@ -133,12 +133,12 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1F);
     }
 
     @Override
     public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override

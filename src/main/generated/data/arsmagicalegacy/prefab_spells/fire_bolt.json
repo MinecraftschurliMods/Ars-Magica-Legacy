@@ -1,0 +1,20 @@
+{
+  "spell": {
+    "name": {
+      "text": "Fire Bolt"
+    },
+    "spell": {
+      "shape_groups": [
+        [
+          "arsmagicalegacy:projectile"
+        ]
+      ],
+      "spell_stack": [
+        "arsmagicalegacy:fire_damage",
+        "arsmagicalegacy:ignition"
+      ],
+      "data": {}
+    },
+    "icon": "arsmagicalegacy:enchant-orange-3"
+  }
+}

@@ -70,7 +70,7 @@ public class EnderGuardian extends AbstractBoss {
         switch (getEnderGuardianAction()) {
             case LONG_CASTING:
                 if (ticksInAction == 32) {
-                    level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                    level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
                 }
                 break;
             case CHARGE:
@@ -80,7 +80,7 @@ public class EnderGuardian extends AbstractBoss {
                 break;
         }
         if (shouldFlapWings() && wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
-            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
         }
     }
 
@@ -121,7 +121,7 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         // EnderBolt
         // EnderRush
         // EnderTorrent

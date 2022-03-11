@@ -78,8 +78,8 @@ public class LifeGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() != null && pSource.getEntity() instanceof LivingEntity) {
-            for (LivingEntity minion : minions) {
-                minion.setLastHurtByMob((LivingEntity) pSource.getEntity());
+            for (LivingEntity e : minions) {
+                e.setLastHurtByMob((LivingEntity) pSource.getEntity());
             }
         }
         return super.hurt(pSource, pAmount);
@@ -88,9 +88,9 @@ public class LifeGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
-        // ExecuteSpellGoal (HealSelf)
-        // ExecuteSpellGoal (Nausea)
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 16, 80));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 16, 4));
         // SummonAllies
     }
 

@@ -1,0 +1,19 @@
+{
+  "spell": {
+    "name": {
+      "text": "Heal Self"
+    },
+    "spell": {
+      "shape_groups": [
+        [
+          "arsmagicalegacy:self"
+        ]
+      ],
+      "spell_stack": [
+        "arsmagicalegacy:heal"
+      ],
+      "data": {}
+    },
+    "icon": "arsmagicalegacy:protect-royal-3"
+  }
+}

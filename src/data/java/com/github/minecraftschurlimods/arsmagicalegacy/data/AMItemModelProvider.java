@@ -72,11 +72,11 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_PLANKS);
         blockItem(WITCHWOOD_SLAB);
         blockItem(WITCHWOOD_STAIRS);
-        withExistingParent(WITCHWOOD_FENCE, "witchwood_fence_inventory");
+        withExistingParent(WITCHWOOD_FENCE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_fence_inventory"));
         blockItem(WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
-        withExistingParent(WITCHWOOD_TRAPDOOR, "witchwood_trapdoor_bottom");
-        withExistingParent(WITCHWOOD_BUTTON, "witchwood_button_inventory");
+        withExistingParent(WITCHWOOD_TRAPDOOR, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_trapdoor_bottom"));
+        withExistingParent(WITCHWOOD_BUTTON, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_button_inventory"));
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
@@ -165,8 +165,8 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item   The item to generate the model for.
      * @param parent The parent model to use.
      */
-    private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, String parent) {
-        return withExistingParent(item.getId().getPath(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/" + parent));
+    private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, ResourceLocation parent) {
+        return withExistingParent(item.getId().getPath(), parent);
     }
 
     /**
@@ -175,7 +175,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
-        return withExistingParent(item, item.get().getBlock().getRegistryName().getPath());
+        return withExistingParent(item, new ResourceLocation(item.get().getBlock().getRegistryName().getNamespace(), "block/" + item.get().getBlock().getRegistryName().getPath()));
     }
 
     /**
@@ -184,7 +184,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private void spawnEggItem(RegistryObject<? extends SpawnEggItem> item) {
-        withExistingParent(item, ":item/template_spawn_egg");
+        withExistingParent(item, new ResourceLocation("item/template_spawn_egg"));
     }
 
     /**

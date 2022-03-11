@@ -65,9 +65,9 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE) {
-            pAmount *= 2.0f;
+            pAmount *= 2f;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount /= 4.0f;
+            pAmount /= 4f;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -75,7 +75,7 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         // Smash
         // StrikeAttack
         // ThrowRock
@@ -83,12 +83,12 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1F);
     }
 
     @Override
     public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10.0F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override

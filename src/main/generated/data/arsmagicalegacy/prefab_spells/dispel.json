@@ -1,0 +1,19 @@
+{
+  "spell": {
+    "name": {
+      "text": "Dispel"
+    },
+    "spell": {
+      "shape_groups": [
+        [
+          "arsmagicalegacy:self"
+        ]
+      ],
+      "spell_stack": [
+        "arsmagicalegacy:dispel"
+      ],
+      "data": {}
+    },
+    "icon": "arsmagicalegacy:fog-magenta-3"
+  }
+}

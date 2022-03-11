@@ -1,0 +1,20 @@
+{
+  "spell": {
+    "name": {
+      "text": "Lightning Bolt"
+    },
+    "spell": {
+      "shape_groups": [
+        [
+          "arsmagicalegacy:projectile"
+        ]
+      ],
+      "spell_stack": [
+        "arsmagicalegacy:lightning_damage",
+        "arsmagicalegacy:damage"
+      ],
+      "data": {}
+    },
+    "icon": "arsmagicalegacy:lighting-eerie-3"
+  }
+}
