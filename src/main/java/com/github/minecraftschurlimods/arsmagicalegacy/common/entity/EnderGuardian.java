@@ -2,33 +2,24 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.mojang.math.Vector3f;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import org.jetbrains.annotations.Nullable;
-
-// TODO hurt() addDeferredTargetSet()
-// TODO registerGoal()
 
 public class EnderGuardian extends AbstractBoss {
     private int wingFlapTime = 0;
@@ -37,15 +28,12 @@ public class EnderGuardian extends AbstractBoss {
     private Vector3f spawn;
     private EnderGuardianAction enderGuardianAction;
 
-    private static final EntityDataAccessor<Integer> ATTACK_TARGET = SynchedEntityData.defineId(EnderGuardian.class, EntityDataSerializers.INT);
-
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.entityData.define(ATTACK_TARGET, -1);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 490D).add(Attributes.ARMOR, 16);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 490D).add(Attributes.ARMOR, 16);
     }
 
     @Override
@@ -71,34 +59,28 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         super.aiStep();
-
-        if (this.spawn == null) {
-            this.spawn = new Vector3f(this.position());
+        if (spawn == null) {
+            spawn = new Vector3f(position());
         }
-        this.wingFlapTime++;
-        this.ticksSinceLastAttack++;
-
-        if (this.getDeltaMovement().y() < 0) {
-            this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() * 0.7999999f, this.getDeltaMovement().z());
+        wingFlapTime++;
+        ticksSinceLastAttack++;
+        if (getDeltaMovement().y() < 0) {
+            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.7999999f, getDeltaMovement().z());
         }
-
-        switch (this.getEnderGuardianAction()) {
+        switch (getEnderGuardianAction()) {
             case LONG_CASTING:
-                if (this.ticksInAction == 32) {
-                    this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                if (ticksInAction == 32) {
+                    level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
                 }
                 break;
             case CHARGE:
-                if (this.getNoActionTime() == 0) {
-                    this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() + 1.5f, this.getDeltaMovement().z());
+                if (getNoActionTime() == 0) {
+                    setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5f, getDeltaMovement().z());
                 }
                 break;
-            default:
-                break;
         }
-
-        if (this.shouldFlapWings() && this.wingFlapTime % (50 * this.getWingFlapSpeed()) == 0) {
-            this.level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+        if (shouldFlapWings() && wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
+            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
         }
     }
 
@@ -107,37 +89,30 @@ public class EnderGuardian extends AbstractBoss {
         if (pSource.isMagic()) {
             pAmount *= 2f;
         }
-
         if (pSource.getEntity() instanceof EnderMan) {
             pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
-            this.heal(10);
+            heal(10);
             return false;
         }
-
         if (pSource == DamageSource.OUT_OF_WORLD) {
-            if (this.spawn != null) {
-                this.setPos(this.spawn.x(), this.spawn.y(), this.spawn.z());
-                this.setEnderGuardianAction(EnderGuardianAction.IDLE);
-                if (!this.level.isClientSide()) {
-                    //ArsMagica2.proxy.addDeferredTargetSet(this, null);
-                }
+            if (spawn != null) {
+                moveTo(spawn.x(), spawn.y(), spawn.z());
+                setEnderGuardianAction(EnderGuardianAction.IDLE);
             } else {
-                this.removeAfterChangingDimensions();
+                removeAfterChangingDimensions();
             }
             return false;
         }
-
-        this.ticksSinceLastAttack = 0;
-
+        ticksSinceLastAttack = 0;
         if (!level.isClientSide() && pSource.getEntity() != null && pSource.getEntity() instanceof Player) {
-            if (pSource == this.getLastDamageSource()) {
-                this.hitCount++;
-                if (this.hitCount > 5) {
-                    this.heal(pAmount / 4);
+            if (pSource == getLastDamageSource()) {
+                hitCount++;
+                if (hitCount > 5) {
+                    heal(pAmount / 4);
                 }
                 return false;
             } else {
-                this.hitCount = 1;
+                hitCount = 1;
             }
         }
         return super.hurt(pSource, pAmount);
@@ -146,34 +121,14 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // Shadowstep
-        // Enderwave
-        // OtherworldyRoar
-        // Protect
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        // EnderBolt
         // EnderRush
-        // Endertorrent
-        // Enderbolt
-    }
-
-    @Override
-    public LivingEntity getTarget() {
-        if (!this.level.isClientSide()) {
-            return super.getTarget();
-        } else {
-            return (LivingEntity) this.level.getEntity(this.entityData.get(ATTACK_TARGET));
-        }
-    }
-
-    @Override
-    public void setTarget(LivingEntity pLivingEntity) {
-        super.setTarget(pLivingEntity);
-        if (!this.level.isClientSide()) {
-            if (pLivingEntity != null) {
-                this.entityData.set(ATTACK_TARGET, pLivingEntity.getId());
-            } else {
-                this.entityData.set(ATTACK_TARGET, -1);
-            }
-        }
+        // EnderTorrent
+        // EnderWave
+        // OtherworldlyRoar
+        // Protect
+        // Shadowstep
     }
 
     @Override
@@ -182,71 +137,43 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public int getTicksSinceLastAttack() {
-        return this.ticksSinceLastAttack;
+        return ticksSinceLastAttack;
     }
 
     public int getWingFlapTime() {
-        return this. wingFlapTime;
+        return wingFlapTime;
     }
 
     public float getWingFlapSpeed() {
-        switch (this.getEnderGuardianAction()) {
-            case CASTING:
-                return 0.5f;
-            case STRIKE:
-                return 0.4f;
-            case CHARGE:
-                if (this.getTicksInAction() < 15) {
-                    return 0.25f;
-                }
-                return 0.75f;
-            default:
-                return 0.25f;
-        }
+        return switch (getEnderGuardianAction()) {
+            case CASTING -> 0.5f;
+            case CHARGE -> getTicksInAction() < 15 ? 0.25f : 0.75f;
+            case STRIKE -> 0.4f;
+            default -> 0.25f;
+        };
     }
 
     public boolean shouldFlapWings() {
-        return this.getEnderGuardianAction() != EnderGuardianAction.LONG_CASTING && this.getEnderGuardianAction() != EnderGuardianAction.SHIELD_BASH;
+        return getEnderGuardianAction() != EnderGuardianAction.LONG_CASTING && getEnderGuardianAction() != EnderGuardianAction.SHIELD_BASH;
     }
 
     @Override
     public boolean hasEffect(final MobEffect pPotion) {
-        if (pPotion == AMMobEffects.REFLECT.get() && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
+        if ((pPotion == AMMobEffects.REFLECT.get() || pPotion == AMMobEffects.MAGIC_SHIELD.get()) && (getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING))
             return true;
-        }
-        if (pPotion == AMMobEffects.MAGIC_SHIELD.get() && (this.getEnderGuardianAction() == EnderGuardianAction.SHIELD_BASH || this.getEnderGuardianAction() == EnderGuardianAction.LONG_CASTING)) {
-            return true;
-        }
         return super.hasEffect(pPotion);
     }
 
-//    public void setAnimID(int id) {
-//        this.setEnderGuardianAction(EnderGuardianAction.values()[id]);
-//        this.ticksInAction = 0;
-//    }
-//
-//    public void setAnimTick(int tick) {
-//        this.ticksInAction = tick;
-//    }
-//
-//    public int getAnimID() {
-//        return this.getEnderGuardianAction().ordinal();
-//    }
-//
-//    public int getAnimTick() {
-//        return this.ticksInAction;
-//    }
-
     public EnderGuardianAction getEnderGuardianAction() {
-        return this.enderGuardianAction;
+        return enderGuardianAction;
     }
 
     public void setEnderGuardianAction(final EnderGuardianAction action) {
-        this.enderGuardianAction = action;
+        enderGuardianAction = action;
         if (action == EnderGuardianAction.LONG_CASTING) {
-            this.wingFlapTime = 0;
+            wingFlapTime = 0;
         }
-        this.ticksInAction = 0;
+        ticksInAction = 0;
     }
 
     @Override
@@ -261,28 +188,28 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.enderGuardianAction = EnderGuardianAction.CASTING;
-        } else {
-            this.enderGuardianAction = EnderGuardianAction.IDLE;
+        if (isCastingSpell) {
+            enderGuardianAction = EnderGuardianAction.CASTING;
+        } else if (enderGuardianAction == EnderGuardianAction.CASTING) {
+            enderGuardianAction = EnderGuardianAction.IDLE;
         }
     }
 
     public enum EnderGuardianAction {
         IDLE(-1),
-        STRIKE(15),
-        SHIELD_BASH(15),
         CASTING(-1),
+        CHARGE(-1),
         LONG_CASTING(-1),
-        CHARGE(-1);
+        SHIELD_BASH(15),
+        STRIKE(15);
 
         private final int maxActionTime;
 
-        private EnderGuardianAction(int maxTime){
+        EnderGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
 
-        public int getMaxActionTime(){
+        public int getMaxActionTime() {
             return maxActionTime;
         }
     }

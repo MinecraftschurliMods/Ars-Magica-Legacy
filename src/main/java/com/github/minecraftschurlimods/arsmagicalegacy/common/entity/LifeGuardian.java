@@ -1,10 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -13,28 +17,23 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-// TODO aiStep() Particle
-// TODO registerGoal()
 
 public class LifeGuardian extends AbstractBoss {
-    private ArrayList<LivingEntity> minions = new ArrayList<>();
-    private ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
+    private static final EntityDataAccessor<Integer> MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
+    private final ArrayList<LivingEntity> minions = new ArrayList<>();
+    private final ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
     private LifeGuardianAction lifeGuardianAction;
-    private static final EntityDataAccessor<Integer> DATA_MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
 
     public LifeGuardian(EntityType<? extends LifeGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
-        this.entityData.define(DATA_MINION_COUNT, 0);
+        this.entityData.define(MINION_COUNT, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue());
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue());
     }
 
     @Override
@@ -59,21 +58,19 @@ public class LifeGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if(!this.level.isClientSide()) {
-            this.minions.addAll(this.queuedMinions);
-            this.queuedMinions.clear();
-            this.minions.removeIf(minion -> minion == null || minion.isDeadOrDying());
+        if (!level.isClientSide()) {
+            minions.addAll(queuedMinions);
+            queuedMinions.clear();
+            minions.removeIf(minion -> minion == null || minion.isDeadOrDying());
         }
-
-        this.entityData.set(DATA_MINION_COUNT, this.minions.size());
-
-//        if (this.tickCount % 100 == 0) {
-//            for (LivingEntity e : this.minions) {
-//                // Particle
-//            }
-//        }
-        if (this.tickCount % 40 == 0) {
-            this.heal(2f);
+        entityData.set(MINION_COUNT, minions.size());
+        if (tickCount % 100 == 0) {
+            for (LivingEntity e : minions) {
+                // Particles
+            }
+        }
+        if (tickCount % 40 == 0) {
+            heal(2f);
         }
         super.aiStep();
     }
@@ -81,7 +78,7 @@ public class LifeGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() != null && pSource.getEntity() instanceof LivingEntity) {
-            for (LivingEntity minion : this.minions) {
+            for (LivingEntity minion : minions) {
                 minion.setLastHurtByMob((LivingEntity) pSource.getEntity());
             }
         }
@@ -91,9 +88,9 @@ public class LifeGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // ExecuteSpellGoal (Dispel)
-        // ExecuteSpellGoal (healSelf)
-        // ExecuteSpellGoal (nauseate)
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        // ExecuteSpellGoal (HealSelf)
+        // ExecuteSpellGoal (Nausea)
         // SummonAllies
     }
 
@@ -103,16 +100,16 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     public int getNumMinions() {
-        return this.entityData.get(DATA_MINION_COUNT);
+        return entityData.get(MINION_COUNT);
     }
 
     public LifeGuardianAction getLifeGuardianAction() {
-        return this.lifeGuardianAction;
+        return lifeGuardianAction;
     }
 
     public void setLifeGuardianAction(final LifeGuardianAction action) {
-        this.lifeGuardianAction = action;
-        this.ticksInAction = 0;
+        lifeGuardianAction = action;
+        ticksInAction = 0;
     }
 
     @Override
@@ -127,10 +124,10 @@ public class LifeGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.lifeGuardianAction = LifeGuardianAction.CASTING;
-        } else {
-            this.lifeGuardianAction = LifeGuardianAction.IDLE;
+        if (isCastingSpell) {
+            lifeGuardianAction = LifeGuardianAction.CASTING;
+        } else if (lifeGuardianAction == LifeGuardianAction.CASTING) {
+            lifeGuardianAction = LifeGuardianAction.IDLE;
         }
     }
 
@@ -140,11 +137,11 @@ public class LifeGuardian extends AbstractBoss {
 
         private final int maxActionTime;
 
-        private LifeGuardianAction(int maxTime){
+        LifeGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
 
-        public int getMaxActionTime(){
+        public int getMaxActionTime() {
             return maxActionTime;
         }
     }

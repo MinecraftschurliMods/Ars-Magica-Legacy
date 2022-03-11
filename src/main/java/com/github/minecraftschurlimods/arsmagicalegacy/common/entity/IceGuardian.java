@@ -1,7 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,11 +16,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-
-// TODO aiStep() maybe spawnParticles()
-// TODO registerGoal()
-// TODO spawnParticles() missing
-// TODO setIceGuardianAction() Network Handler?
 
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
@@ -56,10 +55,9 @@ public class IceGuardian extends AbstractBoss {
     public void aiStep() {
         if (this.level.isClientSide()) {
             this.updateRotations();
-            //this.spawnParticles();
         } else {
             if (this.tickCount % 100 == 0) {
-                List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(0, -3, 0));
+                List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0));
                 for (LivingEntity e : entities) {
                     if (e != this) {
                         e.hurt(DamageSource.ON_FIRE, 5);
@@ -67,7 +65,6 @@ public class IceGuardian extends AbstractBoss {
                 }
             }
         }
-
         super.aiStep();
     }
 
@@ -84,57 +81,54 @@ public class IceGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // ExecuteSpellGoal (dispel)
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        // LaunchArm
         // Smash
         // StrikeAttack
-        // WinterGuardianLaunchArm
     }
 
     public void returnOneArm() {
-        if (!this.hasLeftArm) {
-            this.hasLeftArm = true;
-        } else if (!this.hasRightArm) {
-            this.hasRightArm = true;
+        if (!hasLeftArm) {
+            hasLeftArm = true;
+        } else if (!hasRightArm) {
+            hasRightArm = true;
         }
     }
 
     public void launchOneArm() {
-        if (this.hasLeftArm) {
-            this.hasLeftArm = false;
-        } else if (this.hasRightArm) {
-            this.hasRightArm = false;
+        if (hasLeftArm) {
+            hasLeftArm = false;
+        } else if (hasRightArm) {
+            hasRightArm = false;
         }
     }
 
     public boolean hasLeftArm() {
-        return this.hasLeftArm;
+        return hasLeftArm;
     }
 
     public boolean hasRightArm() {
-        return this.hasRightArm;
+        return hasRightArm;
     }
 
-    private void updateRotations(){
-        this.orbitRotation += 2f;
-        this.orbitRotation %= 360;
+    private void updateRotations() {
+        orbitRotation += 2f;
+        orbitRotation %= 360;
     }
 
-    public float getOrbitRotation(){
-        return this.orbitRotation;
+    public float getOrbitRotation() {
+        return orbitRotation;
     }
 
     public IceGuardianAction getIceGuardianAction() {
-        return this.iceGuardianAction;
+        return iceGuardianAction;
     }
 
     public void setIceGuardianAction(final IceGuardianAction action) {
-        if (!this.level.isClientSide()) {
-            //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
-        }
-        this.iceGuardianAction = action;
-        this.ticksInAction = 0;
+        iceGuardianAction = action;
+        ticksInAction = 0;
     }
-    
+
     @Override
     public boolean canCastSpell() {
         return false;
@@ -147,10 +141,10 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.iceGuardianAction = IceGuardianAction.CASTING;
-        } else {
-            this.iceGuardianAction = IceGuardianAction.IDLE;
+        if (isCastingSpell) {
+            iceGuardianAction = IceGuardianAction.CASTING;
+        } else if (iceGuardianAction == IceGuardianAction.CASTING) {
+            iceGuardianAction = IceGuardianAction.IDLE;
         }
     }
 
@@ -160,11 +154,11 @@ public class IceGuardian extends AbstractBoss {
 
         private final int maxActionTime;
 
-        private IceGuardianAction(int maxTime){
+        IceGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
 
-        public int getMaxActionTime(){
+        public int getMaxActionTime() {
             return maxActionTime;
         }
     }

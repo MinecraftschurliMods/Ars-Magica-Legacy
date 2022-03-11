@@ -27,10 +27,10 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     @Override
     public boolean canUse() {
         cooldownTicks--;
-        boolean execute = this.caster.canCastSpell() && this.cooldownTicks <= 0;
+        boolean execute = caster.canCastSpell() && cooldownTicks <= 0;
         if (execute) {
-            if (this.result == SpellCastResult.EFFECT_FAILED) {
-                this.hasCasted = false;
+            if (result == SpellCastResult.EFFECT_FAILED) {
+                hasCasted = false;
             } else {
                 execute = false;
             }
@@ -40,49 +40,46 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !this.hasCasted && this.caster.getTarget() != null && !this.caster.getTarget().isDeadOrDying();
+        return !hasCasted && caster.getTarget() != null && !caster.getTarget().isDeadOrDying();
     }
 
     @Override
     public void stop() {
         super.stop();
-        this.caster.setIsCastingSpell(false);
-        this.cooldownTicks = cooldown;
-        this.hasCasted = true;
-        this.castTicks = 0;
+        caster.setIsCastingSpell(false);
+        cooldownTicks = cooldown;
+        hasCasted = true;
+        castTicks = 0;
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.caster.getLookControl().setLookAt(this.caster, 30, 30);
-        if (this.caster.distanceToSqr(this.caster.getTarget()) > 64) {
-            double deltaZ = this.caster.getTarget().getZ() - this.caster.getZ();
-            double deltaX = this.caster.getTarget().getX() - this.caster.getX();
-
+        caster.getLookControl().setLookAt(caster, 30, 30);
+        if (caster.getTarget() != null && caster.distanceToSqr(caster.getTarget()) > 64) {
+            double deltaZ = caster.getTarget().getZ() - caster.getZ();
+            double deltaX = caster.getTarget().getX() - caster.getX();
             double angle = -Math.atan2(deltaZ, deltaX);
-
-            double newZ = this.caster.getTarget().getZ() + (Math.sin(angle) * 6);
-            double newX = this.caster.getTarget().getX() + (Math.cos(angle) * 6);
-
-            this.caster.getNavigation().moveTo(newX, this.caster.getTarget().getY(), newZ, 0.5f);
-//        } else if (!this.caster.see) { // maybe falsch
-//            this.caster.getNavigation().moveTo(this.caster.getTarget(), 0.5f);
+            double newZ = caster.getTarget().getZ() + (Math.sin(angle) * 6);
+            double newX = caster.getTarget().getX() + (Math.cos(angle) * 6);
+            caster.getNavigation().moveTo(newX, caster.getTarget().getY(), newZ, 0.5f);
+//        } else if (!caster.see) { // maybe falsch
+//            caster.getNavigation().moveTo(caster.getTarget(), 0.5f);
         } else {
-            if (this.caster.isCastingSpell()) {
-                this.caster.setIsCastingSpell(true);
+            if (caster.isCastingSpell()) {
+                caster.setIsCastingSpell(true);
             }
-
-            this.castTicks++;
-            if (this.castTicks >= duration) {
-                if (!this.caster.level.isClientSide() && this.caster instanceof AbstractBoss boss) {
-                    this.caster.level.playSound(null, this.caster, boss.getAttackSound(), SoundSource.HOSTILE, 1, 1);
+            castTicks++;
+            if (castTicks >= duration) {
+                if (!caster.level.isClientSide() && caster instanceof AbstractBoss boss && boss.getAttackSound() != null) {
+                    caster.level.playSound(null, caster, boss.getAttackSound(), SoundSource.HOSTILE, 1, 1);
                 }
-                this.caster.lookAt(this.caster.getTarget(), 180, 180);
+                if (caster.getTarget() != null) {
+                    caster.lookAt(caster.getTarget(), 180, 180);
+                }
                 spell.cast(caster, caster.level, 0, false, false);
-                this.stop();
+                stop();
             }
         }
-
     }
 }

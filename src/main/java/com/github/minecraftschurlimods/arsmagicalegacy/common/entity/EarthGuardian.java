@@ -1,8 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
@@ -11,17 +15,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 
-// TODO registerGoal()
-// TODO setEarthGuardianAction() Network Handler?
-
 public class EarthGuardian extends AbstractBoss {
-    private float rodRotation = 0;
     public boolean leftArm = false;
+    private float rodRotation = 0;
     private EarthGuardianAction earthGuardianAction;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
@@ -29,7 +29,7 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 140).add(Attributes.ARMOR, 23);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 140).add(Attributes.ARMOR, 23);
     }
 
     @Override
@@ -54,12 +54,11 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (this.ticksInAction > 40 && !level.isClientSide()) {
-            this.setEarthGuardianAction(EarthGuardianAction.IDLE);
+        if (ticksInAction > 40 && !level.isClientSide()) {
+            setEarthGuardianAction(EarthGuardianAction.IDLE);
         } else if (level.isClientSide()) {
-            this.updateRotations();
+            updateRotations();
         }
-
         super.aiStep();
     }
 
@@ -76,10 +75,10 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // ExecuteSpellGoal (Dispel)
-        // ThrowRock
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
         // Smash
         // StrikeAttack
+        // ThrowRock
     }
 
     @Override
@@ -103,32 +102,29 @@ public class EarthGuardian extends AbstractBoss {
         }
     }
 
-    public boolean shouldRenderRock(){
-        return this.getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && this.ticksInAction > 5 && ticksInAction < 27;
+    public boolean shouldRenderRock() {
+        return getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 5 && ticksInAction < 27;
     }
 
-    public float getRodRotations(){
-        return this.rodRotation;
+    public float getRodRotations() {
+        return rodRotation;
     }
 
-    private void updateRotations(){
-        this.rodRotation += 0.02f;
-        this.rodRotation %= 360;
+    private void updateRotations() {
+        rodRotation += 0.02f;
+        rodRotation %= 360;
     }
 
     public EarthGuardianAction getEarthGuardianAction() {
-        return this.earthGuardianAction;
+        return earthGuardianAction;
     }
 
     public void setEarthGuardianAction(final EarthGuardianAction action) {
-        if (this.getEarthGuardianAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
-            this.leftArm = !this.leftArm;
+        earthGuardianAction = action;
+        ticksInAction = 0;
+        if (getEarthGuardianAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
+            leftArm = !leftArm;
         }
-//        } else if (!level.isClientSide()) {
-//            AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
-//        }
-        this.earthGuardianAction = action;
-        this.ticksInAction = 0;
     }
 
     @Override
@@ -143,27 +139,27 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.earthGuardianAction = EarthGuardianAction.CASTING;
-        } else {
-            this.earthGuardianAction = EarthGuardianAction.IDLE;
+        if (isCastingSpell) {
+            earthGuardianAction = EarthGuardianAction.CASTING;
+        } else if (earthGuardianAction == EarthGuardianAction.CASTING) {
+            earthGuardianAction = EarthGuardianAction.IDLE;
         }
     }
 
     public enum EarthGuardianAction {
         IDLE(-1),
-        STRIKE(15),
         CASTING(-1),
+        STRIKE(15),
         THROWING_ROCK(30);
 
         private final int maxActionTime;
 
-        private EarthGuardianAction(int maxTime){
+        EarthGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
-        public int getMaxActionTime(){
+
+        public int getMaxActionTime() {
             return maxActionTime;
         }
-
     }
 }

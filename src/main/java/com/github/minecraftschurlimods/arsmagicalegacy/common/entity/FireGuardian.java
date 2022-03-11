@@ -1,7 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,17 +13,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
-// TODO nova(), flamethrower() & doFlameShield() maybe Particles
-// TODO registerGoal()
-// TODO setFireGuardianAction() Particles and Network Handler?
 
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground = false;
@@ -28,11 +25,10 @@ public class FireGuardian extends AbstractBoss {
 
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
-        this.fireImmune();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
     }
 
     @Override
@@ -41,7 +37,7 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.FIRE_GUARDIAN_HURT.get();
     }
 
@@ -57,31 +53,25 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (this.ticksInAction == 30 && this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (ticksInAction == 30 && getFireGuardianAction() == FireGuardianAction.SPINNING) {
             nova();
         }
-
-        if (this.ticksInAction > 13 && this.getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
-            if (this.getTarget() != null) {
-                this.lookAt(this.getTarget(), 10, 10);
+        if (ticksInAction > 13 && getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
+            if (getTarget() != null) {
+                lookAt(getTarget(), 10, 10);
             }
             flamethrower();
         }
-
         doFlameShield();
         super.aiStep();
     }
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (this.isUnderground && this.getFireGuardianAction() != FireGuardianAction.SPINNING) {
-            return false;
-        } else {
-            if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
-                ++this.hitCount;
-            }
+        if (isUnderground && getFireGuardianAction() != FireGuardianAction.SPINNING) return false;
+        if (getFireGuardianAction() == FireGuardianAction.SPINNING) {
+            ++hitCount;
         }
-
         if (pSource == DamageSource.DROWN) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.FREEZE) {
@@ -93,28 +83,27 @@ public class FireGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        // ExecuteSpellGoal (FireBolt)
         // ExecuteSpellGoal (FireRain)
-        // ExecuteSpellGoal (Dispel)
+        // ExecuteSpellGoal (MeltArmor)
         // Dive
-        // ExecuteSpellGoal (meltAmor)
         // Flamethrower
-        // ExecuteSpellGoal (fireBolt)
     }
 
     @Override
     protected int calculateFallDamage(final float pDistance, final float pDamageMultiplier) {
-        if (this.getFireGuardianAction() == FireGuardianAction.SPINNING) {
-            this.isUnderground = true;
+        if (getFireGuardianAction() == FireGuardianAction.SPINNING) {
+            isUnderground = true;
         }
         return super.calculateFallDamage(pDistance, pDamageMultiplier);
     }
 
     public void nova() {
-        if (this.level.isClientSide()) {
-            // Particle stuff
+        if (level.isClientSide()) {
+            // Particles
         } else {
-            List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(0, -3, 0));
-            for (LivingEntity e : entities) {
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0))) {
                 if (e != this) {
                     e.hurt(DamageSource.ON_FIRE, 5);
                 }
@@ -123,12 +112,11 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public void flamethrower() {
-        Vec3 look = this.getLookAngle();
-        if (this.level.isClientSide()) {
-            // Particle stuff
+        Vec3 look = getLookAngle();
+        if (level.isClientSide()) {
+            // Particles
         } else {
-            List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5 , 2.5).expandTowards(look.x * 3, 0, look.z * 3));
-            for (LivingEntity e : entities) {
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3))) {
                 if (e != this) {
                     e.hurt(DamageSource.ON_FIRE, 5);
                 }
@@ -137,9 +125,9 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public void doFlameShield() {
-        if(!this.level.isClientSide()) {
-            for (Player p: this.level.players()) {
-                if (this.distanceToSqr(p) < 9) {
+        if (!level.isClientSide()) {
+            for (Player p : level.players()) {
+                if (distanceToSqr(p) < 9) {
                     p.hurt(DamageSource.ON_FIRE, 5);
                 }
             }
@@ -147,15 +135,15 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public boolean getIsUnderground() {
-        return this.isUnderground;
+        return isUnderground;
     }
 
     public boolean isBurning() {
-        return !this.isUnderground;
+        return !isUnderground;
     }
 
     public int getHitCount() {
-        return this.hitCount;
+        return hitCount;
     }
 
     @Override
@@ -164,23 +152,19 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public FireGuardianAction getFireGuardianAction() {
-        return this.fireGuardianAction;
+        return fireGuardianAction;
     }
 
     public void setFireGuardianAction(final FireGuardianAction action) {
         if (action == FireGuardianAction.SPINNING) {
-            // Particle
-            // this.addVelocity(0, 1.5, 0);
+            // Particles
+            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5, getDeltaMovement().z());
         } else {
-            this.hitCount = 0;
-            this.isUnderground = false;
+            hitCount = 0;
+            isUnderground = false;
         }
-
-        if (!level.isClientSide()) {
-            //AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
-        }
-        this.fireGuardianAction = action;
-        this.ticksInAction = 0;
+        fireGuardianAction = action;
+        ticksInAction = 0;
     }
 
     @Override
@@ -195,26 +179,26 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.fireGuardianAction = FireGuardianAction.CASTING;
-        } else {
-            this.fireGuardianAction = FireGuardianAction.IDLE;
+        if (isCastingSpell) {
+            fireGuardianAction = FireGuardianAction.CASTING;
+        } else if (fireGuardianAction == FireGuardianAction.CASTING) {
+            fireGuardianAction = FireGuardianAction.IDLE;
         }
     }
 
     public enum FireGuardianAction {
         IDLE(-1),
-        SPINNING(160),
         CASTING(-1),
-        LONG_CASTING(-1);
+        LONG_CASTING(-1),
+        SPINNING(160);
 
         private final int maxActionTime;
 
-        private FireGuardianAction(int maxTime){
+        FireGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
 
-        public int getMaxActionTime(){
+        public int getMaxActionTime() {
             return maxActionTime;
         }
     }

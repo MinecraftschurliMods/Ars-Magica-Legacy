@@ -1,26 +1,22 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-
-// TODO aiStep() (Goal & Particles)
-// TODO registerGoal()
-// TODO setAirGuardianAction() Network Handler
 
 public class AirGuardian extends AbstractBoss {
     private boolean useLeftArm = false;
-    private float spinRotation = 0;
     private float orbitRotation;
-    private int hitCount = 0;
-    private boolean firstTick = true;
+    private float spinRotation = 0;
     private AirGuardianAction airGuardianAction;
 
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
@@ -28,7 +24,7 @@ public class AirGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 220D).add(Attributes.ARMOR, 14);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 220D).add(Attributes.ARMOR, 14);
     }
 
     @Override
@@ -53,38 +49,22 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (firstTick) {
-            //this.goalSelector.addGoal(0, new SpawnLocationGoal(this, 0.5F, 5, 16, new Vec3(this)));
-            this.firstTick = false;
+        orbitRotation += 2f;
+        orbitRotation %= 360;
+        if (airGuardianAction == AirGuardianAction.SPINNING) {
+            spinRotation = (spinRotation - 40) % 360;
+            if (level.isClientSide()) {
+                // Particles
+            }
         }
-
-        this.orbitRotation += 2f;
-        this.orbitRotation %= 360;
-
-        switch(this.airGuardianAction) {
-            case IDLE:
-                break;
-            case SPINNING:
-                this.spinRotation = (this.spinRotation - 40) % 360;
-                if (this.level.isClientSide()) {
-                    // Particle
-                }
-                break;
-            default:
-                break;
+        if (getDeltaMovement().y() < 0) {
+            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.7999999f, getDeltaMovement().z());
         }
-
-        if (this.getDeltaMovement().y() < 0) {
-            this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() * 0.7999999f, this.getDeltaMovement().z());
-        }
-
-        if (this.getY() < 150) {
-            if (this.level.isClientSide()) {
-                // Particle
-            } else {
-                if (this.getY() < 145) {
-                    this.removeAfterChangingDimensions();
-                }
+        if (getY() < 150) {
+            if (level.isClientSide()) {
+                // Particles
+            } else if (getY() < 145) {
+                removeAfterChangingDimensions();
             }
         }
         super.aiStep();
@@ -92,7 +72,6 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        this.hitCount++;
         if (pSource.isMagic()) {
             pAmount /= 2;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
@@ -104,41 +83,35 @@ public class AirGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // Wander
-        // ExecuteSpellGoal (dispel)
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "boss_dispel")).spell(), 20, 50));
+        // Hurricane
         // SpawnWhirlwind
-        // Hurrican
-    }
-
-    public boolean useLeftArm() {
-        return this.useLeftArm;
-    }
-
-    public float getOrbitRotation() {
-        return this.orbitRotation;
     }
 
     @Override
     public boolean isPushable() {
-        return this.airGuardianAction != AirGuardianAction.SPINNING;
+        return airGuardianAction != AirGuardianAction.SPINNING;
+    }
+
+    public boolean useLeftArm() {
+        return useLeftArm;
+    }
+
+    public float getOrbitRotation() {
+        return orbitRotation;
     }
 
     public AirGuardianAction getAirGuardianAction() {
-        return this.airGuardianAction;
+        return airGuardianAction;
     }
 
     public void setAirGuardianAction(final AirGuardianAction action) {
-        this.spinRotation = 0;
-        this.hitCount = 0;
-
+        airGuardianAction = action;
+        spinRotation = 0;
+        ticksInAction = 0;
         if (action == AirGuardianAction.CASTING) {
-            this.useLeftArm = !this.useLeftArm;
+            useLeftArm = !useLeftArm;
         }
-//        if (!this.level.isClientSide()){
-//            AMNetHandler.INSTANCE.sendActionUpdateToAllAround(this);
-//        }
-        this.airGuardianAction = action;
-        this.ticksInAction = 0;
     }
 
     @Override
@@ -153,25 +126,25 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
-        if(isCastingSpell) {
-            this.airGuardianAction = AirGuardianAction.CASTING;
-        } else {
-            this.airGuardianAction = AirGuardianAction.IDLE;
+        if (isCastingSpell) {
+            airGuardianAction = AirGuardianAction.CASTING;
+        } else if (airGuardianAction == AirGuardianAction.CASTING) {
+            airGuardianAction = AirGuardianAction.IDLE;
         }
     }
 
     public enum AirGuardianAction {
         IDLE(-1),
-        SPINNING(160),
-        CASTING(-1);
+        CASTING(-1),
+        SPINNING(160);
 
         private final int maxActionTime;
 
-        private AirGuardianAction(int maxTime){
+        AirGuardianAction(int maxTime) {
             maxActionTime = maxTime;
         }
 
-        public int getMaxActionTime(){
+        public int getMaxActionTime() {
             return maxActionTime;
         }
     }
