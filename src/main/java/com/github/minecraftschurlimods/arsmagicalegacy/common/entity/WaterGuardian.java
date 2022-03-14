@@ -3,6 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.CloneGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WaterSpinAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.core.BlockPos;
@@ -109,8 +111,8 @@ public class WaterGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
         // ChaosWaterBolt
-        // CloneSelf
-        // SpinAttack
+        goalSelector.addGoal(3, new CloneGoal(this));
+        goalSelector.addGoal(3, new WaterSpinAttackGoal(this, 0.5f, 4));
     }
 
     @Override
@@ -226,7 +228,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public boolean canCastSpell() {
-        return false;
+        return true;
     }
 
     @Override

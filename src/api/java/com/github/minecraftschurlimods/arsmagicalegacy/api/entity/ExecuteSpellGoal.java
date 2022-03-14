@@ -55,7 +55,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     @Override
     public void tick() {
         super.tick();
-        caster.getLookControl().setLookAt(caster, 30, 30);
+        caster.getLookControl().setLookAt(caster.getTarget(), 30, 30);
         if (caster.getTarget() != null && caster.distanceToSqr(caster.getTarget()) > 64) {
             double deltaZ = caster.getTarget().getZ() - caster.getZ();
             double deltaX = caster.getTarget().getX() - caster.getX();

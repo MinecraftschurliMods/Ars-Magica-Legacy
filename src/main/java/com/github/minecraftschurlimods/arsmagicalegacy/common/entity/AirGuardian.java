@@ -116,7 +116,7 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean canCastSpell() {
-        return false;
+        return true;
     }
 
     @Override
