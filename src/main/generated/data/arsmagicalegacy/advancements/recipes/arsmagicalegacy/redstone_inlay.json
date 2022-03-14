@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:redstone_inlay"
+    ]
+  },
+  "criteria": {
+    "has_purified_vinteum_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:purified_vinteum_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "arsmagicalegacy:redstone_inlay"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_purified_vinteum_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

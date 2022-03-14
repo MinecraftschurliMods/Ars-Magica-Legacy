@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail",
+  "textures": {
+    "rail": "arsmagicalegacy:block/gold_inlay"
+  }
+}

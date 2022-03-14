@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "shape=north_south": {
+      "model": "arsmagicalegacy:block/iron_inlay"
+    },
+    "shape=east_west": {
+      "model": "arsmagicalegacy:block/iron_inlay",
+      "y": 90
+    },
+    "shape=south_east": {
+      "model": "arsmagicalegacy:block/iron_inlay_corner"
+    },
+    "shape=south_west": {
+      "model": "arsmagicalegacy:block/iron_inlay_corner",
+      "y": 90
+    },
+    "shape=north_west": {
+      "model": "arsmagicalegacy:block/iron_inlay_corner",
+      "y": 180
+    },
+    "shape=north_east": {
+      "model": "arsmagicalegacy:block/iron_inlay_corner",
+      "y": 270
+    }
+  }
+}

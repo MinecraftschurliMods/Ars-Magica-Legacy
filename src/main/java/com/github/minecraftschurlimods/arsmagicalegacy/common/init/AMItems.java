@@ -102,6 +102,9 @@ public interface AMItems {
     RegistryObject<Item>                         ARCANE_ASH                   = registerItem64("arcane_ash");
     RegistryObject<Item>                         PURIFIED_VINTEUM_DUST        = registerItem64("purified_vinteum_dust");
     RegistryObject<StandingAndWallBlockItem>     VINTEUM_TORCH                = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
+    RegistryObject<BlockItem>                    IRON_INLAY                   = registerBlockItem64(AMBlocks.IRON_INLAY);
+    RegistryObject<BlockItem>                    REDSTONE_INLAY               = registerBlockItem64(AMBlocks.REDSTONE_INLAY);
+    RegistryObject<BlockItem>                    GOLD_INLAY                   = registerBlockItem64(AMBlocks.GOLD_INLAY);
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE             = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
@@ -118,9 +121,9 @@ public interface AMItems {
     RegistryObject<MageArmorItem>                BATTLEMAGE_BOOTS             = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 10));
     RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG              = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG               = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
-    RegistryObject<ForgeSpawnEggItem> MANA_CREEPER_SPAWN_EGG   = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
-    RegistryObject<ForgeSpawnEggItem> WATER_GUARDIAN_SPAWN_EGG = ITEMS.register("water_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.WATER_GUARDIAN, 0x324fac, 0xc9bc2f, ITEM_64));
-    RegistryObject<ForgeSpawnEggItem> FIRE_GUARDIAN_SPAWN_EGG  = ITEMS.register("fire_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.FIRE_GUARDIAN, 0xcb5420, 0xc9bc2f, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG   = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            WATER_GUARDIAN_SPAWN_EGG = ITEMS.register("water_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.WATER_GUARDIAN, 0x324fac, 0xc9bc2f, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            FIRE_GUARDIAN_SPAWN_EGG  = ITEMS.register("fire_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.FIRE_GUARDIAN, 0xcb5420, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            EARTH_GUARDIAN_SPAWN_EGG     = ITEMS.register("earth_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.EARTH_GUARDIAN, 0x999999, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            AIR_GUARDIAN_SPAWN_EGG       = ITEMS.register("air_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.AIR_GUARDIAN, 0xc1e1dd, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ICE_GUARDIAN_SPAWN_EGG       = ITEMS.register("ice_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ICE_GUARDIAN, 0x36d5d7, 0xc9bc2f, ITEM_64));

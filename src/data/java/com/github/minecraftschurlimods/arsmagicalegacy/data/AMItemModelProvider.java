@@ -92,6 +92,9 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(TARMA_ROOT, "block/tarma_root");
         itemGenerated(WAKEBLOOM, "block/wakebloom");
         itemGenerated(VINTEUM_TORCH, "block/vinteum_torch");
+        itemGenerated(IRON_INLAY, "block/iron_inlay");
+        itemGenerated(REDSTONE_INLAY, "block/redstone_inlay");
+        itemGenerated(GOLD_INLAY, "block/gold_inlay");
         affinityItem(AFFINITY_ESSENCE);
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);

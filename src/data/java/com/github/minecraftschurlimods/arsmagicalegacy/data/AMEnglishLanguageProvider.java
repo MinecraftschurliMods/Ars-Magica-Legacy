@@ -99,6 +99,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
+        blockIdTranslation(AMBlocks.IRON_INLAY);
+        blockIdTranslation(AMBlocks.REDSTONE_INLAY);
+        blockIdTranslation(AMBlocks.GOLD_INLAY);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);

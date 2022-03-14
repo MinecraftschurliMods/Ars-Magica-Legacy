@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.DesertNovaBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.InlayBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.TarmaRootBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WakebloomBlock;
@@ -105,6 +106,9 @@ public interface AMBlocks {
     RegistryObject<FlowerPotBlock>        POTTED_WAKEBLOOM         = flowerPot(WAKEBLOOM);
     RegistryObject<TorchBlock>            VINTEUM_TORCH            = BLOCKS.register("vinteum_torch",            () -> new TorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
     RegistryObject<WallTorchBlock>        VINTEUM_WALL_TORCH       = BLOCKS.register("vinteum_wall_torch",       () -> new WallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_50886_) -> 14).sound(SoundType.WOOD), ParticleTypes.SMOKE));
+    RegistryObject<InlayBlock>            IRON_INLAY               = BLOCKS.register("iron_inlay",               () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
+    RegistryObject<InlayBlock>            REDSTONE_INLAY           = BLOCKS.register("redstone_inlay",           () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
+    RegistryObject<InlayBlock>            GOLD_INLAY               = BLOCKS.register("gold_inlay",               () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
 
     private static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
         RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
