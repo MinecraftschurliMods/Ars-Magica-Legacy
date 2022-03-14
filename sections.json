@@ -1,12 +1,19 @@
 [
   {
     "id": "intro",
-    "name": "Intro"
+    "name": "Intro",
+    "small": true
   },
   {
     "id": "team",
     "name": "Team",
-    "title": "The Team"
+    "title": "The Team",
+    "small": true
+  },
+  {
+    "id": "links",
+    "name": "Links",
+    "small": true
   },
   {
     "id": "preview",

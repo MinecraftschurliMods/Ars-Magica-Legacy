@@ -13,6 +13,9 @@ async function loadContent(content_json_url, content_folder, target_container_se
   }
   for (const section of sections) {
     const element = document.getElementById(content_template_id).content.firstElementChild.cloneNode(true);
+    if (!section.small) {
+      element.classList.add("max");
+    }
     element.id = section.id;
     console.log(element);
     let heading = element.querySelector('.heading');
