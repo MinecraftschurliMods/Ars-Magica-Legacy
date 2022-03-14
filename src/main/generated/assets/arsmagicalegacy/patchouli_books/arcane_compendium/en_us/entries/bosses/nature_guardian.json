@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.name",
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page1.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page1.title"
+    }
+  ]
+}

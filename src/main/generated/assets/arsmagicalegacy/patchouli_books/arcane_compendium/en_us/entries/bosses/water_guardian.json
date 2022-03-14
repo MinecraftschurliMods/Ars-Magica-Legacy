@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.water_guardian.name",
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.water_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.water_guardian.page1.title",
+      "multiblock_id": "arsmagicalegacy:water_guardian_spawn_ritual"
+    }
+  ]
+}

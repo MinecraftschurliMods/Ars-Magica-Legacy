@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.earth_guardian.name",
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.earth_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.earth_guardian.page1.title",
+      "multiblock_id": "arsmagicalegacy:earth_guardian_spawn_ritual"
+    }
+  ]
+}
