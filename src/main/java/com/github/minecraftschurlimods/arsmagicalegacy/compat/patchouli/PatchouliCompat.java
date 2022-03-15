@@ -74,7 +74,7 @@ public class PatchouliCompat implements ICompatHandler {
     private static final String[][] BLACK_AUREM_CHALK_STRUCTURE = new String[][]{
             {"   ", " B ", "   "},
             {"CCC", "C0C", "CCC"}};
-    private static final String[][] WATER_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
+    private static final String[][] INLAY_RING = new String[][]{
             {"1N2", "E0E", "3N4"}};
     private static final String[][] FIRE_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"1N2", "E0E", "3N4"},
@@ -82,12 +82,6 @@ public class PatchouliCompat implements ICompatHandler {
     private static final String[][] EARTH_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"  T  ", " 1N2 ", "TE0ET", " 3N4 ", "  T  "},
             {"AAAAA", "AOOOA", "AOCOA", "AOOOA", "AAAAA"}};
-    private static final String[][] AIR_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
-            {"1N2", "E0E", "3N4"}};
-    private static final String[][] ICE_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
-            {"   ", " I ", "   "},
-            {"   ", " T ", "   "},
-            {"1N2", "E0E", "3N4"}};
     private static final String[][] LIGHTNING_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"   ", " R ", "   "},
             {"   ", " I ", "   "},
@@ -191,7 +185,7 @@ public class PatchouliCompat implements ICompatHandler {
         api.registerMultiblock(BLACK_AUREM_PILLAR3, makePillarsMultiblock(api, netherBricks, diamondBlock, air, blackAurem, air, chalk));
         api.registerMultiblock(BLACK_AUREM_PILLAR4, makePillarsMultiblock(api, netherBricks, api.strictBlockMatcher(AMBlocks.SUNSTONE_BLOCK.get()), air, blackAurem, air, chalk));
         api.registerMultiblock(WATER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
-                WATER_GUARDIAN_SPAWN_STRUCTURE,
+                INLAY_RING,
                 'E', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.EAST_WEST)),
                 'N', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_SOUTH)),
                 '1', api.stateMatcher(AMBlocks.REDSTONE_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_EAST)),
@@ -224,7 +218,7 @@ public class PatchouliCompat implements ICompatHandler {
                 'C', api.strictBlockMatcher(Blocks.CHISELED_STONE_BRICKS)
         ).setSymmetrical(true));
         api.registerMultiblock(AIR_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
-                AIR_GUARDIAN_SPAWN_STRUCTURE,
+                INLAY_RING,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
@@ -233,16 +227,13 @@ public class PatchouliCompat implements ICompatHandler {
                 '4', goldInlayNorthWest
         ).setSymmetrical(true));
         api.registerMultiblock(ICE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
-                ICE_GUARDIAN_SPAWN_STRUCTURE,
+                INLAY_RING,
                 'E', goldInlayEastWest,
                 'N', goldInlayNorthSouth,
                 '1', goldInlaySouthEast,
                 '2', goldInlayNorthEast,
                 '3', goldInlaySouthWest,
-                '4', goldInlayNorthWest,
-                '0', api.strictBlockMatcher(AMBlocks.TOPAZ_BLOCK.get()),
-                'T', api.strictBlockMatcher(AMBlocks.TOPAZ_BLOCK.get()),
-                'I', api.strictBlockMatcher(Blocks.ICE)
+                '4', goldInlayNorthWest
         ).setSymmetrical(true));
         api.registerMultiblock(LIGHTNING_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 LIGHTNING_GUARDIAN_SPAWN_STRUCTURE,
@@ -270,7 +261,7 @@ public class PatchouliCompat implements ICompatHandler {
                 '3', ironInlaySouthWest,
                 '4', ironInlayNorthWest,
                 'B', api.strictBlockMatcher(Blocks.BOOKSHELF),
-                'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH)
+                'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.EAST), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH)
         ));
         api.registerMultiblock(ENDER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 ENDER_GUARDIAN_SPAWN_STRUCTURE,

@@ -20,6 +20,7 @@ public class InlayBlock extends BaseRailBlock {
 
     public InlayBlock(Properties pProperties) {
         super(false, pProperties);
+        registerDefaultState(stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(WATERLOGGED, false));
     }
 
     @Override
