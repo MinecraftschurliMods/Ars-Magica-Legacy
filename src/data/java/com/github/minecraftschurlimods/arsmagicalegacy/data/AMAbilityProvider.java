@@ -20,7 +20,7 @@ class AMAbilityProvider extends AbilityProvider {
         createAbility(AMAbilities.FIRE_RESISTANCE.get().getId(),        AMAffinities.FIRE.get(),      Range.ofBounds(0.01, 1))  .build(consumer);
         createAbility(AMAbilities.FIRE_PUNCH.get().getId(),             AMAffinities.FIRE.get(),      Range.ofLowerBound(1))    .build(consumer);
         createAbility(AMAbilities.WATER_DAMAGE_FIRE.get().getId(),      AMAffinities.FIRE.get(),      Range.ofBounds(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.DEPTH_STRIDER.get().getId(),          AMAffinities.WATER.get(),     Range.ofBounds(0.01, 1))  .build(consumer);
+        createAbility(AMAbilities.SWIM_SPEED.get().getId(),             AMAffinities.WATER.get(),     Range.ofBounds(0.01, 1))  .build(consumer);
         createAbility(AMAbilities.ENDERMAN_THORNS.get().getId(),        AMAffinities.WATER.get(),     Range.ofLowerBound(1))    .build(consumer);
         createAbility(AMAbilities.NETHER_DAMAGE_WATER.get().getId(),    AMAffinities.WATER.get(),     Range.ofBounds(0.5, 1))   .build(consumer);
         createAbility(AMAbilities.RESISTANCE.get().getId(),             AMAffinities.EARTH.get(),     Range.ofBounds(0.01, 1))  .build(consumer);

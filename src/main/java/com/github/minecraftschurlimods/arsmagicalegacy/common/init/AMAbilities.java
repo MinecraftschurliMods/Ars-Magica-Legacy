@@ -10,7 +10,7 @@ public interface AMAbilities {
     RegistryObject<AbstractAbility> FIRE_RESISTANCE        = AMRegistries.ABILITIES.register("fire_resistance",        () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> FIRE_PUNCH             = AMRegistries.ABILITIES.register("fire_punch",             () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> WATER_DAMAGE_FIRE      = AMRegistries.ABILITIES.register("water_damage_fire",      () -> new AbstractAbility() {});
-    RegistryObject<AbstractAbility> DEPTH_STRIDER          = AMRegistries.ABILITIES.register("depth_strider",          () -> new AbstractAbility() {});
+    RegistryObject<AbstractAbility> SWIM_SPEED             = AMRegistries.ABILITIES.register("swim_speed",             () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> ENDERMAN_THORNS        = AMRegistries.ABILITIES.register("enderman_thorns",        () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> NETHER_DAMAGE_WATER    = AMRegistries.ABILITIES.register("nether_damage_water",    () -> new AbstractAbility() {});
     RegistryObject<AbstractAbility> RESISTANCE             = AMRegistries.ABILITIES.register("resistance",             () -> new AbstractAbility() {});

@@ -133,7 +133,7 @@ public final class Spell implements ISpell {
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
         if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
             return SpellCastResult.NO_PERMISSION;
-        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
+        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
         float mana = mana(caster);
         float burnout = burnout(caster);
@@ -155,6 +155,7 @@ public final class Spell implements ISpell {
             burnoutHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
+        MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
             boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
