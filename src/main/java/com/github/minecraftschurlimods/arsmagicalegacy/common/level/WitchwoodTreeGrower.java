@@ -17,6 +17,6 @@ public class WitchwoodTreeGrower extends AbstractMegaTreeGrower {
     @Nullable
     @Override
     protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredMegaFeature(Random pRandom) {
-        return Holder.direct(AMFeatures.WITCHWOOD_TREE_FEATURE);
+        return AMFeatures.WITCHWOOD_TREE_FEATURE;
     }
 }
