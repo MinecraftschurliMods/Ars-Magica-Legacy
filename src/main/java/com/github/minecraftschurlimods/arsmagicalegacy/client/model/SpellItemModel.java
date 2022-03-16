@@ -42,12 +42,10 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
     private Optional<ResourceLocation> icon;
-    private ResourceLocation affinity;
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);
-            affinity = SpellItem.getSpell(stack).primaryAffinity().getId();
             return super.resolve(model, stack, level, entity, seed);
         }
     };
@@ -63,9 +61,6 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         Player player = ClientHelper.getLocalPlayer();
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || cameraTransformType == ItemTransforms.TransformType.FIXED || icon.isEmpty()) {
             return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
-        }
-        if (ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && (cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND)) {
-            return Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(affinity.getNamespace(), "item/spell_" + affinity.getPath())).handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return this;

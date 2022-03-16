@@ -14,6 +14,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ShapeGroupHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.SpellBookHUD;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.SpellHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.XpHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreModel;
@@ -91,9 +92,10 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
 public final class ClientInit {
+    public static IIngameOverlay XP_HUD;
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
-    public static IIngameOverlay XP_HUD;
+    public static IIngameOverlay SPELL_HUD;
     public static IIngameOverlay SHAPE_GROUP_HUD;
     public static IIngameOverlay SPELL_BOOK_HUD;
 
@@ -140,9 +142,10 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.SPELL_RUNE.get(), RenderType.cutout());
+        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
-        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
+        SPELL_HUD = OverlayRegistry.registerOverlayBottom("spell_hud", new SpellHUD());
         SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
         SPELL_BOOK_HUD = OverlayRegistry.registerOverlayBottom("spell_book_hud", new SpellBookHUD());
         CompatManager.clientInit(event);
