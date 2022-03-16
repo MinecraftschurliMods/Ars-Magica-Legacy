@@ -13,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationCo
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.apache.logging.log4j.LogManager;
@@ -116,6 +118,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             player = ClientHelper.getLocalPlayer();
         }
+        if (player == null) return;
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
             return;
@@ -127,7 +130,6 @@ public class SpellItem extends Item implements ISpellItem {
         }
         pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
         pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
-        if (player == null) return;
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents(player);
             if (reagents.isEmpty()) return;
@@ -163,6 +165,13 @@ public class SpellItem extends Item implements ISpellItem {
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new SpellItemRenderProperties());
     }
+
+/*
+    @Override
+    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+        return false;
+    }
+*/
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
