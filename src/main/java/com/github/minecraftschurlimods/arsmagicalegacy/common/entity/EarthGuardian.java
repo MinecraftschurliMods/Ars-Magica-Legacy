@@ -3,8 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRockGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
@@ -81,8 +81,8 @@ public class EarthGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         goalSelector.addGoal(1, new ThrowRockGoal(this, 0.5f));
-        goalSelector.addGoal(2, new SmashGoal(this, 0.5f, AMSpellParts.PHYSICAL_DAMAGE.get()));
-        goalSelector.addGoal(2, new StrikeAttackGoal(this, 0.5f, 4.0f, AMSpellParts.PHYSICAL_DAMAGE.get()));
+        goalSelector.addGoal(2, new EarthSmashGoal(this, 0.5f));
+        goalSelector.addGoal(2, new EarthStrikeAttackGoal(this, 0.5f, 4.0f));
     }
 
     @Override
@@ -155,7 +155,7 @@ public class EarthGuardian extends AbstractBoss {
         CASTING(-1),
         STRIKE(15),
         THROWING_ROCK(30),
-        SMASH(20); // maybe not needed
+        SMASH(20);
 
         private final int maxActionTime;
 

@@ -13,25 +13,29 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public class SmashGoal extends Goal {
+public class EarthSmashGoal extends Goal {
     private final EarthGuardian earthGuardian;
     private       LivingEntity  target;
     private final float         moveSpeed;
     private       int           cooldown = 0;
-    private final Damage        damageType;
 
-    public SmashGoal(EarthGuardian earthGuardian, float moveSpeed, Damage damageType) {
+    public EarthSmashGoal(EarthGuardian earthGuardian, float moveSpeed) {
         this.earthGuardian = earthGuardian;
         this.moveSpeed = moveSpeed;
-        this.damageType = damageType;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE) return false;
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying()) return false;
+        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE) {
+            return false;
+        }
+        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying()) {
+            return false;
+        }
         if (earthGuardian.getTarget() != null && earthGuardian.distanceToSqr(earthGuardian.getTarget()) > 4D) {
-            if (!earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed)) return false;
+            if (!earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed)) {
+                return false;
+            }
         }
         this.target = earthGuardian.getTarget();
         return true;
@@ -40,7 +44,9 @@ public class SmashGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (earthGuardian.getTarget() != null && earthGuardian.distanceToSqr(earthGuardian.getTarget()) > 4D) {
-            if (earthGuardian.isOnGround()) return earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed);
+            if (earthGuardian.isOnGround()) {
+                return earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed);
+            }
         }
         if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getEarthGuardianAction() == EarthGuardian.EarthGuardianAction.SMASH && earthGuardian.getTicksInAction() > earthGuardian.getEarthGuardianAction().getMaxActionTime())) {
             earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.IDLE);
@@ -76,12 +82,12 @@ public class SmashGoal extends Goal {
                 }
             }
             if (!earthGuardian.level.isClientSide()) {
-//                for (int i = 0; i < 4; ++i) {
-//                    Shockwave shockwave = new Shockwave(earthGuardian.level);
-//                    shockwave.setPos(earthGuardian.getX(), earthGuardian.getY(), earthGuardian.getZ());
-//                    shockwave.setMoveSpeedAndAngle(0.5f, Mth.wrapDegrees(earthGuardian.getYRot() + (90 * i)));
-//                    earthGuardian.level.addFreshEntity(shockwave);
-//                }
+                //                for (int i = 0; i < 4; ++i) {
+                //                    Shockwave shockwave = new Shockwave(earthGuardian.level);
+                //                    shockwave.setPos(earthGuardian.getX(), earthGuardian.getY(), earthGuardian.getZ());
+                //                    shockwave.setMoveSpeedAndAngle(0.5f, Mth.wrapDegrees(earthGuardian.getYRot() + (90 * i)));
+                //                    earthGuardian.level.addFreshEntity(shockwave);
+                //                }
             }
         }
     }

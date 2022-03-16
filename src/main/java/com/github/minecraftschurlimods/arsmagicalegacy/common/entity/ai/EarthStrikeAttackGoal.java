@@ -10,27 +10,31 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.List;
 
-public class StrikeAttackGoal extends Goal {
+public class EarthStrikeAttackGoal extends Goal {
     private final EarthGuardian earthGuardian;
-    private final float moveSpeed;
-    private LivingEntity target;
-    private int cooldown = 0;
-    private final float  damage;
-    private final Damage damageType;
+    private final float         moveSpeed;
+    private       LivingEntity  target;
+    private       int           cooldown = 0;
+    private final float         damage;
 
-    public StrikeAttackGoal(EarthGuardian earthGuardian, float moveSpeed, float damage, Damage damageType) {
+    public EarthStrikeAttackGoal(EarthGuardian earthGuardian, float moveSpeed, float damage) {
         this.earthGuardian = earthGuardian;
         this.moveSpeed = moveSpeed;
         this.damage = damage;
-        this.damageType = damageType;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE) return false;
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying()) return false;
+        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE) {
+            return false;
+        }
+        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying()) {
+            return false;
+        }
         if (earthGuardian.getTarget() != null && earthGuardian.distanceToSqr(earthGuardian.getTarget()) > 4D) {
-            if (!earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed)) return false;
+            if (!earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), moveSpeed)) {
+                return false;
+            }
         }
         this.target = earthGuardian.getTarget();
         return true;
@@ -66,7 +70,7 @@ public class StrikeAttackGoal extends Goal {
             List<LivingEntity> nearbyEntities = earthGuardian.level.getEntitiesOfClass(LivingEntity.class, earthGuardian.getBoundingBox().expandTowards(offsetX, 0, offsetZ).inflate(2.5, 2, 2.5));  // is offset() --> expandTowards
             for (LivingEntity e : nearbyEntities) {
                 if (e != earthGuardian) {
-                    e.hurt(DamageSource.mobAttack(earthGuardian), 8);  // maybe wrong, hurt(DamageSources.causeDamage(damageType, host, true), 8);
+                    e.hurt(DamageSource.mobAttack(earthGuardian), damage);  // maybe wrong, hurt(DamageSources.causeDamage(damageType, host, true), damage);
                 }
             }
         }

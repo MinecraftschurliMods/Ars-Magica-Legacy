@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SummonAllies;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -91,7 +92,7 @@ public class LifeGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 16, 80));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 16, 4));
-        // SummonAllies
+        //goalSelector.addGoal(3, new SummonAllies(this, EarthElemental.class, FireElemental.class, ManaElemental.class, Darkling.class));
     }
 
     @Override
@@ -101,6 +102,10 @@ public class LifeGuardian extends AbstractBoss {
 
     public int getNumMinions() {
         return entityData.get(MINION_COUNT);
+    }
+
+    public void addQueuedMinions(LivingEntity minion) {
+        queuedMinions.add(minion);
     }
 
     public LifeGuardianAction getLifeGuardianAction() {
