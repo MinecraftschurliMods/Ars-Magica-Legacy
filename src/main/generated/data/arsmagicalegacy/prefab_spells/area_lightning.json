@@ -1,21 +1,19 @@
 {
+  "name": {
+    "text": "Area Lightning"
+  },
   "spell": {
-    "name": {
-      "text": "Area Lightning"
-    },
-    "spell": {
-      "shape_groups": [
-        [
-          "arsmagicalegacy:projectile",
-          "arsmagicalegacy:aoe"
-        ]
-      ],
-      "spell_stack": [
-        "arsmagicalegacy:lightning_damage",
-        "arsmagicalegacy:damage"
-      ],
-      "data": {}
-    },
-    "icon": "arsmagicalegacy:lighting-sky-3"
-  }
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:aoe"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:damage"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:lighting-sky-3"
 }

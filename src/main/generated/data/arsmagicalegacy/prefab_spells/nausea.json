@@ -1,19 +1,17 @@
 {
+  "name": {
+    "text": "Nausea"
+  },
   "spell": {
-    "name": {
-      "text": "Nausea"
-    },
-    "spell": {
-      "shape_groups": [
-        [
-          "arsmagicalegacy:projectile"
-        ]
-      ],
-      "spell_stack": [
-        "arsmagicalegacy:nausea"
-      ],
-      "data": {}
-    },
-    "icon": "arsmagicalegacy:enchant-acid-3"
-  }
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:nausea"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:enchant-acid-3"
 }

@@ -1,27 +1,25 @@
 {
+  "name": {
+    "text": "Scramble Synapses"
+  },
   "spell": {
-    "name": {
-      "text": "Scramble Synapses"
-    },
-    "spell": {
-      "shape_groups": [
-        [
-          "arsmagicalegacy:projectile",
-          "arsmagicalegacy:aoe",
-          "arsmagicalegacy:velocity",
-          "arsmagicalegacy:range",
-          "arsmagicalegacy:range",
-          "arsmagicalegacy:range",
-          "arsmagicalegacy:range",
-          "arsmagicalegacy:range"
-        ]
-      ],
-      "spell_stack": [
-        "arsmagicalegacy:lightning_damage",
-        "arsmagicalegacy:scramble_synapses"
-      ],
-      "data": {}
-    },
-    "icon": "arsmagicalegacy:lighting-royal-3"
-  }
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:aoe",
+        "arsmagicalegacy:velocity",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:scramble_synapses"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:lighting-royal-3"
 }

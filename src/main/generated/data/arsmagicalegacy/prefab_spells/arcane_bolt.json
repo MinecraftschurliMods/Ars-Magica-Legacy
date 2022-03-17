@@ -1,19 +1,17 @@
 {
+  "name": {
+    "text": "Arcane Bolt"
+  },
   "spell": {
-    "name": {
-      "text": "Arcane Bolt"
-    },
-    "spell": {
-      "shape_groups": [
-        [
-          "arsmagicalegacy:projectile"
-        ]
-      ],
-      "spell_stack": [
-        "arsmagicalegacy:magic_damage"
-      ],
-      "data": {}
-    },
-    "icon": "arsmagicalegacy:air-burst-magenta-3"
-  }
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:magic_damage"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:air-burst-magenta-3"
 }
