@@ -3,7 +3,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceSmashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -82,9 +88,9 @@ public class IceGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
-        // LaunchArm
-        // Smash
-        // StrikeAttack
+        goalSelector.addGoal(4, new LaunchArmGoal(this, 0.5f));
+        goalSelector.addGoal(2, new IceSmashGoal(this, 0.5f));
+        goalSelector.addGoal(3, new IceStrikeAttackGoal(this, 0.5f, 6f));
     }
 
     public void returnOneArm() {
@@ -150,7 +156,10 @@ public class IceGuardian extends AbstractBoss {
 
     public enum IceGuardianAction {
         IDLE(-1),
-        CASTING(-1);
+        STRIKE(15),
+        SMASH(20),
+        CASTING(-1),
+        LAUNCHING(20);
 
         private final int maxActionTime;
 

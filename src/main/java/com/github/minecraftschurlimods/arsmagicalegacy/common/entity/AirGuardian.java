@@ -3,6 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricanGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpawnWhirlwindGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -84,8 +86,8 @@ public class AirGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
-        // Hurricane
-        // SpawnWhirlwind
+        goalSelector.addGoal(2, new HurricanGoal(this, 0.5f));
+        goalSelector.addGoal(1, new SpawnWhirlwindGoal(this, 0.5f));
     }
 
     @Override

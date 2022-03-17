@@ -3,7 +3,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureSpinAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureThrowSickleGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShieldBashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -70,10 +76,10 @@ public class NatureGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
-        // ShieldBash
-        // SpinAttack
-        // StrikeAttack
-        // ThrowSickle
+        goalSelector.addGoal(5, new ShieldBashGoal(this, 0.75f));
+        goalSelector.addGoal(3, new NatureSpinAttackGoal(this, 0.5f, 8));
+        goalSelector.addGoal(2, new NatureStrikeAttackGoal(this, 0.5f, 4.0f));
+        goalSelector.addGoal(3, new NatureThrowSickleGoal(this, 0.75f));
     }
 
     private void updateMovementAngles() {
@@ -125,7 +131,8 @@ public class NatureGuardian extends AbstractBoss {
         CASTING(-1),
         SPINNING(160),
         STRIKE(15),
-        THROWING_SICKLE(15);
+        THROWING_SICKLE(15),
+        SHIELD_BASH(15);
 
         private final int maxActionTime;
 
