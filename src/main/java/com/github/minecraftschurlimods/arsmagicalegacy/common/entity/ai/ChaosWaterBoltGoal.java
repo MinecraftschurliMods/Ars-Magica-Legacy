@@ -17,24 +17,26 @@ import java.util.ArrayList;
 
 public class ChaosWaterBoltGoal extends Goal {
     private final WaterGuardian waterGuardian;
-//    private static final ItemStack castStack = createDummyStack();
-//    private static ISpellPart WateryGrave() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "watery_grave"));}
-//    private static ISpellPart Projectile() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "projectile"));}
-//    private static ISpellPart MagicDamage() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_damage"));}
-//    private static ISpellPart Knockback() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knockback"));}
+    //    private static final ItemStack castStack = createDummyStack();
+    //    private static ISpellPart WateryGrave() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "watery_grave"));}
+    //    private static ISpellPart Projectile() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "projectile"));}
+    //    private static ISpellPart MagicDamage() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_damage"));}
+    //    private static ISpellPart Knockback() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knockback"));}
 
 
     public ChaosWaterBoltGoal(WaterGuardian waterGuardian) {
         this.waterGuardian = waterGuardian;
     }
 
-//    private static ItemStack createDummyStack() {
-//        return new SpellStack(new ArrayList<>(), Lists.newArrayList(Projectile(), WateryGrave(), MagicDamage(), Knockback()));
-//    }
+    //    private static ItemStack createDummyStack() {
+    //        return new SpellStack(new ArrayList<>(), Lists.newArrayList(Projectile(), WateryGrave(), MagicDamage(), Knockback()));
+    //    }
 
     @Override
     public boolean canUse() {
-        if (waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING)) return true;
+        if (waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING)) {
+            return true;
+        }
         return false;
     }
 

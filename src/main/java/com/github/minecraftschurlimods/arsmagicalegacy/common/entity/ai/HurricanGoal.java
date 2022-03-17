@@ -1,7 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
+import com.ibm.icu.math.MathContext;
 import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.damagesource.DamageSource;
