@@ -3,6 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningBoltGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
@@ -92,9 +95,9 @@ public class LightningGuardian extends AbstractBoss {
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 20, 180));
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 20, 180));
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 40, 240));
-        // LightningBolt
-        // LightningRod
-        // Static
+        goalSelector.addGoal(5, new LightningBoltGoal(this));
+        goalSelector.addGoal(2, new LightningRodGoal(this));
+        goalSelector.addGoal(3, new StaticGoal(this));
     }
 
     @Override
