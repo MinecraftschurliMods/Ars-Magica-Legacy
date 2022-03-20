@@ -1,19 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import com.google.common.collect.Lists;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.ArrayList;
 
 public class ChaosWaterBoltGoal extends Goal {
     private final WaterGuardian waterGuardian;

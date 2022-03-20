@@ -1,8 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Effect;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class FireRainGoal extends Goal {
