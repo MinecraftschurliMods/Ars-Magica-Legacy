@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSeriali
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.Direction;
@@ -239,8 +238,8 @@ public class Projectile extends Entity implements ItemSupplier {
         return entityData.get(SPELL);
     }
 
-    public void setSpell(Spell stack) {
-        entityData.set(SPELL, stack);
+    public void setSpell(Spell spell) {
+        entityData.set(SPELL, spell);
     }
 
     public void decreaseBounces() {

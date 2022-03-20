@@ -1,13 +1,16 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,7 +41,7 @@ public class Zone extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Spell> SPELL = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
 
     /**
      * Use {@link Zone#create(Level)} instead.
@@ -67,7 +70,7 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.define(OWNER, 0);
         entityData.define(GRAVITY, 0f);
         entityData.define(RADIUS, 1.4f);
-        entityData.define(STACK, ItemStack.EMPTY);
+        entityData.define(SPELL, Spell.EMPTY);
     }
 
     @Override
@@ -79,7 +82,7 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
-        entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
+        entityData.set(SPELL, Spell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
     }
 
     @Override
@@ -91,9 +94,7 @@ public class Zone extends Entity implements ItemSupplier {
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Gravity", entityData.get(GRAVITY));
         tag.putFloat("Radius", entityData.get(RADIUS));
-        CompoundTag stack = new CompoundTag();
-        entityData.get(STACK).save(stack);
-        tag.put("Stack", stack);
+        tag.put("Spell", Spell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
     }
 
     @Override
@@ -120,7 +121,7 @@ public class Zone extends Entity implements ItemSupplier {
                     entity = ((PartEntity<?>) entity).getParent();
                 }
                 if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
+                    ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
                 }
             }
         }
@@ -134,7 +135,7 @@ public class Zone extends Entity implements ItemSupplier {
         }
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
+            ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
         }
     }
 
@@ -188,12 +189,12 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.set(RADIUS, radius);
     }
 
-    public ItemStack getStack() {
-        return entityData.get(STACK);
+    public Spell getSpell() {
+        return entityData.get(SPELL);
     }
 
-    public void setStack(ItemStack stack) {
-        entityData.set(STACK, stack);
+    public void setSpell(Spell spell) {
+        entityData.set(SPELL, spell);
     }
 
     @Override
