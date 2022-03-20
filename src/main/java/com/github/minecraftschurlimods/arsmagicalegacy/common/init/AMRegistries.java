@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -46,6 +47,7 @@ public interface AMRegistries {
     DeferredRegister<MenuType<?>>         MENU_TYPES           = DeferredRegister.create(ForgeRegistries.CONTAINERS,         ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS     = DeferredRegister.create(ForgeRegistries.DATA_SERIALIZERS,   ArsMagicaAPI.MOD_ID);
     DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class,                  ArsMagicaAPI.MOD_ID);
     DeferredRegister<IAffinity>           AFFINITIES           = DeferredRegister.create(IAffinity.class,                    ArsMagicaAPI.MOD_ID);
     DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(ISpellPart.class,                   ArsMagicaAPI.MOD_ID);
@@ -73,6 +75,7 @@ public interface AMRegistries {
         AMMenuTypes.register();
         AMStats.register();
         bus.addListener(AMStats::onRegister);
+        AMDataSerializers.register();
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
@@ -90,6 +93,7 @@ public interface AMRegistries {
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
         ATTRIBUTES.register(bus);
+        DATA_SERIALIZERS.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
         SPELL_PARTS.register(bus);

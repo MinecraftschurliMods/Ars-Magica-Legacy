@@ -1,13 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -37,7 +41,7 @@ public class Projectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Spell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL_SERIALIZER);
 
     /**
      * Use {@link Projectile#create(Level)} instead.
@@ -68,7 +72,7 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.define(GRAVITY, 0f);
         entityData.define(SPEED, 1f);
         entityData.define(ICON, new ItemStack(AMItems.BLANK_RUNE.get()));
-        entityData.define(STACK, ItemStack.EMPTY);
+        entityData.define(SPELL, Spell.EMPTY);
     }
 
     @Override
@@ -83,7 +87,7 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(SPEED, tag.getFloat("Speed"));
         entityData.set(ICON, ItemStack.of(tag.getCompound("Icon")));
-        entityData.set(STACK, ItemStack.of(tag.getCompound("Stack")));
+        entityData.set(SPELL, Spell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
     }
 
     @Override
@@ -100,9 +104,7 @@ public class Projectile extends Entity implements ItemSupplier {
         CompoundTag icon = new CompoundTag();
         entityData.get(ICON).save(icon);
         tag.put("Icon", icon);
-        CompoundTag stack = new CompoundTag();
-        entityData.get(STACK).save(stack);
-        tag.put("Stack", stack);
+        tag.put("Spell", Spell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
     }
 
     @Override
@@ -117,6 +119,7 @@ public class Projectile extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
+        if (level.isClientSide()) return;
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
@@ -136,7 +139,7 @@ public class Projectile extends Entity implements ItemSupplier {
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
             } else {
-                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
         } else if (result.getType().equals(HitResult.Type.ENTITY)) {
@@ -145,7 +148,7 @@ public class Projectile extends Entity implements ItemSupplier {
                 entity = ((PartEntity<?>) entity).getParent();
             }
             if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && entity != getOwner()) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(SpellItem.getSpell(getStack()), getOwner(), level, result, tickCount, getIndex(), true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
         }
@@ -232,12 +235,12 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.set(ICON, icon);
     }
 
-    public ItemStack getStack() {
-        return entityData.get(STACK);
+    public Spell getSpell() {
+        return entityData.get(SPELL);
     }
 
-    public void setStack(ItemStack stack) {
-        entityData.set(STACK, stack);
+    public void setSpell(Spell stack) {
+        entityData.set(SPELL, stack);
     }
 
     public void decreaseBounces() {
