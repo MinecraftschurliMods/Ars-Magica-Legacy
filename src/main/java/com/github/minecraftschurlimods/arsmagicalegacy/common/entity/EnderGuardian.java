@@ -37,6 +37,7 @@ public class EnderGuardian extends AbstractBoss {
 
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
+        enderGuardianAction = EnderGuardianAction.IDLE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

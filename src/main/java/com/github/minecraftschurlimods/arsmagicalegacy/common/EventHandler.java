@@ -82,6 +82,8 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
@@ -347,7 +349,9 @@ public final class EventHandler {
     private static void livingSpawn(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntityLiving();
         Level level = entity.getLevel();
-        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
+        //level.setBlock(entity.blockPosition(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
+            entity.remove(Entity.RemovalReason.KILLED);
             IceGuardian guardian = new IceGuardian(AMEntities.ICE_GUARDIAN.get(), level);
             guardian.moveTo(entity.position());
             level.addFreshEntity(guardian);

@@ -201,7 +201,6 @@ public class PatchouliCompat implements ICompatHandler {
                 '2', goldInlayNorthEast,
                 '3', goldInlaySouthWest,
                 '4', goldInlayNorthWest,
-                '0', api.strictBlockMatcher(Blocks.COAL_BLOCK),
                 'O', api.strictBlockMatcher(Blocks.OBSIDIAN)
         ).setSymmetrical(true));
         api.registerMultiblock(EARTH_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
@@ -261,8 +260,8 @@ public class PatchouliCompat implements ICompatHandler {
                 '3', ironInlaySouthWest,
                 '4', ironInlayNorthWest,
                 'B', api.strictBlockMatcher(Blocks.BOOKSHELF),
-                'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.EAST), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH)
-        ));
+                'L', api.stateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.EAST))
+        ).setSymmetrical(true));
         api.registerMultiblock(ENDER_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 ENDER_GUARDIAN_SPAWN_STRUCTURE,
                 'E', goldInlayEastWest,

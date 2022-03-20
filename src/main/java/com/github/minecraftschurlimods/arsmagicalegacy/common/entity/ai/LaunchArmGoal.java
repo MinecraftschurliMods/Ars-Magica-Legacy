@@ -32,7 +32,7 @@ public class LaunchArmGoal extends Goal {
         List<LivingEntity> nearbyEntities = iceGuardian.level.getEntitiesOfClass(LivingEntity.class, iceGuardian.getBoundingBox().inflate(20, 20, 20));
         if (nearbyEntities.size() > 0) {
             for (LivingEntity e : nearbyEntities) {
-                if (!(e instanceof Player) && (!((Player) e).isCreative())) {  // maybe wrong
+                if (!(e instanceof Player) || !((Player) e).isCreative()) {  // maybe wrong
                     if (e.distanceToSqr(iceGuardian) > 49D) {
                         target = e;
                         return true;

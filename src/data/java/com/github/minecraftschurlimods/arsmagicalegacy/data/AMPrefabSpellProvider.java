@@ -57,6 +57,10 @@ class AMPrefabSpellProvider extends PrefabSpellProvider {
                 SpellStack.of(AMSpellParts.NAUSEA.get()),
                 ShapeGroup.of(AMSpellParts.PROJECTILE.get())
         ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "enchant-acid-3")));
+        addPrefabSpell("blink", new PrefabSpellManager.PrefabSpell("Blink", Spell.of(
+                SpellStack.of(AMSpellParts.BLINK.get()),
+                ShapeGroup.of(AMSpellParts.SELF.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "fog-magenta-3")));
         addPrefabSpell("arcane_bolt", new PrefabSpellManager.PrefabSpell("Arcane Bolt", Spell.of(
                 SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get()),
                 ShapeGroup.of(AMSpellParts.PROJECTILE.get())
