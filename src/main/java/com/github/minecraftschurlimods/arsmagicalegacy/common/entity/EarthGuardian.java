@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRockGoal;
@@ -78,7 +79,7 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
+        goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(1, new ThrowRockGoal(this));
         goalSelector.addGoal(2, new EarthSmashGoal(this));
         goalSelector.addGoal(2, new EarthStrikeAttackGoal(this));

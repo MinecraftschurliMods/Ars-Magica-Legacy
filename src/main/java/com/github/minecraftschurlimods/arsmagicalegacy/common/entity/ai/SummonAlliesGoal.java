@@ -11,14 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SummonAllies extends Goal {
+public class SummonAlliesGoal extends Goal {
     private final LifeGuardian lifeGuardian;
     private int cooldown = 0;
     private boolean hasCasted = false;
     private int castTicks = 0;
     private List<EntityType<? extends Mob>> mobs;
 
-    public SummonAllies(LifeGuardian lifeGuardian, EntityType<? extends Mob>... summons) {
+    public SummonAlliesGoal(LifeGuardian lifeGuardian, EntityType<? extends Mob>... summons) {
         this.lifeGuardian = lifeGuardian;
         this.mobs = Arrays.stream(summons).collect(Collectors.toList());
     }

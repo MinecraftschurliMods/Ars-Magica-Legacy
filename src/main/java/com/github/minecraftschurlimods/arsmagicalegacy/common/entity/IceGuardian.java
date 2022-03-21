@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceSmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
@@ -84,7 +85,7 @@ public class IceGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
+        goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(4, new LaunchArmGoal(this));
         goalSelector.addGoal(2, new IceSmashGoal(this));
         goalSelector.addGoal(3, new IceStrikeAttackGoal(this));

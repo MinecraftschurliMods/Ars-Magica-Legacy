@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
-    private final T caster;
+    protected final T caster;
     private final ISpell spell;
     private boolean hasCasted = false;
     private int castTicks = 0;

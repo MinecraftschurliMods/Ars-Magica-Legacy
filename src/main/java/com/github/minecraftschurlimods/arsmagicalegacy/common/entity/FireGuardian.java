@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DiveGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FireRainGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FlamethrowerGoal;
@@ -86,7 +87,7 @@ public class FireGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
+        goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 12, 18));
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 12, 18));
         goalSelector.addGoal(2, new DiveGoal(this));
