@@ -45,7 +45,7 @@ public interface AMSpellParts {
     RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
     // TODO contingencies: damage, death, fall, fire, health
 
-    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), e -> e instanceof LivingEntity l && l.canBreatheUnderwater()));
+    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), LivingEntity::canBreatheUnderwater));
     RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE.get(), Entity::fireImmune));
     RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, Config.SERVER.DAMAGE.get(), e -> !e.canFreeze()));
     RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, Config.SERVER.DAMAGE.get()));

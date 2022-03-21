@@ -10,27 +10,23 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -86,7 +82,7 @@ public final class AMUtil {
      * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
      */
     public static ItemStack createDummyStack(int fortune, int silkTouch) {
-        ItemStack stack = new ItemStack(null);
+        ItemStack stack = new ItemStack((ItemLike) null);
         stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
         stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;

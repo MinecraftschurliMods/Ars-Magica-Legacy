@@ -421,7 +421,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         if (recipe == null || recipe.isEmpty()) {
             Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>) Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
-                requiredPower = spell.parts().size();
+                requiredPower = this.recipe.size();
             }, () -> {
                 recipe = null;
                 requiredPower = 0;

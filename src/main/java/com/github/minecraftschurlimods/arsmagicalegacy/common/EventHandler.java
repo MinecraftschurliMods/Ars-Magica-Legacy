@@ -455,7 +455,7 @@ public final class EventHandler {
         int level = event.getLevel();
         var api = ArsMagicaAPI.get();
         if (level == 1) {
-            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_STARTING_BLUE_POINTS.get());
+            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
         }
         for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
             int minEarnLevel = iSkillPoint.getMinEarnLevel();
@@ -464,14 +464,14 @@ public final class EventHandler {
                 event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }
         }
-        float newMaxMana = Config.SERVER.DEFAULT_MAX_MANA.get().floatValue() + 10 * (level - 1);
+        float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (level - 1);
         AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
             IManaHelper manaHelper = api.getManaHelper();
             maxManaAttr.setBaseValue(newMaxMana);
             manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
-        float newMaxBurnout = Config.SERVER.DEFAULT_MAX_BURNOUT.get().floatValue() + 10 * (level - 1);
+        float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (level - 1);
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
             IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
