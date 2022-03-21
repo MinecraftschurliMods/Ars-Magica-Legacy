@@ -211,12 +211,10 @@ dependencies {
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
-/*
     if (!System.getenv('GITHUB_ACTIONS')) {
         runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
     }
-*/
 
     // add internal libraries
     var projects = subprojects.collect { it.path }
