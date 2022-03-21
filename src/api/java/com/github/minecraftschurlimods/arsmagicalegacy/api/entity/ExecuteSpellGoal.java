@@ -12,8 +12,8 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     private boolean hasCasted = false;
     private int castTicks = 0;
     private int cooldownTicks = 0;
-    private int duration;
-    private int cooldown;
+    private final int duration;
+    private final int cooldown;
     private SpellCastResult result;
 
     public ExecuteSpellGoal(T caster, ISpell spell, int duration, int cooldown) {
@@ -27,15 +27,11 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     @Override
     public boolean canUse() {
         cooldownTicks--;
-        boolean execute = caster.canCastSpell() && cooldownTicks <= 0;
-        if (execute) {
-            if (result == SpellCastResult.EFFECT_FAILED) {
-                hasCasted = false;
-            } else {
-                execute = false;
-            }
+        if (caster.canCastSpell() && cooldownTicks <= 0 && result == SpellCastResult.EFFECT_FAILED) {
+            hasCasted = false;
+            return true;
         }
-        return execute;
+        return false;
     }
 
     @Override
@@ -57,16 +53,12 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
         super.tick();
         if (caster.getTarget() != null && caster.distanceToSqr(caster.getTarget()) > 64) {
             caster.getLookControl().setLookAt(caster.getTarget(), 30, 30);
-            double deltaZ = caster.getTarget().getZ() - caster.getZ();
-            double deltaX = caster.getTarget().getX() - caster.getX();
-            double angle = -Math.atan2(deltaZ, deltaX);
-            double newZ = caster.getTarget().getZ() + (Math.sin(angle) * 6);
-            double newX = caster.getTarget().getX() + (Math.cos(angle) * 6);
-            caster.getNavigation().moveTo(newX, caster.getTarget().getY(), newZ, 0.5f);
-//        } else if (!caster.see) { // maybe falsch
+            double angle = -Math.atan2(caster.getTarget().getZ() - caster.getZ(), caster.getTarget().getX() - caster.getX());
+            caster.getNavigation().moveTo(caster.getTarget().getX() + (Math.cos(angle) * 6), caster.getTarget().getY(), caster.getTarget().getZ() + (Math.sin(angle) * 6), 0.5f);
+//        } else if (!caster.see) {
 //            caster.getNavigation().moveTo(caster.getTarget(), 0.5f);
         } else {
-            if (caster.isCastingSpell()) {
+            if (!caster.isCastingSpell()) {
                 caster.setIsCastingSpell(true);
             }
             castTicks++;
@@ -77,7 +69,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
                 if (caster.getTarget() != null) {
                     caster.lookAt(caster.getTarget(), 180, 180);
                 }
-                spell.cast(caster, caster.level, 0, false, false);
+                result = spell.cast(caster, caster.level, 0, false, false);
                 stop();
             }
         }
