@@ -1,5 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
+/**
+ * Marks a class as a spell casting entity. Has methods to determine if a spell can be cast, if a spell is cast, and to set whether a spell is currently being cast.
+ */
 public interface ISpellCasterEntity {
     /**
      * @return Whether this entity can currently cast a spell or not.
