@@ -1,3 +1,18 @@
+# Version 1.18.1-0.1.5
+
+## Additions
+
+- Added several new server config values
+
+## Changes
+
+- The crafting altar power requirement is now determined by the amount of ingredients of the spell crafted, rather than the amount of spell parts
+- Tweaked the skill point reward requirements
+
+## Fixes
+
+- Fixed a compatibility issue with JEI 9.3
+
 # Version 1.18.1-0.1.4
 
 ## Fixes

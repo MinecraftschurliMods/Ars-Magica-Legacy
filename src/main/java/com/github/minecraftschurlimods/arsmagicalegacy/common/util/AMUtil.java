@@ -15,6 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -81,7 +82,7 @@ public final class AMUtil {
      * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
      */
     public static ItemStack createDummyStack(int fortune, int silkTouch) {
-        ItemStack stack = new ItemStack(null);
+        ItemStack stack = new ItemStack((ItemLike) null);
         stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
         stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;

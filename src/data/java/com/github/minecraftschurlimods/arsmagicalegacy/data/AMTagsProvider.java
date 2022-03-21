@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -12,6 +13,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -78,7 +80,7 @@ class AMTagsProvider {
 
         @Override
         protected void addTags() {
-            tag(ItemTags.createOptional(new ResourceLocation("curios", "head"))).add(AMItems.MAGITECH_GOGGLES.get());
+            tag(TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "head"))).add(AMItems.MAGITECH_GOGGLES.get());
             copy(AMTags.Blocks.WITCHWOOD_LOGS, AMTags.Items.WITCHWOOD_LOGS);
             copy(AMTags.Blocks.ORES_CHIMERITE, AMTags.Items.ORES_CHIMERITE);
             copy(AMTags.Blocks.ORES_TOPAZ, AMTags.Items.ORES_TOPAZ);
