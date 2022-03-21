@@ -33,30 +33,30 @@ import java.util.function.Supplier;
 
 @NonExtendable
 public interface AMRegistries {
-    DeferredRegister<Block>               BLOCKS               = DeferredRegister.create(ForgeRegistries.BLOCKS,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Fluid>               FLUIDS               = DeferredRegister.create(ForgeRegistries.FLUIDS,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Item>                ITEMS                = DeferredRegister.create(ForgeRegistries.ITEMS,              ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MobEffect>           MOB_EFFECTS          = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,        ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Attribute>           ATTRIBUTES           = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<SoundEvent>          SOUND_EVENTS         = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Potion>              POTIONS              = DeferredRegister.create(ForgeRegistries.POTIONS,            ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Enchantment>         ENCHANTMENTS         = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityType<?>>       ENTITIES             = DeferredRegister.create(ForgeRegistries.ENTITIES,           ArsMagicaAPI.MOD_ID);
-    DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITIES       = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES,     ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES       = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,     ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MenuType<?>>         MENU_TYPES           = DeferredRegister.create(ForgeRegistries.CONTAINERS,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS     = DeferredRegister.create(ForgeRegistries.DATA_SERIALIZERS,   ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(ISkillPoint.class,                  ArsMagicaAPI.MOD_ID);
-    DeferredRegister<IAffinity>           AFFINITIES           = DeferredRegister.create(IAffinity.class,                    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(ISpellPart.class,                   ArsMagicaAPI.MOD_ID);
-    DeferredRegister<IAbility>            ABILITIES            = DeferredRegister.create(IAbility.class,                     ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Block>               BLOCKS               = DeferredRegister.create(ForgeRegistries.BLOCKS,                ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Fluid>               FLUIDS               = DeferredRegister.create(ForgeRegistries.FLUIDS,                ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Item>                ITEMS                = DeferredRegister.create(ForgeRegistries.ITEMS,                 ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MobEffect>           MOB_EFFECTS          = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,           ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Attribute>           ATTRIBUTES           = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,            ArsMagicaAPI.MOD_ID);
+    DeferredRegister<SoundEvent>          SOUND_EVENTS         = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,          ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Potion>              POTIONS              = DeferredRegister.create(ForgeRegistries.POTIONS,               ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Enchantment>         ENCHANTMENTS         = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,          ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityType<?>>       ENTITIES             = DeferredRegister.create(ForgeRegistries.ENTITIES,              ArsMagicaAPI.MOD_ID);
+    DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITIES       = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES,        ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES       = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,        ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MenuType<?>>         MENU_TYPES           = DeferredRegister.create(ForgeRegistries.CONTAINERS,            ArsMagicaAPI.MOD_ID);
+    DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS   = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,    ArsMagicaAPI.MOD_ID);
+    DeferredRegister<StatType<?>>         STAT_TYPES           = DeferredRegister.create(ForgeRegistries.STAT_TYPES,            ArsMagicaAPI.MOD_ID);
+    DeferredRegister<DataSerializerEntry> DATA_SERIALIZERS     = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ISkillPoint>         SKILL_POINTS         = DeferredRegister.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "skill_point"), ArsMagicaAPI.MOD_ID);
+    DeferredRegister<IAffinity>           AFFINITIES           = DeferredRegister.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"),    ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ISpellPart>          SPELL_PARTS          = DeferredRegister.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_part"),  ArsMagicaAPI.MOD_ID);
+    DeferredRegister<IAbility>            ABILITIES            = DeferredRegister.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ability"),     ArsMagicaAPI.MOD_ID);
 
-    Supplier<IForgeRegistry<ISkillPoint>> SKILL_POINT_REGISTRY = SKILL_POINTS.makeRegistry("skill_point", () -> new RegistryBuilder<ISkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
-    Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry("affinity",      () -> new RegistryBuilder<IAffinity>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
-    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry("spell_part",   RegistryBuilder::new);
-    Supplier<IForgeRegistry<IAbility>>    ABILITY_REGISTRY     = ABILITIES.makeRegistry("ability",        RegistryBuilder::new);
+    Supplier<IForgeRegistry<ISkillPoint>> SKILL_POINT_REGISTRY = SKILL_POINTS.makeRegistry(ISkillPoint.class, () -> new RegistryBuilder<ISkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
+    Supplier<IForgeRegistry<IAffinity>>   AFFINITY_REGISTRY    = AFFINITIES.makeRegistry(IAffinity.class,     () -> new RegistryBuilder<IAffinity>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
+    Supplier<IForgeRegistry<ISpellPart>>  SPELL_PART_REGISTRY  = SPELL_PARTS.makeRegistry(ISpellPart.class,   RegistryBuilder::new);
+    Supplier<IForgeRegistry<IAbility>>    ABILITY_REGISTRY     = ABILITIES.makeRegistry(IAbility.class,       RegistryBuilder::new);
 
     /**
      * Registers the registries to the given event bus.

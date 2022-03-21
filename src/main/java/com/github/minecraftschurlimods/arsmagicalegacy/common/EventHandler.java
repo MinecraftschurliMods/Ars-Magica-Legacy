@@ -57,6 +57,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -113,6 +114,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.OptionalInt;
@@ -320,15 +322,15 @@ public final class EventHandler {
         Level level = player.getLevel();
         for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
             BlockPos pos = item.blockPosition();
-            Biome.BiomeCategory category = level.getBiome(pos).getBiomeCategory();
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && (category == Biome.BiomeCategory.BEACH || category == Biome.BiomeCategory.OCEAN || category == Biome.BiomeCategory.RIVER || category == Biome.BiomeCategory.SWAMP)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> ItemTags.BOATS.contains(i.getItem()), i -> i.is(Items.WATER_BUCKET));
+//            Biome.BiomeCategory category = level.getBiome(pos).getBiomeCategory();
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos)/* && (category == Biome.BiomeCategory.BEACH || category == Biome.BiomeCategory.OCEAN || category == Biome.BiomeCategory.RIVER || category == Biome.BiomeCategory.SWAMP)*/) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
             }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && category == Biome.BiomeCategory.NETHER) {
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new FireGuardian(AMEntities.FIRE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()), i));
             }
             if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EarthGuardian(AMEntities.EARTH_GUARDIAN.get(), l), i -> Tags.Items.GEMS_EMERALD.contains(i.getItem()), i -> AMTags.Items.GEMS_CHIMERITE.contains(i.getItem()), i -> AMTags.Items.GEMS_TOPAZ.contains(i.getItem()));
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EarthGuardian(AMEntities.EARTH_GUARDIAN.get(), l), i -> i.is(Tags.Items.GEMS_EMERALD), i -> i.is(AMTags.Items.GEMS_CHIMERITE), i -> i.is(AMTags.Items.GEMS_TOPAZ));
             }
             if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL).test(level, pos) && pos.getY() > 128) {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new AirGuardian(AMEntities.AIR_GUARDIAN.get(), l), i -> i.is(AMItems.TARMA_ROOT.get()));
@@ -336,7 +338,7 @@ public final class EventHandler {
             if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new ArcaneGuardian(AMEntities.ARCANE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getBookStack(), i));
             }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && category == Biome.BiomeCategory.THEEND) {
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().createDragonFight()) {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EnderGuardian(AMEntities.ENDER_GUARDIAN.get(), l), i -> i.is(Items.ENDER_EYE));
             }
         }
@@ -345,8 +347,7 @@ public final class EventHandler {
     private static void livingSpawn(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntityLiving();
         Level level = entity.getLevel();
-        //level.setBlock(entity.blockPosition(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
+        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())/* && (category == Biome.BiomeCategory.COLD)*/) {
             entity.remove(Entity.RemovalReason.KILLED);
             IceGuardian guardian = new IceGuardian(AMEntities.ICE_GUARDIAN.get(), level);
             guardian.moveTo(entity.position());
@@ -368,7 +369,7 @@ public final class EventHandler {
             event.setCanceled(true);
         }
         Level level = entity.getLevel();
-        if (entity instanceof Villager villager && villager.isBaby() && level.getMoonPhase() == 0 && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
+        if (entity instanceof Villager villager && villager.isBaby() && level.getMoonPhase() == 0 && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
             LifeGuardian guardian = new LifeGuardian(AMEntities.LIFE_GUARDIAN.get(), level);
             guardian.moveTo(villager.position());
             level.addFreshEntity(guardian);
