@@ -22,11 +22,11 @@ public class LightningGuardian extends AbstractBoss {
     private LightningGuardianAction lightningGuardianAction;
 
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.GREEN);
+        super(type, level, BossEvent.BossBarColor.YELLOW);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 18);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20);
     }
 
     @Override

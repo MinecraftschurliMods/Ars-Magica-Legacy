@@ -22,11 +22,11 @@ public class AirGuardian extends AbstractBoss {
     private AirGuardianAction airGuardianAction;
 
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.GREEN);
+        super(type, level, BossEvent.BossBarColor.YELLOW);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 220D).add(Attributes.ARMOR, 14);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, 10);
     }
 
     @Override

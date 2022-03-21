@@ -31,7 +31,7 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 17);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20);
     }
 
     @Override

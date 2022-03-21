@@ -36,12 +36,12 @@ public class EnderGuardian extends AbstractBoss {
     private EnderGuardianAction enderGuardianAction;
 
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.RED);
+        super(type, level, BossEvent.BossBarColor.PURPLE);
         enderGuardianAction = EnderGuardianAction.IDLE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 490D).add(Attributes.ARMOR, 16);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue());
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue());
     }
 
     @Override

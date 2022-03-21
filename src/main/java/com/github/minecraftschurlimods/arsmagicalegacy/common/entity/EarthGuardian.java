@@ -28,11 +28,11 @@ public class EarthGuardian extends AbstractBoss {
     private EarthGuardianAction earthGuardianAction;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.BLUE);
+        super(type, level, BossEvent.BossBarColor.GREEN);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 140).add(Attributes.ARMOR, 23);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 20);
     }
 
     @Override

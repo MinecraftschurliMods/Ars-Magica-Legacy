@@ -25,11 +25,11 @@ public class NatureGuardian extends AbstractBoss {
     private NatureGuardianAction natureGuardianAction;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.RED);
+        super(type, level, BossEvent.BossBarColor.GREEN);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500D).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20);
     }
 
     @Override

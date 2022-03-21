@@ -46,7 +46,7 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 75D).add(Attributes.ARMOR, 10);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 80).add(Attributes.ARMOR, 10);
     }
 
     @Override

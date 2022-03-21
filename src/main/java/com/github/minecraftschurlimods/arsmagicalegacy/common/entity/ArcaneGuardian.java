@@ -22,11 +22,11 @@ public class ArcaneGuardian extends AbstractBoss {
     private ArcaneGuardianAction arcaneGuardianAction;
 
     public ArcaneGuardian(EntityType<? extends ArcaneGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.GREEN);
+        super(type, level, BossEvent.BossBarColor.PINK);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 115D).add(Attributes.ARMOR, 9);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10);
     }
 
     @Override

@@ -27,11 +27,11 @@ public class IceGuardian extends AbstractBoss {
     private IceGuardianAction iceGuardianAction;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.RED);
+        super(type, level, BossEvent.BossBarColor.BLUE);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 290D).add(Attributes.ARMOR, 23);
+        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20);
     }
 
     @Override
