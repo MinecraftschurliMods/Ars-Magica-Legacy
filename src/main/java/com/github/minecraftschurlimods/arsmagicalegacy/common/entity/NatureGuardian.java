@@ -1,16 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureSpinAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureThrowSickleGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShieldBashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,7 +19,7 @@ public class NatureGuardian extends AbstractBoss {
     private float tendrilRotation;
     private boolean hasSickle = true;
     private float spinRotation = 0;
-    private NatureGuardianAction natureGuardianAction;
+    private NatureGuardianAction action;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
@@ -84,18 +80,18 @@ public class NatureGuardian extends AbstractBoss {
     private void updateMovementAngles() {
         tendrilRotation += 0.2f;
         tendrilRotation %= 360;
-        if (getNatureGuardianAction() == NatureGuardianAction.SPINNING) {
+        if (getAction() == NatureGuardianAction.SPINNING) {
             spinRotation = (spinRotation - 40) % 360;
         }
     }
 
-    public NatureGuardianAction getNatureGuardianAction() {
-        return natureGuardianAction;
+    public NatureGuardianAction getAction() {
+        return action;
     }
 
-    public void setNatureGuardianAction(final NatureGuardianAction action) {
+    public void setAction(final NatureGuardianAction action) {
         spinRotation = 0;
-        natureGuardianAction = action;
+        this.action = action;
         ticksInAction = 0;
     }
 
@@ -108,20 +104,20 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == NatureGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == NatureGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            natureGuardianAction = NatureGuardianAction.CASTING;
-        } else if (natureGuardianAction == NatureGuardianAction.CASTING) {
-            natureGuardianAction = NatureGuardianAction.IDLE;
+            action = NatureGuardianAction.CASTING;
+        } else if (action == NatureGuardianAction.CASTING) {
+            action = NatureGuardianAction.IDLE;
         }
     }
 

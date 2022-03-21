@@ -18,7 +18,7 @@ public class ShieldBashGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.IDLE || natureGuardian.isNatureGuardianActionValid(NatureGuardian.NatureGuardianAction.SHIELD_BASH) || natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying())
+        if (cooldown-- > 0 || natureGuardian.getAction() != NatureGuardian.NatureGuardianAction.IDLE || natureGuardian.isNatureGuardianActionValid(NatureGuardian.NatureGuardianAction.SHIELD_BASH) || natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying())
             return false;
         target = natureGuardian.getTarget();
         return true;
@@ -26,8 +26,8 @@ public class ShieldBashGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || (natureGuardian.getNatureGuardianAction() == NatureGuardian.NatureGuardianAction.SHIELD_BASH && natureGuardian.getTicksInAction() > natureGuardian.getNatureGuardianAction().getMaxActionTime())) {
-            natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.IDLE);
+        if (natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || (natureGuardian.getAction() == NatureGuardian.NatureGuardianAction.SHIELD_BASH && natureGuardian.getTicksInAction() > natureGuardian.getAction().getMaxActionTime())) {
+            natureGuardian.setAction(NatureGuardian.NatureGuardianAction.IDLE);
             cooldown = 10;
             return false;
         }
@@ -39,11 +39,11 @@ public class ShieldBashGoal extends Goal {
         natureGuardian.getLookControl().setLookAt(target, 30, 30);
         natureGuardian.getNavigation().moveTo(target, 0.75f);
         if (natureGuardian.distanceToSqr(target) < 16) {
-            if (natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.SHIELD_BASH) {
-                natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.SHIELD_BASH);
+            if (natureGuardian.getAction() != NatureGuardian.NatureGuardianAction.SHIELD_BASH) {
+                natureGuardian.setAction(NatureGuardian.NatureGuardianAction.SHIELD_BASH);
             }
         }
-        if (natureGuardian.getNatureGuardianAction() == NatureGuardian.NatureGuardianAction.SHIELD_BASH && natureGuardian.getTicksInAction() > 12) {
+        if (natureGuardian.getAction() == NatureGuardian.NatureGuardianAction.SHIELD_BASH && natureGuardian.getTicksInAction() > 12) {
             if (!natureGuardian.getLevel().isClientSide()) {
                 natureGuardian.getLevel().playSound(null, natureGuardian, AMSounds.NATURE_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1f, 1f);
             }

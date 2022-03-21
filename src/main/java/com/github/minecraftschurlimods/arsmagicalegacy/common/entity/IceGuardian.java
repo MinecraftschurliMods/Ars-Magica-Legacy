@@ -1,15 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceSmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +21,7 @@ public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
     private boolean hasLeftArm = true;
     private float orbitRotation;
-    private IceGuardianAction iceGuardianAction;
+    private IceGuardianAction action;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
@@ -124,31 +120,31 @@ public class IceGuardian extends AbstractBoss {
         return orbitRotation;
     }
 
-    public IceGuardianAction getIceGuardianAction() {
-        return iceGuardianAction;
+    public IceGuardianAction getAction() {
+        return action;
     }
 
-    public void setIceGuardianAction(final IceGuardianAction action) {
-        iceGuardianAction = action;
+    public void setAction(final IceGuardianAction action) {
+        this.action = action;
         ticksInAction = 0;
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == IceGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == IceGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            iceGuardianAction = IceGuardianAction.CASTING;
-        } else if (iceGuardianAction == IceGuardianAction.CASTING) {
-            iceGuardianAction = IceGuardianAction.IDLE;
+            action = IceGuardianAction.CASTING;
+        } else if (action == IceGuardianAction.CASTING) {
+            action = IceGuardianAction.IDLE;
         }
     }
 

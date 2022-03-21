@@ -14,7 +14,7 @@ public class CloneGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.IDLE || !waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CLONE)) {
+        if (cooldown-- > 0 || waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.IDLE || !waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CLONE)) {
             return false;
         }
         return waterGuardian.getTarget() != null && !waterGuardian.getTarget().isDeadOrDying();
@@ -22,8 +22,8 @@ public class CloneGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() > waterGuardian.getWaterGuardianAction().getMaxActionTime()) {
-            waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.IDLE);
+        if (waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() > waterGuardian.getAction().getMaxActionTime()) {
+            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.IDLE);
             cooldown = 200;
             return false;
         }
@@ -32,13 +32,11 @@ public class CloneGoal extends Goal {
 
     @Override
     public void tick() {
-        if (waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.CLONE) {
-            waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.CLONE);
+        if (waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.CLONE) {
+            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.CLONE);
         }
-        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() == 30) {
-            WaterGuardian clone1 = spawnClone();
-            WaterGuardian clone2 = spawnClone();
-            waterGuardian.setClones(clone1, clone2);
+        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() == 30) {
+            waterGuardian.setClones(spawnClone(), spawnClone());
         }
     }
 

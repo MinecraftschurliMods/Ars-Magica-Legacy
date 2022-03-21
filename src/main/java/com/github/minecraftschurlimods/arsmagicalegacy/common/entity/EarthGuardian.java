@@ -1,16 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRockGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
@@ -26,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 public class EarthGuardian extends AbstractBoss {
     public boolean leftArm = false;
     private float rodRotation = 0;
-    private EarthGuardianAction earthGuardianAction;
+    private EarthGuardianAction action;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
@@ -59,7 +55,7 @@ public class EarthGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (ticksInAction > 40 && !level.isClientSide()) {
-            setEarthGuardianAction(EarthGuardianAction.IDLE);
+            setAction(EarthGuardianAction.IDLE);
         } else if (level.isClientSide()) {
             updateRotations();
         }
@@ -107,7 +103,7 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     public boolean shouldRenderRock() {
-        return getEarthGuardianAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 5 && ticksInAction < 27;
+        return getAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 5 && ticksInAction < 27;
     }
 
     public float getRodRotations() {
@@ -119,34 +115,34 @@ public class EarthGuardian extends AbstractBoss {
         rodRotation %= 360;
     }
 
-    public EarthGuardianAction getEarthGuardianAction() {
-        return earthGuardianAction;
+    public EarthGuardianAction getAction() {
+        return action;
     }
 
-    public void setEarthGuardianAction(final EarthGuardianAction action) {
-        earthGuardianAction = action;
+    public void setAction(final EarthGuardianAction action) {
+        this.action = action;
         ticksInAction = 0;
-        if (getEarthGuardianAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
+        if (getAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
             leftArm = !leftArm;
         }
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == EarthGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == EarthGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            earthGuardianAction = EarthGuardianAction.CASTING;
-        } else if (earthGuardianAction == EarthGuardianAction.CASTING) {
-            earthGuardianAction = EarthGuardianAction.IDLE;
+            action = EarthGuardianAction.CASTING;
+        } else if (action == EarthGuardianAction.CASTING) {
+            action = EarthGuardianAction.IDLE;
         }
     }
 

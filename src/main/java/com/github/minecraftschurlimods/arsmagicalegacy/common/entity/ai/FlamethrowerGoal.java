@@ -14,14 +14,14 @@ public class FlamethrowerGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return fireGuardian.getFireGuardianAction() == FireGuardian.FireGuardianAction.IDLE && fireGuardian.getTarget() != null && cooldown-- <= 0;
+        return fireGuardian.getAction() == FireGuardian.FireGuardianAction.IDLE && fireGuardian.getTarget() != null && cooldown-- <= 0;
     }
 
     @Override
     public boolean canContinueToUse() {
         if (fireGuardian.getTarget() == null || fireGuardian.getTarget().isDeadOrDying() || fireGuardian.getTicksInAction() > 80) {
             cooldown = 40;
-            fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.IDLE);
+            fireGuardian.setAction(FireGuardian.FireGuardianAction.IDLE);
             return false;
         }
         return true;
@@ -32,8 +32,8 @@ public class FlamethrowerGoal extends Goal {
         LivingEntity target = fireGuardian.getTarget();
         if (target == null) return;
         if (fireGuardian.distanceToSqr(target) < 64) {
-            if (fireGuardian.getFireGuardianAction() != FireGuardian.FireGuardianAction.LONG_CASTING) {
-                fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.LONG_CASTING);
+            if (fireGuardian.getAction() != FireGuardian.FireGuardianAction.LONG_CASTING) {
+                fireGuardian.setAction(FireGuardian.FireGuardianAction.LONG_CASTING);
             }
             fireGuardian.getLookControl().setLookAt(target, 10, 10);
             fireGuardian.getNavigation().recomputePath(); // is clearPathEntity() --> recomputePath()

@@ -1,13 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricaneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +16,7 @@ public class AirGuardian extends AbstractBoss {
     private boolean useLeftArm = false;
     private float orbitRotation;
     private float spinRotation = 0;
-    private AirGuardianAction airGuardianAction;
+    private AirGuardianAction action;
 
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.YELLOW);
@@ -54,7 +50,7 @@ public class AirGuardian extends AbstractBoss {
     public void aiStep() {
         orbitRotation += 2f;
         orbitRotation %= 360;
-        if (airGuardianAction == AirGuardianAction.SPINNING) {
+        if (action == AirGuardianAction.SPINNING) {
             spinRotation = (spinRotation - 40) % 360;
             if (level.isClientSide()) {
                 // Particles
@@ -93,7 +89,7 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean isPushable() {
-        return airGuardianAction != AirGuardianAction.SPINNING;
+        return action != AirGuardianAction.SPINNING;
     }
 
     public boolean useLeftArm() {
@@ -104,12 +100,12 @@ public class AirGuardian extends AbstractBoss {
         return orbitRotation;
     }
 
-    public AirGuardianAction getAirGuardianAction() {
-        return airGuardianAction;
+    public AirGuardianAction getAction() {
+        return action;
     }
 
-    public void setAirGuardianAction(final AirGuardianAction action) {
-        airGuardianAction = action;
+    public void setAction(final AirGuardianAction action) {
+        this.action = action;
         spinRotation = 0;
         ticksInAction = 0;
         if (action == AirGuardianAction.CASTING) {
@@ -119,20 +115,20 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == AirGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == AirGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            airGuardianAction = AirGuardianAction.CASTING;
-        } else if (airGuardianAction == AirGuardianAction.CASTING) {
-            airGuardianAction = AirGuardianAction.IDLE;
+            action = AirGuardianAction.CASTING;
+        } else if (action == AirGuardianAction.CASTING) {
+            action = AirGuardianAction.IDLE;
         }
     }
 

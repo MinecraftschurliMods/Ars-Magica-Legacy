@@ -26,7 +26,7 @@ public class LifeGuardian extends AbstractBoss {
     private static final EntityDataAccessor<Integer> MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
     private final ArrayList<LivingEntity> minions = new ArrayList<>();
     private final ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
-    private LifeGuardianAction lifeGuardianAction;
+    private LifeGuardianAction action;
 
     public LifeGuardian(EntityType<? extends LifeGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
@@ -108,31 +108,31 @@ public class LifeGuardian extends AbstractBoss {
         queuedMinions.add(minion);
     }
 
-    public LifeGuardianAction getLifeGuardianAction() {
-        return lifeGuardianAction;
+    public LifeGuardianAction getAction() {
+        return action;
     }
 
-    public void setLifeGuardianAction(final LifeGuardianAction action) {
-        lifeGuardianAction = action;
+    public void setAction(final LifeGuardianAction action) {
+        this.action = action;
         ticksInAction = 0;
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == LifeGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == LifeGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            lifeGuardianAction = LifeGuardianAction.CASTING;
-        } else if (lifeGuardianAction == LifeGuardianAction.CASTING) {
-            lifeGuardianAction = LifeGuardianAction.IDLE;
+            action = LifeGuardianAction.CASTING;
+        } else if (action == LifeGuardianAction.CASTING) {
+            action = LifeGuardianAction.IDLE;
         }
     }
 

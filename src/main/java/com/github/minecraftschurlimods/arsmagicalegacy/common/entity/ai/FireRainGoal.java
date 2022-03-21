@@ -14,8 +14,8 @@ public class FireRainGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (fireGuardian.getFireGuardianAction() == FireGuardian.FireGuardianAction.IDLE && fireGuardian.getTarget() != null && cooldown-- <= 0) {
-            fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.CASTING);
+        if (fireGuardian.getAction() == FireGuardian.FireGuardianAction.IDLE && fireGuardian.getTarget() != null && cooldown-- <= 0) {
+            fireGuardian.setAction(FireGuardian.FireGuardianAction.CASTING);
             return true;
         }
         return false;
@@ -28,15 +28,15 @@ public class FireRainGoal extends Goal {
 
     @Override
     public void stop() {
-        fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.IDLE);
+        fireGuardian.setAction(FireGuardian.FireGuardianAction.IDLE);
         cooldown = 150;
         boltTicks = 0;
     }
 
     @Override
     public void tick() {
-        if (fireGuardian.getFireGuardianAction() != FireGuardian.FireGuardianAction.CASTING) {
-            fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.CASTING);
+        if (fireGuardian.getAction() != FireGuardian.FireGuardianAction.CASTING) {
+            fireGuardian.setAction(FireGuardian.FireGuardianAction.CASTING);
         }
         boltTicks++;
         if (boltTicks == 12) {

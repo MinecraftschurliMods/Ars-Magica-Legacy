@@ -18,7 +18,7 @@ public class EarthStrikeAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || earthGuardian.getTarget() != null && earthGuardian.distanceToSqr(earthGuardian.getTarget()) > 4D && !earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), 0.5f))
+        if (cooldown-- > 0 || earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || earthGuardian.getTarget() != null && earthGuardian.distanceToSqr(earthGuardian.getTarget()) > 4D && !earthGuardian.getNavigation().moveTo(earthGuardian.getTarget(), 0.5f))
             return false;
         target = earthGuardian.getTarget();
         return true;
@@ -26,8 +26,8 @@ public class EarthStrikeAttackGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getEarthGuardianAction() == EarthGuardian.EarthGuardianAction.STRIKE && earthGuardian.getTicksInAction() > earthGuardian.getEarthGuardianAction().getMaxActionTime())) {
-            earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.IDLE);
+        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.STRIKE && earthGuardian.getTicksInAction() > earthGuardian.getAction().getMaxActionTime())) {
+            earthGuardian.setAction(EarthGuardian.EarthGuardianAction.IDLE);
             cooldown = 5;
             return false;
         }
@@ -39,11 +39,11 @@ public class EarthStrikeAttackGoal extends Goal {
         earthGuardian.getLookControl().setLookAt(target, 30, 30);
         earthGuardian.getNavigation().moveTo(target, 0.5f);
         if (earthGuardian.distanceToSqr(target) < 16) {
-            if (earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.STRIKE) {
-                earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.STRIKE);
+            if (earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.STRIKE) {
+                earthGuardian.setAction(EarthGuardian.EarthGuardianAction.STRIKE);
             }
         }
-        if (earthGuardian.getEarthGuardianAction() == EarthGuardian.EarthGuardianAction.STRIKE && earthGuardian.getTicksInAction() > 12) {
+        if (earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.STRIKE && earthGuardian.getTicksInAction() > 12) {
             if (!earthGuardian.getLevel().isClientSide()) {
                 earthGuardian.getLevel().playSound(null, earthGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1f, 1f);
             }

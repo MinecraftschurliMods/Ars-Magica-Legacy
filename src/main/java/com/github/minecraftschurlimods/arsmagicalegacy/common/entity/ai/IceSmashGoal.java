@@ -18,7 +18,7 @@ public class IceSmashGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.IDLE || iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying() || iceGuardian.getTarget() != null && iceGuardian.distanceToSqr(iceGuardian.getTarget()) > 4D && !iceGuardian.getNavigation().moveTo(iceGuardian.getTarget(), 0.5f))
+        if (cooldown-- > 0 || iceGuardian.getAction() != IceGuardian.IceGuardianAction.IDLE || iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying() || iceGuardian.getTarget() != null && iceGuardian.distanceToSqr(iceGuardian.getTarget()) > 4D && !iceGuardian.getNavigation().moveTo(iceGuardian.getTarget(), 0.5f))
             return false;
         target = iceGuardian.getTarget();
         return true;
@@ -29,8 +29,8 @@ public class IceSmashGoal extends Goal {
         if (iceGuardian.getTarget() != null && iceGuardian.distanceToSqr(iceGuardian.getTarget()) > 4D) {
             if (iceGuardian.isOnGround()) return iceGuardian.getNavigation().moveTo(iceGuardian.getTarget(), 0.5f);
         }
-        if (iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying() || (iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.SMASH && iceGuardian.getTicksInAction() > iceGuardian.getIceGuardianAction().getMaxActionTime())) {
-            iceGuardian.setIceGuardianAction(IceGuardian.IceGuardianAction.IDLE);
+        if (iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying() || (iceGuardian.getAction() == IceGuardian.IceGuardianAction.SMASH && iceGuardian.getTicksInAction() > iceGuardian.getAction().getMaxActionTime())) {
+            iceGuardian.setAction(IceGuardian.IceGuardianAction.IDLE);
             cooldown = 100;
             return false;
         }
@@ -42,11 +42,11 @@ public class IceSmashGoal extends Goal {
         iceGuardian.getLookControl().setLookAt(target, 30, 30);
         iceGuardian.getNavigation().moveTo(target, 0.5f);
         if (iceGuardian.distanceToSqr(target) < 16) {
-            if (iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.SMASH) {
-                iceGuardian.setIceGuardianAction(IceGuardian.IceGuardianAction.SMASH);
+            if (iceGuardian.getAction() != IceGuardian.IceGuardianAction.SMASH) {
+                iceGuardian.setAction(IceGuardian.IceGuardianAction.SMASH);
             }
         }
-        if (iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.SMASH && iceGuardian.getTicksInAction() == 18) {
+        if (iceGuardian.getAction() == IceGuardian.IceGuardianAction.SMASH && iceGuardian.getTicksInAction() == 18) {
             if (!iceGuardian.getLevel().isClientSide()) {
                 iceGuardian.getLevel().playSound(null, iceGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1f, 1f);
             }

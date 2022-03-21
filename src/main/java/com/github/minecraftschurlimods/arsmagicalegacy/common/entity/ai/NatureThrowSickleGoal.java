@@ -15,7 +15,7 @@ public class NatureThrowSickleGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.IDLE || natureGuardian.getTarget() == null || natureGuardian.isDeadOrDying())
+        if (cooldown-- > 0 || natureGuardian.getAction() != NatureGuardian.NatureGuardianAction.IDLE || natureGuardian.getTarget() == null || natureGuardian.isDeadOrDying())
             return false;
         target = natureGuardian.getTarget();
         return true;
@@ -23,8 +23,8 @@ public class NatureThrowSickleGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || (natureGuardian.getNatureGuardianAction() == NatureGuardian.NatureGuardianAction.THROWING_SICKLE && natureGuardian.getTicksInAction() > natureGuardian.getNatureGuardianAction().getMaxActionTime())) {
-            natureGuardian.setNatureGuardianAction((NatureGuardian.NatureGuardianAction.IDLE));
+        if (natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || (natureGuardian.getAction() == NatureGuardian.NatureGuardianAction.THROWING_SICKLE && natureGuardian.getTicksInAction() > natureGuardian.getAction().getMaxActionTime())) {
+            natureGuardian.setAction((NatureGuardian.NatureGuardianAction.IDLE));
             cooldown = 50;
             return false;
         }
@@ -38,8 +38,8 @@ public class NatureThrowSickleGoal extends Goal {
             natureGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
             natureGuardian.getNavigation().recomputePath();//is clearPathEntity() -> recomputePath
-            if (natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.THROWING_SICKLE) {
-                natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.THROWING_SICKLE);
+            if (natureGuardian.getAction() != NatureGuardian.NatureGuardianAction.THROWING_SICKLE) {
+                natureGuardian.setAction(NatureGuardian.NatureGuardianAction.THROWING_SICKLE);
             }
             if (natureGuardian.getTicksInAction() == 12) {
                 natureGuardian.lookAt(target, 100, 100);

@@ -26,7 +26,7 @@ public class SummonAlliesGoal extends Goal {
     @Override
     public boolean canUse() {
         cooldown--;
-        if (lifeGuardian.getLifeGuardianAction() != LifeGuardian.LifeGuardianAction.CASTING && cooldown <= 0) {
+        if (lifeGuardian.getAction() != LifeGuardian.LifeGuardianAction.CASTING && cooldown <= 0) {
             hasCasted = false;
             return true;
         }
@@ -40,7 +40,7 @@ public class SummonAlliesGoal extends Goal {
 
     @Override
     public void stop() {
-        lifeGuardian.setLifeGuardianAction(LifeGuardian.LifeGuardianAction.IDLE);
+        lifeGuardian.setAction(LifeGuardian.LifeGuardianAction.IDLE);
         cooldown = 200;
         hasCasted = true;
         castTicks = 0;
@@ -48,8 +48,8 @@ public class SummonAlliesGoal extends Goal {
 
     @Override
     public void tick() {
-        if (lifeGuardian.getLifeGuardianAction() != LifeGuardian.LifeGuardianAction.CASTING) {
-            lifeGuardian.setLifeGuardianAction(LifeGuardian.LifeGuardianAction.CASTING);
+        if (lifeGuardian.getAction() != LifeGuardian.LifeGuardianAction.CASTING) {
+            lifeGuardian.setAction(LifeGuardian.LifeGuardianAction.CASTING);
         }
         castTicks++;
         if (castTicks == 16) {

@@ -38,12 +38,12 @@ public class WaterGuardian extends AbstractBoss {
     private float orbitRotation;
     private float spinRotation = 0;
     private boolean uberSpinAvailable = false;
-    private WaterGuardianAction waterGuardianAction;
+    private WaterGuardianAction action;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
         setPathfindingMalus(BlockPathTypes.WATER, 0F);
-        waterGuardianAction = WaterGuardianAction.IDLE;
+        action = WaterGuardianAction.IDLE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -72,10 +72,10 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (getWaterGuardianAction() == WaterGuardianAction.CASTING) {
+        if (getAction() == WaterGuardianAction.CASTING) {
             uberSpinAvailable = false;
-        } else if (!level.isClientSide() && uberSpinAvailable && getWaterGuardianAction() != WaterGuardianAction.CASTING && getWaterGuardianAction() != WaterGuardianAction.IDLE) {
-            setWaterGuardianAction(WaterGuardianAction.IDLE);
+        } else if (!level.isClientSide() && uberSpinAvailable && getAction() != WaterGuardianAction.CASTING && getAction() != WaterGuardianAction.IDLE) {
+            setAction(WaterGuardianAction.IDLE);
         } else if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
             remove(RemovalReason.KILLED);
         } else if (level.isClientSide()) {
@@ -86,10 +86,9 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (!(pSource.getEntity() instanceof WaterGuardian)) {
-            return false;
-        } else if (isClone() && master != null) {
-            master.enableUberAttack();
+        if (pSource.getEntity() instanceof WaterGuardian) return false;
+        if (isClone() && master != null) {
+            master.uberSpinAvailable = true;
             master.clearClones();
         } else if (hasClones()) {
             clearClones();
@@ -102,9 +101,7 @@ public class WaterGuardian extends AbstractBoss {
         }
         if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian) {
-            pAmount = 0;
-        } else if (pSource == DamageSource.FREEZE) {
+        } else if (pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian || pSource == DamageSource.FREEZE) {
             pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
@@ -159,17 +156,13 @@ public class WaterGuardian extends AbstractBoss {
         }
     }
 
-    private void enableUberAttack() {
-        uberSpinAvailable = true;
-    }
-
     private void updateRotation() {
         if (!isClone()) {
             orbitRotation += 2f;
         } else {
             orbitRotation -= 2f;
         }
-        if (getWaterGuardianAction() == WaterGuardianAction.SPINNING || getWaterGuardianAction() == WaterGuardianAction.CASTING) {
+        if (getAction() == WaterGuardianAction.SPINNING || getAction() == WaterGuardianAction.CASTING) {
             spinRotation = (spinRotation - 30) % 360;
         }
     }
@@ -189,10 +182,10 @@ public class WaterGuardian extends AbstractBoss {
 
     public void clearClones() {
         if (clone1 != null) {
-            clone1.setRemoved(RemovalReason.DISCARDED);
+            clone1.remove(RemovalReason.KILLED);
             clone1 = null;
         } else if (clone2 != null) {
-            clone2.setRemoved(RemovalReason.DISCARDED);
+            clone2.remove(RemovalReason.KILLED);
             clone2 = null;
         }
     }
@@ -206,16 +199,12 @@ public class WaterGuardian extends AbstractBoss {
         this.master = master;
     }
 
-    public void clearMaster() {
-        master = null;
+    public WaterGuardianAction getAction() {
+        return action;
     }
 
-    public WaterGuardianAction getWaterGuardianAction() {
-        return waterGuardianAction;
-    }
-
-    public void setWaterGuardianAction(final WaterGuardianAction action) {
-        waterGuardianAction = action;
+    public void setAction(final WaterGuardianAction action) {
+        this.action = action;
         spinRotation = 0;
         ticksInAction = 0;
     }
@@ -233,20 +222,20 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == WaterGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == WaterGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            waterGuardianAction = WaterGuardianAction.CASTING;
-        } else if (waterGuardianAction == WaterGuardianAction.CASTING) {
-            waterGuardianAction = WaterGuardianAction.IDLE;
+            action = WaterGuardianAction.CASTING;
+        } else if (action == WaterGuardianAction.CASTING) {
+            action = WaterGuardianAction.IDLE;
         }
     }
 

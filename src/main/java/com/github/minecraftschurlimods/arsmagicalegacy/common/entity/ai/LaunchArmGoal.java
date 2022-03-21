@@ -36,8 +36,8 @@ public class LaunchArmGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (target == null || target.isDeadOrDying() || iceGuardian.distanceToSqr(target) < 49D || iceGuardian.distanceToSqr(target) > 225D || (iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.LAUNCHING && iceGuardian.getTicksInAction() > iceGuardian.getIceGuardianAction().getMaxActionTime())) {
-            iceGuardian.setIceGuardianAction(IceGuardian.IceGuardianAction.IDLE);
+        if (target == null || target.isDeadOrDying() || iceGuardian.distanceToSqr(target) < 49D || iceGuardian.distanceToSqr(target) > 225D || (iceGuardian.getAction() == IceGuardian.IceGuardianAction.LAUNCHING && iceGuardian.getTicksInAction() > iceGuardian.getAction().getMaxActionTime())) {
+            iceGuardian.setAction(IceGuardian.IceGuardianAction.IDLE);
             target = null;
             if (!iceGuardian.hasLeftArm() && !iceGuardian.hasRightArm()) {
                 cooldown = 20;
@@ -50,12 +50,12 @@ public class LaunchArmGoal extends Goal {
     @Override
     public void tick() {
         iceGuardian.getLookControl().setLookAt(target, 30, 30);
-        if (iceGuardian.distanceToSqr(target) > 144 && iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.IDLE) {
+        if (iceGuardian.distanceToSqr(target) > 144 && iceGuardian.getAction() == IceGuardian.IceGuardianAction.IDLE) {
             iceGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
             iceGuardian.getNavigation().recomputePath(); // is clearPathEntity() --> recomputePath()
-            if (iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.LAUNCHING) {
-                iceGuardian.setIceGuardianAction(IceGuardian.IceGuardianAction.LAUNCHING);
+            if (iceGuardian.getAction() != IceGuardian.IceGuardianAction.LAUNCHING) {
+                iceGuardian.setAction(IceGuardian.IceGuardianAction.LAUNCHING);
             }
             if (iceGuardian.getTicksInAction() == 14) {
                 iceGuardian.lookAt(target, 180, 180);

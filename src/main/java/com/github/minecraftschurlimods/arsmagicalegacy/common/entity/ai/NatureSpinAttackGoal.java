@@ -18,11 +18,11 @@ public class NatureSpinAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.IDLE || !natureGuardian.isNatureGuardianActionValid(NatureGuardian.NatureGuardianAction.SPINNING) || natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || natureGuardian.getTarget().distanceToSqr(natureGuardian) > 25) {
+        if (cooldown-- > 0 || natureGuardian.getAction() != NatureGuardian.NatureGuardianAction.IDLE || !natureGuardian.isNatureGuardianActionValid(NatureGuardian.NatureGuardianAction.SPINNING) || natureGuardian.getTarget() == null || natureGuardian.getTarget().isDeadOrDying() || natureGuardian.getTarget().distanceToSqr(natureGuardian) > 25) {
             return false;
         }
         target = natureGuardian.getTarget();
-        natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.SPINNING);
+        natureGuardian.setAction(NatureGuardian.NatureGuardianAction.SPINNING);
         return true;
     }
 
@@ -37,7 +37,7 @@ public class NatureSpinAttackGoal extends Goal {
 
     @Override
     public void stop() {
-        natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.IDLE);
+        natureGuardian.setAction(NatureGuardian.NatureGuardianAction.IDLE);
         cooldown = 150;
         super.stop();
     }

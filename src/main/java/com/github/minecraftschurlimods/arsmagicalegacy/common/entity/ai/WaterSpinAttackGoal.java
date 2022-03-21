@@ -16,10 +16,10 @@ public class WaterSpinAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.IDLE || !waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.SPINNING) || waterGuardian.getTarget() == null || waterGuardian.getTarget().isDeadOrDying() || waterGuardian.getTarget().distanceToSqr(waterGuardian) > 25)
+        if (cooldown-- > 0 || waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.IDLE || !waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.SPINNING) || waterGuardian.getTarget() == null || waterGuardian.getTarget().isDeadOrDying() || waterGuardian.getTarget().distanceToSqr(waterGuardian) > 25)
             return false;
         target = waterGuardian.getTarget();
-        waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.SPINNING);
+        waterGuardian.setAction(WaterGuardian.WaterGuardianAction.SPINNING);
         return true;
     }
 
@@ -34,7 +34,7 @@ public class WaterSpinAttackGoal extends Goal {
 
     @Override
     public void stop() {
-        waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.IDLE);
+        waterGuardian.setAction(WaterGuardian.WaterGuardianAction.IDLE);
         cooldown = 150;
         super.stop();
     }

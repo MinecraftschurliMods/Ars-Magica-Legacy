@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class FireGuardian extends AbstractBoss {
     private boolean isUnderground = false;
     private int hitCount = 0;
-    private FireGuardianAction fireGuardianAction;
+    private FireGuardianAction action;
 
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
@@ -57,10 +57,10 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (ticksInAction == 30 && getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (ticksInAction == 30 && getAction() == FireGuardianAction.SPINNING) {
             nova();
         }
-        if (ticksInAction > 13 && getFireGuardianAction() == FireGuardianAction.LONG_CASTING) {
+        if (ticksInAction > 13 && getAction() == FireGuardianAction.LONG_CASTING) {
             if (getTarget() != null) {
                 lookAt(getTarget(), 10, 10);
             }
@@ -72,8 +72,8 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (isUnderground && getFireGuardianAction() != FireGuardianAction.SPINNING) return false;
-        if (getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (isUnderground && getAction() != FireGuardianAction.SPINNING) return false;
+        if (getAction() == FireGuardianAction.SPINNING) {
             hitCount++;
         }
         if (pSource == DamageSource.DROWN) {
@@ -97,7 +97,7 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     protected int calculateFallDamage(final float pDistance, final float pDamageMultiplier) {
-        if (getFireGuardianAction() == FireGuardianAction.SPINNING) {
+        if (getAction() == FireGuardianAction.SPINNING) {
             isUnderground = true;
         }
         return super.calculateFallDamage(pDistance, pDamageMultiplier);
@@ -155,11 +155,11 @@ public class FireGuardian extends AbstractBoss {
         return true;
     }
 
-    public FireGuardianAction getFireGuardianAction() {
-        return fireGuardianAction;
+    public FireGuardianAction getAction() {
+        return action;
     }
 
-    public void setFireGuardianAction(final FireGuardianAction action) {
+    public void setAction(final FireGuardianAction action) {
         if (action == FireGuardianAction.SPINNING) {
             // Particles
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5, getDeltaMovement().z());
@@ -167,26 +167,26 @@ public class FireGuardian extends AbstractBoss {
             hitCount = 0;
             isUnderground = false;
         }
-        fireGuardianAction = action;
+        this.action = action;
         ticksInAction = 0;
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == FireGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == FireGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            fireGuardianAction = FireGuardianAction.CASTING;
-        } else if (fireGuardianAction == FireGuardianAction.CASTING) {
-            fireGuardianAction = FireGuardianAction.IDLE;
+            action = FireGuardianAction.CASTING;
+        } else if (action == FireGuardianAction.CASTING) {
+            action = FireGuardianAction.IDLE;
         }
     }
 

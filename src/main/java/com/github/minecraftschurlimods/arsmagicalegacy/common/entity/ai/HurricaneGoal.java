@@ -19,7 +19,7 @@ public class HurricaneGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || airGuardian.getAirGuardianAction() != AirGuardian.AirGuardianAction.IDLE) return false;
+        if (cooldown-- > 0 || airGuardian.getAction() != AirGuardian.AirGuardianAction.IDLE) return false;
         if (airGuardian.getTarget() == null || airGuardian.getTarget().isDeadOrDying() || airGuardian.getTarget().distanceToSqr(airGuardian) > 25)
             return false;
         target = airGuardian.getTarget();
@@ -60,7 +60,7 @@ public class HurricaneGoal extends Goal {
                     e.fallDistance = 0f;
                 }
             }
-            airGuardian.setAirGuardianAction(AirGuardian.AirGuardianAction.IDLE);
+            airGuardian.setAction(AirGuardian.AirGuardianAction.IDLE);
             cooldown = 20;
             return false;
         }

@@ -18,13 +18,13 @@ public class ChaosWaterBoltGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING);
+        return waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING);
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CASTING && waterGuardian.getTicksInAction() > 100) {
-            waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.IDLE);
+        if (waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CASTING && waterGuardian.getTicksInAction() > 100) {
+            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.IDLE);
             return false;
         }
         return true;
@@ -32,10 +32,10 @@ public class ChaosWaterBoltGoal extends Goal {
 
     @Override
     public void tick() {
-        if (waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.CASTING) {
-            waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.CASTING);
+        if (waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.CASTING) {
+            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.CASTING);
         }
-        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CASTING) {
+        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CASTING) {
             float yaw = waterGuardian.getLevel().random.nextFloat() * 360;
             waterGuardian.setYRot(yaw);
             waterGuardian.yRotO = yaw;

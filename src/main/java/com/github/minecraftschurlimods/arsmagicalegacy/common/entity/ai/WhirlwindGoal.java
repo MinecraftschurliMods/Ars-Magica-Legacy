@@ -18,7 +18,7 @@ public class WhirlwindGoal extends Goal {
     @Override
     public boolean canUse() {
         cooldown--;
-        if (airGuardian.getAirGuardianAction() == AirGuardian.AirGuardianAction.IDLE && airGuardian.getTarget() != null && cooldown <= 0) {
+        if (airGuardian.getAction() == AirGuardian.AirGuardianAction.IDLE && airGuardian.getTarget() != null && cooldown <= 0) {
             hasCasted = false;
             return true;
         }
@@ -32,7 +32,7 @@ public class WhirlwindGoal extends Goal {
 
     @Override
     public void stop() {
-        airGuardian.setAirGuardianAction(AirGuardian.AirGuardianAction.IDLE);
+        airGuardian.setAction(AirGuardian.AirGuardianAction.IDLE);
         cooldown = 10;
         hasCasted = true;
         castTicks = 0;
@@ -51,8 +51,8 @@ public class WhirlwindGoal extends Goal {
         } else if (!airGuardian.canBeSeenByAnyone()) {  // should be canSee(airGuardian.getTarget())
             airGuardian.getNavigation().moveTo(airGuardian.getTarget(), 0.5f);
         } else {
-            if (airGuardian.getAirGuardianAction() != AirGuardian.AirGuardianAction.CASTING) {
-                airGuardian.setAirGuardianAction(AirGuardian.AirGuardianAction.CASTING);
+            if (airGuardian.getAction() != AirGuardian.AirGuardianAction.CASTING) {
+                airGuardian.setAction(AirGuardian.AirGuardianAction.CASTING);
             }
             castTicks++;
             if (castTicks == 12 && !airGuardian.getLevel().isClientSide()) {

@@ -17,7 +17,7 @@ public class ThrowRockGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying())
+        if (cooldown-- > 0 || earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying())
             return false;
         target = earthGuardian.getTarget();
         return true;
@@ -25,8 +25,8 @@ public class ThrowRockGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getEarthGuardianAction() == EarthGuardian.EarthGuardianAction.THROWING_ROCK && earthGuardian.getTicksInAction() > earthGuardian.getEarthGuardianAction().getMaxActionTime())) {
-            earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.IDLE);
+        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.THROWING_ROCK && earthGuardian.getTicksInAction() > earthGuardian.getAction().getMaxActionTime())) {
+            earthGuardian.setAction(EarthGuardian.EarthGuardianAction.IDLE);
             cooldown = 50;
             return false;
         }
@@ -40,8 +40,8 @@ public class ThrowRockGoal extends Goal {
             earthGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
             earthGuardian.getNavigation().recomputePath();  // is clearPathEntity() --> recomputePath()
-            if (earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.THROWING_ROCK) {
-                earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.THROWING_ROCK);
+            if (earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.THROWING_ROCK) {
+                earthGuardian.setAction(EarthGuardian.EarthGuardianAction.THROWING_ROCK);
             }
             if (earthGuardian.getTicksInAction() == 27) {
                 if (!earthGuardian.getLevel().isClientSide()) {

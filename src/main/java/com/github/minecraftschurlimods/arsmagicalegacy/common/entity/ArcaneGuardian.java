@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 public class ArcaneGuardian extends AbstractBoss {
     private float runeRotationY = 0;
     private float runeRotationZ = 0;
-    private ArcaneGuardianAction arcaneGuardianAction;
+    private ArcaneGuardianAction action;
 
     public ArcaneGuardian(EntityType<? extends ArcaneGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.PINK);
@@ -122,31 +122,31 @@ public class ArcaneGuardian extends AbstractBoss {
         return runeRotationZ;
     }
 
-    public ArcaneGuardianAction getArcaneGuardianAction() {
-        return arcaneGuardianAction;
+    public ArcaneGuardianAction getAction() {
+        return action;
     }
 
-    public void setArcaneGuardianAction(final ArcaneGuardianAction action) {
-        arcaneGuardianAction = action;
+    public void setAction(final ArcaneGuardianAction action) {
+        this.action = action;
         ticksInAction = 0;
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == ArcaneGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == ArcaneGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            arcaneGuardianAction = ArcaneGuardianAction.CASTING;
-        } else if (arcaneGuardianAction == ArcaneGuardianAction.CASTING) {
-            arcaneGuardianAction = ArcaneGuardianAction.IDLE;
+            action = ArcaneGuardianAction.CASTING;
+        } else if (action == ArcaneGuardianAction.CASTING) {
+            action = ArcaneGuardianAction.IDLE;
         }
     }
 

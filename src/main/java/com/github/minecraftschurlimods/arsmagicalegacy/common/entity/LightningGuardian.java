@@ -20,7 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class LightningGuardian extends AbstractBoss {
-    private LightningGuardianAction lightningGuardianAction;
+    private LightningGuardianAction action;
 
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.YELLOW);
@@ -54,21 +54,21 @@ public class LightningGuardian extends AbstractBoss {
     public void aiStep() {
         super.aiStep();
         if (getTarget() != null) {
-            if (!level.isClientSide() && distanceToSqr(getTarget()) > 64D && getLightningGuardianAction() == LightningGuardianAction.IDLE) {
+            if (!level.isClientSide() && distanceToSqr(getTarget()) > 64D && getAction() == LightningGuardianAction.IDLE) {
                 getNavigation().moveTo(getTarget(), 0.5f);
             }
         }
         if (level.isClientSide()) {
             int halfDist = 8;
             int dist = 16;
-            if (getLightningGuardianAction() == LightningGuardianAction.CHARGE) {
+            if (getAction() == LightningGuardianAction.CHARGE) {
                 if (ticksInAction > 50) {
                     // Particles
                 }
                 if (ticksInAction > 66) {
                     // Particles
                 }
-            } else if (getLightningGuardianAction() == LightningGuardianAction.LONG_CASTING) {
+            } else if (getAction() == LightningGuardianAction.LONG_CASTING) {
                 if (ticksInAction > 25 && ticksInAction < 150) {
                     // Particles
                 }
@@ -106,32 +106,32 @@ public class LightningGuardian extends AbstractBoss {
         return 2;
     }
 
-    public LightningGuardianAction getLightningGuardianAction() {
-        return lightningGuardianAction;
+    public LightningGuardianAction getAction() {
+        return action;
     }
 
-    public void setLightningGuardianAction(final LightningGuardianAction action) {
-        lightningGuardianAction = action;
+    public void setAction(final LightningGuardianAction action) {
+        this.action = action;
         ticksInAction = 0;
         setNoGravity(action == LightningGuardianAction.LONG_CASTING);
     }
 
     @Override
     public boolean canCastSpell() {
-        return true;
+        return action == LightningGuardianAction.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return false;
+        return action == LightningGuardianAction.CASTING;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            lightningGuardianAction = LightningGuardianAction.CASTING;
-        } else if (lightningGuardianAction == LightningGuardianAction.CASTING) {
-            lightningGuardianAction = LightningGuardianAction.IDLE;
+            action = LightningGuardianAction.CASTING;
+        } else if (action == LightningGuardianAction.CASTING) {
+            action = LightningGuardianAction.IDLE;
         }
     }
 
