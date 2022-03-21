@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DiveGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FireRainGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FlameThrowerGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FlamethrowerGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
@@ -73,7 +73,7 @@ public class FireGuardian extends AbstractBoss {
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (isUnderground && getFireGuardianAction() != FireGuardianAction.SPINNING) return false;
         if (getFireGuardianAction() == FireGuardianAction.SPINNING) {
-            ++hitCount;
+            hitCount++;
         }
         if (pSource == DamageSource.DROWN) {
             pAmount *= 2f;
@@ -91,7 +91,7 @@ public class FireGuardian extends AbstractBoss {
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 12, 18));
         goalSelector.addGoal(2, new DiveGoal(this));
         goalSelector.addGoal(1, new FireRainGoal(this));
-        goalSelector.addGoal(3, new FlameThrowerGoal(this));
+        goalSelector.addGoal(3, new FlamethrowerGoal(this));
     }
 
     @Override

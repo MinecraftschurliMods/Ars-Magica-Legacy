@@ -5,8 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderBoltGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderRushGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EndertorrentGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderwaveGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderTorrentGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderWaveGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.OtherwordlyRoarGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ProtectGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShadowstepGoal;
@@ -29,10 +29,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class EnderGuardian extends AbstractBoss {
-    private int                 wingFlapTime         = 0;
-    private int                 ticksSinceLastAttack = 0;
-    private int                 hitCount             = 0;
-    private Vector3f            spawn;
+    private int wingFlapTime = 0;
+    private int ticksSinceLastAttack = 0;
+    private int hitCount = 0;
+    private Vector3f spawn;
     private EnderGuardianAction enderGuardianAction;
 
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
@@ -132,8 +132,8 @@ public class EnderGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
         goalSelector.addGoal(2, new EnderBoltGoal(this));
         goalSelector.addGoal(2, new EnderRushGoal(this));
-        goalSelector.addGoal(2, new EndertorrentGoal(this));
-        goalSelector.addGoal(2, new EnderwaveGoal(this));
+        goalSelector.addGoal(2, new EnderTorrentGoal(this));
+        goalSelector.addGoal(2, new EnderWaveGoal(this));
         goalSelector.addGoal(2, new OtherwordlyRoarGoal(this));
         goalSelector.addGoal(2, new ProtectGoal(this));
         goalSelector.addGoal(2, new ShadowstepGoal(this));
@@ -179,10 +179,10 @@ public class EnderGuardian extends AbstractBoss {
 
     public void setEnderGuardianAction(final EnderGuardianAction action) {
         enderGuardianAction = action;
+        ticksInAction = 0;
         if (action == EnderGuardianAction.LONG_CASTING) {
             wingFlapTime = 0;
         }
-        ticksInAction = 0;
     }
 
     @Override
@@ -205,7 +205,12 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public enum EnderGuardianAction {
-        IDLE(-1), CASTING(-1), CHARGE(-1), LONG_CASTING(-1), SHIELD_BASH(15), STRIKE(15);
+        IDLE(-1),
+        CASTING(-1),
+        CHARGE(-1),
+        LONG_CASTING(-1),
+        SHIELD_BASH(15),
+        STRIKE(15);
 
         private final int maxActionTime;
 

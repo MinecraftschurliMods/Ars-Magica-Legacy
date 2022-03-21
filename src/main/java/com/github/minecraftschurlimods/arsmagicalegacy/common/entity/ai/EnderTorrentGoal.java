@@ -1,15 +1,21 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.EntityHitResult;
 
-public class EndertorrentGoal extends Goal {
+public class EnderTorrentGoal extends Goal {
     private final EnderGuardian enderGuardian;
-    private       int           cooldown = 0;
+    private final ISpell spell = PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell();
+    private int cooldown = 0;
 
-    public EndertorrentGoal(EnderGuardian enderGuardian) {
+    public EnderTorrentGoal(EnderGuardian enderGuardian) {
         this.enderGuardian = enderGuardian;
     }
 
@@ -32,11 +38,11 @@ public class EndertorrentGoal extends Goal {
             enderGuardian.getLookControl().setLookAt(enderGuardian.getTarget(), 30, 30);
             if (enderGuardian.getTicksInAction() > 15) {
                 if ((enderGuardian.getTicksInAction() - 15) % 10 == 0) {
-                    //SpellUtils.applyStackStage(NPCSpells.instance.enderGuardian_enderTorrent, guardian, null, guardian.posX, guardian.posY, guardian.posZ, null, guardian.worldObj, false, false, guardian.getTicksInCurrentAction());
+                    ArsMagicaAPI.get().getSpellHelper().invoke(spell, enderGuardian, enderGuardian.getLevel(), new EntityHitResult(enderGuardian), enderGuardian.getTicksInAction(), 0, false);
                 }
                 enderGuardian.lookAt(enderGuardian.getTarget(), 15, 180);
             } else if (enderGuardian.getTicksInAction() == 15) {
-                enderGuardian.level.playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + enderGuardian.getRandom().nextDouble() * 0.5f));
+                enderGuardian.getLevel().playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + enderGuardian.getRandom().nextDouble() * 0.5f));
             } else {
                 enderGuardian.lookAt(enderGuardian.getTarget(), 180, 180);
             }

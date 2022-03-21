@@ -7,36 +7,27 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
-
 public class LaunchArmGoal extends Goal {
-    private final IceGuardian  iceGuardian;
-    private final float        moveSpeed;
-    private       LivingEntity target;
-    private       int          cooldown = 0;
+    private final IceGuardian iceGuardian;
+    private LivingEntity target;
+    private int cooldown = 0;
 
-    public LaunchArmGoal(IceGuardian iceGuardian, float moveSpeed) {
+    public LaunchArmGoal(IceGuardian iceGuardian) {
         this.iceGuardian = iceGuardian;
-        this.moveSpeed = moveSpeed;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || iceGuardian.getTarget() == null) {
-            return false;
-        }
+        if (cooldown-- > 0 || iceGuardian.getTarget() == null) return false;
         if (iceGuardian.getTarget().distanceToSqr(iceGuardian) > 16D) {
             target = iceGuardian.getTarget();
             return true;
         }
-        List<LivingEntity> nearbyEntities = iceGuardian.level.getEntitiesOfClass(LivingEntity.class, iceGuardian.getBoundingBox().inflate(20, 20, 20));
-        if (nearbyEntities.size() > 0) {
-            for (LivingEntity e : nearbyEntities) {
-                if (!(e instanceof Player) || !((Player) e).isCreative()) {  // maybe wrong
-                    if (e.distanceToSqr(iceGuardian) > 49D) {
-                        target = e;
-                        return true;
-                    }
+        for (LivingEntity e : iceGuardian.getLevel().getEntitiesOfClass(LivingEntity.class, iceGuardian.getBoundingBox().inflate(20, 20, 20))) {
+            if (!(e instanceof Player) || !((Player) e).isCreative()) {
+                if (e.distanceToSqr(iceGuardian) > 49D) {
+                    target = e;
+                    return true;
                 }
             }
         }
@@ -60,7 +51,7 @@ public class LaunchArmGoal extends Goal {
     public void tick() {
         iceGuardian.getLookControl().setLookAt(target, 30, 30);
         if (iceGuardian.distanceToSqr(target) > 144 && iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.IDLE) {
-            iceGuardian.getNavigation().moveTo(target, moveSpeed);
+            iceGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
             iceGuardian.getNavigation().recomputePath(); // is clearPathEntity() --> recomputePath()
             if (iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.LAUNCHING) {
@@ -68,13 +59,12 @@ public class LaunchArmGoal extends Goal {
             }
             if (iceGuardian.getTicksInAction() == 14) {
                 iceGuardian.lookAt(target, 180, 180);
-                if (!iceGuardian.level.isClientSide()) {
-                    iceGuardian.level.playSound(null, iceGuardian, AMSounds.ICE_GUARDIAN_LAUNCH_ARM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
-
-                    //                    IceGuardianArm projectile = new IceGuardianArm(iceGuardian.level, iceGuardian, 1.25f);
-                    //                    projectile.setThrowingEntity(iceGuardian);
-                    //                    projectile.setProjectileSpeed(2.0);
-                    //                    iceGuardian.level.addFreshEntity(projectile);
+                if (!iceGuardian.getLevel().isClientSide()) {
+                    iceGuardian.getLevel().playSound(null, iceGuardian, AMSounds.ICE_GUARDIAN_LAUNCH_ARM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+//                    IceGuardianArm projectile = new IceGuardianArm(iceGuardian.getLevel(), iceGuardian, 1.25f);
+//                    projectile.setThrowingEntity(iceGuardian);
+//                    projectile.setProjectileSpeed(2.0);
+//                    iceGuardian.getLevel().addFreshEntity(projectile);
                 }
             }
         }

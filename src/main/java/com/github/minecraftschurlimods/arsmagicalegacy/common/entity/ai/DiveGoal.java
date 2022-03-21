@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class DiveGoal extends Goal {
@@ -23,7 +24,7 @@ public class DiveGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (fireGuardian.getTarget() == null || fireGuardian.getTarget().isDeadOrDying() || fireGuardian.getHitCount() >= 3) {
-            this.cooldown = 300;
+            cooldown = 300;
             fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.IDLE);
             return false;
         }
@@ -32,8 +33,10 @@ public class DiveGoal extends Goal {
 
     @Override
     public void tick() {
-        fireGuardian.getNavigation().moveTo(fireGuardian.getTarget(), 0.75f);
-        if (fireGuardian.getTicksInAction() > 40 && fireGuardian.distanceToSqr(fireGuardian.getTarget()) < 64D) {
+        LivingEntity target = fireGuardian.getTarget();
+        if (target == null) return;
+        fireGuardian.getNavigation().moveTo(target, 0.75f);
+        if (fireGuardian.getTicksInAction() > 40 && fireGuardian.distanceToSqr(target) < 64D) {
             fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.SPINNING);
         }
     }

@@ -93,7 +93,10 @@ public class WaterGuardian extends AbstractBoss {
         } else if (hasClones()) {
             clearClones();
         } else if (!isClone() && random.nextInt(10) < 6) {
-            level.playSound(null, this, getHurtSound(pSource), SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
+            SoundEvent sound = getHurtSound(pSource);
+            if (sound != null) {
+                level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
+            }
             return false;
         }
         if (pSource == DamageSource.LIGHTNING_BOLT) {
@@ -113,7 +116,7 @@ public class WaterGuardian extends AbstractBoss {
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
         goalSelector.addGoal(2, new ChaosWaterBoltGoal(this));
         goalSelector.addGoal(3, new CloneGoal(this));
-        goalSelector.addGoal(3, new WaterSpinAttackGoal(this, 0.5f, 4));
+        goalSelector.addGoal(3, new WaterSpinAttackGoal(this));
     }
 
     @Override

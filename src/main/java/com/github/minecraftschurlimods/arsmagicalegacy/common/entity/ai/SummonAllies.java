@@ -3,19 +3,24 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SummonAllies extends Goal {
     private final LifeGuardian lifeGuardian;
     private int cooldown = 0;
     private boolean hasCasted = false;
     private int castTicks = 0;
-    private Class<? extends Mob>[] mobs;  // should be EntityCreature
+    private List<EntityType<? extends Mob>> mobs;
 
-    public SummonAllies(LifeGuardian lifeGuardian, Class<? extends Mob>... summons) {
+    public SummonAllies(LifeGuardian lifeGuardian, EntityType<? extends Mob>... summons) {
         this.lifeGuardian = lifeGuardian;
-        this.mobs = summons;
+        this.mobs = Arrays.stream(summons).collect(Collectors.toList());
     }
 
     @Override
@@ -48,37 +53,28 @@ public class SummonAllies extends Goal {
         }
         castTicks++;
         if (castTicks == 16) {
-            if (!lifeGuardian.level.isClientSide()) {
-                lifeGuardian.level.playSound(null, lifeGuardian, AMSounds.LIFE_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, lifeGuardian.getRandom().nextFloat() * 0.5f + 0.5f); // should be LIFE_GUARDIAN_SUMMON
+            if (!lifeGuardian.getLevel().isClientSide()) {
+                lifeGuardian.getLevel().playSound(null, lifeGuardian, AMSounds.LIFE_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, lifeGuardian.getRandom().nextFloat() * 0.5f + 0.5f); // should be LIFE_GUARDIAN_SUMMON
             }
-            int numAllies = 3;
-//            for (int i = 0; i < numAllies; ++i) {
-//                Class<? extends Mob> summon = mobs[lifeGuardian.level.getRandom().nextInt(mobs.length)];
-//                try {
-//                    Constructor<? extends Mob> ctor = summon.getConstructor(World.class);
-//                    Mob mob = ctor.newInstance(lifeGuardian.level);
-//                    double newX = lifeGuardian.getX() + lifeGuardian.level.getRandom().nextDouble() * 2 - 1;
-//                    double newZ = lifeGuardian.getZ() + lifeGuardian.level.getRandom().nextDouble() * 2 - 1;
-//                    mob.setPos(newX, lifeGuardian.getY(), newZ);
-//                    mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 1)); // maybe wrong
-//                    mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 99999, 1));  // maybe wrong
-//                    mob.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1));  // maybe wrong
-//                    mob.addEffect(new MobEffectInstance(AMMobEffects.MAGIC_SHIELD.get(), 99999, 1));  // maybe wrong
-//
-//                    if (lifeGuardian.getHealth() < lifeGuardian.getMaxHealth() / 2) {
-//                        mob.addEffect(new MobEffectInstance(AMMobEffects.SHRINK.get(), 99999, 1));  // maybe wrong
-//                    }
-//
-//                    EntityUtils.makeSummon_MonsterFaction(mob, false);
-//                    EntityUtils.setOwner(mob, host);
-//                    EntityUtils.setSummonDuration(mob, 1800);
-//                    lifeGuardian.level.addFreshEntity(mob);
-//                    lifeGuardian.addQueuedMinions(mob);
-//
-//                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-//                    e.printStackTrace();
-//                    return;
+//            for (int i = 0; i < 3; ++i) {
+//                EntityType<?> summon = mobs.get(lifeGuardian.getLevel().getRandom().nextInt(mobs.size()));
+//                Mob mob = (Mob) summon.create(lifeGuardian.getLevel());
+//                if (mob == null) continue;
+//                double newX = lifeGuardian.getX() + lifeGuardian.getLevel().getRandom().nextDouble() * 2 - 1;
+//                double newZ = lifeGuardian.getZ() + lifeGuardian.getLevel().getRandom().nextDouble() * 2 - 1;
+//                mob.moveTo(newX, lifeGuardian.getY(), newZ);
+//                mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 1));
+//                mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 99999, 1));
+//                mob.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1));
+//                mob.addEffect(new MobEffectInstance(AMMobEffects.MAGIC_SHIELD.get(), 99999, 1));
+//                if (lifeGuardian.getHealth() < lifeGuardian.getMaxHealth() / 2) {
+//                    mob.addEffect(new MobEffectInstance(AMMobEffects.SHRINK.get(), 99999, 1));
 //                }
+//                EntityUtils.makeSummonMonsterFaction(mob, false);
+//                EntityUtils.setOwner(mob, host);
+//                EntityUtils.setSummonDuration(mob, 1800);
+//                lifeGuardian.getLevel().addFreshEntity(mob);
+//                lifeGuardian.addQueuedMinions(mob);
 //            }
         }
         if (castTicks >= 23) {

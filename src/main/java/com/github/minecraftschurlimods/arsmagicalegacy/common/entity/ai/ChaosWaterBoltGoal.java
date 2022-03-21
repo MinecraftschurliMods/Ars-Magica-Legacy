@@ -1,31 +1,24 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class ChaosWaterBoltGoal extends Goal {
     private final WaterGuardian waterGuardian;
-    //    private static final ItemStack castStack = createDummyStack();
-    //    private static ISpellPart WateryGrave() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "watery_grave"));}
-    //    private static ISpellPart Projectile() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "projectile"));}
-    //    private static ISpellPart MagicDamage() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_damage"));}
-    //    private static ISpellPart Knockback() { return ArsMagicaAPI.get().getSpellPartRegistry().getValue(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knockback"));}
-
+    private final ISpell spell = PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell();
 
     public ChaosWaterBoltGoal(WaterGuardian waterGuardian) {
         this.waterGuardian = waterGuardian;
     }
 
-    //    private static ItemStack createDummyStack() {
-    //        return new SpellStack(new ArrayList<>(), Lists.newArrayList(Projectile(), WateryGrave(), MagicDamage(), Knockback()));
-    //    }
-
     @Override
     public boolean canUse() {
-        if (waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING)) {
-            return true;
-        }
-        return false;
+        return waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.IDLE && waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CASTING);
     }
 
     @Override
@@ -42,12 +35,11 @@ public class ChaosWaterBoltGoal extends Goal {
         if (waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.CASTING) {
             waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.CASTING);
         }
-
-        if (!waterGuardian.level.isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CASTING) {
-            float yaw = waterGuardian.level.random.nextFloat() * 360;
+        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CASTING) {
+            float yaw = waterGuardian.getLevel().random.nextFloat() * 360;
             waterGuardian.setYRot(yaw);
             waterGuardian.yRotO = yaw;
-            // SpellUtils.applyStackStage(castStack, host, host, host.posX, host.posY, host.posZ, null, host.worldObj, false, false, 0);
+            ArsMagicaAPI.get().getSpellHelper().invoke(spell, waterGuardian, waterGuardian.getLevel(), new EntityHitResult(waterGuardian), waterGuardian.getTicksInAction(), 0, false);
         }
     }
 }

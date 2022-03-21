@@ -63,7 +63,7 @@ public class IceGuardian extends AbstractBoss {
                 List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0));
                 for (LivingEntity e : entities) {
                     if (e != this) {
-                        e.hurt(DamageSource.ON_FIRE, 5);
+                        e.hurt(DamageSource.FREEZE, 5);
                     }
                 }
             }
@@ -75,7 +75,7 @@ public class IceGuardian extends AbstractBoss {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
-        } else if (pSource.isFire() || pSource == DamageSource.ON_FIRE || pSource == DamageSource.IN_FIRE) {
+        } else if (pSource.isFire()) {
             pAmount *= 2f;
         }
         return super.hurt(pSource, pAmount);
@@ -85,9 +85,9 @@ public class IceGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
-        goalSelector.addGoal(4, new LaunchArmGoal(this, 0.5f));
-        goalSelector.addGoal(2, new IceSmashGoal(this, 0.5f));
-        goalSelector.addGoal(3, new IceStrikeAttackGoal(this, 0.5f, 6f));
+        goalSelector.addGoal(4, new LaunchArmGoal(this));
+        goalSelector.addGoal(2, new IceSmashGoal(this));
+        goalSelector.addGoal(3, new IceStrikeAttackGoal(this));
     }
 
     public void returnOneArm() {

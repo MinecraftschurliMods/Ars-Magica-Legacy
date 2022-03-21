@@ -6,24 +6,18 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 public class NatureThrowSickleGoal extends Goal {
     private final NatureGuardian natureGuardian;
-    private final float          moveSpeed;
-    private       LivingEntity   target;
-    private       int            cooldown = 0;
+    private LivingEntity target;
+    private int cooldown = 0;
 
-    public NatureThrowSickleGoal(NatureGuardian natureGuardian, float moveSpeed) {
+    public NatureThrowSickleGoal(NatureGuardian natureGuardian) {
         this.natureGuardian = natureGuardian;
-        this.moveSpeed = moveSpeed;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.IDLE) {
+        if (cooldown-- > 0 || natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.IDLE || natureGuardian.getTarget() == null || natureGuardian.isDeadOrDying())
             return false;
-        }
-        if (natureGuardian.getTarget() == null || natureGuardian.isDeadOrDying()) {
-            return false;
-        }
-        this.target = natureGuardian.getTarget();
+        target = natureGuardian.getTarget();
         return true;
     }
 
@@ -41,20 +35,19 @@ public class NatureThrowSickleGoal extends Goal {
     public void tick() {
         natureGuardian.getLookControl().setLookAt(target, 30, 30);
         if (natureGuardian.distanceToSqr(target) > 100) {
-            natureGuardian.getNavigation().moveTo(target, moveSpeed);
+            natureGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
-            natureGuardian.getNavigation().recomputePath(); // is clearPathEntity() --> recomputePath
+            natureGuardian.getNavigation().recomputePath();//is clearPathEntity() -> recomputePath
             if (natureGuardian.getNatureGuardianAction() != NatureGuardian.NatureGuardianAction.THROWING_SICKLE) {
                 natureGuardian.setNatureGuardianAction(NatureGuardian.NatureGuardianAction.THROWING_SICKLE);
             }
-
             if (natureGuardian.getTicksInAction() == 12) {
                 natureGuardian.lookAt(target, 100, 100);
-                if (!natureGuardian.level.isClientSide()) {
-//                    ThrownSickle projectile = new ThrownSickle(natureGuardian.level, natureGuardian, 2.0f);
+                if (!natureGuardian.getLevel().isClientSide()) {
+//                    ThrownSickle projectile = new ThrownSickle(natureGuardian.getLevel(), natureGuardian, 2.0f);
 //                    projectile.setThrowingEntity(natureGuardian);
 //                    projectile.setProjectileSpeed(2.0);
-//                    natureGuardian.level.addFreshEntity(projectile);
+//                    natureGuardian.getLevel().addFreshEntity(projectile);
                 }
             }
         }

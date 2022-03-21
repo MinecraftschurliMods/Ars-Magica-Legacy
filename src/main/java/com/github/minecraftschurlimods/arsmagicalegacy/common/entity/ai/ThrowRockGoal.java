@@ -8,20 +8,18 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 public class ThrowRockGoal extends Goal {
     private final EarthGuardian earthGuardian;
-    private final float moveSpeed;
     private LivingEntity target;
     private int cooldown = 0;
 
-    public ThrowRockGoal(EarthGuardian earthGuardian, float moveSpeed) {
+    public ThrowRockGoal(EarthGuardian earthGuardian) {
         this.earthGuardian = earthGuardian;
-        this.moveSpeed = moveSpeed;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE) return false;
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying()) return false;
-        this.target = earthGuardian.getTarget();
+        if (cooldown-- > 0 || earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying())
+            return false;
+        target = earthGuardian.getTarget();
         return true;
     }
 
@@ -39,20 +37,20 @@ public class ThrowRockGoal extends Goal {
     public void tick() {
         earthGuardian.getLookControl().setLookAt(target, 30, 30);
         if (earthGuardian.distanceToSqr(target) > 100) {
-            earthGuardian.getNavigation().moveTo(target, moveSpeed);
+            earthGuardian.getNavigation().moveTo(target, 0.5f);
         } else {
             earthGuardian.getNavigation().recomputePath();  // is clearPathEntity() --> recomputePath()
             if (earthGuardian.getEarthGuardianAction() != EarthGuardian.EarthGuardianAction.THROWING_ROCK) {
                 earthGuardian.setEarthGuardianAction(EarthGuardian.EarthGuardianAction.THROWING_ROCK);
             }
             if (earthGuardian.getTicksInAction() == 27) {
-                if (!earthGuardian.level.isClientSide()) {
-                    earthGuardian.level.playSound(null, earthGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                if (!earthGuardian.getLevel().isClientSide()) {
+                    earthGuardian.getLevel().playSound(null, earthGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
                 }
                 earthGuardian.lookAt(target, 180, 180);
-                if (!earthGuardian.level.isClientSide()) {
-//                    ThrowRock projectile = new ThrowRock(earthGuardian.level, earthGuardian, 2.0f);
-//                    earthGuardian.level.addFreshEntity(projectile);
+                if (!earthGuardian.getLevel().isClientSide()) {
+//                    ThrowRock projectile = new ThrowRock(earthGuardian.getLevel(), earthGuardian, 2.0f);
+//                    earthGuardian.getLevel().addFreshEntity(projectile);
                 }
             }
         }

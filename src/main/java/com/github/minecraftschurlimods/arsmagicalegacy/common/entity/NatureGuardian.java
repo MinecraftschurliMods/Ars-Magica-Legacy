@@ -74,10 +74,10 @@ public class NatureGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 16, 40));
-        goalSelector.addGoal(5, new ShieldBashGoal(this, 0.75f));
-        goalSelector.addGoal(3, new NatureSpinAttackGoal(this, 0.5f, 8));
-        goalSelector.addGoal(2, new NatureStrikeAttackGoal(this, 0.5f, 4.0f));
-        goalSelector.addGoal(3, new NatureThrowSickleGoal(this, 0.75f));
+        goalSelector.addGoal(5, new ShieldBashGoal(this));
+        goalSelector.addGoal(3, new NatureSpinAttackGoal(this));
+        goalSelector.addGoal(2, new NatureStrikeAttackGoal(this));
+        goalSelector.addGoal(3, new NatureThrowSickleGoal(this));
     }
 
     private void updateMovementAngles() {

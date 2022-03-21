@@ -10,10 +10,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ArcaneGuardian extends AbstractBoss {
@@ -61,7 +61,7 @@ public class ArcaneGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FALL) return false;
-        if (pSource.getEntity() == null || checkRuneRetaliation(pSource)) return super.hurt(pSource, pAmount);
+        if (checkRuneRetaliation(pSource)) return super.hurt(pSource, pAmount);
         return super.hurt(pSource, pAmount * 0.8F);
     }
 
@@ -97,22 +97,13 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     private boolean checkRuneRetaliation(DamageSource pSource) {
-        if (pSource.getEntity() instanceof ArcaneGuardian) return true;
-        double deltaX = pSource.getEntity().getX() - getX();
-        double deltaZ = pSource.getEntity().getZ() - getZ();
-        double angle = Math.atan2(deltaZ, deltaX);
-        angle -= Math.toRadians(Mth.wrapDegrees(getYRot() + 90) + 180);
+        Entity entity = pSource.getEntity();
+        if (entity == null || entity instanceof ArcaneGuardian) return true;
         if (distanceToSqr(pSource.getEntity()) < 9) {
             double speed = 2.5;
-            double vSpeed = 0.325;
-            deltaZ = pSource.getEntity().getZ() - getZ();
-            deltaX = pSource.getEntity().getX() - getX();
-            angle = Math.atan2(deltaZ, deltaX);
-            if (pSource.getEntity() instanceof Player) {
-                //AMNetHandler.INSTANCE.sendVelocityAddPacket(source.worldObj, (EntityLivingBase)source, speed * Math.cos(radians), vertSpeed, speed * Math.sin(radians));
-            }
-            pSource.getEntity().setDeltaMovement(speed * Math.cos(angle), vSpeed, speed * Math.sin(angle));
-            pSource.getEntity().hurt(DamageSource.mobAttack(this), 2);
+            double angle = Math.atan2(entity.getZ() - getZ(), entity.getX() - getX());
+            entity.setDeltaMovement(speed * Math.cos(angle), 0.325, speed * Math.sin(angle));
+            entity.hurt(DamageSource.mobAttack(this), 2);
             return false;
         }
         return true;

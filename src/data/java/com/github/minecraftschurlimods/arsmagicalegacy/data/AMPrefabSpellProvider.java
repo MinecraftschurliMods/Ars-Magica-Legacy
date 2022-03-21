@@ -65,5 +65,25 @@ class AMPrefabSpellProvider extends PrefabSpellProvider {
                 SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get()),
                 ShapeGroup.of(AMSpellParts.PROJECTILE.get())
         ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "air-burst-magenta-3")));
+        addPrefabSpell("chaos_water_bolt", new PrefabSpellManager.PrefabSpell("Chaos Water Bolt", Spell.of(
+                SpellStack.of(AMSpellParts.DROWNING_DAMAGE.get(), AMSpellParts.WATERY_GRAVE.get(), AMSpellParts.KNOCKBACK.get()),
+                ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire-arrows-sky-3")));
+        addPrefabSpell("ender_bolt", new PrefabSpellManager.PrefabSpell("Ender Bolt", Spell.of(
+                SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.RANDOM_TELEPORT.get()),
+                ShapeGroup.of(AMSpellParts.PROJECTILE.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "beam-magenta-3")));
+        addPrefabSpell("ender_torrent", new PrefabSpellManager.PrefabSpell("Ender Torrent", Spell.of(
+                SpellStack.of(AMSpellParts.SILENCE.get(), AMSpellParts.KNOCKBACK.get()),
+                ShapeGroup.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.VELOCITY.get(), AMSpellParts.AOE.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "light-magenta-3")));
+        addPrefabSpell("ender_wave", new PrefabSpellManager.PrefabSpell("Ender Wave", Spell.of(
+                SpellStack.of(AMSpellParts.SILENCE.get(), AMSpellParts.KNOCKBACK.get()),
+                ShapeGroup.of(AMSpellParts.WAVE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get(), AMSpellParts.TOUCH.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "wind-magenta-3")));
+        addPrefabSpell("otherworldly_roar", new PrefabSpellManager.PrefabSpell("Otherworldly Roar", Spell.of(
+                SpellStack.of(AMSpellParts.BLINDNESS.get(), AMSpellParts.SILENCE.get(), AMSpellParts.KNOCKBACK.get()),
+                ShapeGroup.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.AOE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get())
+        ), new ResourceLocation(ArsMagicaAPI.MOD_ID, "wind-grasp-magenta-3")));
     }
 }

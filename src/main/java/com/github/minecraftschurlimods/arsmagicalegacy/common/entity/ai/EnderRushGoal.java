@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EnderRushGoal extends Goal {
     private final EnderGuardian enderGuardian;
-    private       int           cooldown = 0;
+    private int cooldown = 0;
 
     public EnderRushGoal(EnderGuardian enderGuardian) {
         this.enderGuardian = enderGuardian;
@@ -17,10 +17,7 @@ public class EnderRushGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (enderGuardian.getTarget() == null) {
-            return false;
-        }
-        return cooldown-- <= 0;
+        return enderGuardian.getTarget() != null && cooldown-- <= 0;
     }
 
     @Override
@@ -38,11 +35,11 @@ public class EnderRushGoal extends Goal {
             Vec3 b = new Vec3(enderGuardian.getTarget().getX(), enderGuardian.getTarget().getY(), enderGuardian.getTarget().getZ());
             if (a.distanceToSqr(b) > 4) {
                 //Vec3 movement = MathUtilities.GetMovementVectorBetweenPoints(a, b);
-                Vec3 movement = new Vec3(1, 1, 1); // wrong
+                Vec3 movement = new Vec3(1, 1, 1);
                 float speed = -5f;
                 enderGuardian.moveTo(movement.x * speed, movement.y * speed, movement.z * speed);
             } else {
-                enderGuardian.level.playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + enderGuardian.getRandom().nextDouble() * 0.5f));
+                enderGuardian.getLevel().playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + enderGuardian.getRandom().nextDouble() * 0.5f));
                 if (enderGuardian.getTarget().hurt(DamageSource.mobAttack(enderGuardian), 15) && enderGuardian.getTarget().getHealth() <= 0) {
                     enderGuardian.heal(200);
                 }

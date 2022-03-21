@@ -5,16 +5,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class SpawnWhirlwindGoal extends Goal {
+public class WhirlwindGoal extends Goal {
     private final AirGuardian airGuardian;
-    private       int         cooldown  = 0;
-    private       boolean     hasCasted = false;
-    private       int         castTicks = 0;
-    private       float       moveSpeed = 0;
+    private int cooldown = 0;
+    private boolean hasCasted = false;
+    private int castTicks = 0;
 
-    public SpawnWhirlwindGoal(AirGuardian airGuardian, float moveSpeed) {
+    public WhirlwindGoal(AirGuardian airGuardian) {
         this.airGuardian = airGuardian;
-        this.moveSpeed = moveSpeed;
     }
 
     @Override
@@ -47,10 +45,8 @@ public class SpawnWhirlwindGoal extends Goal {
             double deltaX = airGuardian.getTarget().getX() - airGuardian.getX();
             double deltaZ = airGuardian.getTarget().getZ() - airGuardian.getZ();
             double angle = -Math.atan2(deltaZ, deltaX);
-
             double newX = airGuardian.getTarget().getX() + (Math.cos(angle) * 6);
             double newZ = airGuardian.getTarget().getZ() + (Math.sin(angle) * 6);
-
             airGuardian.getNavigation().moveTo(newX, airGuardian.getTarget().getY(), newZ, 0.5f);
         } else if (!airGuardian.canBeSeenByAnyone()) {  // should be canSee(airGuardian.getTarget())
             airGuardian.getNavigation().moveTo(airGuardian.getTarget(), 0.5f);
@@ -59,13 +55,12 @@ public class SpawnWhirlwindGoal extends Goal {
                 airGuardian.setAirGuardianAction(AirGuardian.AirGuardianAction.CASTING);
             }
             castTicks++;
-            if (castTicks == 12 && !airGuardian.level.isClientSide()) {
-                airGuardian.level.playSound(null, airGuardian, AMSounds.CAST_AIR.get(), SoundSource.HOSTILE, 1.0f, 1.0f); // is there a AIR_GUARDIAN_ATTACK?
-                //                EntityWhirlwind whirlwind = new EntityWhirlwind(airGuardian.level);
-                //                whirlwind.setPos(airGuardian.getX(), airGuardian.getY() + airGuardian.getEyeHeight(), airGuardian.getZ());
-                //                airGuardian.level.addFreshEntity(whirlwind);
+            if (castTicks == 12 && !airGuardian.getLevel().isClientSide()) {
+                airGuardian.getLevel().playSound(null, airGuardian, AMSounds.CAST_AIR.get(), SoundSource.HOSTILE, 1.0f, 1.0f); // is there a AIR_GUARDIAN_ATTACK?
+//                EntityWhirlwind whirlwind = new EntityWhirlwind(airGuardian.getLevel());
+//                whirlwind.setPos(airGuardian.getX(), airGuardian.getY() + airGuardian.getEyeHeight(), airGuardian.getZ());
+//                airGuardian.getLevel().addFreshEntity(whirlwind);
             }
-
         }
         if (castTicks >= 23) {
             stop();

@@ -5,35 +5,20 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-import java.util.List;
-
 public class IceStrikeAttackGoal extends Goal {
     private final IceGuardian iceGuardian;
-    private final float          moveSpeed;
-    private       LivingEntity   target;
-    private       int            cooldown = 0;
-    private final float          damage;
+    private LivingEntity target;
+    private int cooldown = 0;
 
-    public IceStrikeAttackGoal(IceGuardian iceGuardian, float moveSpeed, float damage) {
+    public IceStrikeAttackGoal(IceGuardian iceGuardian) {
         this.iceGuardian = iceGuardian;
-        this.moveSpeed = moveSpeed;
-        this.damage = damage;
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.IDLE) {
+        if (cooldown-- > 0 || iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.IDLE || iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying() || iceGuardian.getTarget() != null && iceGuardian.distanceToSqr(iceGuardian.getTarget()) > 4D && !iceGuardian.getNavigation().moveTo(iceGuardian.getTarget(), 0.5f))
             return false;
-        }
-        if (iceGuardian.getTarget() == null || iceGuardian.getTarget().isDeadOrDying()) {
-            return false;
-        }
-        if (iceGuardian.getTarget() != null && iceGuardian.distanceToSqr(iceGuardian.getTarget()) > 4D) {
-            if (!iceGuardian.getNavigation().moveTo(iceGuardian.getTarget(), moveSpeed)) {
-                return false;
-            }
-        }
-        this.target = iceGuardian.getTarget();
+        target = iceGuardian.getTarget();
         return true;
     }
 
@@ -50,24 +35,18 @@ public class IceStrikeAttackGoal extends Goal {
     @Override
     public void tick() {
         iceGuardian.getLookControl().setLookAt(target, 30, 30);
-        iceGuardian.getNavigation().moveTo(target, moveSpeed);
+        iceGuardian.getNavigation().moveTo(target, 0.5f);
         if (iceGuardian.distanceToSqr(target) < 16) {
             if (iceGuardian.getIceGuardianAction() != IceGuardian.IceGuardianAction.STRIKE) {
                 iceGuardian.setIceGuardianAction(IceGuardian.IceGuardianAction.STRIKE);
             }
         }
-
         if (iceGuardian.getIceGuardianAction() == IceGuardian.IceGuardianAction.STRIKE && iceGuardian.getTicksInAction() > 12) {
-            if (!iceGuardian.level.isClientSide()) {
-                //iceGuardian.level.playSound(null, iceGuardian, AMSounds.ICE_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1f, 1f);
-            }
-
             double offsetX = Math.cos(iceGuardian.getYRot()) * 2;
             double offsetZ = Math.sin(iceGuardian.getYRot()) * 2;
-            List<LivingEntity> nearbyEntities = iceGuardian.level.getEntitiesOfClass(LivingEntity.class, iceGuardian.getBoundingBox().expandTowards(offsetX, 0, offsetZ).inflate(2.5, 2, 2.5));  // is offset() --> expandTowards
-            for (LivingEntity e : nearbyEntities) {
+            for (LivingEntity e : iceGuardian.getLevel().getEntitiesOfClass(LivingEntity.class, iceGuardian.getBoundingBox().expandTowards(offsetX, 0, offsetZ).inflate(2.5, 2, 2.5))) {
                 if (e != iceGuardian) {
-                    e.hurt(DamageSource.FREEZE, damage);  // maybe wrong, hurt(DamageSources.causeDamage(damageType, host, true), damage);
+                    e.hurt(DamageSource.FREEZE, 6f);
                 }
             }
         }

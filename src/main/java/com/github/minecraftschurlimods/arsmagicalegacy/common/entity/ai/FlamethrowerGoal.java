@@ -1,13 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class FlameThrowerGoal extends Goal {
+public class FlamethrowerGoal extends Goal {
     private final FireGuardian fireGuardian;
-    private       int          cooldown = 0;
+    private int cooldown = 0;
 
-    public FlameThrowerGoal(FireGuardian fireGuardian) {
+    public FlamethrowerGoal(FireGuardian fireGuardian) {
         this.fireGuardian = fireGuardian;
     }
 
@@ -19,7 +20,7 @@ public class FlameThrowerGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (fireGuardian.getTarget() == null || fireGuardian.getTarget().isDeadOrDying() || fireGuardian.getTicksInAction() > 80) {
-            this.cooldown = 40;
+            cooldown = 40;
             fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.IDLE);
             return false;
         }
@@ -28,20 +29,19 @@ public class FlameThrowerGoal extends Goal {
 
     @Override
     public void tick() {
-        if (fireGuardian.distanceToSqr(fireGuardian.getTarget()) < 64) {
+        LivingEntity target = fireGuardian.getTarget();
+        if (target == null) return;
+        if (fireGuardian.distanceToSqr(target) < 64) {
             if (fireGuardian.getFireGuardianAction() != FireGuardian.FireGuardianAction.LONG_CASTING) {
                 fireGuardian.setFireGuardianAction(FireGuardian.FireGuardianAction.LONG_CASTING);
             }
-            fireGuardian.getLookControl().setLookAt(fireGuardian.getTarget(), 10, 10);
+            fireGuardian.getLookControl().setLookAt(target, 10, 10);
             fireGuardian.getNavigation().recomputePath(); // is clearPathEntity() --> recomputePath()
         } else {
-            double deltaZ = fireGuardian.getTarget().getZ() - fireGuardian.getZ();
-            double deltaX = fireGuardian.getTarget().getX() - fireGuardian.getX();
-            double angle = -Math.atan2(deltaZ, deltaX);
-
-            double newZ = fireGuardian.getTarget().getZ() + (Math.sin(angle) * 4);
-            double newX = fireGuardian.getTarget().getX() + (Math.cos(angle) * 4);
-            fireGuardian.getNavigation().moveTo(newX, fireGuardian.getTarget().getY(), newZ, 0.5f);
+            double angle = -Math.atan2(target.getZ() - fireGuardian.getZ(), target.getX() - fireGuardian.getX());
+            double newZ = target.getZ() + (Math.sin(angle) * 4);
+            double newX = target.getX() + (Math.cos(angle) * 4);
+            fireGuardian.getNavigation().moveTo(newX, target.getY(), newZ, 0.5f);
         }
     }
 }

@@ -7,8 +7,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-import java.util.List;
-
 public class StaticGoal extends Goal {
     private final LightningGuardian lightningGuardian;
     private int cooldown = 0;
@@ -19,9 +17,8 @@ public class StaticGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (lightningGuardian.getTarget() == null || lightningGuardian.distanceToSqr(lightningGuardian.getTarget()) > 64D || !lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget())) {
+        if (lightningGuardian.getTarget() == null || lightningGuardian.distanceToSqr(lightningGuardian.getTarget()) > 64D || !lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget()))
             return false;
-        }
         return cooldown-- <= 0;
     }
 
@@ -35,8 +32,8 @@ public class StaticGoal extends Goal {
     public void tick() {
         if (lightningGuardian.getTarget() != null) {
             lightningGuardian.getLookControl().setLookAt(lightningGuardian.getTarget(), 10, 10);
-            if (lightningGuardian.getTicksInAction() == 20 && !lightningGuardian.level.isClientSide()) {
-                lightningGuardian.level.playSound(null, lightningGuardian, AMSounds.LIGHTNING_GUARDIAN_STATIC.get(), SoundSource.HOSTILE, 1.0f, lightningGuardian.getRandom().nextFloat() * 0.5f + 0.5f);
+            if (lightningGuardian.getTicksInAction() == 20 && !lightningGuardian.getLevel().isClientSide()) {
+                lightningGuardian.getLevel().playSound(null, lightningGuardian, AMSounds.LIGHTNING_GUARDIAN_STATIC.get(), SoundSource.HOSTILE, 1.0f, lightningGuardian.getRandom().nextFloat() * 0.5f + 0.5f);
             }
             if (lightningGuardian.getTicksInAction() > 66 && lightningGuardian.getTicksInAction() % 15 == 0 && lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget())) {
                 doStrike();
@@ -45,8 +42,7 @@ public class StaticGoal extends Goal {
     }
 
     private void doStrike() {
-        List<LivingEntity> nearbyEntities = lightningGuardian.level.getEntitiesOfClass(LivingEntity.class, lightningGuardian.getBoundingBox().inflate(8, 3, 8));
-        for (LivingEntity e : nearbyEntities) {
+        for (LivingEntity e : lightningGuardian.getLevel().getEntitiesOfClass(LivingEntity.class, lightningGuardian.getBoundingBox().inflate(8, 3, 8))) {
             if (e != lightningGuardian) {
                 e.hurt(DamageSource.LIGHTNING_BOLT, 8);
             }

@@ -35,20 +35,18 @@ public class CloneGoal extends Goal {
         if (waterGuardian.getWaterGuardianAction() != WaterGuardian.WaterGuardianAction.CLONE) {
             waterGuardian.setWaterGuardianAction(WaterGuardian.WaterGuardianAction.CLONE);
         }
-
-        if (!waterGuardian.level.isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() == 30) {
+        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getWaterGuardianAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() == 30) {
             WaterGuardian clone1 = spawnClone();
             WaterGuardian clone2 = spawnClone();
-
             waterGuardian.setClones(clone1, clone2);
         }
     }
 
     private WaterGuardian spawnClone() {
-        WaterGuardian clone = new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), waterGuardian.level);
+        WaterGuardian clone = new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), waterGuardian.getLevel());
         clone.setMaster(waterGuardian);
         clone.setPos(waterGuardian.getX(), waterGuardian.getY(), waterGuardian.getZ());
-        waterGuardian.level.addFreshEntity(clone);
+        waterGuardian.getLevel().addFreshEntity(clone);
         return clone;
     }
 }

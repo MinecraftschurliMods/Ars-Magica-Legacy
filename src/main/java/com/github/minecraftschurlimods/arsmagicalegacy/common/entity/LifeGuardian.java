@@ -99,7 +99,7 @@ public class LifeGuardian extends AbstractBoss {
         return 1.5F;
     }
 
-    public int getNumMinions() {
+    public int getMinionCount() {
         return entityData.get(MINION_COUNT);
     }
 

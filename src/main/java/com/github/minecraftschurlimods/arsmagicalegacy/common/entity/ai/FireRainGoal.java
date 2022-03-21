@@ -40,14 +40,13 @@ public class FireRainGoal extends Goal {
         }
         boltTicks++;
         if (boltTicks == 12) {
-            if (!fireGuardian.level.isClientSide()) {
-//                Effect fire = new Effect(fireGuardian.level);
+            if (!fireGuardian.getLevel().isClientSide()) {
+//                FireRain fire = FireRain.create(fireGuardian.getLevel());
 //                fire.setPos(fireGuardian.getX(), fireGuardian.getY(), fireGuardian.getZ());
 //                fire.setTicksToExist(300);
-//                fire.setRainOfFire(true);
 //                fire.setRadius(10);
 //                fire.setCasterAndStack(host, null);
-//                fireGuardian.level.addFreshEntity(fire);
+//                fireGuardian.getLevel().addFreshEntity(fire);
             }
         }
         if (boltTicks >= 23) {

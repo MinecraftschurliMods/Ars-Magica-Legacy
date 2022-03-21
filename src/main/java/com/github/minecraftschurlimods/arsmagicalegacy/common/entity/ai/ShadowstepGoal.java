@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ShadowstepGoal extends Goal {
     private final EnderGuardian enderGuardian;
-    private       int           cooldown = 0;
+    private int cooldown = 0;
 
     public ShadowstepGoal(EnderGuardian enderGuardian) {
         this.enderGuardian = enderGuardian;
@@ -16,10 +16,7 @@ public class ShadowstepGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (enderGuardian.getTarget() == null) {
-            return false;
-        }
-        return cooldown-- <= 0;
+        return enderGuardian.getTarget() != null && cooldown-- <= 0;
     }
 
     @Override
@@ -30,13 +27,11 @@ public class ShadowstepGoal extends Goal {
             double x = enderGuardian.getTarget().getX() - facing.x() * 3;
             double y = enderGuardian.getTarget().getY();
             double z = enderGuardian.getTarget().getX() - facing.z() * 3;
-
             enderGuardian.setPos(x, y, z);
             enderGuardian.xOld = x;
             enderGuardian.yOld = y;
             enderGuardian.zOld = z;
-
-            enderGuardian.level.playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, enderGuardian.getRandom().nextFloat() * 0.5f + 0.5f);
+            enderGuardian.getLevel().playSound(null, enderGuardian, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, enderGuardian.getRandom().nextFloat() * 0.5f + 0.5f);
         }
     }
 

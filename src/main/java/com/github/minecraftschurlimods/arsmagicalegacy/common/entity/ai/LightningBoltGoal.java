@@ -9,18 +9,15 @@ import net.minecraft.world.entity.player.Player;
 
 public class LightningBoltGoal extends Goal {
     private final LightningGuardian lightningGuardian;
-    private       int               cooldown = 0;
+    private int cooldown = 0;
 
     public LightningBoltGoal(LightningGuardian lightningGuardian) {
         this.lightningGuardian = lightningGuardian;
     }
 
     @Override
-    public boolean canUse() {   // is shouldAnimate() --> canUse()
-        if (lightningGuardian.getTarget() == null || !lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget())) {
-            return false;
-        }
-        return cooldown-- <= 0;
+    public boolean canUse() {
+        return lightningGuardian.getTarget() != null && lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget()) && cooldown-- <= 0;
     }
 
     @Override
@@ -33,31 +30,29 @@ public class LightningBoltGoal extends Goal {
         if (lightningGuardian.getTarget() != null) {
             lightningGuardian.getLookControl().setLookAt(lightningGuardian.getTarget(), 30, 30);
             if (lightningGuardian.getTicksInAction() == 7) {
-
-                // doStrike()
+                //doStrike()
                 if (lightningGuardian.getTarget() != null && lightningGuardian.getSensing().hasLineOfSight(lightningGuardian.getTarget())) {
                     if (lightningGuardian.distanceToSqr(lightningGuardian.getTarget()) > 400) {
                         lightningGuardian.getNavigation().moveTo(lightningGuardian.getTarget(), 0.5f);
                         return;
                     } else {
-                        lightningGuardian.getNavigation().recomputePath();  // is clearPathEntity --> recomputePath()
+                        lightningGuardian.getNavigation().recomputePath();//is clearPathEntity -> recomputePath()
                         if (lightningGuardian.getRandom().nextDouble() > 0.2f) {
                             // Particle
                             lightningGuardian.getTarget().hurt(DamageSource.LIGHTNING_BOLT, 3);
-                            if (lightningGuardian.getTarget() instanceof Player) {
-                                Player player = (Player) lightningGuardian.getTarget();
-                                if (player.getAbilities().flying) {         // maybe wrong
-                                    player.getAbilities().flying = false;   // maybe wrong
+                            if (lightningGuardian.getTarget() instanceof Player player) {
+                                if (player.getAbilities().flying) {
+                                    player.getAbilities().flying = false;
                                 }
-                                //                    if (player.canRide()) {  // should be isRiding()
-                                //                        player.unRide();
-                                //                    }
+//                                if (player.canRide()) {//should be isRiding()
+//                                    player.unRide();
+//                                }
                             }
                         }
                     }
                 }
-                if (!lightningGuardian.level.isClientSide()) {
-                    lightningGuardian.level.playSound(null, lightningGuardian, AMSounds.LIGHTNING_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + lightningGuardian.getRandom().nextDouble() * 0.5f));
+                if (!lightningGuardian.getLevel().isClientSide()) {
+                    lightningGuardian.getLevel().playSound(null, lightningGuardian, AMSounds.LIGHTNING_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + lightningGuardian.getRandom().nextDouble() * 0.5f));
                 }
             }
         }
