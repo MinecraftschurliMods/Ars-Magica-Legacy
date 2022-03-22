@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.IModelData;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
-import org.jetbrains.annotations.NotNull;
 
 public class SpellRuneModel extends BakedModelWrapper<BakedModel> {
     public SpellRuneModel(ResourceLocation id, BakedModel originalModel) {

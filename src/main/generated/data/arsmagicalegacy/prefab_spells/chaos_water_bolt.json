@@ -1,0 +1,19 @@
+{
+  "name": {
+    "text": "Chaos Water Bolt"
+  },
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:drowning_damage",
+      "arsmagicalegacy:watery_grave",
+      "arsmagicalegacy:knockback"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:fire-arrows-sky-3"
+}

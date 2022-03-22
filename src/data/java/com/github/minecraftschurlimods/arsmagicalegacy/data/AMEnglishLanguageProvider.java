@@ -99,6 +99,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.TARMA_ROOT);
         blockIdTranslation(AMBlocks.WAKEBLOOM);
         blockIdTranslation(AMBlocks.VINTEUM_TORCH);
+        blockIdTranslation(AMBlocks.IRON_INLAY);
+        blockIdTranslation(AMBlocks.REDSTONE_INLAY);
+        blockIdTranslation(AMBlocks.GOLD_INLAY);
         for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
@@ -120,6 +123,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.BATTLEMAGE_CHESTPLATE);
         itemIdTranslation(AMItems.BATTLEMAGE_LEGGINGS);
         itemIdTranslation(AMItems.BATTLEMAGE_BOOTS);
+        itemIdTranslation(AMItems.DRYAD_SPAWN_EGG);
+        itemIdTranslation(AMItems.MAGE_SPAWN_EGG);
+        itemIdTranslation(AMItems.MANA_CREEPER_SPAWN_EGG);
+        itemIdTranslation(AMItems.WATER_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.FIRE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.EARTH_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.AIR_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ICE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.LIGHTNING_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.NATURE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);

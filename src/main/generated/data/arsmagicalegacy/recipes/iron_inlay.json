@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#V#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/iron"
+    },
+    "V": {
+      "item": "arsmagicalegacy:purified_vinteum_dust"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:iron_inlay"
+  }
+}

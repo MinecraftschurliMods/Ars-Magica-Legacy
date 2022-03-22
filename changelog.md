@@ -1,42 +1,62 @@
-# Version 1.18.1-0.1.5
+# Version 1.18.2-0.2.0
+
+## Update
+
+- Update to 1.18.2
 
 ## Additions
 
-- Added several new server config values
-
-## Changes
-
-- The crafting altar power requirement is now determined by the amount of ingredients of the spell crafted, rather than the amount of spell parts
-- Tweaked the skill point reward requirements
+- Added bosses! One boss was added for each affinity
+- Each boss can be summoned through a ritual described in the Arcane Compendium
+- Bosses drop affinity essences on death
+- Currently, only the water guardian is fully implemented
 
 ## Fixes
 
-- Fixed a compatibility issue with JEI 9.3
+- Fixed a bug that caused the inscription table to not display items until the player relogs
 
-# Version 1.18.1-0.1.4
-
-## Fixes
-
-- Fixed missing extra skill points on level 1 (fixes #260)
-
-# Version 1.18.1-0.1.3
-
-## Fixes
-
-- Fixed mana not regenerating when obtaining the compendium (fixes #258)
-- Fixed brewing recipes not displaying in JEI
-
-# Version 1.18.1-0.1.1
-
-## Fixes
-
-- Fixed issue with latest forge
-
-**!! WARNING !! This version now requires forge 39.0.66 or above**
-
-# Version 1.18.1-0.1
+# Previous Versions
 
 ## Additions
+
+### Arcane Compendium
+
+- Entry point to the mod
+- Acts as the guide book to the mod
+- Must be crafted (not present in the inventory, crafted) to initiate leveling
+
+### Occulus
+
+- Added the Occulus
+- Opening the Occulus opens a GUI with three skill tree tabs and one affinity tab
+- Skills can be learned by clicking on them, provided the player has the necessary skill points and all parent skills
+- Creative players can learn all skills, ignoring requirements
+
+### Inscription Table
+
+- Added the Inscription Table
+- Opening the Inscription Table opens a GUI with the following:
+    - An area at the top, showing all spell parts currently known
+    - A search bar to search in the known spell parts
+    - A book slot
+    - A name textbox
+    - Five shape group squares
+    - The spell grammar sections at the very bottom
+- To make a spell recipe, drag at least one shape into a shape group and at least one component into the spell grammar
+  section. Put a Book & Quill into the book slot, then take it out (shift-remove the Book & Quill to move it out again
+  instead)
+- Keeps the last spell, allowing you to close and re-open the GUI without problems
+
+### Crafting Altar
+
+- Added the Crafting Altar multiblock
+- Added the Altar Core and Magic Wall blocks
+- Added cap and structure materials
+- Cap and structure materials can be altered via datapacks, default structure materials include vanilla's and AM:L's
+- Put a book into the lectern to start the crafting process
+- Throw the necessary items in
+- Pickup the spell after throwing in the Spell Parchment
+- The required power level for creating a spell is determined by that spell's ingredient count
 
 ### Etherium
 
@@ -73,192 +93,6 @@
 - Added the Crystal Wrench
 - Used to link an Obelisk/Celestial Prism/Black Aurem to a Crafting Altar
 
-### Mana Cake
-
-- Added the Mana Cake: a food item that gives a mana regen effect when eaten
-
-### Mana Martini
-
-- Added the Mana Martini: a drink that gives a burnout reduction effect when drank
-
-### Mage Armor
-
-- Added mage armor
-- Has low durability, but repairs itself using mana
-- Added battlemage armor, which is an improved but more expensive variant of the normal mage armor
-
-### Potions
-
-- Added Lesser Mana Potion
-- Brewed with Chimerite
-- Added Standard Mana Potion
-- Brewed with Wakebloom
-- Added Greater Mana Potion
-- Brewed with Vinteum Dust
-- Added Epic Mana Potion
-- Brewed with Arcane Ash
-- Added Legendary Mana Potion
-- Brewed with Purified Vinteum Dust
-- Added Infused Mana Potion
-- Brewed with Tarma Root
-
-### Magic XP HUD
-
-- The player's magic xp level and progress is now shown above the mana and burnout bars
-
-### Spell Parts
-
-- Added all missing spell parts to the occulus
-- Implemented functionality for:
-    - Channel
-    - Scramble Synapses
-    - True Sight
-    - Attract
-    - Blink
-    - Daylight
-    - Divine Intervention
-    - Ender Intervention
-    - Life Drain
-    - Life Tip
-    - Mana Drain
-    - Melt Armor
-    - Moonrise
-    - Place Block
-    - Recall
-    - Reflect
-    - Rift
-    - Transplace
-- Removed Mark component (was merged with Recall)
-- Marked all work in progress spell parts as [WIP]
-- Reworked all spell part recipes to be more balanced
-
-### Altar Materials
-
-- Added copper, chimerite, topaz, vinteum and netherite blocks as cap materials; netherite is now the strongest (
-  material strength of 13)
-- Added many more altar structure materials, end stone bricks or purpur blocks are now the strongest (material strength
-  of 6)
-
-### Witchwood
-
-- Witchwood trees now rarely generate in dark forests (and other biomes marked as SPOOKY)
-- They generate as a bit larger dark oak trees
-- Witchwood is now used instead of "any wood" in spell recipes
-- Witchwood planks are an altar structure material
-
-### Prefab Spells
-
-- Added a system for prefab spells
-- Prefab spells show in a separate creative tab
-- This is currently an unused system
-
-### Affinity Ability API
-
-- Added a system for affinity abilities
-- This is currently an unused system
-
-## Fixes
-
-- Fixed flower pot rendering and drops
-- Fixed dupe bug with Inscription Table
-- Fixed crash when dying or travelling back from the end
-- Reworked the spell modifier system, solar and lunar modifiers should now work as they should
-- Fixed a few other minor bugs
-
-# Version 1.18.1-0.0.5
-
-## Fixes
-
-### Issues
-
-- fix #242 crash on forge 39.0.18
-
-# Version 1.18.1-0.0.4
-
-## Fixes
-
-### Issues
-
-- fix #241 crash with catalogue
-
-### Compat
-
-- make compatible with newer versions of jei
-
-# Version 1.18.1-0.0.3
-
-## Fixes
-
-### Issues
-
-- fix #236 error with syncing altar materials
-- fix #238 flowers can't be put into flowerpots
-
-# Version 1.18.1-0.0.2
-
-## Fixes
-
-### Commands
-
-- Remove test commands
-
-### Arcane Compendium
-
-- Affinity and Shape Group pages are now properly displaying text
-- All pages now use translation keys
-
-### Occulus
-
-- The Occulus now consumes skill points
-
-### Components
-
-- Physical Damage, Fire Damage, Frost Damage, Lightning Damage, Magic Damage and Drowning Damage now respect the server
-  PvP setting
-
-# Version 1.18.1-0.0.1
-
-## Additions
-
-### Arcane Compendium
-
-- Entry point to the mod
-- Acts as the Guide Book to the mod
-- Worth reading, but still a WIP
-- Must be crafted (not present in the inventory, crafted) to be able to use any items of this mod
-
-### Occulus
-
-- Added the Occulus
-- Opening the Occulus opens a GUI with three skill tree tabs and one affinity tab
-- Skills can be learned by clicking on them, provided the player has the necessary skill points and all parent skills
-- Creative players can learn all skills, ignoring requirements
-
-### Inscription Table
-
-- Added the Inscription Table
-- Opening the Inscription Table opens a GUI with the following:
-    - An area at the top, showing all spell parts currently known
-    - A search bar to search in the known spell parts
-    - A book slot
-    - A name textbox
-    - Five shape group squares
-    - The spell grammar sections at the very bottom
-- To make a spell recipe, drag at least one shape into a shape group and at least one component into the spell grammar
-  section. Put a Book & Quill into the book slot, then take it out (shift-remove the Book & Quill to move it out again
-  instead)
-- Keeps the last spell, allowing you to close and re-open the GUI without problems
-
-### Crafting Altar
-
-- Added the Crafting Altar multiblock
-- Added the Altar Core and Magic Wall blocks
-- Added cap and structure materials
-- Cap and structure materials can be altered via datapacks
-- Put a book into the lectern to start the crafting process
-- Throw the necessary items in
-- Pickup the spell after throwing in the Spell Parchment
-
 ### Skills
 
 - Skills are mapped to spell parts based on the name
@@ -275,9 +109,9 @@
 #### Shapes
 
 - AoE
-- Beam (NYI)
-- Chain (NYI)
-- Channel (NYI)
+- Beam (WIP)
+- Chain (WIP)
+- Channel
 - Projectile
 - Rune
 - Self
@@ -313,29 +147,31 @@
 - Frost
 - Fury
 - Gravity Well
-- Scramble Synapses (NYI)
+- Magic Shield
+- Reflect
+- Scramble Synapses
 - Shield
-- Shrink (NYI)
+- Shrink (WIP)
 - Silence
 - Swift Swim
 - Temporal Anchor
-- True Sight (NYI)
+- True Sight
 - Watery Grave
-- Attract (NYI)
+- Attract
 - Banish Rain
-- Blink (NYI)
-- Blizzard (NYI)
+- Blink
+- Blizzard (WIP)
 - Charm
 - Create Water
-- Daylight (NYI)
+- Daylight
 - Dig
 - Disarm
 - Dispel
-- Divine Intervention (NYI)
+- Divine Intervention
 - Drought
-- Ender Intervention (NYI)
-- Falling Star (NYI)
-- Fire Rain (NYI)
+- Ender Intervention
+- Falling Star (WIP)
+- Fire Rain (WIP)
 - Fling
 - Forge
 - Grow
@@ -343,34 +179,32 @@
 - Heal
 - Ignition
 - Knockback
-- Life Drain (NYI)
-- Life Tip (NYI)
+- Life Drain
+- Life Tip
 - Light
-- Mana Blast (NYI)
-- Mana Drain (NYI)
-- Mana Shield (NYI)
-- Mark (NYI)
-- Melt Armor (NYI)
-- Moonrise (NYI)
-- Place Block (NYI)
+- Mana Blast (WIP)
+- Mana Drain
+- Mana Shield (WIP)
+- Melt Armor
+- Moonrise
+- Place Block
 - Plant
 - Plow
 - Random Teleport
-- Recall (NYI)
-- Reflect (NYI)
+- Recall
 - Repel
-- Rift (NYI)
+- Rift
 - Storm
-- Summon (NYI)
-- Telekinesis (NYI)
-- Transplace (NYI)
+- Summon (WIP)
+- Telekinesis (WIP)
+- Transplace
 - Wizard's Autumn
 
 #### Modifiers
 
 - Bounce
 - Damage
-- Dismembering (NYI)
+- Dismembering (WIP)
 - Duration
 - Effect Power
 - Gravity
@@ -391,10 +225,10 @@
 - Are used to unlock skills
 - Come in three variants (blue, green, red)
 - Blue skill points are granted on level up
-- Green skill points are granted on level up, starting at level 20
-- Red skill points are granted on level up, starting at level 30
-- Players start out with 3 blue skill points (configurable)
-- Can manually be increased via Infinity Orb items
+- Green skill points are granted every second level up, starting at level 10
+- Red skill points are granted every third level up, starting at level 20
+- Players start out with 2 extra blue skill points (configurable)
+- Can manually be increased via Infinity Orb items or via commands
 
 ### Spell Casting
 
@@ -408,7 +242,13 @@
 - Spell casting also gives magic XP, the more complex the spell, the more magic XP you get
 - Mana regenerates over time, while burnout degenerates over time
 - Max Mana and Max Burnout increase with magic level ups
-- A level requires 2.5 * (1.2 ^ next level) magic XP (level 1 -> level 2 requires ~30 casts of a Projectile-Dig spell)
+- A level requires 2.4 * (1.2 ^ next level) magic XP (level 1 -> level 2 requires ~30 casts of a Projectile-Dig spell)
+
+### Prefab Spells
+
+- Added a system for prefab spells
+- Prefab spells show in a separate creative tab
+- This is currently an unused system
 
 ### Affinites
 
@@ -417,49 +257,49 @@
 - Added temporary crafting recipes for the Affinity Essences
 - Affinities are planned to give both positive and negative traits in the future, keep that in mind when playing
 
-## API
+### Affinity Ability API
 
-This part is only relevant if you plan to make an addon mod for Ars Magica: Legacy. It allows you to add new spell
-parts, skill points and affinites, and to hook into some of the mod's core mechanics.
+- Added a system for affinity abilities
+- This is currently an unused system
 
-### Advancements
+### HUDs
 
-- Added PlayerLearnedSkillTrigger and PlayerLevelUpTrigger
+- The player sees their current magic xp level, magic xp progress, mana and burnout in a bar to the right of their hotbar
+- Only visible if magic is already known
+- The position can be altered through the config
 
-### Affinities
+### Witchwood
 
-- Added IAffinity, IAffinityHelper and IAffinityItem
+- Witchwood trees now rarely generate in dark forests (and other biomes marked as SPOOKY)
+- They generate as a bit larger dark oak trees
+- Witchwood is now used instead of "any wood" in spell recipes
+- Witchwood planks are an altar structure material
 
-### Altar
+### Potions
 
-- Added AltarCapMaterial and AltarStructureMaterial
+- Added Lesser Mana Potion
+- Brewed with Chimerite
+- Added Standard Mana Potion
+- Brewed with Wakebloom
+- Added Greater Mana Potion
+- Brewed with Vinteum Dust
+- Added Epic Mana Potion
+- Brewed with Arcane Ash
+- Added Legendary Mana Potion
+- Brewed with Purified Vinteum Dust
+- Added Infused Mana Potion
+- Brewed with Tarma Root
 
-### Datagen
+### Mana Cake
 
-- Added AltarStructureMaterialProvider, OcculusTabBuilder, OcculusTabProvider, SkillBuilder, SkillProvider and
-  SpellPartProvider
+- Added the Mana Cake: a food item that gives a mana regen effect when eaten
 
-### Etherium
+### Mana Martini
 
-- Added EtheriumType, IEtheriumConsumer and IEtheriumProvider
+- Added the Mana Martini: a drink that gives a burnout reduction effect when drank
 
-### Events
+### Mage Armor
 
-- Added AffinityChangingEvent, PlayerLevelUpEvent and SpellCastEvent
-
-### Magic
-
-- Added IBurnoutHelper, IMagicHelper and IManaHelper
-
-### Occulus
-
-- Added ISpellIngredientRenderer, OcculusTabRenderer, IOcculusTab and IOcculusTabManager
-
-### Skills
-
-- Added ISkill, ISkillHelper, ISkillManager, ISkillPoint and ISkillPointItem
-
-### Spells & Spell Parts
-
-- Added ISpell, ISpellComponent, ISpellDataManager, ISpellHelper, ISpellIngredient, ISpellItem, ISpellModifier,
-  ISpellPart, ISpellPartData, ISpellShape, ShapeGroup, SpellCastResult and SpellStack
+- Added mage armor
+- Has low durability, but repairs itself using mana
+- Added battlemage armor, which is an improved but more expensive variant of the normal mage armor

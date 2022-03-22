@@ -2,15 +2,19 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -18,6 +22,11 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -43,6 +52,31 @@ public final class AMUtil {
     }
 
     /**
+     * Searches for items at the given position. If all given predicates are each matched by one of those items, the entity is spawned according to the given spawner function.
+     *
+     * @param level      The level to perform this operation in.
+     * @param pos        The position to use for this operation.
+     * @param spawner    A function, returning the entity to spawn.
+     * @param items      A vararg list of item predicates that must be met. One item can match multiple predicates.
+     */
+    @SafeVarargs
+    public static void consumeItemsAndSpawnEntity(Level level, BlockPos pos, Function<Level, Entity> spawner, Predicate<ItemStack>... items) {
+        Set<ItemEntity> set = new HashSet<>();
+        for (Predicate<ItemStack> predicate : items) {
+            List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), e -> predicate.test(e.getItem()));
+            if (!entities.isEmpty()) {
+                set.add(entities.get(0));
+            } else return;
+        }
+        for (ItemEntity item : set) {
+            item.kill();
+        }
+        Entity entity = spawner.apply(level);
+        entity.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        level.addFreshEntity(entity);
+    }
+
+    /**
      * @param fortune   The fortune level to enchant the stack with.
      * @param silkTouch The silk touch level to enchant the stack with.
      * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
@@ -65,9 +99,9 @@ public final class AMUtil {
     }
 
     /**
-     * @param from Starting point of the ray trace.
-     * @param to   Ending point of the ray trace.
-     * @param entity The entity causing this ray trace.
+     * @param from         Starting point of the ray trace.
+     * @param to           Ending point of the ray trace.
+     * @param entity       The entity causing this ray trace.
      * @param blockContext The block clipping context.
      * @param fluidContext The fluid clipping context.
      * @return The hit result (ray trace result).

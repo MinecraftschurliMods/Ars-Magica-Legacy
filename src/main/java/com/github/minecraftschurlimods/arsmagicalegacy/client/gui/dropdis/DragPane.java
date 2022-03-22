@@ -8,10 +8,10 @@ import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
 
 public class DragPane extends AbstractContainerEventHandler implements NarratableEntry, Widget, DragHandler {
     private final List<DropArea> dropAreas = new ArrayList<>();

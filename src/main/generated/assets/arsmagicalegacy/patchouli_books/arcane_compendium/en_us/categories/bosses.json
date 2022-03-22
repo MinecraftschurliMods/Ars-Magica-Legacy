@@ -1,0 +1,6 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.entities.bosses.name",
+  "description": "item.arsmagicalegacy.arcane_compendium.entities.bosses.description",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "parent": "arsmagicalegacy:entities"
+}
