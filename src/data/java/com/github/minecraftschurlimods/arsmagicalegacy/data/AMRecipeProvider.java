@@ -25,6 +25,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -547,7 +548,7 @@ class AMRecipeProvider extends RecipeProvider {
             return new ShapedNBTRecipeBuilder(result, count, compound);
         }
 
-        public ShapedNBTRecipeBuilder define(Character symbol, Tag<Item> tag) {
+        public ShapedNBTRecipeBuilder define(Character symbol, TagKey<Item> tag) {
             return define(symbol, Ingredient.of(tag));
         }
 
@@ -702,7 +703,7 @@ class AMRecipeProvider extends RecipeProvider {
             return new ShapelessNBTRecipeBuilder(result, count, compound);
         }
 
-        public ShapelessNBTRecipeBuilder requires(Tag<Item> tag) {
+        public ShapelessNBTRecipeBuilder requires(TagKey<Item> tag) {
             return requires(Ingredient.of(tag));
         }
 

@@ -16,6 +16,6 @@ public class DesertNovaBlock extends FlowerBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return Tags.Blocks.SAND.contains(level.getBlockState(pos.below()).getBlock());
+        return level.getBlockState(pos.below()).is(Tags.Blocks.SAND);
     }
 }
