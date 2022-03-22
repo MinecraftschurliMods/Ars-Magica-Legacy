@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
@@ -24,9 +24,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractBoss extends Monster {
+public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
     private final ServerBossEvent bossEvent;
     private int ticksSinceLastPlayerScan = 0;
+    protected int ticksInAction = 0;
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level) {
         this(type, level, BossEvent.BossBarColor.PINK);
@@ -37,7 +38,7 @@ public abstract class AbstractBoss extends Monster {
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         maxUpStep = 1.02F;
         if (!level.isClientSide) {
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0D, 128D, 0D, 192D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
                 bossEvent.addPlayer(player);
             }
         }
@@ -63,7 +64,7 @@ public abstract class AbstractBoss extends Monster {
         super.registerGoals();
         goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 10));
         goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8F));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
     }
@@ -81,6 +82,7 @@ public abstract class AbstractBoss extends Monster {
                 }
             }
         }
+        ticksInAction++;
     }
 
     @Override
@@ -116,10 +118,14 @@ public abstract class AbstractBoss extends Monster {
         return null;
     }
 
+    public int getTicksInAction() {
+        return ticksInAction;
+    }
+
     private void updatePlayers() {
         if (!level.isClientSide) {
             Set<ServerPlayer> newSet = new HashSet<>();
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0D, 128D, 0D, 192D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
                 bossEvent.addPlayer(player);
                 startSeenByPlayer(player);
                 newSet.add(player);

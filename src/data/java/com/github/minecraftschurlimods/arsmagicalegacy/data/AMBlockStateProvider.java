@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
@@ -94,6 +95,9 @@ class AMBlockStateProvider extends BlockStateProvider {
         flowerPotBlock(POTTED_WAKEBLOOM, WAKEBLOOM);
         torchBlock(VINTEUM_TORCH, VINTEUM_WALL_TORCH);
         spellRuneBlock(SPELL_RUNE);
+        railBlock(IRON_INLAY);
+        railBlock(REDSTONE_INLAY);
+        railBlock(GOLD_INLAY);
     }
 
     /**
@@ -290,7 +294,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void railBlock(Supplier<? extends RailBlock> block) {
+    private void railBlock(Supplier<? extends BaseRailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
         ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", texture);
         ModelFile curved = models().withExistingParent(block.get().getRegistryName().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
@@ -298,7 +302,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
-            return switch (state.getValue(((RailBlock) block).getShapeProperty())) {
+            return switch (state.getValue(block.get().getShapeProperty())) {
                 case NORTH_SOUTH -> builder.modelFile(straight).build();
                 case EAST_WEST -> builder.modelFile(straight).rotationY(90).build();
                 case SOUTH_EAST -> builder.modelFile(curved).build();

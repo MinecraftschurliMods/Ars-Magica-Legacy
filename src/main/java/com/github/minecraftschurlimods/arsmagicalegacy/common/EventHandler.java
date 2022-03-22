@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
@@ -27,6 +28,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
@@ -49,12 +51,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -65,19 +71,24 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -93,6 +104,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -129,6 +141,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
         forgeBus.addListener(EventHandler::playerTick);
+        forgeBus.addListener(EventHandler::livingSpawn);
         forgeBus.addListener(EventHandler::livingUpdate);
         forgeBus.addListener(EventPriority.HIGHEST, EventHandler::livingDeath);
         forgeBus.addListener(EventPriority.LOWEST, EventHandler::livingHurt);
@@ -303,6 +316,39 @@ public final class EventHandler {
         var api = ArsMagicaAPI.get();
         api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
         api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        Level level = player.getLevel();
+        for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
+            BlockPos pos = item.blockPosition();
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.getBiome(pos).is(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new FireGuardian(AMEntities.FIRE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()), i));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EarthGuardian(AMEntities.EARTH_GUARDIAN.get(), l), i -> i.is(Tags.Items.GEMS_EMERALD), i -> i.is(AMTags.Items.GEMS_CHIMERITE), i -> i.is(AMTags.Items.GEMS_TOPAZ));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL).test(level, pos) && pos.getY() > 128) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new AirGuardian(AMEntities.AIR_GUARDIAN.get(), l), i -> i.is(AMItems.TARMA_ROOT.get()));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new ArcaneGuardian(AMEntities.ARCANE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getBookStack(), i));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().createDragonFight()) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EnderGuardian(AMEntities.ENDER_GUARDIAN.get(), l), i -> i.is(Items.ENDER_EYE));
+            }
+        }
+    }
+
+    private static void livingSpawn(LivingSpawnEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        Level level = entity.getLevel();
+        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())/* && level.getBiome(entity.blockPosition()).is(Tags.Biomes.IS_FROZEN)*/) {
+            entity.remove(Entity.RemovalReason.KILLED);
+            IceGuardian guardian = new IceGuardian(AMEntities.ICE_GUARDIAN.get(), level);
+            guardian.moveTo(entity.position());
+            level.addFreshEntity(guardian);
+        }
     }
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
@@ -313,9 +359,16 @@ public final class EventHandler {
     }
 
     private static void livingDeath(LivingDeathEvent event) {
-        if (event.getEntityLiving().hasEffect(AMMobEffects.TEMPORAL_ANCHOR.get())) {
-            event.getEntityLiving().removeEffect(AMMobEffects.TEMPORAL_ANCHOR.get());
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(AMMobEffects.TEMPORAL_ANCHOR.get())) {
+            entity.removeEffect(AMMobEffects.TEMPORAL_ANCHOR.get());
             event.setCanceled(true);
+        }
+        Level level = entity.getLevel();
+        if (entity instanceof Villager villager && villager.isBaby() && level.getMoonPhase() == 0 && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())) {
+            LifeGuardian guardian = new LifeGuardian(AMEntities.LIFE_GUARDIAN.get(), level);
+            guardian.moveTo(villager.position());
+            level.addFreshEntity(guardian);
         }
     }
 

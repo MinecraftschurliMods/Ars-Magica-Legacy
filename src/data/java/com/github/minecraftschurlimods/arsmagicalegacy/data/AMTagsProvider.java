@@ -6,15 +6,19 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -25,10 +29,11 @@ class AMTagsProvider {
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
         generator.addProvider(new Fluids(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
         generator.addProvider(new EntityTypes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(new Biomes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -62,7 +67,8 @@ class AMTagsProvider {
             tag(BlockTags.WOODEN_PRESSURE_PLATES).add(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get(), AMBlocks.CERUBLOSSOM.get(), AMBlocks.DESERT_NOVA.get(), AMBlocks.TARMA_ROOT.get(), AMBlocks.WAKEBLOOM.get());
             tag(BlockTags.FLOWER_POTS).add(AMBlocks.POTTED_AUM.get(), AMBlocks.POTTED_CERUBLOSSOM.get(), AMBlocks.POTTED_DESERT_NOVA.get(), AMBlocks.POTTED_TARMA_ROOT.get(), AMBlocks.POTTED_WAKEBLOOM.get());
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.MAGIC_WALL.get(), AMBlocks.OBELISK.get(), AMBlocks.CELESTIAL_PRISM.get(), AMBlocks.BLACK_AUREM.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get(), AMBlocks.SUNSTONE_BLOCK.get(), AMBlocks.SUNSTONE_ORE.get());
+            tag(BlockTags.RAILS).add(AMBlocks.IRON_INLAY.get(), AMBlocks.REDSTONE_INLAY.get(), AMBlocks.GOLD_INLAY.get());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(AMBlocks.OCCULUS.get(), AMBlocks.ALTAR_CORE.get(), AMBlocks.MAGIC_WALL.get(), AMBlocks.OBELISK.get(), AMBlocks.CELESTIAL_PRISM.get(), AMBlocks.BLACK_AUREM.get(), AMBlocks.CHIMERITE_BLOCK.get(), AMBlocks.CHIMERITE_ORE.get(), AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), AMBlocks.TOPAZ_BLOCK.get(), AMBlocks.TOPAZ_ORE.get(), AMBlocks.DEEPSLATE_TOPAZ_ORE.get(), AMBlocks.VINTEUM_BLOCK.get(), AMBlocks.VINTEUM_ORE.get(), AMBlocks.DEEPSLATE_VINTEUM_ORE.get(), AMBlocks.MOONSTONE_BLOCK.get(), AMBlocks.MOONSTONE_ORE.get(), AMBlocks.DEEPSLATE_MOONSTONE_ORE.get(), AMBlocks.SUNSTONE_BLOCK.get(), AMBlocks.SUNSTONE_ORE.get(), AMBlocks.IRON_INLAY.get(), AMBlocks.REDSTONE_INLAY.get(), AMBlocks.GOLD_INLAY.get());
 //            tag(BlockTags.MINEABLE_WITH_SHOVEL);
             tag(BlockTags.MINEABLE_WITH_AXE).add(AMBlocks.INSCRIPTION_TABLE.get(), AMBlocks.WITCHWOOD_FENCE_GATE.get());
 //            tag(BlockTags.MINEABLE_WITH_HOE);
@@ -73,7 +79,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
+        private Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -135,11 +141,12 @@ class AMTagsProvider {
             tag(ItemTags.WOODEN_BUTTONS).add(AMItems.WITCHWOOD_BUTTON.get());
             tag(ItemTags.WOODEN_PRESSURE_PLATES).add(AMItems.WITCHWOOD_PRESSURE_PLATE.get());
             tag(ItemTags.SMALL_FLOWERS).add(AMItems.AUM.get()).add(AMItems.CERUBLOSSOM.get()).add(AMItems.DESERT_NOVA.get()).add(AMItems.TARMA_ROOT.get()).add(AMItems.WAKEBLOOM.get());
+            tag(ItemTags.RAILS).add(AMItems.IRON_INLAY.get(), AMItems.REDSTONE_INLAY.get(), AMItems.GOLD_INLAY.get());
         }
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -150,13 +157,24 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
         @Override
         protected void addTags() {
 
+        }
+    }
+
+    private static class Biomes extends BiomeTagsProvider {
+        private Biomes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+            super(generator, modId, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags() {
+            tag(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN).addTags(BiomeTags.IS_OCEAN, BiomeTags.IS_BEACH, BiomeTags.IS_RIVER).add(net.minecraft.world.level.biome.Biomes.SWAMP);
         }
     }
 }

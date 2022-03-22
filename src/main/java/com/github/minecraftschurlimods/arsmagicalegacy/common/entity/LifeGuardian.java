@@ -1,33 +1,41 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
+
 public class LifeGuardian extends AbstractBoss {
+    private static final EntityDataAccessor<Integer> MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
+    private final ArrayList<LivingEntity> minions = new ArrayList<>();
+    private final ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
+    private LifeGuardianAction action;
+
     public LifeGuardian(EntityType<? extends LifeGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
+        this.entityData.define(MINION_COUNT, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue());
-    }
-
-    @Override
-    public float getEyeHeight(Pose pPose) {
-        return 1.5F;
-    }
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue()).add(AMAttributes.MAX_MANA.get(), 2500).add(AMAttributes.MAX_BURNOUT.get(), 2500);
     }
 
     @Override
@@ -52,11 +60,95 @@ public class LifeGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        if (!level.isClientSide()) {
+            minions.addAll(queuedMinions);
+            queuedMinions.clear();
+            minions.removeIf(minion -> minion == null || minion.isDeadOrDying());
+        }
+        entityData.set(MINION_COUNT, minions.size());
+        if (tickCount % 100 == 0) {
+            for (LivingEntity e : minions) {
+                // Particles
+            }
+        }
+        if (tickCount % 40 == 0) {
+            heal(2f);
+        }
         super.aiStep();
     }
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.getEntity() != null && pSource.getEntity() instanceof LivingEntity) {
+            for (LivingEntity e : minions) {
+                e.setLastHurtByMob((LivingEntity) pSource.getEntity());
+            }
+        }
         return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 16, 80));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 16, 4));
+        //goalSelector.addGoal(3, new SummonAlliesGoal(this, EarthElemental.class, FireElemental.class, ManaElemental.class, Darkling.class));
+    }
+
+    @Override
+    public float getEyeHeight(Pose pPose) {
+        return 1.5F;
+    }
+
+    public int getMinionCount() {
+        return entityData.get(MINION_COUNT);
+    }
+
+    public void addQueuedMinions(LivingEntity minion) {
+        queuedMinions.add(minion);
+    }
+
+    public LifeGuardianAction getAction() {
+        return action;
+    }
+
+    public void setAction(final LifeGuardianAction action) {
+        this.action = action;
+        ticksInAction = 0;
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return action == LifeGuardianAction.IDLE;
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return action == LifeGuardianAction.CASTING;
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+        if (isCastingSpell) {
+            action = LifeGuardianAction.CASTING;
+        } else if (action == LifeGuardianAction.CASTING) {
+            action = LifeGuardianAction.IDLE;
+        }
+    }
+
+    public enum LifeGuardianAction {
+        IDLE(-1),
+        CASTING(-1);
+
+        private final int maxActionTime;
+
+        LifeGuardianAction(int maxTime) {
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime() {
+            return maxActionTime;
+        }
     }
 }

@@ -1,0 +1,19 @@
+{
+  "name": {
+    "text": "Lightning Rune"
+  },
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:rune"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:damage"
+    ],
+    "data": {}
+  },
+  "icon": "arsmagicalegacy:lightning-orange-3"
+}

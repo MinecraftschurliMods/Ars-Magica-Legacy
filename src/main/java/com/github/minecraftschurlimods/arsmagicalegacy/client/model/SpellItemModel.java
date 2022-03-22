@@ -26,13 +26,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.ItemTextureQuadConverter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
