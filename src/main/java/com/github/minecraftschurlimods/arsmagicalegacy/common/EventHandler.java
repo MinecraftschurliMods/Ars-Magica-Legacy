@@ -57,7 +57,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -81,7 +80,6 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
@@ -114,7 +112,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.OptionalInt;
@@ -322,8 +319,7 @@ public final class EventHandler {
         Level level = player.getLevel();
         for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
             BlockPos pos = item.blockPosition();
-//            Biome.BiomeCategory category = level.getBiome(pos).getBiomeCategory();
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos)/* && (category == Biome.BiomeCategory.BEACH || category == Biome.BiomeCategory.OCEAN || category == Biome.BiomeCategory.RIVER || category == Biome.BiomeCategory.SWAMP)*/) {
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.getBiome(pos).is(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN)) {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
             }
             if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
@@ -347,7 +343,7 @@ public final class EventHandler {
     private static void livingSpawn(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntityLiving();
         Level level = entity.getLevel();
-        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())/* && (category == Biome.BiomeCategory.COLD)*/) {
+        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())/* && level.getBiome(entity.blockPosition()).is(Tags.Biomes.IS_FROZEN)*/) {
             entity.remove(Entity.RemovalReason.KILLED);
             IceGuardian guardian = new IceGuardian(AMEntities.ICE_GUARDIAN.get(), level);
             guardian.moveTo(entity.position());

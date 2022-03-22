@@ -6,15 +6,19 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -25,10 +29,11 @@ class AMTagsProvider {
         generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
         generator.addProvider(new Fluids(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
         generator.addProvider(new EntityTypes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(new Biomes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
     }
 
     private static class Blocks extends BlockTagsProvider {
-        Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private Blocks(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -74,7 +79,7 @@ class AMTagsProvider {
     }
 
     private static class Items extends ItemTagsProvider {
-        Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
+        private Items(DataGenerator generator, BlockTagsProvider blockTagsProvider, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, blockTagsProvider, modId, existingFileHelper);
         }
 
@@ -141,7 +146,7 @@ class AMTagsProvider {
     }
 
     private static class Fluids extends FluidTagsProvider {
-        Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private Fluids(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
@@ -152,13 +157,24 @@ class AMTagsProvider {
     }
 
     private static class EntityTypes extends EntityTypeTagsProvider {
-        EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+        private EntityTypes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
             super(generator, modId, existingFileHelper);
         }
 
         @Override
         protected void addTags() {
 
+        }
+    }
+
+    private static class Biomes extends BiomeTagsProvider {
+        private Biomes(DataGenerator generator, String modId, ExistingFileHelper existingFileHelper) {
+            super(generator, modId, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags() {
+            tag(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN).addTags(BiomeTags.IS_OCEAN, BiomeTags.IS_BEACH, BiomeTags.IS_RIVER).add(net.minecraft.world.level.biome.Biomes.SWAMP);
         }
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -116,6 +117,21 @@ public final class AMTags {
 
         private static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        }
+    }
+
+    /**
+     * Holds the mod's biome tags.
+     */
+    public static final class Biomes {
+        public static final TagKey<Biome> CAN_SPAWN_WATER_GUARDIAN = tag("can_spawn_water_guardian");
+
+        private static TagKey<Biome> forgeTag(String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(FORGE, name));
+        }
+
+        private static TagKey<Biome> tag(String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 }
