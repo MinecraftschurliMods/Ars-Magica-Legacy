@@ -45,8 +45,8 @@ public interface AMItems {
     Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
     Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
 
-    RegistryObject<InfinityOrbItem> INFINITY_ORB = ITEMS.register("infinity_orb", InfinityOrbItem::new);
-    RegistryObject<BlockItem>       OCCULUS      = registerBlockItem64(AMBlocks.OCCULUS);
+    RegistryObject<InfinityOrbItem>              INFINITY_ORB                 = ITEMS.register("infinity_orb", InfinityOrbItem::new);
+    RegistryObject<BlockItem>                    OCCULUS                      = registerBlockItem64(AMBlocks.OCCULUS);
     RegistryObject<BlockItem>                    INSCRIPTION_TABLE            = registerBlockItem64(AMBlocks.INSCRIPTION_TABLE);
     RegistryObject<BlockItem>                    ALTAR_CORE                   = registerBlockItem64(AMBlocks.ALTAR_CORE);
     RegistryObject<BlockItem>                    MAGIC_WALL                   = registerBlockItem64(AMBlocks.MAGIC_WALL);

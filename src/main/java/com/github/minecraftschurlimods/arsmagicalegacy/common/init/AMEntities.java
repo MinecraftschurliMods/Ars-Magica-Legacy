@@ -25,8 +25,8 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
 
 public interface AMEntities {
-    RegistryObject<EntityType<Projectile>> PROJECTILE = ENTITIES.register("projectile", () -> EntityType.Builder.of(Projectile::new, MobCategory.MISC).clientTrackingRange(8).sized(0.25F, 0.25F).build("projectile"));
-    RegistryObject<EntityType<Wall>>       WALL       = ENTITIES.register("wall",               () -> EntityType.Builder.of(Wall::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wall"));
+    RegistryObject<EntityType<Projectile>>        PROJECTILE         = ENTITIES.register("projectile",         () -> EntityType.Builder.of(Projectile::new,        MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("projectile"));
+    RegistryObject<EntityType<Wall>>              WALL               = ENTITIES.register("wall",               () -> EntityType.Builder.of(Wall::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wall"));
     RegistryObject<EntityType<Wave>>              WAVE               = ENTITIES.register("wave",               () -> EntityType.Builder.of(Wave::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wave"));
     RegistryObject<EntityType<Zone>>              ZONE               = ENTITIES.register("zone",               () -> EntityType.Builder.of(Zone::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("zone"));
     RegistryObject<EntityType<WaterGuardian>>     WATER_GUARDIAN     = ENTITIES.register("water_guardian",     () -> EntityType.Builder.of(WaterGuardian::new,     MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("water_guardian"));
