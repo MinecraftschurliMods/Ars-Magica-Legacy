@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureSp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.NatureThrowSickleGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShieldBashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
@@ -26,7 +27,7 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3500).add(AMAttributes.MAX_BURNOUT.get(), 3500);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceSmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
@@ -28,7 +29,7 @@ public class IceGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3000).add(AMAttributes.MAX_BURNOUT.get(), 3000);
     }
 
     @Override

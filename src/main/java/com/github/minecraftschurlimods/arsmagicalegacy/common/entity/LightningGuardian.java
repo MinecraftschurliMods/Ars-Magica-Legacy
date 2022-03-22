@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningBoltGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +28,7 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 4000).add(AMAttributes.MAX_BURNOUT.get(), 4000);
     }
 
     @Override

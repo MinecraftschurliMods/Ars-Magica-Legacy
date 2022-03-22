@@ -9,6 +9,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderWav
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.OtherwordlyRoarGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ProtectGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShadowstepGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.mojang.math.Vector3f;
@@ -38,7 +39,7 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 5000).add(AMAttributes.MAX_BURNOUT.get(), 5000);
     }
 
     @Override

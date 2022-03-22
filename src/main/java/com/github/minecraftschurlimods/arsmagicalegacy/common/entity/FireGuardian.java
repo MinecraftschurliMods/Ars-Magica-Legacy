@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DiveGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FireRainGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FlamethrowerGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +33,7 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 4500).add(AMAttributes.MAX_BURNOUT.get(), 4500);
     }
 
     @Override
