@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
@@ -28,7 +27,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Natur
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellRenderType;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
@@ -45,7 +43,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -53,13 +50,11 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.HumanoidArm;
@@ -69,12 +64,12 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -82,7 +77,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = ArsMagicaAPI.MOD_ID)
@@ -107,8 +101,8 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::modelBake);
         modEventBus.addListener(ClientInit::registerLayerDefinitions);
         modEventBus.addListener(ClientInit::registerRenderers);
-        modEventBus.addListener(ClientInit::registerShaders);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        forgeBus.addListener(ClientInit::clientTick);
         forgeBus.addListener(ClientInit::renderHand);
     }
 
@@ -213,13 +207,9 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
     }
 
-    private static void registerShaders(RegisterShadersEvent event) {
-        try {
-            event.registerShader(new ShaderInstance(event.getResourceManager(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_shader"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
-                SpellRenderType.spellShader = shaderInstance;
-            });
-        } catch (IOException e) {
-            ArsMagicaLegacy.LOGGER.error(e);
+    private static void clientTick(TickEvent.ClientTickEvent event) {
+        if (SPELL_HUD instanceof SpellHUD hud) {
+            hud.tick();
         }
     }
 
