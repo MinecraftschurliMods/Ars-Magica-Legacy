@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.UnaryOperator;
 
+@SuppressWarnings("unused")
 public class SpellPartPage implements ICustomComponent {
 //    private static final ResourceLocation GUI_EXTRAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium_gui_extras.png");
 
@@ -60,7 +62,9 @@ public class SpellPartPage implements ICustomComponent {
         else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
-        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(this._part.getRegistryName());
+        ResourceLocation registryName = this._part.getRegistryName();
+        assert registryName != null;
+        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
@@ -134,13 +138,16 @@ public class SpellPartPage implements ICustomComponent {
         int yOffset = -6;
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         for (int i = 0; i < modifiers.size(); i++) {
-            ISkill skill = ArsMagicaAPI.get().getSkillManager().get(modifiers.get(i).getRegistryName());
+            ISpellModifier modifier = modifiers.get(i);
+            ResourceLocation registryName = modifier.getRegistryName();
+            assert registryName != null;
+            ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
             if (i % 7 == 0) {
                 startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);
                 yOffset += 16;
             }
             RenderSystem.enableBlend();
-            Screen.blit(stack, posX + startX, posY + yOffset, context.getGui().getBlitOffset(), 16, 16, SkillIconAtlas.instance().getSprite(modifiers.get(i).getRegistryName()));
+            Screen.blit(stack, posX + startX, posY + yOffset, context.getGui().getBlitOffset(), 16, 16, SkillIconAtlas.instance().getSprite(registryName));
             RenderSystem.disableBlend();
             if (context.isAreaHovered(mouseX, mouseY, posX + startX, posY + yOffset, 16, 16)) {
                 context.setHoverTooltipComponents(List.of(skill.getDisplayName(), skill.getDescription()));
@@ -152,7 +159,9 @@ public class SpellPartPage implements ICustomComponent {
 
     private void renderRecipe(PoseStack poseStack, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
         if (this._part == null) return;
-        List<ISpellIngredient> recipe = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part).recipe();
+        ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part);
+        if (data == null) return;
+        List<ISpellIngredient> recipe = data.recipe();
         if (recipe.isEmpty()) return;
         float angleStep = 360.0f / recipe.size();
         float dist = 45;
