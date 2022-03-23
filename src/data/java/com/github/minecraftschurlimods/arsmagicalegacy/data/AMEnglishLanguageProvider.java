@@ -334,6 +334,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.TIER, "Tier: %s");
         add(TranslationConstants.RANGE_LOWER, "Min: %s");
         add(TranslationConstants.RANGE_UPPER, "Max: %s");
+        add(TranslationConstants.SPELL_PART_MODIFIES, "Modifies");
+        add(TranslationConstants.SPELL_PART_MODIFIED_BY, "Modified By");
         add(CommandTranslations.AFFINITY_ADD_MULTIPLE, "Added %s affinity depth for %s players to %f");
         add(CommandTranslations.AFFINITY_ADD_SINGLE, "Added %s affinity depth for player %s to %f");
         add(CommandTranslations.AFFINITY_GET, "Affinity depth of %s for player %s is %f");

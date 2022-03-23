@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
@@ -31,7 +32,6 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
 public class SpellPartPage implements ICustomComponent {
-//    private static final ResourceLocation GUI_EXTRAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium_gui_extras.png");
 
     private String part;
     private transient int x, y;
@@ -49,14 +49,6 @@ public class SpellPartPage implements ICustomComponent {
         int cx = x + 50;
         int cy = y + 70;
         poseStack.pushPose();
-//        RenderSystem.enableBlend();
-//        RenderSystem.setShaderTexture(0, GUI_EXTRAS);
-//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() + 1);
-//        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//        RenderUtil.drawBox(poseStack, x + 42, y + 15, 112, 145, context.getGui().getBlitOffset(), 60, 40, 40, 40);
-//        RenderUtil.drawBox(poseStack, x, y, 112, 175, context.getGui().getBlitOffset(), 60, 40, 40, 40);
-//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() - 1);
-//        RenderSystem.disableBlend();
         List<ISpellModifier> modifiers = cacheModifiers();
         if (modifiers.isEmpty()) cy -= 16;
         else cy += ((modifiers.size() / 7) * 16) + 8;
@@ -130,7 +122,7 @@ public class SpellPartPage implements ICustomComponent {
 
     private void renderModifiers(PoseStack stack, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
         if (modifiers.isEmpty()) return;
-        Component shapeName = new TranslatableComponent(ArsMagicaAPI.MOD_ID + (_part.getType() == ISpellPart.SpellPartType.MODIFIER ? ".gui.modifies" : ".gui.modifiedBy"));
+        Component shapeName = new TranslatableComponent(_part.getType() == ISpellPart.SpellPartType.MODIFIER ? TranslationConstants.SPELL_PART_MODIFIES : TranslationConstants.SPELL_PART_MODIFIED_BY);
         Font font = context.getGui().getMinecraft().font;
         font.draw(stack, shapeName, posX + 58 - (font.width(shapeName) / 2f), posY, 0);
         RenderSystem.setShaderFogColor(1.0f, 1.0f, 1.0f);
