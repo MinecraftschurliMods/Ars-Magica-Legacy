@@ -10,7 +10,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
@@ -23,16 +22,15 @@ import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
-import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.UnaryOperator;
-import java.util.stream.Stream;
 
 public class SpellPartPage implements ICustomComponent {
+//    private static final ResourceLocation GUI_EXTRAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium_gui_extras.png");
+
     private String part;
     private transient int x, y;
     private transient ISpellPart _part;
@@ -49,14 +47,14 @@ public class SpellPartPage implements ICustomComponent {
         int cx = x + 50;
         int cy = y + 70;
         poseStack.pushPose();
-        //RenderSystem.enableBlend();
-        //RenderSystem.setShaderTexture(0, new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium_gui_extras.png"));
-        //context.getGui().setBlitOffset(context.getGui().getBlitOffset() + 1);
-        //RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        //RenderUtil.drawBox(poseStack, x + 42, y + 15, 112, 145, 60, 40, 40, 40, context.getGui().getBlitOffset());
-        //RenderUtil.drawBox(poseStack, x, y, 112, 175, 60, 40, 40, 40, context.getGui().getBlitOffset());
-        //context.getGui().setBlitOffset(context.getGui().getBlitOffset() - 1);
-        //RenderSystem.disableBlend();
+//        RenderSystem.enableBlend();
+//        RenderSystem.setShaderTexture(0, GUI_EXTRAS);
+//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() + 1);
+//        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//        RenderUtil.drawBox(poseStack, x + 42, y + 15, 112, 145, context.getGui().getBlitOffset(), 60, 40, 40, 40);
+//        RenderUtil.drawBox(poseStack, x, y, 112, 175, context.getGui().getBlitOffset(), 60, 40, 40, 40);
+//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() - 1);
+//        RenderSystem.disableBlend();
         List<ISpellModifier> modifiers = cacheModifiers();
         if (modifiers.isEmpty()) cy -= 16;
         else cy += ((modifiers.size() / 7) * 16) + 8;
@@ -64,11 +62,11 @@ public class SpellPartPage implements ICustomComponent {
         RenderSystem.enableBlend();
         ISkill skill = ArsMagicaAPI.get().getSkillManager().get(this._part.getRegistryName());
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
-        RenderSystem.setShaderTexture(0, sprite.atlas().location());
+        RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
         GuiComponent.blit(poseStack, cx - 2, cy - 2, context.getGui().getBlitOffset(), 20, 20, sprite);
         if (context.isAreaHovered(mouseX, mouseY, cx - 2, cy - 2, 20, 20)) {
-            context.setHoverTooltipComponents(Stream.of(skill.getDisplayName(), skill.getDescription()).map(Component::copy).map(mutableComponent -> mutableComponent.setStyle(context.getFont())).map(Component.class::cast).toList());
+            context.setHoverTooltipComponents(List.of(skill.getDisplayName(), skill.getDescription()));
         }
         renderModifiers(poseStack, context, x, y, mouseX, mouseY, modifiers);
         RenderSystem.disableBlend();
@@ -105,7 +103,7 @@ public class SpellPartPage implements ICustomComponent {
         part = lookup.apply(IVariable.wrap(part)).asString();
     }
 
-    @Override
+    /*@Override
     public boolean mouseClicked(final IComponentRenderContext context, final double mouseX, final double mouseY, final int mouseButton) {
         int posX = x;
         int posY = y;
@@ -124,7 +122,7 @@ public class SpellPartPage implements ICustomComponent {
             startX += 16;
         }
         return ICustomComponent.super.mouseClicked(context, mouseX, mouseY, mouseButton);
-    }
+    }*/
 
     private void renderModifiers(PoseStack stack, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
         if (modifiers.isEmpty()) return;
@@ -165,10 +163,13 @@ public class SpellPartPage implements ICustomComponent {
             float angle = (lastAngle + angleStep) % 360f;
             float x = (float) (cx - (Math.cos(Math.toRadians(angle)) * dist));
             float y = (float) (cy - (Math.sin(Math.toRadians(angle)) * dist));
-            RenderUtil.line2d(poseStack, x + 8, y + 8, cx + 8, cy + 8, context.getGui().getBlitOffset(), 0x0000DD);
-            RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, context.getGui().getBlitOffset(), 0x0000DD, 0xDD00DD);
+            RenderUtil.line2d(poseStack, x + 8, y + 8, cx + 8, cy + 8, context.getGui().getBlitOffset(), 0x0000DD, 2f);
+            RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, context.getGui().getBlitOffset(), 0x0000DD, 0xDD00DD, 2f);
             if (i < recipe.size()) {
+                poseStack.pushPose();
+                poseStack.translate(x - (int)x, y - (int)y, 0);
                 renderCraftingComponent(poseStack, context, recipe.get(i), (int) x, (int) y, mousex, mousey);
+                poseStack.popPose();
             }
             lastX = x;
             lastY = y;

@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredien
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -99,7 +100,13 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             Minecraft minecraft = Minecraft.getInstance();
             ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            itemRenderer.renderStatic(stack, ItemTransforms.TransformType.GUI, x, y, poseStack, Minecraft.getInstance().renderBuffers().bufferSource(), 0); // fixme
+            PoseStack mvs = RenderSystem.getModelViewStack();
+            mvs.pushPose();
+            mvs.mulPoseMatrix(poseStack.last().pose());
+            RenderSystem.applyModelViewMatrix();
+            itemRenderer.renderGuiItem(stack, x, y);
+            mvs.popPose();
+            RenderSystem.applyModelViewMatrix();
         }
     }
 }
