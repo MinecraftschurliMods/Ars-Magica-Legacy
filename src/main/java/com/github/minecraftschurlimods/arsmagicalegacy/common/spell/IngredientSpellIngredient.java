@@ -99,7 +99,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             Minecraft minecraft = Minecraft.getInstance();
             ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            itemRenderer.renderGuiItem(stack, x, y);
+            itemRenderer.renderStatic(stack, ItemTransforms.TransformType.GUI, x, y, poseStack, Minecraft.getInstance().renderBuffers().bufferSource(), 0); // fixme
         }
     }
 }

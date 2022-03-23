@@ -2,21 +2,33 @@ package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
+import vazkii.patchouli.api.PatchouliAPI;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -37,17 +49,17 @@ public class SpellPartPage implements ICustomComponent {
         int cx = x + 50;
         int cy = y + 70;
         poseStack.pushPose();
-//        RenderSystem.enableBlend();
-//        context.getGui().getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ArsMagicaAPI.MODID, "textures/gui/arcane_compendium_gui_extras.png"));
-//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() + 1);
-//        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//        RenderUtil.drawTexturedModalRectClassic(x + 42, y + 15, 112, 145, 60, 40, 40, 40, context.getGui().getBlitOffset());
-//        RenderUtil.drawTexturedModalRectClassic(x, y, 112, 175, 60, 40, 40, 40, context.getGui().getBlitOffset());
-//        context.getGui().setBlitOffset(context.getGui().getBlitOffset() - 1);
-//        RenderSystem.disableBlend();
-//        List<ISpellModifier> modifiers = cacheModifiers();
-//        if (modifiers.isEmpty()) cy -= 16;
-//        else cy += ((modifiers.size() / 7) * 16) + 8;
+        //RenderSystem.enableBlend();
+        //RenderSystem.setShaderTexture(0, new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium_gui_extras.png"));
+        //context.getGui().setBlitOffset(context.getGui().getBlitOffset() + 1);
+        //RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        //RenderUtil.drawBox(poseStack, x + 42, y + 15, 112, 145, 60, 40, 40, 40, context.getGui().getBlitOffset());
+        //RenderUtil.drawBox(poseStack, x, y, 112, 175, 60, 40, 40, 40, context.getGui().getBlitOffset());
+        //context.getGui().setBlitOffset(context.getGui().getBlitOffset() - 1);
+        //RenderSystem.disableBlend();
+        List<ISpellModifier> modifiers = cacheModifiers();
+        if (modifiers.isEmpty()) cy -= 16;
+        else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
         ISkill skill = ArsMagicaAPI.get().getSkillManager().get(this._part.getRegistryName());
@@ -58,14 +70,87 @@ public class SpellPartPage implements ICustomComponent {
         if (context.isAreaHovered(mouseX, mouseY, cx - 2, cy - 2, 20, 20)) {
             context.setHoverTooltipComponents(Stream.of(skill.getDisplayName(), skill.getDescription()).map(Component::copy).map(mutableComponent -> mutableComponent.setStyle(context.getFont())).map(Component.class::cast).toList());
         }
-        // renderModifiers(context, x, y, mouseX, mouseY, modifiers);
+        renderModifiers(poseStack, context, x, y, mouseX, mouseY, modifiers);
         RenderSystem.disableBlend();
         poseStack.popPose();
     }
 
-    @Override
-    public void onVariablesAvailable(UnaryOperator<IVariable> unaryOperator) {
+    private List<ISpellModifier> cacheModifiers() {
+        if (_part.getType() == ISpellPart.SpellPartType.MODIFIER) return List.of();
+        Set<ISpellPartStat> stats;
+        if (_part instanceof ISpellComponent component) {
+            stats = component.getStatsUsed();
+        } else if (_part instanceof ISpellShape shape) {
+            stats = shape.getStatsUsed();
+        } else {
+            return List.of();
+        }
+        List<ISpellModifier> modifiers = new ArrayList<>();
+        for (ISpellPart part : ArsMagicaAPI.get().getSpellPartRegistry()) {
+            if (_part == part) continue;
+            if (part instanceof ISpellModifier modifier) {
+                for (ISpellPartStat stat : modifier.getStatsModified()) {
+                    if (stats.contains(stat)) {
+                        modifiers.add(modifier);
+                        break;
+                    }
+                }
+            }
+        }
+        return modifiers;
     }
+
+    @Override
+    public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
+        part = lookup.apply(IVariable.wrap(part)).asString();
+    }
+
+    @Override
+    public boolean mouseClicked(final IComponentRenderContext context, final double mouseX, final double mouseY, final int mouseButton) {
+        int posX = x;
+        int posY = y;
+        int startX = 0;
+        int yOffset = -6;
+        List<ISpellModifier> modifiers = cacheModifiers();
+        for (int i = 0; i < modifiers.size(); i++) {
+            if (i % 7 == 0) {
+                startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);
+                yOffset += 16;
+            }
+            if (context.isAreaHovered((int)mouseX, (int)mouseY, posX + startX, posY + yOffset, 16, 16)) {
+                PatchouliAPI.get().openBookEntry(PatchouliCompat.ARCANE_COMPENDIUM, modifiers.get(i).getRegistryName(), 0);
+                return true;
+            }
+            startX += 16;
+        }
+        return ICustomComponent.super.mouseClicked(context, mouseX, mouseY, mouseButton);
+    }
+
+    private void renderModifiers(PoseStack stack, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
+        if (modifiers.isEmpty()) return;
+        Component shapeName = new TranslatableComponent(ArsMagicaAPI.MOD_ID + (_part.getType() == ISpellPart.SpellPartType.MODIFIER ? ".gui.modifies" : ".gui.modifiedBy"));
+        Font font = context.getGui().getMinecraft().font;
+        font.draw(stack, shapeName, posX + 58 - (font.width(shapeName) / 2f), posY, 0);
+        RenderSystem.setShaderFogColor(1.0f, 1.0f, 1.0f);
+        int startX = 0;
+        int yOffset = -6;
+        RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
+        for (int i = 0; i < modifiers.size(); i++) {
+            ISkill skill = ArsMagicaAPI.get().getSkillManager().get(modifiers.get(i).getRegistryName());
+            if (i % 7 == 0) {
+                startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);
+                yOffset += 16;
+            }
+            RenderSystem.enableBlend();
+            Screen.blit(stack, posX + startX, posY + yOffset, context.getGui().getBlitOffset(), 16, 16, SkillIconAtlas.instance().getSprite(modifiers.get(i).getRegistryName()));
+            RenderSystem.disableBlend();
+            if (context.isAreaHovered(mouseX, mouseY, posX + startX, posY + yOffset, 16, 16)) {
+                context.setHoverTooltipComponents(List.of(skill.getDisplayName(), skill.getDescription()));
+            }
+            startX += 16;
+        }
+    }
+
 
     private void renderRecipe(PoseStack poseStack, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
         if (this._part == null) return;
