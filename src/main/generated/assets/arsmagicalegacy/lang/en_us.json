@@ -634,6 +634,8 @@
   "potion.potency.7": "VII",
   "potion.potency.8": "IX",
   "potion.potency.9": "X",
+  "screen.arsmagicalegacy.compendium.modified_by": "Modified By",
+  "screen.arsmagicalegacy.compendium.modifies": "Modifies",
   "screen.arsmagicalegacy.inscription_table.default_name": "Spell",
   "screen.arsmagicalegacy.inscription_table.name": "Name",
   "screen.arsmagicalegacy.inscription_table.search": "Search",
