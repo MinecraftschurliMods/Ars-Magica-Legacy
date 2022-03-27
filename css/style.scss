@@ -122,8 +122,11 @@ hr {
   margin: 0 auto 40px auto;
 }
 figure {
+  width: 60vmin;
+  height: 35vmin;
+
   img {
-    max-width: 60vmin;
+    width: inherit;
   }
 }
 #logo, li, img  {
