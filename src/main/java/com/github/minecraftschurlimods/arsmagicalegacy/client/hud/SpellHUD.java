@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -31,10 +31,11 @@ public final class SpellHUD extends GuiComponent implements IIngameOverlay {
 
     @Override
     public void render(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) || player.hasEffect(MobEffects.INVISIBILITY)) return;
+        LocalPlayer player = ClientHelper.getLocalPlayer();
+        if (!(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) || player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) || player.hasEffect(MobEffects.INVISIBILITY))
+            return;
         if (player.getMainHandItem().is(AMItems.SPELL.get())) {
-            float equipProgress = Mth.lerp(partialTicks, oMainHandHeight, mainHandHeight);;
+            float equipProgress = -Mth.lerp(partialTicks, oMainHandHeight, mainHandHeight);;
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/spell_" + SpellItem.getSpell(player.getMainHandItem()).primaryAffinity().getId().getPath()));
             startRender(stack, player, partialTicks);
             if (player.getMainArm() == HumanoidArm.RIGHT) {
@@ -45,7 +46,7 @@ public final class SpellHUD extends GuiComponent implements IIngameOverlay {
             endRender(stack);
         }
         if (player.getOffhandItem().is(AMItems.SPELL.get())) {
-            float equipProgress = Mth.lerp(partialTicks, oOffHandHeight, offHandHeight);;
+            float equipProgress = -Mth.lerp(partialTicks, oOffHandHeight, offHandHeight);;
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/spell_" + SpellItem.getSpell(player.getOffhandItem()).primaryAffinity().getId().getPath()));
             startRender(stack, player, partialTicks);
             if (player.getMainArm() == HumanoidArm.RIGHT) {
@@ -108,10 +109,10 @@ public final class SpellHUD extends GuiComponent implements IIngameOverlay {
     }
 
     private void renderLeft(PoseStack poseStack, TextureAtlasSprite sprite, int width, int height, float equipProgress) {
-        blit(poseStack, (int) (width * 0.3) - sprite.getWidth(), (int) (height * 0.5 - 16 + equipProgress * 10), getBlitOffset(), sprite.getWidth(), sprite.getHeight(), sprite);
+        blit(poseStack, (int) (width * 0.3) - sprite.getWidth(), (int) (height * 0.5 - 16 + equipProgress * 20), getBlitOffset(), sprite.getWidth(), sprite.getHeight(), sprite);
     }
 
     private void renderRight(PoseStack poseStack, TextureAtlasSprite sprite, int width, int height, float equipProgress) {
-        blit(poseStack, (int) (width * 0.7), (int) (height * 0.5 - 16 + equipProgress * 10), getBlitOffset(), sprite.getWidth(), sprite.getHeight(), sprite);
+        blit(poseStack, (int) (width * 0.7), (int) (height * 0.5 - 16 + equipProgress * 20), getBlitOffset(), sprite.getWidth(), sprite.getHeight(), sprite);
     }
 }

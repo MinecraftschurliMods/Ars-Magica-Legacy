@@ -59,8 +59,12 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
         Player player = ClientHelper.getLocalPlayer();
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || cameraTransformType == ItemTransforms.TransformType.FIXED || icon.isEmpty()) {
-            return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
+        if (player != null) {
+            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) || cameraTransformType == ItemTransforms.TransformType.GROUND || cameraTransformType == ItemTransforms.TransformType.FIXED || icon.isEmpty()) {
+                return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
+            } else {
+
+            }
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return this;
