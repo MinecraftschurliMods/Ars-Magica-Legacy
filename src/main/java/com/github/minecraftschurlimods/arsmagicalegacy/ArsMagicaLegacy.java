@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
@@ -67,6 +68,7 @@ public final class ArsMagicaLegacy {
         SkillManager.instance();
         SpellDataManager.instance();
         AltarMaterialManager.instance();
+        ObeliskFuelManager.instance();
         CompatManager.preInit();
     }
 
