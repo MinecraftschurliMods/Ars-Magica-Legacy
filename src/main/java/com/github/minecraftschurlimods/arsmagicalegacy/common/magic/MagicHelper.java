@@ -4,11 +4,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -73,6 +75,9 @@ public final class MagicHelper implements IMagicHelper {
             xp -= xpForNextLevel;
             level++;
             MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            if (player instanceof ServerPlayer serverPlayer) {
+                AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
+            }
             xpForNextLevel = getXpForNextLevel(level);
         }
         magicHolder.setXp(xp);
@@ -93,6 +98,9 @@ public final class MagicHelper implements IMagicHelper {
         if (level > oldLevel && level > 0) {
             for (int i = oldLevel + 1; i <= level; i++) {
                 MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, i));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
+                }
             }
         }
         syncMagic(player);
