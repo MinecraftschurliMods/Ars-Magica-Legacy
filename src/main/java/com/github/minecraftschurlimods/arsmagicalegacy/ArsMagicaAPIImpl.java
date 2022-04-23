@@ -15,9 +15,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabMa
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
@@ -32,9 +35,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +50,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Unmodifiable;
 import vazkii.patchouli.api.PatchouliAPI;
+
+import java.util.List;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
     @Override
@@ -167,5 +174,15 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
         if (level.isClientSide()) {
             ClientHelper.openSpellCustomizationGui(stack);
         }
+    }
+
+    @Override
+    public ISpell makeSpell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
+        return new Spell(shapeGroups, spellStack, additionalData);
+    }
+
+    @Override
+    public ISpell makeSpell(SpellStack spellStack, ShapeGroup... shapeGroups) {
+        return Spell.of(spellStack, shapeGroups);
     }
 }

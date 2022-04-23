@@ -63,13 +63,9 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
     public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) implements IPrefabSpell {
         public static final Codec<IPrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(IPrefabSpell::name),
-                Spell.CODEC.fieldOf("spell").forGetter(IPrefabSpell::spell),
+                ISpell.CODEC.fieldOf("spell").forGetter(IPrefabSpell::spell),
                 ResourceLocation.CODEC.fieldOf("icon").forGetter(IPrefabSpell::icon)
         ).apply(inst, PrefabSpell::new));
-
-        public PrefabSpell(String name, Spell spell, ResourceLocation icon) {
-            this(new TextComponent(name), spell, icon);
-        }
 
         @Override
         public DataResult<JsonElement> getEncodedSpell() {

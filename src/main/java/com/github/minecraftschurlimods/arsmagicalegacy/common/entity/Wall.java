@@ -2,11 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -31,10 +31,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class Wall extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Spell> SPELL = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<Integer> INDEX    = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER    = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float>   RADIUS   = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ISpell>  SPELL    = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
 
     /**
      * Use {@link Wall#create(Level)} instead.
@@ -60,7 +60,7 @@ public class Wall extends Entity implements ItemSupplier {
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
         entityData.define(RADIUS, 1f);
-        entityData.define(SPELL, Spell.EMPTY);
+        entityData.define(SPELL, ISpell.EMPTY);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Wall extends Entity implements ItemSupplier {
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
-        entityData.set(SPELL, Spell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
+        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Wall extends Entity implements ItemSupplier {
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Radius", entityData.get(RADIUS));
-        tag.put("Spell", Spell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
+        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
     }
 
     @Override
@@ -167,11 +167,11 @@ public class Wall extends Entity implements ItemSupplier {
         entityData.set(RADIUS, radius);
     }
 
-    public Spell getSpell() {
+    public ISpell getSpell() {
         return entityData.get(SPELL);
     }
 
-    public void setSpell(Spell spell) {
+    public void setSpell(ISpell spell) {
         entityData.set(SPELL, spell);
     }
 

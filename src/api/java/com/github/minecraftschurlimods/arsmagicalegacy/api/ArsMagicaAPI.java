@@ -14,9 +14,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabMa
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
@@ -179,6 +184,25 @@ public final class ArsMagicaAPI {
          * @param stack  The spell item stack to open the gui for.
          */
         void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
+
+        /**
+         * Make an instance of ISpell.
+         *
+         * @param shapeGroups    The shape groups to use.
+         * @param spellStack     The spell stack to use.
+         * @param additionalData The additional data to use.
+         * @return The spell instance.
+         */
+        ISpell makeSpell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData);
+
+        /**
+         * Make an instance of ISpell.
+         *
+         * @param spellStack     The spell stack to use.
+         * @param shapeGroups    The shape groups to use.
+         * @return The spell instance.
+         */
+        ISpell makeSpell(SpellStack spellStack, ShapeGroup... shapeGroups);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -286,6 +310,16 @@ public final class ArsMagicaAPI {
 
         @Override
         public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
+        }
+
+        @Override
+        public ISpell makeSpell(final List<ShapeGroup> shapeGroups, final SpellStack spellStack, final CompoundTag additionalData) {
+            return null;
+        }
+
+        @Override
+        public ISpell makeSpell(final SpellStack spellStack, final ShapeGroup... shapeGroups) {
+            return null;
         }
     }
 }

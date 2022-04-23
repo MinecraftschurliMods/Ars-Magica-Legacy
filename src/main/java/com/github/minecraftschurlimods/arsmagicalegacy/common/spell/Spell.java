@@ -21,8 +21,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,14 +48,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Spell implements ISpell {
-    //@formatter:off
-    public static final Codec<ISpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ShapeGroup.CODEC.listOf().fieldOf(SHAPE_GROUPS_KEY).forGetter(ISpell::shapeGroups),
-            SpellStack.CODEC.fieldOf(SPELL_STACK_KEY).forGetter(ISpell::spellStack),
-            CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(ISpell::additionalData)
-    ).apply(inst, Spell::new));
-    //@formatter:on
-    public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());
     private static final ResourceLocation AFFINITY_GAINS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_gains");
     private final List<ShapeGroup> shapeGroups;
     private final SpellStack spellStack;
