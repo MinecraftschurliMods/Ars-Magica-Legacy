@@ -298,6 +298,11 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
                 .build(consumer);
+        createOffense(EXPLOSION)
+                .setPosition(120, 300)
+                .addCost(RED.get())
+                .addParent(FURY.getId())
+                .build(consumer);
         createOffense(FALLING_STAR)
                 .setPosition(30, 75)
                 .hidden()
