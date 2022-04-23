@@ -113,7 +113,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @param shapeGroups The shape groups.
      */
     public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
         ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
         table.onSync(name, spell);

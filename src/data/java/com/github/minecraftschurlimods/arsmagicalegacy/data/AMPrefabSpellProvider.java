@@ -15,7 +15,7 @@ class AMPrefabSpellProvider extends PrefabSpellProvider {
 
     @Override
     protected void createPrefabSpells() {
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         addPrefabSpell("dispel", "Dispel", new ResourceLocation(ArsMagicaAPI.MOD_ID, "fog-magenta-3"), api.makeSpell(
                 SpellStack.of(AMSpellParts.DISPEL.get()),
                 ShapeGroup.of(AMSpellParts.SELF.get())
