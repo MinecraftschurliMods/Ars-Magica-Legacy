@@ -50,7 +50,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpel
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransitionManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
@@ -442,7 +442,7 @@ public final class EventHandler {
         event.addListener(TierMapping.instance());
         event.addListener(PrefabSpellManager.instance());
         event.addListener(ObeliskFuelManager.instance());
-        event.addListener(SpellTransitionManager.instance());
+        event.addListener(SpellTransformationManager.instance());
     }
 
     private static void playerLevelUp(PlayerLevelUpEvent event) {

@@ -51,10 +51,10 @@ import java.util.stream.Stream;
 
 public final class Spell implements ISpell {
     //@formatter:off
-    public static final Codec<Spell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ShapeGroup.CODEC.listOf().fieldOf(SHAPE_GROUPS_KEY).forGetter(Spell::shapeGroups),
-            SpellStack.CODEC.fieldOf(SPELL_STACK_KEY).forGetter(Spell::spellStack),
-            CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(Spell::additionalData)
+    public static final Codec<ISpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            ShapeGroup.CODEC.listOf().fieldOf(SHAPE_GROUPS_KEY).forGetter(ISpell::shapeGroups),
+            SpellStack.CODEC.fieldOf(SPELL_STACK_KEY).forGetter(ISpell::spellStack),
+            CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(ISpell::additionalData)
     ).apply(inst, Spell::new));
     //@formatter:on
     public static final Spell EMPTY = new Spell(List.of(), SpellStack.EMPTY, new CompoundTag());

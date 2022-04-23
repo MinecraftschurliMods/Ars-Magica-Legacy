@@ -2,6 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpellManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -21,10 +23,13 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-public class PrefabSpellManager extends CodecDataManager<PrefabSpellManager.PrefabSpell> {
+public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> implements IPrefabSpellManager {
     public static final CreativeModeTab ITEM_CATEGORY = new CreativeModeTab(ArsMagicaAPI.MOD_ID + ".prefab_spells") {
         @Override
         public ItemStack makeIcon() {
@@ -45,11 +50,21 @@ public class PrefabSpellManager extends CodecDataManager<PrefabSpellManager.Pref
         return INSTANCE.get();
     }
 
-    public record PrefabSpell(Component name, Spell spell, ResourceLocation icon) implements IPrefabSpell {
-        public static final Codec<PrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(PrefabSpell::name),
-                Spell.CODEC.fieldOf("spell").forGetter(PrefabSpell::spell),
-                ResourceLocation.CODEC.fieldOf("icon").forGetter(PrefabSpell::icon)
+    @Override
+    public IPrefabSpell getOrDefault(@Nullable final ResourceLocation id, final Supplier<IPrefabSpell> defaultSupplier) {
+        return getOrDefault((Object) id, defaultSupplier);
+    }
+
+    @Override
+    public Optional<IPrefabSpell> getOptional(@Nullable final ResourceLocation id) {
+        return getOptional((Object) id);
+    }
+
+    public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) implements IPrefabSpell {
+        public static final Codec<IPrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(IPrefabSpell::name),
+                Spell.CODEC.fieldOf("spell").forGetter(IPrefabSpell::spell),
+                ResourceLocation.CODEC.fieldOf("icon").forGetter(IPrefabSpell::icon)
         ).apply(inst, PrefabSpell::new));
 
         public PrefabSpell(String name, Spell spell, ResourceLocation icon) {
