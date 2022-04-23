@@ -18,6 +18,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import net.minecraft.nbt.CompoundTag;
@@ -112,6 +113,11 @@ public interface ArsMagicaAPI {
      * @return The ability manager instance.
      */
     IAbilityManager getAbilityManager();
+
+    /**
+     * @return The spell data manager instance.
+     */
+    ISpellTransformationManager getSpellTransformationManager();
 
     /**
      * @return The skill helper instance.

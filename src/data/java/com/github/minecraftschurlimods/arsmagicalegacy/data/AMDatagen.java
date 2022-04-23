@@ -40,10 +40,11 @@ public class AMDatagen {
             generator.addProvider(new AMRecipeProvider(generator));
             AMTagsProvider.add(generator, existingFileHelper);
             generator.addProvider(new AMAltarStructureMaterialProvider(generator));
-            generator.addProvider(new AMOcculusTabProvider(generator));
-            generator.addProvider(new AMSpellPartDataProvider(generator));
-            generator.addProvider(new AMPrefabSpellProvider(generator));
             generator.addProvider(new AMObeliskFuelProvider(generator));
+            generator.addProvider(new AMOcculusTabProvider(generator));
+            generator.addProvider(new AMPrefabSpellProvider(generator));
+            generator.addProvider(new AMSpellPartDataProvider(generator));
+            generator.addProvider(new AMSpellTransformationProvider(generator));
         }
     }
 
