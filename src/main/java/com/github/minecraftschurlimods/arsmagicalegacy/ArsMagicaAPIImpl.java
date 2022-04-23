@@ -53,7 +53,7 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.List;
 
-public final class ArsMagicaAPIImpl implements ArsMagicaAPI.IArsMagicaAPI {
+public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public CreativeModeTab getCreativeModeTab() {
         return AMItems.TAB;
