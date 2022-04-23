@@ -42,6 +42,8 @@ public interface ArsMagicaAPI {
     String MOD_ID = "arsmagicalegacy";
 
     class Internal {
+        private Internal() {}
+
         private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
             Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
             if (!FMLEnvironment.production) {
