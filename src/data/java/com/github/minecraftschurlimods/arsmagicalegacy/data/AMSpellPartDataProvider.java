@@ -349,6 +349,12 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.ENDER_PEARLS), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ENDER_EYE), 1))
                 .build();
+        createSpellPartData(AMSpellParts.EXPLOSION, 80f)
+                .withAffinity(AMAffinities.FIRE, 0.01f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GRAY)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.FIRE_CHARGE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TNT), 1))
+                .build();
         createSpellPartData(AMSpellParts.FALLING_STAR, 1000f)
                 .withAffinity(AMAffinities.ARCANE, 0.1f)
                 .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ARCANE.get())){}, 1))
