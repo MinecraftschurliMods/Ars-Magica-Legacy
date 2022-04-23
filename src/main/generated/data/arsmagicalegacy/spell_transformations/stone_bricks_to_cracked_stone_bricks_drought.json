@@ -1,0 +1,10 @@
+{
+  "from": {
+    "block": "minecraft:stone_bricks",
+    "predicate_type": "minecraft:block_match"
+  },
+  "to": {
+    "Name": "minecraft:cracked_stone_bricks"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

@@ -2,6 +2,7 @@
   "name": {
     "text": "Dispel"
   },
+  "icon": "arsmagicalegacy:fog-magenta-3",
   "spell": {
     "shape_groups": [
       [
@@ -12,6 +13,5 @@
       "arsmagicalegacy:dispel"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:fog-magenta-3"
+  }
 }

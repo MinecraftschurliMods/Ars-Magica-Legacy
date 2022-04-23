@@ -2,6 +2,7 @@
   "name": {
     "text": "Area Lightning"
   },
+  "icon": "arsmagicalegacy:lighting-sky-3",
   "spell": {
     "shape_groups": [
       [
@@ -14,6 +15,5 @@
       "arsmagicalegacy:damage"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:lighting-sky-3"
+  }
 }

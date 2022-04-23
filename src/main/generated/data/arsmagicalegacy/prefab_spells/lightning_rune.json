@@ -2,6 +2,7 @@
   "name": {
     "text": "Lightning Rune"
   },
+  "icon": "arsmagicalegacy:lightning-orange-3",
   "spell": {
     "shape_groups": [
       [
@@ -14,6 +15,5 @@
       "arsmagicalegacy:damage"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:lightning-orange-3"
+  }
 }
