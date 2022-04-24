@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Optional;
 
 /**
- *
+ * Interface representing a spell transformation manager.
  */
 public interface ISpellTransformationManager {
     /**
