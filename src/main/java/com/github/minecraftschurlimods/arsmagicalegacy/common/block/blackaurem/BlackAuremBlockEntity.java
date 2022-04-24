@@ -20,11 +20,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
 public class BlackAuremBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.DARK, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(BlackAuremBlockEntity::onConsume);

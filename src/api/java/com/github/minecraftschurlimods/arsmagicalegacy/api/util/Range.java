@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.DoublePredicate;

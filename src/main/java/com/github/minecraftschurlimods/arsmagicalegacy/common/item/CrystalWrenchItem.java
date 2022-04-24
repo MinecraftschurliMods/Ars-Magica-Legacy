@@ -24,6 +24,7 @@ public class CrystalWrenchItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        if (context.getLevel().isClientSide()) return InteractionResult.PASS;
         var helper = ArsMagicaAPI.get().getEtheriumHelper();
         if (context.isSecondaryUseActive()) {
             if (helper.hasEtheriumProvider(context.getLevel(), context.getClickedPos())) {

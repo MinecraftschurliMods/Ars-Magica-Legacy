@@ -20,6 +20,9 @@
     "arsmagicalegacy:moonstone_ore",
     "arsmagicalegacy:deepslate_moonstone_ore",
     "arsmagicalegacy:sunstone_block",
-    "arsmagicalegacy:sunstone_ore"
+    "arsmagicalegacy:sunstone_ore",
+    "arsmagicalegacy:iron_inlay",
+    "arsmagicalegacy:redstone_inlay",
+    "arsmagicalegacy:gold_inlay"
   ]
 }

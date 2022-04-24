@@ -46,6 +46,9 @@ body:
         - 1.18.1-0.1.2
         - 1.18.1-0.1.3
         - 1.18.1-0.1.4
+        - 1.18.1-0.1.5
+        - 1.18.2-1.0.0
+        - 1.18.2-1.0.1
     validations:
       required: true
   - type: input
@@ -68,11 +71,11 @@ body:
       label: Log
       description: Please provide the content of your `debug.log`. This will be automatically formatted into code, so no need for backticks.
       render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+#  - type: checkboxes
+#    id: terms
+#    attributes:
+#      label: Code of Conduct
+#      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+#      options:
+#        - label: I agree to follow this project's Code of Conduct
+#          required: true

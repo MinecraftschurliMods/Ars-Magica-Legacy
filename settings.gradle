@@ -3,7 +3,7 @@ pluginManagement {
         id 'org.ec4j.editorconfig' version '0.0.3'
         id 'net.minecraftforge.gradle' version '5.1.+'
         id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
-        id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+        id 'org.parchmentmc.librarian.forgegradle' version '1.2+'
     }
     repositories {
         gradlePluginPortal()
@@ -40,11 +40,3 @@ pluginManagement {
 }
 
 rootProject.name = 'Ars Magica Legacy'
-
-file('projects').list().each {
-    var pDir = "projects/$it".toString()
-    if (file(pDir).isDirectory() && file("$pDir/build.gradle").exists()) {
-        include("projects:$it")
-        println "using $it"
-    }
-}

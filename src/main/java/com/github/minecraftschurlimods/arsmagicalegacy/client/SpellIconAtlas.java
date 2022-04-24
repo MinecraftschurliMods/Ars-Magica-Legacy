@@ -10,12 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.util.Lazy;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
 
 public final class SpellIconAtlas extends TextureAtlasHolder {
     public static final ResourceLocation SPELL_ICON_ATLAS = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/atlas/spell_icons.png");

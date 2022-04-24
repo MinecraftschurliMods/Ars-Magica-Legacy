@@ -28,7 +28,7 @@ public class WizardsAutumn extends AbstractComponent {
                 for (int k = -range; k <= range; k++) {
                     BlockPos pos = origin.offset(i, j, k);
                     BlockState state = level.getBlockState(pos);
-                    if (BlockTags.LEAVES.contains(state.getBlock())) {
+                    if (state.is(BlockTags.LEAVES)) {
                         level.destroyBlock(pos, true, caster);
                     }
                 }

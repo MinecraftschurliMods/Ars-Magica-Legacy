@@ -24,8 +24,8 @@ class StairBlockStateMatcher implements IStateMatcher {
     }
 
     @Override
-    public BlockState getDisplayedState(int ticks) {
-        AltarStructureMaterial mat = AltarMaterialManager.instance().getRandomStructureMaterial(ticks / 20);
+    public BlockState getDisplayedState(long ticks) {
+        AltarStructureMaterial mat = AltarMaterialManager.instance().getRandomStructureMaterial(Math.toIntExact(ticks / 20));
         if (mat == null) return Blocks.AIR.defaultBlockState();
         return mat.stair().defaultBlockState().setValue(StairBlock.FACING, direction).setValue(StairBlock.HALF, half);
     }

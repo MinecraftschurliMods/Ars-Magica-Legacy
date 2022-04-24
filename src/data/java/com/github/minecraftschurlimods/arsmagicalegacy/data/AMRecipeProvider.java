@@ -25,6 +25,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -327,6 +328,30 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.IRON_INLAY.get())
+                .pattern("###")
+                .pattern("#V#")
+                .pattern("###")
+                .define('#', Tags.Items.INGOTS_IRON)
+                .define('V', AMItems.PURIFIED_VINTEUM_DUST.get())
+                .unlockedBy("has_purified_vinteum_dust", has(AMItems.PURIFIED_VINTEUM_DUST.get()))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.REDSTONE_INLAY.get())
+                .pattern("###")
+                .pattern("#V#")
+                .pattern("###")
+                .define('#', Tags.Items.DUSTS_REDSTONE)
+                .define('V', AMItems.PURIFIED_VINTEUM_DUST.get())
+                .unlockedBy("has_purified_vinteum_dust", has(AMItems.PURIFIED_VINTEUM_DUST.get()))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.GOLD_INLAY.get())
+                .pattern("###")
+                .pattern("#V#")
+                .pattern("###")
+                .define('#', Tags.Items.INGOTS_GOLD)
+                .define('V', AMItems.PURIFIED_VINTEUM_DUST.get())
+                .unlockedBy("has_purified_vinteum_dust", has(AMItems.PURIFIED_VINTEUM_DUST.get()))
+                .save(consumer);
         ShapedNBTRecipeBuilder.shaped(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())
                 .pattern("AIA")
                 .pattern("JDJ")
@@ -547,7 +572,7 @@ class AMRecipeProvider extends RecipeProvider {
             return new ShapedNBTRecipeBuilder(result, count, compound);
         }
 
-        public ShapedNBTRecipeBuilder define(Character symbol, Tag<Item> tag) {
+        public ShapedNBTRecipeBuilder define(Character symbol, TagKey<Item> tag) {
             return define(symbol, Ingredient.of(tag));
         }
 
@@ -702,7 +727,7 @@ class AMRecipeProvider extends RecipeProvider {
             return new ShapelessNBTRecipeBuilder(result, count, compound);
         }
 
-        public ShapelessNBTRecipeBuilder requires(Tag<Item> tag) {
+        public ShapelessNBTRecipeBuilder requires(TagKey<Item> tag) {
             return requires(Ingredient.of(tag));
         }
 

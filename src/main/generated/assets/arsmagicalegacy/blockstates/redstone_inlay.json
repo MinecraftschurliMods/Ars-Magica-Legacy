@@ -1,0 +1,48 @@
+{
+  "variants": {
+    "shape=north_south,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay"
+    },
+    "shape=east_west,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay",
+      "y": 90
+    },
+    "shape=south_east,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner"
+    },
+    "shape=south_west,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 90
+    },
+    "shape=north_west,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 180
+    },
+    "shape=north_east,waterlogged=false": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 270
+    },
+    "shape=north_south,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay"
+    },
+    "shape=east_west,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay",
+      "y": 90
+    },
+    "shape=south_east,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner"
+    },
+    "shape=south_west,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 90
+    },
+    "shape=north_west,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 180
+    },
+    "shape=north_east,waterlogged=true": {
+      "model": "arsmagicalegacy:block/redstone_inlay_corner",
+      "y": 270
+    }
+  }
+}
