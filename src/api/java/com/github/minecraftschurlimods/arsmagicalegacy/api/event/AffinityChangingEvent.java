@@ -10,10 +10,15 @@ public abstract class AffinityChangingEvent extends PlayerEvent {
      * The affinity being shifted.
      */
     public final IAffinity affinity;
+    /**
+     * Whether this event was caused by a command or not.
+     */
+    public final boolean commandSource;
 
-    public AffinityChangingEvent(Player player, IAffinity affinity) {
+    public AffinityChangingEvent(Player player, IAffinity affinity, boolean commandSource) {
         super(player);
         this.affinity = affinity;
+        this.commandSource = commandSource;
     }
 
     /**
@@ -26,8 +31,8 @@ public abstract class AffinityChangingEvent extends PlayerEvent {
          */
         public float shift;
 
-        public Pre(Player player, IAffinity affinity, float shift) {
-            super(player, affinity);
+        public Pre(Player player, IAffinity affinity, float shift, boolean commandSource) {
+            super(player, affinity, commandSource);
             this.shift = shift;
         }
     }
@@ -42,8 +47,8 @@ public abstract class AffinityChangingEvent extends PlayerEvent {
          */
         public final float shift;
 
-        public Post(Player player, IAffinity affinity, float shift) {
-            super(player, affinity);
+        public Post(Player player, IAffinity affinity, float shift, boolean commandSource) {
+            super(player, affinity, commandSource);
             this.shift = shift;
         }
     }

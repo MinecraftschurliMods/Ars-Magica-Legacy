@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -107,7 +108,11 @@ public class AffinityCommand {
     private static int setAffinity(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
         double amount = DoubleArgumentType.getDouble(context, "amount");
         for (ServerPlayer player : players) {
-            ArsMagicaAPI.get().getAffinityHelper().setAffinityDepth(player, affinity, (float) amount);
+            AffinityChangingEvent.Pre eventPre = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
+            if (!eventPre.isCanceled()) {
+                ArsMagicaAPI.get().getAffinityHelper().applyAffinityShift(eventPre.getPlayer(), eventPre.affinity, eventPre.shift);
+            }
+            new AffinityChangingEvent.Post(player, affinity, (float) amount, true);
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
