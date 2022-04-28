@@ -2,6 +2,7 @@
   "name": {
     "text": "Ender Bolt"
   },
+  "icon": "arsmagicalegacy:beam-magenta-3",
   "spell": {
     "shape_groups": [
       [
@@ -13,6 +14,5 @@
       "arsmagicalegacy:random_teleport"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:beam-magenta-3"
+  }
 }

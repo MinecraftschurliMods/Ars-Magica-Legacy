@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +41,7 @@ public class Projectile extends AbstractShape {
             projectile.setSpeed(helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit));
             IAffinity affinity = spell.primaryAffinity();
             projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : api.getAffinityHelper().getEssenceForAffinity(affinity));
-            projectile.setSpell((Spell) spell);
+            projectile.setSpell(spell);
             level.addFreshEntity(projectile);
         }
         return SpellCastResult.SUCCESS;

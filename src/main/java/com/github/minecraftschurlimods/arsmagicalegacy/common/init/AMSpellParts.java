@@ -43,7 +43,6 @@ public interface AMSpellParts {
     RegistryObject<Wall>               WALL                = SPELL_PARTS.register("wall",                Wall::new);
     RegistryObject<Wave>               WAVE                = SPELL_PARTS.register("wave",                Wave::new);
     RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
-    // TODO contingencies: damage, death, fall, fire, health
 
     RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), LivingEntity::canBreatheUnderwater));
     RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE.get(), Entity::fireImmune));
@@ -92,6 +91,7 @@ public interface AMSpellParts {
     RegistryObject<DivineIntervention> DIVINE_INTERVENTION = SPELL_PARTS.register("divine_intervention", DivineIntervention::new);
     RegistryObject<Drought>            DROUGHT             = SPELL_PARTS.register("drought",             Drought::new);
     RegistryObject<EnderIntervention>  ENDER_INTERVENTION  = SPELL_PARTS.register("ender_intervention",  EnderIntervention::new);
+    RegistryObject<Explosion>          EXPLOSION           = SPELL_PARTS.register("explosion",           Explosion ::new);
     RegistryObject<FallingStar>        FALLING_STAR        = SPELL_PARTS.register("falling_star",        FallingStar::new);
     RegistryObject<FireRain>           FIRE_RAIN           = SPELL_PARTS.register("fire_rain",           FireRain::new);
     RegistryObject<Fling>              FLING               = SPELL_PARTS.register("fling",               Fling::new);

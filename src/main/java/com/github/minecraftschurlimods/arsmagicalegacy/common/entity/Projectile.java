@@ -2,11 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ public class Projectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Spell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL_SERIALIZER);
 
     /**
      * Use {@link Projectile#create(Level)} instead.
@@ -71,7 +71,7 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.define(GRAVITY, 0f);
         entityData.define(SPEED, 1f);
         entityData.define(ICON, new ItemStack(AMItems.BLANK_RUNE.get()));
-        entityData.define(SPELL, Spell.EMPTY);
+        entityData.define(SPELL, ISpell.EMPTY);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(SPEED, tag.getFloat("Speed"));
         entityData.set(ICON, ItemStack.of(tag.getCompound("Icon")));
-        entityData.set(SPELL, Spell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
+        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Projectile extends Entity implements ItemSupplier {
         CompoundTag icon = new CompoundTag();
         entityData.get(ICON).save(icon);
         tag.put("Icon", icon);
-        tag.put("Spell", Spell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
+        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
     }
 
     @Override
@@ -234,11 +234,11 @@ public class Projectile extends Entity implements ItemSupplier {
         entityData.set(ICON, icon);
     }
 
-    public Spell getSpell() {
+    public ISpell getSpell() {
         return entityData.get(SPELL);
     }
 
-    public void setSpell(Spell spell) {
+    public void setSpell(ISpell spell) {
         entityData.set(SPELL, spell);
     }
 

@@ -186,7 +186,7 @@ public final class SpellHelper implements ISpellHelper {
 
     @Override
     public void nextShapeGroup(ItemStack stack) {
-        Spell spell = SpellItem.getSpell(stack);
+        ISpell spell = SpellItem.getSpell(stack);
         spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
         SpellItem.saveSpell(stack, spell);
     }

@@ -2,11 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -36,13 +36,13 @@ import java.util.List;
 
 public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Spell> SPELL = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<Integer> DURATION         = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float>   GRAVITY          = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float>   RADIUS           = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float>   SPEED            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ISpell>  SPELL            = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL_SERIALIZER);
 
     /**
      * Use {@link Wave#create(Level)} instead.
@@ -71,7 +71,7 @@ public class Wave extends Entity implements ItemSupplier {
         entityData.define(GRAVITY, 0f);
         entityData.define(RADIUS, 1f);
         entityData.define(SPEED, 1f);
-        entityData.define(SPELL, Spell.EMPTY);
+        entityData.define(SPELL, ISpell.EMPTY);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Wave extends Entity implements ItemSupplier {
         entityData.set(GRAVITY, tag.getFloat("Gravity"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
         entityData.set(SPEED, tag.getFloat("Speed"));
-        entityData.set(SPELL, Spell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
+        entityData.set(SPELL, ISpell.CODEC.decode(NbtOps.INSTANCE, tag.getCompound("Spell")).getOrThrow(false, ArsMagicaLegacy.LOGGER::error).getFirst());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Wave extends Entity implements ItemSupplier {
         tag.putFloat("Gravity", entityData.get(GRAVITY));
         tag.putFloat("Radius", entityData.get(RADIUS));
         tag.putFloat("Speed", entityData.get(SPEED));
-        tag.put("Spell", Spell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
+        tag.put("Spell", ISpell.CODEC.encodeStart(NbtOps.INSTANCE, getSpell()).getOrThrow(false, ArsMagicaLegacy.LOGGER::error));
     }
 
     @Override
@@ -200,11 +200,11 @@ public class Wave extends Entity implements ItemSupplier {
         entityData.set(SPEED, speed);
     }
 
-    public Spell getSpell() {
+    public ISpell getSpell() {
         return entityData.get(SPELL);
     }
 
-    public void setSpell(Spell spell) {
+    public void setSpell(ISpell spell) {
         entityData.set(SPELL, spell);
     }
 

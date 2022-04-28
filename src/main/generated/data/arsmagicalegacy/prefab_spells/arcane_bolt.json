@@ -2,6 +2,7 @@
   "name": {
     "text": "Arcane Bolt"
   },
+  "icon": "arsmagicalegacy:air-burst-magenta-3",
   "spell": {
     "shape_groups": [
       [
@@ -12,6 +13,5 @@
       "arsmagicalegacy:magic_damage"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:air-burst-magenta-3"
+  }
 }

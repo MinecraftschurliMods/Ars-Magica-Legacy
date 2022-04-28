@@ -2,6 +2,7 @@
   "name": {
     "text": "Water Bolt"
   },
+  "icon": "arsmagicalegacy:beam-blue-3",
   "spell": {
     "shape_groups": [
       [
@@ -13,6 +14,5 @@
       "arsmagicalegacy:watery_grave"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:beam-blue-3"
+  }
 }

@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
@@ -11,7 +12,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTab
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -113,8 +113,9 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @param shapeGroups The shape groups.
      */
     public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
-        Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
-        Spell spell = Spell.of(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
+        var api = ArsMagicaAPI.get();
+        Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
+        ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
         table.onSync(name, spell);
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }
@@ -122,7 +123,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     /**
      * @return An optional containing the spell recipe, or an empty optional if there is no spell recipe laid out yet.
      */
-    public Optional<Spell> getSpellRecipe() {
+    public Optional<ISpell> getSpellRecipe() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);
     }
 
@@ -162,7 +163,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void set(ItemStack stack) {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
-                Spell spell = SpellItem.getSpell(stack);
+                ISpell spell = SpellItem.getSpell(stack);
                 table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
             }
         }

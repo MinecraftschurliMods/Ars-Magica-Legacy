@@ -2,6 +2,7 @@
   "name": {
     "text": "Otherworldly Roar"
   },
+  "icon": "arsmagicalegacy:wind-grasp-magenta-3",
   "spell": {
     "shape_groups": [
       [
@@ -20,6 +21,5 @@
       "arsmagicalegacy:knockback"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:wind-grasp-magenta-3"
+  }
 }

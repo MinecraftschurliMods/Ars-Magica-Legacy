@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,9 +35,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        if (spell instanceof Spell) {
-            pTag.put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, (Spell) spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        }
+        pTag.put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (index != null) {
             pTag.putInt(INDEX_KEY, index);
         }
@@ -51,7 +48,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         if (pTag.contains(SPELL_KEY)) {
-            spell = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
+            spell = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
         }
         if (pTag.contains(INDEX_KEY)) {
             index = pTag.getInt(INDEX_KEY);
