@@ -58,7 +58,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellM
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
@@ -108,6 +107,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -215,12 +215,24 @@ public final class EventHandler {
     }
 
     private static void registerBrewingRecipes() {
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LESSER_MANA.get())));
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.STANDARD_MANA.get())));
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.GREATER_MANA.get())));
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.EPIC_MANA.get())));
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.LEGENDARY_MANA.get())));
-        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.POTION), AMMobEffects.INFUSED_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()),             PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.LESSER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()),             PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.STANDARD_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()),          PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.GREATER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()),            PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.EPIC_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.LEGENDARY_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION),           Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()),            PotionUtils.setPotion(new ItemStack(Items.POTION),           AMMobEffects.INFUSED_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()),             PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.LESSER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()),             PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.STANDARD_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()),          PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.GREATER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()),            PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.EPIC_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.LEGENDARY_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()),            PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION),    AMMobEffects.INFUSED_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.CHIMERITE.get()),             PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.LESSER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.WAKEBLOOM.get()),             PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.STANDARD_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.VINTEUM_DUST.get()),          PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.GREATER_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.ARCANE_ASH.get()),            PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.EPIC_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.LEGENDARY_MANA.get())));
+        BrewingRecipeRegistry.addRecipe(new BrewingRecipe(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD)), Ingredient.of(AMItems.TARMA_ROOT.get()),            PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.INFUSED_MANA.get())));
     }
 
     public static void registerSpellIngredientTypes() {
