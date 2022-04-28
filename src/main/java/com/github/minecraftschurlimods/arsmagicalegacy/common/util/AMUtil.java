@@ -1,9 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import net.minecraft.core.BlockPos;
@@ -12,14 +8,13 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -34,14 +29,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
-    /**
-     * @param player The player to check this for.
-     * @return Whether an enderman can get angry at the given player.
-     */
-    public static boolean canEndermanGetAngryAt(Player player) {
-        return true;
-    }
-
     /**
      * @param view The view vector to which the resulting point is the closest.
      * @param a    The first coordinate of the line.
@@ -90,20 +77,6 @@ public final class AMUtil {
         stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
         stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;
-    }
-
-    /**
-     * Calls {@link AMUtil#translateToScale} with the min and max values of the ability's affinity, the player's value of the ability's affinity, and the given resultMin and resultMax values.
-     *
-     * @param ability   The ability to get the values from.
-     * @param player    The player to get the affinity value from.
-     * @param resultMin The result min value.
-     * @param resultMax The result max value.
-     * @return The result of {@link AMUtil#translateToScale}, with the values described above.
-     */
-    public static double getAbilityValue(IAbilityData ability, Player player, double resultMin, double resultMax) {
-        Range range = ability.range();
-        return translateToScale(range.min().orElse(0d), range.max().orElse(1d), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, ability.affinity()), resultMin, resultMax);
     }
 
     /**
@@ -168,25 +141,5 @@ public final class AMUtil {
             result = Shapes.join(result, shape, BooleanOp.OR);
         }
         return result;
-    }
-
-    /**
-     * Two scales, a1-b1 and a2-b2, are given. A value p on the scale a1-b1 is given.
-     * The method returns a value. The location of that value on the scale a2-b2 is the same as the location of p on the scale a1-b1.
-     *
-     * a1---p---------b1
-     *      |
-     *      |
-     * a2---?---------b2
-     *
-     * @param a1 The min value of the original scale.
-     * @param b1 The max value of the original scale.
-     * @param p  The p value on the original scale.
-     * @param a2 The min value of the target scale.
-     * @param b2 The max value of the target scale.
-     * @return The value of p, scaled from the scale a1-b1 to the scale a2-b2.
-     */
-    public static double translateToScale(double a1, double b1, double p, double a2, double b2) {
-        return (p - a1) / (b1 - a1) * (b2 - a2) + a2;
     }
 }
