@@ -2,6 +2,7 @@
   "name": {
     "text": "Fire Bolt"
   },
+  "icon": "arsmagicalegacy:enchant-orange-3",
   "spell": {
     "shape_groups": [
       [
@@ -13,6 +14,5 @@
       "arsmagicalegacy:ignition"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:enchant-orange-3"
+  }
 }

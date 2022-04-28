@@ -1,0 +1,10 @@
+{
+  "from": {
+    "block": "minecraft:red_sandstone",
+    "predicate_type": "minecraft:block_match"
+  },
+  "to": {
+    "Name": "minecraft:smooth_red_sandstone"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

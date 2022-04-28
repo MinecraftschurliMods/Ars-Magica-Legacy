@@ -1,0 +1,10 @@
+{
+  "from": {
+    "block": "minecraft:quartz_block",
+    "predicate_type": "minecraft:block_match"
+  },
+  "to": {
+    "Name": "minecraft:smooth_quartz"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

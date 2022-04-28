@@ -2,6 +2,7 @@
   "name": {
     "text": "Heal Self"
   },
+  "icon": "arsmagicalegacy:protect-royal-3",
   "spell": {
     "shape_groups": [
       [
@@ -12,6 +13,5 @@
       "arsmagicalegacy:heal"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:protect-royal-3"
+  }
 }

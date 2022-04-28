@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.codeclib.CodecEntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.registries.DataSerializerEntry;
@@ -12,7 +12,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMDataSerializers {
-    EntityDataSerializer<Spell> SPELL_SERIALIZER = new CodecEntityDataSerializer<>(Spell.CODEC);
+    EntityDataSerializer<ISpell> SPELL_SERIALIZER = new CodecEntityDataSerializer<>(ISpell.CODEC);
 
     RegistryObject<DataSerializerEntry> SPELL = DATA_SERIALIZERS.register("spell", () -> new DataSerializerEntry(SPELL_SERIALIZER));
 

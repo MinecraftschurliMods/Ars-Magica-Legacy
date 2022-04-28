@@ -2,6 +2,7 @@
   "name": {
     "text": "Blink"
   },
+  "icon": "arsmagicalegacy:fog-magenta-3",
   "spell": {
     "shape_groups": [
       [
@@ -12,6 +13,5 @@
       "arsmagicalegacy:blink"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:fog-magenta-3"
+  }
 }

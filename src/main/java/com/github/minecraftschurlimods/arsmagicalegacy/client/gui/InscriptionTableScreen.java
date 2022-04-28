@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -18,7 +19,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis.DropAr
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis.DropValidator;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis.FilteredFilledDropArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -282,7 +282,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         }
     }
 
-    private void setFromRecipe(Spell spell) {
+    private void setFromRecipe(ISpell spell) {
         var skillManager = ArsMagicaAPI.get().getSkillManager();
         spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0, spellStackDropZone != null ? spellStackDropZone.getY() : 0, 141, 18, ICON_SIZE, ICON_SIZE, 4, spellStackDropZone);
         spellStackDropZone.clear();
