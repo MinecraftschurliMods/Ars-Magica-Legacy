@@ -39,7 +39,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 final class AbilityHandler {
     static void init(IEventBus forgeBus) {
-        forgeBus.addListener(AbilityHandler::livingSpawn);
         forgeBus.addListener(EventPriority.HIGHEST, AbilityHandler::livingDeath);
         forgeBus.addListener(EventPriority.LOWEST, AbilityHandler::livingHurt);
         forgeBus.addListener(AbilityHandler::livingJump);
@@ -51,20 +50,7 @@ final class AbilityHandler {
         forgeBus.addListener(AbilityHandler::spellCastPost);
     }
 
-    private static void livingSpawn(LivingSpawnEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        Level level = entity.getLevel();
-        if (entity.getType() == EntityType.SNOW_GOLEM && PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL).test(level, entity.blockPosition())/* && level.getBiome(entity.blockPosition()).is(Tags.Biomes.IS_FROZEN)*/) {
-            entity.remove(Entity.RemovalReason.KILLED);
-            IceGuardian guardian = new IceGuardian(AMEntities.ICE_GUARDIAN.get(), level);
-            guardian.moveTo(entity.position());
-            level.addFreshEntity(guardian);
-        }
-    }
-
     private static void livingDeath(LivingDeathEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        Level level = entity.getLevel();
         if (event.getSource().getEntity() instanceof Player player) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;
@@ -200,42 +186,42 @@ final class AbilityHandler {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SPEED);
         IAbilityData ability = manager.get(AMAbilities.SWIM_SPEED.getId());
         if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
+            if (ability.test(player)) {
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SWIM_SPEED, "Swim Speed Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = manager.get(AMAbilities.HASTE.getId());
         if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
+            if (ability.test(player)) {
                 attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HASTE, "Haste Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = manager.get(AMAbilities.GRAVITY.getId());
         if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
+            if (ability.test(player)) {
                 attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.GRAVITY, "Gravity Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = manager.get(AMAbilities.SLOWNESS.getId());
         if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
+            if (ability.test(player)) {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = manager.get(AMAbilities.SPEED.getId());
         if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
+            if (ability.test(player)) {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = manager.get(AMAbilities.STEP_ASSIST.getId());
         if (affinity == ability.affinity()) {
-            float stepHeight = ability.range().test(helper.getAffinityDepth(player, affinity)) ? 1f : 0.6f;
+            float stepHeight = ability.test(player) ? 1f : 0.6f;
             player.maxUpStep = stepHeight;
             ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new UpdateStepHeightPacket(stepHeight), player);
         }
         ability = manager.get(AMAbilities.POISON_RESISTANCE.getId());
-        if (affinity == ability.affinity() && ability.range().test(helper.getAffinityDepth(player, affinity)) && player.hasEffect(MobEffects.POISON)) {
+        if (affinity == ability.affinity() && ability.test(player) && player.hasEffect(MobEffects.POISON)) {
             player.removeEffect(MobEffects.POISON);
         }
     }

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -47,11 +48,11 @@ public final class AMUtil {
      *
      * @param level      The level to perform this operation in.
      * @param pos        The position to use for this operation.
-     * @param spawner    A function, returning the entity to spawn.
+     * @param type       The entity type to spawn.
      * @param items      A vararg list of item predicates that must be met. One item can match multiple predicates.
      */
     @SafeVarargs
-    public static void consumeItemsAndSpawnEntity(Level level, BlockPos pos, Function<Level, Entity> spawner, Predicate<ItemStack>... items) {
+    public static <T extends Entity> void consumeItemsAndSpawnEntity(Level level, BlockPos pos, EntityType<T> type, Predicate<ItemStack>... items) {
         Set<ItemEntity> set = new HashSet<>();
         for (Predicate<ItemStack> predicate : items) {
             List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), e -> predicate.test(e.getItem()));
@@ -62,9 +63,11 @@ public final class AMUtil {
         for (ItemEntity item : set) {
             item.kill();
         }
-        Entity entity = spawner.apply(level);
-        entity.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        level.addFreshEntity(entity);
+        T entity = type.create(level);
+        if (entity != null) {
+            entity.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+            level.addFreshEntity(entity);
+        }
     }
 
     /**
