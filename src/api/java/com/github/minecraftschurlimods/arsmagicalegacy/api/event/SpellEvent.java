@@ -32,7 +32,6 @@ public abstract class SpellEvent extends LivingEvent {
     /**
      * Event that fires when a spell is cast. Has Pre and Post sub events.
      */
-    @Cancelable
     public static abstract sealed class Cast extends SpellEvent {
         public Cast(LivingEntity entity, ISpell spell) {
             super(entity, spell);
@@ -41,6 +40,7 @@ public abstract class SpellEvent extends LivingEvent {
         /**
          * Event that fires before a spell is cast.
          */
+        @Cancelable
         public static final class Pre extends Cast {
             public Pre(LivingEntity entity, ISpell spell) {
                 super(entity, spell);

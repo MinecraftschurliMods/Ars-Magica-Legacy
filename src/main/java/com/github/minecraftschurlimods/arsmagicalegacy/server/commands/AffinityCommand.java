@@ -89,8 +89,7 @@ public class AffinityCommand {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
-            MinecraftForge.EVENT_BUS.post(event);
-            if (!event.isCanceled()) {
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
                 helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepth(player, affinity) + amount));
                 MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
@@ -116,8 +115,7 @@ public class AffinityCommand {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
-            MinecraftForge.EVENT_BUS.post(event);
-            if (!event.isCanceled()) {
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
                 helper.setAffinityDepth(player, affinity, (float) amount);
                 MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
