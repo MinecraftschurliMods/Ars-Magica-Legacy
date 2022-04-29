@@ -1,0 +1,7 @@
+{
+  "affinity": "arsmagicalegacy:water",
+  "range": {
+    "min": 0.01,
+    "max": 1.0
+  }
+}

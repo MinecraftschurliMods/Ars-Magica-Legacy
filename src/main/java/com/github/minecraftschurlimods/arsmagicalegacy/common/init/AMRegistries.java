@@ -79,6 +79,7 @@ public interface AMRegistries {
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
+        AMAbilities.register();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);

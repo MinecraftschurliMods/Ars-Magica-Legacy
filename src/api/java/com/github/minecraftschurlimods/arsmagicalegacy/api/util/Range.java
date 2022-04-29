@@ -46,10 +46,16 @@ public record Range(Optional<Double> min, Optional<Double> max) implements Doubl
         return new Range(Optional.empty(), Optional.of(max));
     }
 
+    /**
+     * @return Whether this range has a lower bound or not.
+     */
     public boolean hasLowerBound() {
         return min.isPresent();
     }
 
+    /**
+     * @return Whether this range has an upper bound or not.
+     */
     public boolean hasUpperBound() {
         return max.isPresent();
     }

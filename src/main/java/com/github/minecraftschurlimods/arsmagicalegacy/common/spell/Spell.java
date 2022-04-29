@@ -123,7 +123,7 @@ public final class Spell implements ISpell {
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
         if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
             return SpellCastResult.NO_PERMISSION;
-        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast(caster, this))) return SpellCastResult.CANCELLED;
+        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, this))) return SpellCastResult.CANCELLED;
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
         float mana = mana(caster);
         float burnout = burnout(caster);
@@ -145,6 +145,7 @@ public final class Spell implements ISpell {
             burnoutHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
+        MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
             boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
@@ -158,9 +159,10 @@ public final class Spell implements ISpell {
                 if (affinityGains) {
                     shift *= 1.1;
                 }
-                AffinityChangingEvent evt = new AffinityChangingEvent(player, affinity, shift.floatValue());
-                if (!evt.isCanceled()) {
-                    api.getAffinityHelper().applyAffinityShift(evt.getPlayer(), evt.affinity, evt.shift);
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
+                if (!MinecraftForge.EVENT_BUS.post(event)) {
+                    api.getAffinityHelper().applyAffinityShift(event.getPlayer(), event.affinity, event.shift);
+                    MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, shift.floatValue(), false));
                 }
             }
             float xp = 0.05f * affinityShifts.size();

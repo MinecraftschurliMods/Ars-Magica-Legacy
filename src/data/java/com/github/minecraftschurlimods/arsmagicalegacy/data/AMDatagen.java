@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.EventHandler;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -39,6 +39,7 @@ public class AMDatagen {
             generator.addProvider(new AMLootTableProvider(generator));
             generator.addProvider(new AMRecipeProvider(generator));
             AMTagsProvider.add(generator, existingFileHelper);
+            generator.addProvider(new AMAbilityProvider(generator));
             generator.addProvider(new AMAltarStructureMaterialProvider(generator));
             generator.addProvider(new AMObeliskFuelProvider(generator));
             generator.addProvider(new AMOcculusTabProvider(generator));

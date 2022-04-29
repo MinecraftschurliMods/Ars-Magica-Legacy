@@ -1,6 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ability;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
@@ -20,14 +22,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AbilityManager extends CodecDataManager<IAbilityData> implements IAbilityManager {
+public final class AbilityManager extends CodecDataManager<IAbilityData> implements IAbilityManager {
     private static final Lazy<AbilityManager> INSTANCE = Lazy.concurrentOf(AbilityManager::new);
 
     private AbilityManager() {
         super("affinity_abilities", AbilityData.CODEC, (data, logger) -> {
-            IForgeRegistry<IAffinity> affinityRegistry = ArsMagicaAPI.get().getAffinityRegistry();
-            data.keySet().removeIf(key -> !affinityRegistry.containsKey(key));
+            IForgeRegistry<IAbility> affinityRegistry = ArsMagicaAPI.get().getAbilityRegistry();
+            data.keySet().removeIf(ability -> !affinityRegistry.containsKey(ability));
         }, LogManager.getLogger());
+        subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
     @Override
@@ -43,6 +46,11 @@ public class AbilityManager extends CodecDataManager<IAbilityData> implements IA
     @Override
     public List<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
         return keySet().stream().filter(key -> key.equals(affinity)).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean hasAbility(Player player, ResourceLocation ability) {
+        return get(ability).test(player);
     }
 
     @Override
@@ -62,7 +70,7 @@ public class AbilityManager extends CodecDataManager<IAbilityData> implements IA
     }
 
     /**
-     * @return The instance of the ability manager.
+     * @return The only instance of this class.
      */
     public static AbilityManager instance() {
         return INSTANCE.get();

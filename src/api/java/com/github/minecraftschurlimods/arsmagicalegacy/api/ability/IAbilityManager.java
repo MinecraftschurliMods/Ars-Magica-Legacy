@@ -29,4 +29,11 @@ public interface IAbilityManager extends IDataManager<IAbilityData> {
      * @return All abilities for the given affinity.
      */
     List<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity);
+
+    /**
+     * @param player The player to check.
+     * @param ability The ability to check.
+     * @return Whether the player has the ability.
+     */
+    boolean hasAbility(Player player, ResourceLocation ability);
 }
