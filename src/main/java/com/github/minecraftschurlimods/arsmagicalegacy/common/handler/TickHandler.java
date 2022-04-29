@@ -15,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
@@ -23,6 +24,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -36,11 +39,23 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
+/**
+ * Holds the living and player tick event handlers. These get special treatment as these events should not have more than one event handler per mod.
+ */
 final class TickHandler {
-    static void init(IEventBus forgeBus, IEventBus modBus) {
+    static void init(IEventBus forgeBus) {
+        forgeBus.addListener(TickHandler::livingUpdate);
         forgeBus.addListener(TickHandler::playerTick);
+    }
+
+    private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
+            entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
+        }
     }
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -62,8 +77,8 @@ final class TickHandler {
 
     private static void playerTickServerStart(final Player player) {
         manaAndBurnoutRegen(player);
-        handleSpawnRituals(player);
         handleAbilities(player);
+        handleSpawnRituals(player);
     }
 
     private static void playerTickServerEnd(final Player player) {
@@ -76,6 +91,14 @@ final class TickHandler {
 
     private static void playerTickClientEnd(final Player player) {
 
+    }
+
+    private static void manaAndBurnoutRegen(final Player player) {
+        var api = ArsMagicaAPI.get();
+        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
+        if (!api.getMagicHelper().knowsMagic(player)) return;
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 
     private static void handleAbilities(final Player player) {
@@ -156,13 +179,5 @@ final class TickHandler {
                 AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EnderGuardian(AMEntities.ENDER_GUARDIAN.get(), l), i -> i.is(Items.ENDER_EYE));
             }
         }
-    }
-
-    private static void manaAndBurnoutRegen(final Player player) {
-        var api = ArsMagicaAPI.get();
-        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
-        if (!api.getMagicHelper().knowsMagic(player)) return;
-        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
     }
 }
