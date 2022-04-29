@@ -1,21 +1,8 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
-import com.github.minecraftschurlimods.arsmagicalegacy.Config;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
@@ -34,15 +21,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
@@ -58,16 +42,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellM
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
-import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -77,13 +56,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -92,19 +66,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -112,7 +81,6 @@ import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -128,13 +96,11 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.OptionalInt;
-import java.util.Set;
 
 public final class EventHandler {
     private EventHandler() {
@@ -147,19 +113,20 @@ public final class EventHandler {
      */
     @Internal
     public static void register(IEventBus modBus) {
+        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        TickHandler.init(forgeBus, modBus);
+        MagicEventHandler.init(forgeBus, modBus);
         modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeCreation);
         modBus.addListener(EventHandler::entityAttributeModification);
         modBus.addListener(EventHandler::enqueueIMC);
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
-        forgeBus.addListener(EventHandler::playerTick);
         forgeBus.addListener(EventHandler::livingSpawn);
         forgeBus.addListener(EventHandler::livingUpdate);
         forgeBus.addListener(EventPriority.HIGHEST, EventHandler::livingDeath);
@@ -175,10 +142,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::potionExpiry);
         forgeBus.addListener(EventHandler::potionRemove);
         forgeBus.addListener(EventHandler::addReloadListener);
-        forgeBus.addListener(EventHandler::playerLevelUp);
-        forgeBus.addListener(EventHandler::spellCastPost);
-        forgeBus.addListener(EventHandler::affinityChangingPost);
-        forgeBus.addListener(EventHandler::manaCostPre);
     }
 
     private static void enqueueIMC(InterModEnqueueEvent event) {
@@ -343,93 +306,6 @@ public final class EventHandler {
         helper.awardXp(event.getPlayer(), 0);
     }
 
-    private static void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != LogicalSide.SERVER) return;
-        if (event.phase != TickEvent.Phase.START) return;
-        Player player = event.player;
-        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
-        var api = ArsMagicaAPI.get();
-        if (!api.getMagicHelper().knowsMagic(player)) return;
-        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
-        Level level = player.getLevel();
-        for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
-            BlockPos pos = item.blockPosition();
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.getBiome(pos).is(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new FireGuardian(AMEntities.FIRE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()), i));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EarthGuardian(AMEntities.EARTH_GUARDIAN.get(), l), i -> i.is(Tags.Items.GEMS_EMERALD), i -> i.is(AMTags.Items.GEMS_CHIMERITE), i -> i.is(AMTags.Items.GEMS_TOPAZ));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL).test(level, pos) && pos.getY() > 128) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new AirGuardian(AMEntities.AIR_GUARDIAN.get(), l), i -> i.is(AMItems.TARMA_ROOT.get()));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new ArcaneGuardian(AMEntities.ARCANE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getBookStack(), i));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().createDragonFight()) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EnderGuardian(AMEntities.ENDER_GUARDIAN.get(), l), i -> i.is(Items.ENDER_EYE));
-            }
-        }
-        var manager = api.getAbilityManager();
-        var helper = api.getAffinityHelper();
-        IAbilityData ability;
-        if (!player.isCreative()) {
-            ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
-            }
-            ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
-            }
-            ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
-            }
-            ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
-            }
-        }
-        ability = manager.get(AMAbilities.SATURATION.getId());
-        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
-        }
-        ability = manager.get(AMAbilities.REGENERATION.getId());
-        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
-        }
-        ability = manager.get(AMAbilities.NIGHT_VISION.getId());
-        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())) + 200, 0, false, false));
-        }
-        ability = manager.get(AMAbilities.FROST_WALKER.getId());
-        if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            FrostWalkerEnchantment.onEntityMoved(player, player.getLevel(), player.blockPosition(), 1);
-        }
-        AttributeMap attributes = player.getAttributes();
-        attributes.getInstance(Attributes.MAX_HEALTH).removeModifier(AbilityUUIDs.HEALTH_REDUCTION);
-        boolean shouldReapplyHealthReduction = false;
-        ability = manager.get(AMAbilities.LIGHT_HEALTH_REDUCTION.getId());
-        if (player.getLevel().getBrightness(LightLayer.SKY, player.blockPosition()) == 15 && ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            shouldReapplyHealthReduction = true;
-        }
-        ability = manager.get(AMAbilities.WATER_HEALTH_REDUCTION.getId());
-        if (player.isInWaterOrBubble() && ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-            shouldReapplyHealthReduction = true;
-        }
-        if (shouldReapplyHealthReduction) {
-            attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepth(player, ability.affinity()) * 4, AttributeModifier.Operation.ADDITION));
-            if (player.getHealth() > player.getMaxHealth()) {
-                player.setHealth(player.getMaxHealth());
-            }
-        }
-    }
-
     private static void livingSpawn(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntityLiving();
         Level level = entity.getLevel();
@@ -465,7 +341,7 @@ public final class EventHandler {
             if (!api.getMagicHelper().knowsMagic(player)) return;
             var helper = api.getAffinityHelper();
             IAbilityData ability = api.getAbilityManager().get(AMAbilities.NAUSEA.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            if (ability.test(player)) {
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int) (600 * helper.getAffinityDepth(player, ability.affinity()))));
             }
         }
@@ -481,15 +357,15 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.FIRE_PUNCH.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && !entity.fireImmune()) {
+            if (ability.test(player) && !entity.fireImmune()) {
                 entity.setSecondsOnFire((int) (5 * helper.getAffinityDepth(player, ability.affinity())));
             }
             ability = manager.get(AMAbilities.FROST_PUNCH.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && entity.canFreeze()) {
+            if (ability.test(player) && entity.canFreeze()) {
                 entity.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), (int) (100 * helper.getAffinityDepth(player, ability.affinity()))));
             }
             ability = manager.get(AMAbilities.SMITE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && entity.getMobType() == MobType.UNDEAD) {
+            if (ability.test(player) && entity.getMobType() == MobType.UNDEAD) {
                 event.setAmount((float) (event.getAmount() + helper.getAffinityDepth(player, ability.affinity()) * 4));
             }
         }
@@ -499,23 +375,23 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.THORNS.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && event.getSource().getEntity() != null) {
+            if (ability.test(player) && event.getSource().getEntity() != null) {
                 event.getSource().getEntity().hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepth(player, ability.affinity())));
             }
             ability = manager.get(AMAbilities.ENDERMAN_THORNS.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && event.getSource().getEntity() instanceof EnderMan enderMan) {
+            if (ability.test(player) && event.getSource().getEntity() instanceof EnderMan enderMan) {
                 enderMan.hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepth(player, ability.affinity())));
             }
             ability = manager.get(AMAbilities.RESISTANCE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            if (ability.test(player)) {
                 event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
             }
             ability = manager.get(AMAbilities.FIRE_RESISTANCE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && event.getSource().isFire()) {
+            if (ability.test(player) && event.getSource().isFire()) {
                 event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
             }
             ability = manager.get(AMAbilities.MAGIC_DAMAGE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && event.getSource().isMagic()) {
+            if (ability.test(player) && event.getSource().isMagic()) {
                 event.setAmount((float) (event.getAmount() * (1 + helper.getAffinityDepth(player, ability.affinity()) / 2)));
             }
         }
@@ -533,7 +409,7 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.JUMP_BOOST.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            if (ability.test(player)) {
                 entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.5f * helper.getAffinityDepth(player, ability.affinity()), 0));
             }
         }
@@ -554,11 +430,11 @@ public final class EventHandler {
             var manager = api.getAbilityManager();
             var helper = api.getAffinityHelper();
             IAbilityData ability = manager.get(AMAbilities.FEATHER_FALLING.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            if (ability.test(player)) {
                 event.setDistance((float) (event.getDistance() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
             }
             ability = manager.get(AMAbilities.FALL_DAMAGE.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
+            if (ability.test(player)) {
                 event.setDistance((float) (event.getDistance() / (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
             }
         }
@@ -629,127 +505,5 @@ public final class EventHandler {
         event.addListener(PrefabSpellManager.instance());
         event.addListener(ObeliskFuelManager.instance());
         event.addListener(SpellTransformationManager.instance());
-    }
-
-    private static void playerLevelUp(PlayerLevelUpEvent event) {
-        Player player = event.getPlayer();
-        int level = event.getLevel();
-        var api = ArsMagicaAPI.get();
-        if (level == 1) {
-            api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
-        }
-        for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
-            int minEarnLevel = iSkillPoint.getMinEarnLevel();
-            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
-                api.getSkillHelper().addSkillPoint(player, iSkillPoint);
-                event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
-            }
-        }
-        float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (level - 1);
-        AttributeInstance maxManaAttr = player.getAttribute(AMAttributes.MAX_MANA.get());
-        if (maxManaAttr != null) {
-            IManaHelper manaHelper = api.getManaHelper();
-            maxManaAttr.setBaseValue(newMaxMana);
-            manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
-        }
-        float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (level - 1);
-        AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
-        if (maxBurnoutAttr != null) {
-            IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
-            maxBurnoutAttr.setBaseValue(newMaxBurnout);
-            burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
-        }
-        event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
-    }
-
-    private static void manaCostPre(SpellEvent.ManaCost.Pre event) {
-        LivingEntity caster = event.getEntityLiving();
-        float cost = event.getBase();
-        if (caster instanceof Player player) {
-            var api = ArsMagicaAPI.get();
-            for (ISpellPart iSpellPart : event.getSpell().parts()) {
-                if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
-                ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
-                if (dataForPart == null) continue;
-                Set<IAffinity> affinities = dataForPart.affinities();
-                for (IAffinity aff : affinities) {
-                    double value = api.getAffinityHelper().getAffinityDepth(player, aff);
-                    if (value > 0) {
-                        cost -= (float) (cost * (0.5f * value / 100f));
-                    }
-                }
-            }
-            var helper = api.getAffinityHelper();
-            IAbilityData ability = api.getAbilityManager().get(AMAbilities.MANA_REDUCTION.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity()))) {
-                cost *= 1 - (helper.getAffinityDepth(player, ability.affinity())) * 0.5f;
-            }
-        }
-        event.setBase(cost);
-    }
-
-    private static void affinityChangingPost(AffinityChangingEvent.Post event) {
-        var api = ArsMagicaAPI.get();
-        var manager = api.getAbilityManager();
-        var helper = api.getAffinityHelper();
-        IAffinity affinity = event.affinity;
-        Player player = event.getPlayer();
-        AttributeMap attributes = player.getAttributes();
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).removeModifier(AbilityUUIDs.SWIM_SPEED);
-        attributes.getInstance(Attributes.ATTACK_SPEED).removeModifier(AbilityUUIDs.HASTE);
-        attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).removeModifier(AbilityUUIDs.GRAVITY);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SLOWNESS);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SPEED);
-        IAbilityData ability = manager.get(AMAbilities.SWIM_SPEED.getId());
-        if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
-                attributes.getInstance(ForgeMod.SWIM_SPEED.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SWIM_SPEED, "Swim Speed Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
-            }
-        }
-        ability = manager.get(AMAbilities.HASTE.getId());
-        if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
-                attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HASTE, "Haste Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
-            }
-        }
-        ability = manager.get(AMAbilities.GRAVITY.getId());
-        if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
-                attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.GRAVITY, "Gravity Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
-            }
-        }
-        ability = manager.get(AMAbilities.SLOWNESS.getId());
-        if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
-            }
-        }
-        ability = manager.get(AMAbilities.SPEED.getId());
-        if (affinity == ability.affinity()) {
-            if (ability.range().test(helper.getAffinityDepth(player, affinity))) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
-            }
-        }
-        ability = manager.get(AMAbilities.STEP_ASSIST.getId());
-        if (affinity == ability.affinity()) {
-            float stepHeight = ability.range().test(helper.getAffinityDepth(player, affinity)) ? 1f : 0.6f;
-            player.maxUpStep = stepHeight;
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new UpdateStepHeightPacket(stepHeight), player);
-        }
-        ability = manager.get(AMAbilities.POISON_RESISTANCE.getId());
-        if (affinity == ability.affinity() && ability.range().test(helper.getAffinityDepth(player, affinity)) && player.hasEffect(MobEffects.POISON)) {
-            player.removeEffect(MobEffects.POISON);
-        }
-    }
-
-    private static void spellCastPost(SpellEvent.Cast.Post event) {
-        if (event.getEntityLiving() instanceof Player player) {
-            var api = ArsMagicaAPI.get();
-            var helper = api.getAffinityHelper();
-            IAbilityData ability = api.getAbilityManager().get(AMAbilities.CLARITY.getId());
-            if (ability.range().test(helper.getAffinityDepth(player, ability.affinity())) && player.getLevel().getRandom().nextBoolean()) {
-                player.addEffect(new MobEffectInstance(AMMobEffects.CLARITY.get(), 1200));
-            }
-        }
     }
 }

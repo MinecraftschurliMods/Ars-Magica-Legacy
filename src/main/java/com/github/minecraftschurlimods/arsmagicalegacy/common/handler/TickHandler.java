@@ -1,0 +1,168 @@
+package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
+
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+
+final class TickHandler {
+    static void init(IEventBus forgeBus, IEventBus modBus) {
+        forgeBus.addListener(TickHandler::playerTick);
+    }
+
+    private static void playerTick(TickEvent.PlayerTickEvent event) {
+        switch (event.side) {
+            case CLIENT:
+                switch (event.phase) {
+                    case START -> playerTickClientStart(event.player);
+                    case END -> playerTickClientEnd(event.player);
+                }
+                break;
+            case SERVER:
+                switch (event.phase) {
+                    case START -> playerTickServerStart(event.player);
+                    case END -> playerTickServerEnd(event.player);
+                }
+                break;
+        }
+    }
+
+    private static void playerTickServerStart(final Player player) {
+        manaAndBurnoutRegen(player);
+        handleSpawnRituals(player);
+        handleAbilities(player);
+    }
+
+    private static void playerTickServerEnd(final Player player) {
+
+    }
+
+    private static void playerTickClientStart(final Player player) {
+
+    }
+
+    private static void playerTickClientEnd(final Player player) {
+
+    }
+
+    private static void handleAbilities(final Player player) {
+        var api = ArsMagicaAPI.get();
+        var manager = api.getAbilityManager();
+        var helper = api.getAffinityHelper();
+        IAbilityData ability;
+        if (!player.isCreative()) {
+            if (manager.hasAbility(player, AMAbilities.WATER_DAMAGE_FIRE.getId()) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            if (manager.hasAbility(player, AMAbilities.WATER_DAMAGE_LIGHTNING.getId()) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            if (manager.hasAbility(player, AMAbilities.NETHER_DAMAGE_WATER.getId()) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+            if (manager.hasAbility(player, AMAbilities.NETHER_DAMAGE_NATURE.getId()) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+            }
+        }
+        ability = manager.get(AMAbilities.SATURATION.getId());
+        if (ability.test(player)) {
+            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+        }
+        ability = manager.get(AMAbilities.REGENERATION.getId());
+        if (ability.test(player)) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+        }
+        ability = manager.get(AMAbilities.NIGHT_VISION.getId());
+        if (ability.test(player)) {
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())) + 200, 0, false, false));
+        }
+        ability = manager.get(AMAbilities.FROST_WALKER.getId());
+        if (ability.test(player)) {
+            FrostWalkerEnchantment.onEntityMoved(player, player.getLevel(), player.blockPosition(), 1);
+        }
+        AttributeMap attributes = player.getAttributes();
+        attributes.getInstance(Attributes.MAX_HEALTH).removeModifier(AbilityUUIDs.HEALTH_REDUCTION);
+        boolean shouldReapplyHealthReduction = false;
+        ability = manager.get(AMAbilities.LIGHT_HEALTH_REDUCTION.getId());
+        if (player.getLevel().getBrightness(LightLayer.SKY, player.blockPosition()) == 15 && ability.test(player)) {
+            shouldReapplyHealthReduction = true;
+        }
+        ability = manager.get(AMAbilities.WATER_HEALTH_REDUCTION.getId());
+        if (player.isInWaterOrBubble() && ability.test(player)) {
+            shouldReapplyHealthReduction = true;
+        }
+        if (shouldReapplyHealthReduction) {
+            attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepth(player, ability.affinity()) * 4, AttributeModifier.Operation.ADDITION));
+            if (player.getHealth() > player.getMaxHealth()) {
+                player.setHealth(player.getMaxHealth());
+            }
+        }
+    }
+
+    private static void handleSpawnRituals(final Player player) {
+        var api = ArsMagicaAPI.get();
+        Level level = player.getLevel();
+        for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
+            BlockPos pos = item.blockPosition();
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.getBiome(pos).is(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), l), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new FireGuardian(AMEntities.FIRE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()), i));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EarthGuardian(AMEntities.EARTH_GUARDIAN.get(), l), i -> i.is(Tags.Items.GEMS_EMERALD), i -> i.is(AMTags.Items.GEMS_CHIMERITE), i -> i.is(AMTags.Items.GEMS_TOPAZ));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL).test(level, pos) && pos.getY() > 128) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new AirGuardian(AMEntities.AIR_GUARDIAN.get(), l), i -> i.is(AMItems.TARMA_ROOT.get()));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new ArcaneGuardian(AMEntities.ARCANE_GUARDIAN.get(), l), i -> ItemStack.isSameItemSameTags(api.getBookStack(), i));
+            }
+            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().createDragonFight()) {
+                AMUtil.consumeItemsAndSpawnEntity(level, pos, l -> new EnderGuardian(AMEntities.ENDER_GUARDIAN.get(), l), i -> i.is(Items.ENDER_EYE));
+            }
+        }
+    }
+
+    private static void manaAndBurnoutRegen(final Player player) {
+        var api = ArsMagicaAPI.get();
+        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
+        if (!api.getMagicHelper().knowsMagic(player)) return;
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+    }
+}

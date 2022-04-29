@@ -49,6 +49,11 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
     }
 
     @Override
+    public boolean hasAbility(Player player, ResourceLocation ability) {
+        return get(ability).test(player);
+    }
+
+    @Override
     public Optional<IAbilityData> getOptional(ResourceLocation id) {
         return super.getOptional(id);
     }
