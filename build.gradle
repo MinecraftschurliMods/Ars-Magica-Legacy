@@ -242,9 +242,11 @@ minecraft {
         client {
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
             }
         }
         server {
