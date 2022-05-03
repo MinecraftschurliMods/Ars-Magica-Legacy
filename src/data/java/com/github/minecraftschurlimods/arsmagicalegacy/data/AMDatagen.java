@@ -46,6 +46,7 @@ public class AMDatagen {
             generator.addProvider(new AMPrefabSpellProvider(generator));
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMSpellTransformationProvider(generator));
+            generator.addProvider(new AMRitualProvider(generator));
         }
     }
 

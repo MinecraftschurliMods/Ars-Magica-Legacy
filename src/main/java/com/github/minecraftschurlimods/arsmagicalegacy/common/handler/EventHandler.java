@@ -41,6 +41,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
@@ -113,7 +114,6 @@ public final class EventHandler {
         TickHandler.init(forgeBus);
         EffectHandler.init(forgeBus);
         AbilityHandler.init(forgeBus);
-        BossSpawnHandler.init(forgeBus);
         modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
@@ -254,6 +254,7 @@ public final class EventHandler {
         event.addListener(PrefabSpellManager.instance());
         event.addListener(ObeliskFuelManager.instance());
         event.addListener(SpellTransformationManager.instance());
+        event.addListener(new RitualManager());
     }
 
     private static void entityJoinWorld(EntityJoinWorldEvent event) {
