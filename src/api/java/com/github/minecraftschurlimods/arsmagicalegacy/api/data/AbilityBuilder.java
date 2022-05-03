@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.SerializationException;
@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public class AbilityBuilder {
     private final ResourceLocation id;
     private ResourceLocation affinity;
-    private Range range;
+    private MinMaxBounds.Doubles bounds;
 
     protected AbilityBuilder(ResourceLocation id) {
         this.id = id;
@@ -58,13 +58,13 @@ public class AbilityBuilder {
     }
 
     /**
-     * Sets the range for this ability.
+     * Sets the bounds for this ability.
      *
-     * @param range The range to set.
+     * @param bounds The bounds to set.
      * @return This builder, for chaining.
      */
-    public AbilityBuilder setRange(Range range) {
-        this.range = range;
+    public AbilityBuilder setBounds(MinMaxBounds.Doubles bounds) {
+        this.bounds = bounds;
         return this;
     }
 
@@ -87,15 +87,8 @@ public class AbilityBuilder {
         JsonObject json = new JsonObject();
         if (affinity == null) throw new SerializationException("An ability needs an affinity!");
         json.addProperty("affinity", this.affinity.toString());
-        if (range == null) throw new SerializationException("An ability needs a range!");
-        JsonObject range = new JsonObject();
-        if (this.range.hasLowerBound()) {
-            range.addProperty("min", this.range.min().get());
-        }
-        if (this.range.hasUpperBound()) {
-            range.addProperty("max", this.range.max().get());
-        }
-        json.add("range", range);
+        if (bounds == null) throw new SerializationException("An ability needs bounds!");
+        json.add("bounds", this.bounds.serializeToJson());
         return json;
     }
 }

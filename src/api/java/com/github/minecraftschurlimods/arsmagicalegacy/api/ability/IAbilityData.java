@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.ability;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Predicate;
@@ -12,9 +12,9 @@ import java.util.function.Predicate;
  */
 public interface IAbilityData extends Predicate<Player> {
     /**
-     * @return The range of affinity depth the ability is active in.
+     * @return The bounds of affinity depth the ability is active in.
      */
-    Range range();
+    MinMaxBounds.Doubles bounds();
 
     /**
      * @return The affinity the ability belongs to.
@@ -23,6 +23,6 @@ public interface IAbilityData extends Predicate<Player> {
 
     @Override
     default boolean test(Player player) {
-        return range().test(ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity()));
+        return bounds().matches(ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity()));
     }
 }
