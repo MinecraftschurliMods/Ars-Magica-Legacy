@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
  *
  */
 public record HeightRequirement(MinMaxBounds.Ints range) implements RitualRequirement {
-    public static final Codec<HeightRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(AMUtil.INT_MIN_MAX_BOUNDS.fieldOf("height").forGetter(HeightRequirement::range)).apply(inst, HeightRequirement::new));
+    public static final Codec<HeightRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("height").forGetter(HeightRequirement::range)).apply(inst, HeightRequirement::new));
 
     @Override
     public Codec<? extends RitualRequirement> codec() {

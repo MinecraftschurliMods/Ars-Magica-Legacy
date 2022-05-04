@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -23,7 +23,7 @@ import java.util.Map;
  *
  */
 public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
-    public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(AMUtil.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
+    public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
 
     public EntitySummonTrigger(EntityType<?> entityType) {
         this(EntityPredicate.Builder.entity().of(entityType).build());
@@ -35,11 +35,11 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
 
     @Override
     public void register(final Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent.SpecialSpawn event) -> {
+        MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent event) -> {// TODO: find a better event to do this
             if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
             Player player = serverLevel.getNearestPlayer(event.getEntityLiving(), 5);
             if (player != null) {
-                ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("player", player, "entity", event.getEntityLiving())));
+                ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", event.getEntityLiving())));
             }
         });
     }

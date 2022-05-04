@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
@@ -80,7 +79,7 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
     private record AbilityData(IAffinity affinity, MinMaxBounds.Doubles bounds) implements IAbilityData {
         private static final Codec<IAbilityData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry).fieldOf("affinity").forGetter(IAbilityData::affinity),
-                AMUtil.DOUBLE_MIN_MAX_BOUNDS.fieldOf("bounds").forGetter(IAbilityData::bounds)
+                CodecHelper.DOUBLE_MIN_MAX_BOUNDS.fieldOf("bounds").forGetter(IAbilityData::bounds)
         ).apply(inst, AbilityData::new));
     }
 }

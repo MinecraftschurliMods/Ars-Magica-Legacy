@@ -2,14 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
@@ -37,23 +29,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
-    public static final Codec<EntityPredicate> ENTITY_PREDICATE = Codec.PASSTHROUGH.xmap(
-            dynamic -> EntityPredicate.fromJson(dynamic.cast(JsonOps.INSTANCE)),
-            entityPredicate -> new Dynamic<>(JsonOps.INSTANCE, sanitizeJson(entityPredicate.serializeToJson())));
-
-    private static JsonElement sanitizeJson(final JsonElement json) {
-        if (json instanceof JsonObject object) {
-            object.entrySet().removeIf(entry -> entry.getValue() instanceof JsonNull);
-        }
-        return json;
-    }
-
-    public static final Codec<MinMaxBounds.Ints> INT_MIN_MAX_BOUNDS = Codec.PASSTHROUGH.xmap(
-            dynamic -> MinMaxBounds.Ints.fromJson(dynamic.cast(JsonOps.INSTANCE)),
-            minMaxBounds -> new Dynamic<>(JsonOps.INSTANCE, minMaxBounds.serializeToJson()));
-    public static final Codec<MinMaxBounds.Doubles> DOUBLE_MIN_MAX_BOUNDS = Codec.PASSTHROUGH.xmap(
-            dynamic -> MinMaxBounds.Doubles.fromJson(dynamic.cast(JsonOps.INSTANCE)),
-            minMaxBounds -> new Dynamic<>(JsonOps.INSTANCE, minMaxBounds.serializeToJson()));
 
     /**
      * @param view The view vector to which the resulting point is the closest.

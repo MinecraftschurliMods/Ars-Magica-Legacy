@@ -54,7 +54,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
         MinecraftForge.EVENT_BUS.addListener((VanillaGameEvent evt) -> {
             BlockPos pos = evt.getEventPosition();
             Level level = evt.getLevel();
-            if (level instanceof ServerLevel serverLevel) {
+            if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {
                 for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(Vec3.atCenterOf(pos), 5, 5, 5))) {
                     if (ritual.perform(player, serverLevel, pos, new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
                         return;
@@ -68,7 +68,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
     public boolean trigger(final ServerLevel level, final BlockPos pos, final Context ctx) {
         GameEvent evt = ctx.get("event", GameEvent.class);
         assert evt != null;
-        return event().contains(Registry.GAME_EVENT.createIntrusiveHolder(evt));
+        return event().contains(evt.builtInRegistryHolder());
     }
 
     @Override

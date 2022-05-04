@@ -35,6 +35,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
 
     private RitualManager() {
         super("am_rituals", Ritual.CODEC, LogManager.getLogger());
+        useRegistryOps();
     }
 
     public static RitualManager instance() {

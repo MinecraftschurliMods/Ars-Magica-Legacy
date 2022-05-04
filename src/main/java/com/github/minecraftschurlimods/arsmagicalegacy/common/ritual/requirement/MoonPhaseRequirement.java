@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
  *
  */
 public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualRequirement {
-    public static final Codec<MoonPhaseRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(AMUtil.INT_MIN_MAX_BOUNDS.fieldOf("phase").forGetter(MoonPhaseRequirement::phase)).apply(inst, MoonPhaseRequirement::new));
+    public static final Codec<MoonPhaseRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("phase").forGetter(MoonPhaseRequirement::phase)).apply(inst, MoonPhaseRequirement::new));
 
     public MoonPhaseRequirement(int phase) {
         this(MinMaxBounds.Ints.exactly(phase));

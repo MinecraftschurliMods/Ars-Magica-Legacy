@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requiremen
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
  *
  */
 public record MagicLevelRequirement(MinMaxBounds.Ints bounds) implements RitualRequirement {
-    public static final Codec<MagicLevelRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(AMUtil.INT_MIN_MAX_BOUNDS.fieldOf("level").forGetter(MagicLevelRequirement::bounds)).apply(inst, MagicLevelRequirement::new));
+    public static final Codec<MagicLevelRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("level").forGetter(MagicLevelRequirement::bounds)).apply(inst, MagicLevelRequirement::new));
 
     @Override
     public Codec<? extends RitualRequirement> codec() {

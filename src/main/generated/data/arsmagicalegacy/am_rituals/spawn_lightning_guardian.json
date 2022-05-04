@@ -12,5 +12,10 @@
   "effect": {
     "entityType": "arsmagicalegacy:lightning_guardian",
     "type": "arsmagicalegacy:spawn_entity"
-  }
+  },
+  "offset": [
+    0,
+    -2,
+    0
+  ]
 }

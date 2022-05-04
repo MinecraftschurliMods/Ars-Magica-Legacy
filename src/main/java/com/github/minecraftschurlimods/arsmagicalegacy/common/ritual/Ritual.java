@@ -13,11 +13,12 @@ import java.util.List;
 /**
  *
  */
-public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements, RitualEffect effect) {
+public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements, RitualEffect effect, BlockPos offset) {
     public static final Codec<Ritual> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RitualTrigger.CODEC.fieldOf("trigger").forGetter(Ritual::trigger),
             RitualRequirement.CODEC.listOf().fieldOf("requirements").forGetter(Ritual::requirements),
-            RitualEffect.CODEC.fieldOf("effect").forGetter(Ritual::effect)
+            RitualEffect.CODEC.fieldOf("effect").forGetter(Ritual::effect),
+            BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(Ritual::offset)
     ).apply(inst, Ritual::new));
 
     public Ritual {
@@ -25,6 +26,7 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
     }
 
     public boolean perform(Player player, ServerLevel level, BlockPos pos, Context ctx) {
+        pos = pos.offset(offset);
         for (RitualRequirement req : requirements) {
             if (!req.test(player, level, pos)) return false;
         }

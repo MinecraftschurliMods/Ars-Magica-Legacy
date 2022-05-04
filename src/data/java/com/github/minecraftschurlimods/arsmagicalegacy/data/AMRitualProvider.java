@@ -28,6 +28,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -141,6 +142,7 @@ public class AMRitualProvider implements DataProvider {
                 .with(new RitualStructureRequirement(PatchouliCompat.LIGHTNING_GUARDIAN_SPAWN_RITUAL))
                 .with(new GameEventRitualTrigger(GameEvent.LIGHTNING_STRIKE))
                 .with(new EntitySpawnRitualEffect(AMEntities.LIGHTNING_GUARDIAN.get()))
+                .with(new BlockPos(0,-2,0))
                 .build(consumer);
     }
 
@@ -162,11 +164,12 @@ public class AMRitualProvider implements DataProvider {
     }
 
     protected static class RitualBuilder {
-        private final ResourceLocation           id;
-        private RitualStructureRequirement structure;
-        private RitualEffect               effect;
-        private RitualTrigger              trigger;
         private final List<RitualRequirement> requirements = new ArrayList<>();
+        private final ResourceLocation        id;
+        private RitualStructureRequirement    structure;
+        private RitualEffect                  effect;
+        private RitualTrigger                 trigger;
+        private BlockPos                      offset = BlockPos.ZERO;
 
         private RitualBuilder(ResourceLocation id) {
             this.id = id;
@@ -201,6 +204,11 @@ public class AMRitualProvider implements DataProvider {
             return this;
         }
 
+        public RitualBuilder with(BlockPos offset) {
+            this.offset = offset;
+            return this;
+        }
+
         private Ritual buildInternal() {
             if (trigger == null) {
                 throw new IllegalStateException("Trigger must be set");
@@ -211,7 +219,7 @@ public class AMRitualProvider implements DataProvider {
             if (structure != null) {
                 requirements.add(0, structure);
             }
-            return new Ritual(trigger, requirements, effect);
+            return new Ritual(trigger, requirements, effect, offset);
         }
 
         public void build(BiConsumer<ResourceLocation, Ritual> consumer) {
