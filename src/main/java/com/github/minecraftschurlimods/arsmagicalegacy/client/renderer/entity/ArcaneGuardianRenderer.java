@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class ArcaneGuardianRenderer extends MobRenderer<ArcaneGuardian, ArcaneGuardianModel<ArcaneGuardian>> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/arcane_guardian.png");
+public class ArcaneGuardianRenderer extends MobRenderer<ArcaneGuardian, ArcaneGuardianModel> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/arcane_guardian.png");
 
-    public ArcaneGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new ArcaneGuardianModel<>(rendererManagerIn.bakeLayer(ArcaneGuardianModel.LAYER_LOCATION)), 0.7F);
+    public ArcaneGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new ArcaneGuardianModel(context.bakeLayer(ArcaneGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override

@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class EnderGuardianRenderer extends MobRenderer<EnderGuardian, EnderGuardianModel<EnderGuardian>> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ender_guardian.png");
+public class EnderGuardianRenderer extends MobRenderer<EnderGuardian, EnderGuardianModel> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ender_guardian.png");
 
-    public EnderGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new EnderGuardianModel<>(rendererManagerIn.bakeLayer(EnderGuardianModel.LAYER_LOCATION)), 0.7F);
+    public EnderGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new EnderGuardianModel(context.bakeLayer(EnderGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override

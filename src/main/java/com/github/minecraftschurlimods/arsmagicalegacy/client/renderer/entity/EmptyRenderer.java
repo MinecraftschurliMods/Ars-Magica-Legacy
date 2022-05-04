@@ -4,14 +4,16 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 public class EmptyRenderer extends EntityRenderer<Entity> {
-    public EmptyRenderer(EntityRendererProvider.Context p_174008_) {
-        super(p_174008_);
+    public EmptyRenderer(EntityRendererProvider.Context renderManagerIn) {
+        super(renderManagerIn);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Entity p_114482_) {
+    @NotNull
+    public ResourceLocation getTextureLocation(final @NotNull Entity pEntity) {
         return new ResourceLocation("missingno");
     }
 }

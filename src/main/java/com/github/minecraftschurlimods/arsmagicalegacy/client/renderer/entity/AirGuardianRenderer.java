@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class AirGuardianRenderer extends MobRenderer<AirGuardian, AirGuardianModel<AirGuardian>> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/air_guardian.png");
+public class AirGuardianRenderer extends MobRenderer<AirGuardian, AirGuardianModel> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/air_guardian.png");
 
-    public AirGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new AirGuardianModel<>(rendererManagerIn.bakeLayer(AirGuardianModel.LAYER_LOCATION)), 0.7F);
+    public AirGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new AirGuardianModel(context.bakeLayer(AirGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override

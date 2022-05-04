@@ -6,16 +6,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardia
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-public class FireGuardianRenderer extends MobRenderer<FireGuardian, FireGuardianModel<FireGuardian>> {
+public class FireGuardianRenderer extends MobRenderer<FireGuardian, FireGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/fire_guardian.png");
 
-    public FireGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new FireGuardianModel<>(rendererManagerIn.bakeLayer(FireGuardianModel.LAYER_LOCATION)), 0.7F);
+    public FireGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new FireGuardianModel(context.bakeLayer(FireGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final FireGuardian pEntity) {
+    @NotNull
+    public ResourceLocation getTextureLocation(final @NotNull FireGuardian pEntity) {
         return TEXTURE;
     }
 }

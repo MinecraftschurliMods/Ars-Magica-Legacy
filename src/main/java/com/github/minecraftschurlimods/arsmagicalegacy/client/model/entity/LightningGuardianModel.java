@@ -15,7 +15,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightningGuardianModel<T extends LightningGuardian> extends EntityModel<T> {
+public class LightningGuardianModel extends EntityModel<LightningGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_guardian"), "main");
     private final ModelPart arms;
     private final ModelPart chest;
@@ -69,7 +69,7 @@ public class LightningGuardianModel<T extends LightningGuardian> extends EntityM
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LightningGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @Override

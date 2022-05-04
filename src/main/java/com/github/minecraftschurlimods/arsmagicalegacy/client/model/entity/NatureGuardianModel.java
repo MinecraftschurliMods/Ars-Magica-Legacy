@@ -15,7 +15,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class NatureGuardianModel<T extends NatureGuardian> extends EntityModel<T> {
+public class NatureGuardianModel extends EntityModel<NatureGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_guardian"), "main");
     private final ModelPart head;
     private final ModelPart body;
@@ -89,7 +89,7 @@ public class NatureGuardianModel<T extends NatureGuardian> extends EntityModel<T
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(NatureGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @Override
