@@ -1,0 +1,1 @@
+{"structure":"arsmagicalegacy:water_guardian_spawn_ritual","trigger":{"ingredients":[{"tag":"minecraft:boats"},{"item":"minecraft:water_bucket"}],"type":"arsmagicalegacy:item_drop"},"requirements":[{"biome":"#arsmagicalegacy:can_spawn_water_guardian","type":"arsmagicalegacy:biome"}],"effect":{"entityType":"arsmagicalegacy:water_guardian","type":"arsmagicalegacy:spawn_entity"}}

@@ -1,0 +1,1 @@
+{"structure":"arsmagicalegacy:arcane_guardian_spawn_ritual","trigger":{"ingredients":[{"type":"forge:nbt","item":"patchouli:guide_book","count":1,"nbt":"{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"}],"type":"arsmagicalegacy:item_drop"},"requirements":[],"effect":{"entityType":"arsmagicalegacy:arcane_guardian","type":"arsmagicalegacy:spawn_entity"}}

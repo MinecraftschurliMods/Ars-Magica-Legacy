@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:nature",
-  "range": {
+  "bounds": {
     "min": 1.0
   }
 }

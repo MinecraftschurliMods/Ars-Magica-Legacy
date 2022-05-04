@@ -1,0 +1,1 @@
+{"structure":"arsmagicalegacy:ender_guardian_spawn_ritual","trigger":{"ingredients":[{"item":"minecraft:ender_eye"}],"type":"arsmagicalegacy:item_drop"},"requirements":[{"type":"arsmagicalegacy:ender_dragon_dimension"}],"effect":{"entityType":"arsmagicalegacy:ender_guardian","type":"arsmagicalegacy:spawn_entity"}}
