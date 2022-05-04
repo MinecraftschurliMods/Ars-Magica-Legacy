@@ -36,6 +36,10 @@ import java.util.function.BiPredicate;
  *
  */
 public record Ritual(RitualStructure structure, RitualTrigger trigger, List<RitualRequirement> requirements, RitualEffect effect) {
+    private static final BiMap<ResourceLocation, Codec<? extends RitualTrigger>> ritualTriggerCodecs = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>>  ritualEffectCodecs = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualRequirement>> ritualRequirementCodecs = HashBiMap.create();
+
     public static final Codec<Ritual> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RitualStructure.CODEC.fieldOf("structure").forGetter(Ritual::structure),
             RitualTrigger.CODEC.fieldOf("trigger").forGetter(Ritual::trigger),
@@ -46,10 +50,6 @@ public record Ritual(RitualStructure structure, RitualTrigger trigger, List<Ritu
     public Ritual {
         trigger.register(this);
     }
-
-    private static final BiMap<ResourceLocation, Codec<? extends RitualTrigger>> ritualTriggerCodecs = HashBiMap.create();
-    private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>>  ritualEffectCodecs = HashBiMap.create();
-    private static final BiMap<ResourceLocation, Codec<? extends RitualRequirement>> ritualRequirementCodecs = HashBiMap.create();
 
     public boolean perform(Player player, ServerLevel level, BlockPos pos, final Context ctx) {
         return this.structure.test(level, pos) && requirements().stream().allMatch(ritualRequirement -> ritualRequirement.test(player, level, pos)) && this.trigger.trigger(level, pos, ctx) && this.effect.performEffect(level, pos);
@@ -116,12 +116,12 @@ public record Ritual(RitualStructure structure, RitualTrigger trigger, List<Ritu
     }
 
     static {
-        ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "death"), EntityDeathTrigger.CODEC);
-        ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "summon"), EntitySummonTrigger.CODEC);
+        ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_death"), EntityDeathTrigger.CODEC);
+        ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_summon"), EntitySummonTrigger.CODEC);
         ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item_drop"), ItemDropRitualTrigger.CODEC);
         ritualTriggerCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "game_event"), GameEventRitualTrigger.CODEC);
 
-        ritualEffectCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_spawn"), EntitySpawnRitualEffect.CODEC);
+        ritualEffectCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_entity"), EntitySpawnRitualEffect.CODEC);
 
         ritualRequirementCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "biome"), BiomeRequirement.CODEC);
         ritualRequirementCodecs.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension"), DimensionRequirement.CODEC);

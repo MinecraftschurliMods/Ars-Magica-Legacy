@@ -20,7 +20,9 @@ import java.util.Map;
  *
  */
 public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritual.RitualTrigger {
-    public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryCodecs.homogeneousList(Registry.GAME_EVENT_REGISTRY).fieldOf("event").forGetter(GameEventRitualTrigger::event)).apply(instance, GameEventRitualTrigger::new));
+    public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            RegistryCodecs.homogeneousList(Registry.GAME_EVENT_REGISTRY).fieldOf("event").forGetter(GameEventRitualTrigger::event)
+    ).apply(instance, GameEventRitualTrigger::new));
 
     @Override
     public void register(final Ritual ritual) {
