@@ -1,5 +1,4 @@
 {
-  "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual",
   "trigger": {
     "ingredients": [
       {
@@ -11,7 +10,12 @@
     ],
     "type": "arsmagicalegacy:item_drop"
   },
-  "requirements": [],
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
   "effect": {
     "entityType": "arsmagicalegacy:arcane_guardian",
     "type": "arsmagicalegacy:spawn_entity"

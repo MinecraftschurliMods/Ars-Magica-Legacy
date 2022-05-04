@@ -1,5 +1,4 @@
 {
-  "structure": "arsmagicalegacy:air_guardian_spawn_ritual",
   "trigger": {
     "ingredients": [
       {
@@ -9,6 +8,10 @@
     "type": "arsmagicalegacy:item_drop"
   },
   "requirements": [
+    {
+      "structure": "arsmagicalegacy:air_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
     {
       "height": {
         "min": 128

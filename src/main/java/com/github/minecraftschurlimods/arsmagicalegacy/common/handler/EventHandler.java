@@ -254,7 +254,7 @@ public final class EventHandler {
         event.addListener(PrefabSpellManager.instance());
         event.addListener(ObeliskFuelManager.instance());
         event.addListener(SpellTransformationManager.instance());
-        event.addListener(new RitualManager());
+        event.addListener(RitualManager.instance());
     }
 
     private static void entityJoinWorld(EntityJoinWorldEvent event) {

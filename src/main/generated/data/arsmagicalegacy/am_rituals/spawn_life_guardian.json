@@ -1,5 +1,4 @@
 {
-  "structure": "arsmagicalegacy:life_guardian_spawn_ritual",
   "trigger": {
     "entity": {
       "type": "minecraft:villager",
@@ -10,6 +9,10 @@
     "type": "arsmagicalegacy:entity_death"
   },
   "requirements": [
+    {
+      "structure": "arsmagicalegacy:life_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
     {
       "phase": 0,
       "type": "arsmagicalegacy:moon_phase"

@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,11 +9,11 @@ import net.minecraft.world.entity.player.Player;
 /**
  *
  */
-public record EnderDragonDimensionRequirement() implements Ritual.RitualRequirement {
+public record EnderDragonDimensionRequirement() implements RitualRequirement {
     public static final Codec<EnderDragonDimensionRequirement> CODEC = Codec.unit(EnderDragonDimensionRequirement::new);
 
     @Override
-    public Codec<? extends Ritual.RitualRequirement> codec() {
+    public Codec<? extends RitualRequirement> codec() {
         return CODEC;
     }
 

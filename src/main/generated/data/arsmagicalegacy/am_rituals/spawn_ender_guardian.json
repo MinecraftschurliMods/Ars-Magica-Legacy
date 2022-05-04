@@ -1,5 +1,4 @@
 {
-  "structure": "arsmagicalegacy:ender_guardian_spawn_ritual",
   "trigger": {
     "ingredients": [
       {
@@ -9,6 +8,10 @@
     "type": "arsmagicalegacy:item_drop"
   },
   "requirements": [
+    {
+      "structure": "arsmagicalegacy:ender_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
     {
       "type": "arsmagicalegacy:ender_dragon_dimension"
     }

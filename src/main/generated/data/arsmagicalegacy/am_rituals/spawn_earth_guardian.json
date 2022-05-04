@@ -1,5 +1,4 @@
 {
-  "structure": "arsmagicalegacy:earth_guardian_spawn_ritual",
   "trigger": {
     "ingredients": [
       {
@@ -14,7 +13,12 @@
     ],
     "type": "arsmagicalegacy:item_drop"
   },
-  "requirements": [],
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:earth_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
   "effect": {
     "entityType": "arsmagicalegacy:earth_guardian",
     "type": "arsmagicalegacy:spawn_entity"
