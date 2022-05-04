@@ -53,7 +53,7 @@ import java.util.Map;
  *
  */
 public class AMRitualProvider implements DataProvider {
-    private static final Gson   GSON   = new GsonBuilder().create();
+    private static final Gson   GSON   = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final Map<ResourceLocation, JsonElement> elements = new HashMap<>();

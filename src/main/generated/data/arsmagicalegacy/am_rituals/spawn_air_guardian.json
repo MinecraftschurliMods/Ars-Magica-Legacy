@@ -1,1 +1,23 @@
-{"structure":"arsmagicalegacy:air_guardian_spawn_ritual","trigger":{"ingredients":[{"item":"arsmagicalegacy:tarma_root"}],"type":"arsmagicalegacy:item_drop"},"requirements":[{"height":{"min":128},"type":"arsmagicalegacy:height"}],"effect":{"entityType":"arsmagicalegacy:air_guardian","type":"arsmagicalegacy:spawn_entity"}}
+{
+  "structure": "arsmagicalegacy:air_guardian_spawn_ritual",
+  "trigger": {
+    "ingredients": [
+      {
+        "item": "arsmagicalegacy:tarma_root"
+      }
+    ],
+    "type": "arsmagicalegacy:item_drop"
+  },
+  "requirements": [
+    {
+      "height": {
+        "min": 128
+      },
+      "type": "arsmagicalegacy:height"
+    }
+  ],
+  "effect": {
+    "entityType": "arsmagicalegacy:air_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}

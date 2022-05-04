@@ -1,1 +1,22 @@
-{"structure":"arsmagicalegacy:life_guardian_spawn_ritual","trigger":{"entity":{"type":"minecraft:villager","flags":{"is_baby":true}},"type":"arsmagicalegacy:entity_death"},"requirements":[{"phase":0,"type":"arsmagicalegacy:moon_phase"}],"effect":{"entityType":"arsmagicalegacy:life_guardian","type":"arsmagicalegacy:spawn_entity"}}
+{
+  "structure": "arsmagicalegacy:life_guardian_spawn_ritual",
+  "trigger": {
+    "entity": {
+      "type": "minecraft:villager",
+      "flags": {
+        "is_baby": true
+      }
+    },
+    "type": "arsmagicalegacy:entity_death"
+  },
+  "requirements": [
+    {
+      "phase": 0,
+      "type": "arsmagicalegacy:moon_phase"
+    }
+  ],
+  "effect": {
+    "entityType": "arsmagicalegacy:life_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}

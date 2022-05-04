@@ -1,1 +1,12 @@
-{"structure":"arsmagicalegacy:lightning_guardian_spawn_ritual","trigger":{"event":"minecraft:lightning_strike","type":"arsmagicalegacy:game_event"},"requirements":[],"effect":{"entityType":"arsmagicalegacy:lightning_guardian","type":"arsmagicalegacy:spawn_entity"}}
+{
+  "structure": "arsmagicalegacy:lightning_guardian_spawn_ritual",
+  "trigger": {
+    "event": "minecraft:lightning_strike",
+    "type": "arsmagicalegacy:game_event"
+  },
+  "requirements": [],
+  "effect": {
+    "entityType": "arsmagicalegacy:lightning_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}
