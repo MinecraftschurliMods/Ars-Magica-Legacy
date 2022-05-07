@@ -20,7 +20,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:earth_guardian",
+    "entity_type": "arsmagicalegacy:earth_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

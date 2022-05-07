@@ -10,7 +10,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:lightning_guardian",
+    "entity_type": "arsmagicalegacy:lightning_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   },
   "offset": [

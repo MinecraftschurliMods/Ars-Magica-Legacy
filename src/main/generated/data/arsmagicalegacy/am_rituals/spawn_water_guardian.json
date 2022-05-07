@@ -21,7 +21,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:water_guardian",
+    "entity_type": "arsmagicalegacy:water_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

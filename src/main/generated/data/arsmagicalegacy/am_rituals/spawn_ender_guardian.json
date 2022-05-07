@@ -17,7 +17,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:ender_guardian",
+    "entity_type": "arsmagicalegacy:ender_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

@@ -12,7 +12,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:ice_guardian",
+    "entity_type": "arsmagicalegacy:ice_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

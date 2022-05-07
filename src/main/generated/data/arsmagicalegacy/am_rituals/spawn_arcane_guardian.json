@@ -17,7 +17,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:arcane_guardian",
+    "entity_type": "arsmagicalegacy:arcane_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

@@ -19,7 +19,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:life_guardian",
+    "entity_type": "arsmagicalegacy:life_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

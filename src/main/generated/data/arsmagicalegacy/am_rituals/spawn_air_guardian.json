@@ -20,7 +20,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:air_guardian",
+    "entity_type": "arsmagicalegacy:air_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }

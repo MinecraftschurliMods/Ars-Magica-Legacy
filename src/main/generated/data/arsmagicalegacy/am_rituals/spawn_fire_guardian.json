@@ -20,7 +20,7 @@
     }
   ],
   "effect": {
-    "entityType": "arsmagicalegacy:fire_guardian",
+    "entity_type": "arsmagicalegacy:fire_guardian",
     "type": "arsmagicalegacy:spawn_entity"
   }
 }
