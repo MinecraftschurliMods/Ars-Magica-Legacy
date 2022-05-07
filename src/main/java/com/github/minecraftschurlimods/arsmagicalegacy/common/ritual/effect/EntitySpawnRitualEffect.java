@@ -23,6 +23,26 @@ public record EntitySpawnRitualEffect(EntityType<?> entityType, Optional<Compoun
             Codec.BOOL.optionalFieldOf("use_player", false).forGetter(EntitySpawnRitualEffect::usePlayer)
     ).apply(inst, EntitySpawnRitualEffect::new));
 
+    public EntitySpawnRitualEffect(EntityType<?> entityType) {
+        this(entityType, Optional.empty(), Optional.empty(), false);
+    }
+
+    public EntitySpawnRitualEffect(EntityType<?> entityType, CompoundTag spawnData) {
+        this(entityType, Optional.of(spawnData), Optional.empty(), false);
+    }
+
+    public EntitySpawnRitualEffect(EntityType<?> entityType, Component customName) {
+        this(entityType, Optional.empty(), Optional.of(customName), false);
+    }
+
+    public EntitySpawnRitualEffect(EntityType<?> entityType, CompoundTag spawnData, Component customName) {
+        this(entityType, Optional.of(spawnData), Optional.of(customName), false);
+    }
+
+    public EntitySpawnRitualEffect(EntityType<?> entityType, CompoundTag spawnData, Component customName, boolean usePlayer) {
+        this(entityType, Optional.of(spawnData), Optional.of(customName), usePlayer);
+    }
+
     @Override
     public boolean performEffect(final Player player, final ServerLevel level, final BlockPos pos) {
         return entityType.spawn(level, spawnData().orElse(null), customName().orElse(null), usePlayer() ? player : null, pos, MobSpawnType.TRIGGERED, false, false) != null;
