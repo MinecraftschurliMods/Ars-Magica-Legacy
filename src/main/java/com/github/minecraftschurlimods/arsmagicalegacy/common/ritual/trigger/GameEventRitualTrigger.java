@@ -62,7 +62,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
     }
 
     @Override
-    public boolean trigger(final ServerLevel level, final BlockPos pos, final Context ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final Context ctx) {
         GameEvent evt = ctx.get("event", GameEvent.class);
         assert evt != null;
         return event().contains(evt.builtInRegistryHolder());

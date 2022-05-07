@@ -45,7 +45,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public boolean trigger(final ServerLevel level, final BlockPos pos, Context ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, Context ctx) {
         LivingEntity entity = ctx.get("entity", LivingEntity.class);
         if (entity == null || !predicate.matches(level, Vec3.atCenterOf(pos), entity)) return false;
         entity.kill();

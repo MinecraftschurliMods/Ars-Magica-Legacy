@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -84,7 +85,7 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements Rit
     }
 
     @Override
-    public boolean trigger(final ServerLevel level, final BlockPos pos, Context ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, Context ctx) {
         Set<ItemEntity> consumable = new HashSet<>();
         var ingredients = new ArrayList<>(this.ingredients);
         level.getEntities().get(EntityTypeTest.forClass(ItemEntity.class), AABB.ofSize(Vec3.atCenterOf(pos), 3, 3, 3), itemEntity -> {

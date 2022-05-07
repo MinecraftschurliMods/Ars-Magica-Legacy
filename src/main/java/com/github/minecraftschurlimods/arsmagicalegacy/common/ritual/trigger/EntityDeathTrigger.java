@@ -38,7 +38,7 @@ public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTri
     }
 
     @Override
-    public boolean trigger(final ServerLevel level, final BlockPos pos, Context ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, Context ctx) {
         return predicate.matches(level, Vec3.atCenterOf(pos), ctx.get("entity", LivingEntity.class));
     }
 

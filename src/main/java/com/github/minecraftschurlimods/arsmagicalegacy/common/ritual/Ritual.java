@@ -27,8 +27,8 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
         for (RitualRequirement req : requirements) {
             if (!req.test(player, level, pos)) return false;
         }
-        if (!this.trigger.trigger(level, pos, ctx)) return false;
-        if (!this.effect.performEffect(level, pos)) return false;
+        if (!this.trigger.trigger(player, level, pos, ctx)) return false;
+        if (!this.effect.performEffect(player, level, pos)) return false;
         player.awardStat(AMStats.RITUALS_TRIGGERED);
         return true;
     }
