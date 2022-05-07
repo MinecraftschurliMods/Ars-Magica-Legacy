@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
@@ -18,9 +19,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public class Dryad extends PathfinderMob {
+    private int timer = Config.SERVER.DRYAD_BONEMEAL_TIMER.get();
     public Dryad(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
     }
@@ -43,8 +44,12 @@ public class Dryad extends PathfinderMob {
     public void aiStep() {
         super.aiStep();
         if (!(level instanceof ServerLevel serverLevel)) return;
-        if (level.random.nextDouble() < 0.01) return;
-        for (final BlockPos pos : BlockPos.betweenClosedStream(AABB.ofSize(position(), 5, 5, 5)).toList()) {
+        timer--;
+        if (timer > 0) return;
+        timer = Config.SERVER.DRYAD_BONEMEAL_TIMER.get();
+        if (level.random.nextDouble() < Config.SERVER.DRYAD_BONEMEAL_CHANCE.get()) return;
+        int radius = Config.SERVER.DRYAD_BONEMEAL_RADIUS.get();
+        for (final BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-radius, -radius, -radius), blockPosition().offset(radius, radius, radius))) {
             BlockState state = level.getBlockState(pos);
             if (!(state.getBlock() instanceof BonemealableBlock bonemealableBlock)) continue;
             if (!bonemealableBlock.isValidBonemealTarget(level, pos, state, false)) continue;

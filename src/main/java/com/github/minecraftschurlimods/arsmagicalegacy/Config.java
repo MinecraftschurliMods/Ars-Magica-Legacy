@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -71,6 +72,9 @@ public final class Config {
         public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
         public final ForgeConfigSpec.IntValue DAMAGE;
         public final ForgeConfigSpec.IntValue DURATION;
+        public final ForgeConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
+        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
+        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
 
         private Server(ForgeConfigSpec.Builder builder) {
             BURNOUT_RATIO = builder
@@ -138,6 +142,22 @@ public final class Config {
                     .comment("Duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.duration")
                     .defineInRange("duration", 600, 1, Short.MAX_VALUE);
+            builder.pop();
+            builder.push("entities");
+            builder.push("dryad");
+            DRYAD_BONEMEAL_TIMER = builder
+                    .comment("The time in ticks between bonemeal uses.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_timer")
+                    .defineInRange("bonemeal_timer", 200, 1, 72000);
+            DRYAD_BONEMEAL_CHANCE = builder
+                    .comment("The chance of bonemeal being applied.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_chance")
+                    .defineInRange("bonemeal_chance", 0.01, 0.0, 1.0);
+            DRYAD_BONEMEAL_RADIUS = builder
+                    .comment("The radius of bonemeal application.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
+                    .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
+            builder.pop();
             builder.pop();
         }
     }
