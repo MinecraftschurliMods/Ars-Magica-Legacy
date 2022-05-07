@@ -33,7 +33,7 @@ mixin {
 */
 
 editorconfig {
-    excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*']
+    excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*', '**/*.bbmodel']
     excludeNonSourceFiles = true
 }
 
@@ -384,6 +384,7 @@ tasks.withType(Jar).configureEach {
     }
 
     exclude '**/*.psd'
+    exclude '**/*.bbmodel'
 }
 
 artifacts {
