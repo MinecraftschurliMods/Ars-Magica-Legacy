@@ -33,6 +33,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
     private RitualManager() {
         super("am_rituals", Ritual.CODEC, LogManager.getLogger());
         useRegistryOps();
+        init();
     }
 
     public static RitualManager instance() {
@@ -75,7 +76,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         return ritualEffectCodecs.get(resourceLocation);
     }
 
-    static {
+    private static void init() {
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_death"), EntityDeathTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_summon"), EntitySummonTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item_drop"), ItemDropRitualTrigger.CODEC);

@@ -12,6 +12,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelpe
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
@@ -69,6 +70,7 @@ public final class ArsMagicaLegacy {
         SpellDataManager.instance();
         AltarMaterialManager.instance();
         ObeliskFuelManager.instance();
+        RitualManager.instance();
         CompatManager.preInit();
     }
 
