@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -75,6 +74,8 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
         public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
         public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
+        public final ForgeConfigSpec.LongValue DRYAD_KILL_COOLDOWN;
+        public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
 
         private Server(ForgeConfigSpec.Builder builder) {
             BURNOUT_RATIO = builder
@@ -157,6 +158,14 @@ public final class Config {
                     .comment("The radius of bonemeal application.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
                     .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
+            DRYAD_KILL_COOLDOWN = builder
+                    .comment("The time in ticks between killing dryads before the counter is reset.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
+                    .defineInRange("kill_cooldown", 12000L, 1L, 720000L);
+            DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
+                    .comment("The number of dryads killed before a nature guardian spawns.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.kills_to_nature_guardian_spawn")
+                    .defineInRange("kills_to_nature_guardian_spawn", 20, 1, Short.MAX_VALUE);
             builder.pop();
             builder.pop();
         }
