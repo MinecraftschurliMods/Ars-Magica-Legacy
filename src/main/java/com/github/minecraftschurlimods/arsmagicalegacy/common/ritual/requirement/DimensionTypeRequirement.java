@@ -11,9 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.dimension.DimensionType;
 
-/**
- *
- */
 public record DimensionTypeRequirement(HolderSet<DimensionType> dimensionType) implements RitualRequirement {
     public static final Codec<DimensionTypeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registry.DIMENSION_TYPE_REGISTRY).fieldOf("dimension_type").forGetter(DimensionTypeRequirement::dimensionType)

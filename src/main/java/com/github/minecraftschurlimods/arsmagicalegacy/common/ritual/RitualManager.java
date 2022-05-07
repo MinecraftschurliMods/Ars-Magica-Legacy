@@ -23,9 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
-/**
- *
- */
 public final class RitualManager extends CodecDataManager<Ritual> {
     private static final Lazy<RitualManager> INSTANCE = Lazy.concurrentOf(RitualManager::new);
 

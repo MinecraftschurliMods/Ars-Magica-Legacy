@@ -53,9 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-/**
- *
- */
 public class AMRitualProvider implements DataProvider {
     private static final Gson   GSON   = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();

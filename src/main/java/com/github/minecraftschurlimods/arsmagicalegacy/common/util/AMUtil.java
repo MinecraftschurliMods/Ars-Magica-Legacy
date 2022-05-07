@@ -29,7 +29,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
-
     /**
      * @param view The view vector to which the resulting point is the closest.
      * @param a    The first coordinate of the line.

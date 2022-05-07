@@ -5,9 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
-/**
- *
- */
 public interface RitualEffect {
     Codec<RitualEffect> CODEC = ResourceLocation.CODEC.dispatch("type", RitualManager::getRitualEffectType, RitualManager::getRitualEffectCodec);
 

@@ -20,9 +20,6 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 import java.util.Map;
 
-/**
- *
- */
 public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
     public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
 

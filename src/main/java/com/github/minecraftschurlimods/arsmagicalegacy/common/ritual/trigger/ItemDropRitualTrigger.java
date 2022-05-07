@@ -28,9 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-/**
- *
- */
 public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements RitualTrigger {
     public static final Codec<ItemDropRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INGREDIENT.listOf().fieldOf("ingredients").forGetter(ItemDropRitualTrigger::ingredients)).apply(inst, ItemDropRitualTrigger::new));
 

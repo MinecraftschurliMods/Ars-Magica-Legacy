@@ -6,9 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-/**
- *
- */
 public record UltrawarmDimensionRequirement() implements RitualRequirement {
     public static final Codec<UltrawarmDimensionRequirement> CODEC = Codec.unit(UltrawarmDimensionRequirement::new);
 

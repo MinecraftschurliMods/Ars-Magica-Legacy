@@ -10,9 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- *
- */
 public record EntitySpawnRitualEffect(EntityType<?> entityType) implements RitualEffect {
     public static final Codec<EntitySpawnRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(ForgeRegistries.ENTITIES.getCodec().fieldOf("entityType").forGetter(EntitySpawnRitualEffect::entityType)).apply(inst, EntitySpawnRitualEffect::new));
 

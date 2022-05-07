@@ -18,9 +18,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import java.util.Map;
 
-/**
- *
- */
 public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTrigger {
     public static final Codec<EntityDeathTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntityDeathTrigger::predicate)).apply(inst, EntityDeathTrigger::new));
 

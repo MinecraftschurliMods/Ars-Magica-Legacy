@@ -15,9 +15,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 
-/**
- *
- */
 public record BiomeRequirement(HolderSet<Biome> biome) implements RitualRequirement {
     public static final Codec<BiomeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).fieldOf("biome").forGetter(BiomeRequirement::biome)

@@ -5,9 +5,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-/**
- *
- */
 public interface Context {
     Context EMPTY = new Context() {
         @Nullable
@@ -19,7 +16,6 @@ public interface Context {
     };
 
     @Nullable <T> T get(String name, Class<T> clazz);
-
 
     record MapContext(Map<String, Object> data) implements Context {
         @Override

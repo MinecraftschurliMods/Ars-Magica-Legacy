@@ -7,9 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.TriPredicate;
 
-/**
- *
- */
 public interface RitualRequirement extends TriPredicate<Player, ServerLevel, BlockPos> {
     Codec<RitualRequirement> CODEC = ResourceLocation.CODEC.dispatch("type", RitualManager::getRitualRequirementType, RitualManager::getRitualRequirementCodec);
 

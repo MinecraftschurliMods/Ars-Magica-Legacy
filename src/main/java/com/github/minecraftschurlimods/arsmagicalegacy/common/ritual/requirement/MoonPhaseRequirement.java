@@ -9,9 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-/**
- *
- */
 public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualRequirement {
     public static final Codec<MoonPhaseRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("phase").forGetter(MoonPhaseRequirement::phase)).apply(inst, MoonPhaseRequirement::new));
 

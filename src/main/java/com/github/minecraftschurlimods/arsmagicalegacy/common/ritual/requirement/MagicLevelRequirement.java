@@ -10,9 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-/**
- *
- */
 public record MagicLevelRequirement(MinMaxBounds.Ints bounds) implements RitualRequirement {
     public static final Codec<MagicLevelRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("level").forGetter(MagicLevelRequirement::bounds)).apply(inst, MagicLevelRequirement::new));
 

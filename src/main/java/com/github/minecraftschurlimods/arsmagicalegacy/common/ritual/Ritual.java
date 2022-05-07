@@ -10,9 +10,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-/**
- *
- */
 public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements, RitualEffect effect, BlockPos offset) {
     public static final Codec<Ritual> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RitualTrigger.CODEC.fieldOf("trigger").forGetter(Ritual::trigger),

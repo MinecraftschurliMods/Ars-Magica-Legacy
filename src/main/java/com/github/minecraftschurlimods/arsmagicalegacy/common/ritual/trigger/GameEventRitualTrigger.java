@@ -24,9 +24,6 @@ import net.minecraftforge.event.VanillaGameEvent;
 
 import java.util.Map;
 
-/**
- *
- */
 public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements RitualTrigger {
     public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryCodecs.homogeneousList(Registry.GAME_EVENT_REGISTRY).fieldOf("event").forGetter(GameEventRitualTrigger::event)
