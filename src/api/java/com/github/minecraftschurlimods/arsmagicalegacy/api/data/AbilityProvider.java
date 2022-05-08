@@ -1,10 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -54,23 +54,23 @@ public abstract class AbilityProvider implements DataProvider {
     }
 
     /**
-     * @param ability       The id of the ability.
+     * @param ability  The id of the ability.
      * @param affinity The id of the ability's affinity.
-     * @param range    The ability's range.
+     * @param bounds   The ability's bounds.
      * @return A new ability.
      */
-    protected AbilityBuilder createAbility(ResourceLocation ability, ResourceLocation affinity, Range range) {
-        return AbilityBuilder.create(ability).setAffinity(affinity).setRange(range);
+    protected AbilityBuilder createAbility(ResourceLocation ability, ResourceLocation affinity, MinMaxBounds.Doubles bounds) {
+        return AbilityBuilder.create(ability).setAffinity(affinity).setBounds(bounds);
     }
 
     /**
-     * @param ability       The id of the ability.
+     * @param ability  The id of the ability.
      * @param affinity The ability's affinity.
-     * @param range    The ability's range.
+     * @param bounds   The ability's bounds.
      * @return A new ability.
      */
-    protected AbilityBuilder createAbility(ResourceLocation ability, IAffinity affinity, Range range) {
-        return AbilityBuilder.create(ability).setAffinity(affinity.getId()).setRange(range);
+    protected AbilityBuilder createAbility(ResourceLocation ability, IAffinity affinity, MinMaxBounds.Doubles bounds) {
+        return AbilityBuilder.create(ability).setAffinity(affinity.getId()).setBounds(bounds);
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

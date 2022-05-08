@@ -1,0 +1,25 @@
+{
+  "trigger": {
+    "entity": {
+      "type": "minecraft:villager",
+      "flags": {
+        "is_baby": true
+      }
+    },
+    "type": "arsmagicalegacy:entity_death"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:life_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
+    {
+      "phase": 0,
+      "type": "arsmagicalegacy:moon_phase"
+    }
+  ],
+  "effect": {
+    "entity_type": "arsmagicalegacy:life_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}

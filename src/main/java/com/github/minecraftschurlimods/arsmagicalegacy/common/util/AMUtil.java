@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 

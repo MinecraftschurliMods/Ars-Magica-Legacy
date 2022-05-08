@@ -7,16 +7,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -24,18 +19,18 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.EnderManAngerEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+
+import java.util.Objects;
 
 final class AbilityHandler {
     static void init(IEventBus forgeBus) {
@@ -148,7 +143,7 @@ final class AbilityHandler {
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(player)) return;
         IAbilityData ability = api.getAbilityManager().get(AMAbilities.ENDERMAN_PUMPKIN.getId());
-        if (ability.range().test(api.getAffinityHelper().getAffinityDepth(player, ability.affinity()))) {
+        if (ability.test(player)) {
             event.setCanceled(true);
         }
     }
@@ -156,7 +151,7 @@ final class AbilityHandler {
     private static void potionApplicable(PotionEvent.PotionApplicableEvent event) {
         var api = ArsMagicaAPI.get();
         IAbilityData ability = api.getAbilityManager().get(AMAbilities.POISON_RESISTANCE.getId());
-        if (event.getEntityLiving() instanceof Player player && event.getPotionEffect().getEffect() == MobEffects.POISON && ability.range().test(api.getAffinityHelper().getAffinityDepth(player, ability.affinity()))) {
+        if (event.getEntityLiving() instanceof Player player && event.getPotionEffect().getEffect() == MobEffects.POISON && ability.test(player)) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -205,13 +200,13 @@ final class AbilityHandler {
         ability = manager.get(AMAbilities.SLOWNESS.getId());
         if (affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepth(player, affinity) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = manager.get(AMAbilities.SPEED.getId());
         if (affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepth(player, affinity) - ability.range().min().orElse(0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepth(player, affinity) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = manager.get(AMAbilities.STEP_ASSIST.getId());

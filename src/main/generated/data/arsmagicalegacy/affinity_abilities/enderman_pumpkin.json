@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:ender",
-  "range": {
+  "bounds": {
     "min": 1.0
   }
 }
