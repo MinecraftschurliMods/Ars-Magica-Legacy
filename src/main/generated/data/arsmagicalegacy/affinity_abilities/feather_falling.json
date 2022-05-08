@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:air",
-  "range": {
+  "bounds": {
     "min": 0.01,
     "max": 1.0
   }

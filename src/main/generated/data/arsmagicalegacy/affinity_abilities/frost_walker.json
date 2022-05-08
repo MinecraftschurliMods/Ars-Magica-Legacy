@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:ice",
-  "range": {
+  "bounds": {
     "min": 1.0
   }
 }

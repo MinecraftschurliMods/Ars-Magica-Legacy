@@ -72,7 +72,6 @@ final class TickHandler {
     private static void playerTickServerStart(final Player player) {
         manaAndBurnoutRegen(player);
         handleAbilities(player);
-        handleSpawnRituals(player);
     }
 
     private static void playerTickServerEnd(final Player player) {
@@ -145,32 +144,6 @@ final class TickHandler {
             attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepth(player, ability.affinity()) * 4, AttributeModifier.Operation.ADDITION));
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
-            }
-        }
-    }
-
-    private static void handleSpawnRituals(final Player player) {
-        var api = ArsMagicaAPI.get();
-        Level level = player.getLevel();
-        for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(player.getX() - 4, player.getY() - 4, player.getZ() - 4, player.getX() + 4, player.getY() + 4, player.getZ() + 4))) {
-            BlockPos pos = item.blockPosition();
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.getBiome(pos).is(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.WATER_GUARDIAN.get(), i -> i.is(ItemTags.BOATS), i -> i.is(Items.WATER_BUCKET));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().ultraWarm()) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.FIRE_GUARDIAN.get(), i -> ItemStack.isSameItemSameTags(api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()), i));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.EARTH_GUARDIAN.get(), i -> i.is(Tags.Items.GEMS_EMERALD), i -> i.is(AMTags.Items.GEMS_CHIMERITE), i -> i.is(AMTags.Items.GEMS_TOPAZ));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL).test(level, pos) && pos.getY() > 128) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.AIR_GUARDIAN.get(), i -> i.is(AMItems.TARMA_ROOT.get()));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL).test(level, pos)) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.ARCANE_GUARDIAN.get(), i -> ItemStack.isSameItemSameTags(api.getBookStack(), i));
-            }
-            if (PatchouliCompat.getMultiblockMatcher(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL).test(level, pos) && level.dimensionType().createDragonFight()) {
-                AMUtil.consumeItemsAndSpawnEntity(level, pos, AMEntities.ENDER_GUARDIAN.get(), i -> i.is(Items.ENDER_EYE));
             }
         }
     }

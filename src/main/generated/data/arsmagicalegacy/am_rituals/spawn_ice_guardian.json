@@ -1,0 +1,18 @@
+{
+  "trigger": {
+    "entity": {
+      "type": "minecraft:snow_golem"
+    },
+    "type": "arsmagicalegacy:entity_summon"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:ice_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
+  "effect": {
+    "entity_type": "arsmagicalegacy:ice_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}

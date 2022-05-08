@@ -1,0 +1,23 @@
+{
+  "trigger": {
+    "ingredients": [
+      {
+        "type": "forge:nbt",
+        "item": "patchouli:guide_book",
+        "count": 1,
+        "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
+      }
+    ],
+    "type": "arsmagicalegacy:item_drop"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
+  "effect": {
+    "entity_type": "arsmagicalegacy:arcane_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}
