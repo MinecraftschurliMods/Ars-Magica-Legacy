@@ -159,7 +159,7 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
                     .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
             DRYAD_KILL_COOLDOWN = builder
-                    .comment("The time in ticks between killing dryads before the counter is reset.")
+                    .comment("The time in seconds between killing dryads before the counter is reset.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
                     .defineInRange("kill_cooldown", 60L, 0L, 36000L);
             DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
