@@ -161,7 +161,7 @@ public final class Config {
             DRYAD_KILL_COOLDOWN = builder
                     .comment("The time in ticks between killing dryads before the counter is reset.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
-                    .defineInRange("kill_cooldown", 12000L, 1L, 720000L);
+                    .defineInRange("kill_cooldown", 60L, 0L, 36000L);
             DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
                     .comment("The number of dryads killed before a nature guardian spawns.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kills_to_nature_guardian_spawn")
