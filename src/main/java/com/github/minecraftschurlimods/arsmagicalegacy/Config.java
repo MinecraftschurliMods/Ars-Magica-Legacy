@@ -71,6 +71,11 @@ public final class Config {
         public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
         public final ForgeConfigSpec.IntValue DAMAGE;
         public final ForgeConfigSpec.IntValue DURATION;
+        public final ForgeConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
+        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
+        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
+        public final ForgeConfigSpec.LongValue DRYAD_KILL_COOLDOWN;
+        public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
 
         private Server(ForgeConfigSpec.Builder builder) {
             BURNOUT_RATIO = builder
@@ -138,6 +143,30 @@ public final class Config {
                     .comment("Duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.duration")
                     .defineInRange("duration", 600, 1, Short.MAX_VALUE);
+            builder.pop();
+            builder.push("entities");
+            builder.push("dryad");
+            DRYAD_BONEMEAL_TIMER = builder
+                    .comment("The time in ticks between bonemeal uses.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_timer")
+                    .defineInRange("bonemeal_timer", 200, 1, 72000);
+            DRYAD_BONEMEAL_CHANCE = builder
+                    .comment("The chance of bonemeal being applied.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_chance")
+                    .defineInRange("bonemeal_chance", 0.01, 0.0, 1.0);
+            DRYAD_BONEMEAL_RADIUS = builder
+                    .comment("The radius of bonemeal application.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
+                    .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
+            DRYAD_KILL_COOLDOWN = builder
+                    .comment("The time in seconds between killing dryads before the counter is reset.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
+                    .defineInRange("kill_cooldown", 60L, 0L, 36000L);
+            DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
+                    .comment("The number of dryads killed before a nature guardian spawns.")
+                    .translation(TranslationConstants.CONFIG + "entities.dryad.kills_to_nature_guardian_spawn")
+                    .defineInRange("kills_to_nature_guardian_spawn", 20, 1, Short.MAX_VALUE);
+            builder.pop();
             builder.pop();
         }
     }

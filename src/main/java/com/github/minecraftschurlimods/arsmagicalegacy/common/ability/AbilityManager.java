@@ -6,11 +6,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.Lazy;
@@ -76,10 +76,10 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
         return INSTANCE.get();
     }
 
-    private record AbilityData(IAffinity affinity, Range range) implements IAbilityData {
+    private record AbilityData(IAffinity affinity, MinMaxBounds.Doubles bounds) implements IAbilityData {
         private static final Codec<IAbilityData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry).fieldOf("affinity").forGetter(IAbilityData::affinity),
-                Range.CODEC.fieldOf("range").forGetter(IAbilityData::range)
+                CodecHelper.DOUBLE_MIN_MAX_BOUNDS.fieldOf("bounds").forGetter(IAbilityData::bounds)
         ).apply(inst, AbilityData::new));
     }
 }

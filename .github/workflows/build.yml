@@ -22,7 +22,7 @@ jobs:
           distribution: 'adopt'
       - name: Setup Build
         run: chmod 777 gradlew
-      - name: Build with Gradle
+      - name: Build and Test with Gradle
         uses: gradle/gradle-build-action@v2
         id: build
         env:
@@ -32,4 +32,4 @@ jobs:
           RELEASE_TYPE: snapshot
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
         with:
-          arguments: setupGithubActions build publish
+          arguments: setupGithubActions build runGameTestServer publish

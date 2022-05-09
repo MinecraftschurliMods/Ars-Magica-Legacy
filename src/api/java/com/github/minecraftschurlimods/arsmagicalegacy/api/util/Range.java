@@ -8,7 +8,9 @@ import java.util.function.DoublePredicate;
 
 /**
  * A double range with inclusive upper and lower bounds.
+ * @deprecated Use {@link net.minecraft.advancements.critereon.MinMaxBounds.Doubles} instead.
  */
+@Deprecated(forRemoval = true, since = "1.1.0")
 public record Range(Optional<Double> min, Optional<Double> max) implements DoublePredicate {
     public static Codec<Range> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Codec.DOUBLE.optionalFieldOf("min").forGetter(Range::min),

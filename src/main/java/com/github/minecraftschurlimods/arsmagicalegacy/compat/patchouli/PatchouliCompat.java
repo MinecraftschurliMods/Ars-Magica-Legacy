@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -241,12 +242,12 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
         api.registerMultiblock(ICE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 INLAY_RING,
-                'E', goldInlayEastWest,
-                'N', goldInlayNorthSouth,
-                '1', goldInlaySouthEast,
-                '2', goldInlayNorthEast,
-                '3', goldInlaySouthWest,
-                '4', goldInlayNorthWest
+                'E', ironInlayEastWest,
+                'N', ironInlayNorthSouth,
+                '1', ironInlaySouthEast,
+                '2', ironInlayNorthEast,
+                '3', ironInlaySouthWest,
+                '4', ironInlayNorthWest
         ).setSymmetrical(true));
         api.registerMultiblock(LIGHTNING_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 LIGHTNING_GUARDIAN_SPAWN_STRUCTURE,
@@ -258,7 +259,7 @@ public class PatchouliCompat implements ICompatHandler {
                 '4', goldInlayNorthWest,
                 '0', api.strictBlockMatcher(Blocks.IRON_BARS),
                 'I', api.strictBlockMatcher(Blocks.IRON_BARS),
-                'R', api.strictBlockMatcher(Blocks.LIGHTNING_ROD)
+                'R', api.propertyMatcher(Blocks.LIGHTNING_ROD.defaultBlockState(), LightningRodBlock.FACING, LightningRodBlock.WATERLOGGED)
         ).setSymmetrical(true));
         api.registerMultiblock(LIFE_GUARDIAN_SPAWN_RITUAL, api.makeMultiblock(
                 LIFE_GUARDIAN_SPAWN_STRUCTURE,
