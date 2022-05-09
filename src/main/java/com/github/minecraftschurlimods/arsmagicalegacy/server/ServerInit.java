@@ -12,5 +12,6 @@ public final class ServerInit {
         MinecraftForge.EVENT_BUS.addListener(AMPermissions::registerPermissionNodes);
         MinecraftForge.EVENT_BUS.addListener(AMCommands::registerCommands);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, AMFeatures::biomeLoading);
+        MinecraftForge.EVENT_BUS.addListener(NatureGuardianSpawnHandler::dryadDeath);
     }
 }

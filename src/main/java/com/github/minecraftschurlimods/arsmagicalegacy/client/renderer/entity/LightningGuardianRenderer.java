@@ -6,16 +6,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGu
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-public class LightningGuardianRenderer extends MobRenderer<LightningGuardian, LightningGuardianModel<LightningGuardian>> {
+public class LightningGuardianRenderer extends MobRenderer<LightningGuardian, LightningGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/lightning_guardian.png");
 
-    public LightningGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new LightningGuardianModel<>(rendererManagerIn.bakeLayer(LightningGuardianModel.LAYER_LOCATION)), 0.7F);
+    public LightningGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new LightningGuardianModel(context.bakeLayer(LightningGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final LightningGuardian pEntity) {
+    @NotNull
+    public ResourceLocation getTextureLocation(final @NotNull LightningGuardian pEntity) {
         return TEXTURE;
     }
 }

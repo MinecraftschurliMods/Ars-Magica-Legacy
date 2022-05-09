@@ -21,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemMod
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellRuneModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EnderGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.FireGuardianModel;
@@ -33,6 +34,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarView
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AirGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ArcaneGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.DryadRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EnderGuardianRenderer;
@@ -190,6 +192,7 @@ public final class ClientInit {
         event.registerLayerDefinition(LightningGuardianModel.LAYER_LOCATION, LightningGuardianModel::createBodyLayer);
         event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
         event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -208,6 +211,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
+        event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
     }

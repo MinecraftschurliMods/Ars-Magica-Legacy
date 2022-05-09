@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class IceGuardianRenderer extends MobRenderer<IceGuardian, IceGuardianModel<IceGuardian>> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ice_guardian.png");
+public class IceGuardianRenderer extends MobRenderer<IceGuardian, IceGuardianModel> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ice_guardian.png");
 
-    public IceGuardianRenderer(EntityRendererProvider.Context rendererManagerIn) {
-        super(rendererManagerIn, new IceGuardianModel<>(rendererManagerIn.bakeLayer(IceGuardianModel.LAYER_LOCATION)), 0.7F);
+    public IceGuardianRenderer(EntityRendererProvider.Context context) {
+        super(context, new IceGuardianModel(context.bakeLayer(IceGuardianModel.LAYER_LOCATION)), 0.7F);
     }
 
     @Override
