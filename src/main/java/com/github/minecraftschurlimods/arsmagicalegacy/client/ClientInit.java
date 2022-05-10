@@ -20,7 +20,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreMod
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellRuneModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
@@ -34,6 +33,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Natur
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellRuneBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AirGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ArcaneGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.DryadRenderer;
@@ -192,9 +192,6 @@ public final class ClientInit {
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), ($, model) -> new SpellItemModel(model));
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), ($, model) -> new AltarCoreModel(model));
-        AMBlocks.SPELL_RUNE.get().getStateDefinition().getPossibleStates().stream()
-                .map(BlockModelShaper::stateToModelLocation)
-                .forEach(loc -> modelRegistry.computeIfPresent(loc, SpellRuneModel::new));
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
