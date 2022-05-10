@@ -46,7 +46,7 @@ public final class Config {
             HUD_HORIZONTAL_OFFSET = builder
                     .comment("Horizontal offset of the hud, from the center of the screen.")
                     .translation(TranslationConstants.CONFIG + "hud_horizontal_offset")
-                    .defineInRange("hud_horizontal_offset", 120, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("hud_horizontal_offset", -210, Short.MIN_VALUE, Short.MAX_VALUE);
             HUD_VERTICAL_OFFSET = builder
                     .comment("Vertical offset of the hud, from the bottom of the screen.")
                     .translation(TranslationConstants.CONFIG + "hud_vertical_offset")
