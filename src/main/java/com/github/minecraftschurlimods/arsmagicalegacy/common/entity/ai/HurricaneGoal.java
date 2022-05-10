@@ -60,10 +60,10 @@ public class HurricaneGoal extends Goal {
         }
         if (castTicks >= 20) {
             for (Entity e : level.getEntitiesOfClass(Entity.class, airGuardian.getBoundingBox().inflate(6, 3, 6), e -> e != airGuardian)) {
-//                if (!level.isClientSide() && e instanceof Whirlwind) {
-//                    e.remove(Entity.RemovalReason.KILLED);
-//                    continue;
-//                }
+                if (!level.isClientSide() && e instanceof Whirlwind) {
+                    e.remove(Entity.RemovalReason.KILLED);
+                    continue;
+                }
                 Vec3 movement = airGuardian.getEyePosition().subtract(e.position()).normalize();
                 double x = -movement.x() * 2.5;
                 double y = 2.5;

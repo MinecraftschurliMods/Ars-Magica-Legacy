@@ -187,6 +187,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
+        entityIdTranslation(AMEntities.WHIRLWIND);
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -377,6 +378,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(CommandTranslations.SKILL_POINT_UNKNOWN, "Could not find skill point type %s");
         add(CommandTranslations.SKILL_UNKNOWN, "Could not find skill %s");
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
+        add("death.attack.wind", "%1$s couldn't withstand such enormous wind speeds");
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
         add("potion.potency.7", "VII");

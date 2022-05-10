@@ -16,6 +16,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Whirlwind;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -42,6 +43,7 @@ public interface AMEntities {
     RegistryObject<EntityType<Dryad>>             DRYAD              = ENTITIES.register("dryad",              () -> EntityType.Builder.of(Dryad::new,             MobCategory.AMBIENT).clientTrackingRange(8).sized(    1,     2).build("dryad"));
     RegistryObject<EntityType<Mage>>              MAGE               = ENTITIES.register("mage",               () -> EntityType.Builder.of(Mage::new,              MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("mage"));
     RegistryObject<EntityType<ManaCreeper>>       MANA_CREEPER       = ENTITIES.register("mana_creeper",       () -> EntityType.Builder.of(ManaCreeper::new,       MobCategory.MONSTER).clientTrackingRange(8).sized( 0.6F,  1.7F).build("mana_creeper"));
+    RegistryObject<EntityType<Whirlwind>>         WHIRLWIND          = ENTITIES.register("whirlwind",          () -> EntityType.Builder.of(Whirlwind::new,         MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("whirlwind"));
 
     /**
      * Empty method that is required for classloading

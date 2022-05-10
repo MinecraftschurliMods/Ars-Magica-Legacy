@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Whirlwind;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -43,9 +44,10 @@ public class WhirlwindGoal extends Goal {
         } else if (!airGuardian.canAttack(target)) {
             airGuardian.getNavigation().moveTo(target, 0.5f);
         } else if (castTicks == 10 && !airGuardian.getLevel().isClientSide()) {
-//            Whirlwind whirlwind = Whirlwind.create(airGuardian.getLevel());
-//            whirlwind.setPos(airGuardian.getX(), airGuardian.getY() + airGuardian.getEyeHeight(), airGuardian.getZ());
-//            airGuardian.getLevel().addFreshEntity(whirlwind);
+            Whirlwind whirlwind = Whirlwind.create(airGuardian.getLevel());
+            whirlwind.setPos(airGuardian.getX(), airGuardian.getY() + airGuardian.getEyeHeight(), airGuardian.getZ());
+            whirlwind.setDeltaMovement(airGuardian.getLookAngle());
+            airGuardian.getLevel().addFreshEntity(whirlwind);
         }
         if (castTicks > 20) {
             stop();
