@@ -7,13 +7,15 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 public class EmptyRenderer extends EntityRenderer<Entity> {
-    public EmptyRenderer(EntityRendererProvider.Context renderManagerIn) {
-        super(renderManagerIn);
+    private static final ResourceLocation TEXTURE = new ResourceLocation("missingno");
+
+    public EmptyRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
     @NotNull
     public ResourceLocation getTextureLocation(final @NotNull Entity pEntity) {
-        return new ResourceLocation("missingno");
+        return TEXTURE;
     }
 }

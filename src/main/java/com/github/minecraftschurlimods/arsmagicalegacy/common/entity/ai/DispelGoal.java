@@ -14,6 +14,6 @@ public class DispelGoal<T extends Mob & ISpellCasterEntity> extends ExecuteSpell
 
     @Override
     public boolean canUse() {
-        return caster.getActiveEffects().size() > 0 || super.canUse();
+        return caster.getActiveEffects().size() > 0 && super.canUse();
     }
 }

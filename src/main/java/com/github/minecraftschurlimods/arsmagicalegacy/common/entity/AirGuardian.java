@@ -14,9 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class AirGuardian extends AbstractBoss {
-    private boolean useLeftArm = false;
-    private float orbitRotation;
-    private float spinRotation = 0;
     private AirGuardianAction action;
 
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
@@ -49,23 +46,17 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        orbitRotation += 2f;
-        orbitRotation %= 360;
-        if (action == AirGuardianAction.SPINNING) {
-            spinRotation = (spinRotation - 40) % 360;
-            if (level.isClientSide()) {
-                // Particles
-            }
-        }
         if (getDeltaMovement().y() < 0) {
-            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.7999999f, getDeltaMovement().z());
+            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.9f, getDeltaMovement().z());
         }
-        if (getY() < 136) {
-            if (level.isClientSide()) {
-                // Particles
-            } else if (getY() < 128) {
-                removeAfterChangingDimensions();
-            }
+        if (getY() < 128) {
+            removeAfterChangingDimensions();
+        }
+        if (action == AirGuardianAction.SPINNING && level.isClientSide()) {
+            // Particles
+        }
+        if (getY() < 136 && level.isClientSide()) {
+            // Particles
         }
         super.aiStep();
     }
@@ -93,25 +84,13 @@ public class AirGuardian extends AbstractBoss {
         return action != AirGuardianAction.SPINNING;
     }
 
-    public boolean useLeftArm() {
-        return useLeftArm;
-    }
-
-    public float getOrbitRotation() {
-        return orbitRotation;
-    }
-
     public AirGuardianAction getAction() {
         return action;
     }
 
     public void setAction(final AirGuardianAction action) {
         this.action = action;
-        spinRotation = 0;
         ticksInAction = 0;
-        if (action == AirGuardianAction.CASTING) {
-            useLeftArm = !useLeftArm;
-        }
     }
 
     @Override
