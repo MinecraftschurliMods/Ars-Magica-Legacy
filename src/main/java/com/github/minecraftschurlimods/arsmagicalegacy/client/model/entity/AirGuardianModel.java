@@ -7,9 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
@@ -45,17 +42,16 @@ public class AirGuardianModel extends EntityModel<AirGuardian> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        CubeDeformation deformation = new CubeDeformation(0F);
-        partdefinition.addOrReplaceChild("right_shoulder", CubeListBuilder.create().texOffs(0, 47).addBox(-7F, -2F, -2F, 4F, 4F, 4F, deformation), PartPose.offset(0F, -4F, 0F));
-        partdefinition.addOrReplaceChild("left_shoulder", CubeListBuilder.create().texOffs(0, 56).addBox(3F, -2F, -2F, 4F, 4F, 4F, deformation), PartPose.offset(0F, -4F, 0F));
-        partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(17, 55).mirror().addBox(-6.5F, 2F, -1.5F, 3F, 6F, 3F, deformation).mirror(false), PartPose.offset(0F, -4F, 0F));
-        partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(17, 55).addBox(3.5F, 2F, -1.5F, 3F, 6F, 3F, deformation), PartPose.offset(0F, -4F, 0F));
-        partdefinition.addOrReplaceChild("core1", CubeListBuilder.create().texOffs(21, 0).addBox(-3F, -3F, -3F, 6F, 6F, 6F, deformation), PartPose.offset(0F, 16F, 0F));
-        partdefinition.addOrReplaceChild("core2", CubeListBuilder.create().texOffs(21, 0).addBox(-3F, -3F, -3F, 6F, 6F, 6F, deformation), PartPose.offset(0F, 16F, 0F));
-        partdefinition.addOrReplaceChild("core3", CubeListBuilder.create().texOffs(21, 0).addBox(-3F, -3F, -3F, 6F, 6F, 6F, deformation), PartPose.offset(0F, 16F, 0F));
-        partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(17, 17).addBox(-3.5F, -7F, -3.5F, 7F, 7F, 7F, deformation), PartPose.offset(0F, -6F, 0F));
-        partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 32).addBox(-3F, 0F, -3F, 6F, 8F, 6F, deformation), PartPose.offset(0F, -6F, 0F));
-        partdefinition.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(0, 21).addBox(-2F, 0F, -2F, 4F, 6F, 4F, deformation), PartPose.offset(0F, 2F, 0F));
+        ModelUtil.addCube(partdefinition, "right_shoulder", 0, 47, -7F, -2F, -2F, 4F, 4F, 4F, 0F, -4F, 0F);
+        ModelUtil.addCube(partdefinition, "left_shoulder", 0, 56, 3F, -2F, -2F, 4F, 4F, 4F, 0F, -4F, 0F);
+        ModelUtil.addCube(partdefinition, "right_arm", 17, 55, -6.5F, 2F, -1.5F, 3F, 6F, 3F, 0F, -4F, 0F, true);
+        ModelUtil.addCube(partdefinition, "left_arm", 17, 55, 3.5F, 2F, -1.5F, 3F, 6F, 3F, 0F, -4F, 0F);
+        ModelUtil.addCube(partdefinition, "core1", 21, 0, -3F, -3F, -3F, 6F, 6F, 6F, 0F, 16F, 0F);
+        ModelUtil.addCube(partdefinition, "core2", 21, 0, -3F, -3F, -3F, 6F, 6F, 6F, 0F, 16F, 0F);
+        ModelUtil.addCube(partdefinition, "core3", 21, 0, -3F, -3F, -3F, 6F, 6F, 6F, 0F, 16F, 0F);
+        ModelUtil.addCube(partdefinition, "head", 17, 17, -3.5F, -7F, -3.5F, 7F, 7F, 7F, 0F, -6F, 0F);
+        ModelUtil.addCube(partdefinition, "body", 0, 32, -3F, 0F, -3F, 6F, 8F, 6F, 0F, -6F, 0F);
+        ModelUtil.addCube(partdefinition, "tail", 0, 21, -2F, 0F, -2F, 4F, 6F, 4F, 0F, 2F, 0F);
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
