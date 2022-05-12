@@ -2,11 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class CloneGoal extends Goal {
     private final WaterGuardian waterGuardian;
-    private int cooldown = 0;
+    private int cooldownTicks = 0;
 
     public CloneGoal(WaterGuardian waterGuardian) {
         this.waterGuardian = waterGuardian;
@@ -14,29 +15,34 @@ public class CloneGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.IDLE || !waterGuardian.isWaterGuardianActionValid(WaterGuardian.WaterGuardianAction.CLONE)) {
+        if (waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.IDLE || waterGuardian.getTarget() == null || waterGuardian.getTarget().isDeadOrDying())
             return false;
-        }
-        return waterGuardian.getTarget() != null && !waterGuardian.getTarget().isDeadOrDying();
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        if (waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() > waterGuardian.getAction().getMaxActionTime()) {
-            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.IDLE);
-            cooldown = 200;
-            return false;
-        }
+        waterGuardian.setAction(WaterGuardian.WaterGuardianAction.CLONE);
         return true;
     }
 
     @Override
+    public boolean canContinueToUse() {
+        cooldownTicks++;
+        return waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTarget() != null && !waterGuardian.getTarget().isDeadOrDying();
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        waterGuardian.setAction(WaterGuardian.WaterGuardianAction.IDLE);
+        cooldownTicks = 0;
+    }
+
+    @Override
     public void tick() {
-        if (waterGuardian.getAction() != WaterGuardian.WaterGuardianAction.CLONE) {
-            waterGuardian.setAction(WaterGuardian.WaterGuardianAction.CLONE);
-        }
-        if (!waterGuardian.getLevel().isClientSide() && waterGuardian.getAction() == WaterGuardian.WaterGuardianAction.CLONE && waterGuardian.getTicksInAction() == 30) {
+        super.tick();
+        LivingEntity target = waterGuardian.getTarget();
+        if (target == null) return;
+        waterGuardian.lookAt(target, 30, 30);
+        if (!waterGuardian.getLevel().isClientSide() && cooldownTicks >= waterGuardian.getAction().getMaxActionTime()) {
             waterGuardian.setClones(spawnClone(), spawnClone());
+            cooldownTicks = 0;
         }
     }
 

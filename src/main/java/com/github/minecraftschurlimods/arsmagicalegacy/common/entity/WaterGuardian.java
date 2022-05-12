@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ChaosWaterBoltGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.CloneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WaterSpinAttackGoal;
@@ -36,15 +35,12 @@ public class WaterGuardian extends AbstractBoss {
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
     private WaterGuardian clone2 = null;
-    private float orbitRotation;
     private float spinRotation = 0;
-    private boolean uberSpinAvailable = false;
     private WaterGuardianAction action;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
         setPathfindingMalus(BlockPathTypes.WATER, 0F);
-        action = WaterGuardianAction.IDLE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -73,14 +69,10 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (getAction() == WaterGuardianAction.CASTING) {
-            uberSpinAvailable = false;
-        } else if (!level.isClientSide() && uberSpinAvailable && getAction() != WaterGuardianAction.CASTING && getAction() != WaterGuardianAction.IDLE) {
-            setAction(WaterGuardianAction.IDLE);
-        } else if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
+        if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
             remove(RemovalReason.KILLED);
-        } else if (level.isClientSide()) {
-            updateRotation();
+        } else if (level.isClientSide() && (getAction() == WaterGuardianAction.SPINNING || getAction() == WaterGuardianAction.CASTING)) {
+            spinRotation = (spinRotation + 30) % 360;
         }
         super.aiStep();
     }
@@ -89,21 +81,18 @@ public class WaterGuardian extends AbstractBoss {
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof WaterGuardian) return false;
         if (isClone() && master != null) {
-            master.uberSpinAvailable = true;
             master.clearClones();
         } else if (hasClones()) {
             clearClones();
-        } else if (!isClone() && random.nextInt(10) < 6) {
-            SoundEvent sound = getHurtSound(pSource);
-            if (sound != null) {
-                level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
-            }
-            return false;
-        }
+        } else if (!isClone() && random.nextInt(10) < 5) return false;
         if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource.getEntity() != null && pSource.getEntity() instanceof WaterGuardian || pSource == DamageSource.FREEZE) {
+        } else if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
+        }
+        SoundEvent sound = getHurtSound(pSource);
+        if (sound != null) {
+            level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
         }
         return super.hurt(pSource, pAmount);
     }
@@ -113,7 +102,7 @@ public class WaterGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
-        goalSelector.addGoal(2, new ChaosWaterBoltGoal(this));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 10, 10));
         goalSelector.addGoal(3, new CloneGoal(this));
         goalSelector.addGoal(3, new WaterSpinAttackGoal(this));
     }
@@ -148,7 +137,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void travel(@NotNull Vec3 pTravelVector) {
-        if (isEffectiveAi() && isInWater()) {
+        if (isInWater()) {
             moveRelative(0.1F, pTravelVector);
             move(MoverType.SELF, getDeltaMovement());
             setDeltaMovement(getDeltaMovement().scale(0.9D));
@@ -157,27 +146,12 @@ public class WaterGuardian extends AbstractBoss {
         }
     }
 
-    private void updateRotation() {
-        if (!isClone()) {
-            orbitRotation += 2f;
-        } else {
-            orbitRotation -= 2f;
-        }
-        if (getAction() == WaterGuardianAction.SPINNING || getAction() == WaterGuardianAction.CASTING) {
-            spinRotation = (spinRotation - 30) % 360;
-        }
-    }
-
-    public float getOrbitRotation() {
-        return orbitRotation;
-    }
-
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
         this.clone1 = clone1;
         this.clone2 = clone2;
     }
 
-    private boolean hasClones() {
+    public boolean hasClones() {
         return clone1 != null || clone2 != null;
     }
 
@@ -185,7 +159,8 @@ public class WaterGuardian extends AbstractBoss {
         if (clone1 != null) {
             clone1.remove(RemovalReason.KILLED);
             clone1 = null;
-        } else if (clone2 != null) {
+        }
+        if (clone2 != null) {
             clone2.remove(RemovalReason.KILLED);
             clone2 = null;
         }
@@ -200,25 +175,18 @@ public class WaterGuardian extends AbstractBoss {
         this.master = master;
     }
 
+    public float getSpinRotation() {
+        return spinRotation;
+    }
+
     public WaterGuardianAction getAction() {
         return action;
     }
 
     public void setAction(final WaterGuardianAction action) {
         this.action = action;
-        spinRotation = 0;
         ticksInAction = 0;
-    }
-
-    public boolean isWaterGuardianActionValid(WaterGuardianAction action) {
-        if (uberSpinAvailable && action != WaterGuardianAction.CASTING) {
-            return false;
-        } else if (action == WaterGuardianAction.CASTING) {
-            return uberSpinAvailable;
-        } else if (action == WaterGuardianAction.CLONE) {
-            return !isClone();
-        }
-        return true;
+        spinRotation = 0;
     }
 
     @Override
