@@ -131,13 +131,13 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
         return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override
-    public void travel(@NotNull Vec3 pTravelVector) {
-        if (isInWater()) {
+    public void travel(Vec3 pTravelVector) {
+        if (isEffectiveAi() && isInWater()) {
             moveRelative(0.1F, pTravelVector);
             move(MoverType.SELF, getDeltaMovement());
             setDeltaMovement(getDeltaMovement().scale(0.9D));
@@ -186,7 +186,6 @@ public class WaterGuardian extends AbstractBoss {
     public void setAction(final WaterGuardianAction action) {
         this.action = action;
         ticksInAction = 0;
-        spinRotation = 0;
     }
 
     @Override

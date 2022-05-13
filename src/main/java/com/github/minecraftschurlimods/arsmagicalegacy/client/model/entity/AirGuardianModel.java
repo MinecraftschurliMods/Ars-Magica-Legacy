@@ -59,11 +59,6 @@ public class AirGuardianModel extends EntityModel<AirGuardian> {
     public void setupAnim(AirGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.xRot = headPitch * (float) Math.PI / 180F;
         head.yRot = netHeadYaw * (float) Math.PI / 180F;
-        float z = Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        rightShoulder.zRot = z;
-        rightArm.zRot = z;
-        leftShoulder.zRot = -z;
-        leftArm.zRot = -z;
         float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45F) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45F));
         rightShoulder.y = -4 + y;
         leftShoulder.y = -4 + y;
@@ -78,6 +73,11 @@ public class AirGuardianModel extends EntityModel<AirGuardian> {
         core1.xRot = ageInTicks % 360 / 6F;
         core2.yRot = (ageInTicks + 120) % 360 / 6F;
         core3.zRot = (ageInTicks + 240) % 360 / 6F;
+        float z = Mth.cos(ageInTicks * 0.1F) * 0.05F + 0.05F;
+        rightShoulder.zRot = z;
+        rightArm.zRot = z;
+        leftShoulder.zRot = -z;
+        leftArm.zRot = -z;
     }
 
     @Override
