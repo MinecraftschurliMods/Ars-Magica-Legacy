@@ -1,18 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class EarthSmashGoal extends Goal {
+public class EarthStrikeGoal extends Goal {
     private final EarthGuardian earthGuardian;
     private int cooldownTicks = 0;
 
-    public EarthSmashGoal(EarthGuardian earthGuardian) {
+    public EarthStrikeGoal(EarthGuardian earthGuardian) {
         this.earthGuardian = earthGuardian;
     }
 
@@ -20,21 +19,14 @@ public class EarthSmashGoal extends Goal {
     public boolean canUse() {
         if (earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying())
             return false;
-        earthGuardian.setAction(EarthGuardian.EarthGuardianAction.SMASH);
+        earthGuardian.setAction(EarthGuardian.EarthGuardianAction.STRIKE);
         return true;
     }
 
     @Override
     public boolean canContinueToUse() {
         cooldownTicks++;
-        return earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.SMASH && earthGuardian.getTarget() != null && !earthGuardian.getTarget().isDeadOrDying();
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
-        earthGuardian.setAction(EarthGuardian.EarthGuardianAction.IDLE);
-        cooldownTicks = 0;
+        return earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.STRIKE && earthGuardian.getTarget() != null && !earthGuardian.getTarget().isDeadOrDying();
     }
 
     @Override
@@ -52,20 +44,11 @@ public class EarthSmashGoal extends Goal {
             if (!earthGuardian.getLevel().isClientSide()) {
                 earthGuardian.getLevel().playSound(null, earthGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1f, 1f);
             }
-            for (LivingEntity e : earthGuardian.getLevel().getEntitiesOfClass(LivingEntity.class, earthGuardian.getBoundingBox().inflate(4, 2, 4))) {
-                if (e != earthGuardian) {
-                    e.hurt(DamageSource.mobAttack(earthGuardian), 8);
-                    e.setDeltaMovement(e.getDeltaMovement().add(0, 1.4f, 0));
+            for (LivingEntity e : earthGuardian.getLevel().getEntitiesOfClass(LivingEntity.class, earthGuardian.getBoundingBox().expandTowards(Math.cos(earthGuardian.getYRot()) * 2, 0, Math.sin(earthGuardian.getYRot()) * 2).inflate(2.5, 2, 2.5))) {
+                if (!(e instanceof EarthGuardian)) {
+                    e.hurt(DamageSource.mobAttack(earthGuardian), 4);
                 }
             }
-//            if (!earthGuardian.getLevel().isClientSide()) {
-//                for (int i = 0; i < 4; ++i) {
-//                    Shockwave shockwave = new Shockwave(earthGuardian.getLevel());
-//                    shockwave.setPos(earthGuardian.getX(), earthGuardian.getY(), earthGuardian.getZ());
-//                    shockwave.setMoveSpeedAndAngle(0.5f, Mth.wrapDegrees(earthGuardian.getYRot() + (90 * i)));
-//                    earthGuardian.getLevel().addFreshEntity(shockwave);
-//                }
-//            }
         }
     }
 }

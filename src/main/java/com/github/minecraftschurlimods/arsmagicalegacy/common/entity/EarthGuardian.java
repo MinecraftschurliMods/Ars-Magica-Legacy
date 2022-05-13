@@ -3,26 +3,19 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRockGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.phys.Vec3;
 
 public class EarthGuardian extends AbstractBoss {
-    public boolean leftArm = false;
-    private float rodRotation = 0;
     private EarthGuardianAction action;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
@@ -54,16 +47,6 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    public void aiStep() {
-        if (ticksInAction > 40 && !level.isClientSide()) {
-            setAction(EarthGuardianAction.IDLE);
-        } else if (level.isClientSide()) {
-            updateRotations();
-        }
-        super.aiStep();
-    }
-
-    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FREEZE) {
             pAmount *= 2f;
@@ -79,7 +62,7 @@ public class EarthGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(1, new ThrowRockGoal(this));
         goalSelector.addGoal(2, new EarthSmashGoal(this));
-        goalSelector.addGoal(2, new EarthStrikeAttackGoal(this));
+        goalSelector.addGoal(2, new EarthStrikeGoal(this));
     }
 
     @Override
@@ -87,33 +70,8 @@ public class EarthGuardian extends AbstractBoss {
         return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1F);
     }
 
-    @Override
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
-    }
-
-    @Override
-    public void travel(Vec3 pTravelVector) {
-        if (isEffectiveAi() && isInWater()) {
-            moveRelative(0.1F, pTravelVector);
-            move(MoverType.SELF, getDeltaMovement());
-            setDeltaMovement(getDeltaMovement().scale(0.9D));
-        } else {
-            super.travel(pTravelVector);
-        }
-    }
-
     public boolean shouldRenderRock() {
-        return getAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 5 && ticksInAction < 27;
-    }
-
-    public float getRodRotations() {
-        return rodRotation;
-    }
-
-    private void updateRotations() {
-        rodRotation += 0.02f;
-        rodRotation %= 360;
+        return getAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 3 && ticksInAction < 27;
     }
 
     public EarthGuardianAction getAction() {
@@ -123,9 +81,6 @@ public class EarthGuardian extends AbstractBoss {
     public void setAction(final EarthGuardianAction action) {
         this.action = action;
         ticksInAction = 0;
-        if (getAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
-            leftArm = !leftArm;
-        }
     }
 
     @Override
