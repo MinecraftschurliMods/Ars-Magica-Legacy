@@ -6,8 +6,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public final class ModelUtil {
-    private static final CubeDeformation NO_DEFORMATION = new CubeDeformation(0);
-
     /**
      * Adds a cube to a part definition.
      * @param pd The part definition to add the cube to.
@@ -25,7 +23,7 @@ public final class ModelUtil {
      * @param offsetZ The z offset.
      */
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, NO_DEFORMATION), PartPose.offset(offsetX, offsetY, offsetZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE), PartPose.offset(offsetX, offsetY, offsetZ));
     }
 
     /**
@@ -48,7 +46,7 @@ public final class ModelUtil {
      * @param rotationZ The z rotation.
      */
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ, float rotationX, float rotationY, float rotationZ) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, NO_DEFORMATION), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
     }
 
     /**
@@ -69,7 +67,7 @@ public final class ModelUtil {
      * @param mirror Add this parameter to mirror the texture.
      */
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ, boolean mirror) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, NO_DEFORMATION).mirror(false), PartPose.offset(offsetX, offsetY, offsetZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE).mirror(false), PartPose.offset(offsetX, offsetY, offsetZ));
     }
 
     /**
@@ -93,6 +91,6 @@ public final class ModelUtil {
      * @param mirror Add this parameter to mirror the texture.
      */
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ, float rotationX, float rotationY, float rotationZ, boolean mirror) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, NO_DEFORMATION).mirror(false), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE).mirror(false), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
     }
 }
