@@ -28,19 +28,19 @@ public class SpellBookMenu extends AbstractContainerMenu {
         }
         //Spell Book Pages - reserve spells
         for (int i = 0; i < SpellBookItem.BACKUP_SPELL_SLOTS / SpellBookItem.ACTIVE_SPELL_SLOTS; i++) {
-            for (int k = 0; k < SpellBookItem.ACTIVE_SPELL_SLOTS; k++) {
-                addSlot(new SpellBookSlot(inventory, slotIndex++, 138 + (i * 26), 5 + (k * 18)));
+            for (int j = 0; j < SpellBookItem.ACTIVE_SPELL_SLOTS; j++) {
+                addSlot(new SpellBookSlot(inventory, slotIndex++, 138 + (i * 26), 5 + (j * 18)));
             }
         }
         //display player inventory
         for (int i = 0; i < 3; i++) {
-            for (int k = 0; k < 9; k++) {
-                addSlot(new Slot(playerInventory, k + i * 9 + 9, 48 + k * 18, 171 + i * 18));
+            for (int j = 0; j < 9; j++) {
+                addSlot(new Slot(playerInventory, j + i * 9 + 9, 48 + j * 18, 171 + i * 18));
             }
         }
         //display player action bar
-        for (int j1 = 0; j1 < 9; j1++) {
-            addSlot(new Slot(playerInventory, j1, 48 + j1 * 18, 229));
+        for (int i = 0; i < 9; i++) {
+            addSlot(new Slot(playerInventory, i, 48 + i * 18, 229));
         }
     }
 

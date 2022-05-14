@@ -26,14 +26,14 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
     private void deserializeTag(CompoundTag tag) {
         if (!tag.contains(SpellBookItem.SPELLS_KEY)) return;
         ListTag spells = tag.getList(SpellBookItem.SPELLS_KEY, Tag.TAG_COMPOUND);
-        if (spells.size() != active.getContainerSize()+back.getContainerSize()) return;
+        if (spells.size() != active.getContainerSize() + back.getContainerSize()) return;
 
         List<Tag> active = spells.subList(0, this.active.getContainerSize());
         for (int i = 0; i < active.size(); i++) {
             this.active.setItem(i, ItemStack.of((CompoundTag) active.get(i)));
         }
 
-        List<Tag> back = spells.subList(this.active.getContainerSize(), this.active.getContainerSize()+this.back.getContainerSize());
+        List<Tag> back = spells.subList(this.active.getContainerSize(), this.active.getContainerSize() + this.back.getContainerSize());
         for (int i = 0; i < back.size(); i++) {
             this.back.setItem(i, ItemStack.of((CompoundTag) back.get(i)));
         }
@@ -51,26 +51,17 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
 
     @Override
     public ItemStack getItem(final int pIndex) {
-        if (pIndex < active.getContainerSize()) {
-            return active.getItem(pIndex);
-        }
-        return back.getItem(pIndex - active.getContainerSize());
+        return pIndex < active.getContainerSize() ? active.getItem(pIndex) : back.getItem(pIndex - active.getContainerSize());
     }
 
     @Override
     public ItemStack removeItem(final int pIndex, final int pCount) {
-        if (pIndex < active.getContainerSize()) {
-            return active.removeItem(pIndex, pCount);
-        }
-        return back.removeItem(pIndex - active.getContainerSize(), pCount);
+        return pIndex < active.getContainerSize() ? active.removeItem(pIndex, pCount) : back.removeItem(pIndex - active.getContainerSize(), pCount);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(final int pIndex) {
-        if (pIndex < active.getContainerSize()) {
-            return active.removeItemNoUpdate(pIndex);
-        }
-        return back.removeItemNoUpdate(pIndex - active.getContainerSize());
+        return pIndex < active.getContainerSize() ? active.removeItemNoUpdate(pIndex) : back.removeItemNoUpdate(pIndex - active.getContainerSize());
     }
 
     @Override
@@ -101,7 +92,7 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
     public ListTag createTag() {
         ListTag listtag = new ListTag();
 
-        for(int i = 0; i < this.getContainerSize(); ++i) {
+        for (int i = 0; i < this.getContainerSize(); ++i) {
             ItemStack itemstack = this.getItem(i);
             if (!itemstack.isEmpty()) {
                 listtag.add(itemstack.save(new CompoundTag()));
