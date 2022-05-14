@@ -31,7 +31,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
     protected void createSpellPartData() {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         createSpellPartData(AMSpellParts.AOE, 2f)
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TNT), 1))
                 .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 1))
                 .build();
@@ -86,10 +86,52 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 2500))
                 .build();
         createSpellPartData(AMSpellParts.ZONE, 3.5f)
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_DAMAGE, 10f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.DIAMOND_SWORD), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_DEATH, 10f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.STONE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.STONE_SLAB), 3))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.BLAZE_POWDER), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.ARCANE_ASH.get()), 1))
+                /*.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 5000))*/
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_FALL, 10f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.FEATHERS), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_FIRE, 10f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.MAGMA_CREAM), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.FIRE.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_HEALTH, 10f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIFE.get())), 1))
                 .build();
         createSpellPartData(AMSpellParts.DROWNING_DAMAGE, 80f)
                 .withAffinity(AMAffinities.WATER, 0.01f)

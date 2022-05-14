@@ -5,7 +5,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManag
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
@@ -30,6 +32,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -93,6 +96,11 @@ public interface ArsMagicaAPI {
      * @return The registry for abilities.
      */
     IForgeRegistry<IAbility> getAbilityRegistry();
+
+    /**
+     * @return The registry for contingency types.
+     */
+    IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
 
     /**
      * @return The skill manager instance.
@@ -172,6 +180,12 @@ public interface ArsMagicaAPI {
      */
     @Unmodifiable
     IEtheriumHelper getEtheriumHelper();
+
+    /**
+     * @return The contingency helper instance.
+     */
+    @Unmodifiable
+    IContingencyHelper getContingencyHelper();
 
     /**
      * Opens the occulus gui for the given player.

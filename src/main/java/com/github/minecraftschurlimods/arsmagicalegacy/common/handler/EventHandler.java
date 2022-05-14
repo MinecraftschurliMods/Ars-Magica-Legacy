@@ -37,6 +37,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
@@ -233,6 +234,7 @@ public final class EventHandler {
             if (attributes.hasAttribute(AMAttributes.MAX_BURNOUT.get())) {
                 event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout"), new CodecCapabilityProvider<>(BurnoutHelper.BurnoutHolder.CODEC, BurnoutHelper.getBurnoutCapability(), BurnoutHelper.BurnoutHolder::new));
             }
+            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "contingency"), new CodecCapabilityProvider<>(ContingencyHelper.Contingency.CODEC, ContingencyHelper.getCapability(), ContingencyHelper.Contingency::new));
         }
         if (event.getObject() instanceof Player) {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge"), new CodecCapabilityProvider<>(SkillHelper.KnowledgeHolder.CODEC, SkillHelper.getCapability(), SkillHelper.KnowledgeHolder::empty));
