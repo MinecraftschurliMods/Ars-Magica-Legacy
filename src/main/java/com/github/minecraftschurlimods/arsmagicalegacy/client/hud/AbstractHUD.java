@@ -11,7 +11,7 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 
 public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay {
-    public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/bar.png");
+    public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/bar.png");
 
     @Override
     public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {

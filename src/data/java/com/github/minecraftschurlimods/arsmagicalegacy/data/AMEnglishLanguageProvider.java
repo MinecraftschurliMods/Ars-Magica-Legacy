@@ -113,6 +113,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         }
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL);
+        itemIdTranslation(AMItems.SPELL_BOOK);
         itemIdTranslation(AMItems.MANA_CAKE);
         itemIdTranslation(AMItems.MANA_MARTINI);
         itemIdTranslation(AMItems.MAGE_HELMET);
