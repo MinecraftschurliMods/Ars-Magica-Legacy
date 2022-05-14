@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -207,6 +208,9 @@ public class SpellItem extends Item implements ISpellItem {
         var api = ArsMagicaAPI.get();
         ItemStack heldItem = player.getItemInHand(hand);
         if (!api.getMagicHelper().knowsMagic(player)) return InteractionResultHolder.fail(heldItem);
+        if (heldItem.getItem() instanceof SpellBookItem) {
+            heldItem = SpellBookItem.getSelectedSpell(heldItem);
+        }
         if (heldItem.hasTag()) {
             assert heldItem.getTag() != null;
             String icon = heldItem.getTag().getString(SPELL_ICON_KEY);
@@ -229,6 +233,9 @@ public class SpellItem extends Item implements ISpellItem {
         if (player == null) return InteractionResult.FAIL;
         if (!api.getMagicHelper().knowsMagic(player)) return InteractionResult.FAIL;
         ItemStack item = context.getItemInHand();
+        if (item.getItem() instanceof SpellBookItem) {
+            item = SpellBookItem.getSelectedSpell(item);
+        }
         Optional<ResourceLocation> spellIcon = getSpellIcon(item);
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
