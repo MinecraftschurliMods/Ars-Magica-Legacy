@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceSmashGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.IceStrikeAttackGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
@@ -16,20 +16,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
-
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
     private boolean hasLeftArm = true;
-    private float orbitRotation;
-    private IceGuardianAction action;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3000).add(AMAttributes.MAX_BURNOUT.get(), 3000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3000).add(AMAttributes.MAX_BURNOUT.get(), 3000);
     }
 
     @Override
@@ -48,22 +44,30 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
     @Override
+    public Action getIdleAction() {
+        return IceGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return IceGuardianAction.CASTING;
+    }
+
+    @Override
+    public boolean canFreeze() {
+        return false;
+    }
+
+    @Override
     public void aiStep() {
-        if (this.level.isClientSide()) {
-            this.updateRotations();
-        } else {
-            if (this.tickCount % 100 == 0) {
-                List<LivingEntity> entities = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0));
-                for (LivingEntity e : entities) {
-                    if (e != this) {
-                        e.hurt(DamageSource.FREEZE, 5);
-                    }
-                }
+        if (this.tickCount % 100 == 0) {
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
+                e.hurt(DamageSource.FREEZE, 5);
             }
         }
         super.aiStep();
@@ -83,9 +87,9 @@ public class IceGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new SmashGoal<>(this, IceGuardianAction.SMASH, DamageSource.FREEZE));
+        goalSelector.addGoal(3, new StrikeGoal<>(this, IceGuardianAction.STRIKE, DamageSource.FREEZE));
         goalSelector.addGoal(4, new LaunchArmGoal(this));
-        goalSelector.addGoal(2, new IceSmashGoal(this));
-        goalSelector.addGoal(3, new IceStrikeAttackGoal(this));
     }
 
     public void returnOneArm() {
@@ -112,49 +116,12 @@ public class IceGuardian extends AbstractBoss {
         return hasRightArm;
     }
 
-    private void updateRotations() {
-        orbitRotation += 2f;
-        orbitRotation %= 360;
-    }
-
-    public float getOrbitRotation() {
-        return orbitRotation;
-    }
-
-    public IceGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final IceGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
-    }
-
-    @Override
-    public boolean canCastSpell() {
-        return action == IceGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == IceGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = IceGuardianAction.CASTING;
-        } else if (action == IceGuardianAction.CASTING) {
-            action = IceGuardianAction.IDLE;
-        }
-    }
-
-    public enum IceGuardianAction {
+    public enum IceGuardianAction implements Action {
         IDLE(-1),
-        STRIKE(15),
-        SMASH(20),
         CASTING(-1),
-        LAUNCHING(20);
+        SMASH(20),
+        STRIKE(20),
+        LAUNCHING(30);
 
         private final int maxActionTime;
 

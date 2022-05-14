@@ -1,37 +1,35 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderBoltGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderRushGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderTorrentGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderWaveGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.OtherwordlyRoarGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.OtherworldlyRoarGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ProtectGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShadowstepGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.mojang.math.Vector3f;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class EnderGuardian extends AbstractBoss {
-    private int wingFlapTime = 0;
-    private int ticksSinceLastAttack = 0;
     private int hitCount = 0;
-    private Vector3f spawn;
-    private EnderGuardianAction action;
+    private int ticksSinceLastAttack = 0;
+    private int wingFlapTime = 0;
+    private Vec3 spawn;
 
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.PURPLE);
@@ -58,42 +56,50 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.ENDER_GUARDIAN_ATTACK.get();
     }
 
     @Override
+    public Action getIdleAction() {
+        return EnderGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return EnderGuardianAction.CASTING;
+    }
+
+    @Override
     public void aiStep() {
-        super.aiStep();
         if (spawn == null) {
-            spawn = new Vector3f(position());
+            spawn = position();
         }
         wingFlapTime++;
         ticksSinceLastAttack++;
-        if (getDeltaMovement().y() < 0) {
-            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.7999999f, getDeltaMovement().z());
+        if (getAction() == EnderGuardianAction.LONG_CASTING) {
+            if (ticksInAction == 32) {
+                level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
+            }
         }
-        switch (getAction()) {
-            case LONG_CASTING:
-                if (ticksInAction == 32) {
-                    level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
-                }
-                break;
-            case CHARGE:
-                if (getNoActionTime() == 0) {
-                    setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5f, getDeltaMovement().z());
-                }
-                break;
+        if (getAction() == EnderGuardianAction.CHARGE) {
+            if (getNoActionTime() == 0) {
+                setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5f, getDeltaMovement().z());
+            }
         }
         if (shouldFlapWings() && wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
             level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
         }
+        super.aiStep();
     }
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.isMagic()) {
             pAmount *= 2f;
+        }
+        if (pSource == DamageSource.DROWN) {
+            pAmount *= 1.5f;
         }
         if (pSource.getEntity() instanceof EnderMan) {
             pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
@@ -105,7 +111,7 @@ public class EnderGuardian extends AbstractBoss {
                 moveTo(spawn.x(), spawn.y(), spawn.z());
                 setAction(EnderGuardianAction.IDLE);
             } else {
-                removeAfterChangingDimensions();
+                remove(RemovalReason.KILLED);
             }
             return false;
         }
@@ -128,18 +134,13 @@ public class EnderGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new EnderBoltGoal(this));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 0, 20));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 0, 20));
         goalSelector.addGoal(2, new EnderRushGoal(this));
         goalSelector.addGoal(2, new EnderTorrentGoal(this));
-        goalSelector.addGoal(2, new EnderWaveGoal(this));
-        goalSelector.addGoal(2, new OtherwordlyRoarGoal(this));
+        goalSelector.addGoal(2, new OtherworldlyRoarGoal(this));
         goalSelector.addGoal(2, new ProtectGoal(this));
         goalSelector.addGoal(2, new ShadowstepGoal(this));
-    }
-
-    @Override
-    public float getEyeHeight(Pose pPose) {
-        return 2.5F;
     }
 
     public int getTicksSinceLastAttack() {
@@ -151,12 +152,9 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public float getWingFlapSpeed() {
-        return switch (getAction()) {
-            case CASTING -> 0.5f;
-            case CHARGE -> getTicksInAction() < 15 ? 0.25f : 0.75f;
-            case STRIKE -> 0.4f;
-            default -> 0.25f;
-        };
+        Action action = getAction();
+        if (action == EnderGuardianAction.CHARGE) return ticksInAction < 15 ? 0.25f : 0.75f;
+        return action == EnderGuardianAction.CASTING ? 0.5f : action == EnderGuardianAction.STRIKE ? 0.4f : 0.25f;
     }
 
     public boolean shouldFlapWings() {
@@ -164,51 +162,20 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hasEffect(final MobEffect pPotion) {
-        if ((pPotion == AMMobEffects.REFLECT.get() || pPotion == AMMobEffects.MAGIC_SHIELD.get()) && (getAction() == EnderGuardianAction.SHIELD_BASH || getAction() == EnderGuardianAction.LONG_CASTING)) {
-            return true;
-        }
-        return super.hasEffect(pPotion);
-    }
-
-    public EnderGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final EnderGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
+    public void setAction(Action action) {
+        super.setAction(action);
         if (action == EnderGuardianAction.LONG_CASTING) {
             wingFlapTime = 0;
         }
     }
 
-    @Override
-    public boolean canCastSpell() {
-        return action == EnderGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == EnderGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = EnderGuardianAction.CASTING;
-        } else if (action == EnderGuardianAction.CASTING) {
-            action = EnderGuardianAction.IDLE;
-        }
-    }
-
-    public enum EnderGuardianAction {
+    public enum EnderGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
         CHARGE(-1),
         LONG_CASTING(-1),
-        SHIELD_BASH(15),
-        STRIKE(15);
+        STRIKE(20),
+        SHIELD_BASH(15);
 
         private final int maxActionTime;
 

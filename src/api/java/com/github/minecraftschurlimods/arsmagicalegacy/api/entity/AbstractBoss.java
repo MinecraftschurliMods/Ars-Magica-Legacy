@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -28,6 +29,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     private final ServerBossEvent bossEvent;
     private int ticksSinceLastPlayerScan = 0;
     protected int ticksInAction = 0;
+    protected Action action;
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level) {
         this(type, level, BossEvent.BossBarColor.PINK);
@@ -37,7 +39,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         super(type, level);
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         maxUpStep = 1.02F;
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
                 bossEvent.addPlayer(player);
             }
@@ -46,7 +48,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     @Override
     public boolean canBeCollidedWith() {
-        return false;
+        return true;
     }
 
     @Override
@@ -57,6 +59,11 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     public boolean isPersistenceRequired() {
         return true;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
     }
 
     @Override
@@ -74,9 +81,9 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         super.aiStep();
         if (bossEvent != null) {
             bossEvent.setProgress(getHealth() / getMaxHealth());
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 bossEvent.setVisible(isAlive());
-                if (++ticksSinceLastPlayerScan >= 20) {
+                if (ticksSinceLastPlayerScan++ >= 20) {
                     updatePlayers();
                     ticksSinceLastPlayerScan = 0;
                 }
@@ -87,8 +94,9 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.getEntity() instanceof AbstractBoss) return false;
         if (pSource == DamageSource.IN_WALL) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 int width = Math.round(getBbWidth());
                 int height = Math.round(getBbHeight());
                 for (int x = -width; x < width; x++) {
@@ -101,11 +109,16 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
             }
             return false;
         }
+        SoundEvent sound = getHurtSound(pSource);
+        if (sound != null) {
+            level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.5f + random.nextFloat() * 0.5f);
+        }
         return super.hurt(pSource, pAmount);
     }
 
     @Override
     public void kill() {
+        super.kill();
         remove(Entity.RemovalReason.KILLED);
         bossEvent.setProgress(0);
         bossEvent.setVisible(false);
@@ -114,16 +127,78 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Nullable
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
+    @Override
+    public boolean canCastSpell() {
+        return action == getIdleAction();
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return action == getCastingAction();
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+        if (isCastingSpell) {
+            action = getCastingAction();
+        } else if (action == getCastingAction()) {
+            action = getIdleAction();
+        }
+    }
+
+    /**
+     * @return The current action of this boss.
+     */
+    public Action getAction() {
+        return action;
+    }
+
+    /**
+     * Sets the current action.
+     * @param action The action to set.
+     */
+    public void setAction(Action action) {
+        this.action = action;
+        ticksInAction = 0;
+    }
+
+    /**
+     * @return Whether this boss is currently in idle state or not.
+     */
+    public boolean isIdle() {
+        return action == getIdleAction();
+    }
+
+    /**
+     * Sets this boss into idle state.
+     */
+    public void setIdle() {
+        setAction(getIdleAction());
+    }
+
+    /**
+     * @return The action representing an idle state.
+     */
+    public abstract Action getIdleAction();
+
+    /**
+     * @return The action representing a casting state.
+     */
+    public abstract Action getCastingAction();
+
+    /**
+     * @return The amount of ticks the boss is already using the current action.
+     */
     public int getTicksInAction() {
         return ticksInAction;
     }
 
     private void updatePlayers() {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             Set<ServerPlayer> newSet = new HashSet<>();
             for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
                 bossEvent.addPlayer(player);
@@ -137,5 +212,15 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 stopSeenByPlayer(player);
             }
         }
+    }
+
+    /**
+     * Marker interface for actions the bosses can use.
+     */
+    public interface Action {
+        /**
+         * @return The time using this action requires.
+         */
+        int getMaxActionTime();
     }
 }

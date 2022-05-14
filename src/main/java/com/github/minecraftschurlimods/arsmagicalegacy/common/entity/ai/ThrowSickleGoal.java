@@ -1,17 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 
-public class FireRainGoal extends AbstractBossGoal<FireGuardian> {
-    public FireRainGoal(FireGuardian boss) {
-        super(boss, FireGuardian.FireGuardianAction.LONG_CASTING, 10);
+public class ThrowSickleGoal extends AbstractBossGoal<NatureGuardian> {
+    public ThrowSickleGoal(NatureGuardian boss) {
+        super(boss, NatureGuardian.NatureGuardianAction.THROWING);
     }
 
     @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
-//            FireRain entity = FireRain.create(boss.getLevel());
+//            ThrownSickle entity = ThrownSickle.create(boss.getLevel());
 //            entity.moveTo(boss.getX(), boss.getY() + boss.getEyeHeight(), boss.getZ());
 //            entity.setDeltaMovement(boss.getLookAngle());
 //            boss.getLevel().addFreshEntity(entity);

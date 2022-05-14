@@ -23,16 +23,6 @@ public class ManaCreeper extends Creeper {
     }
 
     @Override
-    protected void registerGoals() {
-        goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8F));
-        goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        targetSelector.addGoal(2, new HurtByTargetGoal(this));
-    }
-
-    @Override
     protected void explodeCreeper() {
         super.explodeCreeper();
     }

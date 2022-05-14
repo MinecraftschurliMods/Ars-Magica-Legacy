@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,26 +17,23 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LifeGuardian extends AbstractBoss {
-    private static final EntityDataAccessor<Integer> MINION_COUNT = SynchedEntityData.defineId(LifeGuardian.class, EntityDataSerializers.INT);
-    private final ArrayList<LivingEntity> minions = new ArrayList<>();
-    private final ArrayList<LivingEntity> queuedMinions = new ArrayList<>();
-    private LifeGuardianAction action;
+    private final List<LivingEntity> minions = new ArrayList<>();
+    private final List<LivingEntity> queuedMinions = new ArrayList<>();
 
     public LifeGuardian(EntityType<? extends LifeGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
-        this.entityData.define(MINION_COUNT, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200).add(Attributes.ARMOR, Attributes.ARMOR.getDefaultValue()).add(AMAttributes.MAX_MANA.get(), 2500).add(AMAttributes.MAX_BURNOUT.get(), 2500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 2500).add(AMAttributes.MAX_BURNOUT.get(), 2500);
     }
 
     @Override
@@ -54,8 +52,18 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.LIFE_GUARDIAN_ATTACK.get();
+    }
+
+    @Override
+    public Action getIdleAction() {
+        return LifeGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return LifeGuardianAction.CASTING;
     }
 
     @Override
@@ -65,7 +73,6 @@ public class LifeGuardian extends AbstractBoss {
             queuedMinions.clear();
             minions.removeIf(minion -> minion == null || minion.isDeadOrDying());
         }
-        entityData.set(MINION_COUNT, minions.size());
         if (tickCount % 100 == 0) {
             for (LivingEntity e : minions) {
                 // Particles
@@ -93,51 +100,14 @@ public class LifeGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 16, 80));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 16, 4));
-        //goalSelector.addGoal(3, new SummonAlliesGoal(this, EarthElemental.class, FireElemental.class, ManaElemental.class, Darkling.class));
+//        goalSelector.addGoal(3, new SummonAlliesGoal(this, List.of(AMEntities.EARTH_ELEMENTAL.get(), AMEntities.FIRE_ELEMENTAL.get(), AMEntities.MANA_ELEMENTAL.get(), AMEntities.DARKLING.get())));
     }
 
-    @Override
-    public float getEyeHeight(Pose pPose) {
-        return 1.5F;
-    }
-
-    public int getMinionCount() {
-        return entityData.get(MINION_COUNT);
-    }
-
-    public void addQueuedMinions(LivingEntity minion) {
+    public void addQueuedMinion(LivingEntity minion) {
         queuedMinions.add(minion);
     }
 
-    public LifeGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final LifeGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
-    }
-
-    @Override
-    public boolean canCastSpell() {
-        return action == LifeGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == LifeGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = LifeGuardianAction.CASTING;
-        } else if (action == LifeGuardianAction.CASTING) {
-            action = LifeGuardianAction.IDLE;
-        }
-    }
-
-    public enum LifeGuardianAction {
+    public enum LifeGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1);
 

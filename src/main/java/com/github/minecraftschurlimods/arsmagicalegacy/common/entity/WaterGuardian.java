@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.CloneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WaterSpinAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
@@ -16,7 +16,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,16 +30,16 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardian extends AbstractBoss {
+    private static final String KEY = "isClone";
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
+    private float spinRotation = 0;
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
     private WaterGuardian clone2 = null;
-    private float spinRotation = 0;
-    private WaterGuardianAction action;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
-        setPathfindingMalus(BlockPathTypes.WATER, 0F);
+        setPathfindingMalus(BlockPathTypes.WATER, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -63,23 +62,71 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
     @Override
+    public Action getIdleAction() {
+        return WaterGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return WaterGuardianAction.CASTING;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean(KEY, isClone());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        entityData.set(IS_CLONE, pCompound.getBoolean(KEY));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(IS_CLONE, false);
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
+    }
+
+    @Override
+    public void travel(Vec3 pTravelVector) {
+        if (isEffectiveAi() && isInWater()) {
+            moveRelative(getSpeed(), pTravelVector);
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().scale(0.9D));
+        } else {
+            super.travel(pTravelVector);
+        }
+    }
+
+    public float getSpinRotation() {
+        return spinRotation;
+    }
+
+    @Override
     public void aiStep() {
+        if (level.isClientSide() && getAction() == WaterGuardianAction.SPINNING) {
+            spinRotation = (spinRotation + 30) % 360;
+        }
         if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
             remove(RemovalReason.KILLED);
-        } else if (level.isClientSide() && (getAction() == WaterGuardianAction.SPINNING || getAction() == WaterGuardianAction.CASTING)) {
-            spinRotation = (spinRotation + 30) % 360;
         }
         super.aiStep();
     }
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (pSource.getEntity() instanceof WaterGuardian) return false;
         if (isClone() && master != null) {
             master.clearClones();
         } else if (hasClones()) {
@@ -89,10 +136,6 @@ public class WaterGuardian extends AbstractBoss {
             pAmount *= 2f;
         } else if (pSource == DamageSource.FREEZE) {
             pAmount = 0;
-        }
-        SoundEvent sound = getHurtSound(pSource);
-        if (sound != null) {
-            level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.4f + random.nextFloat() * 0.6f);
         }
         return super.hurt(pSource, pAmount);
     }
@@ -104,46 +147,7 @@ public class WaterGuardian extends AbstractBoss {
         goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 10, 10));
         goalSelector.addGoal(3, new CloneGoal(this));
-        goalSelector.addGoal(3, new WaterSpinAttackGoal(this));
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("isClone", isClone());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        entityData.set(IS_CLONE, pCompound.getBoolean("isClone"));
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(IS_CLONE, false);
-    }
-
-    @Override
-    public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1F);
-    }
-
-    @Override
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
-    }
-
-    @Override
-    public void travel(Vec3 pTravelVector) {
-        if (isEffectiveAi() && isInWater()) {
-            moveRelative(0.1F, pTravelVector);
-            move(MoverType.SELF, getDeltaMovement());
-            setDeltaMovement(getDeltaMovement().scale(0.9D));
-        } else {
-            super.travel(pTravelVector);
-        }
+        goalSelector.addGoal(3, new SpinGoal<>(this, WaterGuardianAction.SPINNING, DamageSource.mobAttack(this)));
     }
 
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
@@ -175,43 +179,11 @@ public class WaterGuardian extends AbstractBoss {
         this.master = master;
     }
 
-    public float getSpinRotation() {
-        return spinRotation;
-    }
-
-    public WaterGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final WaterGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
-    }
-
-    @Override
-    public boolean canCastSpell() {
-        return action == WaterGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == WaterGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = WaterGuardianAction.CASTING;
-        } else if (action == WaterGuardianAction.CASTING) {
-            action = WaterGuardianAction.IDLE;
-        }
-    }
-
-    public enum WaterGuardianAction {
+    public enum WaterGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
-        CLONE(30),
-        SPINNING(160);
+        SPINNING(160),
+        CLONE(30);
 
         private final int maxActionTime;
 

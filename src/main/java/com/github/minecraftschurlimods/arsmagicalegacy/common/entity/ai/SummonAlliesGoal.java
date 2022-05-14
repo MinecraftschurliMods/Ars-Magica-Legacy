@@ -1,84 +1,64 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class SummonAlliesGoal extends Goal {
-    private final LifeGuardian lifeGuardian;
-    private int cooldown = 0;
+public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
+    private final List<EntityType<? extends Mob>> list;
     private boolean hasCasted = false;
-    private int castTicks = 0;
-    private List<EntityType<? extends Mob>> mobs;
 
-    public SummonAlliesGoal(LifeGuardian lifeGuardian, EntityType<? extends Mob>... summons) {
-        this.lifeGuardian = lifeGuardian;
-        this.mobs = Arrays.stream(summons).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean canUse() {
-        cooldown--;
-        if (lifeGuardian.getAction() != LifeGuardian.LifeGuardianAction.CASTING && cooldown <= 0) {
-            hasCasted = false;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return !hasCasted;
+    public SummonAlliesGoal(LifeGuardian boss, List<EntityType<? extends Mob>> list) {
+        super(boss, LifeGuardian.LifeGuardianAction.CASTING);
+        this.list = list;
     }
 
     @Override
     public void stop() {
-        lifeGuardian.setAction(LifeGuardian.LifeGuardianAction.IDLE);
-        cooldown = 200;
-        hasCasted = true;
-        castTicks = 0;
+        super.stop();
+        hasCasted = false;
     }
 
     @Override
     public void tick() {
-        if (lifeGuardian.getAction() != LifeGuardian.LifeGuardianAction.CASTING) {
-            lifeGuardian.setAction(LifeGuardian.LifeGuardianAction.CASTING);
-        }
-        castTicks++;
-        if (castTicks == 16) {
-            if (!lifeGuardian.getLevel().isClientSide()) {
-                lifeGuardian.getLevel().playSound(null, lifeGuardian, AMSounds.LIFE_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, lifeGuardian.getRandom().nextFloat() * 0.5f + 0.5f); // should be LIFE_GUARDIAN_SUMMON
+        super.tick();
+        if (cooldownTicks >= 20) {
+            SoundEvent sound = getAttackSound();
+            if (sound != null) {
+                boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat() * 0.5f);
             }
-//            for (int i = 0; i < 3; ++i) {
-//                EntityType<?> summon = mobs.get(lifeGuardian.getLevel().getRandom().nextInt(mobs.size()));
-//                Mob mob = (Mob) summon.create(lifeGuardian.getLevel());
-//                if (mob == null) continue;
-//                double newX = lifeGuardian.getX() + lifeGuardian.getLevel().getRandom().nextDouble() * 2 - 1;
-//                double newZ = lifeGuardian.getZ() + lifeGuardian.getLevel().getRandom().nextDouble() * 2 - 1;
-//                mob.moveTo(newX, lifeGuardian.getY(), newZ);
-//                mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 1));
-//                mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 99999, 1));
-//                mob.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1));
-//                mob.addEffect(new MobEffectInstance(AMMobEffects.MAGIC_SHIELD.get(), 99999, 1));
-//                if (lifeGuardian.getHealth() < lifeGuardian.getMaxHealth() / 2) {
-//                    mob.addEffect(new MobEffectInstance(AMMobEffects.SHRINK.get(), 99999, 1));
-//                }
-//                EntityUtils.makeSummonMonsterFaction(mob, false);
-//                EntityUtils.setOwner(mob, host);
-//                EntityUtils.setSummonDuration(mob, 1800);
-//                lifeGuardian.getLevel().addFreshEntity(mob);
-//                lifeGuardian.addQueuedMinions(mob);
-//            }
+            perform();
+            cooldownTicks = 0;
+            hasCasted = true;
         }
-        if (castTicks >= 23) {
-            stop();
+    }
+
+    @Override
+    public void perform() {
+        for (int i = 0; i < 3; i++) {
+            Mob entity = list.get(boss.getLevel().getRandom().nextInt(list.size())).create(boss.getLevel());
+            if (entity == null) continue;
+            entity.moveTo(boss.getX() + boss.getLevel().getRandom().nextDouble() * 2 - 1, boss.getY(), boss.getZ() + boss.getLevel().getRandom().nextDouble() * 2 - 1);
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10000, 1));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10000, 1));
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10000, 1));
+            entity.addEffect(new MobEffectInstance(AMMobEffects.MAGIC_SHIELD.get(), 10000, 1));
+            if (boss.getHealth() < boss.getMaxHealth() / 2) {
+                entity.addEffect(new MobEffectInstance(AMMobEffects.SHRINK.get(), 10000, 1));
+            }
+//            EntityUtils.makeSummonMonsterFaction(entity, false);
+//            EntityUtils.setOwner(entity, host);
+//            EntityUtils.setSummonDuration(entity, 1800);
+            boss.getLevel().addFreshEntity(entity);
+            boss.addQueuedMinion(entity);
         }
     }
 }

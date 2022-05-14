@@ -14,8 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class AirGuardian extends AbstractBoss {
-    private AirGuardianAction action;
-
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.YELLOW);
     }
@@ -40,23 +38,27 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
     @Override
+    public Action getIdleAction() {
+        return AirGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return AirGuardianAction.CASTING;
+    }
+
+    @Override
     public void aiStep() {
-        if (getDeltaMovement().y() < 0) {
-            setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() * 0.9f, getDeltaMovement().z());
+        if (level.isClientSide()) {
+            // Particles
         }
         if (getY() < 128) {
-            removeAfterChangingDimensions();
-        }
-        if (action == AirGuardianAction.SPINNING && level.isClientSide()) {
-            // Particles
-        }
-        if (getY() < 136 && level.isClientSide()) {
-            // Particles
+            remove(RemovalReason.KILLED);
         }
         super.aiStep();
     }
@@ -75,44 +77,11 @@ public class AirGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new HurricaneGoal(this));
         goalSelector.addGoal(1, new WhirlwindGoal(this));
+        goalSelector.addGoal(2, new HurricaneGoal(this));
     }
 
-    @Override
-    public boolean isPushable() {
-        return action != AirGuardianAction.SPINNING;
-    }
-
-    public AirGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final AirGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
-    }
-
-    @Override
-    public boolean canCastSpell() {
-        return action == AirGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == AirGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = AirGuardianAction.CASTING;
-        } else if (action == AirGuardianAction.CASTING) {
-            action = AirGuardianAction.IDLE;
-        }
-    }
-
-    public enum AirGuardianAction {
+    public enum AirGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
         SPINNING(160);

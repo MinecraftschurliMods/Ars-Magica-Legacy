@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningBoltGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -15,14 +14,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class LightningGuardian extends AbstractBoss {
-    private LightningGuardianAction action;
-
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.YELLOW);
     }
@@ -47,39 +43,31 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.LIGHTNING_GUARDIAN_ATTACK.get();
     }
 
     @Override
+    public Action getIdleAction() {
+        return LightningGuardianAction.IDLE;
+    }
+
+    @Override
+    public Action getCastingAction() {
+        return LightningGuardianAction.CASTING;
+    }
+
+    @Override
     public void aiStep() {
-        super.aiStep();
-        if (getTarget() != null) {
-            if (!level.isClientSide() && distanceToSqr(getTarget()) > 64D && getAction() == LightningGuardianAction.IDLE) {
-                getNavigation().moveTo(getTarget(), 0.5f);
-            }
-        }
         if (level.isClientSide()) {
-            int halfDist = 8;
-            int dist = 16;
-            if (getAction() == LightningGuardianAction.CHARGE) {
-                if (ticksInAction > 50) {
-                    // Particles
-                }
-                if (ticksInAction > 66) {
-                    // Particles
-                }
-            } else if (getAction() == LightningGuardianAction.LONG_CASTING) {
-                if (ticksInAction > 25 && ticksInAction < 150) {
-                    // Particles
-                }
-            }
+            // Particles
         }
+        super.aiStep();
     }
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isMagic() || pSource == DamageSource.MAGIC) {
+        if (pSource.isMagic()) {
             pAmount *= 2;
         } else if (pSource == DamageSource.DROWN) {
             pAmount *= 4;
@@ -93,55 +81,25 @@ public class LightningGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 20, 180));
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 20, 180));
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 20, 180));
-        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 20, 180));
         goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 40, 240));
-        goalSelector.addGoal(5, new LightningBoltGoal(this));
         goalSelector.addGoal(2, new LightningRodGoal(this));
         goalSelector.addGoal(3, new StaticGoal(this));
     }
 
     @Override
-    public float getEyeHeight(Pose pPose) {
-        return 2;
-    }
-
-    public LightningGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final LightningGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
+    public void setAction(Action action) {
+        super.setAction(action);
         setNoGravity(action == LightningGuardianAction.LONG_CASTING);
     }
 
-    @Override
-    public boolean canCastSpell() {
-        return action == LightningGuardianAction.IDLE;
-    }
-
-    @Override
-    public boolean isCastingSpell() {
-        return action == LightningGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = LightningGuardianAction.CASTING;
-        } else if (action == LightningGuardianAction.CASTING) {
-            action = LightningGuardianAction.IDLE;
-        }
-    }
-
-    public enum LightningGuardianAction {
+    public enum LightningGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
         CHARGE(-1),
-        LONG_CASTING(-1),
-        SMASH(20);
+        LONG_CASTING(-1);
 
         private final int maxActionTime;
 
