@@ -95,6 +95,7 @@ final class TickHandler {
     }
 
     private static void handleAbilities(final Player player) {
+        if (player.isDeadOrDying()) return;
         var api = ArsMagicaAPI.get();
         var manager = api.getAbilityManager();
         var helper = api.getAffinityHelper();
