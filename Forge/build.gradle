@@ -1,0 +1,256 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    //id 'org.parchmentmc.librarian.forgegradle'
+}
+
+sourceSets {
+    api.resources.srcDirs = []
+    main.resources {
+        srcDirs += 'src/main/generated'
+        exclude '.cache'
+    }
+    data.resources.srcDirs = []
+}
+
+minecraft {
+    mappings channel: 'official', version: mc_version
+    
+    if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
+        // This location is hardcoded in Forge and can not be changed.
+        // https://github.com/MinecraftForge/MinecraftForge/blob/be1698bb1554f9c8fa2f58e32b9ab70bc4385e60/fmlloader/src/main/java/net/minecraftforge/fml/loading/moddiscovery/ModFile.java#L123
+        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+        project.logger.debug('Forge Access Transformers are enabled for this project.')
+    }
+
+    runs {
+        client {
+            taskName 'Client'
+            mods {
+                modClientRun {
+                    source sourceSets.api
+                    source sourceSets.main
+                    source project(":Xplat").sourceSets.api
+                    source project(":Xplat").sourceSets.main
+                }
+            }
+        }
+
+        server {
+            singleInstance true
+            taskName 'Server'
+            mods {
+                modServerRun {
+                    source sourceSets.api
+                    source sourceSets.main
+                    source project(":Xplat").sourceSets.api
+                    source project(":Xplat").sourceSets.main
+                }
+            }
+        }
+
+        data {
+            singleInstance true
+            args '--mod', mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
+            taskName 'Data'
+            mods {
+                modDataRun {
+                    source sourceSets.api
+                    source sourceSets.main
+                    source sourceSets.data
+                    source project(":Xplat").sourceSets.api
+                    source project(":Xplat").sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            taskName 'Test'
+            singleInstance true
+            setForceExit false // To allow integration tests to run in CI
+            jvmArg '-ea' // Enable assertions
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
+
+            mods {
+                modGameTestServerRun {
+                    source sourceSets.api
+                    source sourceSets.main
+                    source sourceSets.test
+                    source project(":Xplat").sourceSets.api
+                    source project(":Xplat").sourceSets.main
+                }
+            }
+        }
+
+        configureEach {
+            workingDirectory project.file("run/${it.name}") as File
+            ideaModule "${rootProject.name.replace(' ', '_')}.${project.name}.main"
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+    }
+}
+
+configurations {
+    library
+    modAPI
+    runtimeMod
+    include { transitive = false }
+
+    sourceSets.forEach {
+        Configuration extLib
+        Configuration impl
+        Configuration compile
+        Configuration runtime
+        Configuration rcp
+        Configuration ccp
+        if (it.name == "main") {
+            extLib = create("externalLibrary")
+            impl = implementation
+            compile = compileOnly
+            runtime = runtimeOnly
+            rcp = runtimeClasspath
+            ccp = compileClasspath
+        } else {
+            extLib = create(it.name + "ExternalLibrary")
+            impl = getByName(it.name + "Implementation")
+            compile = getByName(it.name + "CompileOnly")
+            runtime = getByName(it.name + "RuntimeOnly")
+            rcp = getByName(it.name + "RuntimeClasspath")
+            ccp = getByName(it.name + "CompileClasspath")
+        }
+        impl.extendsFrom(extLib)
+        compile.extendsFrom(library)
+        compile.extendsFrom(modAPI)
+        if (it.name != "api") {
+            if (it.name != "main") {
+                rcp.extendsFrom(minecraft)
+            }
+            runtime.extendsFrom(runtimeMod)
+        }
+        if (it.name != "main") {
+            ccp.extendsFrom(minecraft)
+        }
+        impl.extendsFrom(include)
+    }
+}
+
+configurations {
+    datagenLibrary {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+    dataImplementation.extendsFrom(datagenLibrary)
+}
+
+dependencies {
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
+
+    compileOnly project(":Xplat")
+    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+
+    // jei for integration
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-forge-api:${project.jei_version}")
+    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+
+    // curios for additional inventory slots
+    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
+    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}")
+
+    // patchouli for the guide book (arcane compendium)
+    modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
+    runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    // theoneprobe for integration
+    modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
+    runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
+
+    if (!System.getenv('GITHUB_ACTIONS')) {
+        runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
+        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
+    }
+
+    // add internal libraries
+    include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.18.2-1.0-SNAPSHOT')
+
+    apiImplementation project(':Xplat').sourceSets.api.output
+
+    implementation sourceSets.api.output
+    implementation project(':Xplat').sourceSets.api.output
+
+    dataImplementation sourceSets.api.output
+    dataImplementation sourceSets.main.output
+    dataImplementation project(':Xplat').sourceSets.api.output
+
+    testImplementation sourceSets.api.output
+    testImplementation sourceSets.main.output
+    testImplementation project(':Xplat').sourceSets.api.output
+
+    library 'org.jetbrains:annotations:23.0.0'
+}
+
+tasks.withType(JavaCompile) {
+    source(project(":Xplat").sourceSets.api.allSource)
+    source(project(":Xplat").sourceSets.main.allSource)
+}
+
+processResources {
+    from project(":Xplat").sourceSets.main.resources
+}
+
+jar {
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    from sourceSets.main.output
+    from sourceSets.api.output
+    from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
+        exclude 'LICENSE*'
+        exclude '**/META_INF/MANIFEST.MF'
+        exclude '**/META-INF/mods.toml'
+    }
+    manifest {
+        attributes([
+                'Built-On-Forge': forge_version,
+                'FMLModType'    : 'MOD'
+        ])
+    }
+    finalizedBy('reobfJar')
+}
+
+sourcesJar {
+    from sourceSets.main.allSource
+    from sourceSets.api.allSource
+}
+
+task apiJar(type: Jar, dependsOn: apiClasses) {
+    archiveClassifier.set('api')
+    from sourceSets.api.allSource
+    from sourceSets.api.output
+    finalizedBy('reobfJar')
+}
+
+task setupGithubActions() {
+    doLast {
+        println "##[set-output name=modid;]${project.mod_id}"
+        println "##[set-output name=version;]${project.version}"
+        if (project.hasProperty('curse_project_id')) {
+            println "##[set-output name=project_id;]${project.curse_project_id}"
+            println "##[set-output name=curse_versions;]${project.curse_versions}"
+            if (project.hasProperty('curse_title')) {
+                println "##[set-output name=curse_title;]${project.curse_title}"
+            }
+            if (project.hasProperty('curse_relations')) {
+                println "##[set-output name=curse_relations;]${project.curse_relations}"
+            }
+        }
+    }
+}

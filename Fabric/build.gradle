@@ -1,0 +1,40 @@
+plugins {
+    id 'fabric-loom'
+    id 'maven-publish'
+    id 'idea'
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${mc_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":Xplat")
+}
+
+loom {
+    runs {
+        client {
+            client()
+            setConfigName("Fabric Client")
+            ideConfigGenerated(true)
+            runDir("run/fabric_client")
+        }
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run/fabric/server")
+        }
+    }
+}
+
+compileTestJava {
+    enabled false
+}
+
+tasks.withType(JavaCompile) {
+    source(project(":Xplat").sourceSets.api.allSource)
+    source(project(":Xplat").sourceSets.main.allSource)
+}

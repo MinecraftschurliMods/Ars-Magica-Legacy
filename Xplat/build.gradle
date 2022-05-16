@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'org.spongepowered.gradle.vanilla'
+    id 'maven-publish'
+}
+
+sourceSets.create('api') {
+    resources.srcDirs = []
+}
+
+configurations.apiImplementation.extendsFrom(configurations.minecraft)
+
+minecraft {
+    version(mc_version)
+    runs {
+        if (project.hasProperty('xplat_runs_enabled') ? project.findProperty('xplat_runs_enabled').toBoolean() : true) {
+            server(project.hasProperty('xplat_server_run_name') ? project.findProperty('xplat_server_run_name') : 'vanilla_server') {
+                workingDirectory(this.file("run"))
+            }
+            client(project.hasProperty('xplat_client_run_name') ? project.findProperty('xplat_client_run_name') : 'vanilla_client') {
+                workingDirectory(this.file("run"))
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+}

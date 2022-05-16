@@ -3,13 +3,19 @@ pluginManagement {
         id 'org.ec4j.editorconfig' version '0.0.3'
         id 'net.minecraftforge.gradle' version '5.1.+'
         id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+        id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT'
         id 'org.parchmentmc.librarian.forgegradle' version '1.2+'
+        id 'fabric-loom' version '0.11-SNAPSHOT'
     }
     repositories {
         gradlePluginPortal()
         maven {
             name 'MinecraftForge'
             url 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name 'Fabric'
+            url 'https://maven.fabricmc.net/'
         }
         maven {
             name 'ParchmentMC'
@@ -40,3 +46,4 @@ pluginManagement {
 }
 
 rootProject.name = 'Ars Magica Legacy'
+include("Xplat", "Forge", "Fabric")

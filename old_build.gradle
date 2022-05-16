@@ -1,0 +1,527 @@
+//file:noinspection GroovyAssignabilityCheck
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
+        classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'org.ec4j.editorconfig'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    id 'org.parchmentmc.librarian.forgegradle'
+}
+
+//=============================================
+
+/*
+mixin {
+    add sourceSets.main, "arsmagicalegacy.refmap.json"
+    config 'arsmagicalegacy.mixins.json'
+    dumpTargetOnFailure true
+}
+*/
+
+editorconfig {
+    excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*', '**/*.bbmodel']
+    excludeNonSourceFiles = true
+}
+
+group = "${project.mod_group}"
+version = "${project.mc_version}-${project.mod_version}"
+archivesBaseName = "${project.mod_id}"
+
+if (System.getenv('RELEASE_TYPE') != null) {
+    status = System.getenv('RELEASE_TYPE').toLowerCase()
+    if (status == 'snapshot') status = status.toUpperCase()
+    version = "${version}-${status}"
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.java_version)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+sourceSets {
+    api.resources.srcDirs = []
+    main.resources {
+        srcDirs += 'src/main/generated'
+        exclude '.cache'
+    }
+    data.resources.srcDirs = []
+}
+
+configurations {
+    library
+    modAPI
+    runtimeMod
+    include { transitive = false }
+
+    sourceSets.forEach {
+        Configuration extLib
+        Configuration impl
+        Configuration compile
+        Configuration runtime
+        Configuration rcp
+        Configuration ccp
+        if (it.name == "main") {
+            extLib = create("externalLibrary")
+            impl = implementation
+            compile = compileOnly
+            runtime = runtimeOnly
+            rcp = runtimeClasspath
+            ccp = compileClasspath
+        } else {
+            extLib = create(it.name + "ExternalLibrary")
+            impl = getByName(it.name + "Implementation")
+            compile = getByName(it.name + "CompileOnly")
+            runtime = getByName(it.name + "RuntimeOnly")
+            rcp = getByName(it.name + "RuntimeClasspath")
+            ccp = getByName(it.name + "CompileClasspath")
+        }
+        impl.extendsFrom(extLib)
+        compile.extendsFrom(library)
+        compile.extendsFrom(modAPI)
+        if (it.name != "api") {
+            if (it.name != "main") {
+                rcp.extendsFrom(minecraft)
+            }
+            runtime.extendsFrom(runtimeMod)
+        }
+        if (it.name != "main") {
+            ccp.extendsFrom(minecraft)
+        }
+        impl.extendsFrom(include)
+    }
+}
+
+configurations {
+    datagenLibrary {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+    dataImplementation.extendsFrom(datagenLibrary)
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name = 'Sponge maven'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+        content {
+            includeGroup 'org.spongepowered'
+        }
+    }
+    maven {
+        name = 'Minecraftschurli Maven'
+        url = 'https://minecraftschurli.ddns.net/repository/maven-public/'
+        content {
+            includeGroup 'com.github.ichhabehunger54'
+            includeGroup 'com.github.minecraftschurli'
+        }
+    }
+    maven {
+        name = 'Progwml6 Maven'
+        url = 'https://dvs1.progwml6.com/files/maven/'
+        content {
+            includeGroup 'mezz.jei'
+        }
+    }
+    maven {
+        name = 'mcjty maven'
+        url = "https://maven.k-4u.nl"
+        content {
+            includeGroup 'mcjty.theoneprobe'
+        }
+    }
+    maven {
+        name = 'theillusivec4 Maven'
+        url = 'https://maven.theillusivec4.top/'
+        content {
+            includeGroup 'top.theillusivec4.curios'
+        }
+    }
+    maven {
+        name = 'blamejared Maven'
+        url = 'https://maven.blamejared.com'
+        content {
+            includeGroup 'com.blamejared.controlling'
+            includeGroup 'vazkii.patchouli'
+        }
+    }
+    /*maven {
+        name = 'CurseMaven'
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }*/
+    /*maven {
+        name = 'saps Maven'
+        url = 'https://maven.saps.dev/minecraft/'
+    }*/
+    /*maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven/'
+    }*/
+    maven {
+        name = 'ModMaven'
+        url = 'https://modmaven.k-4u.nl'
+    }
+}
+
+dependencies {
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
+    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+
+    // jei for integration
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-forge-api:${project.jei_version}")
+    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+
+    // curios for additional inventory slots
+    modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
+    runtimeMod fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}")
+
+    // patchouli for the guide book (arcane compendium)
+    modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
+    runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    // theoneprobe for integration
+    modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
+    runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
+
+    if (!System.getenv('GITHUB_ACTIONS')) {
+        runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
+        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
+    }
+
+    // add internal libraries
+    include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.18.2-1.0-SNAPSHOT')
+
+    implementation sourceSets.api.output
+
+    dataImplementation sourceSets.api.output
+    dataImplementation sourceSets.main.output
+
+    testImplementation sourceSets.api.output
+    testImplementation sourceSets.main.output
+
+    library 'org.jetbrains:annotations:23.0.0'
+}
+
+minecraft {
+    mappings project.mappings_channel, project.mappings_version
+    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+    runs {
+        client {
+            ideaModule "${project.name.replace(' ', '_')}.main"
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
+            }
+        }
+        server {
+            ideaModule "${project.name.replace(' ', '_')}.main"
+            singleInstance true
+            property 'forge.logging.markers', 'REGISTRIES'
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+            }
+        }
+        data {
+            ideaModule "${project.name.replace(' ', '_')}.data"
+            singleInstance true
+            args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.data as SourceSet
+            }
+        }
+        gameTestServer {
+            ideaModule "${project.name.replace(' ', '_')}.test"
+            singleInstance true
+            setForceExit false // To allow integration tests to run in CI
+            jvmArg '-ea' // Enable assertions
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
+
+            mods.create("${project.mod_id}") {
+                source sourceSets.api as SourceSet
+                source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
+            }
+        }
+    }
+    runs.configureEach {
+        workingDirectory project.file("run/${it.name}") as File
+        property 'forge.logging.console.level', 'debug'
+    }
+}
+
+def replaceIn = ['META-INF/mods.toml']
+def replaceProperties = [
+        'version'                : project.version,
+        'mod_id'                 : project.mod_id,
+        'mod_url'                : project.mod_url,
+        'mod_name'               : project.mod_name,
+        'mod_author'             : project.mod_author,
+        'mod_credits'            : project.mod_credits,
+        'mc_version_range'       : project.mc_version_range,
+        'jei_version_range'      : project.jei_version_range,
+        'forge_version_range'    : project.forge_version_range,
+        'loader_version_range'   : project.loader_version_range,
+        'curios_version_range'   : project.curios_version_range,
+        'patchouli_version_range': project.patchouli_version_range,
+        'issue_tracker_url'      : "https://github.com/${project.github}/issues"
+]
+
+processResources {
+    inputs.properties replaceProperties
+
+    filesMatching(replaceIn) {
+        expand replaceProperties
+    }
+    // minify json files
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
+        }
+    }
+}
+
+javadoc {
+    source = sourceSets.api.allJava
+    options.encoding = 'UTF-8'
+    options.tags = [
+            'side:a:Side:',
+            'apiNote:a:API Note:',
+            'implSpec:a:Implementation Requirements:',
+            'implNote:a:Implementation Note:'
+    ]
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+jar {
+    from sourceSets.main.output
+    from sourceSets.api.output
+    from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
+        exclude 'LICENSE'
+        exclude '**/META_INF/**'
+    }
+    finalizedBy('reobfJar')
+}
+
+sourcesJar {
+    from sourceSets.main.allSource
+    from sourceSets.api.allSource
+}
+
+task apiJar(type: Jar, dependsOn: apiClasses) {
+    archiveClassifier.set('api')
+    from sourceSets.api.allSource
+    from sourceSets.api.output
+    finalizedBy('reobfJar')
+}
+
+task deobfJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('deobf')
+    from sourceSets.main.output
+    from sourceSets.api.output
+}
+
+tasks.withType(Jar).configureEach {
+    String extension = ''
+    if (it.archiveClassifier.present) {
+        extension = it.archiveClassifier.get()
+        if (extension != '') {
+            extension = '-' + extension
+        }
+    }
+    from 'LICENSE.md'
+    manifest {
+        mainAttributes([
+                'Maven-Artifact'        : "${project.mod_group}:${project.archivesBaseName}:${project.version}",
+                'Specification-Title'   : archivesBaseName,
+                'Specification-Vendor'  : "${project.vendor}",
+                'Specification-Version' : '1',
+                'Implementation-Title'  : "${archivesBaseName}${extension}",
+                'Implementation-Version': "${project.mod_version}",
+                'Implementation-Vendor' : "${project.vendor}",
+                'Built-On-Java'         : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On'              : "${project.mc_version}-${project.forge_version}",
+                'Timestamp'             : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLModType'            : 'MOD'
+        ])
+    }
+
+    exclude '**/*.psd'
+    exclude '**/*.bbmodel'
+}
+
+artifacts {
+    archives jar
+    archives apiJar
+    archives sourcesJar
+    archives javadocJar
+    archives deobfJar
+}
+
+reobf {
+    apiJar { classpath.from(sourceSets.api.compileClasspath) }
+    jar { classpath.from(sourceSets.main.compileClasspath) }
+}
+
+task reobf {
+    dependsOn reobfJar
+    dependsOn reobfApiJar
+}
+
+task setupGithubActions() {
+    doLast {
+        println "##[set-output name=modid;]${project.mod_id}"
+        println "##[set-output name=version;]${project.version}"
+        if (project.hasProperty('curse_project_id')) {
+            println "##[set-output name=project_id;]${project.curse_project_id}"
+            println "##[set-output name=curse_versions;]${project.curse_versions}"
+            if (project.hasProperty('curse_title')) {
+                println "##[set-output name=curse_title;]${project.curse_title}"
+            }
+            if (project.hasProperty('curse_relations')) {
+                println "##[set-output name=curse_relations;]${project.curse_relations}"
+            }
+        }
+    }
+}
+
+idea {
+    module {
+        for (String exclude in ['run', 'out', 'libs']) {
+            excludeDirs += file(exclude)
+        }
+    }
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+publishing {
+    publications.create(project.archivesBaseName + 'ToMaven', MavenPublication) {
+        artifacts = [apiJar, deobfJar]
+        groupId = project.group
+        artifactId = project.archivesBaseName
+        version = project.version
+        from components.java
+        pom {
+            name = project.mod_name
+            url = project.mod_url
+            packaging = 'jar'
+            scm {
+                connection = "scm:git:git://github.com/${project.github}.git"
+                developerConnection = "scm:git:git@github.com:${project.github}.git"
+                url = "https://github.com/${project.github}"
+            }
+            issueManagement {
+                system = 'github'
+                url = "https://github.com/${project.github}/issues"
+            }
+            organization {
+                name = 'Minecraftschurli Mods'
+                url = 'https://github.com/MinecraftschurliMods'
+            }
+            developers {
+                developer {
+                    id = 'minecraftschurli'
+                    url = 'https://github.com/Minecraftschurli'
+                    name = 'Minecraftschurli'
+                    email = 'minecraftschurli@gmail.com'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/MinecraftschurliMods'
+                    timezone = 'Europe/Vienna'
+                }
+                developer {
+                    id = 'ichhabehunger54'
+                    name = 'IchHabeHunger54'
+                    url = 'https://github.com/IchHabeHunger54'
+                    organization = 'Minecraftschurli Mods'
+                    organizationUrl = 'https://github.com/MinecraftschurliMods'
+                    timezone = 'Europe/Vienna'
+                }
+            }
+            licenses {
+                license {
+                    name = '"Don\'t Be a Jerk" License'
+                    url = "https://github.com/${rootProject.github}/blob/version/${project.mc_version}/LICENSE.md"
+                    distribution = 'repo'
+                }
+            }
+            withXml {
+                asNode().dependencies.dependency.each { dep ->
+                    if (dep.version.last().value().last().contains('_mapped_')) {
+                        assert dep.parent().remove(dep)
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            if (
+            (System.getenv("MAVEN_USER") != null) &&
+                    (System.getenv("MAVEN_PASSWORD") != null) &&
+                    (System.getenv("MAVEN_URL") != null)
+            ) {
+                url System.getenv("MAVEN_URL")
+                credentials {
+                    username System.getenv("MAVEN_USER")
+                    password System.getenv("MAVEN_PASSWORD")
+                }
+            } else {
+                url "$buildDir/repo"
+            }
+        }
+    }
+}
+
+check {
+    dependsOn editorconfigCheck
+}
+
+publish {
+    dependsOn check
+}
+
+evaluationDependsOnChildren()

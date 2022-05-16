@@ -113,6 +113,7 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-/src/generated/resources/.cache/
-!run/client/options.txt
-!run/server/eula.txt
+/Forge/src/generated/resources/.cache/
+!Forge/run/client/options.txt
+!Forge/run/server/eula.txt
+!/.idea/scopes/
