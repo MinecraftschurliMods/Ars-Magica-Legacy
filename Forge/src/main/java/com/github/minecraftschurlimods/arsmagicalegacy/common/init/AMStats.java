@@ -5,6 +5,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
@@ -27,7 +29,7 @@ public interface AMStats {
         return location;
     }
 
-    static void onRegister(FMLCommonSetupEvent event) {
+    static void onRegister() {
         STAT_REGISTER.forEach((location, formatter) -> {
             Registry.register(Registry.CUSTOM_STAT, location, location);
             Stats.CUSTOM.get(location, formatter);

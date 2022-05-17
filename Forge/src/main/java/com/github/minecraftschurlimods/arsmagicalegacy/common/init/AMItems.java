@@ -13,7 +13,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ColoredRegistryObject;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
@@ -27,7 +26,6 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.WaterLilyBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -139,7 +137,6 @@ public interface AMItems {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
 
-    @SuppressWarnings("unchecked")
     private static RegistryObject<BlockItem> registerBlockItem64(RegistryObject<? extends Block> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_64));
     }

@@ -4,9 +4,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillBuilder;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.RegistryObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Consumer;
 

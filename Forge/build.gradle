@@ -29,10 +29,12 @@ minecraft {
     runs {
         client {
             taskName 'Client'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
             mods {
                 modClientRun {
                     source sourceSets.api
                     source sourceSets.main
+                    source sourceSets.test
                     source project(":Xplat").sourceSets.api
                     source project(":Xplat").sourceSets.main
                 }
@@ -150,8 +152,6 @@ configurations {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-
-    compileOnly project(":Xplat")
     //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
@@ -187,14 +187,17 @@ dependencies {
 
     implementation sourceSets.api.output
     implementation project(':Xplat').sourceSets.api.output
+    implementation project(':Xplat').sourceSets.main.output
 
     dataImplementation sourceSets.api.output
     dataImplementation sourceSets.main.output
     dataImplementation project(':Xplat').sourceSets.api.output
+    dataImplementation project(':Xplat').sourceSets.main.output
 
     testImplementation sourceSets.api.output
     testImplementation sourceSets.main.output
     testImplementation project(':Xplat').sourceSets.api.output
+    testImplementation project(':Xplat').sourceSets.main.output
 
     library 'org.jetbrains:annotations:23.0.0'
 }

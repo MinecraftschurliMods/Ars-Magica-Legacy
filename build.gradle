@@ -35,10 +35,10 @@ subprojects {
     project.ext.mod_author = project.authors.split(',').join(', ')
 
     jar {
-        from("LICENSE") {
+        from(rootProject.file("LICENSE")) {
             rename { "${it}_${mod_name_simple}" }
         }
-        from("LICENSE.md") {
+        from(rootProject.file("LICENSE.md")) {
             rename { "${it.split('\\.')[0]}_${mod_name_simple}.md" }
         }
         manifest {

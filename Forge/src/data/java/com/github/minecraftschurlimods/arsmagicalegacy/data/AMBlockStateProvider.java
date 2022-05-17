@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -302,6 +301,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         ModelFile raisedSW = models().withExistingParent(block.get().getRegistryName().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+            //noinspection deprecation
             return switch (state.getValue(block.get().getShapeProperty())) {
                 case NORTH_SOUTH -> builder.modelFile(straight).build();
                 case EAST_WEST -> builder.modelFile(straight).rotationY(90).build();

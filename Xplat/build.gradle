@@ -27,4 +27,7 @@ minecraft {
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '23.0.0'
+    apiImplementation group: 'org.jetbrains', name: 'annotations', version: '23.0.0'
+    implementation sourceSets.api.output
 }

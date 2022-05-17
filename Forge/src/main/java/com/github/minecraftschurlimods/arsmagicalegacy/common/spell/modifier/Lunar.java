@@ -1,11 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.DAMAGE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.DURATION;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.HEALING;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.RANGE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.SIZE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.SPEED;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats.*;
 
 public class Lunar extends GenericSpellModifier {
     private static final float MULTIPLIER = 1.625f; //1 + 15000 / 24000

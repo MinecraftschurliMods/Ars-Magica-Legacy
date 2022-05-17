@@ -5,11 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.Obel
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMenu;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 

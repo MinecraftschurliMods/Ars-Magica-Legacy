@@ -35,6 +35,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
@@ -155,6 +156,7 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
+        AMStats.onRegister();
         registerBrewingRecipes();
         registerSpellIngredientTypes();
         AMCriteriaTriggers.register();
