@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -38,12 +37,8 @@ final class TickHandler {
         if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
         }
-        var contingencyHelper = ArsMagicaAPI.get().getContingencyHelper();
         if (event.getEntityLiving().isOnFire()) {
-            contingencyHelper.triggerContingency(event.getEntityLiving(), ContingencyType.FIRE);
-        }
-        if (event.getEntityLiving().getHealth() * 4 < event.getEntityLiving().getMaxHealth()) {
-            contingencyHelper.triggerContingency(event.getEntityLiving(), ContingencyType.HEALTH);
+            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntityLiving(), ContingencyType.FIRE);
         }
     }
 

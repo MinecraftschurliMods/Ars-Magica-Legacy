@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
@@ -87,6 +88,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -127,6 +129,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
+        forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
     }
@@ -301,6 +304,12 @@ public final class EventHandler {
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
         helper.awardXp(event.getPlayer(), 0);
+    }
+
+    private static void livingDamage(LivingDamageEvent event) {
+        if (event.getEntityLiving().getHealth() * 4 < event.getEntityLiving().getMaxHealth()) {
+            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntityLiving(), ContingencyType.HEALTH);
+        }
     }
 
     private static void manaCostPre(SpellEvent.ManaCost.Pre event) {

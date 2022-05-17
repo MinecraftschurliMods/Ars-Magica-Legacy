@@ -5,6 +5,23 @@
   "recipe": [
     {
       "ingredient": {
+        "type": "forge:nbt",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:gems/chimerite"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "item": "minecraft:clock"
       },
       "count": 1,
@@ -12,43 +29,7 @@
     },
     {
       "ingredient": {
-        "type": "forge:nbt",
-        "item": "minecraft:potion",
-        "count": 1,
-        "nbt": "{Potion:\"minecraft:healing\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:gems/topaz"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "LIGHT",
-        "NEUTRAL",
-        "DARK"
-      ],
-      "amount": 5000,
-      "type": "arsmagicalegacy:etherium"
-    },
-    {
-      "ingredient": {
-        "type": "forge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
-        "count": 1,
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

@@ -5,13 +5,6 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "minecraft:clock"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
@@ -22,21 +15,14 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:stone"
+        "tag": "forge:gems/topaz"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:stone_slab"
-      },
-      "count": 3,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:blaze_powder"
+        "item": "minecraft:clock"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -44,13 +30,6 @@
     {
       "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "arsmagicalegacy:arcane_ash"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

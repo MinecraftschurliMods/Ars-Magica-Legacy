@@ -54,9 +54,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class AMRitualProvider implements DataProvider {
-    private static final Gson   GSON   = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
-
     private final Map<ResourceLocation, JsonElement> elements = new HashMap<>();
     private final DataGenerator generator;
 
@@ -83,63 +82,52 @@ public class AMRitualProvider implements DataProvider {
                 .with(ItemDropRitualTrigger.stackExact(ArsMagicaAPI.get().getBookStack()))
                 .with(new EntitySpawnRitualEffect(AMEntities.ARCANE_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_air_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL))
                 .with(ItemDropRitualTrigger.item(AMItems.TARMA_ROOT.get()))
                 .with(new HeightRequirement(MinMaxBounds.Ints.atLeast(128)))
                 .with(new EntitySpawnRitualEffect(AMEntities.AIR_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_earth_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.tags(
-                        Tags.Items.GEMS_EMERALD,
-                        AMTags.Items.GEMS_CHIMERITE,
-                        AMTags.Items.GEMS_TOPAZ))
+                .with(ItemDropRitualTrigger.tags(Tags.Items.GEMS_EMERALD, AMTags.Items.GEMS_CHIMERITE, AMTags.Items.GEMS_TOPAZ))
                 .with(new EntitySpawnRitualEffect(AMEntities.EARTH_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_fire_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL))
                 .with(ItemDropRitualTrigger.stackExact(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(IAffinity.WATER)))
                 .with(new UltrawarmDimensionRequirement())
                 .with(new EntitySpawnRitualEffect(AMEntities.FIRE_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_water_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL))
                 .with(ItemDropRitualTrigger.ingredients(Ingredient.of(ItemTags.BOATS), Ingredient.of(Items.WATER_BUCKET)))
                 .with(new BiomeRequirement(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN))
                 .with(new EntitySpawnRitualEffect(AMEntities.WATER_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ender_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL))
                 .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
                 .with(new EnderDragonDimensionRequirement())
                 .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ice_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL))
                 .with(new EntitySummonTrigger(EntityType.SNOW_GOLEM))
-                /*.with(new BiomeRequirement(Tags.Biomes.IS_FROZEN))*///TODO: Add biome requirement
+//                .with(new BiomeRequirement(Tags.Biomes.IS_FROZEN))
                 .with(new EntitySpawnRitualEffect(AMEntities.ICE_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_life_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL))
                 .with(new EntityDeathTrigger(EntityPredicate.Builder.entity().of(EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true).build()).build()))
                 .with(new MoonPhaseRequirement(0))
                 .with(new EntitySpawnRitualEffect(AMEntities.LIFE_GUARDIAN.get()))
                 .build(consumer);
-
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_lightning_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.LIGHTNING_GUARDIAN_SPAWN_RITUAL))
                 .with(new GameEventRitualTrigger(GameEvent.LIGHTNING_STRIKE))
                 .with(new EntitySpawnRitualEffect(AMEntities.LIGHTNING_GUARDIAN.get()))
-                .with(new BlockPos(0,-2,0))
+                .with(new BlockPos(0, -2, 0))
                 .build(consumer);
     }
 
@@ -153,7 +141,7 @@ public class AMRitualProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return "AMRituals";
+        return "AMRituals[" + ArsMagicaAPI.MOD_ID + "]";
     }
 
     public static RitualBuilder builder(ResourceLocation id) {
@@ -162,11 +150,11 @@ public class AMRitualProvider implements DataProvider {
 
     protected static class RitualBuilder {
         private final List<RitualRequirement> requirements = new ArrayList<>();
-        private final ResourceLocation        id;
-        private RitualStructureRequirement    structure;
-        private RitualEffect                  effect;
-        private RitualTrigger                 trigger;
-        private BlockPos                      offset = BlockPos.ZERO;
+        private final ResourceLocation id;
+        private RitualStructureRequirement structure;
+        private RitualEffect effect;
+        private RitualTrigger trigger;
+        private BlockPos offset = BlockPos.ZERO;
 
         private RitualBuilder(ResourceLocation id) {
             this.id = id;
@@ -207,12 +195,8 @@ public class AMRitualProvider implements DataProvider {
         }
 
         private Ritual buildInternal() {
-            if (trigger == null) {
-                throw new IllegalStateException("Trigger must be set");
-            }
-            if (effect == null) {
-                throw new IllegalStateException("Effect must be set");
-            }
+            if (trigger == null) throw new IllegalStateException("Trigger must be set");
+            if (effect == null) throw new IllegalStateException("Effect must be set");
             if (structure != null) {
                 requirements.add(0, structure);
             }

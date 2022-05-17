@@ -5,13 +5,6 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "minecraft:clock"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
@@ -22,7 +15,7 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:diamond_sword"
+        "item": "minecraft:clock"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -36,9 +29,9 @@
     },
     {
       "types": [
+        "DARK",
         "LIGHT",
-        "NEUTRAL",
-        "DARK"
+        "NEUTRAL"
       ],
       "amount": 5000,
       "type": "arsmagicalegacy:etherium"

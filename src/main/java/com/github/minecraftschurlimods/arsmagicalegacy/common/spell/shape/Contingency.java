@@ -1,10 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -24,13 +23,13 @@ public class Contingency extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         LivingEntity target = null;
-        if (hit instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof LivingEntity target1) {
-            target = target1;
+        if (hit instanceof EntityHitResult result && result.getEntity() instanceof LivingEntity entity) {
+            target = entity;
         }
         if (target == null) {
             target = caster;
         }
-        ContingencyHelper.instance().setContingency(target, this.type, spell);
+        ArsMagicaAPI.get().getContingencyHelper().setContingency(target, type, spell);
         return SpellCastResult.SUCCESS;
     }
 

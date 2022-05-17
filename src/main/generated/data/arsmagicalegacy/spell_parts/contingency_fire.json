@@ -5,14 +5,17 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "minecraft:clock"
+        "type": "forge:nbt",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:magma_cream"
+        "item": "minecraft:clock"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -25,27 +28,10 @@
       "type": "arsmagicalegacy:ingredient"
     },
     {
-      "ingredient": {
-        "type": "forge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
-        "count": 1,
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "tag": "forge:gems/sunstone"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
       "types": [
+        "DARK",
         "LIGHT",
-        "NEUTRAL",
-        "DARK"
+        "NEUTRAL"
       ],
       "amount": 5000,
       "type": "arsmagicalegacy:etherium"
