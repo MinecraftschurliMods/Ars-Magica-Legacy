@@ -7,97 +7,190 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class ArcaneGuardianModel extends EntityModel<ArcaneGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_guardian"), "main");
     private final ModelPart head;
-    private final ModelPart arms;
+    private final ModelPart neck;
+    private final ModelPart hoodTop;
+    private final ModelPart hoodLeft;
+    private final ModelPart hoodRight;
+    private final ModelPart hoodBack;
+    private final ModelPart upperRightArm;
+    private final ModelPart lowerRightArm;
+    private final ModelPart rightHand;
+    private final ModelPart upperLeftArm;
+    private final ModelPart lowerLeftArm;
+    private final ModelPart leftHand;
     private final ModelPart core;
-    private final ModelPart legs;
-    private final ModelPart main;
+    private final ModelPart core1;
+    private final ModelPart core2;
+    private final ModelPart core3;
+    private final ModelPart core4;
+    private final ModelPart robeTop;
+    private final ModelPart rightLeg;
+    private final ModelPart robeBackRight;
+    private final ModelPart robeRight;
+    private final ModelPart leftLeg;
+    private final ModelPart robeBackLeft;
+    private final ModelPart robeLeft;
+    private final ModelPart robeFront;
+    private final ModelPart body;
+    private final ModelPart book;
+    private final ModelPart rune;
+    private final ModelPart wand;
 
     public ArcaneGuardianModel(ModelPart root) {
         head = root.getChild("head");
-        arms = root.getChild("arms");
+        neck = root.getChild("neck");
+        hoodTop = root.getChild("hood_top");
+        hoodLeft = root.getChild("hood_left");
+        hoodRight = root.getChild("hood_right");
+        hoodBack = root.getChild("hood_back");
+        upperRightArm = root.getChild("upper_right_arm");
+        lowerRightArm = root.getChild("lower_right_arm");
+        rightHand = root.getChild("right_hand");
+        upperLeftArm = root.getChild("upper_left_arm");
+        lowerLeftArm = root.getChild("lower_left_arm");
+        leftHand = root.getChild("left_hand");
         core = root.getChild("core");
-        legs = root.getChild("legs");
-        main = root.getChild("main");
+        core1 = root.getChild("core1");
+        core2 = root.getChild("core2");
+        core3 = root.getChild("core3");
+        core4 = root.getChild("core4");
+        robeTop = root.getChild("robe_top");
+        rightLeg = root.getChild("right_leg");
+        robeBackRight = root.getChild("robe_back_right");
+        robeRight = root.getChild("robe_right");
+        leftLeg = root.getChild("left_leg");
+        robeBackLeft = root.getChild("robe_back_left");
+        robeLeft = root.getChild("robe_left");
+        robeFront = root.getChild("robe_front");
+        body = root.getChild("body");
+        book = root.getChild("book");
+        rune = root.getChild("rune");
+        wand = root.getChild("wand");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-                .texOffs(100, 44).addBox(-3F, -34F, -3F, 7F, 7F, 7F, new CubeDeformation(0F))
-                .texOffs(95, 116).addBox(-0.5F, -27F, -0.5F, 2F, 1F, 2F, new CubeDeformation(0F)), PartPose.offset(0F, 24F, 0F));
-        head.addOrReplaceChild("hood", CubeListBuilder.create()
-                .texOffs(94, 34).addBox(-4F, -35F, -3F, 9F, 1F, 8F, new CubeDeformation(0F))
-                .texOffs(91, 17).addBox(-4F, -34F, -3F, 1F, 8F, 8F, new CubeDeformation(0F))
-                .texOffs(110, 17).addBox(4F, -34F, -3F, 1F, 8F, 8F, new CubeDeformation(0F))
-                .texOffs(112, 7).addBox(-3F, -34F, 4F, 7F, 8F, 1F, new CubeDeformation(0F)), PartPose.offset(0F, 0F, 0F));
-        PartDefinition arms = partdefinition.addOrReplaceChild("arms", CubeListBuilder.create()
-                .texOffs(103, 68).addBox(-4F, -19F, -5F, 4F, 5F, 4F, new CubeDeformation(0F))
-                .texOffs(69, 68).addBox(-4F, -14F, -5F, 4F, 5F, 4F, new CubeDeformation(0F)), PartPose.offset(-3.5F, 17F, 3.5F));
-        arms.addOrReplaceChild("arm_lower_left", CubeListBuilder.create()
-                .texOffs(86, 68).addBox(-2F, -2.5F, -2F, 4F, 5F, 4F, new CubeDeformation(0F)), PartPose.offsetAndRotation(9.5F, -12.8891F, -6.1464F, 0F, 0.7854F, 1.5708F));
-        arms.addOrReplaceChild("arm_upper_left", CubeListBuilder.create()
-                .texOffs(103, 68).addBox(0F, -2.5F, -2F, 4F, 5F, 4F, new CubeDeformation(0F)), PartPose.offsetAndRotation(8F, -16.0711F, -2.9645F, -0.7854F, 0F, 0F));
-        PartDefinition hand = arms.addOrReplaceChild("hand", CubeListBuilder.create(), PartPose.offset(10F, -2.8891F, -3.1464F));
-        hand.addOrReplaceChild("hand_right", CubeListBuilder.create()
-                .texOffs(106, 78).addBox(-1F, -1F, -6.3333F, 2F, 2F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-12F, -11.4442F, 0.1464F, 1.5708F, 0F, 0F));
-        hand.addOrReplaceChild("hand_left", CubeListBuilder.create()
-                .texOffs(113, 78).addBox(-3.5F, -1F, -1F, 1F, 2F, 2F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-0.5F, -10F, -3F, -0.7854F, 0F, 0F));
-        PartDefinition core = partdefinition.addOrReplaceChild("core", CubeListBuilder.create()
-                .texOffs(103, 8).addBox(-0.9716F, -15.3716F, -1F, 2F, 6F, 2F, new CubeDeformation(0F)), PartPose.offset(0.4716F, 16.3716F, 0.5F));
-        core.addOrReplaceChild("core_4", CubeListBuilder.create()
-                .texOffs(118, 1).addBox(-2.0015F, -1.9186F, -0.5327F, 4F, 4F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0.0364F, -12.0515F, 0.0327F, 0F, 0F, -0.7854F));
-        core.addOrReplaceChild("core_3", CubeListBuilder.create()
-                .texOffs(118, 1).addBox(-1.9048F, -1.8911F, -0.5489F, 4F, 4F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0.0364F, -12.0515F, 0.0327F, 0.6155F, 0.5236F, 0.9553F));
-        core.addOrReplaceChild("core_2", CubeListBuilder.create()
-                .texOffs(118, 1).addBox(-1.9989F, -1.916F, -0.4636F, 4F, 4F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0.0364F, -12.0515F, 0.0327F, 1.5708F, -0.7854F, -1.5708F));
-        core.addOrReplaceChild("core_1", CubeListBuilder.create()
-                .texOffs(118, 1).addBox(-2.0103F, -1.9275F, -0.4974F, 4F, 4F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0.0364F, -12.0515F, 0.0327F, 0.6155F, -0.5236F, -0.9553F));
-        PartDefinition legs = partdefinition.addOrReplaceChild("legs", CubeListBuilder.create(), PartPose.offset(3.5F, 19F, -0.5F));
-        legs.addOrReplaceChild("leg_right", CubeListBuilder.create()
-                .texOffs(120, 68).addBox(-1F, 0F, -1.1F, 2F, 12F, 2F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-5F, -9F, 2F, 0.1745F, 0F, 0F));
-        legs.addOrReplaceChild("leg_left", CubeListBuilder.create()
-                .texOffs(120, 68).addBox(-1F, 0.0825F, -1.0571F, 2F, 12F, 2F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-1F, -9F, 1F, 0.1745F, 0F, 0F));
-        PartDefinition robe = legs.addOrReplaceChild("robe", CubeListBuilder.create()
-                .texOffs(104, 83).addBox(-4F, -20.5F, -0.5F, 8F, 4F, 4F, new CubeDeformation(0F)), PartPose.offset(-3F, 7.5F, -0.5F));
-        robe.addOrReplaceChild("robe_south_right", CubeListBuilder.create()
-                .texOffs(88, 105).addBox(-2F, 0.4977F, -0.5834F, 4F, 9F, 1F, new CubeDeformation(0F))
-                .texOffs(99, 105).addBox(2F, 0.4977F, -0.5834F, 4F, 9F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-2F, -17F, 3F, 0.1745F, 0F, 0F));
-        robe.addOrReplaceChild("robe_west", CubeListBuilder.create()
-                .texOffs(122, 93).addBox(-0.5F, -0.6281F, -0.8524F, 1F, 9F, 2F, new CubeDeformation(0F))
-                .texOffs(113, 92).addBox(-7.5F, -0.5281F, -1.3524F, 1F, 9F, 3F, new CubeDeformation(0F)), PartPose.offsetAndRotation(3.5F, -16F, 1.5F, 0.0873F, 0F, 0F));
-        robe.addOrReplaceChild("robe_front", CubeListBuilder.create()
-                .texOffs(110, 105).addBox(-4F, -0.5152F, -0.6514F, 8F, 9F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0F, -16F, 0F, -0.0873F, 0F, 0F));
-        PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create()
-                .texOffs(104, 59).addBox(-3.5F, -26F, -1.5F, 8F, 4F, 4F, new CubeDeformation(0F))
-                .texOffs(91, 120).addBox(-1.5F, -23F, -3.5F, 4F, 6F, 2F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-21.5F, -42F, 10.5F, 44F, 44F, 0F, new CubeDeformation(0F)), PartPose.offset(0F, 24F, 0F));
-        main.addOrReplaceChild("wand", CubeListBuilder.create()
-                .texOffs(98, 97).addBox(-0.5F, -0.5F, -12.3333F, 1F, 1F, 6F, new CubeDeformation(0F)), PartPose.offsetAndRotation(-5.5F, -21.3333F, 0.5F, 1.5708F, 0F, 0F));
+        ModelUtil.addCube(partdefinition, "head", 100, 44, -3f, -7f, -3f, 7f, 7f, 7f, 0f, -4.5f, 0f);
+        ModelUtil.addCube(partdefinition, "neck", 95, 116, -0.5f, -0.5f, -0.5f, 2f, 1f, 2f, 0f, -4f, 0f);
+        ModelUtil.addCube(partdefinition, "hood_top", 94, 34, -4f, -8f, -3f, 9f, 1f, 8f, 0f, -4.5f, 0f);
+        ModelUtil.addCube(partdefinition, "hood_left", 91, 17, -4f, -7f, -3f, 1f, 8f, 8f, 0f, -4.5f, 0f);
+        ModelUtil.addCube(partdefinition, "hood_right", 110, 17, 4f, -7f, -3f, 1f, 8f, 8f, 0f, -4.5f, 0f);
+        ModelUtil.addCube(partdefinition, "hood_back", 112, 7, -3f, -7f, 4f, 7f, 8f, 1f, 0f, -4.5f, 0f);
+        ModelUtil.addCube(partdefinition, "upper_right_arm", 103, 68, -7.5f, -2.5f, -1.5f, 4f, 5f, 4f, 0f, -1f, 0f);
+        ModelUtil.addCube(partdefinition, "lower_right_arm", 69, 68, -7.5f, 2.5f, -1.5f, 4f, 5f, 4f, 0f, -1f, 0f);
+        ModelUtil.addCube(partdefinition, "right_hand", 106, 78, -3f, -1f, -8.5f, 2f, 2f, 1f, -3.5f, -1f, 0.5f, 1.5708f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "upper_left_arm", 103, 68, 0f, -2.5f, -2f, 4f, 5f, 4f, 4.5f, -1f, 0.5f, -0.7854f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "lower_left_arm", 86, 68, -2.5f, -2.0f, -2.0f, 4f, 5f, 4f, 6.5f, 2.5355f, -3.0355f, 0f, 0.7854f, 1.5708f);
+        ModelUtil.addCube(partdefinition, "left_hand", 113, 78, -2f, 3f, -2.5f, 1f, 2f, 2f, 4.5f, 0.5f, 2f, -0.7854f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "core", 103, 8, -0.5f, -3f, -0.5f, 2f, 6f, 2f, 0f, 2.5f, 0f);
+        ModelUtil.addCube(partdefinition, "core1", 118, 1, -2f, -1.5f, -0.5f, 4f, 4f, 1f, 0.5f, 2.5f, 0.5f, 0f, 0f, -0.7854f);
+        ModelUtil.addCube(partdefinition, "core2", 118, 1, -2f, -1.5f, -0.5f, 4f, 4f, 1f, 0.5f, 2.5f, 0.5f, 0.6109f, 0.5236f, 0.9599f);
+        ModelUtil.addCube(partdefinition, "core3", 118, 1, -2f, -1.5f, -0.5f, 4f, 4f, 1f, 0.5f, 2.5f, 0.5f, 1.5708f, -0.7854f, -1.5708f);
+        ModelUtil.addCube(partdefinition, "core4", 118, 1, -2f, -1.5f, -0.5f, 4f, 4f, 1f, 0.5f, 2.5f, 0.5f, 0.6109f, -0.5236f, -0.9599f);
+        ModelUtil.addCube(partdefinition, "robe_top", 104, 83, -3.5f, -2f, -1.5f, 8f, 4f, 4f, 0f, 6.5f, 0f);
+        ModelUtil.addCube(partdefinition, "right_leg", 120, 68, -1f, 0f, -1.1f, 2f, 12f, 2f, -1.5f, 8.5f, 1.5f, 0.1745f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "robe_back_right", 88, 105, -2f, 0.4f, -0.6f, 4f, 9f, 1f, -1.5f, 8f, 2f, 0.1745f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "robe_right", 113, 92, -7.501f, -0.6f, -1.35f, 1f, 9f, 3f, 4f, 9f, 0.5f, 0.0873f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "left_leg", 120, 68, -1f, 0f, -1.1f, 2f, 12f, 2f, 2.5f, 8.5f, 0.5f, 0.1745f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "robe_back_left", 99, 105, 2f, 0.4f, -0.6f, 4f, 9f, 1f, -1.5f, 8f, 2f, 0.1745f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "robe_left", 122, 93, -0.499f, -0.6f, -0.85f, 1f, 9f, 2f, 4f, 9f, 0.5f, 0.0873f, 0f, 0f);
+        ModelUtil.addCube(partdefinition, "robe_front", 110, 105, -3.5f, -4.5f, -1.5f, 8f, 9f, 1f, 0f, 13f, 0f);
+        ModelUtil.addCube(partdefinition, "body", 104, 59, -3.5f, -2f, -1.5f, 8f, 4f, 4f, 0f, -1.5f, 0f);
+        ModelUtil.addCube(partdefinition, "book", 91, 120, -1.5f, -3f, -3.5f, 4f, 6f, 2f, 0f, 1.5f, 0f);
+        ModelUtil.addCube(partdefinition, "rune", 0, 0, -21.5f, -22f, 10.5f, 44f, 44f, 0f, 0f, 2f, 0f);
+        ModelUtil.addCube(partdefinition, "wand", 98, 97, -2.5f, -0.5f, -14.5f, 1f, 1f, 6f, -3.5f, -1.5f, 0.5f, 1.5708f, 0f, 0f);
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
     @Override
     public void setupAnim(ArcaneGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        head.xRot = headPitch * (float) Math.PI / 180f;
+        head.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hoodTop.xRot = headPitch * (float) Math.PI / 180f;
+        hoodTop.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hoodLeft.xRot = headPitch * (float) Math.PI / 180f;
+        hoodLeft.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hoodRight.xRot = headPitch * (float) Math.PI / 180f;
+        hoodRight.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hoodBack.xRot = headPitch * (float) Math.PI / 180f;
+        hoodBack.yRot = netHeadYaw * (float) Math.PI / 180f;
+        float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45f) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45f));
+        head.y = -4.5f + y;
+        neck.y = -4f + y;
+        hoodTop.y = -4.5f + y;
+        hoodLeft.y = -4.5f + y;
+        hoodRight.y = -4.5f + y;
+        hoodBack.y = -4.5f + y;
+        upperRightArm.y = -1 + y;
+        lowerRightArm.y = -1 + y;
+        rightHand.y = -1 + y;
+        upperLeftArm.y = -1 + y;
+        lowerLeftArm.y = 2.5355f + y;
+        leftHand.y = 0.5f + y;
+        core.y = 2.5f + y;
+        core1.y = 2.5f + y;
+        core2.y = 2.5f + y;
+        core3.y = 2.5f + y;
+        core4.y = 2.5f + y;
+        robeTop.y = 6.5f + y;
+        rightLeg.y = 8.5f + y;
+        robeBackRight.y = 8 + y;
+        robeRight.y = 9 + y;
+        leftLeg.y = 8.5f + y;
+        robeBackLeft.y = 8 + y;
+        robeLeft.y = 9 + y;
+        robeFront.y = 13 + y;
+        body.y = -1.5f + y;
+        book.y = 1.5f + y;
+        wand.y = -1.5f + y;
+        rune.zRot = (float) ((ageInTicks % 360) * Math.PI / 180);
+        float z = Mth.cos((ageInTicks % 360) * 0.1F) * 0.05F + 0.05F;
+        upperRightArm.zRot = z;
+        lowerRightArm.zRot = z;
+        rightHand.zRot = z;
+        wand.zRot = z;
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         head.render(poseStack, buffer, packedLight, packedOverlay);
-        arms.render(poseStack, buffer, packedLight, packedOverlay);
+        neck.render(poseStack, buffer, packedLight, packedOverlay);
+        hoodTop.render(poseStack, buffer, packedLight, packedOverlay);
+        hoodLeft.render(poseStack, buffer, packedLight, packedOverlay);
+        hoodRight.render(poseStack, buffer, packedLight, packedOverlay);
+        hoodBack.render(poseStack, buffer, packedLight, packedOverlay);
+        upperRightArm.render(poseStack, buffer, packedLight, packedOverlay);
+        lowerRightArm.render(poseStack, buffer, packedLight, packedOverlay);
+        rightHand.render(poseStack, buffer, packedLight, packedOverlay);
+        upperLeftArm.render(poseStack, buffer, packedLight, packedOverlay);
+        lowerLeftArm.render(poseStack, buffer, packedLight, packedOverlay);
+        leftHand.render(poseStack, buffer, packedLight, packedOverlay);
         core.render(poseStack, buffer, packedLight, packedOverlay);
-        legs.render(poseStack, buffer, packedLight, packedOverlay);
-        main.render(poseStack, buffer, packedLight, packedOverlay);
+        core1.render(poseStack, buffer, packedLight, packedOverlay);
+        core2.render(poseStack, buffer, packedLight, packedOverlay);
+        core3.render(poseStack, buffer, packedLight, packedOverlay);
+        core4.render(poseStack, buffer, packedLight, packedOverlay);
+        robeTop.render(poseStack, buffer, packedLight, packedOverlay);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        robeBackRight.render(poseStack, buffer, packedLight, packedOverlay);
+        robeRight.render(poseStack, buffer, packedLight, packedOverlay);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        robeBackLeft.render(poseStack, buffer, packedLight, packedOverlay);
+        robeLeft.render(poseStack, buffer, packedLight, packedOverlay);
+        robeFront.render(poseStack, buffer, packedLight, packedOverlay);
+        body.render(poseStack, buffer, packedLight, packedOverlay);
+        book.render(poseStack, buffer, packedLight, packedOverlay);
+        rune.render(poseStack, buffer, packedLight, packedOverlay);
+        wand.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }
