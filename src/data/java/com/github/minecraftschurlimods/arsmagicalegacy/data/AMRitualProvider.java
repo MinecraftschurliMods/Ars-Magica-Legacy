@@ -114,7 +114,7 @@ public class AMRitualProvider implements DataProvider {
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ice_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL))
                 .with(new EntitySummonTrigger(EntityType.SNOW_GOLEM))
-//                .with(new BiomeRequirement(Tags.Biomes.IS_FROZEN))
+//                .with(new BiomeRequirement(Tags.Biomes.IS_FROZEN)) // TODO biome requirement
                 .with(new EntitySpawnRitualEffect(AMEntities.ICE_GUARDIAN.get()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_life_guardian"))
