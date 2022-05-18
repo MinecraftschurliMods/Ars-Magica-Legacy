@@ -460,6 +460,15 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('P', Items.PAPER)
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.SPELL_BOOK.get())
+                .pattern("SLL")
+                .pattern("SPP")
+                .pattern("SLL")
+                .define('S', Tags.Items.STRING)
+                .define('L', Tags.Items.LEATHER)
+                .define('P', Items.PAPER)
+                .unlockedBy("has_paper", has(Items.PAPER))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.MANA_CAKE.get(), 3)
                 .requires(Tags.Items.CROPS_WHEAT)
                 .requires(Items.SUGAR)

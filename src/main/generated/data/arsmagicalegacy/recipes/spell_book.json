@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SLL",
+    "SPP",
+    "SLL"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:string"
+    },
+    "L": {
+      "tag": "forge:leather"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:spell_book"
+  }
+}
