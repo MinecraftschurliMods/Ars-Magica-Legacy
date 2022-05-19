@@ -1,19 +1,48 @@
-# Version 1.18.2-1.0.0
+# Version 1.18.2-1.1.0
 
 ## Update
 
-- Update to 1.18.2
+- Update to Forge 40.1.0
 
 ## Additions
 
-- Added bosses! One boss was added for each affinity
-- Each boss can be summoned through a ritual described in the Arcane Compendium
-- Bosses drop affinity essences on death
-- Currently, only the water guardian is fully implemented
+### Abilities
+
+- Added abilities!
+- Abilities are slight buffs or debuffs to the player that activate once the player has delved deep enough into an affinity
+- Every affinity has a normal buff starting at either 1% and scaling up or starting at 25% depthö, one debuff starting at 50% depth, and a special buff at 100% depth
+- Ender is the exception to this, it has two buffs and two debuffs starting at 50%, with a special one at 100%. The debuffs vanish at 100% as well.
+
+### Rituals
+
+- Rituals are now heavily customizable through datapacks
+- Lightning Guardian spawning now correctly works
+
+### Dryads
+
+- Added dryads!
+- Dryads are passive humanoid mobs that spawn in large groups (15-25 dryads) in forests
+- They can be lured with saplings and passively bonemeal nearby plants
+- If 20 dryads are slain within a minute, the Nature Guardian spawns
+- All values can be tweaked through the config
+
+### Spell Book
+
+- Added the spell book
+- It can be used to store multiple spells in one slot
+- Spells can be managed by shift-opening the book, the selected spell can be switched via shift-scrolling
 
 ## Fixes
 
-- Fixed a bug that caused the inscription table to not display items until the player relogs
+- Fixed a copy-paste error with wall and wave shapes that could crash the game
+- Prefab spells now show up correctly in JEI
+- The levelup advancement trigger now correctly fires
+- Commands received an internal cleanup, they should now work correctly
+- Various fixes and cleanups
+
+## Compatibility
+
+- Added compatibility with JEI versions 10 and up
 
 # Previous Versions
 
@@ -244,12 +273,6 @@
 - Max Mana and Max Burnout increase with magic level ups
 - A level requires 2.4 * (1.2 ^ next level) magic XP (level 1 -> level 2 requires ~30 casts of a Projectile-Dig spell)
 
-### Prefab Spells
-
-- Added a system for prefab spells
-- Prefab spells show in a separate creative tab
-- This is currently an unused system
-
 ### Affinites
 
 - Added 10 affinites: water, fire, earth, air, ice, lightning, life, nature, arcane, ender
@@ -257,10 +280,12 @@
 - Added temporary crafting recipes for the Affinity Essences
 - Affinities are planned to give both positive and negative traits in the future, keep that in mind when playing
 
-### Affinity Ability API
+### Bosses
 
-- Added a system for affinity abilities
-- This is currently an unused system
+- Added bosses! One boss was added for each affinity
+- Each boss can be summoned through a ritual described in the Arcane Compendium
+- Bosses drop affinity essences on death
+- Currently, only the water guardian is fully implemented
 
 ### HUDs
 
