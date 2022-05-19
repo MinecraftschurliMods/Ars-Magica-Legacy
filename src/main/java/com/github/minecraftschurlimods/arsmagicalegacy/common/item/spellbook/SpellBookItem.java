@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,10 +31,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class SpellBookItem extends Item implements DyeableLeatherItem {
-    public static final int    ACTIVE_SPELL_SLOTS = 8;
-    public static final int    BACKUP_SPELL_SLOTS = 8 * 4;
-    public static final String SELECTED_SLOT_KEY  = "SelectedSlot";
-    public static final String SPELLS_KEY         = "Spells";
+    public static final int ACTIVE_SPELL_SLOTS = 8;
+    public static final int BACKUP_SPELL_SLOTS = 32;
+    public static final int TOTAL_SPELL_SLOTS = ACTIVE_SPELL_SLOTS + BACKUP_SPELL_SLOTS;
+    public static final String SELECTED_SLOT_KEY = "SelectedSlot";
+    public static final String SPELLS_KEY = "Spells";
 
     public SpellBookItem() {
         super(AMItems.ITEM_1);
@@ -54,7 +54,7 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemInHand = player.getItemInHand(usedHand);
-        if (player.isSprinting()) {
+        if (player.isCrouching()) {
             if (!player.isLocalPlayer()) {
                 player.openMenu(new SimpleMenuProvider((containerId, inventory, $) -> new SpellBookMenu(containerId, inventory, itemInHand), getName(itemInHand)));
             }
@@ -70,13 +70,13 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
         ItemStack itemInHand = context.getItemInHand();
         ItemStack selectedSpell = getSelectedSpell(itemInHand);
         Player player = context.getPlayer();
-        if (player != null && player.isSprinting()) {
+        if (player != null && player.isCrouching()) {
             if (!player.isLocalPlayer()) {
                 player.openMenu(new SimpleMenuProvider((containerId, inventory, $) -> new SpellBookMenu(containerId, inventory, itemInHand), getName(itemInHand)));
             }
             return InteractionResult.sidedSuccess(player.isLocalPlayer());
         }
-        return selectedSpell.useOn(context);
+        return selectedSpell.getItem().useOn(context);
     }
 
     @Override
@@ -106,31 +106,17 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     }
 
     public static void prevSelectedSlot(ItemStack stack) {
-        SimpleContainer active = getContainer(stack).active();
-        int slot = getSelectedSlot(stack) - 1;
-        slot = slot % active.getContainerSize();
-        int start = slot;
-        while (active.getItem(slot).isEmpty()) {
-            slot = (slot - 1) % active.getContainerSize();
-            if (slot == start) {
-                slot = -1;
-                break;
-            }
+        int slot = (getSelectedSlot(stack) - 1) % getContainer(stack).active().getContainerSize();
+        if (slot < 0) {
+            slot += getContainer(stack).active().getContainerSize();
         }
         setSelectedSlot(stack, slot);
     }
 
     public static void nextSelectedSlot(ItemStack stack) {
-        SimpleContainer active = getContainer(stack).active();
-        int slot = getSelectedSlot(stack) + 1;
-        slot = slot % active.getContainerSize();
-        int start = slot;
-        while (active.getItem(slot).isEmpty()) {
-            slot = (slot + 1) % active.getContainerSize();
-            if (slot == start) {
-                slot = -1;
-                break;
-            }
+        int slot = (getSelectedSlot(stack) + 1) % getContainer(stack).active().getContainerSize();
+        if (slot > getContainer(stack).active().getContainerSize()) {
+            slot -= getContainer(stack).active().getContainerSize();
         }
         setSelectedSlot(stack, slot);
     }
