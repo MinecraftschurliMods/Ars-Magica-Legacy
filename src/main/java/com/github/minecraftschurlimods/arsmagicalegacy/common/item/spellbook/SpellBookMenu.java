@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
