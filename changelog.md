@@ -10,7 +10,7 @@
 
 - Added abilities!
 - Abilities are slight buffs or debuffs to the player that activate once the player has delved deep enough into an affinity
-- Every affinity has a normal buff starting at either 1% and scaling up or starting at 25% depthö, one debuff starting at 50% depth, and a special buff at 100% depth
+- Every affinity has a normal buff starting at either 1% and scaling up or starting at 25% depth, one debuff starting at 50% depth, and a special buff at 100% depth
 - Ender is the exception to this, it has two buffs and two debuffs starting at 50%, with a special one at 100%. The debuffs vanish at 100% as well.
 
 ### Rituals
