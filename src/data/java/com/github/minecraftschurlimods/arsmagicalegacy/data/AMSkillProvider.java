@@ -50,6 +50,31 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId())
                 .build(consumer);
+        createDefense(CONTINGENCY_DAMAGE)
+                .setPosition(255, 345)
+                .addCost(RED.get())
+                .addParent(REFLECT.getId())
+                .build(consumer);
+        createUtility(CONTINGENCY_DEATH)
+                .setPosition(165, 345)
+                .addCost(RED.get())
+                .addParent(ENDER_INTERVENTION.getId())
+                .build(consumer);
+        createDefense(CONTINGENCY_FALL)
+                .setPosition(75, 120)
+                .addCost(RED.get())
+                .addParent(SLOW_FALLING.getId())
+                .build(consumer);
+        createOffense(CONTINGENCY_FIRE)
+                .setPosition(75, 165)
+                .addCost(RED.get())
+                .addParent(FORGE.getId())
+                .build(consumer);
+        createDefense(CONTINGENCY_HEALTH)
+                .setPosition(300, 255)
+                .addCost(RED.get())
+                .addParent(SHIELD.getId())
+                .build(consumer);
         createOffense(PROJECTILE)
                 .setPosition(210, 30)
                 .addCost(BLUE.get())

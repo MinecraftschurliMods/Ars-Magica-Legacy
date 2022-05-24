@@ -31,7 +31,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
     protected void createSpellPartData() {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         createSpellPartData(AMSpellParts.AOE, 2f)
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TNT), 1))
                 .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 1))
                 .build();
@@ -49,6 +49,41 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.CHANNEL, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_DAMAGE, 10f)
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_DEATH, 10f)
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_FALL, 10f)
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_FIRE, 10f)
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.FIRE.get())), 1))
+                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .build();
+        createSpellPartData(AMSpellParts.CONTINGENCY_HEALTH, 10f)
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIFE.get())), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT), 5000))
                 .build();
         createSpellPartData(AMSpellParts.PROJECTILE, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
@@ -86,7 +121,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 2500))
                 .build();
         createSpellPartData(AMSpellParts.ZONE, 3.5f)
-                .withIngredient(new IngredientSpellIngredient(new NBTIngredient(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())){}, 1))
+                .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))

@@ -23,6 +23,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableS
 import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
@@ -85,6 +86,7 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);

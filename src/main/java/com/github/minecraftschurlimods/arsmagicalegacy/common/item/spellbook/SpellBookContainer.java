@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public record SpellBookContainer(ItemStack stack, SimpleContainer active, SimpleContainer back) implements Container {
-
     public SpellBookContainer(ItemStack stack, int active, int back) {
         this(stack, new SimpleContainer(active), new SimpleContainer(back));
     }
@@ -91,7 +90,6 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
 
     public ListTag createTag() {
         ListTag listtag = new ListTag();
-
         for (int i = 0; i < this.getContainerSize(); ++i) {
             ItemStack itemstack = this.getItem(i);
             if (!itemstack.isEmpty()) {
@@ -100,7 +98,6 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
                 listtag.add(new CompoundTag());
             }
         }
-
         return listtag;
     }
 }
