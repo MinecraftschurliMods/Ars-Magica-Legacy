@@ -1,0 +1,11 @@
+{
+  "occulus_tab": "arsmagicalegacy:defense",
+  "x": 75,
+  "y": 120,
+  "parents": [
+    "arsmagicalegacy:slow_falling"
+  ],
+  "cost": {
+    "arsmagicalegacy:red": 1
+  }
+}

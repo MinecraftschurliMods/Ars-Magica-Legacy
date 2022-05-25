@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
@@ -55,7 +56,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -63,16 +66,20 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -102,6 +109,8 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerLayerDefinitions);
         modEventBus.addListener(ClientInit::registerRenderers);
         modEventBus.addListener(ClientInit::itemColors);
+        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        forgeBus.addListener(ClientInit::mouseScroll);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -233,5 +242,19 @@ public final class ClientInit {
 
     private static void itemColors(ColorHandlerEvent.Item event) {
         event.getItemColors().register((stack, tintIndex) -> tintIndex == 0 && stack.getItem() instanceof DyeableLeatherItem dyeable ? dyeable.getColor(stack) : -1, AMItems.SPELL_BOOK.get());
+    }
+
+    private static void mouseScroll(InputEvent.MouseScrollEvent event) {
+        Player player = ClientHelper.getLocalPlayer();
+        if (player == null || !player.isCrouching()) return;
+        ItemStack item = player.getMainHandItem();
+        if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) {
+            item = player.getOffhandItem();
+        }
+        if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) return;
+        double delta = event.getScrollDelta();
+        if (delta == 0) return;
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellBookNextSpellPacket(delta > 0));
+        event.setCanceled(true);
     }
 }

@@ -1,44 +1,38 @@
 {
-  "manaCost": 2.5,
+  "manaCost": 10.0,
   "reagents": [],
   "affinities": {},
   "recipe": [
     {
       "ingredient": {
-        "tag": "forge:dusts/vinteum"
+        "type": "forge:nbt",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:fences/wooden"
+        "tag": "forge:gems/topaz"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:magic_wall"
+        "item": "minecraft:clock"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "minecraft:walls"
+        "item": "arsmagicalegacy:tarma_root"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "DARK",
-        "LIGHT",
-        "NEUTRAL"
-      ],
-      "amount": 2500,
-      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_fall",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/contingency_fall.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_fall.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:contingency_fall"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/contingency_fall"
+}

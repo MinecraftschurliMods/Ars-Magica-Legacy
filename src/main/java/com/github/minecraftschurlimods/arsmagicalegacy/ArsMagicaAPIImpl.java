@@ -6,7 +6,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManag
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
@@ -29,6 +31,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
@@ -86,6 +89,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public IForgeRegistry<IAbility> getAbilityRegistry() {
         return AMRegistries.ABILITY_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<ContingencyType> getContingencyTypeRegistry() {
+        return AMRegistries.CONTINGENCY_TYPE_REGISTRY.get();
     }
 
     @Override
@@ -165,6 +173,12 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public IEtheriumHelper getEtheriumHelper() {
         return EtheriumHelper.instance();
+    }
+
+    @Unmodifiable
+    @Override
+    public IContingencyHelper getContingencyHelper() {
+        return ContingencyHelper.instance();
     }
 
     @Override

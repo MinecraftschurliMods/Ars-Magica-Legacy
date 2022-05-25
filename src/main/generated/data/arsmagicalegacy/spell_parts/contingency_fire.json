@@ -1,5 +1,5 @@
 {
-  "manaCost": 2.0,
+  "manaCost": 10.0,
   "reagents": [],
   "affinities": {},
   "recipe": [
@@ -8,14 +8,21 @@
         "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:tnt"
+        "item": "minecraft:clock"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:tarma_root"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -26,7 +33,7 @@
         "LIGHT",
         "NEUTRAL"
       ],
-      "amount": 1,
+      "amount": 5000,
       "type": "arsmagicalegacy:etherium"
     }
   ]
