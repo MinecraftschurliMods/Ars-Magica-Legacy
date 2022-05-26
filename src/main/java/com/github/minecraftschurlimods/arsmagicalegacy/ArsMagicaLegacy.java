@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
@@ -72,6 +73,7 @@ public final class ArsMagicaLegacy {
         AltarMaterialManager.instance();
         ObeliskFuelManager.instance();
         RitualManager.instance();
+        AbilityManager.instance();
         CompatManager.preInit();
     }
 
