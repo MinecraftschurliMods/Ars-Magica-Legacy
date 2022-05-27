@@ -2,11 +2,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -188,6 +190,38 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
+        abilityIdTranslation(AMAbilities.FIRE_RESISTANCE);
+        abilityIdTranslation(AMAbilities.FIRE_PUNCH);
+        abilityIdTranslation(AMAbilities.WATER_DAMAGE_FIRE);
+        abilityIdTranslation(AMAbilities.SWIM_SPEED);
+        abilityIdTranslation(AMAbilities.ENDERMAN_THORNS);
+        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_WATER);
+        abilityIdTranslation(AMAbilities.RESISTANCE);
+        abilityIdTranslation(AMAbilities.HASTE);
+        abilityIdTranslation(AMAbilities.FALL_DAMAGE);
+        abilityIdTranslation(AMAbilities.JUMP_BOOST);
+        abilityIdTranslation(AMAbilities.FEATHER_FALLING);
+        abilityIdTranslation(AMAbilities.GRAVITY);
+        abilityIdTranslation(AMAbilities.FROST_PUNCH);
+        abilityIdTranslation(AMAbilities.FROST_WALKER);
+        abilityIdTranslation(AMAbilities.SLOWNESS);
+        abilityIdTranslation(AMAbilities.SPEED);
+        abilityIdTranslation(AMAbilities.STEP_ASSIST);
+        abilityIdTranslation(AMAbilities.WATER_DAMAGE_LIGHTNING);
+        abilityIdTranslation(AMAbilities.THORNS);
+        abilityIdTranslation(AMAbilities.SATURATION);
+        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_NATURE);
+        abilityIdTranslation(AMAbilities.SMITE);
+        abilityIdTranslation(AMAbilities.REGENERATION);
+        abilityIdTranslation(AMAbilities.NAUSEA);
+        abilityIdTranslation(AMAbilities.MANA_REDUCTION);
+        abilityIdTranslation(AMAbilities.CLARITY);
+        abilityIdTranslation(AMAbilities.MAGIC_DAMAGE);
+        abilityIdTranslation(AMAbilities.POISON_RESISTANCE);
+        abilityIdTranslation(AMAbilities.NIGHT_VISION);
+        abilityIdTranslation(AMAbilities.ENDERMAN_PUMPKIN);
+        abilityIdTranslation(AMAbilities.LIGHT_HEALTH_REDUCTION);
+        abilityIdTranslation(AMAbilities.WATER_HEALTH_REDUCTION);
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -412,6 +446,15 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
+     * Adds an ability translation that matches the ability id.
+     *
+     * @param ability The ability to generate the translation for.
+     */
+    private void abilityIdTranslation(final RegistryObject<? extends IAbility> ability) {
+        addAbility(ability, idToTranslation(ability.getId().getPath()));
+    }
+
+    /**
      * Adds a block translation that matches the block id.
      *
      * @param block The block to generate the translation for.
@@ -532,6 +575,26 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(Util.makeDescriptionId("skill", skill) + ".description", description);
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath(), name);
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath() + ".page0.text", compendiumText);
+    }
+
+    /**
+     * Adds an ability translation.
+     *
+     * @param ability The ability to add the translation for.
+     * @param translation The translation for the ability.
+     */
+    private void addAbility(final Supplier<? extends IAbility> ability, final String translation) {
+        addAbility(ability.get(), translation);
+    }
+
+    /**
+     * Adds an ability translation.
+     *
+     * @param ability The ability to add the translation for.
+     * @param translation The translation for the ability.
+     */
+    private void addAbility(IAbility ability, final String translation) {
+        add(ability.getTranslationKey(), translation);
     }
 
     /**

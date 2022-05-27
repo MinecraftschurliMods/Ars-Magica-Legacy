@@ -45,7 +45,7 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
 
     @Override
     public List<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
-        return keySet().stream().filter(key -> key.equals(affinity)).collect(Collectors.toList());
+        return entrySet().stream().filter(entry -> entry.getValue().affinity().getId().equals(affinity)).map(Entry::getKey).collect(Collectors.toList());
     }
 
     @Override
