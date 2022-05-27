@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.earth",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+      "title": "affinity.arsmagicalegacy.earth"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_earth"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.haste.description",
+      "title": "ability.arsmagicalegacy.haste.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.fall_damage.description",
+      "title": "ability.arsmagicalegacy.fall_damage.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.resistance.description",
+      "title": "ability.arsmagicalegacy.resistance.name"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.life_drain",
+  "name": "skill.arsmagicalegacy.life_drain.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/life_drain.png",
   "pages": [

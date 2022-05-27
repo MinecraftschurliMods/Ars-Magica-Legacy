@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.water",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+      "title": "affinity.arsmagicalegacy.water"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_water"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.enderman_thorns.description",
+      "title": "ability.arsmagicalegacy.enderman_thorns.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.nether_damage_water.description",
+      "title": "ability.arsmagicalegacy.nether_damage_water.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.swim_speed.description",
+      "title": "ability.arsmagicalegacy.swim_speed.name"
+    }
+  ]
+}

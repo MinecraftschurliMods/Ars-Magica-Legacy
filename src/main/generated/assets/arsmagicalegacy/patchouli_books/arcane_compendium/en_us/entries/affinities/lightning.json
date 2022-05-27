@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.lightning",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
+      "title": "affinity.arsmagicalegacy.lightning"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_lightning"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.water_damage_lightning.description",
+      "title": "ability.arsmagicalegacy.water_damage_lightning.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.step_assist.description",
+      "title": "ability.arsmagicalegacy.step_assist.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.speed.description",
+      "title": "ability.arsmagicalegacy.speed.name"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.air",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}",
+      "title": "affinity.arsmagicalegacy.air"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_air"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.feather_falling.description",
+      "title": "ability.arsmagicalegacy.feather_falling.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.gravity.description",
+      "title": "ability.arsmagicalegacy.gravity.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.jump_boost.description",
+      "title": "ability.arsmagicalegacy.jump_boost.name"
+    }
+  ]
+}

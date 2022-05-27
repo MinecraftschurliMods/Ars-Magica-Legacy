@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.water_breathing",
+  "name": "skill.arsmagicalegacy.water_breathing.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/water_breathing.png",
   "pages": [

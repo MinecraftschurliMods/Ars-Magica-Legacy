@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.nature",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}",
+      "title": "affinity.arsmagicalegacy.nature"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_nature"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.thorns.description",
+      "title": "ability.arsmagicalegacy.thorns.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.nether_damage_nature.description",
+      "title": "ability.arsmagicalegacy.nether_damage_nature.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.saturation.description",
+      "title": "ability.arsmagicalegacy.saturation.name"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.wizards_autumn",
+  "name": "skill.arsmagicalegacy.wizards_autumn.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/wizards_autumn.png",
   "pages": [

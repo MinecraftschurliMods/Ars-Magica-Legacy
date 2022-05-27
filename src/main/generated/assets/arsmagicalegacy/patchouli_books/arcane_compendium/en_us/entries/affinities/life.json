@@ -1,0 +1,31 @@
+{
+  "name": "affinity.arsmagicalegacy.life",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}",
+      "title": "affinity.arsmagicalegacy.life"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_life"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.smite.description",
+      "title": "ability.arsmagicalegacy.smite.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.nausea.description",
+      "title": "ability.arsmagicalegacy.nausea.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.regeneration.description",
+      "title": "ability.arsmagicalegacy.regeneration.name"
+    }
+  ]
+}

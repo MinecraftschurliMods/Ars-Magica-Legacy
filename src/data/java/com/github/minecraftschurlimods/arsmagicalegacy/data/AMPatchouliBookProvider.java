@@ -1,6 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -11,11 +15,11 @@ import com.github.minecraftschurlimods.patchouli_datagen.AbstractPageBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.BookBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.EntryBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.PatchouliBookProvider;
-import com.github.minecraftschurlimods.patchouli_datagen.page.TextPageBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedBookBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedCategoryBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedEntryBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -23,22 +27,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.LanguageProvider;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 class AMPatchouliBookProvider extends PatchouliBookProvider {
+    private final AMAbilityProvider abilities;
     private final LanguageProvider lang;
 
-    AMPatchouliBookProvider(DataGenerator generator, String modid, LanguageProvider lang, boolean includeClient, boolean includeServer) {
+    AMPatchouliBookProvider(DataGenerator generator, String modid, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
         super(generator, modid, includeClient, includeServer);
+        this.abilities = abilities;
         this.lang = lang;
     }
 
     @Override
     protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
         var api = ArsMagicaAPI.get();
-        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang)
+        var affinityHelper = api.getAffinityHelper();
+        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang::add)
                 .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
                 .setCreativeTab(api.getCreativeModeTab().getRecipeFolderName())
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
@@ -61,16 +66,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("Above the book slot is a search bar, which will search through all known skills. Below the slot is where the name for your spell recipe goes (note that this is not the name of the spell itself).$(br2)Once you are done, simply take out the book.")
                 .addSimpleTextPage("Now that you have your spell recipe, you can do the final step: crafting the spell at the $(l:mechanics/crafting_altar)Crafting Altar$().$(br2)To start crafting the spell, put the recipe onto the altar's lectern. The items you need to throw in will appear above it, always starting with a $(l:items/runes)Blank Rune$() and ending with a $(l:items/spell_parchment)Spell Parchment$().")
                 .addSimpleTextPage("When first using the spell, you can choose an icon and a name for the spell. After that, you're done!$(br2)It is heavily recommended to at least read the other chapters in this category, as they cover most things to know in magic.")
-                .build()
-                .addEntry("affinities", "Affinities", api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()))
-                .addSimpleTextPage("Think of affinities like the elements of spell parts. There are ten affinities in total, seen on the right.$(br2)Every affinity has an essence that is used in intermediate spell crafting involving this affinity.")
-                .addSimpleTextPage("- Fire$(br)- Water$(br)- Earth$(br)- Air$(br)- Ice$(br)- Lightning$(br)- Nature$(br)- Life$(br)- Arcane$(br)- Ender")
-                .addSimpleTextPage("When you use spells with a certain affinity a lot, you will shift more and more into that affinity. Your affinity depth for all affinities can be seen in the affinity tab of the $(l:blocks/occulus)Occulus$().$(br2)While you don't notice anything yet, you suspect that being too deep in one affinity might cause some things to happen in the future.")
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_fire"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_water"))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_earth"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_air"))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_ice"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_lightning"))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_nature"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_life"))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_arcane"), new ResourceLocation(ArsMagicaAPI.MOD_ID + ":affinity_essence_ender"))
                 .build()
                 .addEntry("crafting_altar", "Crafting Altar", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .addSimpleTextPage("Harnessing the forces of creation, the crafting altar allows you to work miracles of magic. This is where you will create all of your spells.")
@@ -212,8 +207,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build();
         builder.addCategory("entities", "Entities", "", new ItemStack(AMItems.MANA_CREEPER_SPAWN_EGG.get()))
                 .setSortnum(3)
-                .addSubCategory("bosses", "Bosses", "", api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()))
-                .addEntry("water_guardian", "Water Guardian", api.getAffinityHelper().getEssenceForAffinity(AMAffinities.WATER.get()))
+                .addSubCategory("bosses", "Bosses", "", affinityHelper.getEssenceForAffinity(AMAffinities.WATER.get()))
+                .addEntry("water_guardian", "Water Guardian", affinityHelper.getEssenceForAffinity(AMAffinities.WATER.get()))
                 .addSimpleTextPage("The Water Guardian is a unique being. It is always in a state of fluidity, making it able to shrug off physical attacks. It is a trickster as well, flowing into copies of itself and attacking from ambush if you are fooled by the decoy.")
                 .addEntityPage(AMEntities.WATER_GUARDIAN.getId()).setText("Recommended magic level: 10").build()
                 .addSimpleMultiblockPage("Water Guardian Ritual", PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL)
@@ -282,9 +277,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
 /*
         TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
                 .setSortnum(7);
-                .build();
 */
-        Set<ResourceLocation> parts = new HashSet<>();
+
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
             if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
                 TranslatedCategoryBuilder b = switch (spellPart.getType()) {
@@ -293,21 +287,35 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                     case SHAPE -> shapes;
                 };
                 ResourceLocation registryName = spellPart.getRegistryName();
-                parts.add(registryName);
-                String entryLangKey = "item.%s.%s.%s.%s".formatted(b.getBookId().getNamespace(), b.getBookId().getPath(), b.getId().getPath().replaceAll("/", "."), registryName.getPath().replaceAll("/", "."));
-                TranslatedEntryBuilder entry = b.addEntry(new TranslatedEntryBuilder(registryName.getPath(), entryLangKey, registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png", b) {});
-                String textLangKey = "%s.page0.text".formatted(entryLangKey);
-                entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
+                                                .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+                entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
                 if (spellPart == AMSpellParts.SUMMON.get()) {
-                    textLangKey = "%s.page1.text".formatted(entryLangKey);
-                    entry.addPage(new TextPageBuilder(textLangKey, entry)).build();
+                    entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
                 }
-                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build().setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath())).build();
+                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build();
+                entry.build();
             }
         }
         shapes.build();
         components.build();
         modifiers.build();
+        TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "Think of affinities like the elements of spell parts.$(br2)Every affinity has an essence that is used in intermediate spell crafting involving this affinity. When you use spells with a certain affinity a lot, you will shift more and more into that affinity. Your affinity depth for all affinities can be seen in the affinity tab of the $(l:blocks/occulus)Occulus$().$(br2)While you don't notice anything yet, you suspect that being too deep in one affinity might cause some things to happen in the future.", affinityHelper.getEssenceForAffinity(IAffinity.WATER));
+        var abilityRegistry = api.getAbilityRegistry();
+        for (final IAffinity affinity : api.getAffinityRegistry()) {
+            ResourceLocation id = affinity.getId();
+            if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(IAffinity.NONE)) continue;
+            TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity))
+                                                     .addSimpleSpotlightPage(affinityHelper.getEssenceForAffinity(affinity), null, affinity.getTranslationKey())
+                                                     .addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
+            for (final ResourceLocation abilityId : abilities.getAbilitiesForAffinity(id)) {
+                IAbility ability = abilityRegistry.getValue(abilityId);
+                if (ability == null) continue;
+                entry.addSimpleTextPage(ability.getTranslationKey() + ".description", ability.getTranslationKey() + ".name");
+            }
+            entry.build();
+        }
+        affinities.build();
         builder.build(consumer);
     }
 

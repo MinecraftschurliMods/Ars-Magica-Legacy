@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.astral_distortion",
+  "name": "skill.arsmagicalegacy.astral_distortion.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/astral_distortion.png",
   "pages": [

@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
@@ -190,38 +191,38 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
-        abilityIdTranslation(AMAbilities.FIRE_RESISTANCE);
-        abilityIdTranslation(AMAbilities.FIRE_PUNCH);
-        abilityIdTranslation(AMAbilities.WATER_DAMAGE_FIRE);
-        abilityIdTranslation(AMAbilities.SWIM_SPEED);
-        abilityIdTranslation(AMAbilities.ENDERMAN_THORNS);
-        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_WATER);
-        abilityIdTranslation(AMAbilities.RESISTANCE);
-        abilityIdTranslation(AMAbilities.HASTE);
-        abilityIdTranslation(AMAbilities.FALL_DAMAGE);
-        abilityIdTranslation(AMAbilities.JUMP_BOOST);
-        abilityIdTranslation(AMAbilities.FEATHER_FALLING);
-        abilityIdTranslation(AMAbilities.GRAVITY);
-        abilityIdTranslation(AMAbilities.FROST_PUNCH);
-        abilityIdTranslation(AMAbilities.FROST_WALKER);
-        abilityIdTranslation(AMAbilities.SLOWNESS);
-        abilityIdTranslation(AMAbilities.SPEED);
-        abilityIdTranslation(AMAbilities.STEP_ASSIST);
-        abilityIdTranslation(AMAbilities.WATER_DAMAGE_LIGHTNING);
-        abilityIdTranslation(AMAbilities.THORNS);
-        abilityIdTranslation(AMAbilities.SATURATION);
-        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_NATURE);
-        abilityIdTranslation(AMAbilities.SMITE);
-        abilityIdTranslation(AMAbilities.REGENERATION);
-        abilityIdTranslation(AMAbilities.NAUSEA);
-        abilityIdTranslation(AMAbilities.MANA_REDUCTION);
-        abilityIdTranslation(AMAbilities.CLARITY);
-        abilityIdTranslation(AMAbilities.MAGIC_DAMAGE);
-        abilityIdTranslation(AMAbilities.POISON_RESISTANCE);
-        abilityIdTranslation(AMAbilities.NIGHT_VISION);
-        abilityIdTranslation(AMAbilities.ENDERMAN_PUMPKIN);
-        abilityIdTranslation(AMAbilities.LIGHT_HEALTH_REDUCTION);
-        abilityIdTranslation(AMAbilities.WATER_HEALTH_REDUCTION);
+        abilityIdTranslation(AMAbilities.FIRE_RESISTANCE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.FIRE_PUNCH, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.SWIM_SPEED, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.ENDERMAN_THORNS, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.RESISTANCE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.HASTE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.FALL_DAMAGE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.JUMP_BOOST, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.FEATHER_FALLING, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.GRAVITY, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.FROST_PUNCH, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.FROST_WALKER, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.SLOWNESS, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.SPEED, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.STEP_ASSIST, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.SATURATION, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.THORNS, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.SMITE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.REGENERATION, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.NAUSEA, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.MANA_REDUCTION, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.CLARITY, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.MAGIC_DAMAGE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.POISON_RESISTANCE, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.NIGHT_VISION, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.ENDERMAN_PUMPKIN, ""); // TODO Text
+        abilityIdTranslation(AMAbilities.WATER_DAMAGE_FIRE, ""); // TODO Text & Name
+        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_WATER, ""); // TODO Text & Name
+        abilityIdTranslation(AMAbilities.WATER_DAMAGE_LIGHTNING, ""); // TODO Text & Name
+        abilityIdTranslation(AMAbilities.NETHER_DAMAGE_NATURE, ""); // TODO Text & Name
+        abilityIdTranslation(AMAbilities.LIGHT_HEALTH_REDUCTION, ""); // TODO Text & Name
+        abilityIdTranslation(AMAbilities.WATER_HEALTH_REDUCTION, ""); // TODO Text & Name
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -450,8 +451,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param ability The ability to generate the translation for.
      */
-    private void abilityIdTranslation(final RegistryObject<? extends IAbility> ability) {
-        addAbility(ability, idToTranslation(ability.getId().getPath()));
+    private void abilityIdTranslation(final RegistryObject<? extends IAbility> ability, String description) {
+        addAbility(ability, idToTranslation(ability.getId().getPath()), description);
     }
 
     /**
@@ -573,28 +574,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     private void skillTranslation(ResourceLocation skill, String name, String description, String compendiumType, String compendiumText) {
         add(Util.makeDescriptionId("skill", skill) + ".name", name);
         add(Util.makeDescriptionId("skill", skill) + ".description", description);
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath(), name);
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath() + ".page0.text", compendiumText);
     }
 
     /**
      * Adds an ability translation.
      *
-     * @param ability The ability to add the translation for.
-     * @param translation The translation for the ability.
+     * @param ability     The ability to add the translation for.
+     * @param name        The translation for the abilities name.
+     * @param description The translation for the abilities description.
      */
-    private void addAbility(final Supplier<? extends IAbility> ability, final String translation) {
-        addAbility(ability.get(), translation);
-    }
-
-    /**
-     * Adds an ability translation.
-     *
-     * @param ability The ability to add the translation for.
-     * @param translation The translation for the ability.
-     */
-    private void addAbility(IAbility ability, final String translation) {
-        add(ability.getTranslationKey(), translation);
+    private void addAbility(Supplier<? extends IAbility> ability, String name, String description) {
+        add(ability.get(), name, description);
     }
 
     /**
@@ -614,17 +605,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param translation The translation for the affinity.
      */
     private void addAffinity(Supplier<? extends IAffinity> affinity, String translation) {
-        addAffinity(affinity.get(), translation);
-    }
-
-    /**
-     * Adds an affinity translation.
-     *
-     * @param affinity    The affinity to add the translation for.
-     * @param translation The translation for the affinity.
-     */
-    private void addAffinity(IAffinity affinity, String translation) {
-        add(affinity.getTranslationKey(), translation);
+        add(affinity.get(), translation);
     }
 
     /**
@@ -677,17 +658,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param translation The translation for the skill point.
      */
     private void addSkillPoint(Supplier<? extends ISkillPoint> skillPoint, String translation) {
-        addSkillPoint(skillPoint.get(), translation);
-    }
-
-    /**
-     * Adds a skill point translation.
-     *
-     * @param skillPoint  The skill point to add the translation for.
-     * @param translation The translation for the skill point.
-     */
-    private void addSkillPoint(ISkillPoint skillPoint, String translation) {
-        add(skillPoint.getTranslationKey(), translation);
+        add(skillPoint.get(), translation);
     }
 
     /**
@@ -731,6 +702,15 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    private void add(ITranslatable translatable, String translation) {
+        add(translatable.getTranslationKey(), translation);
+    }
+
+    private void add(ITranslatable.WithDescription translatable, String nameTranslation, String descriptionTranslation) {
+        add(translatable.getNameTranslationKey(), nameTranslation);
+        add(translatable.getDescriptionTranslationKey(), descriptionTranslation);
     }
 
     /**

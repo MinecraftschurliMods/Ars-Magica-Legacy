@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.ender_intervention",
+  "name": "skill.arsmagicalegacy.ender_intervention.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/ender_intervention.png",
   "pages": [

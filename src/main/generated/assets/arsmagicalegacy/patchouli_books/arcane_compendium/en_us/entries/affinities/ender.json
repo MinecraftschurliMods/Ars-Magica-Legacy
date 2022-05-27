@@ -1,0 +1,41 @@
+{
+  "name": "affinity.arsmagicalegacy.ender",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+      "title": "affinity.arsmagicalegacy.ender"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_ender"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.poison_resistance.description",
+      "title": "ability.arsmagicalegacy.poison_resistance.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.night_vision.description",
+      "title": "ability.arsmagicalegacy.night_vision.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.light_health_reduction.description",
+      "title": "ability.arsmagicalegacy.light_health_reduction.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.water_health_reduction.description",
+      "title": "ability.arsmagicalegacy.water_health_reduction.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.enderman_pumpkin.description",
+      "title": "ability.arsmagicalegacy.enderman_pumpkin.name"
+    }
+  ]
+}
