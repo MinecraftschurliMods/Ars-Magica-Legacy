@@ -14,89 +14,289 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class NatureGuardianModel extends EntityModel<NatureGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_guardian"), "main");
+    private final ModelPart hair1;
+    private final ModelPart hair2;
+    private final ModelPart hair3;
+    private final ModelPart hair4;
+    private final ModelPart hair5;
+    private final ModelPart hair6;
+    private final ModelPart hair7;
+    private final ModelPart hair8;
     private final ModelPart head;
-    private final ModelPart body;
-    private final ModelPart rods;
-    private final ModelPart main;
+    private final ModelPart neck;
+    private final ModelPart body1;
+    private final ModelPart body2;
+    private final ModelPart body3;
+    private final ModelPart body4;
+    private final ModelPart body5;
+    private final ModelPart core1;
+    private final ModelPart core2;
+    private final ModelPart core3;
+    private final ModelPart shoulder;
+    private final ModelPart topInnerRod1;
+    private final ModelPart middleInnerRod1;
+    private final ModelPart bottomInnerRod1;
+    private final ModelPart topInnerRod2;
+    private final ModelPart middleInnerRod2;
+    private final ModelPart bottomInnerRod2;
+    private final ModelPart topInnerRod3;
+    private final ModelPart middleInnerRod3;
+    private final ModelPart bottomInnerRod3;
+    private final ModelPart topInnerRod4;
+    private final ModelPart middleInnerRod4;
+    private final ModelPart bottomInnerRod4;
+    private final ModelPart outerRod1;
+    private final ModelPart outerRod2;
+    private final ModelPart outerRod3;
+    private final ModelPart outerRod4;
+    private final ModelPart leftArm;
+    private final ModelPart leftHand;
+    private final ModelPart shield;
+    private final ModelPart rightArm;
+    private final ModelPart rightHand;
+    private final ModelPart sickleRod;
+    private final ModelPart sickleHead;
+    private final ModelPart sickleBlade1;
+    private final ModelPart sickleBlade2;
+    private final ModelPart sickleBlade3;
 
     public NatureGuardianModel(ModelPart root) {
+        hair1 = root.getChild("hair1");
+        hair2 = root.getChild("hair2");
+        hair3 = root.getChild("hair3");
+        hair4 = root.getChild("hair4");
+        hair5 = root.getChild("hair5");
+        hair6 = root.getChild("hair6");
+        hair7 = root.getChild("hair7");
+        hair8 = root.getChild("hair8");
         head = root.getChild("head");
-        body = root.getChild("body");
-        rods = root.getChild("rods");
-        main = root.getChild("main");
+        neck = root.getChild("neck");
+        body1 = root.getChild("body1");
+        body2 = root.getChild("body2");
+        body3 = root.getChild("body3");
+        body4 = root.getChild("body4");
+        body5 = root.getChild("body5");
+        core1 = root.getChild("core1");
+        core2 = root.getChild("core2");
+        core3 = root.getChild("core3");
+        shoulder = root.getChild("shoulder");
+        topInnerRod1 = root.getChild("top_inner_rod1");
+        middleInnerRod1 = root.getChild("middle_inner_rod1");
+        bottomInnerRod1 = root.getChild("bottom_inner_rod1");
+        topInnerRod2 = root.getChild("top_inner_rod2");
+        middleInnerRod2 = root.getChild("middle_inner_rod2");
+        bottomInnerRod2 = root.getChild("bottom_inner_rod2");
+        topInnerRod3 = root.getChild("top_inner_rod3");
+        middleInnerRod3 = root.getChild("middle_inner_rod3");
+        bottomInnerRod3 = root.getChild("bottom_inner_rod3");
+        topInnerRod4 = root.getChild("top_inner_rod4");
+        middleInnerRod4 = root.getChild("middle_inner_rod4");
+        bottomInnerRod4 = root.getChild("bottom_inner_rod4");
+        outerRod1 = root.getChild("outer_rod1");
+        outerRod2 = root.getChild("outer_rod2");
+        outerRod3 = root.getChild("outer_rod3");
+        outerRod4 = root.getChild("outer_rod4");
+        leftArm = root.getChild("left_arm");
+        leftHand = root.getChild("left_hand");
+        shield = root.getChild("shield");
+        rightArm = root.getChild("right_arm");
+        rightHand = root.getChild("right_hand");
+        sickleRod = root.getChild("sickle_rod");
+        sickleHead = root.getChild("sickle_head");
+        sickleBlade1 = root.getChild("sickle_blade1");
+        sickleBlade2 = root.getChild("sickle_blade2");
+        sickleBlade3 = root.getChild("sickle_blade3");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-                .texOffs(65, 24).mirror().addBox(-7F, -64F, 1F, 8F, 6F, 12F, new CubeDeformation(0F)).mirror(false), PartPose.offset(3F, 24F, -7F));
-        head.addOrReplaceChild("hair", CubeListBuilder.create()
-                .texOffs(0, 64).mirror().addBox(-5F, -65F, 5F, 4F, 2F, 20F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(7, 51).mirror().addBox(-4F, -61F, 10F, 2F, 2F, 10F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 49).mirror().addBox(0F, -65F, 7F, 2F, 2F, 12F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 49).mirror().addBox(-8F, -65F, 7F, 2F, 2F, 12F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 38).mirror().addBox(0F, -62.5F, 9F, 2F, 2F, 8F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 38).mirror().addBox(-8F, -62.5F, 7F, 2F, 2F, 8F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 30).mirror().addBox(0F, -59.5F, 10F, 2F, 2F, 5F, new CubeDeformation(0F)).mirror(false)
-                .texOffs(5, 30).mirror().addBox(-8F, -59.5F, 10F, 2F, 2F, 5F, new CubeDeformation(0F)).mirror(false), PartPose.offset(0F, 0F, 0F));
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-                .texOffs(36, 0).addBox(-3F, 11F, -6.5F, 8F, 8F, 8F, new CubeDeformation(0F))
-                .texOffs(69, 19).addBox(-7F, -19.5F, -3.5F, 16F, 2F, 2F, new CubeDeformation(0F)), PartPose.offset(-1F, -10F, 3F));
-        body.addOrReplaceChild("body4", CubeListBuilder.create()
-                .texOffs(36, 17).addBox(-4.5F, 20.615F, -6.5F, 7F, 8F, 7F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -17F, 4F, -0.1309F, 0F, 0F));
-        body.addOrReplaceChild("body3", CubeListBuilder.create()
-                .texOffs(36, 33).addBox(-4F, 12F, -8.3F, 6F, 8F, 6F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -17F, 4F, -0.0175F, 0F, 0F));
-        body.addOrReplaceChild("body2", CubeListBuilder.create()
-                .texOffs(36, 0).addBox(-5F, 3.615F, -10.5F, 8F, 8F, 8F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -17F, 4F, 0.0873F, 0F, 0F));
-        body.addOrReplaceChild("body1", CubeListBuilder.create()
-                .texOffs(69, 0).addBox(-7F, -4F, -11.4F, 12F, 8F, 10F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -17F, 4F, 0.0436F, 0F, 0F));
-        body.addOrReplaceChild("arm", CubeListBuilder.create()
-                .texOffs(0, 9).addBox(8F, -54.5F, -2.5F, 4F, 14F, 6F, new CubeDeformation(0F))
-                .texOffs(114, 0).addBox(8.5F, -40.5F, -1.5F, 3F, 12F, 4F, new CubeDeformation(0F))
-                .texOffs(0, 9).addBox(-12F, -54.5F, -2.5F, 4F, 14F, 6F, new CubeDeformation(0F))
-                .texOffs(114, 0).addBox(-11.5F, -40.5F, -1.5F, 3F, 12F, 4F, new CubeDeformation(0F)), PartPose.offset(1F, 34F, -3F));
-        PartDefinition rods = partdefinition.addOrReplaceChild("rods", CubeListBuilder.create(), PartPose.offset(0F, 16F, 0F));
-        rods.addOrReplaceChild("rod_southeast", CubeListBuilder.create()
-                .texOffs(0, 30).addBox(2F, -0.375F, 2F, 1F, 14F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 30).addBox(2F, -0.375F, -3F, 1F, 14F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 30).addBox(-3F, -0.375F, 2F, 1F, 14F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 30).addBox(-3F, -0.375F, -3F, 1F, 14F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0F, -6.625F, 0.5F, 0F, -1.5708F, 0F));
-        rods.addOrReplaceChild("rod_east_bottom", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-0.5F, 9.625F, 2F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-0.5F, 4.625F, 2F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(2F, 4.625F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(2F, 9.625F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-0.5F, 9.625F, -3F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-0.5F, 4.625F, -3F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-3F, 9.625F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-3F, 4.625F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0F, -6.625F, 0.5F, 0F, -1.5708F, 0F));
-        rods.addOrReplaceChild("rod_east_top", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-0.5F, -0.375F, 2F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(2F, -0.375F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-0.5F, -0.375F, -3F, 1F, 5F, 1F, new CubeDeformation(0F))
-                .texOffs(0, 0).addBox(-3F, -0.375F, -0.5F, 1F, 5F, 1F, new CubeDeformation(0F)), PartPose.offsetAndRotation(0F, -6.625F, 0.5F, 0F, -1.5708F, 0F));
-        PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create()
-                .texOffs(36, 48).mirror().addBox(-2F, -58F, -2F, 4F, 4F, 4F, new CubeDeformation(0F)).mirror(false), PartPose.offset(0F, 24F, 0F));
-        main.addOrReplaceChild("core", CubeListBuilder.create()
-                .texOffs(5, 0).addBox(-5.5F, -3F, 0F, 4F, 4F, 4F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -8F, 4F, 0F, -1.5708F, 0F));
-        main.addOrReplaceChild("shield", CubeListBuilder.create()
-                .texOffs(84, 45).addBox(-7F, -17.5F, -18F, 20F, 30F, 2F, new CubeDeformation(0F)), PartPose.offsetAndRotation(2F, -38F, 4F, 0F, 1.5708F, 0F));
+        ModelUtil.addCube(partdefinition, "hair1", 0, 64, -2, -1, -2, 4, 2, 20, 0, -44, 0, true);
+        ModelUtil.addCube(partdefinition, "hair2", 5, 49, 3, -1, 0, 2, 2, 12, 0, -44, 0, true);
+        ModelUtil.addCube(partdefinition, "hair3", 5, 38, 3, -1, 2, 2, 2, 8, 0, -41.5f, 0, true);
+        ModelUtil.addCube(partdefinition, "hair4", 5, 30, 3, -1, 3, 2, 2, 5, 0, -38.5f, 0, true);
+        ModelUtil.addCube(partdefinition, "hair5", 7, 51, -1, -1, 3, 2, 2, 10, 0, -40, 0, true);
+        ModelUtil.addCube(partdefinition, "hair6", 5, 30, -5, -1, 3, 2, 2, 5, 0, -38.5f, 0, true);
+        ModelUtil.addCube(partdefinition, "hair7", 5, 38, -5, -1, 0, 2, 2, 8, 0, -41.5f, 0, true);
+        ModelUtil.addCube(partdefinition, "hair8", 5, 49, -5, -1, 0, 2, 2, 12, 0, -44, 0, true);
+        ModelUtil.addCube(partdefinition, "head", 65, 24, -4, -6, -6, 8, 6, 12, 0, -38, 0, true);
+        ModelUtil.addCube(partdefinition, "neck", 36, 48, -2, -4, -2, 4, 4, 4, 0, -34, 0, true);
+        ModelUtil.addCube(partdefinition, "body1", 69, 0, -6, -4, -5, 12, 8, 10, 0, -30, 0);
+        ModelUtil.addCube(partdefinition, "body2", 36, 0, -4, -4, -4, 8, 8, 8, 0, -22, 0);
+        ModelUtil.addCube(partdefinition, "body3", 36, 33, -3, -4, -3, 6, 8, 6, 0, -14, 0);
+        ModelUtil.addCube(partdefinition, "body4", 36, 17, -3.5f, -4, -3.5f, 7, 8, 7, 0, -6, 0);
+        ModelUtil.addCube(partdefinition, "body5", 36, 0, -4, -4, -4, 8, 8, 8, 0, 2, 0);
+        ModelUtil.addCube(partdefinition, "core1", 5, 0, -2, -2, -2, 4, 4, 4, 0, 10, 0);
+        ModelUtil.addCube(partdefinition, "core2", 5, 0, -2, -2, -2, 4, 4, 4, 0, 10, 0);
+        ModelUtil.addCube(partdefinition, "core3", 5, 0, -2, -2, -2, 4, 4, 4, 0, 10, 0);
+        ModelUtil.addCube(partdefinition, "shoulder", 69, 19, -8, -1, -1, 16, 2, 2, 0, -31.5f, 0);
+        ModelUtil.addCube(partdefinition, "top_inner_rod1", 0, 0, -0.5f, 0, -4, 1, 5, 1, 0, 6, 0);
+        ModelUtil.addCube(partdefinition, "middle_inner_rod1", 0, 0, -0.5f, 5, -4, 1, 5, 1, 0, 6, 0);
+        ModelUtil.addCube(partdefinition, "bottom_inner_rod1", 0, 0, -0.5f, 10, -4, 1, 5, 1, 0, 6, 0);
+        ModelUtil.addCube(partdefinition, "top_inner_rod2", 0, 0, -0.5f, 0, -4, 1, 5, 1, 0, 6, 0, 0, -1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "middle_inner_rod2", 0, 0, -0.5f, 5, -4, 1, 5, 1, 0, 6, 0, 0, -1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "bottom_inner_rod2", 0, 0, -0.5f, 10, -4, 1, 5, 1, 0, 6, 0, 0, -1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "top_inner_rod3", 0, 0, -0.5f, 0, -4, 1, 5, 1, 0, 6, 0, 0, 3.1416f, 0);
+        ModelUtil.addCube(partdefinition, "middle_inner_rod3", 0, 0, -0.5f, 5, -4, 1, 5, 1, 0, 6, 0, 0, 3.1416f, 0);
+        ModelUtil.addCube(partdefinition, "bottom_inner_rod3", 0, 0, -0.5f, 10, -4, 1, 5, 1, 0, 6, 0, 0, 3.1416f, 0);
+        ModelUtil.addCube(partdefinition, "top_inner_rod4", 0, 0, -0.5f, 0, -4, 1, 5, 1, 0, 6, 0, 0, 1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "middle_inner_rod4", 0, 0, -0.5f, 5, -4, 1, 5, 1, 0, 6, 0, 0, 1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "bottom_inner_rod4", 0, 0, -0.5f, 10, -4, 1, 5, 1, 0, 6, 0, 0, 1.5708f, 0);
+        ModelUtil.addCube(partdefinition, "outer_rod1", 0, 30, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -0.7854f, 0);
+        ModelUtil.addCube(partdefinition, "outer_rod2", 0, 30, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -2.3562f, 0);
+        ModelUtil.addCube(partdefinition, "outer_rod3", 0, 30, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 2.3562f, 0);
+        ModelUtil.addCube(partdefinition, "outer_rod4", 0, 30, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 0.7854f, 0);
+        ModelUtil.addCube(partdefinition, "left_arm", 0, 9, 18, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, 0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "left_hand", 114, 0, -1.5f, -1, -2, 3, 12, 4, 10, -20.5f, 2, -0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "shield", 84, 45, -10, -15, -17, 20, 30, 2, 0, -20.5f, 0, 0, 1.0472f, 0);
+        ModelUtil.addCube(partdefinition, "right_arm", 0, 9, -2, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, 0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "right_hand", 114, 0, -1.5f, -2, -2, 3, 12, 4, -10, -20.5f, 2, -1.309f, 0, 0);
+        ModelUtil.addCube(partdefinition, "sickle_rod", 0, 90, -1, 10.5f, -32, 2, 2, 36, 10, -20.5f, 2, -0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "sickle_head", 115, 113, -1.5f, 5.5f, -35, 3, 12, 3, 10, -20.5f, 2, -0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "sickle_blade1", 120, 78, -0.5f, 3.5f, -34.5f, 1, 30, 3, 10, -20.5f, 2, -0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "sickle_blade2", 107, 114, -0.499f, 11.5f, -46, 1, 12, 2, 10, -20.5f, 2, 0.2618f, 0, 0);
+        ModelUtil.addCube(partdefinition, "sickle_blade3", 102, 119, -0.5f, -3.5f, -51, 1, 8, 1, 10, -20.5f, 2, 0.7854f, 0, 0);
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
     @Override
     public void setupAnim(NatureGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        hair1.xRot = headPitch * (float) Math.PI / 180f;
+        hair1.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair2.xRot = headPitch * (float) Math.PI / 180f;
+        hair2.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair3.xRot = headPitch * (float) Math.PI / 180f;
+        hair3.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair4.xRot = headPitch * (float) Math.PI / 180f;
+        hair4.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair5.xRot = headPitch * (float) Math.PI / 180f;
+        hair5.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair6.xRot = headPitch * (float) Math.PI / 180f;
+        hair6.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair7.xRot = headPitch * (float) Math.PI / 180f;
+        hair7.yRot = netHeadYaw * (float) Math.PI / 180f;
+        hair8.xRot = headPitch * (float) Math.PI / 180f;
+        hair8.yRot = netHeadYaw * (float) Math.PI / 180f;
+        head.xRot = headPitch * (float) Math.PI / 180f;
+        head.yRot = netHeadYaw * (float) Math.PI / 180f;
+        float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45f) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45f));
+        hair1.y = -44 + y;
+        hair2.y = -44 + y;
+        hair3.y = -41.5f + y;
+        hair4.y = -38.5f + y;
+        hair5.y = -40 + y;
+        hair6.y = -38.5f + y;
+        hair7.y = -41.5f + y;
+        hair8.y = -44 + y;
+        head.y = -38 + y;
+        neck.y = -34 + y;
+        body1.y = -30 + y;
+        body2.y = -22 + y;
+        body3.y = -14 + y;
+        body4.y = -6 + y;
+        body5.y = 2 + y;
+        core1.y = 10 + y;
+        core2.y = 10 + y;
+        core3.y = 10 + y;
+        shoulder.y = -31.5f + y;
+        topInnerRod1.y = 6 + y;
+        middleInnerRod1.y = 6 + y;
+        bottomInnerRod1.y = 6 + y;
+        topInnerRod2.y = 6 + y;
+        middleInnerRod2.y = 6 + y;
+        bottomInnerRod2.y = 6 + y;
+        topInnerRod3.y = 6 + y;
+        middleInnerRod3.y = 6 + y;
+        bottomInnerRod3.y = 6 + y;
+        topInnerRod4.y = 6 + y;
+        middleInnerRod4.y = 6 + y;
+        bottomInnerRod4.y = 6 + y;
+        outerRod1.y = 6 + y;
+        outerRod2.y = 6 + y;
+        outerRod3.y = 6 + y;
+        outerRod4.y = 6 + y;
+        leftArm.y = -28.5f + y;
+        leftHand.y = -20.5f + y;
+        shield.y = -20.5f + y;
+        rightArm.y = -28.5f + y;
+        rightHand.y = -20.5f + y;
+        sickleRod.y = -20.5f + y;
+        sickleHead.y = -20.5f + y;
+        sickleBlade1.y = -20.5f + y;
+        sickleBlade2.y = -20.5f + y;
+        sickleBlade3.y = -20.5f + y;
+        core1.xRot = ageInTicks % 360 / 6f;
+        core2.yRot = (ageInTicks + 120) % 360 / 6f;
+        core3.zRot = (ageInTicks + 240) % 360 / 6f;
+        float rot = (float) ((ageInTicks % 360) * Math.PI / 45);
+        topInnerRod1.yRot = rot;
+        middleInnerRod1.yRot = rot;
+        bottomInnerRod1.yRot = rot;
+        topInnerRod2.yRot = -(float) (Math.PI / 2) + rot;
+        middleInnerRod2.yRot = -(float) (Math.PI / 2) + rot;
+        bottomInnerRod2.yRot = -(float) (Math.PI / 2) + rot;
+        topInnerRod3.yRot = (float) Math.PI + rot;
+        middleInnerRod3.yRot = (float) Math.PI + rot;
+        bottomInnerRod3.yRot = (float) Math.PI + rot;
+        topInnerRod4.yRot = (float) (Math.PI / 2) + rot;
+        middleInnerRod4.yRot = (float) (Math.PI / 2) + rot;
+        bottomInnerRod4.yRot = (float) (Math.PI / 2) + rot;
+        outerRod1.yRot = -(float) (Math.PI / 4) + rot;
+        outerRod2.yRot = -(float) (3 * Math.PI / 4) + rot;
+        outerRod3.yRot = (float) (3 * Math.PI / 4) + rot;
+        outerRod4.yRot = (float) (Math.PI / 4) + rot;
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        hair1.render(poseStack, buffer, packedLight, packedOverlay);
+        hair2.render(poseStack, buffer, packedLight, packedOverlay);
+        hair3.render(poseStack, buffer, packedLight, packedOverlay);
+        hair4.render(poseStack, buffer, packedLight, packedOverlay);
+        hair5.render(poseStack, buffer, packedLight, packedOverlay);
+        hair6.render(poseStack, buffer, packedLight, packedOverlay);
+        hair7.render(poseStack, buffer, packedLight, packedOverlay);
+        hair8.render(poseStack, buffer, packedLight, packedOverlay);
         head.render(poseStack, buffer, packedLight, packedOverlay);
-        body.render(poseStack, buffer, packedLight, packedOverlay);
-        rods.render(poseStack, buffer, packedLight, packedOverlay);
-        main.render(poseStack, buffer, packedLight, packedOverlay);
+        neck.render(poseStack, buffer, packedLight, packedOverlay);
+        body1.render(poseStack, buffer, packedLight, packedOverlay);
+        body2.render(poseStack, buffer, packedLight, packedOverlay);
+        body3.render(poseStack, buffer, packedLight, packedOverlay);
+        body4.render(poseStack, buffer, packedLight, packedOverlay);
+        body5.render(poseStack, buffer, packedLight, packedOverlay);
+        core1.render(poseStack, buffer, packedLight, packedOverlay);
+        core2.render(poseStack, buffer, packedLight, packedOverlay);
+        core3.render(poseStack, buffer, packedLight, packedOverlay);
+        shoulder.render(poseStack, buffer, packedLight, packedOverlay);
+        topInnerRod1.render(poseStack, buffer, packedLight, packedOverlay);
+        middleInnerRod1.render(poseStack, buffer, packedLight, packedOverlay);
+        bottomInnerRod1.render(poseStack, buffer, packedLight, packedOverlay);
+        topInnerRod2.render(poseStack, buffer, packedLight, packedOverlay);
+        middleInnerRod2.render(poseStack, buffer, packedLight, packedOverlay);
+        bottomInnerRod2.render(poseStack, buffer, packedLight, packedOverlay);
+        topInnerRod3.render(poseStack, buffer, packedLight, packedOverlay);
+        middleInnerRod3.render(poseStack, buffer, packedLight, packedOverlay);
+        bottomInnerRod3.render(poseStack, buffer, packedLight, packedOverlay);
+        topInnerRod4.render(poseStack, buffer, packedLight, packedOverlay);
+        middleInnerRod4.render(poseStack, buffer, packedLight, packedOverlay);
+        bottomInnerRod4.render(poseStack, buffer, packedLight, packedOverlay);
+        outerRod1.render(poseStack, buffer, packedLight, packedOverlay);
+        outerRod2.render(poseStack, buffer, packedLight, packedOverlay);
+        outerRod3.render(poseStack, buffer, packedLight, packedOverlay);
+        outerRod4.render(poseStack, buffer, packedLight, packedOverlay);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay);
+        leftHand.render(poseStack, buffer, packedLight, packedOverlay);
+        shield.render(poseStack, buffer, packedLight, packedOverlay);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay);
+        rightHand.render(poseStack, buffer, packedLight, packedOverlay);
+        sickleRod.render(poseStack, buffer, packedLight, packedOverlay);
+        sickleHead.render(poseStack, buffer, packedLight, packedOverlay);
+        sickleBlade1.render(poseStack, buffer, packedLight, packedOverlay);
+        sickleBlade2.render(poseStack, buffer, packedLight, packedOverlay);
+        sickleBlade3.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }
