@@ -4,9 +4,8 @@
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
-      "title": "affinity.arsmagicalegacy.lightning"
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.affinities.lightning.page0.text"
     },
     {
       "type": "patchouli:crafting",

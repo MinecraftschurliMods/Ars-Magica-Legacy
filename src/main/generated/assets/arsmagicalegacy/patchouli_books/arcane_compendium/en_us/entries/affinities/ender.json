@@ -4,9 +4,8 @@
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
-      "title": "affinity.arsmagicalegacy.ender"
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.affinities.ender.page0.text"
     },
     {
       "type": "patchouli:crafting",

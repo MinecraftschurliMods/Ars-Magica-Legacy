@@ -2,8 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
@@ -207,8 +205,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build();
         builder.addCategory("entities", "Entities", "", new ItemStack(AMItems.MANA_CREEPER_SPAWN_EGG.get()))
                 .setSortnum(3)
-                .addSubCategory("bosses", "Bosses", "", affinityHelper.getEssenceForAffinity(AMAffinities.WATER.get()))
-                .addEntry("water_guardian", "Water Guardian", affinityHelper.getEssenceForAffinity(AMAffinities.WATER.get()))
+                .addSubCategory("bosses", "Bosses", "", new ItemStack(AMItems.WATER_GUARDIAN_SPAWN_EGG.get()))
+                .addEntry("water_guardian", "Water Guardian", new ItemStack(AMItems.WATER_GUARDIAN_SPAWN_EGG.get()))
                 .addSimpleTextPage("The Water Guardian is a unique being. It is always in a state of fluidity, making it able to shrug off physical attacks. It is a trickster as well, flowing into copies of itself and attacking from ambush if you are fooled by the decoy.")
                 .addEntityPage(AMEntities.WATER_GUARDIAN.getId()).setText("Recommended magic level: 10").build()
                 .addSimpleMultiblockPage("Water Guardian Ritual", PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL)
@@ -248,6 +246,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("The Nature Guardian is a fearsome opponent. Boasting a deadly scythe and the skill to use it, only the most powerful or foolish would seek it out. It is just as dangerous at range as in melee, if not more.")
                 .addEntityPage(AMEntities.NATURE_GUARDIAN.getId()).setText("Recommended magic level: 70").build()
                 .addSimpleTextPage("Unlike all other bosses, the Nature Guardian appears to guard dryads when enough are slain in quick succession. Nature can be harsh, but it will not tolerate a massacre.", "Spawn Ritual")
+                .addEntityPage(AMEntities.DRYAD.getId()).setText("Dryads spawn in forests. They can be lured with saplings and boost nearby plants' growth.").build()
                 .build()
                 .addEntry("life_guardian", "[WIP] Life Guardian", new ItemStack(AMItems.LIFE_GUARDIAN_SPAWN_EGG.get()))
                 .addSimpleTextPage("The Life Guardian doesn't attack much on its own, though it may decide to throw you around a little. It generally prefers to let others do the fighting for it, infusing them with its tremendous power. In return, the others will often lay down their lives for the guardian's protection. The Life Guardian is a different kind of fight than the other bosses.")
@@ -278,7 +277,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
                 .setSortnum(7);
 */
-
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
             if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
                 TranslatedCategoryBuilder b = switch (spellPart.getType()) {
@@ -288,7 +286,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 };
                 ResourceLocation registryName = spellPart.getRegistryName();
                 TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
-                                                .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+                        .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
                 entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
                 if (spellPart == AMSpellParts.SUMMON.get()) {
                     entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
@@ -300,14 +298,21 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         shapes.build();
         components.build();
         modifiers.build();
-        TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "Think of affinities like the elements of spell parts.$(br2)Every affinity has an essence that is used in intermediate spell crafting involving this affinity. When you use spells with a certain affinity a lot, you will shift more and more into that affinity. Your affinity depth for all affinities can be seen in the affinity tab of the $(l:blocks/occulus)Occulus$().$(br2)While you don't notice anything yet, you suspect that being too deep in one affinity might cause some things to happen in the future.", affinityHelper.getEssenceForAffinity(IAffinity.WATER));
+        TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(IAffinity.WATER))
+                .setSortnum(8);
+        affinities.addEntry("affinities", "Affinities", affinityHelper.getEssenceForAffinity(IAffinity.WATER))
+                .setPriority(true)
+                .addSimpleTextPage("Affinities are magical elements of sorts. All components (excluding some of the very powerful, reality-bending ones) have an affinity that is associated with them. That means that if you use spells with a certain affinity a lot, you will shift into that affinity.")
+                .addSimpleTextPage("Shifting into an affinity bears individual side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
+                .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Reports about lost affinity tomes have been spreading as well, though how to obtain or use them is currently subject to investigation.")
+                .build();
         var abilityRegistry = api.getAbilityRegistry();
         for (final IAffinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(IAffinity.NONE)) continue;
-            TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity))
-                                                     .addSimpleSpotlightPage(affinityHelper.getEssenceForAffinity(affinity), null, affinity.getTranslationKey())
-                                                     .addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
+            TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
+            entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
+            entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
             for (final ResourceLocation abilityId : abilities.getAbilitiesForAffinity(id)) {
                 IAbility ability = abilityRegistry.getValue(abilityId);
                 if (ability == null) continue;
