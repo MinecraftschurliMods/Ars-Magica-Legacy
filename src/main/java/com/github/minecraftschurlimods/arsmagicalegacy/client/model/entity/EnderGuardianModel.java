@@ -7,9 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
@@ -65,30 +62,30 @@ public class EnderGuardianModel extends EntityModel<EnderGuardian> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        ModelUtil.addCube(partdefinition, "head", 0, 0, -4, -8, -4, 8, 8, 8, 0, -6, 0);
-        ModelUtil.addCube(partdefinition, "neck", 0, 36, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
-        ModelUtil.addCube(partdefinition, "body", 0, 17, -2, -7, -2, 4, 14, 4, 0, 1, 0);
-        ModelUtil.addCube(partdefinition, "tail", 0, 46, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, 0.5236f, 0, 0);
-        ModelUtil.addCube(partdefinition, "top_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, -2, 0);
-        ModelUtil.addCube(partdefinition, "middle_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 1, 0);
-        ModelUtil.addCube(partdefinition, "bottom_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 4, 0);
-        ModelUtil.addCube(partdefinition, "backbone1", 0, 93, -1, -1, 2, 2, 2, 1, 0, -4, 0);
-        ModelUtil.addCube(partdefinition, "backbone2", 0, 93, -1, -1, 2, 2, 2, 1, 0, -1, 0);
-        ModelUtil.addCube(partdefinition, "backbone3", 0, 93, -1, -1, 2, 2, 2, 1, 0, 2, 0);
-        ModelUtil.addCube(partdefinition, "backbone4", 0, 93, -1, -1, 2, 2, 2, 1, 0, 5, 0);
-        ModelUtil.addCube(partdefinition, "right_arm", 0, 65, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(partdefinition, "right_hand", 0, 80, -8, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(partdefinition, "right_inner_wing", 0, 97, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, 3.1416f, -0.3054f, 3.1416f);
-        ModelUtil.addCube(partdefinition, "right_outer_wing", 0, 102, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, 1.5708f, 0.3491f);
-        ModelUtil.addCube(partdefinition, "right_wing", 0, 107, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -1.5708f, 0.3491f, true);
-        ModelUtil.addCube(partdefinition, "left_arm", 11, 65, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(partdefinition, "left_hand", 9, 80, 6, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(partdefinition, "left_inner_wing", 0, 97, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, 3.1416f, 0.3054f, -3.1416f);
-        ModelUtil.addCube(partdefinition, "left_outer_wing", 0, 102, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -1.5708f, -0.3491f);
-        ModelUtil.addCube(partdefinition, "left_wing", 0, 107, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, 1.5708f, -0.3491f);
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        MeshDefinition md = new MeshDefinition();
+        PartDefinition pd = md.getRoot();
+        ModelUtil.addCube(pd, "head", 0, 0, -4, -8, -4, 8, 8, 8, 0, -6, 0);
+        ModelUtil.addCube(pd, "neck", 0, 36, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
+        ModelUtil.addCube(pd, "body", 0, 17, -2, -7, -2, 4, 14, 4, 0, 1, 0);
+        ModelUtil.addCube(pd, "tail", 0, 46, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, (float) (Math.PI / 6), 0, 0);
+        ModelUtil.addCube(pd, "top_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, -2, 0);
+        ModelUtil.addCube(pd, "middle_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 1, 0);
+        ModelUtil.addCube(pd, "bottom_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 4, 0);
+        ModelUtil.addCube(pd, "backbone1", 0, 93, -1, -1, 2, 2, 2, 1, 0, -4, 0);
+        ModelUtil.addCube(pd, "backbone2", 0, 93, -1, -1, 2, 2, 2, 1, 0, -1, 0);
+        ModelUtil.addCube(pd, "backbone3", 0, 93, -1, -1, 2, 2, 2, 1, 0, 2, 0);
+        ModelUtil.addCube(pd, "backbone4", 0, 93, -1, -1, 2, 2, 2, 1, 0, 5, 0);
+        ModelUtil.addCube(pd, "right_arm", 0, 65, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        ModelUtil.addCube(pd, "right_hand", 0, 80, -8, 10, -1, 2, 10, 2, 0, -5, 0);
+        ModelUtil.addCube(pd, "right_inner_wing", 0, 97, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, -(float) (7 * Math.PI / 72), (float) Math.PI);
+        ModelUtil.addCube(pd, "right_outer_wing", 0, 102, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), (float) (Math.PI / 9));
+        ModelUtil.addMirroredCube(pd, "right_wing", 0, 107, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), (float) (Math.PI / 9));
+        ModelUtil.addCube(pd, "left_arm", 11, 65, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        ModelUtil.addCube(pd, "left_hand", 9, 80, 6, 10, -1, 2, 10, 2, 0, -5, 0);
+        ModelUtil.addCube(pd, "left_inner_wing", 0, 97, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, (float) (7 * Math.PI / 72), -(float) Math.PI);
+        ModelUtil.addCube(pd, "left_outer_wing", 0, 102, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), -(float) (Math.PI / 9));
+        ModelUtil.addCube(pd, "left_wing", 0, 107, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), -(float) (Math.PI / 9));
+        return LayerDefinition.create(md, 128, 128);
     }
 
     @Override

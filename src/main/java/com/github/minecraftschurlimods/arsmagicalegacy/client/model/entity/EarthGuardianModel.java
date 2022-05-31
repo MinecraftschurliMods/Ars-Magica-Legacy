@@ -58,28 +58,28 @@ public class EarthGuardianModel extends EntityModel<EarthGuardian> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        ModelUtil.addCube(partdefinition, "head", 0, 0, -4f, -6f, -4f, 8f, 6f, 8f, 0f, -11f, 0f);
-        ModelUtil.addCube(partdefinition, "neck", 0, 15, -2f, -1f, -2f, 4f, 1f, 4f, 0f, -10f, 0f);
-        ModelUtil.addCube(partdefinition, "body", 0, 21, -5f, 0f, -3f, 10f, 3f, 6f, 0f, -10f, 0f);
-        ModelUtil.addCube(partdefinition, "core1", 33, 2, -3f, -3f, -3f, 6f, 6f, 6f, 0f, -2f, 0f);
-        ModelUtil.addCube(partdefinition, "core2", 33, 2, -3f, -3f, -3f, 6f, 6f, 6f, 0f, -2f, 0f);
-        ModelUtil.addCube(partdefinition, "core3", 33, 2, -3f, -3f, -3f, 6f, 6f, 6f, 0f, -2f, 0f);
-        ModelUtil.addCube(partdefinition, "right_shoulder_pad", 0, 48, -15.5f, 0f, -5f, 6f, 6f, 10f, 20.5f, -3f, 0f, 0f, 0f, 0.6109f);
-        ModelUtil.addCube(partdefinition, "right_shoulder", 0, 31, -14f, 0f, -4f, 8f, 8f, 8f, 18.5f, -5f, 0f, 0f, 0f, 0.6109f);
-        ModelUtil.addCube(partdefinition, "right_arm", 33, 18, 6.5f, 0f, -2f, 4f, 8f, 4f, 0f, -4f, 0f);
-        ModelUtil.addCube(partdefinition, "right_hand", 50, 17, 7f, 0f, -1.5f, 3f, 10f, 3f, 0f, 2f, 0f);
-        ModelUtil.addCube(partdefinition, "left_shoulder_pad", 0, 48, 9.5f, 0f, -5f, 6f, 6f, 10f, -20.5f, -3f, 0f, 0f, 0f, -0.6109f);
-        ModelUtil.addCube(partdefinition, "left_shoulder", 0, 31, 6f, 0f, -4f, 8f, 8f, 8f, -18.5f, -5f, 0f, 0f, 0f, -0.6109f);
-        ModelUtil.addCube(partdefinition, "left_arm", 33, 18, -10.5f, 0f, -2f, 4f, 8f, 4f, 0f, -4f, 0f);
-        ModelUtil.addCube(partdefinition, "left_hand", 50, 17, -10f, 0f, -1.5f, 3f, 10f, 3f, 0f, 2f, 0f);
-        ModelUtil.addCube(partdefinition, "rod", 33, 31, -1f, -8f, -1f, 2f, 16f, 2f, 0f, 12f, 0f);
-        ModelUtil.addCube(partdefinition, "rod1", 42, 31, 2f, -5f, -3f, 1f, 10f, 1f, 0f, 12f, 0f);
-        ModelUtil.addCube(partdefinition, "rod2", 42, 31, 2f, -5f, 2f, 1f, 10f, 1f, 0f, 12f, 0f);
-        ModelUtil.addCube(partdefinition, "rod3", 42, 31, -3f, -5f, 2f, 1f, 10f, 1f, 0f, 12f, 0f);
-        ModelUtil.addCube(partdefinition, "rod4", 42, 31, -3f, -5f, -3f, 1f, 10f, 1f, 0f, 12f, 0f);
-        return LayerDefinition.create(meshdefinition, 64, 64);
+        MeshDefinition md = new MeshDefinition();
+        PartDefinition pd = md.getRoot();
+        ModelUtil.addCube(pd, "head", 0, 0, -4, -6, -4, 8, 6, 8, 0, -11, 0);
+        ModelUtil.addCube(pd, "neck", 0, 15, -2, -1, -2, 4, 1, 4, 0, -10, 0);
+        ModelUtil.addCube(pd, "body", 0, 21, -5, 0, -3, 10, 3, 6, 0, -10, 0);
+        ModelUtil.addCube(pd, "core1", 33, 2, -3, -3, -3, 6, 6, 6, 0, -2, 0);
+        ModelUtil.addCube(pd, "core2", 33, 2, -3, -3, -3, 6, 6, 6, 0, -2, 0);
+        ModelUtil.addCube(pd, "core3", 33, 2, -3, -3, -3, 6, 6, 6, 0, -2, 0);
+        ModelUtil.addCube(pd, "right_shoulder_pad", 0, 48, -15.5f, 0, -5, 6, 6, 10, 20.5f, -3, 0, 0, 0, (float) (7 * Math.PI / 36));
+        ModelUtil.addCube(pd, "right_shoulder", 0, 31, -14, 0, -4, 8, 8, 8, 18.5f, -5, 0, 0, 0, (float) (7 * Math.PI / 36));
+        ModelUtil.addCube(pd, "right_arm", 33, 18, 6.5f, 0, -2, 4, 8, 4, 0, -4, 0);
+        ModelUtil.addCube(pd, "right_hand", 50, 17, 7, 0, -1.5f, 3, 10, 3, 0, 2, 0);
+        ModelUtil.addCube(pd, "left_shoulder_pad", 0, 48, 9.5f, 0, -5, 6, 6, 10, -20.5f, -3, 0, 0, 0, -(float) (7 * Math.PI / 36));
+        ModelUtil.addCube(pd, "left_shoulder", 0, 31, 6, 0, -4, 8, 8, 8, -18.5f, -5, 0, 0, 0, -(float) (7 * Math.PI / 36));
+        ModelUtil.addCube(pd, "left_arm", 33, 18, -10.5f, 0, -2, 4, 8, 4, 0, -4, 0);
+        ModelUtil.addCube(pd, "left_hand", 50, 17, -10, 0, -1.5f, 3, 10, 3, 0, 2, 0);
+        ModelUtil.addCube(pd, "rod", 33, 31, -1, -8, -1, 2, 16, 2, 0, 12, 0);
+        ModelUtil.addCube(pd, "rod1", 42, 31, 2, -5, -3, 1, 10, 1, 0, 12, 0);
+        ModelUtil.addCube(pd, "rod2", 42, 31, 2, -5, 2, 1, 10, 1, 0, 12, 0);
+        ModelUtil.addCube(pd, "rod3", 42, 31, -3, -5, 2, 1, 10, 1, 0, 12, 0);
+        ModelUtil.addCube(pd, "rod4", 42, 31, -3, -5, -3, 1, 10, 1, 0, 12, 0);
+        return LayerDefinition.create(md, 64, 64);
     }
 
     @Override

@@ -40,19 +40,19 @@ public class AirGuardianModel extends EntityModel<AirGuardian> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        ModelUtil.addCube(partdefinition, "head", 17, 17, -3.5f, -7f, -3.5f, 7f, 7f, 7f, 0f, -6f, 0f);
-        ModelUtil.addCube(partdefinition, "body", 0, 32, -3f, 0f, -3f, 6f, 8f, 6f, 0f, -6f, 0f);
-        ModelUtil.addCube(partdefinition, "tail", 0, 21, -2f, 0f, -2f, 4f, 6f, 4f, 0f, 2f, 0f);
-        ModelUtil.addCube(partdefinition, "core1", 21, 0, -3f, -3f, -3f, 6f, 6f, 6f, 0f, 16f, 0f);
-        ModelUtil.addCube(partdefinition, "core2", 21, 0, -3f, -3f, -3f, 6f, 6f, 6f, 0f, 16f, 0f);
-        ModelUtil.addCube(partdefinition, "core3", 21, 0, -3f, -3f, -3f, 6f, 6f, 6f, 0f, 16f, 0f);
-        ModelUtil.addCube(partdefinition, "right_shoulder", 0, 47, -7f, -2f, -2f, 4f, 4f, 4f, 0f, -4f, 0f);
-        ModelUtil.addCube(partdefinition, "right_arm", 17, 55, -6.5f, 2f, -1.5f, 3f, 6f, 3f, 0f, -4f, 0f, true);
-        ModelUtil.addCube(partdefinition, "left_shoulder", 0, 56, 3f, -2f, -2f, 4f, 4f, 4f, 0f, -4f, 0f);
-        ModelUtil.addCube(partdefinition, "left_arm", 17, 55, 3.5f, 2f, -1.5f, 3f, 6f, 3f, 0f, -4f, 0f);
-        return LayerDefinition.create(meshdefinition, 64, 64);
+        MeshDefinition md = new MeshDefinition();
+        PartDefinition pd = md.getRoot();
+        ModelUtil.addCube(pd, "head", 17, 17, -3.5f, -7, -3.5f, 7, 7, 7, 0, -6, 0);
+        ModelUtil.addCube(pd, "body", 0, 32, -3, 0, -3, 6, 8, 6, 0, -6, 0);
+        ModelUtil.addCube(pd, "tail", 0, 21, -2, 0, -2, 4, 6, 4, 0, 2, 0);
+        ModelUtil.addCube(pd, "core1", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "core2", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "core3", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "right_shoulder", 0, 47, -7, -2, -2, 4, 4, 4, 0, -4, 0);
+        ModelUtil.addMirroredCube(pd, "right_arm", 17, 55, -6.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
+        ModelUtil.addCube(pd, "left_shoulder", 0, 56, 3, -2, -2, 4, 4, 4, 0, -4, 0);
+        ModelUtil.addCube(pd, "left_arm", 17, 55, 3.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
+        return LayerDefinition.create(md, 64, 64);
     }
 
     @Override

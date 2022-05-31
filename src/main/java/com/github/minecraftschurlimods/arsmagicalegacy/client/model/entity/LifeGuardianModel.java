@@ -7,9 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
@@ -67,31 +64,31 @@ public class LifeGuardianModel extends EntityModel<LifeGuardian> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        ModelUtil.addCube(partdefinition, "core1", 0, 0, -1.5f, -0.5f, -1.5f, 3, 1, 3, 0, 2, 0);
-        ModelUtil.addCube(partdefinition, "core2", 0, 5, -3, -0.5f, -3, 6, 1, 6, 0, 3, 0);
-        ModelUtil.addCube(partdefinition, "core3", 0, 13, -4, -1, -4, 8, 2, 8, 0, 4.5f, 0);
-        ModelUtil.addCube(partdefinition, "core4", 0, 24, -5, -1.5f, -5, 10, 3, 10, 0, 7, 0);
-        ModelUtil.addCube(partdefinition, "core5", 0, 38, -6, -3, -6, 12, 6, 12, 0, 11.5f, 0);
-        ModelUtil.addCube(partdefinition, "core6", 0, 57, -5, -0.5f, -5, 10, 1, 10, 0, 15, 0);
-        ModelUtil.addCube(partdefinition, "core7", 0, 69, -4, -0.5f, -4, 8, 1, 8, 0, 16, 0);
-        ModelUtil.addCube(partdefinition, "core8", 0, 79, -3, -0.5f, -3, 6, 1, 6, 0, 17, 0);
-        ModelUtil.addCube(partdefinition, "x_rod", 0, 104, -8, -1, -1, 16, 2, 2, 0, 19, 0, -0.7854f, 0, 0);
-        ModelUtil.addCube(partdefinition, "z_rod", 0, 104, -8, -1, -1, 16, 2, 2, 0, 19, 0, -0.7854f, -1.5708f, 0);
-        ModelUtil.addCube(partdefinition, "middle_rod_north", 0, 109, -1, -5.5f, -7.999f, 2, 11, 2, 0, 13, 0);
-        ModelUtil.addCube(partdefinition, "middle_rod_east", 0, 109, 5.999f, -5.5f, -1, 2, 11, 2, 0, 13, 0);
-        ModelUtil.addCube(partdefinition, "middle_rod_south", 0, 109, -1, -5.5f, 5.999f, 2, 11, 2, 0, 13, 0);
-        ModelUtil.addCube(partdefinition, "middle_rod_west", 0, 109, -7.999f, -5.5f, -1, 2, 11, 2, 0, 13 , 0);
-        ModelUtil.addCube(partdefinition, "top_rod_north", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -0.3927f, 0, 0);
-        ModelUtil.addCube(partdefinition, "top_rod_east", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -0.3927f, 1.5708f, 0);
-        ModelUtil.addCube(partdefinition, "top_rod_south", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -0.3927f, 3.1416f, 0, true);
-        ModelUtil.addCube(partdefinition, "top_rod_west", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -0.3927f, -1.5708f, 0, true);
-        ModelUtil.addCube(partdefinition, "circle_north", 41, 114, -7, -7, 0, 14, 14, 0, 0, 12, -10);
-        ModelUtil.addCube(partdefinition, "circle_east", 41, 114, -7, -7, 0, 14, 14, 0, -10, 12, 0, 1.5708f, 0, 1.5708f);
-        ModelUtil.addCube(partdefinition, "circle_south", 41, 114, -7, -7, 0, 14, 14, 0, 0, 12, 10, 3.1416f, 0, 3.1416f);
-        ModelUtil.addCube(partdefinition, "circle_west", 41, 114, -7, -7, 0, 14, 14, 0, 10, 12, 0, -1.5708f, 0, 1.5708f);
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        MeshDefinition md = new MeshDefinition();
+        PartDefinition pd = md.getRoot();
+        ModelUtil.addCube(pd, "core1", 0, 0, -1.5f, -0.5f, -1.5f, 3, 1, 3, 0, 2, 0);
+        ModelUtil.addCube(pd, "core2", 0, 5, -3, -0.5f, -3, 6, 1, 6, 0, 3, 0);
+        ModelUtil.addCube(pd, "core3", 0, 13, -4, -1, -4, 8, 2, 8, 0, 4.5f, 0);
+        ModelUtil.addCube(pd, "core4", 0, 24, -5, -1.5f, -5, 10, 3, 10, 0, 7, 0);
+        ModelUtil.addCube(pd, "core5", 0, 38, -6, -3, -6, 12, 6, 12, 0, 11.5f, 0);
+        ModelUtil.addCube(pd, "core6", 0, 57, -5, -0.5f, -5, 10, 1, 10, 0, 15, 0);
+        ModelUtil.addCube(pd, "core7", 0, 69, -4, -0.5f, -4, 8, 1, 8, 0, 16, 0);
+        ModelUtil.addCube(pd, "core8", 0, 79, -3, -0.5f, -3, 6, 1, 6, 0, 17, 0);
+        ModelUtil.addCube(pd, "x_rod", 0, 104, -8, -1, -1, 16, 2, 2, 0, 19, 0, -(float) (Math.PI / 4), 0, 0);
+        ModelUtil.addCube(pd, "z_rod", 0, 104, -8, -1, -1, 16, 2, 2, 0, 19, 0, -(float) (Math.PI / 4), -(float) (Math.PI / 2), 0);
+        ModelUtil.addCube(pd, "middle_rod_north", 0, 109, -1, -5.5f, -7.999f, 2, 11, 2, 0, 13, 0);
+        ModelUtil.addCube(pd, "middle_rod_east", 0, 109, 5.999f, -5.5f, -1, 2, 11, 2, 0, 13, 0);
+        ModelUtil.addCube(pd, "middle_rod_south", 0, 109, -1, -5.5f, 5.999f, 2, 11, 2, 0, 13, 0);
+        ModelUtil.addCube(pd, "middle_rod_west", 0, 109, -7.999f, -5.5f, -1, 2, 11, 2, 0, 13 , 0);
+        ModelUtil.addCube(pd, "top_rod_north", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -(float) (Math.PI / 8), 0, 0);
+        ModelUtil.addCube(pd, "top_rod_east", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -(float) (Math.PI / 8), (float) (Math.PI / 2), 0);
+        ModelUtil.addMirroredCube(pd, "top_rod_south", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -(float) (Math.PI / 8), (float) Math.PI, 0);
+        ModelUtil.addMirroredCube(pd, "top_rod_west", 36, 114, -0.5f, -17, -12.5f, 1, 7, 1, 0, 22, 0, -(float) (Math.PI / 8), -(float) (Math.PI / 2), 0);
+        ModelUtil.addCube(pd, "circle_north", 41, 114, -7, -7, 0, 14, 14, 0, 0, 12, -10);
+        ModelUtil.addCube(pd, "circle_east", 41, 114, -7, -7, 0, 14, 14, 0, -10, 12, 0, (float) (Math.PI / 2), 0, (float) (Math.PI / 2));
+        ModelUtil.addCube(pd, "circle_south", 41, 114, -7, -7, 0, 14, 14, 0, 0, 12, 10, (float) Math.PI, 0, (float) Math.PI);
+        ModelUtil.addCube(pd, "circle_west", 41, 114, -7, -7, 0, 14, 14, 0, 10, 12, 0, -(float) (Math.PI / 2), 0, (float) (Math.PI / 2));
+        return LayerDefinition.create(md, 128, 128);
     }
 
     @Override
