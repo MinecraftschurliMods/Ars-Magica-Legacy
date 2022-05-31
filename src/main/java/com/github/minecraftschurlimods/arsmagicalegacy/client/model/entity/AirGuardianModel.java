@@ -42,17 +42,17 @@ public class AirGuardianModel extends EntityModel<AirGuardian> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition md = new MeshDefinition();
         PartDefinition pd = md.getRoot();
-        ModelUtil.addCube(pd, "head", 17, 17, -3.5f, -7, -3.5f, 7, 7, 7, 0, -6, 0);
-        ModelUtil.addCube(pd, "body", 0, 32, -3, 0, -3, 6, 8, 6, 0, -6, 0);
-        ModelUtil.addCube(pd, "tail", 0, 21, -2, 0, -2, 4, 6, 4, 0, 2, 0);
-        ModelUtil.addCube(pd, "core1", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
-        ModelUtil.addCube(pd, "core2", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
-        ModelUtil.addCube(pd, "core3", 21, 0, -3, -3, -3, 6, 6, 6, 0, 16, 0);
-        ModelUtil.addCube(pd, "right_shoulder", 0, 47, -7, -2, -2, 4, 4, 4, 0, -4, 0);
-        ModelUtil.addMirroredCube(pd, "right_arm", 17, 55, -6.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
-        ModelUtil.addCube(pd, "left_shoulder", 0, 56, 3, -2, -2, 4, 4, 4, 0, -4, 0);
-        ModelUtil.addCube(pd, "left_arm", 17, 55, 3.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
-        return LayerDefinition.create(md, 64, 64);
+        ModelUtil.addCube(pd, "head", 0, 0, -3.5f, -7, -3.5f, 7, 7, 7, 0, -6, 0);
+        ModelUtil.addCube(pd, "body", 40, 0, -3, 0, -3, 6, 8, 6, 0, -6, 0);
+        ModelUtil.addCube(pd, "tail", 40, 14, -2, 0, -2, 4, 6, 4, 0, 2, 0);
+        ModelUtil.addCube(pd, "core1", 0, 14, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "core2", 0, 14, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "core3", 0, 14, -3, -3, -3, 6, 6, 6, 0, 16, 0);
+        ModelUtil.addCube(pd, "right_shoulder", 24, 14, -7, -2, -2, 4, 4, 4, 0, -4, 0);
+        ModelUtil.addCube(pd, "right_arm", 28, 5, -6.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
+        ModelUtil.addCube(pd, "left_shoulder", 24, 22, 3, -2, -2, 4, 4, 4, 0, -4, 0);
+        ModelUtil.addCube(pd, "left_arm", 28, 5, 3.5f, 2, -1.5f, 3, 6, 3, 0, -4, 0);
+        return LayerDefinition.create(md, 64, 32);
     }
 
     @Override

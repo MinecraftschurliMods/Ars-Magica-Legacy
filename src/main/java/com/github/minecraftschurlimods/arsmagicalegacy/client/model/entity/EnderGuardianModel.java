@@ -65,27 +65,27 @@ public class EnderGuardianModel extends EntityModel<EnderGuardian> {
         MeshDefinition md = new MeshDefinition();
         PartDefinition pd = md.getRoot();
         ModelUtil.addCube(pd, "head", 0, 0, -4, -8, -4, 8, 8, 8, 0, -6, 0);
-        ModelUtil.addCube(pd, "neck", 0, 36, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
-        ModelUtil.addCube(pd, "body", 0, 17, -2, -7, -2, 4, 14, 4, 0, 1, 0);
-        ModelUtil.addCube(pd, "tail", 0, 46, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, (float) (Math.PI / 6), 0, 0);
-        ModelUtil.addCube(pd, "top_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, -2, 0);
-        ModelUtil.addCube(pd, "middle_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 1, 0);
-        ModelUtil.addCube(pd, "bottom_rib", 0, 41, -4, -1, -1, 8, 2, 2, 0, 4, 0);
-        ModelUtil.addCube(pd, "backbone1", 0, 93, -1, -1, 2, 2, 2, 1, 0, -4, 0);
-        ModelUtil.addCube(pd, "backbone2", 0, 93, -1, -1, 2, 2, 2, 1, 0, -1, 0);
-        ModelUtil.addCube(pd, "backbone3", 0, 93, -1, -1, 2, 2, 2, 1, 0, 2, 0);
-        ModelUtil.addCube(pd, "backbone4", 0, 93, -1, -1, 2, 2, 2, 1, 0, 5, 0);
-        ModelUtil.addCube(pd, "right_arm", 0, 65, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(pd, "right_hand", 0, 80, -8, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(pd, "right_inner_wing", 0, 97, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, -(float) (7 * Math.PI / 72), (float) Math.PI);
-        ModelUtil.addCube(pd, "right_outer_wing", 0, 102, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), (float) (Math.PI / 9));
-        ModelUtil.addMirroredCube(pd, "right_wing", 0, 107, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), (float) (Math.PI / 9));
-        ModelUtil.addCube(pd, "left_arm", 11, 65, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(pd, "left_hand", 9, 80, 6, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(pd, "left_inner_wing", 0, 97, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, (float) (7 * Math.PI / 72), -(float) Math.PI);
-        ModelUtil.addCube(pd, "left_outer_wing", 0, 102, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), -(float) (Math.PI / 9));
-        ModelUtil.addCube(pd, "left_wing", 0, 107, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), -(float) (Math.PI / 9));
-        return LayerDefinition.create(md, 128, 128);
+        ModelUtil.addCube(pd, "neck", 0, 16, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
+        ModelUtil.addCube(pd, "body", 0, 24, -2, -7, -2, 4, 14, 4, 0, 1, 0);
+        ModelUtil.addCube(pd, "tail", 16, 24, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, (float) (Math.PI / 6), 0, 0);
+        ModelUtil.addCube(pd, "top_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, -2, 0);
+        ModelUtil.addCube(pd, "middle_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 1, 0);
+        ModelUtil.addCube(pd, "bottom_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 4, 0);
+        ModelUtil.addCube(pd, "backbone1", 20, 20, -1, -1, 2, 2, 2, 1, 0, -4, 0);
+        ModelUtil.addCube(pd, "backbone2", 20, 20, -1, -1, 2, 2, 2, 1, 0, -1, 0);
+        ModelUtil.addCube(pd, "backbone3", 20, 20, -1, -1, 2, 2, 2, 1, 0, 2, 0);
+        ModelUtil.addCube(pd, "backbone4", 20, 20, -1, -1, 2, 2, 2, 1, 0, 5, 0);
+        ModelUtil.addCube(pd, "right_arm", 32, 0, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        ModelUtil.addCube(pd, "right_hand", 32, 14, -8, 10, -1, 2, 10, 2, 0, -5, 0);
+        ModelUtil.addCube(pd, "right_inner_wing", 0, 42, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, -(float) (7 * Math.PI / 72), (float) Math.PI);
+        ModelUtil.addCube(pd, "right_outer_wing", 0, 46, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), (float) (Math.PI / 9));
+        ModelUtil.addMirroredCube(pd, "right_wing", 32, 26, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), (float) (Math.PI / 9));
+        ModelUtil.addCube(pd, "left_arm", 42, 0, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        ModelUtil.addCube(pd, "left_hand", 40, 14, 6, 10, -1, 2, 10, 2, 0, -5, 0);
+        ModelUtil.addCube(pd, "left_inner_wing", 0, 42, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, (float) (7 * Math.PI / 72), -(float) Math.PI);
+        ModelUtil.addCube(pd, "left_outer_wing", 0, 46, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), -(float) (Math.PI / 9));
+        ModelUtil.addCube(pd, "left_wing", 32, 26, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), -(float) (Math.PI / 9));
+        return LayerDefinition.create(md, 64, 64);
     }
 
     @Override
