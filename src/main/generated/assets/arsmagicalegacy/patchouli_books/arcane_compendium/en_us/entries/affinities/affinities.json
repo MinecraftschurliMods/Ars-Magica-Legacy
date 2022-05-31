@@ -1,7 +1,7 @@
 {
   "name": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.name",
   "category": "arsmagicalegacy:affinities",
-  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "icon": "minecraft:nether_star",
   "pages": [
     {
       "type": "patchouli:text",

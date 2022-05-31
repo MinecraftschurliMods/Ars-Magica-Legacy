@@ -300,7 +300,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         modifiers.build();
         TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(IAffinity.WATER))
                 .setSortnum(8);
-        affinities.addEntry("affinities", "Affinities", affinityHelper.getEssenceForAffinity(IAffinity.WATER))
+        affinities.addEntry("affinities", "Affinities", new ItemStack(Items.NETHER_STAR))
                 .setPriority(true)
                 .addSimpleTextPage("Affinities are magical elements of sorts. All components (excluding some of the very powerful, reality-bending ones) have an affinity that is associated with them. That means that if you use spells with a certain affinity a lot, you will shift into that affinity.")
                 .addSimpleTextPage("Shifting into an affinity bears individual side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
