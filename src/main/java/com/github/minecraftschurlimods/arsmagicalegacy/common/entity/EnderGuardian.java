@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 public class EnderGuardian extends AbstractBoss {
     private int hitCount = 0;
     private int ticksSinceLastAttack = 0;
-    private int wingFlapTime = 0;
+    private float wingFlapTime = 0;
     private Vec3 spawn;
 
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
@@ -75,7 +75,6 @@ public class EnderGuardian extends AbstractBoss {
         if (spawn == null) {
             spawn = position();
         }
-        wingFlapTime++;
         ticksSinceLastAttack++;
         if (getAction() == EnderGuardianAction.LONG_CASTING) {
             if (ticksInAction == 32) {
@@ -87,8 +86,11 @@ public class EnderGuardian extends AbstractBoss {
                 setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5f, getDeltaMovement().z());
             }
         }
-        if (shouldFlapWings() && wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
-            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
+        if (shouldFlapWings()) {
+            wingFlapTime += getWingFlapSpeed() * 20f;
+            if (wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
+                level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
+            }
         }
         super.aiStep();
     }
@@ -113,6 +115,7 @@ public class EnderGuardian extends AbstractBoss {
             } else {
                 remove(RemovalReason.KILLED);
             }
+            super.hurt(pSource, pAmount);
             return false;
         }
         ticksSinceLastAttack = 0;
@@ -122,6 +125,7 @@ public class EnderGuardian extends AbstractBoss {
                 if (hitCount > 5) {
                     heal(pAmount / 4);
                 }
+                super.hurt(pSource, pAmount);
                 return false;
             } else {
                 hitCount = 1;
@@ -147,7 +151,7 @@ public class EnderGuardian extends AbstractBoss {
         return ticksSinceLastAttack;
     }
 
-    public int getWingFlapTime() {
+    public float getWingFlapTime() {
         return wingFlapTime;
     }
 
