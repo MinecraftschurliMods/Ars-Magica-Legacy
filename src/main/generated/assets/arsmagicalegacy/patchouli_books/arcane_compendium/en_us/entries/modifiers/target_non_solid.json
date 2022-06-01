@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.target_non_solid",
+  "name": "skill.arsmagicalegacy.target_non_solid.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/target_non_solid.png",
   "pages": [

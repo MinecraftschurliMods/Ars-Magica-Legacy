@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.life_tap",
+  "name": "skill.arsmagicalegacy.life_tap.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/life_tap.png",
   "pages": [

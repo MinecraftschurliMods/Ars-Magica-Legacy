@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.divine_intervention",
+  "name": "skill.arsmagicalegacy.divine_intervention.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/divine_intervention.png",
   "pages": [

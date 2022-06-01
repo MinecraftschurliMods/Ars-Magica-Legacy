@@ -42,14 +42,28 @@ public interface ITranslatable {
     interface WithDescription extends ITranslatable {
         @Override
         default Component getDisplayName() {
-            return new TranslatableComponent(getTranslationKey() + ".name");
+            return new TranslatableComponent(getNameTranslationKey());
         }
 
         /**
          * @return A component containing the description of this object
          */
         default Component getDescription() {
-            return new TranslatableComponent(getTranslationKey() + ".description");
+            return new TranslatableComponent(getDescriptionTranslationKey());
+        }
+
+        /**
+         * @return The translation key for the name
+         */
+        default String getNameTranslationKey() {
+            return ITranslatable.super.getTranslationKey() + ".name";
+        }
+
+        /**
+         * @return The translation key for the description
+         */
+        default String getDescriptionTranslationKey() {
+            return ITranslatable.super.getTranslationKey() + ".description";
         }
     }
 

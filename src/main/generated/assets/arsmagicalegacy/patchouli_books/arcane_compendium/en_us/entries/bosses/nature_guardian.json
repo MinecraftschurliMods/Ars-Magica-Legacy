@@ -16,6 +16,11 @@
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page2.text",
       "title": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page2.title"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:dryad",
+      "text": "Dryads spawn in forests. They can be lured with saplings and boost nearby plants' growth."
     }
   ]
 }

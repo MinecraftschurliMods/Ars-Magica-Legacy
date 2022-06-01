@@ -2,11 +2,14 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -188,6 +191,38 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
+        abilityIdTranslation(AMAbilities.FIRE_RESISTANCE, "After using fire spells for some time, you develop some resistance to fire. As you delve deeper, you notice the resistance getting stronger and stronger.$(br2)Affinity: Fire$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.FIRE_PUNCH, "Becoming part fire, enemies you hit now get set on fire.$(br2)Affinity: Fire$(br)Range: 100 %");
+        addAbility(AMAbilities.WATER_DAMAGE_FIRE, "Water Damage (Fire)", "Having fun with fire magic has made you less suitable for water. You will take damage in water, though not enough to kill you on its own.$(br2)Affinity: Fire$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.SWIM_SPEED, "After using water spells for some time, you develop better swimming skills. As you delve deeper, you notice your speed in water getting faster and faster.$(br2)Affinity: Water$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.ENDERMAN_THORNS, "Becoming part water, enderman that hit you now take damage themselves.$(br2)Affinity: Water$(br)Range: 100 %");
+        addAbility(AMAbilities.NETHER_DAMAGE_WATER, "Nether Damage (Water)", "Having fun with water magic has made you less suitable for fire. You will take damage in the nether, though not enough to kill you on its own.$(br2)Affinity: Water$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.RESISTANCE, "After using earth spells for some time, you develop some physical resistance. As you delve deeper, you notice the resistance getting stronger and stronger.$(br2)Affinity: Earth$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.HASTE, "After using earth spells for some time, you develop better block breaking skills. As you delve deeper, you notice that speed getting faster and faster.$(br2)Affinity: Earth$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.FALL_DAMAGE, "Having fun with earth magic has made you heavier. You take more fall damage.$(br2)Affinity: Earth$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.JUMP_BOOST, "After using air spells for some time, you develop better jumping skills. As you delve deeper, you notice your jump strength getting stronger and stronger.$(br2)Affinity: Air$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.FEATHER_FALLING, "After using air spells for some time, you develop better landing skills. As you delve deeper, you notice your fall damage taken getting weaker and weaker.$(br2)Affinity: Air$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.GRAVITY, "Having fun with air magic has made you accidentally bend gravity. You fall a lot faster.$(br2)Affinity: Air$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.FROST_PUNCH, "After using ice spells for some time, you develop a frost punch, slowing your enemies. As you delve deeper, you notice the frost getting stronger and stronger.$(br2)Affinity: Ice$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.FROST_WALKER, "Becoming part ice, water now freezes under your feet.$(br2)Affinity: Ice$(br)Range: 100 %");
+        abilityIdTranslation(AMAbilities.SLOWNESS, "Having fun with ice magic has made you shiver. You move slower.$(br2)Affinity: Ice$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.SPEED, "After using lightning spells for some time, you develop better running skills. As you delve deeper, you notice your speed becoming faster and faster.$(br2)Affinity: Lightning$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.STEP_ASSIST, "Becoming part lightning, you are now able to step up 1-block slopes.$(br2)Affinity: Lightning$(br)Range: 100 %");
+        addAbility(AMAbilities.WATER_DAMAGE_LIGHTNING, "Water Damage (Lightning)", "Having fun with lightning magic has made you less suitable for water. You will take damage in water, though not enough to kill you on its own.$(br2)Affinity: Lightning$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.SATURATION, "After using nature spells for some time, you feel nourished. As you delve deeper, you notice nourishment getting stronger and stronger.$(br2)Affinity: Nature$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.THORNS, "Becoming one with nature, enemies that hit you now take a bit of damage themselves.$(br2)Affinity: Nature$(br)Range: 100 %");
+        addAbility(AMAbilities.NETHER_DAMAGE_NATURE, "Nether Damage (Nature)", "Having fun with nature magic has made you less suitable for fire. You will take damage in the nether, though not enough to kill you on its own.$(br2)Affinity: Nature$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.SMITE, "After using life spells for some time, you feel an urge to slay the undead. As you delve deeper, you notice your damage towards undeads getting stronger and stronger.$(br2)Affinity: Life$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.REGENERATION, "Becoming one with life, you get a permanent regeneration effect.$(br2)Affinity: Life$(br)Range: 100 %");
+        abilityIdTranslation(AMAbilities.NAUSEA, "Having fun with life magic has made you less suitable for killing. You will receive a nausea effect when killing a non-undead enemy.$(br2)Affinity: Life$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.MANA_REDUCTION, "After using arcane spells for some time, your spells' mana requirements goes down. As you delve deeper, you notice the mana cost getting lower and lower.$(br2)Affinity: Arcane$(br)Range: 1 - 100 %");
+        abilityIdTranslation(AMAbilities.CLARITY, "Becoming one with the arcane, you have a chance of receiving the Clarity effect upon casting, which allows you to cast your next spell for free.$(br2)Affinity: Arcane$(br)Range: 100 %");
+        abilityIdTranslation(AMAbilities.MAGIC_DAMAGE, "Having fun with arcane magic has made you vulnerable against the very thing you use. You will receive more damage from magic sources.$(br2)Affinity: Arcane$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.POISON_RESISTANCE, "After using ender spells for quite some time, you develop a resistance against toxins.$(br2)Affinity: Ender$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.NIGHT_VISION, "After using ender spells for quite some time, you gain permanent night vision.$(br2)Affinity: Ender$(br)Range: 50 - 100 %");
+        abilityIdTranslation(AMAbilities.ENDERMAN_PUMPKIN, "Becoming one with the end, enderman will treat you as one of their own and not attack you anymore when staring into their eyes.$(br2)Affinity: Ender$(br)Range: 100 %");
+        abilityIdTranslation(AMAbilities.LIGHT_HEALTH_REDUCTION, "Toying around with ender magic consumes your life in light. When in direct sunlight, your maximum health decreases.$(br2)Affinity: Ender$(br)Range: 50 - 100 %$(br)There have been rumors among the villagers of true ender mages that managed to nullify this effect...");
+        abilityIdTranslation(AMAbilities.WATER_HEALTH_REDUCTION, "Toying around with ender magic consumes your life in water. When in water, your maximum health decreases.$(br2)Affinity: Ender$(br)Range: 50 - 100 %$(br)There have been rumors among the villagers of true ender mages that managed to nullify this effect...");
         skillTranslation(AMSpellParts.ABSORPTION.getId(), "Absorption", "Like a slightly flimsier shield.", "components", "You gain absorption hearts, like you would when eating a golden apple. This does not stack with golden apples.");
         skillTranslation(AMSpellParts.AGILITY.getId(), "Agility", "Seems like you won't be catching me anytime soon.", "components", "You managed to gain step-up abilities, greater jump height and reduced fall damage.");
         skillTranslation(AMSpellParts.AOE.getId(), "AoE", "Zone control.", "shapes", "After charging your spell, you can shape it into a blast that radiates outwards from the spell's origin. An AoE spell will not affect the caster.");
@@ -202,11 +237,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.CHAIN.getId(), "[WIP] Chain", "Looks like you brought friends. Well, I don't mind, you're all gonna die.", "shapes", "You can shape your magic into a blast that jumps from one target to the next. Chain contains an 8-block built in touch-like component, though you can, if you like, add $(l:shapes/projectile)Projectile$() to start the chain somewhere else.$(br2)A chain spell cannot affect the caster. Chain jump range can be extended by using the $(l:modifiers/range)Range$() modifier.");
         skillTranslation(AMSpellParts.CHANNEL.getId(), "Channel", "You might want to concentrate.", "shapes", "Through intense concentration, you can maintain a flow of magic on yourself.$(br2)This is useful for things like $(l:components/heal)Heal$(), $(l:components/attract)Attract$() and $(l:components/repel)Repel$().");
         skillTranslation(AMSpellParts.CHARM.getId(), "Charm", "Friends! Lots of friends! And they blew up...", "components", "You can cause breedable creatures to breed.");
-        skillTranslation(AMSpellParts.CONTINGENCY_DAMAGE.getId(), "Contingency: Damage", "Hurting me? That would be bad...", "shapes", "You have managed to create a spell that triggers only when you get hurt.$(br)You can only have one contingency active at a time.");
-        skillTranslation(AMSpellParts.CONTINGENCY_DEATH.getId(), "Contingency: Death", "You're coming with me.", "shapes", "Enemies may get you, but in those few seconds it takes, you will have all the time you need to ensure they come along for the ride.$(br)You can only have one contingency active at a time.");
-        skillTranslation(AMSpellParts.CONTINGENCY_FALL.getId(), "Contingency: Fall", "Falling... Well at least now it has a purpose.", "shapes", "You have figured out a spell shape that triggers when falling the instant before you hit the ground.$(br)You can only have one contingency active at a time.");
-        skillTranslation(AMSpellParts.CONTINGENCY_FIRE.getId(), "Contingency: Fire", "You shall (not) burn!", "shapes", "You've decided you really don't like being on fire anymore. To that end, you made a spell that will light up when the flames do.$(br)You can only have one contingency active at a time.");
-        skillTranslation(AMSpellParts.CONTINGENCY_HEALTH.getId(), "Contingency: Health", "I'm not going down... Not right now.", "shapes", "No matter your power, a knife between the shoulder blades will seriously cramp your style. You have found a way to make your enemies regret trying that, though. Or need two knives. This contingency triggers when your health is less than or equal to 25% of maximum.$(br)You can only have one contingency active at a time.");
+        skillTranslation(AMSpellParts.CONTINGENCY_DAMAGE.getId(), "Contingency: Damage", "Hurting me? That would be bad...", "shapes", "You have managed to create a spell that triggers only when you get hurt.$(br2)You can only have one contingency active at a time.");
+        skillTranslation(AMSpellParts.CONTINGENCY_DEATH.getId(), "Contingency: Death", "You're coming with me.", "shapes", "Enemies may get you, but in those few seconds it takes, you will have all the time you need to ensure they come along for the ride.$(br2)You can only have one contingency active at a time.");
+        skillTranslation(AMSpellParts.CONTINGENCY_FALL.getId(), "Contingency: Fall", "Falling... Well at least now it has a purpose.", "shapes", "You have figured out a spell shape that triggers when falling the instant before you hit the ground.$(br2)You can only have one contingency active at a time.");
+        skillTranslation(AMSpellParts.CONTINGENCY_FIRE.getId(), "Contingency: Fire", "You shall (not) burn!", "shapes", "You've decided you really don't like being on fire anymore. To that end, you made a spell that will light up when the flames do.$(br2)You can only have one contingency active at a time.");
+        skillTranslation(AMSpellParts.CONTINGENCY_HEALTH.getId(), "Contingency: Health", "I'm not going down... Not right now.", "shapes", "No matter your power, a knife between the shoulder blades will seriously cramp your style. You have found a way to make your enemies regret trying that, though. Or need two knives. This contingency triggers when your health is less than or equal to 25% of maximum.$(br2)You can only have one contingency active at a time.");
         skillTranslation(AMSpellParts.CREATE_WATER.getId(), "Create Water", "Yep, totally intended turning my snow into water...", "components", "You can coalesce moisture from the air around into one location, creating water where there was none. It can also be used to fill a cauldron.$(br2)This will not work in the nether.");
         skillTranslation(AMSpellParts.DAMAGE.getId(), "Damage", "Now it hurts...", "modifiers", "Amplifies the damage dealt by spells, or the healing done by damage spells to the undead.");
         skillTranslation(AMSpellParts.DAYLIGHT.getId(), "Daylight", "Does that mean I can control time?", "components", "You have gained the ability to control time.$(br2)This spell will cause the time to move to dawn.");
@@ -382,15 +417,25 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(CommandTranslations.SKILL_POINT_SET_SINGLE, "Player %s now has %d skill points of type %s");
         add(CommandTranslations.SKILL_POINT_UNKNOWN, "Could not find skill point type %s");
         add(CommandTranslations.SKILL_UNKNOWN, "Could not find skill %s");
+        add(EtheriumType.DARK.getTranslationKey(), "Dark Etherium");
+        add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
+        add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.air.page0.text", "The air affinity is associated with jumping, flying and falling. Many of them use effects, such as $(l:components/jump_boost)Jump Boost$(), $(l:components/levitation)Levitation$() or $(l:components/slow_falling)Slow Falling$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.ice.page0.text", "The ice affinity is associated with snow, frost and slowness. Popular examples include $(l:components/frost_damage)Frost Damage$(), $(l:components/frost)Frost$() and $(l:components/slowness)Slowness$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.lightning.page0.text", "The lightning affinity is associated with speed, power and weather. Notable examples are $(l:components/lightning_damage)Lightning Damage$(), $(l:components/haste)Haste$() and $(l:components/storm)Storm$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.nature.page0.text", "The nature affinity is associated with attraction, growth and harvest. As such, the most common components are $(l:components/attract)Attract$(), $(l:components/grow)Grow$() and $(l:components/harvest)Harvest$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.life.page0.text", "The life affinity is associated with healing, resurrection and anti-undead measures. They are usually defensive, like $(l:components/heal)Heal$(), $(l:components/regeneration)Regeneration$() and $(l:components/summon)Summon$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.arcane.page0.text", "The arcane affinity is associated with mana, enchantment and trickery. Arcane components are indirectly offensive for the most part, seen for example with $(l:components/invisibility)Invisibility$(), $(l:components/disarm)Disarm$() and $(l:components/mana_drain)Mana Drain$().");
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.ender.page0.text", "The ender affinity is associated with teleportation, darkness and the night. Ender components are the most powerful, but also the most expensive, with examples such as $(l:components/blindness)Blindness$(), $(l:components/astral_distortion)Astral Distortion$() and $(l:components/transplace)Transplace$().");
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
         add("potion.potency.7", "VII");
         add("potion.potency.8", "IX");
         add("potion.potency.9", "X");
-        add(EtheriumType.DARK.getTranslationKey(), "Dark Etherium");
-        add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
-        add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
     }
 
     /**
@@ -409,6 +454,15 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void wipItemIdTranslation(RegistryObject<? extends Item> item) {
         addItem(item, "[WIP] " + idToTranslation(item.getId().getPath()));
+    }
+
+    /**
+     * Adds an ability translation that matches the ability id.
+     *
+     * @param ability The ability to generate the translation for.
+     */
+    private void abilityIdTranslation(final RegistryObject<? extends IAbility> ability, String description) {
+        addAbility(ability, idToTranslation(ability.getId().getPath()), description);
     }
 
     /**
@@ -530,8 +584,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     private void skillTranslation(ResourceLocation skill, String name, String description, String compendiumType, String compendiumText) {
         add(Util.makeDescriptionId("skill", skill) + ".name", name);
         add(Util.makeDescriptionId("skill", skill) + ".description", description);
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath(), name);
         add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath() + ".page0.text", compendiumText);
+    }
+
+    /**
+     * Adds an ability translation.
+     *
+     * @param ability     The ability to add the translation for.
+     * @param name        The translation for the abilities name.
+     * @param description The translation for the abilities description.
+     */
+    private void addAbility(Supplier<? extends IAbility> ability, String name, String description) {
+        add(ability.get(), name, description);
     }
 
     /**
@@ -551,17 +615,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param translation The translation for the affinity.
      */
     private void addAffinity(Supplier<? extends IAffinity> affinity, String translation) {
-        addAffinity(affinity.get(), translation);
-    }
-
-    /**
-     * Adds an affinity translation.
-     *
-     * @param affinity    The affinity to add the translation for.
-     * @param translation The translation for the affinity.
-     */
-    private void addAffinity(IAffinity affinity, String translation) {
-        add(affinity.getTranslationKey(), translation);
+        add(affinity.get(), translation);
     }
 
     /**
@@ -614,17 +668,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param translation The translation for the skill point.
      */
     private void addSkillPoint(Supplier<? extends ISkillPoint> skillPoint, String translation) {
-        addSkillPoint(skillPoint.get(), translation);
-    }
-
-    /**
-     * Adds a skill point translation.
-     *
-     * @param skillPoint  The skill point to add the translation for.
-     * @param translation The translation for the skill point.
-     */
-    private void addSkillPoint(ISkillPoint skillPoint, String translation) {
-        add(skillPoint.getTranslationKey(), translation);
+        add(skillPoint.get(), translation);
     }
 
     /**
@@ -668,6 +712,15 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    private void add(ITranslatable translatable, String translation) {
+        add(translatable.getTranslationKey(), translation);
+    }
+
+    private void add(ITranslatable.WithDescription translatable, String nameTranslation, String descriptionTranslation) {
+        add(translatable.getNameTranslationKey(), nameTranslation);
+        add(translatable.getDescriptionTranslationKey(), descriptionTranslation);
     }
 
     /**

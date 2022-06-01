@@ -81,12 +81,19 @@ public class AbilityBuilder {
     }
 
     /**
+     * @return The affinity for this ability.
+     */
+    public ResourceLocation getAffinity() {
+        if (affinity == null) throw new SerializationException("An ability needs an affinity!");
+        return affinity;
+    }
+
+    /**
      * @return The serialized ability.
      */
     JsonObject serialize() {
         JsonObject json = new JsonObject();
-        if (affinity == null) throw new SerializationException("An ability needs an affinity!");
-        json.addProperty("affinity", this.affinity.toString());
+        json.addProperty("affinity", this.getAffinity().toString());
         if (bounds == null) throw new SerializationException("An ability needs bounds!");
         json.add("bounds", this.bounds.serializeToJson());
         return json;

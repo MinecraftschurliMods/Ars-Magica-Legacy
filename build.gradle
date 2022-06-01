@@ -222,7 +222,7 @@ dependencies {
     include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
     include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
     include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
-    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.18.2-1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen-forge-1.18.2:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
 

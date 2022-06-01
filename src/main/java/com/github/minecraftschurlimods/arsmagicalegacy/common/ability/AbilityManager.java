@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
@@ -14,6 +15,7 @@ import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +47,7 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
 
     @Override
     public List<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
-        return keySet().stream().filter(key -> key.equals(affinity)).collect(Collectors.toList());
+        return entrySet().stream().filter(entry -> entry.getValue().affinity().getId().equals(affinity)).map(Entry::getKey).collect(Collectors.toList());
     }
 
     @Override

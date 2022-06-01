@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.silk_touch",
+  "name": "skill.arsmagicalegacy.silk_touch.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/silk_touch.png",
   "pages": [

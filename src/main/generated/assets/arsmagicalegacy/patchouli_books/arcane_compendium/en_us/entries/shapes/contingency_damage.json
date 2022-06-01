@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_damage",
+  "name": "skill.arsmagicalegacy.contingency_damage.name",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/contingency_damage.png",
   "pages": [
