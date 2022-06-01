@@ -1,0 +1,30 @@
+{
+  "name": "affinity.arsmagicalegacy.arcane",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.affinities.arcane.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_arcane"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.clarity.description",
+      "title": "ability.arsmagicalegacy.clarity.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.mana_reduction.description",
+      "title": "ability.arsmagicalegacy.mana_reduction.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.magic_damage.description",
+      "title": "ability.arsmagicalegacy.magic_damage.name"
+    }
+  ]
+}

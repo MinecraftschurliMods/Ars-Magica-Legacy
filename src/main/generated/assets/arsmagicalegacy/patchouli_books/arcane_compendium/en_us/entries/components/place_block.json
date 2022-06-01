@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.place_block",
+  "name": "skill.arsmagicalegacy.place_block.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/place_block.png",
   "pages": [

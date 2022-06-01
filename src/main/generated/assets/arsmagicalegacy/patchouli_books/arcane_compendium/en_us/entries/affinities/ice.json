@@ -1,0 +1,30 @@
+{
+  "name": "affinity.arsmagicalegacy.ice",
+  "category": "arsmagicalegacy:affinities",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.affinities.ice.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:affinity_essence_ice"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.frost_punch.description",
+      "title": "ability.arsmagicalegacy.frost_punch.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.slowness.description",
+      "title": "ability.arsmagicalegacy.slowness.name"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.frost_walker.description",
+      "title": "ability.arsmagicalegacy.frost_walker.name"
+    }
+  ]
+}

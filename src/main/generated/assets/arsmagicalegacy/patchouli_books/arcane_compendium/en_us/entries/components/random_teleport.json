@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.random_teleport",
+  "name": "skill.arsmagicalegacy.random_teleport.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/random_teleport.png",
   "pages": [

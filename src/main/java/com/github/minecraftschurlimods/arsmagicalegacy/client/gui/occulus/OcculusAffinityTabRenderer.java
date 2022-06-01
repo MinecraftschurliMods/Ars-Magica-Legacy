@@ -10,6 +10,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.gui.screens.Screen;
@@ -106,15 +109,15 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                         Double lower = range.getMin();
                         Double upper = range.getMax();
                         if (lower != null || upper != null) {
-                            TextComponent cmp = new TextComponent("(");
+                            TextComponent cmp = new TextComponent(" (");
                             if (lower != null) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower)));
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
                                 if (upper != null) {
                                     cmp.append(", ");
                                 }
                             }
                             if (upper != null) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper)));
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
                             }
                             cmp.append(")");
                             component.append(cmp);
@@ -129,8 +132,8 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             pMatrixStack.pushPose();
-            pMatrixStack.translate(0, -1, 0);
-            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY, getFont());
+            pMatrixStack.translate(-posX, -posY, 0);
+            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX+posX, pMouseY+posY, getFont());
             pMatrixStack.popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);

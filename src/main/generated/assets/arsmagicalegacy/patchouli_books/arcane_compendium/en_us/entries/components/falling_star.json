@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.falling_star",
+  "name": "skill.arsmagicalegacy.falling_star.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/falling_star.png",
   "pages": [

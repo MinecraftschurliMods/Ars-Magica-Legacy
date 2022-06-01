@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.absorption",
+  "name": "skill.arsmagicalegacy.absorption.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/absorption.png",
   "pages": [

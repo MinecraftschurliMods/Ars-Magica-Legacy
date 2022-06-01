@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.explosion",
+  "name": "skill.arsmagicalegacy.explosion.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/explosion.png",
   "pages": [

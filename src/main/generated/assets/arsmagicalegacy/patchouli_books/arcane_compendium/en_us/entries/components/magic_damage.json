@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.magic_damage",
+  "name": "skill.arsmagicalegacy.magic_damage.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/magic_damage.png",
   "pages": [

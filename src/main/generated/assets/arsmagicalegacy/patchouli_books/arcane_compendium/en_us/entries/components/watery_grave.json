@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.watery_grave",
+  "name": "skill.arsmagicalegacy.watery_grave.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/watery_grave.png",
   "pages": [

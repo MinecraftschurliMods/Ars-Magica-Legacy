@@ -1,7 +1,7 @@
 {
   "name": "item.arsmagicalegacy.arcane_compendium.bosses.water_guardian.name",
   "category": "arsmagicalegacy:bosses",
-  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "icon": "arsmagicalegacy:water_guardian_spawn_egg",
   "pages": [
     {
       "type": "patchouli:text",

@@ -46,6 +46,7 @@ final class AbilityHandler {
     }
 
     private static void livingDeath(LivingDeathEvent event) {
+        if (event.getEntityLiving().isInvertedHealAndHarm()) return;
         if (event.getSource().getEntity() instanceof Player player) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;

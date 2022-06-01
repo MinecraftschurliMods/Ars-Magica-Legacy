@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_death",
+  "name": "skill.arsmagicalegacy.contingency_death.name",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/contingency_death.png",
   "pages": [
