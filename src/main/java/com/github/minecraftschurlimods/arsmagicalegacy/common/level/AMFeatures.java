@@ -177,7 +177,6 @@ public final class AMFeatures {
             }
             if (category == Biome.BiomeCategory.FOREST) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AUM_PLACEMENT);
-                spawn.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25));
             }
             if (category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.SWAMP) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CERUBLOSSOM_PLACEMENT);
@@ -191,6 +190,12 @@ public final class AMFeatures {
             }
             if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_VEGETATION);
+            }
+            if (category != Biome.BiomeCategory.MUSHROOM) {
+                spawn.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntities.MANA_CREEPER.get(), 2, 1, 1));
+            }
+            if (category == Biome.BiomeCategory.FOREST || category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.PLAINS || category == Biome.BiomeCategory.TAIGA) {
+                spawn.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25));
             }
         }
     }
