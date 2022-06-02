@@ -7,12 +7,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardi
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardianArm;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaVortex;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownRock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownSickle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
@@ -22,9 +26,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ENTITIES;
 
+@NonExtendable
 public interface AMEntities {
     RegistryObject<EntityType<Projectile>>        PROJECTILE         = ENTITIES.register("projectile",         () -> EntityType.Builder.of(Projectile::new,        MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("projectile"));
     RegistryObject<EntityType<Wall>>              WALL               = ENTITIES.register("wall",               () -> EntityType.Builder.of(Wall::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("wall"));
@@ -40,10 +46,14 @@ public interface AMEntities {
     RegistryObject<EntityType<LifeGuardian>>      LIFE_GUARDIAN      = ENTITIES.register("life_guardian",      () -> EntityType.Builder.of(LifeGuardian::new,      MobCategory.MONSTER).clientTrackingRange(8).sized(    1,  1.5F).build("life_guardian"));
     RegistryObject<EntityType<ArcaneGuardian>>    ARCANE_GUARDIAN    = ENTITIES.register("arcane_guardian",    () -> EntityType.Builder.of(ArcaneGuardian::new,    MobCategory.MONSTER).clientTrackingRange(8).sized( 0.9F,  2.5F).build("arcane_guardian"));
     RegistryObject<EntityType<EnderGuardian>>     ENDER_GUARDIAN     = ENTITIES.register("ender_guardian",     () -> EntityType.Builder.of(EnderGuardian::new,     MobCategory.MONSTER).clientTrackingRange(8).sized(    1,  2.5F).build("ender_guardian"));
+    RegistryObject<EntityType<IceGuardianArm>>    ICE_GUARDIAN_ARM   = ENTITIES.register("ice_guardian_arm",   () -> EntityType.Builder.of(IceGuardianArm::new,    MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("ice_guardian_arm"));
+    RegistryObject<EntityType<ThrownSickle>>      THROWN_SICKLE      = ENTITIES.register("thrown_sickle",      () -> EntityType.Builder.of(ThrownSickle::new,      MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("thrown_sickle"));
+    RegistryObject<EntityType<ThrownRock>>        THROWN_ROCK        = ENTITIES.register("thrown_rock",        () -> EntityType.Builder.of(ThrownRock::new,        MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("thrown_rock"));
+    RegistryObject<EntityType<Whirlwind>>         WHIRLWIND          = ENTITIES.register("whirlwind",          () -> EntityType.Builder.of(Whirlwind::new,         MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("whirlwind"));
     RegistryObject<EntityType<Dryad>>             DRYAD              = ENTITIES.register("dryad",              () -> EntityType.Builder.of(Dryad::new,             MobCategory.AMBIENT).clientTrackingRange(8).sized(    1,     2).build("dryad"));
     RegistryObject<EntityType<Mage>>              MAGE               = ENTITIES.register("mage",               () -> EntityType.Builder.of(Mage::new,              MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("mage"));
     RegistryObject<EntityType<ManaCreeper>>       MANA_CREEPER       = ENTITIES.register("mana_creeper",       () -> EntityType.Builder.of(ManaCreeper::new,       MobCategory.MONSTER).clientTrackingRange(8).sized( 0.6F,  1.7F).build("mana_creeper"));
-    RegistryObject<EntityType<Whirlwind>>         WHIRLWIND          = ENTITIES.register("whirlwind",          () -> EntityType.Builder.of(Whirlwind::new,         MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("whirlwind"));
+    RegistryObject<EntityType<ManaVortex>>        MANA_VORTEX        = ENTITIES.register("mana_vortex",        () -> EntityType.Builder.of(ManaVortex::new,        MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("mana_vortex"));
 
     /**
      * Empty method that is required for classloading

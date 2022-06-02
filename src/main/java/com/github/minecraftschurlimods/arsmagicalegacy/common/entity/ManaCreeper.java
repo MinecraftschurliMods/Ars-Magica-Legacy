@@ -18,5 +18,8 @@ public class ManaCreeper extends Creeper {
     @Override
     protected void explodeCreeper() {
         super.explodeCreeper();
+        ManaVortex entity = ManaVortex.create(level);
+        entity.moveTo(position());
+        level.addFreshEntity(entity);
     }
 }

@@ -46,8 +46,8 @@ public class Projectile extends Entity implements ItemSupplier {
      * Use {@link Projectile#create(Level)} instead.
      */
     @Internal
-    public Projectile(EntityType<? extends Projectile> entityEntityType, Level level) {
-        super(entityEntityType, level);
+    public Projectile(EntityType<? extends Projectile> type, Level level) {
+        super(type, level);
     }
 
     /**
