@@ -24,13 +24,12 @@ plugins {
 
 //=============================================
 
-/*
+
 mixin {
-    add sourceSets.main, "arsmagicalegacy.refmap.json"
-    config 'arsmagicalegacy.mixins.json'
+    add sourceSets.main, "${project.mod_id}.refmap.json"
+    config "${project.mod_id}.mixins.json"
     dumpTargetOnFailure true
 }
-*/
 
 editorconfig {
     excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*', '**/*.bbmodel']
@@ -193,7 +192,7 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")

@@ -1,10 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -14,6 +17,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+
+import java.util.Objects;
 
 /**
  * Holds all event handlers required for the various mob effects.
@@ -31,6 +36,7 @@ final class EffectHandler {
         forgeBus.addListener(EffectHandler::potionAdded);
         forgeBus.addListener(EffectHandler::potionExpiry);
         forgeBus.addListener(EffectHandler::potionRemove);
+        forgeBus.addListener(EffectHandler::entitySize);
     }
 
     private static void entityJoinWorld(EntityJoinWorldEvent event) {
@@ -45,24 +51,24 @@ final class EffectHandler {
     private static void livingJump(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
-            entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1), 0));
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1), 0));
         }
     }
 
     private static void livingFall(LivingFallEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
-            event.setDistance(event.getDistance() / (1.1f * (entity.getEffect(AMMobEffects.AGILITY.get()).getAmplifier() + 1)));
+            event.setDistance(event.getDistance() / (1.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1)));
         }
         if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.get())) {
-            event.setDistance(event.getDistance() * (entity.getEffect(AMMobEffects.GRAVITY_WELL.get()).getAmplifier() + 1));
+            event.setDistance(event.getDistance() * (Objects.requireNonNull(entity.getEffect(AMMobEffects.GRAVITY_WELL.get())).getAmplifier() + 1));
         }
     }
 
     private static void livingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (event.getSource() != DamageSource.OUT_OF_WORLD && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
-            event.setAmount(event.getAmount() / (float) entity.getEffect(AMMobEffects.MAGIC_SHIELD.get()).getAmplifier());
+            event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
         }
     }
 
@@ -107,6 +113,16 @@ final class EffectHandler {
     private static void potionRemove(PotionEvent.PotionRemoveEvent event) {
         if (!event.getEntity().level.isClientSide() && !(event.getPotionEffect() == null) && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
+        }
+    }
+
+    private static void entitySize(EntityEvent.Size event) {
+        if (!(event.getEntity() instanceof LivingEntity living) || !living.isAddedToWorld()) return;
+        float factor = (float) living.getAttributeValue(AMAttributes.SCALE.get());
+        if (factor == 1) return;
+        event.setNewSize(event.getNewSize().scale(factor), true);
+        if (living instanceof Player) {
+            event.setNewEyeHeight(event.getNewEyeHeight() * factor);
         }
     }
 }

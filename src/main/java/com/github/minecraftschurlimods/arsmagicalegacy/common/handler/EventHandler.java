@@ -42,7 +42,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
@@ -94,6 +93,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.OptionalInt;
@@ -221,6 +221,16 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
+        for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
+            EntityType<? extends LivingEntity> living;
+            try {
+                //noinspection unchecked
+                living = (EntityType<? extends LivingEntity>) entity;
+            } catch (ClassCastException e) {
+                continue;
+            }
+            event.add(living, AMAttributes.SCALE.get());
+        }
     }
 
     private static void enqueueIMC(InterModEnqueueEvent event) {
@@ -244,7 +254,6 @@ public final class EventHandler {
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), new CodecCapabilityProvider<>(AffinityHelper.AffinityHolder.CODEC, AffinityHelper.getCapability(), AffinityHelper.AffinityHolder::empty));
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic"), new CodecCapabilityProvider<>(MagicHelper.MagicHolder.CODEC, MagicHelper.getMagicCapability(), MagicHelper.MagicHolder::new));
             event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rift"), new CodecCapabilityProvider<>(RiftHelper.RiftHolder.CODEC, RiftHelper.getRiftCapability(), RiftHelper.RiftHolder::new));
-            event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "shrink"), new CodecCapabilityProvider<>(ShrinkHelper.ShrinkHolder.CODEC, ShrinkHelper.getShrinkCapability(), ShrinkHelper.ShrinkHolder::new));
         }
     }
 
@@ -280,7 +289,6 @@ public final class EventHandler {
         ManaHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         BurnoutHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         RiftHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
-        ShrinkHelper.instance().syncOnDeath(event.getOriginal(), event.getPlayer());
         event.getOriginal().invalidateCaps();
     }
 
