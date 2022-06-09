@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.rune.name",
+  "advancement": "arsmagicalegacy:book/rune",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/rune.png",
+  "name": "skill.arsmagicalegacy.rune.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:rune"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/rune"
+  ]
 }

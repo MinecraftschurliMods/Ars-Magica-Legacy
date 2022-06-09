@@ -1,23 +1,23 @@
 {
-  "manaCost": 5.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:earth": 0.01
   },
+  "manaCost": 5.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:light_gray_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "tag": "forge:chests/wooden"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

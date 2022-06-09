@@ -1,23 +1,23 @@
 {
-  "trigger": {
-    "ingredients": [
-      {
-        "type": "forge:nbt",
-        "item": "patchouli:guide_book",
-        "count": 1,
-        "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
-      }
-    ],
-    "type": "arsmagicalegacy:item_drop"
+  "effect": {
+    "type": "arsmagicalegacy:spawn_entity",
+    "entity_type": "arsmagicalegacy:arcane_guardian"
   },
   "requirements": [
     {
-      "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual",
-      "type": "arsmagicalegacy:structure"
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:arcane_guardian_spawn_ritual"
     }
   ],
-  "effect": {
-    "entity_type": "arsmagicalegacy:arcane_guardian",
-    "type": "arsmagicalegacy:spawn_entity"
+  "trigger": {
+    "type": "arsmagicalegacy:item_drop",
+    "ingredients": [
+      {
+        "type": "forge:nbt",
+        "count": 1,
+        "item": "patchouli:guide_book",
+        "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
+      }
+    ]
   }
 }

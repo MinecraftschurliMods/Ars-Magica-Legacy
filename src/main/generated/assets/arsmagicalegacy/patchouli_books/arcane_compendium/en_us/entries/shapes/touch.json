@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.touch.name",
+  "advancement": "arsmagicalegacy:book/touch",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/touch.png",
+  "name": "skill.arsmagicalegacy.touch.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:touch"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/touch"
+  ]
 }

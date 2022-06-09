@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.drowning_damage.name",
+  "advancement": "arsmagicalegacy:book/drowning_damage",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/drowning_damage.png",
+  "name": "skill.arsmagicalegacy.drowning_damage.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:drowning_damage"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/drowning_damage"
+  ]
 }

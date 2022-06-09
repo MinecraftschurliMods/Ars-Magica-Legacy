@@ -1,5 +1,5 @@
 {
   "block": "minecraft:dark_oak_planks",
-  "stair": "minecraft:dark_oak_stairs",
-  "power": 1
+  "power": 1,
+  "stair": "minecraft:dark_oak_stairs"
 }

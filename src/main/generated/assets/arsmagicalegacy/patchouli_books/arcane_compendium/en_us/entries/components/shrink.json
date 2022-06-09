@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.shrink.name",
+  "advancement": "arsmagicalegacy:book/shrink",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/shrink.png",
+  "name": "skill.arsmagicalegacy.shrink.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:shrink"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/shrink"
+  ]
 }

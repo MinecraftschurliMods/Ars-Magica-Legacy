@@ -1,8 +1,8 @@
 {
-  "occulus_tab": "arsmagicalegacy:offense",
-  "x": 210,
-  "y": 30,
   "cost": {
     "arsmagicalegacy:blue": 1
-  }
+  },
+  "occulus_tab": "arsmagicalegacy:offense",
+  "x": 210,
+  "y": 30
 }

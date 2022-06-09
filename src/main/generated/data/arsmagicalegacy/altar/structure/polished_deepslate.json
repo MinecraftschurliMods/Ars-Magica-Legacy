@@ -1,5 +1,5 @@
 {
   "block": "minecraft:polished_deepslate",
-  "stair": "minecraft:polished_deepslate_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:polished_deepslate_stairs"
 }

@@ -1,5 +1,5 @@
 {
   "block": "minecraft:mossy_stone_bricks",
-  "stair": "minecraft:mossy_stone_brick_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:mossy_stone_brick_stairs"
 }

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.velocity.name",
+  "advancement": "arsmagicalegacy:book/velocity",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/velocity.png",
+  "name": "skill.arsmagicalegacy.velocity.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:velocity"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/velocity"
+  ]
 }

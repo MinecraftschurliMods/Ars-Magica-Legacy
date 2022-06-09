@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "V": {
+      "tag": "forge:dusts/vinteum"
+    }
+  },
   "pattern": [
     "V",
     "S"
   ],
-  "key": {
-    "V": {
-      "tag": "forge:dusts/vinteum"
-    },
-    "S": {
-      "tag": "forge:rods/wooden"
-    }
-  },
   "result": {
     "item": "arsmagicalegacy:vinteum_torch"
   }

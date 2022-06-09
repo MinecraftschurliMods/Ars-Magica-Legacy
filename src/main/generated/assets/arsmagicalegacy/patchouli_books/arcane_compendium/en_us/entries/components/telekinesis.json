@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.telekinesis.name",
+  "advancement": "arsmagicalegacy:book/telekinesis",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/telekinesis.png",
+  "name": "skill.arsmagicalegacy.telekinesis.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:telekinesis"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/telekinesis"
+  ]
 }

@@ -2,7 +2,6 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -15,7 +14,8 @@
           ],
           "name": "arsmagicalegacy:affinity_essence"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

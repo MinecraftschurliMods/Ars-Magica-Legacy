@@ -1,7 +1,7 @@
 {
-  "name": "affinity.arsmagicalegacy.earth",
   "category": "arsmagicalegacy:affinities",
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+  "name": "affinity.arsmagicalegacy.earth",
   "pages": [
     {
       "type": "patchouli:text",

@@ -22,13 +22,13 @@ public interface IOcculusTabManager extends IDataManager<IOcculusTab> {
      * @return The occulus tab, or null if the occulus tab is not loaded.
      */
     @Nullable
-    IOcculusTab getNullable(ResourceLocation id);
+    IOcculusTab get(ResourceLocation id);
 
     /**
      * @param id The id of the occulus tab to get.
      * @return The occulus tab. Throws an exception if the occulus tab is not loaded.
      */
-    IOcculusTab get(ResourceLocation id);
+    IOcculusTab getOrThrow(ResourceLocation id);
 
     /**
      * @return An unmodifiable collection of all tabs.

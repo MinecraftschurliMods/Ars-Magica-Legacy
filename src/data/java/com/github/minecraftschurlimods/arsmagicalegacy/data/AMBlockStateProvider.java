@@ -79,7 +79,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         stairsBlock(WITCHWOOD_STAIRS, WITCHWOOD_PLANKS);
         fenceBlock(WITCHWOOD_FENCE, WITCHWOOD_PLANKS);
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
-        doorBlock(WITCHWOOD_DOOR);
+        //doorBlock(WITCHWOOD_DOOR);//TODO: Fix door model forge#8687
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);

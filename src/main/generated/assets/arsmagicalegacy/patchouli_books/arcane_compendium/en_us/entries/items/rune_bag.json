@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.rune_bag.name",
   "category": "arsmagicalegacy:items",
   "icon": "arsmagicalegacy:rune_bag",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.rune_bag.name",
   "pages": [
     {
       "type": "patchouli:text",

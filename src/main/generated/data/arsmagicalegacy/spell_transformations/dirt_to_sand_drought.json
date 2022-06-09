@@ -1,10 +1,10 @@
 {
   "from": {
-    "tag": "minecraft:dirt",
-    "predicate_type": "minecraft:tag_match"
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:dirt"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:sand"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

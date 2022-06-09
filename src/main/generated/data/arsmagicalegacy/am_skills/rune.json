@@ -1,12 +1,12 @@
 {
+  "cost": {
+    "arsmagicalegacy:green": 1
+  },
   "occulus_tab": "arsmagicalegacy:defense",
-  "x": 120,
-  "y": 300,
   "parents": [
     "arsmagicalegacy:agility",
     "arsmagicalegacy:entangle"
   ],
-  "cost": {
-    "arsmagicalegacy:green": 1
-  }
+  "x": 120,
+  "y": 300
 }

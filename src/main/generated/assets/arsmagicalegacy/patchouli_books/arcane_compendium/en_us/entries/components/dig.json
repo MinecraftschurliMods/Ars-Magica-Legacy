@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.dig.name",
+  "advancement": "arsmagicalegacy:book/dig",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/dig.png",
+  "name": "skill.arsmagicalegacy.dig.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:dig"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/dig"
+  ]
 }

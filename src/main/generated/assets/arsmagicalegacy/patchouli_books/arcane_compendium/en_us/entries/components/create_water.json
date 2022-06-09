@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.create_water.name",
+  "advancement": "arsmagicalegacy:book/create_water",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/create_water.png",
+  "name": "skill.arsmagicalegacy.create_water.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:create_water"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/create_water"
+  ]
 }

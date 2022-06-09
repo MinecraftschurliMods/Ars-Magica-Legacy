@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "L L",
-    "WRW",
-    "WWW"
-  ],
   "key": {
-    "W": {
-      "tag": "minecraft:wool"
-    },
     "L": {
       "item": "minecraft:leather"
     },
     "R": {
       "item": "arsmagicalegacy:white_rune"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     }
   },
+  "pattern": [
+    "L L",
+    "WRW",
+    "WWW"
+  ],
   "result": {
     "item": "arsmagicalegacy:mage_chestplate"
   }

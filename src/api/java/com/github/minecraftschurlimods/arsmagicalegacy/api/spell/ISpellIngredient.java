@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,8 +15,8 @@ import java.util.List;
  * Interface representing an ingredient for spell crafting.
  */
 public interface ISpellIngredient {
-    Codec<ISpellIngredient> CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientCodec);
-    Codec<ISpellIngredient> NETWORK_CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientNetworkCodec);
+    Codec<ISpellIngredient> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientCodec));
+    Codec<ISpellIngredient> NETWORK_CODEC = ExtraCodecs.lazyInitializedCodec(() -> ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientNetworkCodec));
 
     /**
      * @return The id of this type.

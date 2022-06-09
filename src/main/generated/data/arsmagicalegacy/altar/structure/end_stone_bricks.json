@@ -1,5 +1,5 @@
 {
   "block": "minecraft:end_stone_bricks",
-  "stair": "minecraft:end_stone_brick_stairs",
-  "power": 6
+  "power": 6,
+  "stair": "minecraft:end_stone_brick_stairs"
 }

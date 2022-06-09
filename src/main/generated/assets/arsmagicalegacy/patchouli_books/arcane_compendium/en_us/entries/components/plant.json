@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.plant.name",
+  "advancement": "arsmagicalegacy:book/plant",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/plant.png",
+  "name": "skill.arsmagicalegacy.plant.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:plant"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/plant"
+  ]
 }

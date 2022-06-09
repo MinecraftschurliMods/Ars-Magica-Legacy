@@ -1,23 +1,23 @@
 {
-  "manaCost": 20.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:arcane": 0.01
   },
+  "manaCost": 20.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:cyan_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:cerublossom"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

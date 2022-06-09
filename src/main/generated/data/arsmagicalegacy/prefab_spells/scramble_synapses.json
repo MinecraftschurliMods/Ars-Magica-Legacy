@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:lighting-royal-3",
   "name": {
     "text": "Scramble Synapses"
   },
-  "icon": "arsmagicalegacy:lighting-royal-3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -19,7 +20,6 @@
     "spell_stack": [
       "arsmagicalegacy:lightning_damage",
       "arsmagicalegacy:scramble_synapses"
-    ],
-    "data": {}
+    ]
   }
 }

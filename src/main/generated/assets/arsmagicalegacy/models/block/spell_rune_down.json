@@ -1,10 +1,12 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "texture": "arsmagicalegacy:block/spell_rune"
-  },
   "elements": [
     {
+      "faces": {
+        "up": {
+          "texture": "#texture"
+        }
+      },
       "from": [
         1,
         0,
@@ -14,12 +16,10 @@
         15,
         0.5,
         15
-      ],
-      "faces": {
-        "up": {
-          "texture": "#texture"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "texture": "arsmagicalegacy:block/spell_rune"
+  }
 }

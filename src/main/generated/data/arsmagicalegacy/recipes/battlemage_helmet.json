@@ -1,27 +1,27 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "GOG",
-    "ORO",
-    " E "
-  ],
   "key": {
-    "O": {
-      "item": "minecraft:obsidian"
+    "E": {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "arsmagicalegacy:affinity_essence",
+      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}"
     },
     "G": {
       "tag": "forge:ingots/gold"
     },
-    "E": {
-      "type": "forge:nbt",
-      "item": "arsmagicalegacy:affinity_essence",
-      "count": 1,
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}"
+    "O": {
+      "item": "minecraft:obsidian"
     },
     "R": {
       "item": "arsmagicalegacy:red_rune"
     }
   },
+  "pattern": [
+    "GOG",
+    "ORO",
+    " E "
+  ],
   "result": {
     "item": "arsmagicalegacy:battlemage_helmet"
   }

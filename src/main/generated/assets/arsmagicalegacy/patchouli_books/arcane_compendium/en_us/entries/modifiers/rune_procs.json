@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.rune_procs.name",
+  "advancement": "arsmagicalegacy:book/rune_procs",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/rune_procs.png",
+  "name": "skill.arsmagicalegacy.rune_procs.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:rune_procs"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/rune_procs"
+  ]
 }

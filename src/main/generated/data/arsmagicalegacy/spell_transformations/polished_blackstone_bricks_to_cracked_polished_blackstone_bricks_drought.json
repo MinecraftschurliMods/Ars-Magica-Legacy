@@ -3,8 +3,8 @@
     "block": "minecraft:polished_blackstone_bricks",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:cracked_polished_blackstone_bricks"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.haste.name",
+  "advancement": "arsmagicalegacy:book/haste",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/haste.png",
+  "name": "skill.arsmagicalegacy.haste.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:haste"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/haste"
+  ]
 }

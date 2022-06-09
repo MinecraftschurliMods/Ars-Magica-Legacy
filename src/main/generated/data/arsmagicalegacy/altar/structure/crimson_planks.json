@@ -1,5 +1,5 @@
 {
   "block": "minecraft:crimson_planks",
-  "stair": "minecraft:crimson_stairs",
-  "power": 4
+  "power": 4,
+  "stair": "minecraft:crimson_stairs"
 }

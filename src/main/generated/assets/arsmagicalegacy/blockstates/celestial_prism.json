@@ -1,10 +1,10 @@
 {
   "variants": {
-    "half=upper": {
-      "model": "arsmagicalegacy:block/celestial_prism_upper"
-    },
     "half=lower": {
       "model": "arsmagicalegacy:block/celestial_prism"
+    },
+    "half=upper": {
+      "model": "arsmagicalegacy:block/celestial_prism_upper"
     }
   }
 }

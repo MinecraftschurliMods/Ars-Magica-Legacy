@@ -1,7 +1,7 @@
 {
   "affinity": "arsmagicalegacy:nature",
   "bounds": {
-    "min": 0.01,
-    "max": 1.0
+    "max": 1.0,
+    "min": 0.01
   }
 }

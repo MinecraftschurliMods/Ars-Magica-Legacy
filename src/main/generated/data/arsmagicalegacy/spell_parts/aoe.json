@@ -1,33 +1,33 @@
 {
+  "affinities": {},
   "manaCost": 2.0,
   "reagents": [],
-  "affinities": {},
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
+        "item": "arsmagicalegacy:affinity_essence",
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "minecraft:tnt"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:etherium",
+      "amount": 1,
       "types": [
         "NEUTRAL",
         "LIGHT",
         "DARK"
-      ],
-      "amount": 1,
-      "type": "arsmagicalegacy:etherium"
+      ]
     }
   ]
 }

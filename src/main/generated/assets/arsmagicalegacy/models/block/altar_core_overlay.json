@@ -1,11 +1,12 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "arsmagicalegacy:block/altar_core",
-    "overlay": "arsmagicalegacy:block/altar_core_overlay"
-  },
   "elements": [
     {
+      "faces": {
+        "down": {
+          "texture": "#overlay"
+        }
+      },
       "from": [
         0,
         0,
@@ -15,12 +16,11 @@
         16,
         0,
         16
-      ],
-      "faces": {
-        "down": {
-          "texture": "#overlay"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "overlay": "arsmagicalegacy:block/altar_core_overlay",
+    "particle": "arsmagicalegacy:block/altar_core"
+  }
 }

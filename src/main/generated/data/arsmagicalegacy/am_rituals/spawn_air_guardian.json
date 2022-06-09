@@ -1,26 +1,26 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:spawn_entity",
+    "entity_type": "arsmagicalegacy:air_guardian"
+  },
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:air_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:height",
+      "height": {
+        "min": 128
+      }
+    }
+  ],
   "trigger": {
+    "type": "arsmagicalegacy:item_drop",
     "ingredients": [
       {
         "item": "arsmagicalegacy:tarma_root"
       }
-    ],
-    "type": "arsmagicalegacy:item_drop"
-  },
-  "requirements": [
-    {
-      "structure": "arsmagicalegacy:air_guardian_spawn_ritual",
-      "type": "arsmagicalegacy:structure"
-    },
-    {
-      "height": {
-        "min": 128
-      },
-      "type": "arsmagicalegacy:height"
-    }
-  ],
-  "effect": {
-    "entity_type": "arsmagicalegacy:air_guardian",
-    "type": "arsmagicalegacy:spawn_entity"
+    ]
   }
 }

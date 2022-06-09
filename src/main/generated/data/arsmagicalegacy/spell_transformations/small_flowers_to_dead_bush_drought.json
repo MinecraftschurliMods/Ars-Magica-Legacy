@@ -1,10 +1,10 @@
 {
   "from": {
-    "tag": "minecraft:small_flowers",
-    "predicate_type": "minecraft:tag_match"
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:small_flowers"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:dead_bush"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "affinity.arsmagicalegacy.lightning",
   "category": "arsmagicalegacy:affinities",
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
+  "name": "affinity.arsmagicalegacy.lightning",
   "pages": [
     {
       "type": "patchouli:text",

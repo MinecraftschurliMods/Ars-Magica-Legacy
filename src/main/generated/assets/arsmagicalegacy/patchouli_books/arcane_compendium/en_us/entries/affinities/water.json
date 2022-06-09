@@ -1,7 +1,7 @@
 {
-  "name": "affinity.arsmagicalegacy.water",
   "category": "arsmagicalegacy:affinities",
   "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "name": "affinity.arsmagicalegacy.water",
   "pages": [
     {
       "type": "patchouli:text",

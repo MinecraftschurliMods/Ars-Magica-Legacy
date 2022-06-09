@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.agility.name",
+  "advancement": "arsmagicalegacy:book/agility",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/agility.png",
+  "name": "skill.arsmagicalegacy.agility.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:agility"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/agility"
+  ]
 }

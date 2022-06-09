@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.wizards_autumn.name",
+  "advancement": "arsmagicalegacy:book/wizards_autumn",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/wizards_autumn.png",
+  "name": "skill.arsmagicalegacy.wizards_autumn.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:wizards_autumn"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/wizards_autumn"
+  ]
 }

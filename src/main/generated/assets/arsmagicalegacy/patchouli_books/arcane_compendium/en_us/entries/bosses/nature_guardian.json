@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.name",
   "category": "arsmagicalegacy:bosses",
   "icon": "arsmagicalegacy:nature_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.name",
   "pages": [
     {
       "type": "patchouli:text",

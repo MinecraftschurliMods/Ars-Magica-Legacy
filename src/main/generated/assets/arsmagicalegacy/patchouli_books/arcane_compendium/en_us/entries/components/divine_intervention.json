@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.divine_intervention.name",
+  "advancement": "arsmagicalegacy:book/divine_intervention",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/divine_intervention.png",
+  "name": "skill.arsmagicalegacy.divine_intervention.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:divine_intervention"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/divine_intervention"
+  ]
 }

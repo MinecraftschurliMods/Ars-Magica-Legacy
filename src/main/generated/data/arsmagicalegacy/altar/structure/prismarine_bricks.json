@@ -1,5 +1,5 @@
 {
   "block": "minecraft:prismarine_bricks",
-  "stair": "minecraft:prismarine_brick_stairs",
-  "power": 4
+  "power": 4,
+  "stair": "minecraft:prismarine_brick_stairs"
 }

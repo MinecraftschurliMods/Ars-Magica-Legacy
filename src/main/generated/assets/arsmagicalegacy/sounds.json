@@ -1,428 +1,428 @@
 {
+  "block.crafting_altar.add_ingredient": {
+    "sounds": [
+      "arsmagicalegacy:block/crafting_altar/add_ingredient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.block.crafting_altar.add_ingredient"
+  },
+  "block.crafting_altar.finish": {
+    "sounds": [
+      "arsmagicalegacy:block/crafting_altar/finish"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.block.crafting_altar.finish"
+  },
+  "block.inscription_table.take_book": {
+    "sounds": [
+      "arsmagicalegacy:block/inscription_table/take_book"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.block.inscription_table.take_book"
+  },
+  "entity.arcane_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/arcane_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.ambient"
+  },
   "entity.arcane_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.attack",
     "sounds": [
       "arsmagicalegacy:entity/arcane_guardian/attack_1",
       "arsmagicalegacy:entity/arcane_guardian/attack_2",
       "arsmagicalegacy:entity/arcane_guardian/attack_3",
       "arsmagicalegacy:entity/arcane_guardian/attack_4",
       "arsmagicalegacy:entity/arcane_guardian/attack_5"
-    ]
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.attack"
+  },
+  "entity.arcane_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/arcane_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.death"
+  },
+  "entity.arcane_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/arcane_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.hurt"
+  },
+  "entity.earth_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/earth_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.ambient"
+  },
+  "entity.earth_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/earth_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.attack"
+  },
+  "entity.earth_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/earth_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.death"
+  },
+  "entity.earth_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/earth_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.hurt"
+  },
+  "entity.ender_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.ambient"
+  },
+  "entity.ender_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.attack"
+  },
+  "entity.ender_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.death"
+  },
+  "entity.ender_guardian.flap": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/flap"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.flap"
+  },
+  "entity.ender_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.hurt"
+  },
+  "entity.ender_guardian.roar": {
+    "sounds": [
+      "arsmagicalegacy:entity/ender_guardian/roar"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.roar"
+  },
+  "entity.fire_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.ambient"
+  },
+  "entity.fire_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.attack"
+  },
+  "entity.fire_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.death"
+  },
+  "entity.fire_guardian.flamethrower": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/flamethrower"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.flamethrower"
+  },
+  "entity.fire_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.hurt"
+  },
+  "entity.fire_guardian.nova": {
+    "sounds": [
+      "arsmagicalegacy:entity/fire_guardian/nova"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.nova"
+  },
+  "entity.ice_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.ambient"
+  },
+  "entity.ice_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.death"
+  },
+  "entity.ice_guardian.launch_arm": {
+    "sounds": [
+      "arsmagicalegacy:entity/ice_guardian/launch_arm"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.launch_arm"
+  },
+  "entity.life_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/life_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.ambient"
+  },
+  "entity.life_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/life_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.attack"
+  },
+  "entity.life_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/life_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.death"
+  },
+  "entity.life_guardian.heal": {
+    "sounds": [
+      "arsmagicalegacy:entity/life_guardian/heal"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.heal"
+  },
+  "entity.life_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/life_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.hurt"
+  },
+  "entity.lightning_guardian.ambient": {
+    "sounds": [
+      "arsmagicalegacy:entity/lightning_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.ambient"
+  },
+  "entity.lightning_guardian.attack": {
+    "sounds": [
+      "arsmagicalegacy:entity/lightning_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.attack"
+  },
+  "entity.lightning_guardian.death": {
+    "sounds": [
+      "arsmagicalegacy:entity/lightning_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.death"
+  },
+  "entity.lightning_guardian.hurt": {
+    "sounds": [
+      "arsmagicalegacy:entity/lightning_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.hurt"
   },
   "entity.lightning_guardian.lightning_rod": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.lightning_rod",
     "sounds": [
       "arsmagicalegacy:entity/lightning_guardian/lightning_rod_1",
       "arsmagicalegacy:entity/lightning_guardian/lightning_rod_2",
       "arsmagicalegacy:entity/lightning_guardian/lightning_rod_3"
-    ]
-  },
-  "entity.arcane_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/arcane_guardian/ambient"
-    ]
-  },
-  "entity.arcane_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/arcane_guardian/death"
-    ]
-  },
-  "entity.arcane_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.arcane_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/arcane_guardian/hurt"
-    ]
-  },
-  "entity.earth_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/earth_guardian/ambient"
-    ]
-  },
-  "entity.earth_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/earth_guardian/attack"
-    ]
-  },
-  "entity.earth_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/earth_guardian/death"
-    ]
-  },
-  "entity.earth_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.earth_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/earth_guardian/hurt"
-    ]
-  },
-  "entity.ender_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/ambient"
-    ]
-  },
-  "entity.ender_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/attack"
-    ]
-  },
-  "entity.ender_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/death"
-    ]
-  },
-  "entity.ender_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/hurt"
-    ]
-  },
-  "entity.fire_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/ambient"
-    ]
-  },
-  "entity.fire_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/attack"
-    ]
-  },
-  "entity.fire_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/death"
-    ]
-  },
-  "entity.fire_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/hurt"
-    ]
-  },
-  "entity.ice_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/ice_guardian/ambient"
-    ]
-  },
-  "entity.ice_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/ice_guardian/death"
-    ]
-  },
-  "entity.life_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/life_guardian/ambient"
-    ]
-  },
-  "entity.life_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/life_guardian/attack"
-    ]
-  },
-  "entity.life_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/life_guardian/death"
-    ]
-  },
-  "entity.life_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/life_guardian/hurt"
-    ]
-  },
-  "entity.lightning_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/lightning_guardian/ambient"
-    ]
-  },
-  "entity.lightning_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/lightning_guardian/attack"
-    ]
-  },
-  "entity.lightning_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/lightning_guardian/death"
-    ]
-  },
-  "entity.lightning_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/lightning_guardian/hurt"
-    ]
-  },
-  "entity.nature_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/nature_guardian/ambient"
-    ]
-  },
-  "entity.nature_guardian.attack": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.attack",
-    "sounds": [
-      "arsmagicalegacy:entity/nature_guardian/attack"
-    ]
-  },
-  "entity.nature_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/nature_guardian/death"
-    ]
-  },
-  "entity.nature_guardian.hurt": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.hurt",
-    "sounds": [
-      "arsmagicalegacy:entity/nature_guardian/hurt"
-    ]
-  },
-  "entity.water_guardian.ambient": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.water_guardian.ambient",
-    "sounds": [
-      "arsmagicalegacy:entity/water_guardian/ambient"
-    ]
-  },
-  "entity.water_guardian.death": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.water_guardian.death",
-    "sounds": [
-      "arsmagicalegacy:entity/water_guardian/death"
-    ]
-  },
-  "entity.ender_guardian.flap": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.flap",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/flap"
-    ]
-  },
-  "entity.ender_guardian.roar": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ender_guardian.roar",
-    "sounds": [
-      "arsmagicalegacy:entity/ender_guardian/roar"
-    ]
-  },
-  "entity.fire_guardian.flamethrower": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.flamethrower",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/flamethrower"
-    ]
-  },
-  "entity.fire_guardian.nova": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.fire_guardian.nova",
-    "sounds": [
-      "arsmagicalegacy:entity/fire_guardian/nova"
-    ]
-  },
-  "entity.ice_guardian.launch_arm": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.ice_guardian.launch_arm",
-    "sounds": [
-      "arsmagicalegacy:entity/ice_guardian/launch_arm"
-    ]
-  },
-  "entity.life_guardian.heal": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.life_guardian.heal",
-    "sounds": [
-      "arsmagicalegacy:entity/life_guardian/heal"
-    ]
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.lightning_rod"
   },
   "entity.lightning_guardian.static": {
-    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.static",
     "sounds": [
       "arsmagicalegacy:entity/lightning_guardian/static"
-    ]
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.lightning_guardian.static"
   },
-  "spell.cast.air": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.air",
+  "entity.nature_guardian.ambient": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/air"
-    ]
+      "arsmagicalegacy:entity/nature_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.ambient"
   },
-  "spell.cast.arcane": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.arcane",
+  "entity.nature_guardian.attack": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/arcane"
-    ]
+      "arsmagicalegacy:entity/nature_guardian/attack"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.attack"
   },
-  "spell.cast.earth": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.earth",
+  "entity.nature_guardian.death": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/earth"
-    ]
+      "arsmagicalegacy:entity/nature_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.death"
   },
-  "spell.cast.ender": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.ender",
+  "entity.nature_guardian.hurt": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/ender"
-    ]
+      "arsmagicalegacy:entity/nature_guardian/hurt"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.nature_guardian.hurt"
   },
-  "spell.cast.fire": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.fire",
+  "entity.water_guardian.ambient": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/fire"
-    ]
+      "arsmagicalegacy:entity/water_guardian/ambient"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.water_guardian.ambient"
   },
-  "spell.cast.ice": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.ice",
+  "entity.water_guardian.death": {
     "sounds": [
-      "arsmagicalegacy:spell/cast/ice"
-    ]
-  },
-  "spell.cast.life": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.life",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/life"
-    ]
-  },
-  "spell.cast.lightning": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.lightning",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/lightning"
-    ]
-  },
-  "spell.cast.nature": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.nature",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/nature"
-    ]
-  },
-  "spell.cast.none": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.none",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/none"
-    ]
-  },
-  "spell.cast.water": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.cast.water",
-    "sounds": [
-      "arsmagicalegacy:spell/cast/water"
-    ]
-  },
-  "spell.loop.air": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.air",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/air"
-    ]
-  },
-  "spell.loop.arcane": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.arcane",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/arcane"
-    ]
-  },
-  "spell.loop.earth": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.earth",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/earth"
-    ]
-  },
-  "spell.loop.ender": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.ender",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/ender"
-    ]
-  },
-  "spell.loop.fire": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.fire",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/fire"
-    ]
-  },
-  "spell.loop.ice": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.ice",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/ice"
-    ]
-  },
-  "spell.loop.life": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.life",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/life"
-    ]
-  },
-  "spell.loop.lightning": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.lightning",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/lightning"
-    ]
-  },
-  "spell.loop.nature": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.nature",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/nature"
-    ]
-  },
-  "spell.loop.water": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.loop.water",
-    "sounds": [
-      "arsmagicalegacy:spell/loop/water"
-    ]
-  },
-  "spell.contingency": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.contingency",
-    "sounds": [
-      "arsmagicalegacy:spell/contingency"
-    ]
-  },
-  "spell.mana_shield": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.mana_shield",
-    "sounds": [
-      "arsmagicalegacy:spell/mana_shield"
-    ]
-  },
-  "spell.rune": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.rune",
-    "sounds": [
-      "arsmagicalegacy:spell/rune"
-    ]
-  },
-  "spell.starstrike": {
-    "subtitle": "subtitle.arsmagicalegacy.spell.starstrike",
-    "sounds": [
-      "arsmagicalegacy:spell/starstrike"
-    ]
-  },
-  "block.crafting_altar.add_ingredient": {
-    "subtitle": "subtitle.arsmagicalegacy.block.crafting_altar.add_ingredient",
-    "sounds": [
-      "arsmagicalegacy:block/crafting_altar/add_ingredient"
-    ]
-  },
-  "block.crafting_altar.finish": {
-    "subtitle": "subtitle.arsmagicalegacy.block.crafting_altar.finish",
-    "sounds": [
-      "arsmagicalegacy:block/crafting_altar/finish"
-    ]
-  },
-  "block.inscription_table.take_book": {
-    "subtitle": "subtitle.arsmagicalegacy.block.inscription_table.take_book",
-    "sounds": [
-      "arsmagicalegacy:block/inscription_table/take_book"
-    ]
+      "arsmagicalegacy:entity/water_guardian/death"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.entity.water_guardian.death"
   },
   "misc.get_knowledge_point": {
-    "subtitle": "subtitle.arsmagicalegacy.misc.get_knowledge_point",
     "sounds": [
       "arsmagicalegacy:misc/get_knowledge_point"
-    ]
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.misc.get_knowledge_point"
   },
   "misc.magic_level_up": {
-    "subtitle": "subtitle.arsmagicalegacy.misc.magic_level_up",
     "sounds": [
       "arsmagicalegacy:misc/magic_level_up"
-    ]
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.misc.magic_level_up"
+  },
+  "spell.cast.air": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/air"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.air"
+  },
+  "spell.cast.arcane": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/arcane"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.arcane"
+  },
+  "spell.cast.earth": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/earth"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.earth"
+  },
+  "spell.cast.ender": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/ender"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.ender"
+  },
+  "spell.cast.fire": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/fire"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.fire"
+  },
+  "spell.cast.ice": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/ice"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.ice"
+  },
+  "spell.cast.life": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/life"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.life"
+  },
+  "spell.cast.lightning": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/lightning"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.lightning"
+  },
+  "spell.cast.nature": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/nature"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.nature"
+  },
+  "spell.cast.none": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/none"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.none"
+  },
+  "spell.cast.water": {
+    "sounds": [
+      "arsmagicalegacy:spell/cast/water"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.cast.water"
+  },
+  "spell.contingency": {
+    "sounds": [
+      "arsmagicalegacy:spell/contingency"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.contingency"
+  },
+  "spell.loop.air": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/air"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.air"
+  },
+  "spell.loop.arcane": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/arcane"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.arcane"
+  },
+  "spell.loop.earth": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/earth"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.earth"
+  },
+  "spell.loop.ender": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/ender"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.ender"
+  },
+  "spell.loop.fire": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/fire"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.fire"
+  },
+  "spell.loop.ice": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/ice"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.ice"
+  },
+  "spell.loop.life": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/life"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.life"
+  },
+  "spell.loop.lightning": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/lightning"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.lightning"
+  },
+  "spell.loop.nature": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/nature"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.nature"
+  },
+  "spell.loop.water": {
+    "sounds": [
+      "arsmagicalegacy:spell/loop/water"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.loop.water"
+  },
+  "spell.mana_shield": {
+    "sounds": [
+      "arsmagicalegacy:spell/mana_shield"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.mana_shield"
+  },
+  "spell.rune": {
+    "sounds": [
+      "arsmagicalegacy:spell/rune"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.rune"
+  },
+  "spell.starstrike": {
+    "sounds": [
+      "arsmagicalegacy:spell/starstrike"
+    ],
+    "subtitle": "subtitle.arsmagicalegacy.spell.starstrike"
   }
 }

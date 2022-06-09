@@ -1,23 +1,23 @@
 {
-  "manaCost": 750.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:water": 0.1
   },
+  "manaCost": 750.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:blue_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "minecraft:copper_ingot"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

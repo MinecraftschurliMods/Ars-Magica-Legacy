@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.fury.name",
+  "advancement": "arsmagicalegacy:book/fury",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/fury.png",
+  "name": "skill.arsmagicalegacy.fury.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:fury"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/fury"
+  ]
 }

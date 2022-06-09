@@ -1,5 +1,5 @@
 {
   "block": "minecraft:smooth_sandstone",
-  "stair": "minecraft:smooth_sandstone_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:smooth_sandstone_stairs"
 }

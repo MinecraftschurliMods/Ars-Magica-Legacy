@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:enchant-acid-3",
   "name": {
     "text": "Nausea"
   },
-  "icon": "arsmagicalegacy:enchant-acid-3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
@@ -11,7 +12,6 @@
     ],
     "spell_stack": [
       "arsmagicalegacy:nausea"
-    ],
-    "data": {}
+    ]
   }
 }

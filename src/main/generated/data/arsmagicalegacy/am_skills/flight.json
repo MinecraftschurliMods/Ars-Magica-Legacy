@@ -1,11 +1,11 @@
 {
+  "cost": {
+    "arsmagicalegacy:red": 1
+  },
   "occulus_tab": "arsmagicalegacy:defense",
-  "x": 120,
-  "y": 255,
   "parents": [
     "arsmagicalegacy:levitation"
   ],
-  "cost": {
-    "arsmagicalegacy:red": 1
-  }
+  "x": 120,
+  "y": 255
 }

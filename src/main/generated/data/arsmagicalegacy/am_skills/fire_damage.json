@@ -1,11 +1,11 @@
 {
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  },
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 165,
-  "y": 120,
   "parents": [
     "arsmagicalegacy:physical_damage"
   ],
-  "cost": {
-    "arsmagicalegacy:blue": 1
-  }
+  "x": 165,
+  "y": 120
 }

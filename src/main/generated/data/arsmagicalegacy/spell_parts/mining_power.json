@@ -1,24 +1,24 @@
 {
+  "affinities": {},
   "manaCost": 1.25,
   "reagents": [],
-  "affinities": {},
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
+        "item": "arsmagicalegacy:affinity_essence",
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "tag": "forge:gems/diamond"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

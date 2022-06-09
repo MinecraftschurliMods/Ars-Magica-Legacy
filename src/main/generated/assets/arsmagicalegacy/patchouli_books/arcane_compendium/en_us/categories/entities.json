@@ -1,6 +1,6 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.entities.name",
   "description": "item.arsmagicalegacy.arcane_compendium.entities.description",
   "icon": "arsmagicalegacy:mana_creeper_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.entities.name",
   "sortnum": 3
 }

@@ -1,5 +1,5 @@
 {
   "block": "minecraft:red_nether_bricks",
-  "stair": "minecraft:red_nether_brick_stairs",
-  "power": 5
+  "power": 5,
+  "stair": "minecraft:red_nether_brick_stairs"
 }

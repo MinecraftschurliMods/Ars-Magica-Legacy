@@ -3,8 +3,8 @@
     "block": "minecraft:infested_stone",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:infested_cobblestone"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.mage_armor.name",
   "category": "arsmagicalegacy:items",
   "icon": "arsmagicalegacy:mage_helmet{\"Damage\":0}",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.mage_armor.name",
   "pages": [
     {
       "type": "patchouli:text",

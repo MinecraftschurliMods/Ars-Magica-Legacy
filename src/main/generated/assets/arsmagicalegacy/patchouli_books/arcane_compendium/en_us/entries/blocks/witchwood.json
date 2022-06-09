@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.witchwood.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:witchwood_log",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.witchwood.name",
   "pages": [
     {
       "type": "patchouli:text",

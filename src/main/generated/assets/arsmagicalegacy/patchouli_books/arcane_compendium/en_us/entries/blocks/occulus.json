@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.occulus.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:occulus",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.occulus.name",
   "pages": [
     {
       "type": "patchouli:text",

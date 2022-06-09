@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.regeneration.name",
+  "advancement": "arsmagicalegacy:book/regeneration",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/regeneration.png",
+  "name": "skill.arsmagicalegacy.regeneration.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:regeneration"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/regeneration"
+  ]
 }

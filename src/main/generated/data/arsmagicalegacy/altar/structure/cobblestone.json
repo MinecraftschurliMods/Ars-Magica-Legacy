@@ -1,5 +1,5 @@
 {
   "block": "minecraft:cobblestone",
-  "stair": "minecraft:cobblestone_stairs",
-  "power": 2
+  "power": 2,
+  "stair": "minecraft:cobblestone_stairs"
 }

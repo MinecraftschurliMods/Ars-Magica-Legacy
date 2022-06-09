@@ -1,5 +1,5 @@
 {
   "block": "minecraft:polished_granite",
-  "stair": "minecraft:polished_granite_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:polished_granite_stairs"
 }

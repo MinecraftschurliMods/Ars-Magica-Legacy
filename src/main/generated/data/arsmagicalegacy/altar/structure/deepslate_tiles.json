@@ -1,5 +1,5 @@
 {
   "block": "minecraft:deepslate_tiles",
-  "stair": "minecraft:deepslate_tile_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:deepslate_tile_stairs"
 }

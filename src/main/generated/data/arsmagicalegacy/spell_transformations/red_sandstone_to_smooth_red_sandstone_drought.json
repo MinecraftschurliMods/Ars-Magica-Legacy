@@ -3,8 +3,8 @@
     "block": "minecraft:red_sandstone",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:smooth_red_sandstone"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

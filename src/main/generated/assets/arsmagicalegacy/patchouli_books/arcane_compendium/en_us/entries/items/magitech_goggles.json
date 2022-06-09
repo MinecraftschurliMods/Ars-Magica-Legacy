@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.magitech_goggles.name",
   "category": "arsmagicalegacy:items",
   "icon": "arsmagicalegacy:magitech_goggles",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.magitech_goggles.name",
   "pages": [
     {
       "type": "patchouli:text",

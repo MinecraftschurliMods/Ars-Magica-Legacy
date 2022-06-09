@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.name",
   "category": "arsmagicalegacy:affinities",
   "icon": "minecraft:nether_star",
+  "name": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.name",
   "pages": [
     {
       "type": "patchouli:text",

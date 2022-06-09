@@ -3,8 +3,8 @@
     "facing=down": {
       "model": "arsmagicalegacy:block/spell_rune_down"
     },
-    "facing=up": {
-      "model": "arsmagicalegacy:block/spell_rune_up"
+    "facing=east": {
+      "model": "arsmagicalegacy:block/spell_rune_east"
     },
     "facing=north": {
       "model": "arsmagicalegacy:block/spell_rune_north"
@@ -12,11 +12,11 @@
     "facing=south": {
       "model": "arsmagicalegacy:block/spell_rune_south"
     },
+    "facing=up": {
+      "model": "arsmagicalegacy:block/spell_rune_up"
+    },
     "facing=west": {
       "model": "arsmagicalegacy:block/spell_rune_west"
-    },
-    "facing=east": {
-      "model": "arsmagicalegacy:block/spell_rune_east"
     }
   }
 }

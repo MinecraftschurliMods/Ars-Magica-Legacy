@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.contingency_health.name",
+  "advancement": "arsmagicalegacy:book/contingency_health",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/contingency_health.png",
+  "name": "skill.arsmagicalegacy.contingency_health.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:contingency_health"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/contingency_health"
+  ]
 }

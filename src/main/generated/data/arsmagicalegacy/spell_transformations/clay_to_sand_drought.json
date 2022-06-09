@@ -3,8 +3,8 @@
     "block": "minecraft:clay",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:sand"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

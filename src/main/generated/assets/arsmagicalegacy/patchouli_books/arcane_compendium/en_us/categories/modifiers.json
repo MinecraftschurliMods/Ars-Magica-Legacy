@@ -1,6 +1,6 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.name",
   "description": "item.arsmagicalegacy.arcane_compendium.modifiers.description",
   "icon": "arsmagicalegacy:textures/icon/skill/target_non_solid.png",
+  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.name",
   "sortnum": 6
 }

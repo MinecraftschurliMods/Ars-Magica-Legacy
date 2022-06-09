@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:black_aurem",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -9,28 +9,28 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page1.title",
-      "multiblock_id": "arsmagicalegacy:black_aurem_chalk"
+      "multiblock_id": "arsmagicalegacy:black_aurem_chalk",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page1.title"
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page2.title",
-      "multiblock_id": "arsmagicalegacy:black_aurem_pillar1"
+      "multiblock_id": "arsmagicalegacy:black_aurem_pillar1",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page2.title"
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page3.title",
-      "multiblock_id": "arsmagicalegacy:black_aurem_pillar2"
+      "multiblock_id": "arsmagicalegacy:black_aurem_pillar2",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page3.title"
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page4.title",
-      "multiblock_id": "arsmagicalegacy:black_aurem_pillar3"
+      "multiblock_id": "arsmagicalegacy:black_aurem_pillar3",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page4.title"
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page5.title",
-      "multiblock_id": "arsmagicalegacy:black_aurem_pillar4"
+      "multiblock_id": "arsmagicalegacy:black_aurem_pillar4",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.black_aurem.page5.title"
     }
   ]
 }

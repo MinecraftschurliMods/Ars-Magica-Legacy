@@ -104,7 +104,6 @@ public interface AMRegistries {
         STAT_TYPES.register(bus);
         ATTRIBUTES.register(bus);
         DATA_SERIALIZERS.register(bus);
-        DATA_SERIALIZERS.register(bus);
         CONFIGURED_FEATURES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);

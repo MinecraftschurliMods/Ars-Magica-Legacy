@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#V#",
-    "###"
-  ],
   "key": {
     "#": {
       "tag": "forge:dusts/redstone"
@@ -13,6 +8,11 @@
       "item": "arsmagicalegacy:purified_vinteum_dust"
     }
   },
+  "pattern": [
+    "###",
+    "#V#",
+    "###"
+  ],
   "result": {
     "item": "arsmagicalegacy:redstone_inlay"
   }

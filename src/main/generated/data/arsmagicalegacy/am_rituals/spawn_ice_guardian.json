@@ -1,18 +1,18 @@
 {
-  "trigger": {
-    "entity": {
-      "type": "minecraft:snow_golem"
-    },
-    "type": "arsmagicalegacy:entity_summon"
+  "effect": {
+    "type": "arsmagicalegacy:spawn_entity",
+    "entity_type": "arsmagicalegacy:ice_guardian"
   },
   "requirements": [
     {
-      "structure": "arsmagicalegacy:ice_guardian_spawn_ritual",
-      "type": "arsmagicalegacy:structure"
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:ice_guardian_spawn_ritual"
     }
   ],
-  "effect": {
-    "entity_type": "arsmagicalegacy:ice_guardian",
-    "type": "arsmagicalegacy:spawn_entity"
+  "trigger": {
+    "type": "arsmagicalegacy:entity_summon",
+    "entity": {
+      "type": "minecraft:snow_golem"
+    }
   }
 }

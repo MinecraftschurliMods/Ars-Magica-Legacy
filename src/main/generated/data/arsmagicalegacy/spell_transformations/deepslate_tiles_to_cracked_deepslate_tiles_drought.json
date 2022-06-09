@@ -3,8 +3,8 @@
     "block": "minecraft:deepslate_tiles",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:cracked_deepslate_tiles"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

@@ -1,11 +1,11 @@
 {
+  "cost": {
+    "arsmagicalegacy:red": 1
+  },
   "occulus_tab": "arsmagicalegacy:utility",
-  "x": 75,
-  "y": 255,
   "parents": [
     "arsmagicalegacy:random_teleport"
   ],
-  "cost": {
-    "arsmagicalegacy:red": 1
-  }
+  "x": 75,
+  "y": 255
 }

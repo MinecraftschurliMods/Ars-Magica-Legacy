@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.flight.name",
+  "advancement": "arsmagicalegacy:book/flight",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/flight.png",
+  "name": "skill.arsmagicalegacy.flight.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:flight"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/flight"
+  ]
 }

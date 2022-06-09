@@ -1,6 +1,6 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.name",
   "description": "item.arsmagicalegacy.arcane_compendium.items.description",
   "icon": "arsmagicalegacy:purified_vinteum_dust",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.name",
   "sortnum": 2
 }

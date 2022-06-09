@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "LLL",
-    "W W",
-    "LLL"
-  ],
   "key": {
     "L": {
       "tag": "forge:leather"
@@ -13,6 +8,11 @@
       "tag": "minecraft:wool"
     }
   },
+  "pattern": [
+    "LLL",
+    "W W",
+    "LLL"
+  ],
   "result": {
     "item": "arsmagicalegacy:rune_bag"
   }

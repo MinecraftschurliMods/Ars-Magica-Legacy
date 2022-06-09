@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.name",
   "category": "arsmagicalegacy:mechanics",
   "icon": "arsmagicalegacy:spell_parchment",
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.name",
   "pages": [
     {
       "type": "patchouli:text",

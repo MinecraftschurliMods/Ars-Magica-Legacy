@@ -2,10 +2,10 @@
   "parent": "arsmagicalegacy:book/root",
   "criteria": {
     "knows": {
-      "trigger": "arsmagicalegacy:player_learned_skill",
       "conditions": {
         "skill": "arsmagicalegacy:water_breathing"
-      }
+      },
+      "trigger": "arsmagicalegacy:player_learned_skill"
     }
   },
   "requirements": [

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.recall.name",
+  "advancement": "arsmagicalegacy:book/recall",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/recall.png",
+  "name": "skill.arsmagicalegacy.recall.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:recall"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/recall"
+  ]
 }

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.random_teleport.name",
+  "advancement": "arsmagicalegacy:book/random_teleport",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/random_teleport.png",
+  "name": "skill.arsmagicalegacy.random_teleport.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:random_teleport"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/random_teleport"
+  ]
 }
