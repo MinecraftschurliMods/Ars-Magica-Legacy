@@ -16,14 +16,12 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -40,7 +38,7 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
     private static final Lazy<PrefabSpellManager> INSTANCE = Lazy.concurrentOf(PrefabSpellManager::new);
 
     private PrefabSpellManager() {
-        super("prefab_spells", PrefabSpell.CODEC, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "prefab_spells", PrefabSpell.CODEC, LoggerFactory.getLogger(PrefabSpellManager.class));
     }
 
     /**
@@ -62,7 +60,7 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
 
     public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) implements IPrefabSpell {
         public static final Codec<IPrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(IPrefabSpell::name),
+                Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(Component::literal).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", Component.translatable(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(IPrefabSpell::name),
                 ISpell.CODEC.fieldOf("spell").forGetter(IPrefabSpell::spell),
                 ResourceLocation.CODEC.fieldOf("icon").forGetter(IPrefabSpell::icon)
         ).apply(inst, PrefabSpell::new));

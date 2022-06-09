@@ -83,6 +83,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Map;
@@ -167,12 +168,13 @@ public final class ClientInit {
 
     private static void modelRegister(ModelRegistryEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
-            ResourceLocation itemId = item.getRegistryName();
+            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
             if (item instanceof IAffinityItem) {
-                for (IAffinity affinity : api.getAffinityRegistry()) {
-                    if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
+                IForgeRegistry<IAffinity> affinities = api.getAffinityRegistry();
+                for (IAffinity affinity : affinities) {
+                    if (!IAffinity.NONE.equals(affinities.getKey(affinity))) {
                         ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
@@ -188,7 +190,7 @@ public final class ClientInit {
     private static void modelBake(ModelBakeEvent event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
         for (Item item : ForgeRegistries.ITEMS) {
-            ResourceLocation itemId = item.getRegistryName();
+            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
             if (item instanceof IAffinityItem) {
                 modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), ($, model) -> new AffinityOverrideModel(model));

@@ -23,7 +23,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,21 +38,13 @@ public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
     private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private SkillHelper() {
-    }
+    private SkillHelper() {}
 
     /**
      * @return The only instance of this class.
      */
     public static SkillHelper instance() {
         return INSTANCE.get();
-    }
-
-    /**
-     * Registers the required network packets.
-     */
-    public static void init() {
-        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     /**
@@ -240,20 +231,22 @@ public final class SkillHelper implements ISkillHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getKnowledgeHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(getKnowledgeHolder(player)), player);
     }
 
     private KnowledgeHolder getKnowledgeHolder(Player player) {
         return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
     }
 
-    public static final class SyncPacket extends CodecPacket<KnowledgeHolder> {
-        public SyncPacket(KnowledgeHolder data) {
-            super(data);
+    public static final class SkillSyncPacket extends CodecPacket<KnowledgeHolder> {
+        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge_sync");
+
+        public SkillSyncPacket(KnowledgeHolder data) {
+            super(ID, data);
         }
 
-        public SyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+        public SkillSyncPacket(FriendlyByteBuf buf) {
+            super(ID, buf);
         }
 
         @Override
@@ -262,7 +255,7 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         @Override
-        protected Codec<KnowledgeHolder> getCodec() {
+        protected Codec<KnowledgeHolder> codec() {
             return KnowledgeHolder.CODEC;
         }
     }
@@ -271,7 +264,7 @@ public final class SkillHelper implements ISkillHelper {
         //@formatter:off
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.setOf(ResourceLocation.CODEC).fieldOf("skills").forGetter(KnowledgeHolder::skills),
-                CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints)
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
         //@formatter:on
 

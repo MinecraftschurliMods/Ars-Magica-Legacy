@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
@@ -10,6 +11,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
@@ -143,12 +145,14 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
+        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_sync");
+
         public MagicSyncPacket(MagicHolder data) {
-            super(data);
+            super(ID, data);
         }
 
         public MagicSyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+            super(ID, buf);
         }
 
         @Override
@@ -157,7 +161,7 @@ public final class MagicHelper implements IMagicHelper {
         }
 
         @Override
-        protected Codec<MagicHolder> getCodec() {
+        protected Codec<MagicHolder> codec() {
             return MagicHolder.CODEC;
         }
     }

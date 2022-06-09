@@ -13,8 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.GuiUtils;
@@ -36,8 +35,8 @@ public class SpellCustomizationScreen extends Screen {
     private EditBox editBox;
 
     public SpellCustomizationScreen(ItemStack stack) {
-        super(TextComponent.EMPTY);
-        editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
+        super(Component.empty());
+        editBox = new EditBox(font, 0, 0, 0, 0, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
         SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
         SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
@@ -48,7 +47,7 @@ public class SpellCustomizationScreen extends Screen {
         super.init();
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
-        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
+        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
     }
 

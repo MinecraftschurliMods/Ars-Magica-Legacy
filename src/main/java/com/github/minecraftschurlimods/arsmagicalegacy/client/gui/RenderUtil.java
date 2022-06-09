@@ -10,14 +10,13 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
-import java.util.Random;
 
 public final class RenderUtil {
-    private RenderUtil() {
-    }
+    private RenderUtil() {}
 
     /**
      * Draws a gradient line between the given coordinates.
@@ -46,8 +45,7 @@ public final class RenderUtil {
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
         buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1f).normal(1, 1, 0).endVertex();
         buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1f).normal(1, 1, 0).endVertex();
-        buf.end();
-        BufferUploader.end(buf);
+        BufferUploader.drawWithShader(buf.end());
         RenderSystem.lineWidth(1);
         RenderSystem.enableCull();
         RenderSystem.depthMask(true);
@@ -154,7 +152,7 @@ public final class RenderUtil {
         } else {
             int mx = (int) ((endX + startX) / 2);
             int my = (int) ((endY + startY) / 2);
-            Random random = Optional.ofNullable(Minecraft.getInstance().level).map(Level::getRandom).orElseGet(Random::new);
+            RandomSource random = Optional.ofNullable(Minecraft.getInstance().level).map(Level::getRandom).orElseGet(RandomSource::create);
             mx += (random.nextFloat() - 0.5) * displace;
             my += (random.nextFloat() - 0.5) * displace;
             fractalLine2df(stack, startX, startY, mx, my, zLevel, color, displace / 2f, fractalDetail);
@@ -185,7 +183,6 @@ public final class RenderUtil {
         bufferbuilder.vertex(pMatrix, startX + endX, startY + endY, zLevel).uv(maxU, maxV).endVertex();
         bufferbuilder.vertex(pMatrix, startX + endX, startY, zLevel).uv(maxU, minV).endVertex();
         bufferbuilder.vertex(pMatrix, startX, startY, zLevel).uv(minU, minV).endVertex();
-        bufferbuilder.end();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 }

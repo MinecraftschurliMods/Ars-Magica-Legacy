@@ -3,8 +3,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -127,8 +129,8 @@ public final class AMUtil {
      * @return A collector that joins multiple components together, using the given delimiter.
      */
     public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String delimiter) {
-        TextComponent del = new TextComponent(delimiter);
-        return Collector.of(TextComponent.EMPTY::copy, (c1, c2) -> (c1.getContents().isEmpty() ? c1 : c1.append(del)).append(c2), (c1, c2) -> c1.append(del).append(c2));
+        MutableComponent del = Component.literal(delimiter);
+        return Collector.of(Component.empty()::copy, (c1, c2) -> (c1.getContents() == ComponentContents.EMPTY ? c1 : c1.append(del)).append(c2), (c1, c2) -> c1.append(del).append(c2));
     }
 
     /**
@@ -143,5 +145,14 @@ public final class AMUtil {
             result = Shapes.join(result, shape, BooleanOp.OR);
         }
         return result;
+    }
+
+    public static double nextDouble(RandomSource random, double bound) {
+        double r = random.nextDouble();
+        r = r * bound;
+        if (r >= bound) {
+            r = Double.longBitsToDouble(Double.doubleToLongBits(bound) - 1);
+        }
+        return r;
     }
 }

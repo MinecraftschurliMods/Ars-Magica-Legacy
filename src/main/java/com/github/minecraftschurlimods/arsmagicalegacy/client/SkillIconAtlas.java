@@ -21,7 +21,7 @@ public final class SkillIconAtlas extends TextureAtlasHolder {
     private static final String PREFIX = "icon/skill";
     private static final Lazy<SkillIconAtlas> INSTANCE = Lazy.of(SkillIconAtlas::new);
     private static final String SUFFIX = ".png";
-    private static final Predicate<String> RESOURCE_PREDICATE = s -> s.endsWith(SUFFIX);
+    private static final Predicate<ResourceLocation> RESOURCE_PREDICATE = s -> s.getPath().endsWith(SUFFIX);
     private Collection<ResourceLocation> resourceLocations;
 
     private SkillIconAtlas() {
@@ -50,7 +50,7 @@ public final class SkillIconAtlas extends TextureAtlasHolder {
     protected TextureAtlas.Preparations prepare(ResourceManager resourceManager, ProfilerFiller pProfiler) {
         int pathLength = ("textures/" + PREFIX + "/").length();
         int suffixLength = SUFFIX.length();
-        this.resourceLocations = resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE).stream().map(resourceLocation -> {
+        this.resourceLocations = resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE).keySet().stream().map(resourceLocation -> {
             String path = resourceLocation.getPath();
             path = path.substring(pathLength, path.length() - suffixLength);
             return new ResourceLocation(resourceLocation.getNamespace(), path);

@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
-        super("spell_parts", SpellPartData.CODEC, SpellPartData.NETWORK_CODEC, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "spell_parts", SpellPartData.CODEC, SpellPartData.NETWORK_CODEC, LoggerFactory.getLogger(SpellDataManager.class));
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
@@ -48,7 +48,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
 
     @Override
     public ISpellPartData getDataForPart(ISpellPart part) {
-        return get(part.getRegistryName());
+        return get(part.getId());
     }
 
     @Override
@@ -82,14 +82,14 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, float burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
-                CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
+                Codec.unboundedMap(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 Codec.either(CodecHelper.INGREDIENT, ItemStack.CODEC).listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
                 Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.burnout()))
         ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.orElse((float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
         public static final Codec<ISpellPartData> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.NETWORK_CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
-                CodecHelper.mapOf(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
+                Codec.unboundedMap(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 Codec.either(CodecHelper.INGREDIENT, ItemStack.CODEC).listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
                 Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.burnout()))

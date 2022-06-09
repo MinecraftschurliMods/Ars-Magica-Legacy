@@ -23,8 +23,8 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.WaterLilyBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
@@ -98,7 +98,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    CERUBLOSSOM                  = registerBlockItem64(AMBlocks.CERUBLOSSOM);
     RegistryObject<BlockItem>                    DESERT_NOVA                  = registerBlockItem64(AMBlocks.DESERT_NOVA);
     RegistryObject<BlockItem>                    TARMA_ROOT                   = registerBlockItem64(AMBlocks.TARMA_ROOT);
-    RegistryObject<BlockItem>                    WAKEBLOOM                    = ITEMS.register("wakebloom", () -> new WaterLilyBlockItem(AMBlocks.WAKEBLOOM.get(), ITEM_64));
+    RegistryObject<BlockItem>                    WAKEBLOOM                    = ITEMS.register("wakebloom", () -> new PlaceOnWaterBlockItem(AMBlocks.WAKEBLOOM.get(), ITEM_64));
     RegistryObject<Item>                         ARCANE_COMPOUND              = registerItem64("arcane_compound");
     RegistryObject<Item>                         ARCANE_ASH                   = registerItem64("arcane_ash");
     RegistryObject<Item>                         PURIFIED_VINTEUM_DUST        = registerItem64("purified_vinteum_dust");
@@ -139,7 +139,6 @@ public interface AMItems {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
 
-    @SuppressWarnings("unchecked")
     private static RegistryObject<BlockItem> registerBlockItem64(RegistryObject<? extends Block> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_64));
     }

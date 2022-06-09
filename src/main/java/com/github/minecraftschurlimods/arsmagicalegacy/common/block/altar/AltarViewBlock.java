@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.Material;
 
 public class AltarViewBlock extends AirBlock implements EntityBlock {
     public AltarViewBlock() {
-        super(BlockBehaviour.Properties.of(Material.AIR).noCollission().noDrops().air());
+        super(BlockBehaviour.Properties.of(Material.AIR).noCollission().noLootTable().air());
     }
 
     @Override

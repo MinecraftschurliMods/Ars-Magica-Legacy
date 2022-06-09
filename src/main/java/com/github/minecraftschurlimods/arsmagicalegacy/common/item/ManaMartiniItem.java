@@ -22,18 +22,18 @@ public class ManaMartiniItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
-        if (pLivingEntity instanceof Player player) {
-            player.awardStat(Stats.ITEM_USED.get(this));
-            if (player instanceof ServerPlayer) {
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, pStack);
-            }
+        super.finishUsingItem(pStack, pLevel, pLivingEntity);
+        if (pLivingEntity instanceof ServerPlayer serverplayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, pStack);
+            serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
-        pLevel.gameEvent(pLivingEntity, GameEvent.DRINKING_FINISH, pLivingEntity.eyeBlockPosition());
-        pLivingEntity.addEffect(new MobEffectInstance(AMMobEffects.BURNOUT_REDUCTION.get(), 300));
+        if (!pLevel.isClientSide) {
+            pLivingEntity.addEffect(new MobEffectInstance(AMMobEffects.BURNOUT_REDUCTION.get(), 300));
+        }
         if (!(pLivingEntity instanceof Player) || !((Player) pLivingEntity).isCreative()) {
             pStack.shrink(1);
         }
-        pLivingEntity.gameEvent(GameEvent.DRINKING_FINISH);
+        pLivingEntity.gameEvent(GameEvent.DRINK);
         return pStack;
     }
 

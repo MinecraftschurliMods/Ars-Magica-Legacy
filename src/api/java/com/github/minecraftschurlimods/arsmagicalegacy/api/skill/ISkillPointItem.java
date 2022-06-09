@@ -30,7 +30,7 @@ public interface ISkillPointItem {
      * @return the {@link ItemStack} with the {@link ISkillPoint} stored in it
      */
     default ItemStack setSkillPoint(ItemStack stack, ISkillPoint skillPoint) {
-        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getSkillPointRegistry().getRegistryName().toString(), Objects.requireNonNull(skillPoint.getRegistryName()).toString());
+        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getSkillPointRegistry().getRegistryName().toString(), skillPoint.getId().toString());
         return stack;
     }
 }

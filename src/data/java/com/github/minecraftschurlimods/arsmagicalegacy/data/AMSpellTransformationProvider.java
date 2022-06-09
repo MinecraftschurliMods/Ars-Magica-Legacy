@@ -38,6 +38,6 @@ class AMSpellTransformationProvider extends SpellTransformationProvider {
     }
 
     private void addAMSpellTransformation(String id, RuleTest from, BlockState to, ISpellPart spellPart) {
-        addSpellTransformation(new ResourceLocation(ArsMagicaAPI.MOD_ID, id), from, to, spellPart.getRegistryName());
+        addSpellTransformation(new ResourceLocation(ArsMagicaAPI.MOD_ID, id), from, to, spellPart.getId());
     }
 }

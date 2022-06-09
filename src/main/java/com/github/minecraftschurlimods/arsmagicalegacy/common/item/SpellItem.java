@@ -19,8 +19,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -120,27 +118,27 @@ public class SpellItem extends Item implements ISpellItem {
         }
         if (player == null) return;
         if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
+            pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
             return;
         }
         ISpell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) {
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_INVALID_DESCRIPTION));
+            pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
         }
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
-        pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
+        pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
+        pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
             List<Either<Ingredient, ItemStack>> reagents = spell.reagents(player);
             if (reagents.isEmpty()) return;
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
+            pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_REAGENTS));
             for (Either<Ingredient, ItemStack> e : reagents) {
                 pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
                         .map(stack1 -> stack1.getHoverName().copy())
                         .collect(AMUtil.joiningComponents(" | ")));
             }
         } else {
-            pTooltipComponents.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
+            pTooltipComponents.add(Component.translatable(TranslationConstants.HOLD_SHIFT_FOR_DETAILS));
         }
     }
 
@@ -149,11 +147,11 @@ public class SpellItem extends Item implements ISpellItem {
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
             if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
-                return new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN);
+                return Component.translatable(TranslationConstants.SPELL_UNKNOWN);
         }
         ISpell spell = getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
+        if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
+        return getSpellName(pStack).<Component>map(Component::literal).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -181,7 +179,7 @@ public class SpellItem extends Item implements ISpellItem {
                 player.awardStat(AMStats.SPELL_CAST);
             }
             if (result.isFail()) {
-                player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
+                player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
             }
         }
         saveSpell(stack, spell);
@@ -271,7 +269,7 @@ public class SpellItem extends Item implements ISpellItem {
                     player.awardStat(AMStats.SPELL_CAST);
                 }
                 if (result.isFail()) {
-                    player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
+                    player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
                 }
             }
         }

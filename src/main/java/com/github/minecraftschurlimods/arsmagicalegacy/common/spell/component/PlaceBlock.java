@@ -38,7 +38,7 @@ public class PlaceBlock extends AbstractComponent {
         if (player.isShiftKeyDown()) {
             BlockState state = level.getBlockState(target.getBlockPos());
             if (!state.isAir() && state.getBlock().asItem() != Items.AIR) {
-                stack.getOrCreateTag().putString(KEY, state.getBlock().getRegistryName().toString());
+                stack.getOrCreateTag().putString(KEY, ForgeRegistries.BLOCKS.getKey(state.getBlock()).toString());
                 return SpellCastResult.SUCCESS;
             }
         } else {

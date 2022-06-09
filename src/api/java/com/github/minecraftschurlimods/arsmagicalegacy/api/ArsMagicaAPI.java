@@ -11,7 +11,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -32,7 +31,6 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -168,12 +166,6 @@ public interface ArsMagicaAPI {
      */
     @Unmodifiable
     IRiftHelper getRiftHelper();
-
-    /**
-     * @return The shrink helper instance.
-     */
-    @Unmodifiable
-    IShrinkHelper getShrinkHelper();
 
     /**
      * @return The etherium helper instance.

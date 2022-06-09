@@ -27,6 +27,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -143,7 +144,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public float getWalkTargetValue(@NotNull BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(LightLayer.BLOCK, pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override

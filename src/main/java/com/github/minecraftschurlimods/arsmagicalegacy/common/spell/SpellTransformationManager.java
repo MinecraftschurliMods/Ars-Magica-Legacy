@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.mojang.serialization.Codec;
@@ -9,14 +10,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
+
 import java.util.Optional;
 
 public final class SpellTransformationManager extends CodecDataManager<SpellTransformationManager.SpellTransformation> implements ISpellTransformationManager {
     private static final Lazy<SpellTransformationManager> INSTANCE = Lazy.concurrentOf(SpellTransformationManager::new);
 
     private SpellTransformationManager() {
-        super("spell_transformations", SpellTransformation.CODEC, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "spell_transformations", SpellTransformation.CODEC, LoggerFactory.getLogger(SpellDataManager.class));
     }
 
     /**

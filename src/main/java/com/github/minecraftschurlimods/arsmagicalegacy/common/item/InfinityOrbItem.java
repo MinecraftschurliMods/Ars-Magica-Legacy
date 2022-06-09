@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import java.util.Objects;
+
 public class InfinityOrbItem extends Item implements ISkillPointItem {
     public InfinityOrbItem() {
         super(AMItems.ITEM_1);
@@ -26,7 +27,7 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        if (allowdedIn(tab)) {
+        if (allowedIn(tab)) {
             for (ISkillPoint point : ArsMagicaAPI.get().getSkillPointRegistry().getValues()) {
                 list.add(setSkillPoint(new ItemStack(this), point));
             }
@@ -45,12 +46,12 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
 
     @Override
     public Component getName(ItemStack stack) {
-        return new TranslatableComponent(getDescriptionId(stack), getSkillPoint(stack));
+        return Component.translatable(getDescriptionId(stack), getSkillPoint(stack));
     }
 
     @Override
     public String getDescriptionId(ItemStack pStack) {
-        ResourceLocation skillPoint = ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(pStack).getRegistryName();
+        ResourceLocation skillPoint = Objects.requireNonNull(ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(pStack)).getId();
         return Util.makeDescriptionId(super.getDescriptionId(pStack), skillPoint);
     }
 }

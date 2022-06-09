@@ -18,7 +18,7 @@ public record DimensionRequirement(HolderSet<Level> dimension) implements Ritual
 
     @Override
     public boolean test(final Player player, final ServerLevel level, final BlockPos pos) {
-        return dimension().contains(level.getServer().registryAccess().registryOrThrow(Registry.DIMENSION_REGISTRY).getOrCreateHolder(level.dimension()));
+        return dimension().contains(level.getServer().registryAccess().registryOrThrow(Registry.DIMENSION_REGISTRY).getOrCreateHolder(level.dimension()).getOrThrow(false, s -> {}));
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -39,7 +39,7 @@ public class RuneBagItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide()) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         if (pPlayer instanceof ServerPlayer sp) {
-            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), TextComponent.EMPTY), buf -> buf.writeEnum(pUsedHand));
+            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), Component.empty()), buf -> buf.writeEnum(pUsedHand));
         }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }

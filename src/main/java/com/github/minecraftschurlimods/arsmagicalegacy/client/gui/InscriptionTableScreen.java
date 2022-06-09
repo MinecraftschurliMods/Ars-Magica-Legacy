@@ -29,11 +29,9 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,14 +42,15 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
-    private static final Component SEARCH_LABEL = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
-    private static final Component NAME_LABEL = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_NAME);
-    private static final Component DEFAULT_NAME = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
+    private static final Component SEARCH_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
+    private static final Component NAME_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_NAME);
+    private static final Component DEFAULT_NAME = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
     private static final int SHAPE_GROUP_WIDTH = 36;
     private static final int SHAPE_GROUP_HEIGHT = 34;
     private static final int SHAPE_GROUP_PADDING = 3;
@@ -109,10 +108,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                     .map(basicDropZone -> DraggableWithData.<ResourceLocation>dataList(basicDropZone.items())
                             .stream()
                             .map(spellPartRegistry::getValue)
+                            .filter(Objects::nonNull)
                             .toList())
                     .anyMatch(iSpellParts -> isValidInShapeGroup(iSpellParts, value)) || isValidInSpellStack(DraggableWithData.<ResourceLocation>dataList(spellStackDropZone.items())
                     .stream()
                     .map(spellPartRegistry::getValue)
+                    .filter(Objects::nonNull)
                     .toList(), value);
         };
         nameBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 93 + topPos, 141, 12, 64, nameBar, font, NAME_LABEL));
@@ -128,8 +129,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         dragPane = new DragPane(leftPos, topPos, width, height);
         FilteredFilledDropArea<ResourceLocation> sourceBox = dragPane.addDropArea(new FilteredFilledDropArea<>(40 + leftPos, 5 + topPos, 138, 48, ICON_SIZE, ICON_SIZE, knowsFilter.and(searchFilter).and(hasValidPlace), spellPartRegistry.getValues()
                 .stream()
-                .sorted(Comparator.comparing(ISpellPart::getType).thenComparing(IForgeRegistryEntry::getRegistryName))
-                .map(IForgeRegistryEntry::getRegistryName)
+                .sorted(Comparator.comparing(ISpellPart::getType).thenComparing(ISpellPart::getId))
+                .map(ISpellPart::getId)
                 .toList(), rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl), skillManager.get(rl).getDisplayName())));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
@@ -287,7 +288,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0, spellStackDropZone != null ? spellStackDropZone.getY() : 0, 141, 18, ICON_SIZE, ICON_SIZE, 4, spellStackDropZone);
         spellStackDropZone.clear();
         for (ISpellPart iSpellPart : spell.spellStack().parts()) {
-            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getRegistryName()), skillManager.get(iSpellPart.getRegistryName()).getDisplayName(), iSpellPart.getRegistryName()));
+            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getId()), skillManager.get(iSpellPart.getId()).getDisplayName(), iSpellPart.getId()));
         }
         int i = 0;
         for (ShapeGroup shapeGroup : spell.shapeGroups()) {
@@ -300,7 +301,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }
             zone.clear();
             for (ISpellPart spellPart : shapeGroup.parts()) {
-                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getRegistryName()), skillManager.get(spellPart.getRegistryName()).getDisplayName(), spellPart.getRegistryName()));
+                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getId()), skillManager.get(spellPart.getId()).getDisplayName(), spellPart.getId()));
             }
             if (shapeGroupDropZones.size() > i) {
                 shapeGroupDropZones.set(i, zone);

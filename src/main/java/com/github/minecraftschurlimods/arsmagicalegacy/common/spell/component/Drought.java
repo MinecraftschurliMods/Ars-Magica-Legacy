@@ -34,7 +34,7 @@ public class Drought extends AbstractComponent {
             level.setBlock(pos.offset(target.getDirection().getNormal()), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
             return SpellCastResult.SUCCESS;
         } else {
-            Optional<BlockState> optional = ArsMagicaAPI.get().getSpellTransformationManager().getTransformationFor(state, level, getRegistryName());
+            Optional<BlockState> optional = ArsMagicaAPI.get().getSpellTransformationManager().getTransformationFor(state, level, getId());
             if (optional.isPresent()) {
                 level.setBlock(pos, optional.get(), Block.UPDATE_ALL);
                 return SpellCastResult.SUCCESS;

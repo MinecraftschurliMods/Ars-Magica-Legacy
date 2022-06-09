@@ -19,7 +19,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
@@ -54,8 +53,7 @@ public class SpellPartPage implements ICustomComponent {
         else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
-        ResourceLocation registryName = this._part.getRegistryName();
-        assert registryName != null;
+        ResourceLocation registryName = this._part.getId();
         ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
@@ -122,7 +120,7 @@ public class SpellPartPage implements ICustomComponent {
 
     private void renderModifiers(PoseStack stack, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
         if (modifiers.isEmpty()) return;
-        Component shapeName = new TranslatableComponent(_part.getType() == ISpellPart.SpellPartType.MODIFIER ? TranslationConstants.SPELL_PART_MODIFIES : TranslationConstants.SPELL_PART_MODIFIED_BY);
+        Component shapeName = Component.translatable(_part.getType() == ISpellPart.SpellPartType.MODIFIER ? TranslationConstants.SPELL_PART_MODIFIES : TranslationConstants.SPELL_PART_MODIFIED_BY);
         Font font = context.getGui().getMinecraft().font;
         font.draw(stack, shapeName, posX + 58 - (font.width(shapeName) / 2f), posY, 0);
         RenderSystem.setShaderFogColor(1.0f, 1.0f, 1.0f);
@@ -131,8 +129,7 @@ public class SpellPartPage implements ICustomComponent {
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
-            ResourceLocation registryName = modifier.getRegistryName();
-            assert registryName != null;
+            ResourceLocation registryName = modifier.getId();
             ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
             if (i % 7 == 0) {
                 startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);

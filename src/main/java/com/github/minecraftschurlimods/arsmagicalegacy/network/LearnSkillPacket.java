@@ -7,14 +7,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-public record LearnSkillPacket(ResourceLocation id) implements IPacket {
+public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
+    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "learn_skill");
+
     public LearnSkillPacket(FriendlyByteBuf buf) {
         this(buf.readResourceLocation());
     }
 
     @Override
+    public ResourceLocation id() {
+        return ID;
+    }
+
+    @Override
     public void serialize(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(id());
+        buf.writeResourceLocation(skill());
     }
 
     @Override
@@ -22,7 +29,7 @@ public record LearnSkillPacket(ResourceLocation id) implements IPacket {
         var api = ArsMagicaAPI.get();
         var skillHelper = api.getSkillHelper();
         ServerPlayer sender = ctx.getSender();
-        api.getSkillManager().get(id()).getCost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
-        skillHelper.learn(sender, id());
+        api.getSkillManager().get(skill()).getCost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
+        skillHelper.learn(sender, skill());
     }
 }

@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -51,9 +50,9 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
     @Override
     public List<Component> getTooltip() {
         ItemStack[] items = ingredient().getItems();
-        if (items.length == 1) return List.of(items[0].getDisplayName(), new TextComponent("x " + count()));
+        if (items.length == 1) return List.of(items[0].getDisplayName(), Component.literal("x " + count()));
         ArrayList<Component> components = new ArrayList<>(Arrays.stream(items).map(ItemStack::getDisplayName).toList());
-        components.add(new TextComponent("x " + count()));
+        components.add(Component.literal("x " + count()));
         return components;
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.BakedModelWrapper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
@@ -29,7 +30,7 @@ public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             IAffinity affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(stack);
             if (affinity.getId().equals(IAffinity.NONE)) return model;
-            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + stack.getItem().getRegistryName().getPath() + "_" + affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_" + affinity.getId().getPath());
             return Minecraft.getInstance().getModelManager().getModel(rl);
         }
     }

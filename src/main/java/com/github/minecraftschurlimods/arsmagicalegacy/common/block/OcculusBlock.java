@@ -7,7 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationCo
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -121,7 +121,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
         if (pLevel.isClientSide()) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-                pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
+                pPlayer.sendSystemMessage(Component.translatable(TranslationConstants.PREVENT));
             } else {
                 api.openOcculusGui(pPlayer);
             }

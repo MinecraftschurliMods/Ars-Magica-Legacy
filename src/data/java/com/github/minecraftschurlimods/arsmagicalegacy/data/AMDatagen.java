@@ -26,31 +26,25 @@ public class AMDatagen {
         DataGenerator generator = evt.getGenerator();
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
-        if (evt.includeServer()) {
-            generator.addProvider(abilityProvider);
-        }
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
-        if (evt.includeClient()) {
-            generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
-            generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
-            generator.addProvider(lang);
-            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
-        }
-        if (evt.includeServer()) {
-            AMSkillProvider skillProvider = new AMSkillProvider(generator);
-            generator.addProvider(skillProvider);
-            generator.addProvider(new AMAdvancementProvider(generator, existingFileHelper, skillProvider));
-            generator.addProvider(new AMLootTableProvider(generator));
-            generator.addProvider(new AMRecipeProvider(generator));
-            AMTagsProvider.add(generator, existingFileHelper);
-            generator.addProvider(new AMAltarStructureMaterialProvider(generator));
-            generator.addProvider(new AMObeliskFuelProvider(generator));
-            generator.addProvider(new AMOcculusTabProvider(generator));
-            generator.addProvider(new AMPrefabSpellProvider(generator));
-            generator.addProvider(new AMSpellPartDataProvider(generator));
-            generator.addProvider(new AMSpellTransformationProvider(generator));
-            generator.addProvider(new AMRitualProvider(generator));
-        }
+        generator.addProvider(evt.includeServer(), abilityProvider);
+        generator.addProvider(true, new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
+        generator.addProvider(evt.includeClient(), new AMBlockStateProvider(generator, existingFileHelper));
+        generator.addProvider(evt.includeClient(), new AMItemModelProvider(generator, existingFileHelper));
+        generator.addProvider(evt.includeClient(), lang);
+        generator.addProvider(evt.includeClient(), new AMSoundDefinitionsProvider(generator, existingFileHelper));
+        AMSkillProvider skillProvider = new AMSkillProvider(generator);
+        generator.addProvider(evt.includeServer(), skillProvider);
+        generator.addProvider(evt.includeServer(), new AMAdvancementProvider(generator, existingFileHelper, skillProvider));
+        generator.addProvider(evt.includeServer(), new AMLootTableProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMRecipeProvider(generator));
+        AMTagsProvider.add(evt.includeServer(), generator, existingFileHelper);
+        generator.addProvider(evt.includeServer(), new AMAltarStructureMaterialProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMObeliskFuelProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMOcculusTabProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMPrefabSpellProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMSpellPartDataProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMRitualProvider(generator));
     }
 
 }

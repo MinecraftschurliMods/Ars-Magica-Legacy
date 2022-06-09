@@ -22,7 +22,7 @@ public final class SpellIconAtlas extends TextureAtlasHolder {
     private static final String PREFIX = "icon/spell";
     private static final Lazy<SpellIconAtlas> INSTANCE = Lazy.of(SpellIconAtlas::new);
     private static final String SUFFIX = ".png";
-    private static final Predicate<String> RESOURCE_PREDICATE = s -> s.endsWith(SUFFIX);
+    private static final Predicate<ResourceLocation> RESOURCE_PREDICATE = s -> s.getPath().endsWith(SUFFIX);
     private Collection<ResourceLocation> resourceLocations;
 
     private SpellIconAtlas() {
@@ -59,7 +59,7 @@ public final class SpellIconAtlas extends TextureAtlasHolder {
         HashMap<String, ResourceLocation> acc = new HashMap<>();
         int length = ("textures/" + PREFIX + "/").length();
         int length1 = SUFFIX.length();
-        for (ResourceLocation resourceLocation : resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE)) {
+        for (ResourceLocation resourceLocation : resourceManager.listResources("textures/" + PREFIX, RESOURCE_PREDICATE).keySet()) {
             String path = resourceLocation.getPath();
             path = path.substring(length, path.length() - length1);
             acc.putIfAbsent(path, new ResourceLocation(resourceLocation.getNamespace(), path));

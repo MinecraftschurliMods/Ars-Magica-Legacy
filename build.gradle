@@ -76,42 +76,32 @@ configurations {
     runtimeMod
     include { transitive = false }
 
-    sourceSets.forEach {
+    sourceSets.forEach((SourceSet sourceSet) -> {
         Configuration extLib
-        Configuration impl
-        Configuration compile
-        Configuration runtime
-        Configuration rcp
-        Configuration ccp
-        if (it.name == "main") {
+        Configuration impl = getByName(sourceSet.implementationConfigurationName)
+        Configuration compile = getByName(sourceSet.compileOnlyConfigurationName)
+        Configuration runtime = getByName(sourceSet.runtimeOnlyConfigurationName)
+        Configuration ccp = getByName(sourceSet.compileClasspathConfigurationName)
+        Configuration rcp = getByName(sourceSet.runtimeClasspathConfigurationName)
+        if (sourceSet.name == "main") {
             extLib = create("externalLibrary")
-            impl = implementation
-            compile = compileOnly
-            runtime = runtimeOnly
-            rcp = runtimeClasspath
-            ccp = compileClasspath
         } else {
-            extLib = create(it.name + "ExternalLibrary")
-            impl = getByName(it.name + "Implementation")
-            compile = getByName(it.name + "CompileOnly")
-            runtime = getByName(it.name + "RuntimeOnly")
-            rcp = getByName(it.name + "RuntimeClasspath")
-            ccp = getByName(it.name + "CompileClasspath")
+            extLib = create(sourceSet.name + "ExternalLibrary")
         }
         impl.extendsFrom(extLib)
         compile.extendsFrom(library)
         compile.extendsFrom(modAPI)
-        if (it.name != "api") {
-            if (it.name != "main") {
+        if (sourceSet.name != "api") {
+            if (sourceSet.name != "main") {
                 rcp.extendsFrom(minecraft)
             }
             runtime.extendsFrom(runtimeMod)
         }
-        if (it.name != "main") {
+        if (sourceSet.name != "main") {
             ccp.extendsFrom(minecraft)
         }
         impl.extendsFrom(include)
-    }
+    })
 }
 
 configurations {
@@ -137,8 +127,7 @@ repositories {
         name = 'Minecraftschurli Maven'
         url = 'https://minecraftschurli.ddns.net/repository/maven-public/'
         content {
-            includeGroup 'com.github.ichhabehunger54'
-            includeGroup 'com.github.minecraftschurli'
+            includeGroup 'com.github.minecraftschurlimods'
         }
     }
     maven {
@@ -196,9 +185,9 @@ dependencies {
     //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-forge-api:${project.jei_version}")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.18.2-common-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.18.2-forge-api:${project.jei_version}")
+    //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
@@ -213,16 +202,15 @@ dependencies {
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     if (!System.getenv('GITHUB_ACTIONS')) {
-        runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
+        runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
     }
 
     // add internal libraries
-    include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
-    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen-forge-1.18.2:1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
 

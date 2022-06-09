@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -33,12 +34,16 @@ public abstract class PrefabSpellProvider implements DataProvider {
     protected abstract void createPrefabSpells();
 
     @Override
-    public void run(HashCache pCache) throws IOException {
+    public void run(CachedOutput pCache) {
         createPrefabSpells();
         for (Map.Entry<ResourceLocation, JsonElement> entry : data.entrySet()) {
             ResourceLocation id = entry.getKey();
             JsonElement spell = entry.getValue();
-            DataProvider.save(GSON, pCache, spell, generator.getOutputFolder().resolve("data/" + id.getNamespace() + "/prefab_spells/" + id.getPath() + ".json"));
+            try {
+                DataProvider.saveStable(pCache, spell, generator.getOutputFolder().resolve("data/" + id.getNamespace() + "/prefab_spells/" + id.getPath() + ".json"));
+            } catch (IOException e) {
+                LOGGER.error("Couldn't save prefab spell {}", id, e);
+            }
         }
     }
 

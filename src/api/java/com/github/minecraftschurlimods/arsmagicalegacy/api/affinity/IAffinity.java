@@ -4,16 +4,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
 /**
  * Interface representing an affinity.
  */
-public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IAffinity>, ITranslatable.OfRegistryEntry<IAffinity> {
+public interface IAffinity extends Comparable<IAffinity>, ITranslatable {
     String AFFINITY = "affinity";
     ResourceLocation NONE      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "none");
     ResourceLocation ARCANE    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane");
@@ -70,7 +70,12 @@ public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IA
     }
 
     @Override
+    default ResourceLocation getId() {
+        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getKey(this));
+    }
+
+    @Override
     default int compareTo(IAffinity o) {
-        return o.getRegistryName() == null && getRegistryName() != null ? 1 : Objects.compare(getRegistryName(), o.getRegistryName(), ResourceLocation::compareTo);
+        return Comparator.comparing(ArsMagicaAPI.get().getAffinityRegistry()::getKey).compare(this, o);
     }
 }

@@ -1,13 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -19,7 +21,7 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     private static final Supplier<OcculusTabManager> INSTANCE = Lazy.concurrentOf(OcculusTabManager::new);
 
     private OcculusTabManager() {
-        super("occulus_tabs", OcculusTab.CODEC, OcculusTab.NETWORK_CODEC, OcculusTabManager::validate, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "occulus_tabs", OcculusTab.CODEC, OcculusTab.NETWORK_CODEC, OcculusTabManager::validate, LoggerFactory.getLogger(OcculusTabManager.class));
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
@@ -35,18 +37,24 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     }
 
     @Override
-    public Optional<IOcculusTab> getOptional(ResourceLocation id) {
+    public Optional<IOcculusTab> getOptional(@Nullable ResourceLocation id) {
         return getOptional((Object) id);
     }
 
+    @Nullable
     @Override
     public IOcculusTab getNullable(ResourceLocation id) {
-        return get((Object) id);
+        return get(id);
     }
 
     @Override
-    public IOcculusTab get(ResourceLocation id) {
+    public IOcculusTab get(@Nullable ResourceLocation id) {
         return getOrThrow(id);
+    }
+
+    @Override
+    public IOcculusTab getOrThrow(@Nullable final ResourceLocation id) {
+        return super.getOrThrow(id);
     }
 
     @Override

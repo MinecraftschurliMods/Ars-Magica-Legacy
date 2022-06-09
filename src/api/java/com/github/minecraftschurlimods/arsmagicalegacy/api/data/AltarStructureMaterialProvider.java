@@ -2,12 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
@@ -20,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AltarStructureMaterialProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
     protected final DataGenerator generator;
     private final String namespace;
@@ -35,18 +32,26 @@ public abstract class AltarStructureMaterialProvider implements DataProvider {
     protected abstract void createStructureMaterials();
 
     @Override
-    public void run(HashCache pCache) throws IOException {
+    public void run(CachedOutput pCache) {
         createStructureMaterials();
         Path path = generator.getOutputFolder();
         for (Map.Entry<ResourceLocation, AltarStructureMaterial> entry : structureMaterials.entrySet()) {
             ResourceLocation resourceLocation = entry.getKey();
             AltarStructureMaterial altarStructureMaterial = entry.getValue();
-            DataProvider.save(GSON, pCache, AltarStructureMaterial.CODEC.encodeStart(JsonOps.INSTANCE, altarStructureMaterial).getOrThrow(false, LOGGER::warn), path.resolve("data/" + resourceLocation.getNamespace() + "/altar/structure/" + resourceLocation.getPath() + ".json"));
+            try {
+                DataProvider.saveStable(pCache, AltarStructureMaterial.CODEC.encodeStart(JsonOps.INSTANCE, altarStructureMaterial).getOrThrow(false, LOGGER::warn), path.resolve("data/" + resourceLocation.getNamespace() + "/altar/structure/" + resourceLocation.getPath() + ".json"));
+            } catch (IOException e) {
+                LOGGER.error("Couldn't save structure material {}", resourceLocation, e);
+            }
         }
         for (Map.Entry<ResourceLocation, AltarCapMaterial> entry : capMaterials.entrySet()) {
             ResourceLocation resourceLocation = entry.getKey();
             AltarCapMaterial altarStructureMaterial = entry.getValue();
-            DataProvider.save(GSON, pCache, AltarCapMaterial.CODEC.encodeStart(JsonOps.INSTANCE, altarStructureMaterial).getOrThrow(false, LOGGER::warn), path.resolve("data/" + resourceLocation.getNamespace() + "/altar/cap/" + resourceLocation.getPath() + ".json"));
+            try {
+                DataProvider.saveStable(pCache, AltarCapMaterial.CODEC.encodeStart(JsonOps.INSTANCE, altarStructureMaterial).getOrThrow(false, LOGGER::warn), path.resolve("data/" + resourceLocation.getNamespace() + "/altar/cap/" + resourceLocation.getPath() + ".json"));
+            } catch (IOException e) {
+                LOGGER.error("Couldn't save cap material {}", resourceLocation, e);
+            }
         }
     }
 

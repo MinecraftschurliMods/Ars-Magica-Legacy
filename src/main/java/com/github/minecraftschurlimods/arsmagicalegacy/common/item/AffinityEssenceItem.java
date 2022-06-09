@@ -17,21 +17,18 @@ public class AffinityEssenceItem extends Item implements IAffinityItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
-        if (allowdedIn(pCategory)) {
+        if (allowedIn(pCategory)) {
             var api = ArsMagicaAPI.get();
             for (IAffinity affinity : api.getAffinityRegistry()) {
-                if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
-                pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getRegistryName()));
+                if (IAffinity.NONE.equals(affinity.getId())) continue;
+                pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getId()));
             }
         }
     }
 
     @Override
     public String getDescriptionId(ItemStack pStack) {
-        ResourceLocation affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(pStack).getRegistryName();
-        if (affinity == null) {
-            affinity = IAffinity.NONE;
-        }
+        ResourceLocation affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(pStack).getId();
         return Util.makeDescriptionId(super.getDescriptionId(pStack), affinity);
     }
 }

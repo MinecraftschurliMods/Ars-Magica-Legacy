@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -14,12 +15,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Objects;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.*;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 class AMItemModelProvider extends ItemModelProvider {
     AMItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
@@ -33,13 +37,13 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()
-                .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-                .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
-                .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
-        blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+                          .transform(ItemTransforms.TransformType.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+                          .transform(ItemTransforms.TransformType.GROUND).translation(0, 3, 0).scale(0.25f).end()
+                          .transform(ItemTransforms.TransformType.FIXED).scale(0.5f).end()
+                          .transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+                          .transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+                          .transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end().end();
+        blockItem(CELESTIAL_PRISM).transforms().transform(ItemTransforms.TransformType.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
         itemGenerated(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);
@@ -181,7 +185,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      */
     private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
-        return withExistingParent(item, new ResourceLocation(item.get().getBlock().getRegistryName().getNamespace(), "block/" + item.get().getBlock().getRegistryName().getPath()));
+        return withExistingParent(item, new ResourceLocation(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(item.get().getBlock())).getNamespace(), "block/" + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(item.get().getBlock())).getPath()));
     }
 
     /**

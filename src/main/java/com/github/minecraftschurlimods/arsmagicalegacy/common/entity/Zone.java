@@ -41,7 +41,7 @@ public class Zone extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> OWNER            = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float>   GRAVITY          = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float>   RADIUS           = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ISpell>  SPELL            = SynchedEntityData.defineId(Zone.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<ISpell>  SPELL            = SynchedEntityData.defineId(Zone.class, AMDataSerializers.SPELL.get());
 
     /**
      * Use {@link Zone#create(Level)} instead.
