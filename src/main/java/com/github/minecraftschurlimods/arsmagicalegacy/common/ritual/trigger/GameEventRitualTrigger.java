@@ -38,7 +38,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
     }
 
     public GameEventRitualTrigger(ResourceKey<GameEvent> gameEvent) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.GAME_EVENT_REGISTRY).getOrCreateHolder(gameEvent));
+        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.GAME_EVENT_REGISTRY).getOrCreateHolder(gameEvent).getOrThrow(false, s -> {}));
     }
 
     @SafeVarargs
@@ -49,11 +49,11 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
     @Override
     public void register(final Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((VanillaGameEvent evt) -> {
-            BlockPos pos = evt.getEventPosition();
+            Vec3 pos = evt.getEventPosition();
             Level level = evt.getLevel();
             if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {
-                for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(Vec3.atCenterOf(pos), 5, 5, 5))) {
-                    if (ritual.perform(player, serverLevel, pos, new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
+                for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(pos, 5, 5, 5))) {
+                    if (ritual.perform(player, serverLevel, new BlockPos(pos), new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
                         return;
                     }
                 }

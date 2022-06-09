@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
@@ -21,10 +20,13 @@ import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 class AMPatchouliBookProvider extends PatchouliBookProvider {
@@ -111,9 +113,9 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSpotlightPage(new ItemStack(AMItems.DESERT_NOVA.get())).setText("Desert Novas grow in dry conditions. The Nova has extraordinary magical properties for a desert plant, and is highly sought after. It is one of the two plants used in the $(l:items/purified_vinteum_dust)purification process of Vinteum Dust$().").setAnchor("desert_nova").build()
                 .addSpotlightPage(new ItemStack(AMItems.TARMA_ROOT.get())).setText("Lighter than it looks, Tarma Root grows in mountain biomes. It is an ingredient in spells and air essences.").setAnchor("tarma_root").build()
                 .addSpotlightPage(new ItemStack(AMItems.WAKEBLOOM.get())).setText("Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water affinity essences.").setAnchor("wakebloom").build()
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, Items.PINK_DYE.getRegistryName().getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, Items.BLUE_DYE.getRegistryName().getPath()))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, Items.RED_DYE.getRegistryName().getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, Items.BROWN_DYE.getRegistryName().getPath()))
-                .addSimpleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, Items.MAGENTA_DYE.getRegistryName().getPath()))
+                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.PINK_DYE).getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.BLUE_DYE).getPath()))
+                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.RED_DYE).getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.BROWN_DYE).getPath()))
+                .addSimpleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.MAGENTA_DYE).getPath()))
                 .build()
                 .addEntry("inscription_table", "Inscription Table", new ItemStack(AMItems.INSCRIPTION_TABLE.get()))
                 .addSimpleTextPage("Using this table with a Book & Quill, you can compose spells of incredible power.$(br2)You will see what skills you know at the top in the Source Region. You can then drag shapes and modifiers to the brown $(l:mechanics/shape_groups)Shape Group$() squares, and drag components to the gray Spell Grammar section at the bottom to lay out a spell.")
@@ -189,14 +191,14 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addEntry("runes", "Runes", new ItemStack(AMItems.BLANK_RUNE.get()))
                 .addSimpleTextPage("Runes are the basic building parts of spells. When combined with multiple other items in the right combination, a magical spell scroll can be created.")
                 .addSimpleRecipePage("crafting", AMItems.BLANK_RUNE.getId())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BLACK).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.BLUE).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.BROWN).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.CYAN).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.GRAY).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.GREEN).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.LIGHT_GRAY).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.LIME).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.MAGENTA).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.ORANGE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.PINK).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.PURPLE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.RED).getRegistryName())
-                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.get(DyeColor.WHITE).getRegistryName(), AMItems.COLORED_RUNE.get(DyeColor.YELLOW).getRegistryName())
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.BLACK), AMItems.COLORED_RUNE.getId(DyeColor.BLUE))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.BROWN), AMItems.COLORED_RUNE.getId(DyeColor.CYAN))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.GRAY), AMItems.COLORED_RUNE.getId(DyeColor.GREEN))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.LIGHT_BLUE), AMItems.COLORED_RUNE.getId(DyeColor.LIGHT_GRAY))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.LIME), AMItems.COLORED_RUNE.getId(DyeColor.MAGENTA))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.ORANGE), AMItems.COLORED_RUNE.getId(DyeColor.PINK))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.PURPLE), AMItems.COLORED_RUNE.getId(DyeColor.RED))
+                .addSimpleDoubleRecipePage("crafting", AMItems.COLORED_RUNE.getId(DyeColor.WHITE), AMItems.COLORED_RUNE.getId(DyeColor.YELLOW))
                 .build()
                 .addEntry("spell_parchment", "Spell Parchment", new ItemStack(AMItems.SPELL_PARCHMENT.get()))
                 .addSimpleTextPage("Any mage that wants to cast spells without the need of some sort of staff or wand needs something to write the spell down on. This has worked for thousands of years, and surprisingly nothing more effective has been invented yet.")
@@ -284,7 +286,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                     case MODIFIER -> modifiers;
                     case SHAPE -> shapes;
                 };
-                ResourceLocation registryName = spellPart.getRegistryName();
+                ResourceLocation registryName = spellPart.getId();
                 TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
                         .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
                 entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
@@ -322,6 +324,10 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         }
         affinities.build();
         builder.build(consumer);
+    }
+
+    private ResourceLocation key(final Item item) {
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
     }
 
     private static class SpellPartPageBuilder extends AbstractPageBuilder<SpellPartPageBuilder> {

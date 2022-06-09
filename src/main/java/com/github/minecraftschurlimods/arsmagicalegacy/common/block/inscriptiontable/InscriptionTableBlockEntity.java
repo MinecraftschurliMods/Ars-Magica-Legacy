@@ -11,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -33,7 +32,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public static final String SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
     public static final String INVENTORY_KEY = ArsMagicaAPI.MOD_ID + ":inventory";
     public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
-    private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
+    private static final Component TITLE = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_TITLE);
     private ItemStack stack = ItemStack.EMPTY;
     private @Nullable ISpell spellRecipe;
     private @Nullable String spellName;
@@ -108,7 +107,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return Optional.ofNullable(getSpellRecipe())
                 .map(spell -> {
                     if (spell.isEmpty()) return stack;
-                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
+                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> Component.translatable(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
                 });
     }
 

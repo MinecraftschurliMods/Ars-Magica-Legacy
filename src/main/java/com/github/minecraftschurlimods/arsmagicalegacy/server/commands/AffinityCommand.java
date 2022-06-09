@@ -18,7 +18,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,7 +32,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.Co
 
 public class AffinityCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinityCommand::suggestAffinities;
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN_AFFINITY = new DynamicCommandExceptionType(message -> new TranslatableComponent(AFFINITY_UNKNOWN, message));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN_AFFINITY = new DynamicCommandExceptionType(message -> Component.translatable(AFFINITY_UNKNOWN, message));
 
     /**
      * Registers the command to the given builder.
@@ -95,9 +95,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_ADD_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_ADD_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
         }
         return players.size();
     }
@@ -121,9 +121,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_SET_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_SET_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
         }
         return players.size();
     }
@@ -144,9 +144,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_RESET_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(AFFINITY_RESET_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -160,7 +160,7 @@ public class AffinityCommand {
     }
 
     private static int getAffinity(ServerPlayer player, IAffinity affinity, CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
+        context.getSource().sendSuccess(Component.translatable(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
         return Command.SINGLE_SUCCESS;
     }
 

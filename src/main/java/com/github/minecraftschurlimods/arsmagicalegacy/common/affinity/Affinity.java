@@ -4,8 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,7 +12,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAffinity {
+public final class Affinity implements IAffinity {
     private final int color;
     private final Set<ResourceLocation> minorOpposites;
     private final Set<ResourceLocation> majorOpposites;
@@ -55,7 +53,7 @@ public final class Affinity extends ForgeRegistryEntry<IAffinity> implements IAf
 
     @Override
     public Set<ResourceLocation> getAdjacentAffinities() {
-        return ArsMagicaAPI.get().getAffinityRegistry().getValues().stream().filter(iAffinity -> !getMinorOpposingAffinities().contains(iAffinity.getRegistryName()) && !getMajorOpposingAffinities().contains(iAffinity.getRegistryName()) && !getDirectOpposingAffinity().equals(iAffinity.getRegistryName())).map(IForgeRegistryEntry::getRegistryName).collect(Collectors.toSet());
+        return ArsMagicaAPI.get().getAffinityRegistry().getValues().stream().filter(iAffinity -> !getMinorOpposingAffinities().contains(iAffinity.getId()) && !getMajorOpposingAffinities().contains(iAffinity.getId()) && !getDirectOpposingAffinity().equals(iAffinity.getId())).map(IAffinity::getId).collect(Collectors.toSet());
     }
 
     @Override

@@ -1,30 +1,22 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public abstract class ObeliskFuelProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObeliskFuelProvider.class);
     protected final DataGenerator generator;
     private final String namespace;
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
@@ -37,9 +29,15 @@ public abstract class ObeliskFuelProvider implements DataProvider {
     protected abstract void createFuels();
 
     @Override
-    public void run(HashCache pCache) {
+    public void run(CachedOutput pCache) {
         createFuels();
-        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/obelisk_fuel/" + resourceLocation.getPath() + ".json")));
+        data.forEach((resourceLocation, jsonObject) -> {
+            try {
+                DataProvider.saveStable(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/obelisk_fuel/" + resourceLocation.getPath() + ".json"));
+            } catch (IOException e) {
+                LOGGER.error("Couldn't save obelisk fuel {}", resourceLocation, e);
+            }
+        });
     }
 
     @Override
@@ -75,22 +73,6 @@ public abstract class ObeliskFuelProvider implements DataProvider {
      */
     protected void forIngredient(String name, Ingredient ingredient, int burntime, int valuepertick) {
         new ObeliskFuelBuilder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurntime(burntime).setValuePerTick(valuepertick).build();
-    }
-
-    private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save obelisk fuel {}", pPath, ioexception);
-        }
     }
 
     public class ObeliskFuelBuilder {

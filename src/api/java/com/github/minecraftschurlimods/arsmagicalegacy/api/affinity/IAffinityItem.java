@@ -29,7 +29,7 @@ public interface IAffinityItem {
      * @return The stack, now with the given affinity set on it.
      */
     default ItemStack setAffinity(ItemStack stack, IAffinity affinity) {
-        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(), Objects.requireNonNull(affinity.getRegistryName()).toString());
+        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(), affinity.getId().toString());
         return stack;
     }
 }

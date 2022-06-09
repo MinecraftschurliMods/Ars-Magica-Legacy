@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,11 +22,11 @@ public class EnderIntervention extends AbstractComponent {
         if (target.getEntity() instanceof LivingEntity living && !living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
             if (living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
                 if (living instanceof Player) {
-                    living.sendMessage(new TranslatableComponent(TranslationConstants.NO_TELEPORT), living.getUUID());
+                    living.sendSystemMessage(Component.translatable(TranslationConstants.NO_TELEPORT));
                 }
             } else if (level.dimension() == Level.NETHER) {
                 if (living instanceof Player) {
-                    living.sendMessage(new TranslatableComponent(TranslationConstants.NO_TELEPORT_NETHER), living.getUUID());
+                    living.sendSystemMessage(Component.translatable(TranslationConstants.NO_TELEPORT_NETHER));
                 }
             } else if (level.dimension() != Level.END && level instanceof ServerLevel server) {
                 ServerLevel serverlevel = server.getServer().getLevel(Level.END);

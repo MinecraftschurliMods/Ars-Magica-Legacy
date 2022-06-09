@@ -25,7 +25,7 @@ public record BiomeRequirement(HolderSet<Biome> biome) implements RitualRequirem
     }
 
     public BiomeRequirement(ResourceKey<Biome> biome) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.BIOME_REGISTRY).getOrCreateHolder(biome));
+        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.BIOME_REGISTRY).getOrCreateHolder(biome).getOrThrow(false, s -> {}));
     }
 
     @SafeVarargs

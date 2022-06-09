@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
@@ -59,7 +58,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
             }
             drawNameplate(ingredient.getTooltip(), poseStack, bufferSource, packedLight);
         } else {
-            drawNameplate(List.of(new TranslatableComponent(TranslationConstants.ALTAR_CORE_LOW_POWER)), poseStack, bufferSource, packedLight);
+            drawNameplate(List.of(Component.translatable(TranslationConstants.ALTAR_CORE_LOW_POWER)), poseStack, bufferSource, packedLight);
         }
         poseStack.popPose();
         poseStack.pushPose();

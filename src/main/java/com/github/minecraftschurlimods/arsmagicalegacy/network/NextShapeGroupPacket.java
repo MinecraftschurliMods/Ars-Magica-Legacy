@@ -3,13 +3,21 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkEvent;
 
 public record NextShapeGroupPacket(InteractionHand hand) implements IPacket {
+    public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "next_shape_group");
+
     public NextShapeGroupPacket(FriendlyByteBuf buf) {
         this(buf.readEnum(InteractionHand.class));
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
     @Override

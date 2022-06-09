@@ -1,24 +1,25 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Optional;
 
 public final class AltarMaterialManager {
     private static final Lazy<AltarMaterialManager> INSTANCE = Lazy.concurrentOf(AltarMaterialManager::new);
-    private final Logger logger = LogManager.getLogger();
-    public final CodecDataManager<AltarStructureMaterial> structure = new CodecDataManager<>("altar/structure", AltarStructureMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
-    public final CodecDataManager<AltarCapMaterial> cap = new CodecDataManager<>("altar/cap", AltarCapMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+    private final Logger logger = LoggerFactory.getLogger(AltarMaterialManager.class);
+    public final CodecDataManager<AltarStructureMaterial> structure = new CodecDataManager<>(ArsMagicaAPI.MOD_ID, "altar/structure", AltarStructureMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+    public final CodecDataManager<AltarCapMaterial> cap = new CodecDataManager<>(ArsMagicaAPI.MOD_ID, "altar/cap", AltarCapMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
 
     /**
      * @return The only instance of this class.

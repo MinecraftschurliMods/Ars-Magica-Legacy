@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.Enti
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionTypeRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MagicLevelRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MoonPhaseRequirement;
@@ -21,7 +20,7 @@ import com.google.common.collect.HashBiMap;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 public final class RitualManager extends CodecDataManager<Ritual> {
     private static final Lazy<RitualManager> INSTANCE = Lazy.concurrentOf(RitualManager::new);
@@ -31,7 +30,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
     private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>>      ritualEffectCodecs      = HashBiMap.create();
 
     private RitualManager() {
-        super("am_rituals", Ritual.CODEC, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "am_rituals", Ritual.CODEC, LoggerFactory.getLogger(RitualManager.class));
         useRegistryOps();
         init();
     }
@@ -87,7 +86,6 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "biome"), BiomeRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension"), DimensionRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension_type"), DimensionTypeRequirement.CODEC);
-        registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_dragon_dimension"), EnderDragonDimensionRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "height"), HeightRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_level"), MagicLevelRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "moon_phase"), MoonPhaseRequirement.CODEC);

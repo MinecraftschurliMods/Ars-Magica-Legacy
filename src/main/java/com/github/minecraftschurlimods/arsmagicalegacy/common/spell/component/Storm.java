@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,8 +32,8 @@ public class Storm extends AbstractComponent {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
                 if (random < 20) {
-                    double posX = caster.getX() + level.random.nextDouble(100) - 50;
-                    double posZ = caster.getZ() + level.random.nextDouble(100) - 50;
+                    double posX = caster.getX() + AMUtil.nextDouble(level.random, 100) - 50;
+                    double posZ = caster.getZ() + AMUtil.nextDouble(level.random, 100) - 50;
                     double posY = caster.getY();
                     while (!level.canSeeSky(new BlockPos(posX, posY, posZ))) {
                         posY++;

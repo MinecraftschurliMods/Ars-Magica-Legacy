@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -26,7 +27,6 @@ import java.util.function.Consumer;
  * Base class for skill data generators.
  */
 public abstract class SkillProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
     private final DataGenerator generator;
     private final String namespace;
@@ -41,12 +41,16 @@ public abstract class SkillProvider implements DataProvider {
 
     @Internal
     @Override
-    public void run(HashCache pCache) {
+    public void run(CachedOutput pCache) {
         data = new HashSet<>();
         createSkills(skill -> {
             if (!data.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
             else {
-                saveSkill(pCache, skill.serialize(), generator.getOutputFolder().resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
+                try {
+                    DataProvider.saveStable(pCache, skill.serialize(), generator.getOutputFolder().resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
+                } catch (IOException e) {
+                    LOGGER.error("Couldn't save skill {}", skill.getId(), e);
+                }
             }
         });
     }
@@ -76,21 +80,5 @@ public abstract class SkillProvider implements DataProvider {
      */
     protected SkillBuilder createSkill(String name, IOcculusTab occulusTab) {
         return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab);
-    }
-
-    private static void saveSkill(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save skill {}", pPath, ioexception);
-        }
     }
 }

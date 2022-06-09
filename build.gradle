@@ -126,8 +126,6 @@ repositories {
         name = 'Minecraftschurli Maven'
         url = 'https://minecraftschurli.ddns.net/repository/maven-public/'
         content {
-            includeGroup 'com.github.ichhabehunger54'
-            includeGroup 'com.github.minecraftschurli'
             includeGroup 'com.github.minecraftschurlimods'
         }
     }
@@ -186,9 +184,9 @@ dependencies {
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-forge-api:${project.jei_version}")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.18.2-common-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.18.2-forge-api:${project.jei_version}")
+    //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
@@ -203,21 +201,21 @@ dependencies {
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     if (!System.getenv('GITHUB_ACTIONS')) {
-        runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
+        runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
     }
 
     // add internal libraries
-    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT') {
-        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
-    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT') {
-        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
-    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT') {
-        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
-    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen-forge-1.18.2:1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
 

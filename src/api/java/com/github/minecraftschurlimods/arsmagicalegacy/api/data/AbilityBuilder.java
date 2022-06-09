@@ -1,13 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.SerializationException;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class AbilityBuilder {
@@ -53,8 +54,8 @@ public class AbilityBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_ -> this")
-    public AbilityBuilder setAffinity(ForgeRegistryEntry<IAbility> affinity) {
-        return setAffinity(affinity.getRegistryName());
+    public AbilityBuilder setAffinity(IAffinity affinity) {
+        return setAffinity(Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getKey(affinity)));
     }
 
     /**

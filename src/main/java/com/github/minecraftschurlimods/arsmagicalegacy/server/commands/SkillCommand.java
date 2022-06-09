@@ -18,7 +18,6 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -33,7 +32,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.Co
 
 public class SkillCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> new TranslatableComponent(SKILL_UNKNOWN, message));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN_SKILL = new DynamicCommandExceptionType(message -> Component.translatable(SKILL_UNKNOWN, message));
 
     /**
      * Registers the command to the given builder.
@@ -133,9 +132,9 @@ public class SkillCommand {
             ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_FORGET_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_FORGET_ALL_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_ALL_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -154,7 +153,7 @@ public class SkillCommand {
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
             if (!helper.knows(player, skill)) {
-                context.getSource().sendFailure(new TranslatableComponent(SKILL_NOT_YET_KNOWN, skill.getDisplayName(), player.getDisplayName()));
+                context.getSource().sendFailure(Component.translatable(SKILL_NOT_YET_KNOWN, skill.getDisplayName(), player.getDisplayName()));
                 return 0;
             }
         }
@@ -162,9 +161,9 @@ public class SkillCommand {
             helper.forget(player, skill);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_FORGET_MULTIPLE, skill.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_MULTIPLE, skill.getDisplayName(), players.size()), true);
         }
         return players.size();
     }
@@ -182,9 +181,9 @@ public class SkillCommand {
             ArsMagicaAPI.get().getSkillHelper().learnAll(player);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_LEARN_ALL_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_ALL_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -203,7 +202,7 @@ public class SkillCommand {
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
             if (helper.knows(player, skill)) {
-                context.getSource().sendFailure(new TranslatableComponent(SKILL_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
+                context.getSource().sendFailure(Component.translatable(SKILL_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
                 return 0;
             }
         }
@@ -211,9 +210,9 @@ public class SkillCommand {
             helper.learn(player, skill);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(new TranslatableComponent(SKILL_LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
         }
         return players.size();
     }
@@ -230,6 +229,6 @@ public class SkillCommand {
     }
 
     private static Component createSkillListComponent(Stream<ISkill> stream) {
-        return stream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(new TranslatableComponent(""));
+        return stream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(Component.translatable(""));
     }
 }

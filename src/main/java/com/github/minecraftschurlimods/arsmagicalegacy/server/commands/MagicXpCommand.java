@@ -9,14 +9,14 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ToFloatFunction;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
@@ -92,9 +92,9 @@ public class MagicXpCommand {
             type.add.accept(sp, amount);
         }
         if (players.size() == 1) {
-            source.sendSuccess(new TranslatableComponent(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_SINGLE : MAGIC_XP_ADD_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
+            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_SINGLE : MAGIC_XP_ADD_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
         } else {
-            source.sendSuccess(new TranslatableComponent(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_MULTIPLE : MAGIC_XP_ADD_LEVELS_MULTIPLE, amount, players.size()), true);
+            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_MULTIPLE : MAGIC_XP_ADD_LEVELS_MULTIPLE, amount, players.size()), true);
         }
         return players.size();
     }
@@ -120,9 +120,9 @@ public class MagicXpCommand {
             type.set.accept(sp, amount);
         }
         if (players.size() == 1) {
-            source.sendSuccess(new TranslatableComponent(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_SINGLE : MAGIC_XP_SET_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
+            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_SINGLE : MAGIC_XP_SET_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
         } else {
-            source.sendSuccess(new TranslatableComponent(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_MULTIPLE : MAGIC_XP_SET_LEVELS_MULTIPLE, amount, players.size()), true);
+            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_MULTIPLE : MAGIC_XP_SET_LEVELS_MULTIPLE, amount, players.size()), true);
         }
         return players.size();
     }
@@ -144,20 +144,24 @@ public class MagicXpCommand {
     }
 
     private static int getMagicXp(CommandSourceStack source, ServerPlayer player, MagicXpCommandType type) {
-        int i = (int) type.get.apply(player);
-        source.sendSuccess(new TranslatableComponent(type == MagicXpCommandType.POINTS ? MAGIC_XP_GET_POINTS : MAGIC_XP_GET_LEVELS, player.getDisplayName(), i), true);
-        return i;
+        Number i = type.get.apply(player);
+        source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_GET_POINTS : MAGIC_XP_GET_LEVELS, player.getDisplayName(), i), true);
+        return i.intValue();
     }
 
-    private enum MagicXpCommandType {
-        POINTS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardXp(player, value.floatValue()), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setXp(player, value.floatValue()), player -> ArsMagicaAPI.get().getMagicHelper().getXp(player)),
-        LEVELS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardLevel(player, value.intValue()), (player, value) -> ArsMagicaAPI.get().getMagicHelper().setLevel(player, value.intValue()), player -> ArsMagicaAPI.get().getMagicHelper().getLevel(player));
+    private enum MagicXpCommandType  {
+        POINTS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardXp(player, value.floatValue()),
+               (player, value) -> ArsMagicaAPI.get().getMagicHelper().setXp(player, value.floatValue()),
+               (player) -> ArsMagicaAPI.get().getMagicHelper().getXp(player)),
+        LEVELS((player, value) -> ArsMagicaAPI.get().getMagicHelper().awardLevel(player, value.intValue()),
+               (player, value) -> ArsMagicaAPI.get().getMagicHelper().setLevel(player, value.intValue()),
+               (player) -> ArsMagicaAPI.get().getMagicHelper().getLevel(player));
 
         final BiConsumer<ServerPlayer, Double> add;
         final BiConsumer<ServerPlayer, Double> set;
-        final ToFloatFunction<ServerPlayer> get;
+        final Function<ServerPlayer, Number> get;
 
-        MagicXpCommandType(BiConsumer<ServerPlayer, Double> add, BiConsumer<ServerPlayer, Double> set, ToFloatFunction<ServerPlayer> get) {
+        MagicXpCommandType(BiConsumer<ServerPlayer, Double> add, BiConsumer<ServerPlayer, Double> set, Function<ServerPlayer, Number> get) {
             this.add = add;
             this.set = set;
             this.get = get;

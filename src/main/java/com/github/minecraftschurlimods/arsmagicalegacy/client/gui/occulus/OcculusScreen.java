@@ -9,13 +9,11 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class OcculusScreen extends Screen {
     private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
-    private static final Component TITLE = new TranslatableComponent("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
+    private static final Component TITLE = Component.translatable("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
     private final int guiWidth;
     private final int guiHeight;
     private final int tabWidth;
@@ -48,8 +46,8 @@ public class OcculusScreen extends Screen {
             addRenderableWidget(new OcculusTabButton(tabIndex, 7 + ((tabIndex % 8) * (tabSize + 2)), -tabSize, tab, pButton -> setActiveTab(tabIndex)));
         }
         maxPage = (int) Math.floor((float) (registry.getTabs().size() - 1) / 16F);
-        nextPage = addRenderableWidget(new Button(guiWidth + 2, -21, 20, 20, new TextComponent(">"), this::nextPage));
-        prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, new TextComponent("<"), this::prevPage));
+        nextPage = addRenderableWidget(new Button(guiWidth + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
+        prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, Component.literal("<"), this::prevPage));
         nextPage.active = page < maxPage;
         prevPage.active = false;
         addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), guiWidth, guiHeight);

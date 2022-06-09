@@ -3,15 +3,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -19,22 +17,17 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
  * Base class for spell part data generators.
  */
 public abstract class SpellPartDataProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final String namespace;
@@ -48,9 +41,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
     protected abstract void createSpellPartData();
 
     @Override
-    public void run(HashCache pCache) {
+    public void run(CachedOutput pCache) {
         createSpellPartData();
-        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json")));
+        for (Map.Entry<ResourceLocation, JsonObject> entry : data.entrySet()) {
+            ResourceLocation resourceLocation = entry.getKey();
+            JsonObject jsonObject = entry.getValue();
+            try {
+                DataProvider.saveStable(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json"));
+            } catch (IOException e) {
+                LOGGER.error("Couldn't save spell part data {}", resourceLocation, e);
+            }
+        }
     }
 
     @Override
@@ -73,7 +74,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost) {
-        return createSpellPartData(spellPart.getRegistryName(), manaCost);
+        return createSpellPartData(spellPart.getId(), manaCost);
     }
 
     /**
@@ -111,7 +112,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @return A new spell part data object.
      */
     public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost, float burnout) {
-        return createSpellPartData(spellPart.getRegistryName(), manaCost, burnout);
+        return createSpellPartData(spellPart.getId(), manaCost, burnout);
     }
 
     /**
@@ -132,22 +133,6 @@ public abstract class SpellPartDataProvider implements DataProvider {
      */
     public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
         return createSpellPartData(spellPart.getId(), manaCost, burnout);
-    }
-
-    private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save spell part data {}", pPath, ioexception);
-        }
     }
 
     public class SpellPartDataBuilder {

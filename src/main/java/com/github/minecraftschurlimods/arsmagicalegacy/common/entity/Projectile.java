@@ -40,7 +40,7 @@ public class Projectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL.get());
 
     /**
      * Use {@link Projectile#create(Level)} instead.

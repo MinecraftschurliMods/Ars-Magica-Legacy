@@ -11,7 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequi
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionTypeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MoonPhaseRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.RitualStructureRequirement;
@@ -21,8 +21,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.Ent
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.GameEventRitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.ItemDropRitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
@@ -30,15 +28,16 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.LogManager;
@@ -54,7 +53,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class AMRitualProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
     private final Map<ResourceLocation, JsonElement> elements = new HashMap<>();
     private final DataGenerator generator;
@@ -64,12 +62,12 @@ public class AMRitualProvider implements DataProvider {
     }
 
     @Override
-    public void run(final HashCache pCache) {
+    public void run(CachedOutput pCache) {
         addRituals(this::addRitual);
         Path outputFolder = this.generator.getOutputFolder();
         elements.forEach((id, jsonElement) -> {
             try {
-                DataProvider.save(GSON, pCache, jsonElement, createPath(outputFolder, id));
+                DataProvider.saveStable(pCache, jsonElement, createPath(outputFolder, id));
             } catch (IOException e) {
                 LOGGER.error("Couldn't save ritual {}", id, e);
             }
@@ -108,7 +106,7 @@ public class AMRitualProvider implements DataProvider {
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ender_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL))
                 .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
-                .with(new EnderDragonDimensionRequirement())
+                .with(new DimensionTypeRequirement(BuiltinDimensionTypes.END))
                 .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ice_guardian"))

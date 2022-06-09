@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public interface IOcculusTabManager extends IDataManager<IOcculusTab> {
      * @param id The id of the occulus tab to get.
      * @return The occulus tab, or null if the occulus tab is not loaded.
      */
+    @Nullable
     IOcculusTab getNullable(ResourceLocation id);
 
     /**

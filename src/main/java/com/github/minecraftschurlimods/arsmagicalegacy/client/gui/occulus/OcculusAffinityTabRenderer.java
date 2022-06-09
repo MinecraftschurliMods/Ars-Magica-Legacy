@@ -10,16 +10,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -59,7 +54,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         Player player = getPlayer();
         assert player != null;
         for (IAffinity aff : affinities) {
-            if (Objects.equals(aff.getRegistryName(), IAffinity.NONE)) continue;
+            if (Objects.equals(aff.getId(), IAffinity.NONE)) continue;
             double depth = helper.getAffinityDepth(player, aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
@@ -109,15 +104,15 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                         Double lower = range.getMin();
                         Double upper = range.getMax();
                         if (lower != null || upper != null) {
-                            TextComponent cmp = new TextComponent(" (");
+                            MutableComponent cmp = Component.literal(" (");
                             if (lower != null) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
+                                cmp.append(Component.translatable(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
                                 if (upper != null) {
                                     cmp.append(", ");
                                 }
                             }
                             if (upper != null) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
+                                cmp.append(Component.translatable(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
                             }
                             cmp.append(")");
                             component.append(cmp);
@@ -129,7 +124,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         }
         if (!drawString.isEmpty()) {
             if (!Screen.hasShiftDown()) {
-                drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
+                drawString.add(Component.translatable(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             pMatrixStack.pushPose();
             pMatrixStack.translate(-posX, -posY, 0);

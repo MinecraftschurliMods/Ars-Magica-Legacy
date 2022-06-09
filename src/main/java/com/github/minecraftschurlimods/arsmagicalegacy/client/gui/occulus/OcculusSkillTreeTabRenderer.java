@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
-    public static final Component MISSING_REQUIREMENTS = new TranslatableComponent(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS).withStyle(ChatFormatting.DARK_RED);
+    public static final Component MISSING_REQUIREMENTS = Component.translatable(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS).withStyle(ChatFormatting.DARK_RED);
     private static final float SKILL_SIZE = 32f;
     private static final float SCALE = 1f;
     private int lastMouseX = 0;
@@ -42,7 +41,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     }
 
     private static int getColorForSkill(ISkill skill) {
-        return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::getColor).orElse(ColorUtil.GRAY);
+        return skill.getCost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(ISkillPoint::color).orElse(ColorUtil.GRAY);
     }
 
     private static int getColorForLine(ISkill parent, ISkill child) {

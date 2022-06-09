@@ -21,13 +21,13 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMTagsProvider {
-    static void add(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+    static void add(boolean enable, DataGenerator generator, ExistingFileHelper existingFileHelper) {
         AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
-        generator.addProvider(blocks);
-        generator.addProvider(new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
-        generator.addProvider(new Fluids(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
-        generator.addProvider(new EntityTypes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
-        generator.addProvider(new Biomes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(enable, blocks);
+        generator.addProvider(enable, new Items(generator, blocks, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(enable, new Fluids(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(enable, new EntityTypes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
+        generator.addProvider(enable, new Biomes(generator, ArsMagicaAPI.MOD_ID, existingFileHelper));
     }
 
     private static class Blocks extends BlockTagsProvider {

@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -22,7 +21,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Collections;
@@ -47,13 +45,6 @@ public final class AffinityHelper implements IAffinityHelper {
      */
     public static AffinityHelper instance() {
         return INSTANCE.get();
-    }
-
-    /**
-     * Registers the required network packets.
-     */
-    public static void init() {
-        ArsMagicaLegacy.NETWORK_HANDLER.register(SyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     /**
@@ -143,7 +134,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void applyAffinityShift(Player player, IAffinity affinity, float shift) {
-        if (affinity.getRegistryName() == Affinity.NONE) return;
+        if (affinity.getId() == Affinity.NONE) return;
         AffinityHolder storage = getAffinityHolder(player);
         float adjacentDecrement = shift * ADJACENT_FACTOR;
         float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
@@ -185,16 +176,18 @@ public final class AffinityHelper implements IAffinityHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new AffinitySyncPacket(getAffinityHolder(player)), player);
     }
 
-    public static final class SyncPacket extends CodecPacket<AffinityHolder> {
-        public SyncPacket(AffinityHolder data) {
-            super(data);
+    public static final class AffinitySyncPacket extends CodecPacket<AffinityHolder> {
+        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_sync");
+
+        public AffinitySyncPacket(AffinityHolder data) {
+            super(ID, data);
         }
 
-        public SyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+        public AffinitySyncPacket(FriendlyByteBuf buf) {
+            super(ID, buf);
         }
 
         @Override
@@ -203,14 +196,14 @@ public final class AffinityHelper implements IAffinityHelper {
         }
 
         @Override
-        protected Codec<AffinityHolder> getCodec() {
+        protected Codec<AffinityHolder> codec() {
             return AffinityHolder.CODEC;
         }
     }
 
     public static final class AffinityHolder {
         public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                CodecHelper.mapOf(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
         private final Map<ResourceLocation, Double> depths;

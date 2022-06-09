@@ -18,14 +18,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class TierMapping extends SimplePreparableReloadListener<JsonArray> {
     private static final ResourceLocation TIER_MAPPING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "tier_mapping.json");
@@ -34,8 +31,7 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
     private final Gson gson = new GsonBuilder().create();
     private final List<ResourceLocation> tiers = new ArrayList<>();
 
-    private TierMapping() {
-    }
+    private TierMapping() {}
 
     /**
      * @return The only instance of this class.
@@ -46,10 +42,12 @@ public final class TierMapping extends SimplePreparableReloadListener<JsonArray>
 
     @Override
     protected JsonArray prepare(ResourceManager resourceManager, ProfilerFiller p) {
-        if (!resourceManager.hasResource(TIER_MAPPING)) {
+        Optional<Resource> resource = resourceManager.getResource(TIER_MAPPING);
+        if (resource.isEmpty()) {
             return new JsonArray();
         }
-        try (Resource r = resourceManager.getResource(TIER_MAPPING); InputStream stream = r.getInputStream(); Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+        Resource r = resource.get();
+        try (Reader reader = r.openAsReader()) {
             return gson.fromJson(reader, JsonArray.class);
         } catch (IOException e) {
             LOGGER.error("Could not read Tier sorting file " + TIER_MAPPING, e);

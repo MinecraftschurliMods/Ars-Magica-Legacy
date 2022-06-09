@@ -12,12 +12,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
-
-import java.util.Random;
 
 public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
 
@@ -39,7 +38,7 @@ public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
         IModelData modelData = blockEntity.getModelData();
         long seed = blockState.getSeed(blockPos);
         BakedModel blockModel = dispatcher.getBlockModel(blockState);
-        Random random = level.random;
+        RandomSource random = level.random;
         VertexConsumer buffer = bufferSource.getBuffer(ItemBlockRenderTypes.getRenderType(blockState, false));
         dispatcher.getModelRenderer().tesselateBlock(level, blockModel, blockState, blockPos, poseStack, buffer, false, random, seed, packedOverlay, modelData);
     }

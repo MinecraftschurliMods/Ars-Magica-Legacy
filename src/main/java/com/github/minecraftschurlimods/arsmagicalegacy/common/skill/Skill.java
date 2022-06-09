@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -21,7 +20,7 @@ public final class Skill implements ISkill {
     public static final Codec<ISkill> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(ISkill::getId),
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
             Codec.INT.fieldOf("y").forGetter(ISkill::getY),
@@ -30,7 +29,7 @@ public final class Skill implements ISkill {
     @Internal
     public static final Codec<ISkill> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ResourceLocation.CODEC.listOf().<Set<ResourceLocation>>xmap(Sets::newHashSet, Lists::newArrayList).fieldOf("parents").orElseGet(Sets::newHashSet).forGetter(ISkill::getParents),
-            CodecHelper.mapOf(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
+            Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT).fieldOf("cost").orElseGet(Maps::newHashMap).forGetter(ISkill::getCost),
             ResourceLocation.CODEC.fieldOf("occulus_tab").forGetter(ISkill::getOcculusTab),
             Codec.INT.fieldOf("x").forGetter(ISkill::getX),
             Codec.INT.fieldOf("y").forGetter(ISkill::getY),

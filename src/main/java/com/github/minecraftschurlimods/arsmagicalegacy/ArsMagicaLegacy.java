@@ -36,21 +36,27 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
-    public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 1);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
     public ArsMagicaLegacy() {
-        if (INSTANCE != null)
-            throw LOGGER.throwing(new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!"));
-        if (!(ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl))
-            throw LOGGER.throwing(new IllegalStateException("API was not initialized!"));
+        if (INSTANCE != null) {
+            IllegalStateException exception = new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!");
+            LOGGER.error(exception.getMessage(), exception);
+            throw exception;
+        }
+        if (!(ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl)) {
+            IllegalStateException exception = new IllegalStateException("API was not initialized!");
+            LOGGER.error(exception.getMessage(), exception);
+            throw exception;
+        }
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -60,8 +66,6 @@ public final class ArsMagicaLegacy {
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> DistProxy::init);
         Config.init();
         registerNetworkPackets();
-        SkillHelper.init();
-        AffinityHelper.init();
         EtheriumHelper.instance();
         OcculusTabManager.instance();
         SkillManager.instance();
@@ -81,16 +85,18 @@ public final class ArsMagicaLegacy {
     }
 
     private void registerNetworkPackets() {
-        NETWORK_HANDLER.register(InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(InscriptionTableSyncPacket.ID, InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(LearnSkillPacket.ID, LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(NextShapeGroupPacket.ID, NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(SpellBookNextSpellPacket.ID, SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(SpellIconSelectPacket.ID, SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(BEClientSyncPacket.ID, BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(OpenOcculusGuiPacket.ID, OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(UpdateStepHeightPacket.ID, UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(SkillHelper.SkillSyncPacket.ID, SkillHelper.SkillSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(AffinityHelper.AffinitySyncPacket.ID, AffinityHelper.AffinitySyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.ID, MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.ID, ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

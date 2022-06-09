@@ -23,9 +23,4 @@ public interface IPrefabSpellManager extends Map<ResourceLocation, IPrefabSpell>
      * @return An optional containing the prefab spell with the given id, or an empty optional if there is no prefab spell with that id available.
      */
     Optional<IPrefabSpell> getOptional(@Nullable ResourceLocation id);
-
-    /**
-     * @return All registered prefab spells with their associated ids.
-     */
-    Map<ResourceLocation, IPrefabSpell> getData();
 }

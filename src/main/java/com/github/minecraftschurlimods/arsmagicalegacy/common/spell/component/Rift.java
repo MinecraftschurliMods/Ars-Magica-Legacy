@@ -8,7 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMen
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +29,7 @@ public class Rift extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof ServerPlayer sp) {
             int size = Math.min(Math.round(Math.max(1, ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.POWER, modifiers, spell, caster, target))), PermissionAPI.getPermission(sp, AMPermissions.MAX_RIFT_SIZE));
-            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> RiftMenu.rift(id, inv, sp, size), new TranslatableComponent(TranslationConstants.RIFT_TITLE)), buf -> {
+            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> RiftMenu.rift(id, inv, sp, size), Component.translatable(TranslationConstants.RIFT_TITLE)), buf -> {
                 buf.writeUUID(sp.getUUID());
                 buf.writeInt(size);
             });

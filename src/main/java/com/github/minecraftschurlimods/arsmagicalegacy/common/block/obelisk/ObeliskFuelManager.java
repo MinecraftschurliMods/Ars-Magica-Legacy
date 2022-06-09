@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
@@ -8,7 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public final class ObeliskFuelManager extends CodecDataManager<ObeliskFuelManage
     private static final Lazy<ObeliskFuelManager> INSTANCE = Lazy.concurrentOf(ObeliskFuelManager::new);
 
     private ObeliskFuelManager() {
-        super("obelisk_fuel", ObeliskFuel.CODEC, ObeliskFuel.NETWORK_CODEC, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "obelisk_fuel", ObeliskFuel.CODEC, ObeliskFuel.NETWORK_CODEC, LoggerFactory.getLogger(ObeliskFuelManager.class));
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 

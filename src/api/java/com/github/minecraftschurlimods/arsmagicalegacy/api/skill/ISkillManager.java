@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -34,6 +35,7 @@ public interface ISkillManager extends IDataManager<ISkill> {
      * @param id The id of the skill to get.
      * @return The skill, or null if the skill is not loaded.
      */
+    @Nullable
     ISkill getNullable(ResourceLocation id);
 
     /**

@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -109,7 +109,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-            pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
+            pPlayer.sendSystemMessage(Component.translatable(TranslationConstants.PREVENT));
             return InteractionResult.FAIL;
         }
         if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) {

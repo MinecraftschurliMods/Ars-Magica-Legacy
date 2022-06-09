@@ -8,8 +8,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
     private static final Lazy<SkillManager> INSTANCE = Lazy.concurrentOf(SkillManager::new);
 
     private SkillManager() {
-        super("am_skills", Skill.CODEC, Skill.NETWORK_CODEC, SkillManager::validateSkills, LogManager.getLogger());
+        super(ArsMagicaAPI.MOD_ID, "am_skills", Skill.CODEC, Skill.NETWORK_CODEC, SkillManager::validateSkills, LoggerFactory.getLogger(SkillManager.class));
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
@@ -66,18 +67,24 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
     }
 
     @Override
-    public Optional<ISkill> getOptional(ResourceLocation id) {
+    public Optional<ISkill> getOptional(@Nullable ResourceLocation id) {
         return getOptional((Object) id);
     }
 
     @Override
-    public ISkill get(ResourceLocation id) {
+    public ISkill get(@Nullable ResourceLocation id) {
         return getOrThrow(id);
     }
 
     @Override
+    public ISkill getOrThrow(@Nullable ResourceLocation id) {
+        return super.getOrThrow(id);
+    }
+
+    @Nullable
+    @Override
     public ISkill getNullable(ResourceLocation id) {
-        return get((Object) id);
+        return get(id);
     }
 
     @Override

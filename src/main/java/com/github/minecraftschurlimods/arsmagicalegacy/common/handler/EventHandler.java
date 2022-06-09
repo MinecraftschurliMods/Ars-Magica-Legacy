@@ -29,14 +29,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
@@ -54,10 +52,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransfo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,12 +66,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -83,7 +73,6 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -96,7 +85,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
-import java.util.OptionalInt;
 import java.util.Set;
 
 /**
@@ -117,7 +105,6 @@ public final class EventHandler {
         TickHandler.init(forgeBus);
         EffectHandler.init(forgeBus);
         AbilityHandler.init(forgeBus);
-        modBus.addGenericListener(Feature.class, EventPriority.LOWEST, EventHandler::registerFeature);
         modBus.addListener(EventHandler::setup);
         modBus.addListener(EventHandler::registerCapabilities);
         modBus.addListener(EventHandler::entityAttributeCreation);
@@ -132,30 +119,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
-    }
-
-    private static void registerFeature(RegistryEvent.Register<Feature<?>> event) {
-        AMFeatures.CHIMERITE_FEATURE = AMFeatures.ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
-        AMFeatures.VINTEUM_FEATURE = AMFeatures.ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
-        AMFeatures.TOPAZ_FEATURE = AMFeatures.ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
-        AMFeatures.TOPAZ_EXTRA_FEATURE = AMFeatures.ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
-        AMFeatures.CHIMERITE_PLACEMENT = AMFeatures.orePlacement("chimerite_ore", AMFeatures.CHIMERITE_FEATURE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
-        AMFeatures.VINTEUM_PLACEMENT = AMFeatures.orePlacement("vinteum_ore", AMFeatures.VINTEUM_FEATURE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
-        AMFeatures.TOPAZ_PLACEMENT = AMFeatures.orePlacement("topaz_ore", AMFeatures.TOPAZ_FEATURE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
-        AMFeatures.TOPAZ_EXTRA_PLACEMENT = AMFeatures.orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_EXTRA_FEATURE, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
-        AMFeatures.AUM_FEATURE = AMFeatures.flower("aum", 64, AMBlocks.AUM);
-        AMFeatures.CERUBLOSSOM_FEATURE = AMFeatures.flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
-        AMFeatures.DESERT_NOVA_FEATURE = AMFeatures.flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
-        AMFeatures.TARMA_ROOT_FEATURE = AMFeatures.flower("tarma_root", 64, AMBlocks.TARMA_ROOT);
-        AMFeatures.WAKEBLOOM_FEATURE = AMFeatures.flower("wakebloom", 64, AMBlocks.WAKEBLOOM);
-        AMFeatures.AUM_PLACEMENT = AMFeatures.flowerPlacement("aum", AMFeatures.AUM_FEATURE, 32);
-        AMFeatures.CERUBLOSSOM_PLACEMENT = AMFeatures.flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM_FEATURE, 32);
-        AMFeatures.DESERT_NOVA_PLACEMENT = AMFeatures.flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA_FEATURE, 32);
-        AMFeatures.TARMA_ROOT_PLACEMENT = AMFeatures.flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT_FEATURE, 32);
-        AMFeatures.WAKEBLOOM_PLACEMENT = AMFeatures.flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM_FEATURE, 32);
-        AMFeatures.WITCHWOOD_TREE_FEATURE = AMFeatures.tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
-        AMFeatures.WITCHWOOD_TREE_PLACEMENT = AMFeatures.treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE_FEATURE, AMBlocks.WITCHWOOD_SAPLING);
-        AMFeatures.WITCHWOOD_TREE_VEGETATION = AMFeatures.treeVegetation("trees_witchwood", AMFeatures.WITCHWOOD_TREE_FEATURE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
     }
 
     private static void setup(FMLCommonSetupEvent event) {
@@ -349,8 +312,8 @@ public final class EventHandler {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
         }
         for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
-            int minEarnLevel = iSkillPoint.getMinEarnLevel();
-            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
+            int minEarnLevel = iSkillPoint.minEarnLevel();
+            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.levelsForPoint() == 0) {
                 api.getSkillHelper().addSkillPoint(player, iSkillPoint);
                 event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }

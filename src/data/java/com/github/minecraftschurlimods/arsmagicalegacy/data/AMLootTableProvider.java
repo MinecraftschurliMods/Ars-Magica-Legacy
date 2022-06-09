@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -160,7 +161,7 @@ class AMLootTableProvider extends LootTableProvider {
                 ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
                 if (isNonLiving(entitytype)) {
                     if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)
-                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, entitytype.getRegistryName()));
+                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, ForgeRegistries.ENTITIES.getKey(entitytype)));
                 } else if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
                     LootTable.Builder loottable$builder = lootTables.remove(resourcelocation);
                     if (loottable$builder == null) continue;

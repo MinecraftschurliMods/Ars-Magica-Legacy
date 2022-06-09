@@ -10,8 +10,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -33,13 +32,13 @@ class AltarProbeInfoProvider implements IProbeInfoProvider {
         BlockEntity blockEntity = level.getBlockEntity(iProbeHitData.getPos());
         if (blockEntity instanceof AltarCoreBlockEntity altarCoreBlockEntity) {
             Collection<BlockPos> blockPos = altarCoreBlockEntity.getBoundPositions();
-            iProbeInfo.mcText(new TranslatableComponent(TranslationConstants.ALTAR_POWER, altarCoreBlockEntity.getPowerLevel()));
+            iProbeInfo.mcText(Component.translatable(TranslationConstants.ALTAR_POWER, altarCoreBlockEntity.getPowerLevel()));
             if (probeMode == ProbeMode.NORMAL) {
                 IProbeInfo horizontal = iProbeInfo.horizontal(iProbeInfo.defaultLayoutStyle().borderColor(0xffddddff).alignment(ElementAlignment.ALIGN_CENTER).bottomPadding(3));
                 blockPos.forEach(pos -> horizontal.item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)));
             } else {
                 IProbeInfo vertical = iProbeInfo.vertical(iProbeInfo.defaultLayoutStyle().borderColor(0xffddddff).alignment(ElementAlignment.ALIGN_CENTER));
-                blockPos.forEach(pos -> vertical.horizontal(vertical.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(2)).item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)).mcText(new TextComponent(pos.toShortString()), iProbeInfo.defaultTextStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(-2).rightPadding(5)));
+                blockPos.forEach(pos -> vertical.horizontal(vertical.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(2)).item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)).mcText(Component.literal(pos.toShortString()), iProbeInfo.defaultTextStyle().alignment(ElementAlignment.ALIGN_CENTER).topPadding(-2).rightPadding(5)));
             }
         }
     }

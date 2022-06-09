@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
@@ -8,6 +9,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
@@ -124,12 +126,14 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     public static final class BurnoutSyncPacket extends CodecPacket<BurnoutHolder> {
+        public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "burnout_sync");
+
         public BurnoutSyncPacket(BurnoutHolder data) {
-            super(data);
+            super(ID, data);
         }
 
         public BurnoutSyncPacket(FriendlyByteBuf buf) {
-            super(buf);
+            super(ID, buf);
         }
 
         @Override
@@ -138,7 +142,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
         }
 
         @Override
-        protected Codec<BurnoutHolder> getCodec() {
+        protected Codec<BurnoutHolder> codec() {
             return BurnoutHolder.CODEC;
         }
     }

@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
@@ -15,10 +14,9 @@ import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +26,10 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
     private static final Lazy<AbilityManager> INSTANCE = Lazy.concurrentOf(AbilityManager::new);
 
     private AbilityManager() {
-        super("affinity_abilities", AbilityData.CODEC, (data, logger) -> {
+        super(ArsMagicaAPI.MOD_ID, "affinity_abilities", AbilityData.CODEC, (data, logger) -> {
             IForgeRegistry<IAbility> affinityRegistry = ArsMagicaAPI.get().getAbilityRegistry();
             data.keySet().removeIf(ability -> !affinityRegistry.containsKey(ability));
-        }, LogManager.getLogger());
+        }, LoggerFactory.getLogger(AbilityManager.class));
         subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
     }
 
@@ -55,27 +53,21 @@ public final class AbilityManager extends CodecDataManager<IAbilityData> impleme
         return get(ability).test(player);
     }
 
-    @Override
-    public Optional<IAbilityData> getOptional(ResourceLocation id) {
-        return super.getOptional(id);
-    }
-
-    @Override
-    public IAbilityData get(ResourceLocation id) {
-        return super.getOrThrow(id);
-    }
-
-    @Nullable
-    @Override
-    public IAbilityData getNullable(ResourceLocation id) {
-        return super.get(id);
-    }
-
     /**
      * @return The only instance of this class.
      */
     public static AbilityManager instance() {
         return INSTANCE.get();
+    }
+
+    @Override
+    public IAbilityData getOrThrow(@Nullable ResourceLocation id) {
+        return super.getOrThrow(id);
+    }
+
+    @Override
+    public Optional<IAbilityData> getOptional(@Nullable ResourceLocation id) {
+        return super.getOptional(id);
     }
 
     private record AbilityData(IAffinity affinity, MinMaxBounds.Doubles bounds) implements IAbilityData {

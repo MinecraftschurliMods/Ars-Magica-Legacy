@@ -28,10 +28,10 @@ public class JEICompat implements IModPlugin {
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         for (Item item : ForgeRegistries.ITEMS.getValues()) {
             if (item instanceof IAffinityItem) {
-                registration.registerSubtypeInterpreter(item, AffinitySubtypeInterpreter.INSTANCE);
+                registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, AffinitySubtypeInterpreter.INSTANCE);
             }
             if (item instanceof ISkillPointItem) {
-                registration.registerSubtypeInterpreter(item, SkillPointSubtypeInterpreter.INSTANCE);
+                registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, SkillPointSubtypeInterpreter.INSTANCE);
             }
         }
     }
@@ -52,7 +52,7 @@ public class JEICompat implements IModPlugin {
 
         @Override
         public String apply(ItemStack ingredient, UidContext context) {
-            return ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(ingredient).getRegistryName().toString();
+            return ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(ingredient).getId().toString();
         }
     }
 
@@ -64,7 +64,7 @@ public class JEICompat implements IModPlugin {
 
         @Override
         public String apply(ItemStack ingredient, UidContext context) {
-            return ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(ingredient).getRegistryName().toString();
+            return ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(ingredient).getId().toString();
         }
     }
 }

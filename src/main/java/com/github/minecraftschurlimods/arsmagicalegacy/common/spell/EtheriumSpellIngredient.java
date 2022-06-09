@@ -14,7 +14,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -40,9 +39,9 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     @Override
     public List<Component> getTooltip() {
         if (types.size() == 1)
-            return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));
+            return List.of(types.iterator().next().getDisplayName(), Component.literal("x " + amount()));
         ArrayList<Component> components = new ArrayList<>(types.stream().map(ITranslatable::getDisplayName).toList());
-        components.add(new TextComponent("x " + amount()));
+        components.add(Component.literal("x " + amount()));
         return components;
     }
 

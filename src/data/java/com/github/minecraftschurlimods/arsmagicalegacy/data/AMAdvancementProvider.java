@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -24,34 +25,16 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 class AMAdvancementProvider extends AdvancementProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
     private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
 
     AMAdvancementProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper, AMSkillProvider skillProvider) {
         super(pGenerator, existingFileHelper);
-        generator = pGenerator;
-        tabs = ImmutableList.of(new AMBookAdvancements(skillProvider));
+        this.tabs = ImmutableList.of(new AMBookAdvancements(skillProvider));
     }
 
-    @Override
-    public void run(HashCache pCache) {
-        Path path = generator.getOutputFolder();
-        Set<ResourceLocation> set = new HashSet<>();
-        Consumer<Advancement> consumer = a -> {
-            if (!set.add(a.getId())) throw new IllegalStateException("Duplicate advancement " + a.getId());
-            else {
-                Path path1 = path.resolve("data/" + a.getId().getNamespace() + "/advancements/" + a.getId().getPath() + ".json");
-                try {
-                    DataProvider.save(GSON, pCache, a.deconstruct().serializeToJson(), path1);
-                } catch (IOException e) {
-                    LOGGER.error("Couldn't save advancement {}", path1, e);
-                }
-            }
-        };
-        for (Consumer<Consumer<Advancement>> c : tabs) {
-            c.accept(consumer);
+    protected void registerAdvancements(Consumer<Advancement> consumer, net.minecraftforge.common.data.ExistingFileHelper fileHelper) {
+        for(Consumer<Consumer<Advancement>> consumer1 : this.tabs) {
+            consumer1.accept(consumer);
         }
     }
 
