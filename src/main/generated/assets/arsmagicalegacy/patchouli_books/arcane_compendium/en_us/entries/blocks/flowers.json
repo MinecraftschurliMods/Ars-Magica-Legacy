@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:aum",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.name",
   "pages": [
     {
       "type": "patchouli:text",

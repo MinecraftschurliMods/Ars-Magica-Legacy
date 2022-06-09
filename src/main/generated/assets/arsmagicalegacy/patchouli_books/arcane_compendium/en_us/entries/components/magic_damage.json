@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.magic_damage.name",
+  "advancement": "arsmagicalegacy:book/magic_damage",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/magic_damage.png",
+  "name": "skill.arsmagicalegacy.magic_damage.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:magic_damage"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/magic_damage"
+  ]
 }

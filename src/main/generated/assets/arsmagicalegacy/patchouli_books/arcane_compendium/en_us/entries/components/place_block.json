@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.place_block.name",
+  "advancement": "arsmagicalegacy:book/place_block",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/place_block.png",
+  "name": "skill.arsmagicalegacy.place_block.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:place_block"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/place_block"
+  ]
 }

@@ -3,8 +3,8 @@
     "block": "minecraft:quartz_block",
     "predicate_type": "minecraft:block_match"
   },
+  "spell_part": "arsmagicalegacy:drought",
   "to": {
     "Name": "minecraft:smooth_quartz"
-  },
-  "spell_part": "arsmagicalegacy:drought"
+  }
 }

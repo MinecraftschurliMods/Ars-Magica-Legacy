@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.bosses.life_guardian.name",
   "category": "arsmagicalegacy:bosses",
   "icon": "arsmagicalegacy:life_guardian_spawn_egg",
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.life_guardian.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -14,8 +14,8 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.bosses.life_guardian.page2.title",
-      "multiblock_id": "arsmagicalegacy:life_guardian_spawn_ritual"
+      "multiblock_id": "arsmagicalegacy:life_guardian_spawn_ritual",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.life_guardian.page2.title"
     },
     {
       "type": "patchouli:text",

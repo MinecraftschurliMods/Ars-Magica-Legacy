@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.jump_boost.name",
+  "advancement": "arsmagicalegacy:book/jump_boost",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/jump_boost.png",
+  "name": "skill.arsmagicalegacy.jump_boost.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:jump_boost"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/jump_boost"
+  ]
 }

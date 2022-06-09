@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.inscription_table.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:inscription_table",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.inscription_table.name",
   "pages": [
     {
       "type": "patchouli:text",

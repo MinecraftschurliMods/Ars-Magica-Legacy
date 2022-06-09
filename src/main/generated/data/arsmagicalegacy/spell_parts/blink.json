@@ -1,23 +1,23 @@
 {
-  "manaCost": 160.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:ender": 0.05
   },
+  "manaCost": 160.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:black_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "tag": "forge:ender_pearls"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

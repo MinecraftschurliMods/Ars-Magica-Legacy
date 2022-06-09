@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.contingency_fall.name",
+  "advancement": "arsmagicalegacy:book/contingency_fall",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/contingency_fall.png",
+  "name": "skill.arsmagicalegacy.contingency_fall.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:contingency_fall"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/contingency_fall"
+  ]
 }

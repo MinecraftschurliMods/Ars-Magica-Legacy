@@ -1,5 +1,5 @@
 {
   "block": "minecraft:weathered_cut_copper",
-  "stair": "minecraft:weathered_cut_copper_stairs",
-  "power": 3
+  "power": 3,
+  "stair": "minecraft:weathered_cut_copper_stairs"
 }

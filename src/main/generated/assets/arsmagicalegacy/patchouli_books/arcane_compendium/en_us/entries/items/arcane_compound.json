@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_compound.name",
   "category": "arsmagicalegacy:items",
   "icon": "arsmagicalegacy:arcane_compound",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.arcane_compound.name",
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:wind-grasp-magenta-3",
   "name": {
     "text": "Otherworldly Roar"
   },
-  "icon": "arsmagicalegacy:wind-grasp-magenta-3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -19,7 +20,6 @@
       "arsmagicalegacy:blindness",
       "arsmagicalegacy:silence",
       "arsmagicalegacy:knockback"
-    ],
-    "data": {}
+    ]
   }
 }

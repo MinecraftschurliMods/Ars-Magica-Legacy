@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.name",
   "category": "arsmagicalegacy:blocks",
   "icon": "arsmagicalegacy:obelisk",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -14,13 +14,13 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.page2.title",
-      "multiblock_id": "arsmagicalegacy:obelisk_chalk"
+      "multiblock_id": "arsmagicalegacy:obelisk_chalk",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.page2.title"
     },
     {
       "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.page3.title",
-      "multiblock_id": "arsmagicalegacy:obelisk_pillars"
+      "multiblock_id": "arsmagicalegacy:obelisk_pillars",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.obelisk.page3.title"
     }
   ]
 }

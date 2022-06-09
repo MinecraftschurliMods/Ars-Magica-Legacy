@@ -1,23 +1,24 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:spawn_entity",
+    "entity_type": "arsmagicalegacy:ender_guardian"
+  },
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:ender_guardian_spawn_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:dimension_type",
+      "dimension_type": "minecraft:the_end"
+    }
+  ],
   "trigger": {
+    "type": "arsmagicalegacy:item_drop",
     "ingredients": [
       {
         "item": "minecraft:ender_eye"
       }
-    ],
-    "type": "arsmagicalegacy:item_drop"
-  },
-  "requirements": [
-    {
-      "structure": "arsmagicalegacy:ender_guardian_spawn_ritual",
-      "type": "arsmagicalegacy:structure"
-    },
-    {
-      "type": "arsmagicalegacy:ender_dragon_dimension"
-    }
-  ],
-  "effect": {
-    "entity_type": "arsmagicalegacy:ender_guardian",
-    "type": "arsmagicalegacy:spawn_entity"
+    ]
   }
 }

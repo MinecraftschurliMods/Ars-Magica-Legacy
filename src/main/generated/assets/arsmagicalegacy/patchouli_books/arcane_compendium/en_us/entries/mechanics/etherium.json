@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.name",
   "category": "arsmagicalegacy:mechanics",
   "icon": "arsmagicalegacy:crystal_wrench",
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.etherium.name",
   "pages": [
     {
       "type": "patchouli:text",

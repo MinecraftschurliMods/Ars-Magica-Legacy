@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.items.mana_food.name",
   "category": "arsmagicalegacy:items",
   "icon": "arsmagicalegacy:mana_cake",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.mana_food.name",
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.disarm.name",
+  "advancement": "arsmagicalegacy:book/disarm",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/disarm.png",
+  "name": "skill.arsmagicalegacy.disarm.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:disarm"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/disarm"
+  ]
 }

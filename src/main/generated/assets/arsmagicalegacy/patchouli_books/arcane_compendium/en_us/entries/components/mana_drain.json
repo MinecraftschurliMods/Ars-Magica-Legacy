@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.mana_drain.name",
+  "advancement": "arsmagicalegacy:book/mana_drain",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/mana_drain.png",
+  "name": "skill.arsmagicalegacy.mana_drain.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:mana_drain"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/mana_drain"
+  ]
 }

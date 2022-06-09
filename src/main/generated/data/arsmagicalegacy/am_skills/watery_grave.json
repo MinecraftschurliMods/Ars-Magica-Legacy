@@ -1,11 +1,11 @@
 {
+  "cost": {
+    "arsmagicalegacy:green": 1
+  },
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 345,
-  "y": 165,
   "parents": [
     "arsmagicalegacy:drowning_damage"
   ],
-  "cost": {
-    "arsmagicalegacy:green": 1
-  }
+  "x": 345,
+  "y": 165
 }

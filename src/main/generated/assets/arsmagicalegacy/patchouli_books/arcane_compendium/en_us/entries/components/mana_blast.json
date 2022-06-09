@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.mana_blast.name",
+  "advancement": "arsmagicalegacy:book/mana_blast",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/mana_blast.png",
+  "name": "skill.arsmagicalegacy.mana_blast.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:mana_blast"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/mana_blast"
+  ]
 }

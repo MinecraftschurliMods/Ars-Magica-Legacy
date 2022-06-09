@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.temporal_anchor.name",
+  "advancement": "arsmagicalegacy:book/temporal_anchor",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/temporal_anchor.png",
+  "name": "skill.arsmagicalegacy.temporal_anchor.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:temporal_anchor"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/temporal_anchor"
+  ]
 }

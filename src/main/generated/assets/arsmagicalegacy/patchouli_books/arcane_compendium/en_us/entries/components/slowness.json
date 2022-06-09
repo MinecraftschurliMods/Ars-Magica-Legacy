@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.slowness.name",
+  "advancement": "arsmagicalegacy:book/slowness",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/slowness.png",
+  "name": "skill.arsmagicalegacy.slowness.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:slowness"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/slowness"
+  ]
 }

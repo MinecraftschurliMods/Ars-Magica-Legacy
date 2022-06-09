@@ -1,5 +1,16 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:spawn_entity",
+    "entity_type": "arsmagicalegacy:earth_guardian"
+  },
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:earth_guardian_spawn_ritual"
+    }
+  ],
   "trigger": {
+    "type": "arsmagicalegacy:item_drop",
     "ingredients": [
       {
         "tag": "forge:gems/emerald"
@@ -10,17 +21,6 @@
       {
         "tag": "forge:gems/topaz"
       }
-    ],
-    "type": "arsmagicalegacy:item_drop"
-  },
-  "requirements": [
-    {
-      "structure": "arsmagicalegacy:earth_guardian_spawn_ritual",
-      "type": "arsmagicalegacy:structure"
-    }
-  ],
-  "effect": {
-    "entity_type": "arsmagicalegacy:earth_guardian",
-    "type": "arsmagicalegacy:spawn_entity"
+    ]
   }
 }

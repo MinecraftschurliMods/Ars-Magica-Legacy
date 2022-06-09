@@ -1,5 +1,5 @@
 {
   "block": "minecraft:diorite",
-  "stair": "minecraft:diorite_stairs",
-  "power": 2
+  "power": 2,
+  "stair": "minecraft:diorite_stairs"
 }

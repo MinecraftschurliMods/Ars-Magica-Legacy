@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "V": {
+      "tag": "forge:dusts/vinteum"
+    }
+  },
   "pattern": [
     "V",
     "S"
   ],
-  "key": {
-    "V": {
-      "tag": "forge:dusts/vinteum"
-    },
-    "S": {
-      "tag": "forge:stone"
-    }
-  },
   "result": {
     "item": "arsmagicalegacy:altar_core"
   }

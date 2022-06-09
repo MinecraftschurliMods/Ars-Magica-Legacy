@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:fire-arrows-sky-3",
   "name": {
     "text": "Chaos Water Bolt"
   },
-  "icon": "arsmagicalegacy:fire-arrows-sky-3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
@@ -13,7 +14,6 @@
       "arsmagicalegacy:drowning_damage",
       "arsmagicalegacy:watery_grave",
       "arsmagicalegacy:knockback"
-    ],
-    "data": {}
+    ]
   }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.silk_touch.name",
+  "advancement": "arsmagicalegacy:book/silk_touch",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/silk_touch.png",
+  "name": "skill.arsmagicalegacy.silk_touch.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:silk_touch"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/silk_touch"
+  ]
 }

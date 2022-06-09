@@ -1,9 +1,9 @@
 {
   "parent": "forge:item/default",
-  "textures": {
-    "tex": "arsmagicalegacy:block/celestial_prism",
-    "particle": "arsmagicalegacy:block/celestial_prism"
-  },
   "loader": "forge:obj",
-  "model": "arsmagicalegacy:models/block/obj/celestial_prism.obj"
+  "model": "arsmagicalegacy:models/block/obj/celestial_prism.obj",
+  "textures": {
+    "particle": "arsmagicalegacy:block/celestial_prism",
+    "tex": "arsmagicalegacy:block/celestial_prism"
+  }
 }

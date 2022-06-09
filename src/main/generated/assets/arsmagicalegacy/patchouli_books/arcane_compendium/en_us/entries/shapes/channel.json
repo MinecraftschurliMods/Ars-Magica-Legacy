@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.channel.name",
+  "advancement": "arsmagicalegacy:book/channel",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/channel.png",
+  "name": "skill.arsmagicalegacy.channel.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:channel"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/channel"
+  ]
 }

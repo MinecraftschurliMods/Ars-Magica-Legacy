@@ -1,7 +1,7 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.name",
   "category": "arsmagicalegacy:mechanics",
   "icon": "patchouli:guide_book{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}",
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.getting_started.name",
   "pages": [
     {
       "type": "patchouli:text",

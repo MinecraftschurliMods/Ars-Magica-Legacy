@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.dismembering.name",
+  "advancement": "arsmagicalegacy:book/dismembering",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/dismembering.png",
+  "name": "skill.arsmagicalegacy.dismembering.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:dismembering"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/dismembering"
+  ]
 }

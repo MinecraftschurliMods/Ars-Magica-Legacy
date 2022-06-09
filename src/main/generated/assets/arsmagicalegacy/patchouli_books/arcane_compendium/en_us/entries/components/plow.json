@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.plow.name",
+  "advancement": "arsmagicalegacy:book/plow",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/plow.png",
+  "name": "skill.arsmagicalegacy.plow.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:plow"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/plow"
+  ]
 }

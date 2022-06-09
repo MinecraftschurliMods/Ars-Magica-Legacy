@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.contingency_damage.name",
+  "advancement": "arsmagicalegacy:book/contingency_damage",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/contingency_damage.png",
+  "name": "skill.arsmagicalegacy.contingency_damage.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:contingency_damage"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/contingency_damage"
+  ]
 }

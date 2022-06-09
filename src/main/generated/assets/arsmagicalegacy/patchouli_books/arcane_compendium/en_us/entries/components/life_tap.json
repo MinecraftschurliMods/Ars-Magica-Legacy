@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.life_tap.name",
+  "advancement": "arsmagicalegacy:book/life_tap",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/life_tap.png",
+  "name": "skill.arsmagicalegacy.life_tap.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:life_tap"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/life_tap"
+  ]
 }

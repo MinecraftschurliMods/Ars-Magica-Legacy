@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "AAA",
-    "ADA",
-    "AAA"
-  ],
   "key": {
     "A": {
       "item": "arsmagicalegacy:arcane_ash"
@@ -13,6 +8,11 @@
       "item": "minecraft:diamond"
     }
   },
+  "pattern": [
+    "AAA",
+    "ADA",
+    "AAA"
+  ],
   "result": {
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"

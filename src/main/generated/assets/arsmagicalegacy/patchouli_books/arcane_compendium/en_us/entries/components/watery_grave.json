@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.watery_grave.name",
+  "advancement": "arsmagicalegacy:book/watery_grave",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/watery_grave.png",
+  "name": "skill.arsmagicalegacy.watery_grave.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:watery_grave"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/watery_grave"
+  ]
 }

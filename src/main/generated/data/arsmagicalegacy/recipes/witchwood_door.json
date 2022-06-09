@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "wooden_door",
-  "pattern": [
-    "##",
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "arsmagicalegacy:witchwood_planks"
     }
   },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "arsmagicalegacy:witchwood_door",
-    "count": 3
+    "count": 3,
+    "item": "arsmagicalegacy:witchwood_door"
   }
 }

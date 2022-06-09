@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.falling_star.name",
+  "advancement": "arsmagicalegacy:book/falling_star",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/falling_star.png",
+  "name": "skill.arsmagicalegacy.falling_star.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:falling_star"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/falling_star"
+  ]
 }

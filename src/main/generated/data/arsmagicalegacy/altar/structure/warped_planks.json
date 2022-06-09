@@ -1,5 +1,5 @@
 {
   "block": "minecraft:warped_planks",
-  "stair": "minecraft:warped_stairs",
-  "power": 4
+  "power": 4,
+  "stair": "minecraft:warped_stairs"
 }

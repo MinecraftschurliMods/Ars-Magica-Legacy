@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "W W",
-    "LRL"
-  ],
   "key": {
-    "W": {
-      "tag": "minecraft:wool"
-    },
     "L": {
       "item": "minecraft:leather"
     },
     "R": {
       "item": "arsmagicalegacy:black_rune"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     }
   },
+  "pattern": [
+    "W W",
+    "LRL"
+  ],
   "result": {
     "item": "arsmagicalegacy:mage_boots"
   }

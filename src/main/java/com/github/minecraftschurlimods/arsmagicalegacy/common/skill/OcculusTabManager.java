@@ -32,29 +32,18 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
         return INSTANCE.get();
     }
 
-    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
-        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
+    @Override
+    public IOcculusTab getOrThrow(@Nullable ResourceLocation id) {
+        return super.getOrThrow(id);
     }
 
     @Override
     public Optional<IOcculusTab> getOptional(@Nullable ResourceLocation id) {
-        return getOptional((Object) id);
+        return super.getOptional(id);
     }
 
-    @Nullable
-    @Override
-    public IOcculusTab getNullable(ResourceLocation id) {
-        return get(id);
-    }
-
-    @Override
-    public IOcculusTab get(@Nullable ResourceLocation id) {
-        return getOrThrow(id);
-    }
-
-    @Override
-    public IOcculusTab getOrThrow(@Nullable final ResourceLocation id) {
-        return super.getOrThrow(id);
+    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
+        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
     }
 
     @Override

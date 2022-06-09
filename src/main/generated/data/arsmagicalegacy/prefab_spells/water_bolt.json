@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:beam-blue-3",
   "name": {
     "text": "Water Bolt"
   },
-  "icon": "arsmagicalegacy:beam-blue-3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
@@ -12,7 +13,6 @@
     "spell_stack": [
       "arsmagicalegacy:drowning_damage",
       "arsmagicalegacy:watery_grave"
-    ],
-    "data": {}
+    ]
   }
 }

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.2,
   "ingredient": {
     "item": "arsmagicalegacy:arcane_compound"
   },
-  "result": "arsmagicalegacy:arcane_ash",
-  "experience": 0.2,
-  "cookingtime": 200
+  "result": "arsmagicalegacy:arcane_ash"
 }

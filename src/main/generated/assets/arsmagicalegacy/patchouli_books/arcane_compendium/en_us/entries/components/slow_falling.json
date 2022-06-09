@@ -1,7 +1,8 @@
 {
-  "name": "skill.arsmagicalegacy.slow_falling.name",
+  "advancement": "arsmagicalegacy:book/slow_falling",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/slow_falling.png",
+  "name": "skill.arsmagicalegacy.slow_falling.name",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,6 +12,5 @@
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:slow_falling"
     }
-  ],
-  "advancement": "arsmagicalegacy:book/slow_falling"
+  ]
 }

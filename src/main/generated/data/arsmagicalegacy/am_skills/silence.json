@@ -1,11 +1,11 @@
 {
+  "cost": {
+    "arsmagicalegacy:red": 1
+  },
   "occulus_tab": "arsmagicalegacy:offense",
-  "x": 255,
-  "y": 255,
   "parents": [
     "arsmagicalegacy:astral_distortion"
   ],
-  "cost": {
-    "arsmagicalegacy:red": 1
-  }
+  "x": 255,
+  "y": 255
 }

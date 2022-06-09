@@ -1,6 +1,6 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.blocks.name",
   "description": "item.arsmagicalegacy.arcane_compendium.blocks.description",
   "icon": "arsmagicalegacy:occulus",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.name",
   "sortnum": 1
 }

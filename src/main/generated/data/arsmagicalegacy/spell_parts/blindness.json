@@ -1,36 +1,36 @@
 {
-  "manaCost": 80.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:ender": 0.05
   },
+  "manaCost": 80.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:black_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:night_vision\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:weakness\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }
