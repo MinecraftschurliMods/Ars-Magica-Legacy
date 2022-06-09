@@ -68,23 +68,18 @@ public final class SkillManager extends CodecDataManager<ISkill> implements ISki
 
     @Override
     public Optional<ISkill> getOptional(@Nullable ResourceLocation id) {
-        return getOptional((Object) id);
+        return super.getOptional(id);
     }
 
+    @Nullable
     @Override
     public ISkill get(@Nullable ResourceLocation id) {
-        return getOrThrow(id);
+        return super.get(id);
     }
 
     @Override
     public ISkill getOrThrow(@Nullable ResourceLocation id) {
         return super.getOrThrow(id);
-    }
-
-    @Nullable
-    @Override
-    public ISkill getNullable(ResourceLocation id) {
-        return get(id);
     }
 
     @Override
