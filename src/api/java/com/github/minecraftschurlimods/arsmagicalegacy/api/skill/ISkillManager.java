@@ -36,13 +36,13 @@ public interface ISkillManager extends IDataManager<ISkill> {
      * @return The skill, or null if the skill is not loaded.
      */
     @Nullable
-    ISkill getNullable(ResourceLocation id);
+    ISkill get(ResourceLocation id);
 
     /**
      * @param id The id of the skill to get.
      * @return The skill. Throws an exception if the skill is not loaded.
      */
-    ISkill get(ResourceLocation id);
+    ISkill getOrThrow(ResourceLocation id);
 
     /**
      * @return An unmodifiable collection of all skills.
