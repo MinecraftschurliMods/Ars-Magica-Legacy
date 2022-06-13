@@ -1,12 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -29,6 +35,11 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
+import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -38,6 +49,8 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Supplier;
 
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.BIOME_MODIFIERS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.BIOME_MODIFIER_SERIALIZERS;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.CONFIGURED_FEATURES;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.PLACED_FEATURES;
 
@@ -66,6 +79,9 @@ public interface AMFeatures {
     RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT       = PLACED_FEATURES.register("wakebloom",           () -> flowerPlacement(WAKEBLOOM_FEATURE.getHolder().get(), 32));
     RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT  = PLACED_FEATURES.register("witchwood_tree",      () -> treePlacement(WITCHWOOD_TREE_FEATURE.getHolder().get(), AMBlocks.WITCHWOOD_SAPLING));
     RegistryObject<PlacedFeature> WITCHWOOD_TREE_VEGETATION = PLACED_FEATURES.register("trees_witchwood",     () -> treeVegetation(WITCHWOOD_TREE_FEATURE.getHolder().get(), PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING));
+
+    RegistryObject<Codec<BiomeModifier>> MODIFIER_CODEC = BIOME_MODIFIER_SERIALIZERS.register("modifier", () -> Codec.unit(new Modifier()));
+    RegistryObject<BiomeModifier> MODIFIER = BIOME_MODIFIERS.register("modifier", Modifier::new);
 
     /**
      * @param ore                      The ore block to use.
@@ -148,42 +164,44 @@ public interface AMFeatures {
         return new PlacedFeature(feature, Arrays.asList(modifiers));
     }
 
-//    /**
-//     * Called for each biome, adds this mod's features to biomes.
-//     *
-//     * @param event The biome loading event provided by the event bus.
-//     */
-//    @Internal
-//    public static void biomeLoading(BiomeLoadingEvent event) {
-//        // TODO biome modifiers
-//        BiomeGenerationSettingsBuilder builder = event.getGeneration();
-//        MobSpawnSettingsBuilder spawn = event.getSpawns();
-//        ResourceLocation biome = event.getName();
-//        Biome.BiomeCategory category = event.getCategory();
-//        if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
-//            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CHIMERITE_PLACEMENT);
-//            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, VINTEUM_PLACEMENT);
-//            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_PLACEMENT);
-//            if (category == Biome.BiomeCategory.MOUNTAIN) {
-//                builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_EXTRA_PLACEMENT);
-//            }
-//            if (category == Biome.BiomeCategory.FOREST) {
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AUM_PLACEMENT);
-//                spawn.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25));
-//            }
-//            if (category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.SWAMP) {
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CERUBLOSSOM_PLACEMENT);
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WAKEBLOOM_PLACEMENT);
-//            }
-//            if (category == Biome.BiomeCategory.DESERT || category == Biome.BiomeCategory.MESA) {
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, DESERT_NOVA_PLACEMENT);
-//            }
-//            if (category == Biome.BiomeCategory.MOUNTAIN || category == Biome.BiomeCategory.EXTREME_HILLS || category == Biome.BiomeCategory.UNDERGROUND) {
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TARMA_ROOT_PLACEMENT);
-//            }
-//            if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
-//                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_VEGETATION);
-//            }
-//        }
-//    }
+    class Modifier implements BiomeModifier {
+
+        @Override
+        public void modify(final Holder<Biome> biome, final Phase phase, final ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+            if (phase == Phase.ADD) {
+                BiomeGenerationSettingsBuilder generationSettings = builder.getGenerationSettings();
+                MobSpawnSettingsBuilder spawn = builder.getMobSpawnSettings();
+                if (biome.is(BiomeTags.IS_OVERWORLD)) {
+                    generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CHIMERITE_PLACEMENT.getHolder().get());
+                    generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, VINTEUM_PLACEMENT.getHolder().get());
+                    generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_PLACEMENT.getHolder().get());
+                    if (biome.is(BiomeTags.IS_MOUNTAIN)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_EXTRA_PLACEMENT.getHolder().get());
+                    }
+                    if (biome.is(BiomeTags.IS_FOREST)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AUM_PLACEMENT.getHolder().get());
+                        spawn.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25));
+                    }
+                    if (biome.is(BiomeTags.IS_JUNGLE) || biome.is(Tags.Biomes.IS_SWAMP)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CERUBLOSSOM_PLACEMENT.getHolder().get());
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WAKEBLOOM_PLACEMENT.getHolder().get());
+                    }
+                    if (biome.is(Tags.Biomes.IS_SANDY)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, DESERT_NOVA_PLACEMENT.getHolder().get());
+                    }
+                    if (biome.is(BiomeTags.IS_MOUNTAIN) || biome.is(BiomeTags.IS_HILL) || biome.is(Tags.Biomes.IS_UNDERGROUND)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TARMA_ROOT_PLACEMENT.getHolder().get());
+                    }
+                    if (biome.is(Tags.Biomes.IS_SPOOKY)) {
+                        generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_VEGETATION.getHolder().get());
+                    }
+                }
+            }
+        }
+
+        @Override
+        public Codec<? extends BiomeModifier> codec() {
+            return MODIFIER_CODEC.get();
+        }
+    }
 }
