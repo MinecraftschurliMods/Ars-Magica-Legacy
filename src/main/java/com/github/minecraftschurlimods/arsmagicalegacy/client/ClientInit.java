@@ -233,6 +233,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
+        event.registerEntityRenderer(AMEntities.MANA_VORTEX.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
         event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
