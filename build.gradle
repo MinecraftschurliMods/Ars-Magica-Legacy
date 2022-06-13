@@ -44,8 +44,10 @@ archivesBaseName = "${project.mod_id}"
 if (System.getenv('RELEASE_TYPE') != null) {
     status = System.getenv('RELEASE_TYPE').toLowerCase()
     if (status == 'snapshot') status = status.toUpperCase()
-    version = "${version}-${status}"
+} else {
+    status = 'SNAPSHOT'
 }
+version = "${version}-${status}"
 
 java {
     withSourcesJar()
@@ -77,17 +79,12 @@ configurations {
     include { transitive = false }
 
     sourceSets.forEach((SourceSet sourceSet) -> {
-        Configuration extLib
+        Configuration extLib = create(sourceSet.getTaskName(null, 'externalLibrary'))
         Configuration impl = getByName(sourceSet.implementationConfigurationName)
         Configuration compile = getByName(sourceSet.compileOnlyConfigurationName)
         Configuration runtime = getByName(sourceSet.runtimeOnlyConfigurationName)
         Configuration ccp = getByName(sourceSet.compileClasspathConfigurationName)
         Configuration rcp = getByName(sourceSet.runtimeClasspathConfigurationName)
-        if (sourceSet.name == "main") {
-            extLib = create("externalLibrary")
-        } else {
-            extLib = create(sourceSet.name + "ExternalLibrary")
-        }
         impl.extendsFrom(extLib)
         compile.extendsFrom(library)
         compile.extendsFrom(modAPI)
@@ -102,6 +99,7 @@ configurations {
         }
         impl.extendsFrom(include)
     })
+    jarJar.extendsFrom(include)
 }
 
 configurations {
@@ -207,9 +205,15 @@ dependencies {
     }
 
     // add internal libraries
-    include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
+    }
+    include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
+    }
+    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
+    }
     datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
@@ -277,28 +281,15 @@ minecraft {
     }
 }
 
-def replaceIn = ['META-INF/mods.toml']
-def replaceProperties = [
-        'version'                : project.version,
-        'mod_id'                 : project.mod_id,
-        'mod_url'                : project.mod_url,
-        'mod_name'               : project.mod_name,
-        'mod_author'             : project.mod_author,
-        'mod_credits'            : project.mod_credits,
-        'mc_version_range'       : project.mc_version_range,
-        'jei_version_range'      : project.jei_version_range,
-        'forge_version_range'    : project.forge_version_range,
-        'loader_version_range'   : project.loader_version_range,
-        'curios_version_range'   : project.curios_version_range,
-        'patchouli_version_range': project.patchouli_version_range,
-        'issue_tracker_url'      : "https://github.com/${project.github}/issues"
-]
+project.ext.issue_tracker_url = "https://github.com/${project.github}/issues"
 
 processResources {
-    inputs.properties replaceProperties
+    Map<String, ?> buildProps = project.properties.clone()
+    buildProps.values().removeIf { !it.getClass().isPrimitive() && !(it instanceof CharSequence) }
+    inputs.properties buildProps
 
-    filesMatching(replaceIn) {
-        expand replaceProperties
+    filesMatching(['META-INF/mods.toml']) {
+        expand buildProps
     }
     // minify json files
     doLast {
@@ -360,7 +351,7 @@ tasks.withType(Jar).configureEach {
     }
     from 'LICENSE.md'
     manifest {
-        mainAttributes([
+        attributes([
                 'Maven-Artifact'        : "${project.mod_group}:${project.archivesBaseName}:${project.version}",
                 'Specification-Title'   : archivesBaseName,
                 'Specification-Vendor'  : "${project.vendor}",
@@ -433,6 +424,7 @@ publishing {
         artifactId = project.archivesBaseName
         version = project.version
         from components.java
+        jarJar.component(it)
         pom {
             name = project.mod_name
             url = project.mod_url
@@ -474,13 +466,6 @@ publishing {
                     name = '"Don\'t Be a Jerk" License'
                     url = "https://github.com/${rootProject.github}/blob/version/${project.mc_version}/LICENSE.md"
                     distribution = 'repo'
-                }
-            }
-            withXml {
-                asNode().dependencies.dependency.each { dep ->
-                    if (dep.version.last().value().last().contains('_mapped_')) {
-                        assert dep.parent().remove(dep)
-                    }
                 }
             }
         }
