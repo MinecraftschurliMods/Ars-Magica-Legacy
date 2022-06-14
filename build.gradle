@@ -328,6 +328,10 @@ sourcesJar {
     from sourceSets.api.allSource
 }
 
+tasks.jarJar.configure {
+    from sourceSets.api.output
+}
+
 task apiJar(type: Jar, dependsOn: apiClasses) {
     archiveClassifier.set('api')
     from sourceSets.api.allSource
