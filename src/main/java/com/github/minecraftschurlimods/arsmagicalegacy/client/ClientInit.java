@@ -31,6 +31,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGu
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LifeGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LightningGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
@@ -48,6 +49,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Li
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -204,16 +206,17 @@ public final class ClientInit {
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(AirGuardianModel.LAYER_LOCATION, AirGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(AirGuardianModel.LAYER_LOCATION, AirGuardianModel::createBodyLayer);
         event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
         event.registerLayerDefinition(LightningGuardianModel.LAYER_LOCATION, LightningGuardianModel::createBodyLayer);
         event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
+        event.registerLayerDefinition(ThrownRockModel.LAYER_LOCATION, ThrownRockModel::createBodyLayer);
         event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
     }
 
@@ -222,20 +225,24 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
-        event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), AirGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), EnderGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), AirGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), IceGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), LifeGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), LifeGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), EnderGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN_ARM.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.THROWN_SICKLE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), ThrownRockRenderer::new);
+        event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
+        event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
+        event.registerEntityRenderer(AMEntities.MAGE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
         event.registerEntityRenderer(AMEntities.MANA_VORTEX.get(), EmptyRenderer::new);
-        event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
-        event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
