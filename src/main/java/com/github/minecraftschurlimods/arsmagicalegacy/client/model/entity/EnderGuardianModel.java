@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class EnderGuardianModel extends EntityModel<EnderGuardian> {
+public class EnderGuardianModel extends AMEntityModel<EnderGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_guardian"), "main");
     private final ModelPart head;
     private final ModelPart neck;
@@ -38,60 +38,59 @@ public class EnderGuardianModel extends EntityModel<EnderGuardian> {
     private final ModelPart leftWing;
 
     public EnderGuardianModel(ModelPart root) {
-        head = root.getChild("head");
-        neck = root.getChild("neck");
-        body = root.getChild("body");
-        tail = root.getChild("tail");
-        topRib = root.getChild("top_rib");
-        middleRib = root.getChild("middle_rib");
-        bottomRib = root.getChild("bottom_rib");
-        backbone1 = root.getChild("backbone1");
-        backbone2 = root.getChild("backbone2");
-        backbone3 = root.getChild("backbone3");
-        backbone4 = root.getChild("backbone4");
-        rightArm = root.getChild("right_arm");
-        rightHand = root.getChild("right_hand");
-        rightInnerWing = root.getChild("right_inner_wing");
-        rightOuterWing = root.getChild("right_outer_wing");
-        rightWing = root.getChild("right_wing");
-        leftArm = root.getChild("left_arm");
-        leftHand = root.getChild("left_hand");
-        leftInnerWing = root.getChild("left_inner_wing");
-        leftOuterWing = root.getChild("left_outer_wing");
-        leftWing = root.getChild("left_wing");
+        head = addPart(root, "head");
+        neck = addPart(root, "neck");
+        body = addPart(root, "body");
+        tail = addPart(root, "tail");
+        topRib = addPart(root, "top_rib");
+        middleRib = addPart(root, "middle_rib");
+        bottomRib = addPart(root, "bottom_rib");
+        backbone1 = addPart(root, "backbone1");
+        backbone2 = addPart(root, "backbone2");
+        backbone3 = addPart(root, "backbone3");
+        backbone4 = addPart(root, "backbone4");
+        rightArm = addPart(root, "right_arm");
+        rightHand = addPart(root, "right_hand");
+        rightInnerWing = addPart(root, "right_inner_wing");
+        rightOuterWing = addPart(root, "right_outer_wing");
+        rightWing = addPart(root, "right_wing");
+        leftArm = addPart(root, "left_arm");
+        leftHand = addPart(root, "left_hand");
+        leftInnerWing = addPart(root, "left_inner_wing");
+        leftOuterWing = addPart(root, "left_outer_wing");
+        leftWing = addPart(root, "left_wing");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition md = new MeshDefinition();
         PartDefinition pd = md.getRoot();
-        ModelUtil.addCube(pd, "head", 0, 0, -4, -8, -4, 8, 8, 8, 0, -6, 0);
-        ModelUtil.addCube(pd, "neck", 0, 16, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
-        ModelUtil.addCube(pd, "body", 0, 24, -2, -7, -2, 4, 14, 4, 0, 1, 0);
-        ModelUtil.addCube(pd, "tail", 16, 24, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, (float) (Math.PI / 6), 0, 0);
-        ModelUtil.addCube(pd, "top_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, -2, 0);
-        ModelUtil.addCube(pd, "middle_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 1, 0);
-        ModelUtil.addCube(pd, "bottom_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 4, 0);
-        ModelUtil.addCube(pd, "backbone1", 20, 20, -1, -1, 2, 2, 2, 1, 0, -4, 0);
-        ModelUtil.addCube(pd, "backbone2", 20, 20, -1, -1, 2, 2, 2, 1, 0, -1, 0);
-        ModelUtil.addCube(pd, "backbone3", 20, 20, -1, -1, 2, 2, 2, 1, 0, 2, 0);
-        ModelUtil.addCube(pd, "backbone4", 20, 20, -1, -1, 2, 2, 2, 1, 0, 5, 0);
-        ModelUtil.addCube(pd, "right_arm", 32, 0, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(pd, "right_hand", 32, 14, -8, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(pd, "right_inner_wing", 0, 42, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, -(float) (7 * Math.PI / 72), (float) Math.PI);
-        ModelUtil.addCube(pd, "right_outer_wing", 0, 46, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), (float) (Math.PI / 9));
-        ModelUtil.addMirroredCube(pd, "right_wing", 32, 26, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), (float) (Math.PI / 9));
-        ModelUtil.addCube(pd, "left_arm", 42, 0, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
-        ModelUtil.addCube(pd, "left_hand", 40, 14, 6, 10, -1, 2, 10, 2, 0, -5, 0);
-        ModelUtil.addCube(pd, "left_inner_wing", 0, 42, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, (float) (7 * Math.PI / 72), -(float) Math.PI);
-        ModelUtil.addCube(pd, "left_outer_wing", 0, 46, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), -(float) (Math.PI / 9));
-        ModelUtil.addCube(pd, "left_wing", 32, 26, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), -(float) (Math.PI / 9));
+        addCube(pd, "head", 0, 0, -4, -8, -4, 8, 8, 8, 0, -6, 0);
+        addCube(pd, "neck", 0, 16, -6, -1, -1, 12, 2, 2, 0, -4.999f, 0);
+        addCube(pd, "body", 0, 24, -2, -7, -2, 4, 14, 4, 0, 1, 0);
+        addCube(pd, "tail", 16, 24, -1, -8, 3, 2, 16, 2, 0, 15.5f, 1, (float) (Math.PI / 6), 0, 0);
+        addCube(pd, "top_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, -2, 0);
+        addCube(pd, "middle_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 1, 0);
+        addCube(pd, "bottom_rib", 0, 20, -4, -1, -1, 8, 2, 2, 0, 4, 0);
+        addCube(pd, "backbone1", 20, 20, -1, -1, 2, 2, 2, 1, 0, -4, 0);
+        addCube(pd, "backbone2", 20, 20, -1, -1, 2, 2, 2, 1, 0, -1, 0);
+        addCube(pd, "backbone3", 20, 20, -1, -1, 2, 2, 2, 1, 0, 2, 0);
+        addCube(pd, "backbone4", 20, 20, -1, -1, 2, 2, 2, 1, 0, 5, 0);
+        addCube(pd, "right_arm", 32, 0, -8, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        addCube(pd, "right_hand", 32, 14, -8, 10, -1, 2, 10, 2, 0, -5, 0);
+        addCube(pd, "right_inner_wing", 0, 42, 3.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, -(float) (7 * Math.PI / 72), (float) Math.PI);
+        addCube(pd, "right_outer_wing", 0, 46, -1, -1, -1, 14, 2, 2, -11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), (float) (Math.PI / 9));
+        AMEntityModel.addMirroredCube(pd, "right_wing", 32, 26, -13.5f, 1, 0, 15, 20, 0, -11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), (float) (Math.PI / 9));
+        addCube(pd, "left_arm", 42, 0, 6, -1, -1.5f, 2, 11, 3, 0, -5, 0);
+        addCube(pd, "left_hand", 40, 14, 6, 10, -1, 2, 10, 2, 0, -5, 0);
+        addCube(pd, "left_inner_wing", 0, 42, -13.5f, 0, -2, 10, 2, 2, 0, -6, 0, (float) Math.PI, (float) (7 * Math.PI / 72), -(float) Math.PI);
+        addCube(pd, "left_outer_wing", 0, 46, -13, -1, -1, 14, 2, 2, 11.5f, -4.5f, 5, 0, -(float) (Math.PI / 2), -(float) (Math.PI / 9));
+        addCube(pd, "left_wing", 32, 26, -1.5f, 1, 0, 15, 20, 0, 11.5f, -4.5f, 5, 0, (float) (Math.PI / 2), -(float) (Math.PI / 9));
         return LayerDefinition.create(md, 64, 64);
     }
 
     @Override
     public void setupAnim(EnderGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        head.xRot = headPitch * (float) Math.PI / 180f;
-        head.yRot = netHeadYaw * (float) Math.PI / 180f;
+        setHeadRotations(headPitch, netHeadYaw, head);
         float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45f) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45f));
         head.y = -6 + y;
         neck.y = -4.999f + y;
@@ -124,30 +123,5 @@ public class EnderGuardianModel extends EntityModel<EnderGuardian> {
         rightWing.yRot = (float) (Math.PI / 4) - rot;
         leftOuterWing.yRot = (float) (3 * Math.PI / 4) + rot;
         leftWing.yRot = -(float) (Math.PI / 4) + rot;
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        head.render(poseStack, buffer, packedLight, packedOverlay);
-        neck.render(poseStack, buffer, packedLight, packedOverlay);
-        body.render(poseStack, buffer, packedLight, packedOverlay);
-        tail.render(poseStack, buffer, packedLight, packedOverlay);
-        topRib.render(poseStack, buffer, packedLight, packedOverlay);
-        middleRib.render(poseStack, buffer, packedLight, packedOverlay);
-        bottomRib.render(poseStack, buffer, packedLight, packedOverlay);
-        backbone1.render(poseStack, buffer, packedLight, packedOverlay);
-        backbone2.render(poseStack, buffer, packedLight, packedOverlay);
-        backbone3.render(poseStack, buffer, packedLight, packedOverlay);
-        backbone4.render(poseStack, buffer, packedLight, packedOverlay);
-        rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-        rightHand.render(poseStack, buffer, packedLight, packedOverlay);
-        rightInnerWing.render(poseStack, buffer, packedLight, packedOverlay);
-        rightOuterWing.render(poseStack, buffer, packedLight, packedOverlay);
-        rightWing.render(poseStack, buffer, packedLight, packedOverlay);
-        leftArm.render(poseStack, buffer, packedLight, packedOverlay);
-        leftHand.render(poseStack, buffer, packedLight, packedOverlay);
-        leftInnerWing.render(poseStack, buffer, packedLight, packedOverlay);
-        leftOuterWing.render(poseStack, buffer, packedLight, packedOverlay);
-        leftWing.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

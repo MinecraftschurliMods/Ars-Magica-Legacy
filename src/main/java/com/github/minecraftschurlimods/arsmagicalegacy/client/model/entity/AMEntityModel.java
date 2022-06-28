@@ -1,11 +1,64 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.Entity;
 
-public final class ModelUtil {
+import java.util.HashSet;
+import java.util.Set;
+
+public class AMEntityModel<T extends Entity> extends EntityModel<T> {
+    private final Set<ModelPart> PARTS = new HashSet<>();
+
+    public AMEntityModel() {
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float r, float g, float b, float a) {
+        for (ModelPart mp : PARTS) {
+            mp.render(stack, consumer, light, overlay, r, g, b, a);
+        }
+    }
+
+    @Override
+    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    }
+
+    /**
+     * Adds a model part to a model by getting it from the root part.
+     *
+     * @param root The root model part.
+     * @param name The name of the part.
+     * @return The model part added.
+     */
+    public ModelPart addPart(ModelPart root, String name) {
+        ModelPart part = root.getChild(name);
+        PARTS.add(part);
+        return part;
+    }
+
+    /**
+     * Sets the given pitch and yaw values for all given model parts. Converts them from radians to degrees, as is required.
+     *
+     * @param pitch The pitch value to use.
+     * @param yaw   The yaw value to use.
+     * @param parts The parts to set the pitch and yaw for.
+     */
+    public void setHeadRotations(float pitch, float yaw, ModelPart... parts) {
+        float newPitch = pitch * (float) Math.PI / 180f;
+        float newYaw = yaw * (float) Math.PI / 180f;
+        for (ModelPart mp : parts) {
+            mp.xRot = newPitch;
+            mp.yRot = newYaw;
+        }
+    }
+
     /**
      * Adds a cube to a part definition.
      *
