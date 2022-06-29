@@ -27,14 +27,13 @@ public class ThrownRockModel extends AMEntityModel<ThrownRock> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition md = new MeshDefinition();
         PartDefinition pd = md.getRoot();
-        addCube(pd, "rock1", 1, 24, -7, -3, -2.999F, 8, 6, 7, 0, 1, 0);
-        addCube(pd, "rock2", 1, 23, 1, -3.5f, -4, 7, 7, 8, 0, 0.5f, 0);
-        addCube(pd, "rock3", 1, 24, -3, -3, -5, 8, 6, 7, 0, 3, 0);
+        addCube(pd, "rock1", 1, 24, -7, -4, -2.999F, 8, 6, 7, 0, 4, 0);
+        addCube(pd, "rock2", 1, 23, 1, -5, -4, 7, 7, 8, 0, 4, 0);
+        addCube(pd, "rock3", 1, 24, -3, -2, -5, 8, 6, 7, 0, 4, 0);
         return LayerDefinition.create(md, 64, 64);
     }
 
     @Override
     public void setupAnim(ThrownRock pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        setHeadRotations(pHeadPitch, pNetHeadYaw, rock1, rock2, rock3);
     }
 }

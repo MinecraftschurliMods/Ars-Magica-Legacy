@@ -1,0 +1,33 @@
+package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+
+public abstract class NonLiving3DModelRenderer<T extends Entity, M extends EntityModel<T>> extends EntityRenderer<T> {
+    private final M model;
+
+    public NonLiving3DModelRenderer(EntityRendererProvider.Context context, M model) {
+        super(context);
+        this.model = model;
+    }
+
+    @Override
+    public void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+        pMatrixStack.pushPose();
+        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90));
+        pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
+        model.setupAnim(pEntity, pPartialTicks, 0, pEntity.tickCount + pPartialTicks, pEntityYaw, pEntity.getXRot());
+        VertexConsumer vertexconsumer = pBuffer.getBuffer(model.renderType(getTextureLocation(pEntity)));
+        model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        pMatrixStack.popPose();
+        super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+    }
+}

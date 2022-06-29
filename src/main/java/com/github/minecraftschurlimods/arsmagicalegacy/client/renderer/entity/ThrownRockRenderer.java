@@ -21,25 +21,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.projectile.LlamaSpit;
 import org.jetbrains.annotations.NotNull;
 
-public class ThrownRockRenderer extends EntityRenderer<ThrownRock> {
+public class ThrownRockRenderer extends NonLiving3DModelRenderer<ThrownRock, ThrownRockModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/earth_guardian.png");
-    private final ThrownRockModel model;
 
-    public ThrownRockRenderer(final EntityRendererProvider.Context context) {
-        super(context);
-        model = new ThrownRockModel(context.bakeLayer(ThrownRockModel.LAYER_LOCATION));
-    }
-
-    @Override
-    public void render(ThrownRock pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
-        pMatrixStack.pushPose();
-        pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90));
-        pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
-        model.setupAnim(pEntity, pPartialTicks, 0, -0.1F, 0, 0);
-        VertexConsumer vertexconsumer = pBuffer.getBuffer(model.renderType(TEXTURE));
-        model.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
-        pMatrixStack.popPose();
-        super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+    public ThrownRockRenderer(EntityRendererProvider.Context context) {
+        super(context, new ThrownRockModel(context.bakeLayer(ThrownRockModel.LAYER_LOCATION)));
     }
 
     @Override
