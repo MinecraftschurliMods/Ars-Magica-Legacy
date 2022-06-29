@@ -33,7 +33,6 @@ public class ThrownRockRenderer extends EntityRenderer<ThrownRock> {
     @Override
     public void render(ThrownRock pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
         pMatrixStack.pushPose();
-        pMatrixStack.translate(0, 0.15, 0);
         pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90));
         pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
         model.setupAnim(pEntity, pPartialTicks, 0, -0.1F, 0, 0);
