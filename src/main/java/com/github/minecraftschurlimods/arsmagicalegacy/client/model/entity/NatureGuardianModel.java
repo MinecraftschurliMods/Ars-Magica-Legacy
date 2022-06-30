@@ -2,95 +2,27 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
-public class NatureGuardianModel extends AMEntityModel<NatureGuardian> {
+import java.util.Set;
+
+public class NatureGuardianModel extends AMBossEntityModel<NatureGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_guardian"), "main");
-    private final ModelPart hair1;
-    private final ModelPart hair2;
-    private final ModelPart hair3;
-    private final ModelPart hair4;
-    private final ModelPart hair5;
-    private final ModelPart hair6;
-    private final ModelPart hair7;
-    private final ModelPart hair8;
-    private final ModelPart head;
-    private final ModelPart neck;
-    private final ModelPart body1;
-    private final ModelPart body2;
-    private final ModelPart body3;
-    private final ModelPart body4;
-    private final ModelPart body5;
-    private final ModelPart core1;
-    private final ModelPart core2;
-    private final ModelPart core3;
-    private final ModelPart shoulder;
-    private final ModelPart rod1;
-    private final ModelPart rod2;
-    private final ModelPart rod3;
-    private final ModelPart rod4;
-    private final ModelPart rod5;
-    private final ModelPart rod6;
-    private final ModelPart rod7;
-    private final ModelPart rod8;
-    private final ModelPart leftArm;
-    private final ModelPart leftHand;
-    private final ModelPart shield;
-    private final ModelPart rightArm;
-    private final ModelPart rightHand;
-    private final ModelPart sickleRod;
-    private final ModelPart sickleHead;
-    private final ModelPart sickleBlade1;
-    private final ModelPart sickleBlade2;
-    private final ModelPart sickleBlade3;
+    private final Set<ModelPart> rightArm;
+    private final Set<ModelPart> sickle;
 
     public NatureGuardianModel(ModelPart root) {
-        hair1 = addPart(root, "hair1");
-        hair2 = addPart(root, "hair2");
-        hair3 = addPart(root, "hair3");
-        hair4 = addPart(root, "hair4");
-        hair5 = addPart(root, "hair5");
-        hair6 = addPart(root, "hair6");
-        hair7 = addPart(root, "hair7");
-        hair8 = addPart(root, "hair8");
-        head = addPart(root, "head");
-        neck = addPart(root, "neck");
-        body1 = addPart(root, "body1");
-        body2 = addPart(root, "body2");
-        body3 = addPart(root, "body3");
-        body4 = addPart(root, "body4");
-        body5 = addPart(root, "body5");
-        core1 = addPart(root, "core1");
-        core2 = addPart(root, "core2");
-        core3 = addPart(root, "core3");
-        shoulder = addPart(root, "shoulder");
-        rod1 = addPart(root, "rod1");
-        rod2 = addPart(root, "rod2");
-        rod3 = addPart(root, "rod3");
-        rod4 = addPart(root, "rod4");
-        rod5 = addPart(root, "rod5");
-        rod6 = addPart(root, "rod6");
-        rod7 = addPart(root, "rod7");
-        rod8 = addPart(root, "rod8");
-        leftArm = addPart(root, "left_arm");
-        leftHand = addPart(root, "left_hand");
-        shield = addPart(root, "shield");
-        rightArm = addPart(root, "right_arm");
-        rightHand = addPart(root, "right_hand");
-        sickleRod = addPart(root, "sickle_rod");
-        sickleHead = addPart(root, "sickle_head");
-        sickleBlade1 = addPart(root, "sickle_blade1");
-        sickleBlade2 = addPart(root, "sickle_blade2");
-        sickleBlade3 = addPart(root, "sickle_blade3");
+        rightArm = addParts(root, "right_arm", "right_hand");
+        sickle = addParts(root, "sickle_rod", "sickle_head", "sickle_blade1", "sickle_blade2", "sickle_blade3");
+        addParts(root, "neck", "body1", "body2", "body3", "body4", "body5", "shoulder", "left_arm", "left_hand", "shield");
+        addRotatingParts(root, "rod1", "rod2", "rod3", "rod4", "rod5", "rod6", "rod7", "rod8");
+        addRotatingCubes(root, 6, "core");
+        addHeadParts(root, "hair1", "hair2", "hair3", "hair4", "hair5", "hair6", "hair7", "hair8", "head");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -116,78 +48,31 @@ public class NatureGuardianModel extends AMEntityModel<NatureGuardian> {
         addCube(pd, "core3", 60, 45, -2, -2, -2, 4, 4, 4, 0, 10, 0);
         addCube(pd, "shoulder", 0, 36, -8, -1, -1, 16, 2, 2, 0, -31.5f, 0);
         addCube(pd, "rod1", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0);
-        addCube(pd, "rod2", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -(float) (Math.PI / 4), 0);
-        addCube(pd, "rod3", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -(float) (Math.PI / 2), 0);
-        addCube(pd, "rod4", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -(float) (3 * Math.PI / 4), 0);
-        addCube(pd, "rod5", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, (float) Math.PI, 0);
-        addCube(pd, "rod6", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, (float) (3 * Math.PI / 4), 0);
-        addCube(pd, "rod7", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, (float) (Math.PI / 2), 0);
-        addCube(pd, "rod8", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, (float) (Math.PI / 4), 0);
-        addCube(pd, "left_arm", 44, 53, 18, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, (float) (Math.PI / 12), 0, 0);
-        addCube(pd, "left_hand", 64, 53, -1.5f, -1, -2, 3, 12, 4, 10, -20.5f, 2, -(float) (Math.PI / 12), 0, 0);
-        addCube(pd, "shield", 0, 40, -10, -15, -17, 20, 30, 2, 0, -20.5f, 0, 0, (float) (Math.PI / 3), 0);
-        addCube(pd, "right_arm", 44, 53, -2, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, (float) (Math.PI / 12), 0, 0);
-        addCube(pd, "right_hand", 64, 53, -1.5f, -2, -2, 3, 12, 4, -10, -20.5f, 2, -(float) (5 * Math.PI / 12), 0, 0);
-        addCube(pd, "sickle_rod", 0, 73, -1, 10.5f, -32, 2, 2, 36, 10, -20.5f, 2, -(float) (Math.PI / 12), 0, 0);
-        addCube(pd, "sickle_head", 76, 73, -1.5f, 5.5f, -35, 3, 12, 3, 10, -20.5f, 2, -(float) (Math.PI / 12), 0, 0);
-        addCube(pd, "sickle_blade1", 84, 73, -0.5f, 3.5f, -34.5f, 1, 30, 3, 10, -20.5f, 2, -(float) (Math.PI / 12), 0, 0);
-        addCube(pd, "sickle_blade2", 96, 73, -0.499f, 11.5f, -46, 1, 12, 2, 10, -20.5f, 2, (float) (Math.PI / 12), 0, 0);
-        addCube(pd, "sickle_blade3", 102, 73, -0.5f, -3.5f, -51, 1, 8, 1, 10, -20.5f, 2, (float) (Math.PI / 4), 0, 0);
+        addCube(pd, "rod2", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -45, 0);
+        addCube(pd, "rod3", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -90, 0);
+        addCube(pd, "rod4", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, -135, 0);
+        addCube(pd, "rod5", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 180, 0);
+        addCube(pd, "rod6", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 135, 0);
+        addCube(pd, "rod7", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 90, 0);
+        addCube(pd, "rod8", 78, 53, -0.5f, 0, -4, 1, 14, 1, 0, 6, 0, 0, 45, 0);
+        addCube(pd, "left_arm", 44, 53, 18, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, 15, 0, 0);
+        addCube(pd, "left_hand", 64, 53, -1.5f, -1, -2, 3, 12, 4, 10, -20.5f, 2, -15, 0, 0);
+        addCube(pd, "shield", 0, 40, -10, -15, -17, 20, 30, 2, 0, -20.5f, 0, 0, 60, 0);
+        addCube(pd, "right_arm", 44, 53, -2, -5, -3.5f, 4, 14, 6, -10, -28.5f, 0.5f, 15, 0, 0);
+        addCube(pd, "right_hand", 64, 53, -1.5f, -2, -2, 3, 12, 4, -10, -20.5f, 2, -75, 0, 0);
+        addCube(pd, "sickle_rod", 0, 73, -1, 10.5f, -32, 2, 2, 36, 10, -20.5f, 2, -15, 0, 0);
+        addCube(pd, "sickle_head", 84, 73, -1.5f, 5.5f, -35, 3, 12, 3, 10, -20.5f, 2, -15, 0, 0);
+        addCube(pd, "sickle_blade1", 76, 73, -0.5f, 3.5f, -34.5f, 1, 30, 3, 10, -20.5f, 2, -15, 0, 0);
+        addCube(pd, "sickle_blade2", 96, 73, -0.499f, 11.5f, -46, 1, 12, 2, 10, -20.5f, 2, 15, 0, 0);
+        addCube(pd, "sickle_blade3", 102, 73, -0.5f, -3.5f, -51, 1, 8, 1, 10, -20.5f, 2, 45, 0, 0);
         return LayerDefinition.create(md, 128, 128);
     }
 
     @Override
-    public void setupAnim(NatureGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        setHeadRotations(headPitch, netHeadYaw, hair1, hair2, hair3, hair4, hair5, hair6, hair7, hair8, head);
-        float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45f) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45f));
-        hair1.y = -44 + y;
-        hair2.y = -44 + y;
-        hair3.y = -41.5f + y;
-        hair4.y = -38.5f + y;
-        hair5.y = -40 + y;
-        hair6.y = -38.5f + y;
-        hair7.y = -41.5f + y;
-        hair8.y = -44 + y;
-        head.y = -38 + y;
-        neck.y = -34 + y;
-        body1.y = -30 + y;
-        body2.y = -22 + y;
-        body3.y = -14 + y;
-        body4.y = -6 + y;
-        body5.y = 2 + y;
-        core1.y = 10 + y;
-        core2.y = 10 + y;
-        core3.y = 10 + y;
-        shoulder.y = -31.5f + y;
-        rod1.y = 6 + y;
-        rod2.y = 6 + y;
-        rod3.y = 6 + y;
-        rod4.y = 6 + y;
-        rod5.y = 6 + y;
-        rod6.y = 6 + y;
-        rod7.y = 6 + y;
-        rod8.y = 6 + y;
-        leftArm.y = -28.5f + y;
-        leftHand.y = -20.5f + y;
-        shield.y = -20.5f + y;
-        rightArm.y = -28.5f + y;
-        rightHand.y = -20.5f + y;
-        sickleRod.y = -20.5f + y;
-        sickleHead.y = -20.5f + y;
-        sickleBlade1.y = -20.5f + y;
-        sickleBlade2.y = -20.5f + y;
-        sickleBlade3.y = -20.5f + y;
-        core1.xRot = ageInTicks % 360 / 6f;
-        core2.yRot = (ageInTicks + 120) % 360 / 6f;
-        core3.zRot = (ageInTicks + 240) % 360 / 6f;
-        float rot = (float) ((ageInTicks % 360) * Math.PI / 45);
-        rod1.yRot = rot;
-        rod2.yRot = -(float) (Math.PI / 4) + rot;
-        rod3.yRot = -(float) (Math.PI / 2) + rot;
-        rod4.yRot = -(float) (3 * Math.PI / 4) + rot;
-        rod5.yRot = (float) Math.PI + rot;
-        rod6.yRot = (float) (3 * Math.PI / 4) + rot;
-        rod7.yRot = (float) (Math.PI / 2) + rot;
-        rod8.yRot = (float) (Math.PI / 4) + rot;
+    public void setupAnim(NatureGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        for (ModelPart mp : sickle) {
+            mp.visible = true;
+        }
     }
 }

@@ -2,22 +2,26 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.Util;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class AMEntityModel<T extends Entity> extends EntityModel<T> {
+    private static final float[] DEG_TO_RAD = Util.make(new float[360], array -> {
+        for (int i = -180; i < 180; i++) {
+            array[i + 180] = (float) Math.toRadians(i);
+        }
+    });
     private final Set<ModelPart> PARTS = new HashSet<>();
-
-    public AMEntityModel() {
-    }
 
     @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float r, float g, float b, float a) {
@@ -44,19 +48,17 @@ public class AMEntityModel<T extends Entity> extends EntityModel<T> {
     }
 
     /**
-     * Sets the given pitch and yaw values for all given model parts. Converts them from radians to degrees, as is required.
+     * Adds multiple model parts to a model by getting them from the root part.
      *
-     * @param pitch The pitch value to use.
-     * @param yaw   The yaw value to use.
-     * @param parts The parts to set the pitch and yaw for.
+     * @param root  The root model part.
+     * @param names The names of the parts.
      */
-    public void setHeadRotations(float pitch, float yaw, ModelPart... parts) {
-        float newPitch = pitch * (float) Math.PI / 180f;
-        float newYaw = yaw * (float) Math.PI / 180f;
-        for (ModelPart mp : parts) {
-            mp.xRot = newPitch;
-            mp.yRot = newYaw;
+    public Set<ModelPart> addParts(ModelPart root, String... names) {
+        Set<ModelPart> set = new HashSet<>();
+        for (String s : names) {
+            set.add(addPart(root, s));
         }
+        return set;
     }
 
     /**
@@ -101,7 +103,7 @@ public class AMEntityModel<T extends Entity> extends EntityModel<T> {
      * @param rotationZ The z rotation.
      */
     public static void addCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ, float rotationX, float rotationY, float rotationZ) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX == 0 ? 0 : degToRad(rotationX), rotationY == 0 ? 0 : degToRad(rotationY), rotationZ == 0 ? 0 : degToRad(rotationZ)));
     }
 
     /**
@@ -146,6 +148,17 @@ public class AMEntityModel<T extends Entity> extends EntityModel<T> {
      * @param rotationZ The z rotation.
      */
     public static void addMirroredCube(PartDefinition pd, String name, int texU, int texV, float originX, float originY, float originZ, float sizeX, float sizeY, float sizeZ, float offsetX, float offsetY, float offsetZ, float rotationX, float rotationY, float rotationZ) {
-        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE).mirror(false), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ));
+        pd.addOrReplaceChild(name, CubeListBuilder.create().texOffs(texU, texV).mirror().addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, CubeDeformation.NONE).mirror(false), PartPose.offsetAndRotation(offsetX, offsetY, offsetZ, rotationX == 0 ? 0 : degToRad(rotationX), rotationY == 0 ? 0 : degToRad(rotationY), rotationZ == 0 ? 0 : degToRad(rotationZ)));
+    }
+
+    /**
+     * Converts a double degrees value to a float radians value. Uses an internal cache for integer values.
+     *
+     * @param deg The degrees value to convert.
+     * @return The float radians value.
+     */
+    public static float degToRad(double deg) {
+        deg = Mth.wrapDegrees(deg);
+        return deg % 1 == 0 ? DEG_TO_RAD[(int) deg + 180] : (float) Math.toRadians(deg);
     }
 }

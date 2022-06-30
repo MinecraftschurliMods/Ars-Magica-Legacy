@@ -2,9 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -13,22 +10,8 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
+public class WaterGuardianModel extends AMBossEntityModel<WaterGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_guardian"), "main");
-    private final ModelPart topHead;
-    private final ModelPart middleHead;
-    private final ModelPart bottomHead;
-    private final ModelPart core1;
-    private final ModelPart core2;
-    private final ModelPart core3;
-    private final ModelPart northernOuterBody;
-    private final ModelPart easternOuterBody;
-    private final ModelPart southernOuterBody;
-    private final ModelPart westernOuterBody;
-    private final ModelPart northernInnerBody;
-    private final ModelPart easternInnerBody;
-    private final ModelPart southernInnerBody;
-    private final ModelPart westernInnerBody;
     private final ModelPart innerOrb1;
     private final ModelPart outerOrb1;
     private final ModelPart innerOrb2;
@@ -51,20 +34,6 @@ public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
     private final ModelPart outerTentacle4;
 
     public WaterGuardianModel(ModelPart root) {
-        topHead = addPart(root, "top_head");
-        middleHead = addPart(root, "middle_head");
-        bottomHead = addPart(root, "bottom_head");
-        core1 = addPart(root, "core1");
-        core2 = addPart(root, "core2");
-        core3 = addPart(root, "core3");
-        northernOuterBody = addPart(root, "northern_outer_body");
-        easternOuterBody = addPart(root, "eastern_outer_body");
-        southernOuterBody = addPart(root, "southern_outer_body");
-        westernOuterBody = addPart(root, "western_outer_body");
-        northernInnerBody = addPart(root, "northern_inner_body");
-        easternInnerBody = addPart(root, "eastern_inner_body");
-        southernInnerBody = addPart(root, "southern_inner_body");
-        westernInnerBody = addPart(root, "western_inner_body");
         innerOrb1 = addPart(root, "inner_orb1");
         outerOrb1 = addPart(root, "outer_orb1");
         innerOrb2 = addPart(root, "inner_orb2");
@@ -85,6 +54,8 @@ public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
         outerTentacle2 = addPart(root, "outer_tentacle2");
         outerTentacle3 = addPart(root, "outer_tentacle3");
         outerTentacle4 = addPart(root, "outer_tentacle4");
+        addParts(root, "top_head", "middle_head", "bottom_head", "northern_outer_body", "eastern_outer_body", "southern_outer_body", "western_outer_body", "northern_inner_body", "eastern_inner_body", "southern_inner_body", "western_inner_body");
+        addRotatingCube(root, 4, "core");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -104,18 +75,18 @@ public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
         addCube(pd, "eastern_inner_body", 44, 13, 3, -3, -3, 1, 3, 6, 0, 6, 0);
         addCube(pd, "southern_inner_body", 0, 26, -4, -3, -4, 8, 3, 1, 0, 6, 0);
         addCube(pd, "western_inner_body", 44, 13, -4, -3, -3, 1, 3, 6, 0, 6, 0);
-        addCube(pd, "inner_orb1", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, -(float) (Math.PI / 2), 0);
-        addCube(pd, "outer_orb1", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, (float) (Math.PI / 2), 0, 0);
-        addCube(pd, "inner_orb2", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, -(float) Math.PI, 0);
-        addCube(pd, "outer_orb2", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, (float) (Math.PI / 2), -(float) (Math.PI / 2), 0);
-        addCube(pd, "inner_orb3", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, (float) (Math.PI / 2), 0);
-        addCube(pd, "outer_orb3", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, (float) (Math.PI / 2), -(float) Math.PI, 0);
+        addCube(pd, "inner_orb1", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, -90, 0);
+        addCube(pd, "outer_orb1", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, 90, 0, 0);
+        addCube(pd, "inner_orb2", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, -180, 0);
+        addCube(pd, "outer_orb2", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, 90, -90, 0);
+        addCube(pd, "inner_orb3", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, 90, 0);
+        addCube(pd, "outer_orb3", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, 90, -180, 0);
         addCube(pd, "inner_orb4", 32, 16, -11, 8.5f, -0.5f, 2, 1, 1, 0, -6.5f, 0, 0, 0, 0);
-        addCube(pd, "outer_orb4", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, (float) (Math.PI / 2), (float) (Math.PI / 2), 0);
-        addCube(pd, "rod1", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, (float) (Math.PI / 2), (float) (3 * Math.PI / 4), 0);
-        addCube(pd, "rod2", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, (float) (Math.PI / 2), -(float) (3 * Math.PI / 4), 0);
-        addCube(pd, "rod3", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, (float) (Math.PI / 2), -(float) (Math.PI / 4), 0);
-        addCube(pd, "rod4", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, (float) (Math.PI / 2), (float) (Math.PI / 4), 0);
+        addCube(pd, "outer_orb4", 32, 13, -1, -10.5f, -10, 2, 1, 2, 0, -6.5f, 0, 90, 90, 0);
+        addCube(pd, "rod1", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, 90, 135, 0);
+        addCube(pd, "rod2", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, 90, -135, 0);
+        addCube(pd, "rod3", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, 90, -45, 0);
+        addCube(pd, "rod4", 22, 20, 9.5f, -0.5f, 4, 1, 1, 10, 0, 12, 0, 90, 45, 0);
         addCube(pd, "northern_tentacle", 60, 15, -0.5f, 0, -4, 1, 10, 1, 0, 6, 0);
         addCube(pd, "eastern_tentacle", 60, 15, -4, 0, -0.5f, 1, 10, 1, 0, 6, 0);
         addCube(pd, "southern_tentacle", 60, 15, -0.5f, 0, 3, 1, 10, 1, 0, 6, 0);
@@ -128,46 +99,9 @@ public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
     }
 
     @Override
-    public void setupAnim(WaterGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float y = 45 * (Mth.cos(ageInTicks % 360 * (float) Math.PI / 45f) - Mth.cos((ageInTicks - 1) % 360 * (float) Math.PI / 45f));
-        topHead.y = -0.5f + y;
-        middleHead.y = 0.5f + y;
-        bottomHead.y = 2.5f + y;
-        core1.y = 5 + y;
-        core2.y = 5 + y;
-        core3.y = 5 + y;
-        northernOuterBody.y = 6 + y;
-        easternOuterBody.y = 6 + y;
-        southernOuterBody.y = 6 + y;
-        westernOuterBody.y = 6 + y;
-        northernInnerBody.y = 6 + y;
-        easternInnerBody.y = 6 + y;
-        southernInnerBody.y = 6 + y;
-        westernInnerBody.y = 6 + y;
-        innerOrb1.y = -6.5f + y;
-        outerOrb1.y = -6.5f + y;
-        innerOrb2.y = -6.5f + y;
-        outerOrb2.y = -6.5f + y;
-        innerOrb3.y = -6.5f + y;
-        outerOrb3.y = -6.5f + y;
-        innerOrb4.y = -6.5f + y;
-        outerOrb4.y = -6.5f + y;
-        rod1.y = 12 + y;
-        rod2.y = 12 + y;
-        rod3.y = 12 + y;
-        rod4.y = 12 + y;
-        northernTentacle.y = 6 + y;
-        easternTentacle.y = 6 + y;
-        southernTentacle.y = 6 + y;
-        westernTentacle.y = 6 + y;
-        outerTentacle1.y = 6 + y;
-        outerTentacle2.y = 6 + y;
-        outerTentacle3.y = 6 + y;
-        outerTentacle4.y = 6 + y;
-        core1.xRot = ageInTicks % 360 / 4f;
-        core2.yRot = (ageInTicks + 120) % 360 / 4f;
-        core3.zRot = (ageInTicks + 240) % 360 / 4f;
-        float rot = (float) (((ageInTicks + entity.getSpinRotation()) % 360) * Math.PI / 180);
+    public void setupAnim(WaterGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        float rot = (float) (((pAgeInTicks + pEntity.getSpinRotation()) % 360) * Math.PI / 180);
         innerOrb1.yRot = -(float) (Math.PI / 2) + rot;
         outerOrb1.yRot = rot;
         innerOrb2.yRot = -(float) Math.PI + rot;
@@ -180,17 +114,17 @@ public class WaterGuardianModel extends AMEntityModel<WaterGuardian> {
         rod2.yRot = -(float) (3 * Math.PI / 4) + rot;
         rod3.yRot = -(float) (Math.PI / 4) + rot;
         rod4.yRot = (float) (Math.PI / 4) + rot;
-        float swing = Mth.sin(ageInTicks % 360 * (float) Math.PI / 45f) * 0.1f;
+        float swing = Mth.sin(degToRad(pAgeInTicks % 360 * 4)) * 0.1f;
         northernTentacle.xRot = -swing;
         easternTentacle.zRot = swing;
         southernTentacle.xRot = swing;
         westernTentacle.zRot = -swing;
         outerTentacle1.xRot = swing / 2f;
         outerTentacle1.zRot = swing / 2f;
-        outerTentacle3.xRot = -swing / 2f;
-        outerTentacle3.zRot = -swing / 2f;
         outerTentacle2.xRot = swing / 2f;
         outerTentacle2.zRot = -swing / 2f;
+        outerTentacle3.xRot = -swing / 2f;
+        outerTentacle3.zRot = -swing / 2f;
         outerTentacle4.xRot = -swing / 2f;
         outerTentacle4.zRot = swing / 2f;
     }
