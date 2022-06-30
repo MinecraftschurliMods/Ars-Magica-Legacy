@@ -28,7 +28,7 @@ public class AMBossEntityModel<T extends Entity> extends AMEntityModel<T> {
         }
         float rot = degToRad(pAgeInTicks);
         for (Map.Entry<ModelPart, Float> entry : ROTATING_PARTS.entrySet()) {
-            entry.getKey().yRot = entry.getValue() + rot;
+            entry.getKey().yRot = degToRad(entry.getValue()) + rot;
         }
         for (Map.Entry<Triple<ModelPart, ModelPart, ModelPart>, Float> entry : ROTATING_CUBES.entrySet()) {
             float size = entry.getValue();

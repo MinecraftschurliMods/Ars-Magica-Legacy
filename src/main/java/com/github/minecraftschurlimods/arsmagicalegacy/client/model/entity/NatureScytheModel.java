@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownSickle;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureScythe;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -9,15 +9,15 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class ThrownSickleModel extends AMEntityModel<ThrownSickle> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "thrown_sickle"), "main");
+public class NatureScytheModel extends AMEntityModel<NatureScythe> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_scythe"), "main");
     private final ModelPart rod;
     private final ModelPart head;
     private final ModelPart blade1;
     private final ModelPart blade2;
     private final ModelPart blade3;
 
-    public ThrownSickleModel(ModelPart root) {
+    public NatureScytheModel(ModelPart root) {
         rod = addPart(root, "rod");
         head = addPart(root, "head");
         blade1 = addPart(root, "blade1");
@@ -37,9 +37,9 @@ public class ThrownSickleModel extends AMEntityModel<ThrownSickle> {
     }
 
     @Override
-    public void setupAnim(ThrownSickle pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    public void setupAnim(NatureScythe pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        float rot = (float) (pAgeInTicks * Math.PI / 45);
+        float rot = (float) (pAgeInTicks * Math.PI / 30);
         rod.xRot = rot;
         head.xRot = rot;
         blade1.xRot = rot;

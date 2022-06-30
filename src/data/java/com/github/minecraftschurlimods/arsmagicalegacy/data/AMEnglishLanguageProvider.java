@@ -12,6 +12,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
@@ -23,6 +24,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTr
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -140,6 +142,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
+        itemIdTranslation(AMItems.NATURE_SCYTHE);
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
@@ -188,10 +191,14 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.LIFE_GUARDIAN);
         entityIdTranslation(AMEntities.ARCANE_GUARDIAN);
         entityIdTranslation(AMEntities.ENDER_GUARDIAN);
+        addEntityType(AMEntities.WINTERS_GRASP, "Winter's Grasp");
+        entityIdTranslation(AMEntities.NATURE_SCYTHE);
+        entityIdTranslation(AMEntities.THROWN_ROCK);
+        entityIdTranslation(AMEntities.WHIRLWIND);
         entityIdTranslation(AMEntities.DRYAD);
         entityIdTranslation(AMEntities.MAGE);
         entityIdTranslation(AMEntities.MANA_CREEPER);
-        entityIdTranslation(AMEntities.WHIRLWIND);
+        entityIdTranslation(AMEntities.MANA_VORTEX);
         abilityIdTranslation(AMAbilities.FIRE_RESISTANCE, "After using fire spells for some time, you develop some resistance to fire. As you delve deeper, you notice the resistance getting stronger and stronger.$(br2)Affinity: Fire$(br)Range: 1 - 100 %");
         abilityIdTranslation(AMAbilities.FIRE_PUNCH, "Becoming part fire, enemies you hit now get set on fire.$(br2)Affinity: Fire$(br)Range: 100 %");
         addAbility(AMAbilities.WATER_DAMAGE_FIRE, "Water Damage (Fire)", "Having fun with fire magic has made you less suitable for water. You will take damage in water, though not enough to kill you on its own.$(br2)Affinity: Fire$(br)Range: 50 - 100 %");
@@ -344,6 +351,20 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         configTranslation("duration", "Duration of effect-based components, in ticks.");
+        damageSourceTranslation(AMDamageSources.NATURE_SCYTHE, "%1$s was sliced open");
+        damageSourceTranslation(AMDamageSources.THROWN_ROCK, "%1$s was crushed under a rock");
+        damageSourceTranslation(AMDamageSources.WIND, "%1$s couldn't withstand such enormous wind speeds");
+        arcaneCompendiumTranslation("affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
+        arcaneCompendiumTranslation("affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
+        arcaneCompendiumTranslation("affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
+        arcaneCompendiumTranslation("affinities.air.page0.text", "The air affinity is associated with jumping, flying and falling. Many of them use effects, such as $(l:components/jump_boost)Jump Boost$(), $(l:components/levitation)Levitation$() or $(l:components/slow_falling)Slow Falling$().");
+        arcaneCompendiumTranslation("affinities.ice.page0.text", "The ice affinity is associated with snow, frost and slowness. Popular examples include $(l:components/frost_damage)Frost Damage$(), $(l:components/frost)Frost$() and $(l:components/slowness)Slowness$().");
+        arcaneCompendiumTranslation("affinities.lightning.page0.text", "The lightning affinity is associated with speed, power and weather. Notable examples are $(l:components/lightning_damage)Lightning Damage$(), $(l:components/haste)Haste$() and $(l:components/storm)Storm$().");
+        arcaneCompendiumTranslation("affinities.nature.page0.text", "The nature affinity is associated with attraction, growth and harvest. As such, the most common components are $(l:components/attract)Attract$(), $(l:components/grow)Grow$() and $(l:components/harvest)Harvest$().");
+        arcaneCompendiumTranslation("affinities.life.page0.text", "The life affinity is associated with healing, resurrection and anti-undead measures. They are usually defensive, like $(l:components/heal)Heal$(), $(l:components/regeneration)Regeneration$() and $(l:components/summon)Summon$().");
+        arcaneCompendiumTranslation("affinities.arcane.page0.text", "The arcane affinity is associated with mana, enchantment and trickery. Arcane components are indirectly offensive for the most part, seen for example with $(l:components/invisibility)Invisibility$(), $(l:components/disarm)Disarm$() and $(l:components/mana_drain)Mana Drain$().");
+        arcaneCompendiumTranslation("affinities.ender.page0.text", "The ender affinity is associated with teleportation, darkness and the night. Ender components are the most powerful, but also the most expensive, with examples such as $(l:components/blindness)Blindness$(), $(l:components/astral_distortion)Astral Distortion$() and $(l:components/transplace)Transplace$().");
+        arcaneCompendiumTranslation("components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
         add(TranslationConstants.ALTAR_CORE_LOW_POWER, "Altar has not enough power!");
         add(TranslationConstants.CRYSTAL_WRENCH_TOO_FAR, "You cannot perform this action over such distance!");
         add(TranslationConstants.SPELL_BURNOUT, "Burnout: %d");
@@ -421,18 +442,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(EtheriumType.DARK.getTranslationKey(), "Dark Etherium");
         add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
         add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.air.page0.text", "The air affinity is associated with jumping, flying and falling. Many of them use effects, such as $(l:components/jump_boost)Jump Boost$(), $(l:components/levitation)Levitation$() or $(l:components/slow_falling)Slow Falling$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.ice.page0.text", "The ice affinity is associated with snow, frost and slowness. Popular examples include $(l:components/frost_damage)Frost Damage$(), $(l:components/frost)Frost$() and $(l:components/slowness)Slowness$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.lightning.page0.text", "The lightning affinity is associated with speed, power and weather. Notable examples are $(l:components/lightning_damage)Lightning Damage$(), $(l:components/haste)Haste$() and $(l:components/storm)Storm$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.nature.page0.text", "The nature affinity is associated with attraction, growth and harvest. As such, the most common components are $(l:components/attract)Attract$(), $(l:components/grow)Grow$() and $(l:components/harvest)Harvest$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.life.page0.text", "The life affinity is associated with healing, resurrection and anti-undead measures. They are usually defensive, like $(l:components/heal)Heal$(), $(l:components/regeneration)Regeneration$() and $(l:components/summon)Summon$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.arcane.page0.text", "The arcane affinity is associated with mana, enchantment and trickery. Arcane components are indirectly offensive for the most part, seen for example with $(l:components/invisibility)Invisibility$(), $(l:components/disarm)Disarm$() and $(l:components/mana_drain)Mana Drain$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.affinities.ender.page0.text", "The ender affinity is associated with teleportation, darkness and the night. Ender components are the most powerful, but also the most expensive, with examples such as $(l:components/blindness)Blindness$(), $(l:components/astral_distortion)Astral Distortion$() and $(l:components/transplace)Transplace$().");
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium.components.summon.page1.text", "Summoned creatures drop no loot, and no xp, but can be interacted with normally, such as breeding, milking cows, or riding horses. Horses are the exception to the item drop rule and will drop saddles and armor given to them.$(br2)Tameable creatures such as wolves and cats are automatically tamed to their owner upon summoning.");
-        add("death.attack.wind", "%1$s couldn't withstand such enormous wind speeds");
+        add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
         add("potion.potency.7", "VII");
@@ -586,7 +596,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     private void skillTranslation(ResourceLocation skill, String name, String description, String compendiumType, String compendiumText) {
         add(Util.makeDescriptionId("skill", skill) + ".name", name);
         add(Util.makeDescriptionId("skill", skill) + ".description", description);
-        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumType + "." + skill.getPath() + ".page0.text", compendiumText);
+        arcaneCompendiumTranslation(compendiumType + "." + skill.getPath() + ".page0.text", compendiumText);
     }
 
     /**
@@ -714,6 +724,26 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    /**
+     * Adds a damage source translation.
+     *
+     * @param damageSource The damage source to add the translation for.
+     * @param translation  The translation to use.
+     */
+    private void damageSourceTranslation(DamageSource damageSource, String translation) {
+        add("death.attack." + damageSource.getMsgId(), translation);
+    }
+
+    /**
+     * Adds a damage source translation.
+     *
+     * @param compendiumEntry The compendium entry to add the translation for.
+     * @param translation     The translation to use.
+     */
+    private void arcaneCompendiumTranslation(String compendiumEntry, String translation) {
+        add("item." + ArsMagicaAPI.MOD_ID + "arcane_compendium." + compendiumEntry, translation);
     }
 
     private void add(ITranslatable translatable, String translation) {

@@ -19,11 +19,11 @@ public class IceGuardianModel extends AMBossEntityModel<IceGuardian> {
     public IceGuardianModel(ModelPart root) {
         addParts(root, "top_body", "middle_body", "bottom_body", "right_shoulder", "left_shoulder");
         addHeadParts(root, "right_eye", "left_eye", "top_head", "middle_head", "bottom_head");
-        addRotatingParts(root, "rod1", "rod2", "rod3", "rod4", "cube1", "cube2", "cube3", "cube4");
+        addRotatingParts(root, "cube1", "cube2", "cube3", "cube4", "rod1", "rod2", "rod3", "rod4");
         addRotatingCube(root, 6, "core");
         addRotatingCubes(root, 4, "right_core", "left_core");
         rightArm = addPositiveSwingingParts(root, "right_arm", "right_hand", "right_outer_fingers", "right_inner_fingers", "right_thumb");
-        leftArm = addPositiveSwingingParts(root, "left_arm", "left_hand", "left_outer_fingers", "left_inner_fingers", "left_thumb");
+        leftArm = addNegativeSwingingParts(root, "left_arm", "left_hand", "left_outer_fingers", "left_inner_fingers", "left_thumb");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -42,7 +42,7 @@ public class IceGuardianModel extends AMBossEntityModel<IceGuardian> {
         addCube(pd, "core3", 94, 32, -3, -3, -3, 6, 6, 6, 0, 15, 0);
         addCube(pd, "cube1", 118, 14, -1.5f, -1.5f, -9, 3, 3, 1, 0, 15, 0);
         addCube(pd, "cube2", 118, 14, -1.5f, -1.5f, -9, 3, 3, 1, 0, 15, 0, 0, 90, 0);
-        addCube(pd, "cube3", 118, 14, -1.5f, -1.5f, -9, 3, 3, 1, 0, 15, 0, 0, 180, 0);
+        addCube(pd, "cube3", 118, 14, -1.5f, -1.5f, -9, 3, 3, 1, 0, 15, 0, 0, -180, 0);
         addCube(pd, "cube4", 118, 14, -1.5f, -1.5f, -9, 3, 3, 1, 0, 15, 0, 0, -90, 0);
         addCube(pd, "rod1", 118, 0, -10, -6, -1, 2, 12, 2, 0, 15, 0, 0, -45, 0);
         addCube(pd, "rod2", 118, 0, -10, -6, -1, 2, 12, 2, 0, 15, 0, 0, 45, 0);
@@ -52,20 +52,20 @@ public class IceGuardianModel extends AMBossEntityModel<IceGuardian> {
         addMirroredCube(pd, "right_core1", 22, 24, -2, -2, -2, 4, 4, 4, 13, -14.5f, 0);
         addMirroredCube(pd, "right_core2", 22, 24, -2, -2, -2, 4, 4, 4, 13, -14.5f, 0);
         addMirroredCube(pd, "right_core3", 22, 24, -2, -2, -2, 4, 4, 4, 13, -14.5f, 0);
-        addCube(pd, "right_arm", 94, 0, 17, 0, -3, 6, 26, 6, 0, -10, 0);
-        addMirroredCube(pd, "right_hand", 82, 44, 17, 27, -2, 6, 1, 5, 0, -10, 0);
-        addMirroredCube(pd, "right_outer_fingers", 104, 44, 22, 26, -2, 1, 1, 5, 0, -10, 0);
-        addMirroredCube(pd, "right_inner_fingers", 104, 44, 17, 26, -2, 1, 1, 5, 0, -10, 0);
-        addMirroredCube(pd, "right_thumb", 82, 50, 17, 26, -3, 3, 2, 1, 0, -10, 0);
+        addCube(pd, "right_arm", 94, 0, -23, 0, -3, 6, 26, 6, 0, -10, 0);
+        addCube(pd, "right_hand", 82, 44, -23, 27, -2, 6, 1, 5, 0, -10, 0);
+        addCube(pd, "right_outer_fingers", 104, 44, -23, 26, -2, 1, 1, 5, 0, -10, 0);
+        addCube(pd, "right_inner_fingers", 104, 44, -18, 26, -2, 1, 1, 5, 0, -10, 0);
+        addCube(pd, "right_thumb", 82, 50, -20, 26, -3, 3, 2, 1, 0, -10, 0);
         addCube(pd, "left_shoulder", 50, 18, -5, -5, -6, 10, 10, 12, 7, -8, 0, 0, 0, -45);
         addCube(pd, "left_core1", 22, 24, -2, -2, -2, 4, 4, 4, -13, -14.5f, 0);
         addCube(pd, "left_core2", 22, 24, -2, -2, -2, 4, 4, 4, -13, -14.5f, 0);
         addCube(pd, "left_core3", 22, 24, -2, -2, -2, 4, 4, 4, -13, -14.5f, 0);
-        addCube(pd, "left_arm", 94, 0, -23, 0, -3, 6, 26, 6, 0, -10, 0);
-        addCube(pd, "left_hand", 82, 44, -23, 27, -2, 6, 1, 5, 0, -10, 0);
-        addCube(pd, "left_outer_fingers", 104, 44, -23, 26, -2, 1, 1, 5, 0, -10, 0);
-        addCube(pd, "left_inner_fingers", 104, 44, -18, 26, -2, 1, 1, 5, 0, -10, 0);
-        addCube(pd, "left_thumb", 82, 50, -20, 26, -3, 3, 2, 1, 0, -10, 0);
+        addCube(pd, "left_arm", 94, 0, 17, 0, -3, 6, 26, 6, 0, -10, 0);
+        addMirroredCube(pd, "left_hand", 82, 44, 17, 27, -2, 6, 1, 5, 0, -10, 0);
+        addMirroredCube(pd, "left_outer_fingers", 104, 44, 22, 26, -2, 1, 1, 5, 0, -10, 0);
+        addMirroredCube(pd, "left_inner_fingers", 104, 44, 17, 26, -2, 1, 1, 5, 0, -10, 0);
+        addMirroredCube(pd, "left_thumb", 82, 50, 17, 26, -3, 3, 2, 1, 0, -10, 0);
         return LayerDefinition.create(md, 128, 64);
     }
 

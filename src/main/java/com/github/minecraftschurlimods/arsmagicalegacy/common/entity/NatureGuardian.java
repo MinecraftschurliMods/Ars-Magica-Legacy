@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGo
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShieldBashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowSickleGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowScytheGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
@@ -85,7 +85,7 @@ public class NatureGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(3, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new StrikeGoal<>(this, NatureGuardianAction.STRIKE, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(3, new ThrowSickleGoal(this));
+        goalSelector.addGoal(3, new ThrowScytheGoal(this));
         goalSelector.addGoal(5, new ShieldBashGoal(this));
     }
 

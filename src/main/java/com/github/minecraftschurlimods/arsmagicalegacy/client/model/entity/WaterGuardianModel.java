@@ -119,13 +119,13 @@ public class WaterGuardianModel extends AMBossEntityModel<WaterGuardian> {
         easternTentacle.zRot = swing;
         southernTentacle.xRot = swing;
         westernTentacle.zRot = -swing;
-        outerTentacle1.xRot = swing / 2f;
-        outerTentacle1.zRot = swing / 2f;
-        outerTentacle2.xRot = swing / 2f;
-        outerTentacle2.zRot = -swing / 2f;
-        outerTentacle3.xRot = -swing / 2f;
-        outerTentacle3.zRot = -swing / 2f;
-        outerTentacle4.xRot = -swing / 2f;
-        outerTentacle4.zRot = swing / 2f;
+        outerTentacle1.xRot = swing;
+        outerTentacle1.zRot = swing;
+        outerTentacle2.xRot = swing;
+        outerTentacle2.zRot = -swing;
+        outerTentacle3.xRot = -swing;
+        outerTentacle3.zRot = -swing;
+        outerTentacle4.xRot = -swing;
+        outerTentacle4.zRot = swing;
     }
 }

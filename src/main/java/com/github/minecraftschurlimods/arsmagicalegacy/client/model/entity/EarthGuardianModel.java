@@ -21,7 +21,7 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
         rightArm = addParts(root, "right_shoulder_pad", "right_shoulder");
         rightArm.addAll(addPositiveSwingingParts(root, "right_arm", "right_hand"));
         leftArm = addParts(root, "left_shoulder_pad", "left_shoulder");
-        leftArm.addAll(addPositiveSwingingParts(root, "left_arm", "left_hand"));
+        leftArm.addAll(addNegativeSwingingParts(root, "left_arm", "left_hand"));
         rock = addParts(root, "rock1", "rock2", "rock3");
         addParts(root, "neck", "body", "rod");
         addHeadPart(root, "head");

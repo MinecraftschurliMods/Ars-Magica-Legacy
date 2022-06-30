@@ -32,7 +32,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LifeG
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LightningGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownSickleModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureScytheModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
@@ -51,7 +51,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Ma
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownSickleRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureScytheRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -218,7 +218,7 @@ public final class ClientInit {
         event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
         event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
         event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(ThrownSickleModel.LAYER_LOCATION, ThrownSickleModel::createBodyLayer);
+        event.registerLayerDefinition(NatureScytheModel.LAYER_LOCATION, NatureScytheModel::createBodyLayer);
         event.registerLayerDefinition(ThrownRockModel.LAYER_LOCATION, ThrownRockModel::createBodyLayer);
         event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
     }
@@ -238,8 +238,8 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), LifeGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), EnderGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN_ARM.get(), EmptyRenderer::new);
-        event.registerEntityRenderer(AMEntities.THROWN_SICKLE.get(), ThrownSickleRenderer::new);
+        event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), NatureScytheRenderer::new);
         event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), ThrownRockRenderer::new);
         event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
         event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);

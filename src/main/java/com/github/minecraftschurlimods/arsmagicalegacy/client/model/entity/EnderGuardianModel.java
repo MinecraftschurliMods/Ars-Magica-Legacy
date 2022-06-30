@@ -58,7 +58,7 @@ public class EnderGuardianModel extends AMBossEntityModel<EnderGuardian> {
     @Override
     public void setupAnim(EnderGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        float rot = Mth.cos(degToRad(pEntity.getWingFlapTime() + pAgeInTicks - pEntity.tickCount));
+        float rot = Mth.cos(degToRad(pEntity.getWingFlapTime() + pAgeInTicks));
         rightOuterWing.yRot = -degToRad(135) - rot;
         rightWing.yRot = degToRad(45) - rot;
         leftOuterWing.yRot = degToRad(135) + rot;

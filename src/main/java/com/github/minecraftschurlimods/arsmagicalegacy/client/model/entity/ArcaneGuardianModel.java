@@ -26,8 +26,8 @@ public class ArcaneGuardianModel extends AMBossEntityModel<ArcaneGuardian> {
         addCube(pd, "head", 88, 0, -3, -7, -3, 7, 7, 7, 0, -4.5f, 0);
         addCube(pd, "neck", 116, 8, -0.5f, -0.5f, -0.5f, 2, 1, 2, 0, -4, 0);
         addCube(pd, "hood_top", 88, 14, -4, -8, -3, 9, 1, 8, 0, -4.5f, 0);
-        addCube(pd, "hood_right", 106, 23, -4, -7, -3, 1, 8, 8, 0, -4.5f, 0);
-        addCube(pd, "hood_left", 88, 23, 4, -7, -3, 1, 8, 8, 0, -4.5f, 0);
+        addCube(pd, "hood_right", 88, 23, -4, -7, -3, 1, 8, 8, 0, -4.5f, 0);
+        addCube(pd, "hood_left", 106, 23, 4, -7, -3, 1, 8, 8, 0, -4.5f, 0);
         addCube(pd, "hood_back", 88, 39, -3, -7, 4, 7, 8, 1, 0, -4.5f, 0);
         addCube(pd, "body", 104, 39, -3.5f, -2, -1.5f, 8, 4, 4, 0, -1.5f, 0);
         addCube(pd, "rune", 0, 0, -21.5f, -22, 10.5f, 44, 44, 0, 0, 2, 0);

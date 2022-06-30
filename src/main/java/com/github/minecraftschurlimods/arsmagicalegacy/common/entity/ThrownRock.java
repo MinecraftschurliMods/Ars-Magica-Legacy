@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -102,7 +103,7 @@ public class ThrownRock extends Entity {
         if (!level.isClientSide()) {
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 if (!living.isBlocking()) {
-                    entity.hurt(DamageSource.mobAttack(getOwner()), 10);
+                    entity.hurt(AMDamageSources.THROWN_ROCK, 10);
                 } else if (living instanceof Player player && random.nextFloat() < 0.25f) {
                     player.getCooldowns().addCooldown(Items.SHIELD, 100);
                     level.broadcastEntityEvent(player, (byte) 30);
