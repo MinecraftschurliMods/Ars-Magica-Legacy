@@ -7,53 +7,70 @@ import net.minecraft.world.entity.player.Player;
  */
 public interface IMagicHelper {
     /**
-     * Get the current magic level for the given player.
-     *
-     * @param player the player to get the level for
-     * @return the level of the player
+     * @param player The player to get the magic level for.
+     * @return The magic level of the given player.
      */
     int getLevel(Player player);
 
     /**
-     * Get the current magic xp for the given player.
-     *
-     * @param player the player to get the xp for
-     * @return the xp of the player
+     * @param player The player to get the magic xp for.
+     * @return The magic xp of the given player.
      */
     float getXp(Player player);
 
     /**
-     * Award the given player the supplied amount of xp.
-     * (this method handles leveling automatically)
+     * @param level The current magic level.
+     * @return The magic xp required to level from the given level to the next magic level.
+     */
+    float getXpForNextLevel(int level);
+
+    /**
+     * Awards the given amount of magic xp to the given player. Also handles leveling.
      *
-     * @param player the player to award the xp to
-     * @param amount the amount of xp to award
+     * @param player The player to award the magic xp to.
+     * @param amount The amount of magic xp to award.
      */
     void awardXp(Player player, float amount);
 
     /**
-     * Check if the given player knows what magic is.
+     * Sets the given amount of magic xp for the given player. Also handles leveling.
      *
-     * @param player the player to check
-     * @return true if the entity knows magic, false otherwise
+     * @param player The player to set the magic xp for.
+     * @param amount The amount of magic xp to set.
+     */
+    void setXp(Player player, float amount);
+
+    /**
+     * Awards the given amount of magic levels to the given player. Also handles leveling.
+     *
+     * @param player The player to award the magic levels to.
+     * @param levels The amount of magic levels to award.
+     */
+    void awardLevel(Player player, int levels);
+
+    /**
+     * Sets the given magic level for the given player. Also handles leveling.
+     *
+     * @param player The player to set the magic level for.
+     * @param level  The magic level to set.
+     */
+    void setLevel(Player player, int level);
+
+    /**
+     * @param player The player to check.
+     * @return True if the player knows magic, false otherwise.
      */
     boolean knowsMagic(Player player);
 
     /**
-     * Check if the player has magic vision.
-     * (this is mainly a check for the magitech goggles)
-     *
-     * @param player the player to check
-     * @return true if the player has magic vision
+     * @param player The player to check.
+     * @return True if the player has magic vision, false otherwise.
      */
     //boolean hasMagicVision(Player player);
 
     /**
-     * Get the level of truesight the player has.
-     * (mainly through the potion effect)
-     *
-     * @param player the player to check
-     * @return the level of truesight
+     * @param player The player to check.
+     * @return The level of true sight the player has.
      */
     //int getTrueSightLevel(Player player);
 }

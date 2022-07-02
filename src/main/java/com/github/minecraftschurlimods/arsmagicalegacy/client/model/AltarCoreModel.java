@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Random;
 
 public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
-
     public AltarCoreModel(BakedModel originalModel) {
         super(originalModel);
     }

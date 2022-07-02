@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.shapes.projectile",
+  "name": "skill.arsmagicalegacy.projectile.name",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/projectile.png",
   "pages": [

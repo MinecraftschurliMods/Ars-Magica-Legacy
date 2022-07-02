@@ -14,10 +14,21 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:iron_sword",
-        "count": 1,
-        "type": "forge:nbt"
+        "item": "arsmagicalegacy:yellow_rune"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ingots/iron"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

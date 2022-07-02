@@ -1,0 +1,41 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.witchwood.name",
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:witchwood_log",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.witchwood.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood",
+      "recipe2": "arsmagicalegacy:stripped_witchwood"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_planks",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.witchwood.page2.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_slab",
+      "recipe2": "arsmagicalegacy:witchwood_stairs"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_fence",
+      "recipe2": "arsmagicalegacy:witchwood_fence_gate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_door",
+      "recipe2": "arsmagicalegacy:witchwood_trapdoor"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:witchwood_button",
+      "recipe2": "arsmagicalegacy:witchwood_pressure_plate"
+    }
+  ]
+}

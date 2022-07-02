@@ -1,0 +1,26 @@
+{
+  "trigger": {
+    "ingredients": [
+      {
+        "item": "arsmagicalegacy:tarma_root"
+      }
+    ],
+    "type": "arsmagicalegacy:item_drop"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:air_guardian_spawn_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
+    {
+      "height": {
+        "min": 128
+      },
+      "type": "arsmagicalegacy:height"
+    }
+  ],
+  "effect": {
+    "entity_type": "arsmagicalegacy:air_guardian",
+    "type": "arsmagicalegacy:spawn_entity"
+  }
+}

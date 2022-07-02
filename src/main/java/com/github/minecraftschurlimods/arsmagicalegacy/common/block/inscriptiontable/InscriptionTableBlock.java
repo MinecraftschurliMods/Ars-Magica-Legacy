@@ -60,28 +60,18 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        switch (pState.getValue(FACING)) {
-            case NORTH -> {
-                return pState.getValue(HALF) == Half.LEFT ? RIGHT_Z : LEFT_Z;
-            }
-            case EAST -> {
-                return pState.getValue(HALF) == Half.LEFT ? LEFT_X : RIGHT_X;
-            }
-            case SOUTH -> {
-                return pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
-            }
-            case WEST -> {
-                return pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
-            }
+        return switch (pState.getValue(FACING)) {
+            case NORTH -> pState.getValue(HALF) == Half.LEFT ? RIGHT_Z : LEFT_Z;
+            case EAST -> pState.getValue(HALF) == Half.LEFT ? LEFT_X : RIGHT_X;
+            case SOUTH -> pState.getValue(HALF) == Half.LEFT ? LEFT_Z : RIGHT_Z;
+            case WEST -> pState.getValue(HALF) == Half.LEFT ? RIGHT_X : LEFT_X;
             default -> throw new IllegalStateException("Unexpected value: " + pState.getValue(FACING));
-        }
+        };
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        if (pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getCounterClockWise())).canBeReplaced(pContext))
-            return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, Half.RIGHT);
-        return null;
+        return pContext.getLevel().getBlockState(pContext.getClickedPos().relative(pContext.getHorizontalDirection().getCounterClockWise())).canBeReplaced(pContext) ? defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, Half.RIGHT) : null;
     }
 
     @Override
@@ -117,13 +107,14 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.isSecondaryUseActive()) return InteractionResult.PASS;
         if (pLevel.isClientSide()) return InteractionResult.SUCCESS;
-        ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+        var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
             pPlayer.sendMessage(new TranslatableComponent(TranslationConstants.PREVENT), pPlayer.getUUID());
             return InteractionResult.FAIL;
         }
-        if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT)
+        if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) {
             pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
+        }
         NetworkHooks.openGui((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;

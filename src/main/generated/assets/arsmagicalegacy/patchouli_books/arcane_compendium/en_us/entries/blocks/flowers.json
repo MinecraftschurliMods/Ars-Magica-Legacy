@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A variety of flowers can be found scattered across the world."
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.flowers.page0.text"
     },
     {
       "type": "patchouli:spotlight",
@@ -35,7 +35,7 @@
       "type": "patchouli:spotlight",
       "anchor": "wakebloom",
       "item": "arsmagicalegacy:wakebloom",
-      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water essence."
+      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water affinity essences."
     },
     {
       "type": "patchouli:crafting",

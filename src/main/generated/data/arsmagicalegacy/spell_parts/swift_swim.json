@@ -21,10 +21,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
+        "type": "forge:nbt",
         "item": "minecraft:fishing_rod",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

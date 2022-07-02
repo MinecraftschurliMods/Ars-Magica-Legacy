@@ -1,0 +1,25 @@
+{
+  "name": {
+    "text": "Scramble Synapses"
+  },
+  "icon": "arsmagicalegacy:lighting-royal-3",
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:aoe",
+        "arsmagicalegacy:velocity",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:scramble_synapses"
+    ],
+    "data": {}
+  }
+}

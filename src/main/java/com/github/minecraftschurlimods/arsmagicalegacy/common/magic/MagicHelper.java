@@ -1,13 +1,16 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,6 +41,10 @@ public final class MagicHelper implements IMagicHelper {
         return MAGIC;
     }
 
+    private static void handleMagicSync(MagicHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(cap -> cap.onSync(holder)));
+    }
+
     @Override
     public int getLevel(Player player) {
         return getMagicHolder(player).getLevel();
@@ -49,19 +56,53 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     @Override
+    public float getXpForNextLevel(int level) {
+        return level == 0 ? 0 : Config.SERVER.LEVELING_MULTIPLIER.get().floatValue() * (float) Math.pow(Config.SERVER.LEVELING_BASE.get().floatValue(), level);
+    }
+
+    @Override
     public void awardXp(Player player, float amount) {
+        setXp(player, getXp(player) + amount);
+    }
+
+    @Override
+    public void setXp(Player player, float amount) {
         MagicHolder magicHolder = getMagicHolder(player);
-        float n = magicHolder.getXp() + amount;
-        int l = magicHolder.getLevel();
-        while (true) {
-            float xpForNextLevel = getXpForNextLevel(l);
-            if (n < xpForNextLevel) break;
-            n -= xpForNextLevel;
-            l++;
-            MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, l));
+        int level = magicHolder.getLevel();
+        float xp = Math.max(0, amount);
+        float xpForNextLevel = getXpForNextLevel(level);
+        while (xp >= xpForNextLevel) {
+            xp -= xpForNextLevel;
+            level++;
+            MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            if (player instanceof ServerPlayer serverPlayer) {
+                AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
+            }
+            xpForNextLevel = getXpForNextLevel(level);
         }
-        magicHolder.setXp(n);
-        magicHolder.setLevel(l);
+        magicHolder.setXp(xp);
+        magicHolder.setLevel(level);
+        syncMagic(player);
+    }
+
+    @Override
+    public void awardLevel(Player player, int level) {
+        setLevel(player, getLevel(player) + level);
+    }
+
+    @Override
+    public void setLevel(Player player, int level) {
+        MagicHolder magicHolder = getMagicHolder(player);
+        int oldLevel = magicHolder.getLevel();
+        magicHolder.setLevel(level);
+        if (level > oldLevel && level > 0) {
+            for (int i = oldLevel + 1; i <= level; i++) {
+                MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, i));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
+                }
+            }
+        }
         syncMagic(player);
     }
 
@@ -73,13 +114,19 @@ public final class MagicHelper implements IMagicHelper {
     /**
      * Called on player death, syncs the capability.
      *
-     * @param original The old player from the event.
-     * @param player   The new player from the event.
+     * @param original The now-dead player.
+     * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
+        syncMagic(player);
     }
 
+    /**
+     * Syncs the capability to the client.
+     *
+     * @param player The player to sync to.
+     */
     public void syncMagic(Player player) {
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(getMagicHolder(player)), player);
     }
@@ -93,15 +140,6 @@ public final class MagicHelper implements IMagicHelper {
             player.invalidateCaps();
         }
         return magicHolder;
-    }
-
-    private float getXpForNextLevel(int level) {
-        if (level == 0) return 0;
-        return 2.5f * (float) Math.pow(1.2, level);
-    }
-
-    private static void handleMagicSync(MagicHolder data, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(data)));
     }
 
     public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
@@ -135,7 +173,7 @@ public final class MagicHelper implements IMagicHelper {
         private int level;
 
         public float getXp() {
-            return this.xp;
+            return xp;
         }
 
         public void setXp(float xp) {
@@ -143,16 +181,21 @@ public final class MagicHelper implements IMagicHelper {
         }
 
         public int getLevel() {
-            return this.level;
+            return level;
         }
 
         public void setLevel(int level) {
             this.level = level;
         }
 
+        /**
+         * Syncs the values with the given data object.
+         *
+         * @param data The data object to sync with.
+         */
         public void onSync(MagicHolder data) {
-            this.xp = data.xp;
-            this.level = data.level;
+            xp = data.xp;
+            level = data.level;
         }
     }
 }

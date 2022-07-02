@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.banish_rain",
+  "name": "skill.arsmagicalegacy.banish_rain.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/banish_rain.png",
   "pages": [

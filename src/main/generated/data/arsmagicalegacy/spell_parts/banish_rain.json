@@ -2,7 +2,7 @@
   "manaCost": 750.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:water": 0.3
+    "arsmagicalegacy:water": 0.1
   },
   "recipe": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:ingots/gold"
+        "item": "minecraft:copper_ingot"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

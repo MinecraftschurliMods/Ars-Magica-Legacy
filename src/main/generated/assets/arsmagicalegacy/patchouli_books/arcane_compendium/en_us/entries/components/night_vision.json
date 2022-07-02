@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.night_vision",
+  "name": "skill.arsmagicalegacy.night_vision.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/night_vision.png",
   "pages": [

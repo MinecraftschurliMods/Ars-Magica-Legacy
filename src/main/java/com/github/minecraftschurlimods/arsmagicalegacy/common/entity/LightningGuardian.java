@@ -1,6 +1,16 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningBoltGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,25 +19,16 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class LightningGuardian extends AbstractBoss {
+    private LightningGuardianAction action;
+
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
-        super(type, level, BossEvent.BossBarColor.GREEN);
+        super(type, level, BossEvent.BossBarColor.YELLOW);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()).add(Attributes.MAX_HEALTH, 250D).add(Attributes.ARMOR, 18);
-    }
-
-    @Override
-    public float getEyeHeight(@NotNull Pose pPose) {
-        return 2;
-    }
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 4000).add(AMAttributes.MAX_BURNOUT.get(), 4000);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.LIGHTNING_GUARDIAN_HURT.get();
     }
 
@@ -53,10 +54,103 @@ public class LightningGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         super.aiStep();
+        if (getTarget() != null) {
+            if (!level.isClientSide() && distanceToSqr(getTarget()) > 64D && getAction() == LightningGuardianAction.IDLE) {
+                getNavigation().moveTo(getTarget(), 0.5f);
+            }
+        }
+        if (level.isClientSide()) {
+            int halfDist = 8;
+            int dist = 16;
+            if (getAction() == LightningGuardianAction.CHARGE) {
+                if (ticksInAction > 50) {
+                    // Particles
+                }
+                if (ticksInAction > 66) {
+                    // Particles
+                }
+            } else if (getAction() == LightningGuardianAction.LONG_CASTING) {
+                if (ticksInAction > 25 && ticksInAction < 150) {
+                    // Particles
+                }
+            }
+        }
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.isMagic() || pSource == DamageSource.MAGIC) {
+            pAmount *= 2;
+        } else if (pSource == DamageSource.DROWN) {
+            pAmount *= 4;
+        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+            pAmount *= -1;
+        }
         return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 20, 180));
+        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 20, 180));
+        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 20, 180));
+        goalSelector.addGoal(3, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 40, 240));
+        goalSelector.addGoal(5, new LightningBoltGoal(this));
+        goalSelector.addGoal(2, new LightningRodGoal(this));
+        goalSelector.addGoal(3, new StaticGoal(this));
+    }
+
+    @Override
+    public float getEyeHeight(Pose pPose) {
+        return 2;
+    }
+
+    public LightningGuardianAction getAction() {
+        return action;
+    }
+
+    public void setAction(final LightningGuardianAction action) {
+        this.action = action;
+        ticksInAction = 0;
+        setNoGravity(action == LightningGuardianAction.LONG_CASTING);
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return action == LightningGuardianAction.IDLE;
+    }
+
+    @Override
+    public boolean isCastingSpell() {
+        return action == LightningGuardianAction.CASTING;
+    }
+
+    @Override
+    public void setIsCastingSpell(boolean isCastingSpell) {
+        if (isCastingSpell) {
+            action = LightningGuardianAction.CASTING;
+        } else if (action == LightningGuardianAction.CASTING) {
+            action = LightningGuardianAction.IDLE;
+        }
+    }
+
+    public enum LightningGuardianAction {
+        IDLE(-1),
+        CASTING(-1),
+        CHARGE(-1),
+        LONG_CASTING(-1),
+        SMASH(20);
+
+        private final int maxActionTime;
+
+        LightningGuardianAction(int maxTime) {
+            maxActionTime = maxTime;
+        }
+
+        public int getMaxActionTime() {
+            return maxActionTime;
+        }
     }
 }

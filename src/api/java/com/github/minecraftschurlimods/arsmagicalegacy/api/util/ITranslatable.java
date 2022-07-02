@@ -9,63 +9,66 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.Objects;
 
 /**
- * Utility interface for providing easy localisation
+ * Utility interface for providing easy localization.
  */
 public interface ITranslatable {
     /**
-     * Get the id for the current object<br>
-     * used for generating the translation key
-     *
-     * @return the id of this object
+     * @return The id of this object.
      */
     ResourceLocation getId();
 
     /**
-     * Get the type of the object (e.g. "item", "block", etc.)
-     *
-     * @return the type of this object
+     * @return The type of this object, for example "block" or "item".
      */
     String getType();
 
     /**
-     * Get the translation key for this object
-     *
-     * @return the translation key for this object
+     * @return The translation key for this object.
      */
     default String getTranslationKey() {
         return Util.makeDescriptionId(getType(), getId());
     }
 
     /**
-     * Get the {@link Component} containing the display name of this object
-     *
-     * @return the {@link Component} containing the display name of this object
+     * @return A component containing the display name of this object.
      */
     default Component getDisplayName() {
         return new TranslatableComponent(getTranslationKey());
     }
 
     /**
-     * Like {@link ITranslatable} but also has a description
+     * ITranslatable that also has a description.
      */
     interface WithDescription extends ITranslatable {
         @Override
         default Component getDisplayName() {
-            return new TranslatableComponent(getTranslationKey() + ".name");
+            return new TranslatableComponent(getNameTranslationKey());
         }
 
         /**
-         * Get the {@link Component} containing the description of this object
-         *
-         * @return the {@link Component} containing the description of this object
+         * @return A component containing the description of this object
          */
         default Component getDescription() {
-            return new TranslatableComponent(getTranslationKey() + ".description");
+            return new TranslatableComponent(getDescriptionTranslationKey());
+        }
+
+        /**
+         * @return The translation key for the name
+         */
+        default String getNameTranslationKey() {
+            return ITranslatable.super.getTranslationKey() + ".name";
+        }
+
+        /**
+         * @return The translation key for the description
+         */
+        default String getDescriptionTranslationKey() {
+            return ITranslatable.super.getTranslationKey() + ".description";
         }
     }
 
     /**
-     * Like {@link ITranslatable} but handles the id via {@link IForgeRegistryEntry#getRegistryName()}
+     * ITranslatable that handles the id using a registry entry.
      */
     interface OfRegistryEntry<T extends IForgeRegistryEntry<T>> extends IForgeRegistryEntry<T>, ITranslatable {
         @Override
@@ -74,7 +77,7 @@ public interface ITranslatable {
         }
 
         /**
-         * Like {@link ITranslatable.OfRegistryEntry} but also has a description
+         * ITranslatable.OfRegistryEntry that also has a description.
          */
         interface WithDescription<T extends IForgeRegistryEntry<T>> extends OfRegistryEntry<T>, ITranslatable.WithDescription {
         }

@@ -3,13 +3,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * Interface representing an affinity
+ * Interface representing an affinity.
  */
 public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IAffinity>, ITranslatable.OfRegistryEntry<IAffinity> {
     String AFFINITY = "affinity";
@@ -26,39 +28,41 @@ public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IA
     ResourceLocation ENDER     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender");
 
     /**
-     * Will return the color used by the occulus to render this affinity depth.
-     *
-     * @return the color of the affinity
+     * @return The color of this affinity.
      */
     int getColor();
 
     /**
-     * Get the minor opposing affinities for this affinity.
-     *
-     * @return the minor opposing affinities for this affinity
+     * @return The minor opposing affinities for this affinity.
      */
     Set<ResourceLocation> getMinorOpposingAffinities();
 
     /**
-     * Get the major opposing affinities for this affinity.
-     *
-     * @return the major opposing affinities for this affinity
+     * @return The major opposing affinities for this affinity.
      */
     Set<ResourceLocation> getMajorOpposingAffinities();
 
     /**
-     * Get the adjacent affinities for this affinity.
-     *
-     * @return the adjacent affinities for this affinity
+     * @return The adjacent affinities for this affinity.
      */
     Set<ResourceLocation> getAdjacentAffinities();
 
     /**
-     * Get the direct opposing affinity for this affinity.
-     *
-     * @return the direct opposing affinity for this affinity
+     * @return The direct opposing affinity for this affinity.
      */
     ResourceLocation getDirectOpposingAffinity();
+
+    /**
+     * @return The sound that should be played when casting a spell with this affinity.
+     */
+    @Nullable
+    SoundEvent getCastSound();
+
+    /**
+     * @return The sound that should be played when casting a continuous spell with this affinity.
+     */
+    @Nullable
+    SoundEvent getLoopSound();
 
     @Override
     default String getType() {
@@ -67,7 +71,6 @@ public interface IAffinity extends IForgeRegistryEntry<IAffinity>, Comparable<IA
 
     @Override
     default int compareTo(IAffinity o) {
-        if (o.getRegistryName() == null && getRegistryName() != null) return 1;
-        return Objects.compare(getRegistryName(), o.getRegistryName(), ResourceLocation::compareTo);
+        return o.getRegistryName() == null && getRegistryName() != null ? 1 : Objects.compare(getRegistryName(), o.getRegistryName(), ResourceLocation::compareTo);
     }
 }

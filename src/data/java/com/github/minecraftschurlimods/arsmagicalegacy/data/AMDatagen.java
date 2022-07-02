@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.EventHandler;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -16,7 +16,7 @@ public class AMDatagen {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * @param evt the event object of the {@link GatherDataEvent}
+     * @param evt The event object of the {@link GatherDataEvent}.
      */
     @SubscribeEvent
     static void gatherData(GatherDataEvent evt) {
@@ -25,11 +25,16 @@ public class AMDatagen {
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, lang, evt.includeClient(), evt.includeServer()));
+        AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
+        if (evt.includeServer()) {
+            generator.addProvider(abilityProvider);
+        }
+        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         if (evt.includeClient()) {
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
             generator.addProvider(lang);
+            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
         }
         if (evt.includeServer()) {
             AMSkillProvider skillProvider = new AMSkillProvider(generator);
@@ -39,8 +44,13 @@ public class AMDatagen {
             generator.addProvider(new AMRecipeProvider(generator));
             AMTagsProvider.add(generator, existingFileHelper);
             generator.addProvider(new AMAltarStructureMaterialProvider(generator));
+            generator.addProvider(new AMObeliskFuelProvider(generator));
             generator.addProvider(new AMOcculusTabProvider(generator));
+            generator.addProvider(new AMPrefabSpellProvider(generator));
             generator.addProvider(new AMSpellPartDataProvider(generator));
+            generator.addProvider(new AMSpellTransformationProvider(generator));
+            generator.addProvider(new AMRitualProvider(generator));
         }
     }
+
 }

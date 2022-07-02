@@ -5,6 +5,16 @@
   "recipe": [
     {
       "ingredient": {
+        "type": "forge:nbt",
+        "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "tag": "forge:bones"
       },
       "count": 1,

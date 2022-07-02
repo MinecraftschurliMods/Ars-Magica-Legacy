@@ -2,22 +2,22 @@
   "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:arcane": 0.05
+    "arsmagicalegacy:earth": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:brown_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "nbt": "{Damage:0}",
-        "item": "minecraft:iron_chestplate",
+        "type": "forge:nbt",
+        "item": "minecraft:shield",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Damage:0}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

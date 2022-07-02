@@ -5,10 +5,10 @@
   "recipe": [
     {
       "ingredient": {
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+        "type": "forge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -22,13 +22,6 @@
     },
     {
       "ingredient": {
-        "item": "minecraft:brown_mushroom"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "item": "minecraft:poppy"
       },
       "count": 1,
@@ -36,10 +29,10 @@
     },
     {
       "ingredient": {
-        "nbt": "{Potion:\"minecraft:water\"}",
+        "type": "forge:nbt",
         "item": "minecraft:potion",
         "count": 1,
-        "type": "forge:nbt"
+        "nbt": "{Potion:\"minecraft:water\"}"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

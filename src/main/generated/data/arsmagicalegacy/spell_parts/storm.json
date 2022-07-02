@@ -1,9 +1,8 @@
 {
-  "manaCost": 15.0,
+  "manaCost": 750.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:lightning": 1.0E-5,
-    "arsmagicalegacy:nature": 1.0E-5
+    "arsmagicalegacy:lightning": 0.1
   },
   "recipe": [
     {
@@ -15,14 +14,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:gems/topaz"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:ghast_tear"
+        "item": "minecraft:lightning_rod"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

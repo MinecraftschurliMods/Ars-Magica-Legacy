@@ -1,0 +1,6 @@
+{
+  "affinity": "arsmagicalegacy:lightning",
+  "bounds": {
+    "min": 1.0
+  }
+}

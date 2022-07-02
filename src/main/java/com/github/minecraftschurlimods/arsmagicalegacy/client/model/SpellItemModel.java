@@ -26,29 +26,28 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.ItemTextureQuadConverter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import javax.annotation.Nullable;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON = RenderType.itemEntityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
 
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
+    private Optional<ResourceLocation> icon;
     private final ItemOverrides overrides = new ItemOverrides() {
-        @Nullable
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);
             return super.resolve(model, stack, level, entity, seed);
         }
     };
-
-    private Optional<ResourceLocation> icon;
     private ItemTransforms.TransformType cameraTransformType;
 
     public SpellItemModel(BakedModel originalModel) {
@@ -59,7 +58,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
         this.cameraTransformType = cameraTransformType;
         Player player = Minecraft.getInstance().player;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || this.icon.isEmpty()) {
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || icon.isEmpty()) {
             return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
         }
         super.handlePerspective(cameraTransformType, poseStack);
@@ -82,7 +81,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     private boolean isHand() {
-        return this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || this.cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
     }
 
     @Override
@@ -92,7 +91,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        if (this.cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
+        if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
             ResourceLocation key = icon.get();
             try {
                 return CACHE.get(key, () -> {
@@ -107,7 +106,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public boolean isLayered() {
-        return this.cameraTransformType == ItemTransforms.TransformType.GUI;
+        return cameraTransformType == ItemTransforms.TransformType.GUI;
     }
 
     @Override

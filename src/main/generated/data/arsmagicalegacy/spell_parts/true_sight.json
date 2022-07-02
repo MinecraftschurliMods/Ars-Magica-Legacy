@@ -1,11 +1,13 @@
 {
   "manaCost": 80.0,
   "reagents": [],
-  "affinities": {},
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.05
+  },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:white_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -19,7 +21,7 @@
     },
     {
       "ingredient": {
-        "tag": "forge:glass_panes"
+        "tag": "forge:glass"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

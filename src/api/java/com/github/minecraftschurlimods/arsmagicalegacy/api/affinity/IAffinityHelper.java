@@ -6,102 +6,98 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Interface representing an affinity helper
+ * Interface for affinity related helper methods.
  */
 public interface IAffinityHelper {
     /**
-     * Get the affinity essence {@link ItemStack} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.
-     *
-     * @param affinity the {@link ResourceLocation} of the {@link IAffinity affinity} to get the essence stack for
-     * @return the {@link ItemStack} containing the affinity essence
+     * @param affinity The id of the affinity to get the essence stack for.
+     * @return An item stack containing the affinity essence.
      */
     ItemStack getEssenceForAffinity(ResourceLocation affinity);
 
     /**
-     * Get the affinity essence {@link ItemStack} for the given {@link IAffinity affinity}.
-     *
-     * @param affinity the {@link IAffinity affinity} to get the essence stack for
-     * @return the {@link ItemStack} containing the affinity essence
+     * @param affinity The affinity to get the essence stack for.
+     * @return An item stack containing the affinity essence.
      */
     ItemStack getEssenceForAffinity(IAffinity affinity);
 
     /**
-     * Get the affinity tome {@link ItemStack} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.
-     *
-     * @param affinity the {@link ResourceLocation} of the {@link IAffinity affinity} to get the tome stack for
-     * @return the {@link ItemStack} containing the affinity tome
+     * @param affinity The id of the affinity to get the tome stack for.
+     * @return An item stack containing the affinity tome.
      */
     ItemStack getTomeForAffinity(ResourceLocation affinity);
 
     /**
-     * Get the affinity tome {@link ItemStack} for the given {@link IAffinity affinity}.
-     *
-     * @param affinity the {@link IAffinity affinity} to get the tome stack for
-     * @return the {@link ItemStack} containing the affinity tome
+     * @param affinity The affinity to get the tome stack for.
+     * @return An item stack containing the affinity tome.
      */
     ItemStack getTomeForAffinity(IAffinity affinity);
 
     /**
-     * Get the {@link ItemStack} of the given {@link Item} for the {@link IAffinity affinity} under the given {@link ResourceLocation}.
-     *
-     * @param item     the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
-     * @param affinity the {@link ResourceLocation} of the {@link IAffinity affinity} to set
-     * @param <T>      the {@link Item} implementing {@link IAffinityItem}
-     * @return the {@link ItemStack} of the given item with the given {@link IAffinity} stored in it
+     * @param item     The item to make the item stack from.
+     * @param affinity The id of the affinity to set on the item stack.
+     * @param <T>      The item implementing IAffinityItem.
+     * @return An item stack of the given item with the given affinity stored in it.
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation affinity);
 
     /**
-     * Get the {@link ItemStack} of the given {@link Item} for the given {@link IAffinity affinity}.
-     *
-     * @param item     the item to make the {@link ItemStack} from on which the {@link IAffinity} will be set
-     * @param affinity the {@link IAffinity affinity} to set
-     * @param <T>      the {@link Item} implementing {@link IAffinityItem}
-     * @return the {@link ItemStack} of the given item with the given {@link IAffinity} stored in it
+     * @param item     The item to make the item stack from.
+     * @param affinity The affinity to set on the item stack.
+     * @param <T>      The item implementing IAffinityItem.
+     * @return An item stack of the given item with the given affinity stored in it.
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity);
 
     /**
-     * Get the {@link IAffinity} from a {@link ItemStack} returns the NONE affinity if the stack does not contain an affinity.
-     *
-     * @param stack the stack to get the affinity from
-     * @return the {@link IAffinity} stored in the stack or the NONE affinity if the stack does not contain one
+     * @param stack The stack to get the affinity from.
+     * @return The affinity stored in the stack, or the NONE affinity if the stack does not contain one.
      */
     IAffinity getAffinityForStack(ItemStack stack);
 
     /**
-     * Get the affinity depth for a given player and affinity.
-     *
-     * @param player   the player to get the affinity depth for
-     * @param affinity the affinity to get the depth for
-     * @return the depth of the given player in the given affinity
+     * @param player   The player to get the affinity depth for.
+     * @param affinity The id of the affinity to get the depth for.
+     * @return The depth of the given player in the given affinity.
      */
     double getAffinityDepth(Player player, ResourceLocation affinity);
 
     /**
-     * Get the affinity depth for a given player and affinity.
-     *
-     * @param player   the player to get the affinity depth for
-     * @param affinity the affinity to get the depth for
-     * @return the depth of the given player in the given affinity
+     * @param player   The player to get the affinity depth for.
+     * @param affinity The affinity to get the depth for.
+     * @return The depth of the given player in the given affinity.
      */
     double getAffinityDepth(Player player, IAffinity affinity);
 
     /**
-     * Apply the affinity shift for the given player and affinity.
+     * @param player   The player to set the affinity depth for.
+     * @param affinity The id of the affinity to set the depth for.
+     * @param amount   The amount the affinity should have.
+     */
+    void setAffinityDepth(Player player, ResourceLocation affinity, float amount);
+
+    /**
+     * @param player   The player to set the affinity depth for.
+     * @param affinity The affinity to set the depth for.
+     * @param amount   The amount the affinity should have.
+     */
+    void setAffinityDepth(Player player, IAffinity affinity, float amount);
+
+    /**
+     * Applies the affinity shift for the given player and affinity.
      *
-     * @param player the player to shift the affinity for
-     * @param affinity the affinity to shift
-     * @param shift the amount to shift
+     * @param player   The player to shift the affinity for.
+     * @param affinity The affinity to shift.
+     * @param shift    The amount to shift.
      */
     void applyAffinityShift(Player player, ResourceLocation affinity, float shift);
 
     /**
-     * Apply the affinity shift for the given player and affinity.
+     * Applies the affinity shift for the given player and affinity.
      *
-     * @param player the player to shift the affinity for
-     * @param affinity the affinity to shift
-     * @param shift the amount to shift
+     * @param player   The player to shift the affinity for.
+     * @param affinity The affinity to shift.
+     * @param shift    The amount to shift.
      */
     void applyAffinityShift(Player player, IAffinity affinity, float shift);
 }

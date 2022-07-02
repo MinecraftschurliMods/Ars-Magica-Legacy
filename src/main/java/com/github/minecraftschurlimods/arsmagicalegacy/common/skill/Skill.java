@@ -39,22 +39,12 @@ public final class Skill implements ISkill {
     //@formatter:on
     private final int x;
     private final int y;
-    private ResourceLocation id;
     private final ResourceLocation occulusTab;
     private final Set<ResourceLocation> parents;
     private final Map<ResourceLocation, Integer> cost;
     private final boolean hidden;
+    private ResourceLocation id;
 
-    /**
-     * Creates a new skill.
-     *
-     * @param parents    The skill's parent set.
-     * @param cost       The skill cost.
-     * @param occulusTab The occulus tab to display the skill in.
-     * @param x          The X coordinate to display the skill at.
-     * @param y          The Y coordinate to display the skill at.
-     * @param hidden     Whether the skill is hidden or not.
-     */
     public Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, int x, int y, boolean hidden) {
         this.occulusTab = occulusTab;
         this.parents = parents;
@@ -64,24 +54,9 @@ public final class Skill implements ISkill {
         this.hidden = hidden;
     }
 
-    /**
-     * Creates a new skill. Also sets the id.
-     *
-     * @param id         The skill's id.
-     * @param parents    The skill's parent set.
-     * @param cost       The skill cost.
-     * @param occulusTab The occulus tab to display the skill in.
-     * @param x          The X coordinate to display the skill at.
-     * @param y          The Y coordinate to display the skill at.
-     * @param hidden     Whether the skill is hidden or not.
-     */
     public Skill(ResourceLocation id, Set<ResourceLocation> parents, Map<ResourceLocation, Integer> cost, ResourceLocation occulusTab, Integer x, Integer y, Boolean hidden) {
         this(parents, cost, occulusTab, x, y, hidden);
         setId(id);
-    }
-
-    void setId(ResourceLocation id) {
-        this.id = id;
     }
 
     @Override
@@ -97,6 +72,10 @@ public final class Skill implements ISkill {
     @Override
     public ResourceLocation getId() {
         return id;
+    }
+
+    void setId(ResourceLocation id) {
+        this.id = id;
     }
 
     @Override
@@ -123,7 +102,7 @@ public final class Skill implements ISkill {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != getClass()) return false;
-        var that = (Skill) obj;
+        Skill that = (Skill) obj;
         return Objects.equals(id, that.id) && Objects.equals(occulusTab, that.occulusTab) && Objects.equals(parents, that.parents) && x == that.x && y == that.y && Objects.equals(cost, that.cost) && hidden == that.hidden;
     }
 

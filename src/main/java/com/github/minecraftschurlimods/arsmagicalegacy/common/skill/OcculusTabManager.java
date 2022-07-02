@@ -30,6 +30,10 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
         return INSTANCE.get();
     }
 
+    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
+        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
+    }
+
     @Override
     public Optional<IOcculusTab> getOptional(ResourceLocation id) {
         return getOptional((Object) id);
@@ -53,9 +57,5 @@ public final class OcculusTabManager extends CodecDataManager<IOcculusTab> imple
     @Override
     public IOcculusTab getByIndex(int index) {
         return values().stream().sorted(Comparator.comparing(IOcculusTab::getOcculusIndex)).toArray(IOcculusTab[]::new)[index];
-    }
-
-    private static void validate(Map<ResourceLocation, IOcculusTab> data, Logger logger) {
-        data.forEach((id, tab) -> ((OcculusTab) tab).setId(id));
     }
 }

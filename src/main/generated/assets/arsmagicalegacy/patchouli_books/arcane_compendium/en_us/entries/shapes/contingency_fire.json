@@ -1,0 +1,16 @@
+{
+  "name": "skill.arsmagicalegacy.contingency_fire.name",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/contingency_fire.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_fire.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:contingency_fire"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/contingency_fire"
+}

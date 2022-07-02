@@ -1,5 +1,5 @@
 {
-  "manaCost": 300.0,
+  "manaCost": 40.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:life": 0.01
@@ -7,7 +7,7 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:black_rune"
+        "item": "arsmagicalegacy:magenta_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

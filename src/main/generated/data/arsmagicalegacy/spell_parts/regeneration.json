@@ -1,21 +1,20 @@
 {
-  "manaCost": 540.0,
+  "manaCost": 480.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:life": 0.05,
-    "arsmagicalegacy:nature": 0.05
+    "arsmagicalegacy:life": 0.05
   },
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:blue_rune"
+        "item": "arsmagicalegacy:pink_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:golden_apple"
+        "item": "minecraft:ghast_tear"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

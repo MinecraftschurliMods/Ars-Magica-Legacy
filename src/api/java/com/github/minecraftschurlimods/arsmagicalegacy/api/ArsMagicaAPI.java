@@ -1,261 +1,224 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.Unmodifiable;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
-public final class ArsMagicaAPI {
-    /**
-     * The modid of the mod
-     */
-    public static final String MOD_ID = "arsmagicalegacy";
-    private static final Lazy<IArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
-        try {
-            //noinspection unchecked
-            Class<? extends IArsMagicaAPI> clazz = (Class<? extends IArsMagicaAPI>) Class.forName(ArsMagicaAPI.class.getModule().getDescriptor().provides().stream().flatMap(provides -> provides.providers().stream()).findFirst().orElseThrow());
-            return clazz.getDeclaredConstructor().newInstance();
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
-            return StubArsMagicaAPI.INSTANCE;
-        }
-        /*var impl = ServiceLoader.load(FMLLoader.getGameLayer(), IArsMagicaAPI.class).findFirst();
-        if (!FMLEnvironment.production) {
-            return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI")));
-        }
-        return impl.orElseGet(() -> {
-            LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI, using a dummy");
-            return StubArsMagicaAPI.INSTANCE;
-        });*/
-    });
+@NonExtendable
+public interface ArsMagicaAPI {
+    String MOD_ID = "arsmagicalegacy";
 
-    private ArsMagicaAPI() {
+    class Internal {
+        private Internal() {}
+
+        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
+            Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
+            if (!FMLEnvironment.production) {
+                return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI!")));
+            }
+            return impl.orElseGet(() -> {
+                LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
+                return null;
+            });
+        });
     }
 
     /**
-     * Get the API Instance
+     * @return The API instance.
+     */
+    static ArsMagicaAPI get() {
+        return Internal.LAZY_INSTANCE.get();
+    }
+
+    /**
+     * @return The creative mode tab of the mod.
+     */
+    CreativeModeTab getCreativeModeTab();
+
+    /**
+     * @return The arcane compendium item stack.
+     */
+    ItemStack getBookStack();
+
+    /**
+     * @return The registry for skill points.
+     */
+    IForgeRegistry<ISkillPoint> getSkillPointRegistry();
+
+    /**
+     * @return The registry for affinities.
+     */
+    IForgeRegistry<IAffinity> getAffinityRegistry();
+
+    /**
+     * @return The registry for spell parts.
+     */
+    IForgeRegistry<ISpellPart> getSpellPartRegistry();
+
+    /**
+     * @return The registry for abilities.
+     */
+    IForgeRegistry<IAbility> getAbilityRegistry();
+
+    /**
+     * @return The registry for contingency types.
+     */
+    IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
+
+    /**
+     * @return The skill manager instance.
+     */
+    ISkillManager getSkillManager();
+
+    /**
+     * @return The occulus tab manager instance.
+     */
+    IOcculusTabManager getOcculusTabManager();
+
+    /**
+     * @return The spell data manager instance.
+     */
+    ISpellDataManager getSpellDataManager();
+
+    /**
+     * @return The ability manager instance.
+     */
+    IAbilityManager getAbilityManager();
+
+    /**
+     * @return The spell data manager instance.
+     */
+    ISpellTransformationManager getSpellTransformationManager();
+
+    /**
+     * @return The skill helper instance.
+     */
+    @Unmodifiable
+    ISkillHelper getSkillHelper();
+
+    /**
+     * @return The affinity helper instance.
+     */
+    @Unmodifiable
+    IAffinityHelper getAffinityHelper();
+
+    /**
+     * @return The magic helper instance.
+     */
+    @Unmodifiable
+    IMagicHelper getMagicHelper();
+
+    /**
+     * @return The mana helper instance.
+     */
+    @Unmodifiable
+    IManaHelper getManaHelper();
+
+    /**
+     * @return The burnout helper instance.
+     */
+    @Unmodifiable
+    IBurnoutHelper getBurnoutHelper();
+
+    /**
+     * @return The spell helper instance.
+     */
+    @Unmodifiable
+    ISpellHelper getSpellHelper();
+
+    /**
+     * @return The rift helper instance.
+     */
+    @Unmodifiable
+    IRiftHelper getRiftHelper();
+
+    /**
+     * @return The shrink helper instance.
+     */
+    @Unmodifiable
+    IShrinkHelper getShrinkHelper();
+
+    /**
+     * @return The etherium helper instance.
+     */
+    @Unmodifiable
+    IEtheriumHelper getEtheriumHelper();
+
+    /**
+     * @return The contingency helper instance.
+     */
+    @Unmodifiable
+    IContingencyHelper getContingencyHelper();
+
+    /**
+     * Opens the occulus gui for the given player.
      *
-     * @return the API Instance
+     * @param player The player to open the gui for.
      */
-    public static IArsMagicaAPI get() {
-        return LAZY_INSTANCE.get();
-    }
+    void openOcculusGui(Player player);
 
     /**
-     * The Interface representing the API
+     * Opens the spell customization gui for the given player.
+     *
+     * @param level  The level to open the gui in.
+     * @param player The player to open the gui for.
+     * @param stack  The spell item stack to open the gui for.
      */
-    @NonExtendable
-    public interface IArsMagicaAPI {
-        /**
-         * Get the {@link CreativeModeTab} of the mod
-         *
-         * @return the {@link CreativeModeTab} of the mod
-         */
-        CreativeModeTab getCreativeModeTab();
+    void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
 
-        /**
-         * Get the Arcane Compendium {@link ItemStack}
-         *
-         * @return the {@link ItemStack} for the Arcane Compendium
-         */
-        ItemStack getBookStack();
+    /**
+     * Make an instance of ISpell.
+     *
+     * @param shapeGroups    The shape groups to use.
+     * @param spellStack     The spell stack to use.
+     * @param additionalData The additional data to use.
+     * @return The spell instance.
+     */
+    ISpell makeSpell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData);
 
-        /**
-         * Get the registry for skill points.
-         *
-         * @return the registry for skill points
-         */
-        IForgeRegistry<ISkillPoint> getSkillPointRegistry();
-
-        /**
-         * Get the registry for affinities.
-         *
-         * @return the registry for affinities
-         */
-        IForgeRegistry<IAffinity> getAffinityRegistry();
-
-        /**
-         * Get the registry for spell parts.
-         *
-         * @return the registry for spell parts
-         */
-        IForgeRegistry<ISpellPart> getSpellPartRegistry();
-
-        /**
-         * Get the {@link ISkillManager} instance.
-         *
-         * @return the {@link ISkillManager} instance
-         */
-        ISkillManager getSkillManager();
-
-        /**
-         * Get the {@link IOcculusTabManager} instance.
-         *
-         * @return the {@link IOcculusTabManager} instance
-         */
-        IOcculusTabManager getOcculusTabManager();
-
-        /**
-         * Get the {@link ISpellDataManager} instance.
-         *
-         * @return the {@link ISpellDataManager} instance
-         */
-        ISpellDataManager getSpellDataManager();
-
-        /**
-         * Get the {@link ISkillHelper} instance.
-         *
-         * @return the {@link ISkillHelper} instance
-         */
-        ISkillHelper getSkillHelper();
-
-        /**
-         * Get the {@link IAffinityHelper} instance.
-         *
-         * @return the {@link IAffinityHelper} instance
-         */
-        IAffinityHelper getAffinityHelper();
-
-        /**
-         * Get the {@link IMagicHelper} instance.
-         *
-         * @return the {@link IMagicHelper} instance
-         */
-        IMagicHelper getMagicHelper();
-
-        /**
-         * Get the {@link IManaHelper} instance.
-         *
-         * @return the {@link IManaHelper} instance
-         */
-        IManaHelper getManaHelper();
-
-        /**
-         * Get the {@link IBurnoutHelper} instance.
-         *
-         * @return the {@link IBurnoutHelper} instance
-         */
-        IBurnoutHelper getBurnoutHelper();
-
-        /**
-         * Open the occulus gui for the given player.
-         *
-         * @param player the player to open the gui for
-         */
-        void openOcculusGui(Player player);
-
-        /**
-         * Get the {@link ISpellHelper} instance.
-         *
-         * @return the {@link ISpellHelper} instance
-         */
-        ISpellHelper getSpellHelper();
-
-        /**
-         * Open the spell customization gui for the given spell (the given stack).<br>
-         * Only works on the client.
-         */
-        void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private static class StubArsMagicaAPI implements IArsMagicaAPI {
-        private static final IArsMagicaAPI INSTANCE = new StubArsMagicaAPI();
-
-        @Override
-        public CreativeModeTab getCreativeModeTab() {
-            return CreativeModeTab.TAB_MISC;
-        }
-
-        @Override
-        public ItemStack getBookStack() {
-            return ItemStack.EMPTY;
-        }
-
-        @Override
-        public IForgeRegistry<ISkillPoint> getSkillPointRegistry() {
-            return null;
-        }
-
-        @Override
-        public IForgeRegistry<IAffinity> getAffinityRegistry() {
-            return null;
-        }
-
-        @Override
-        public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
-            return null;
-        }
-
-        @Override
-        public ISkillManager getSkillManager() {
-            return null;
-        }
-
-        @Override
-        public IOcculusTabManager getOcculusTabManager() {
-            return null;
-        }
-
-        @Override
-        public ISpellDataManager getSpellDataManager() {
-            return null;
-        }
-
-        @Override
-        public ISkillHelper getSkillHelper() {
-            return null;
-        }
-
-        @Override
-        public IAffinityHelper getAffinityHelper() {
-            return null;
-        }
-
-        @Override
-        public IMagicHelper getMagicHelper() {
-            return null;
-        }
-
-        @Override
-        public IManaHelper getManaHelper() {
-            return null;
-        }
-
-        @Override
-        public IBurnoutHelper getBurnoutHelper() {
-            return null;
-        }
-
-        @Override
-        public void openOcculusGui(final Player pPlayer) {
-        }
-
-        @Override
-        public ISpellHelper getSpellHelper() {
-            return null;
-        }
-
-        @Override
-        public void openSpellCustomizationGui(final Level level, final Player player, final ItemStack stack) {
-        }
-    }
+    /**
+     * Make an instance of ISpell.
+     *
+     * @param spellStack     The spell stack to use.
+     * @param shapeGroups    The shape groups to use.
+     * @return The spell instance.
+     */
+    ISpell makeSpell(SpellStack spellStack, ShapeGroup... shapeGroups);
 }

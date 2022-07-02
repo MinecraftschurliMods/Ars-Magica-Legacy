@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.physical_damage",
+  "name": "skill.arsmagicalegacy.physical_damage.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/physical_damage.png",
   "pages": [

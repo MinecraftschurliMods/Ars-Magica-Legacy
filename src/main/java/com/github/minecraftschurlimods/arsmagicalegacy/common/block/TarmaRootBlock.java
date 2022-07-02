@@ -19,8 +19,8 @@ public class TarmaRootBlock extends FlowerBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        Block block = level.getBlockState(pos.below()).getBlock();
-        return Tags.Blocks.SAND.contains(block) || Tags.Blocks.DIRT.contains(block) || BlockTags.STONE_ORE_REPLACEABLES.contains(block) || BlockTags.DEEPSLATE_ORE_REPLACEABLES.contains(block) || block == Blocks.CLAY || block == Blocks.GRAVEL;
+        BlockState block = level.getBlockState(pos.below());
+        return block.is(Tags.Blocks.SAND) || block.is(BlockTags.DIRT) || block.is(BlockTags.STONE_ORE_REPLACEABLES) || block.is(BlockTags.DEEPSLATE_ORE_REPLACEABLES) || block.is(Blocks.CLAY) || block.is(Blocks.GRAVEL);
     }
 
     @Override

@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A gateway to the stars, the Occulus shows you your innermost self. Here, you can spend skill points to unlock new skills."
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.occulus.page0.text"
     },
     {
       "type": "patchouli:crafting",

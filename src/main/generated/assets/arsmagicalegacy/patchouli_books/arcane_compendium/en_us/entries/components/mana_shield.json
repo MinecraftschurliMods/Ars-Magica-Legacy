@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.mana_shield",
+  "name": "skill.arsmagicalegacy.mana_shield.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/mana_shield.png",
   "pages": [

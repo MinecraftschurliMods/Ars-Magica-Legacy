@@ -11,7 +11,7 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 
 public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay {
-    public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/bar.png");
+    public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/bar.png");
 
     @Override
     public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {
@@ -20,8 +20,28 @@ public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay
         }
     }
 
+    /**
+     * Renders the HUD.
+     *
+     * @param mStack       The pose stack to use.
+     * @param width        The width to use.
+     * @param height       The height to use.
+     * @param partialTicks The partial ticks value to use.
+     */
     protected abstract void render(PoseStack mStack, int width, int height, float partialTicks);
 
+    /**
+     * Renders a bar.
+     *
+     * @param mStack   The pose stack to use.
+     * @param x        The x coordinate to draw the bar at.
+     * @param y        The y coordinate to draw the bar at.
+     * @param width    The width to use.
+     * @param height   The height to use.
+     * @param value    The current value of the bar.
+     * @param maxValue The max value of the bar.
+     * @param color    The bar color.
+     */
     protected void renderBar(PoseStack mStack, int x, int y, int width, int height, double value, double maxValue, int color) {
         int relWidth = 0;
         if (maxValue != 0) {

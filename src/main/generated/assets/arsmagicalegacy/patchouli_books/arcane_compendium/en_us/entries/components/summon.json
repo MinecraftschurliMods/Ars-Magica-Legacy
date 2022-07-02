@@ -1,11 +1,15 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.summon",
+  "name": "skill.arsmagicalegacy.summon.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/summon.png",
   "pages": [
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.components.summon.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.summon.page1.text"
     },
     {
       "type": "arsmagicalegacy:spell_part",

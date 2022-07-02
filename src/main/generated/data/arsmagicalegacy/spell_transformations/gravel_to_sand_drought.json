@@ -1,0 +1,10 @@
+{
+  "from": {
+    "block": "minecraft:gravel",
+    "predicate_type": "minecraft:block_match"
+  },
+  "to": {
+    "Name": "minecraft:sand"
+  },
+  "spell_part": "arsmagicalegacy:drought"
+}

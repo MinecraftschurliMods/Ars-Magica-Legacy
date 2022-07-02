@@ -1,5 +1,5 @@
 {
-  "manaCost": 15.0,
+  "manaCost": 4.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:nature": 0.01
@@ -14,13 +14,6 @@
     },
     {
       "ingredient": {
-        "tag": "forge:ingots/iron"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "ingredient": {
         "tag": "forge:rods/wooden"
       },
       "count": 1,
@@ -28,7 +21,7 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:saplings"
+        "item": "arsmagicalegacy:witchwood_sapling"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

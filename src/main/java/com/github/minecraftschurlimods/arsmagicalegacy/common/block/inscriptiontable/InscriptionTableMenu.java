@@ -3,17 +3,19 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -36,36 +38,46 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         table.startOpen(inventory.player);
         this.table = table;
         addSlot(new InscriptionTableSlot(table));
+        for (int i = 0; i < 9; i++) {
+            addSlot(new Slot(inventory, i, 30 + i * 18, 228));
+        }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new Slot(inventory, i * 9 + j + 9, 30 + j * 18, 170 + i * 18));
             }
         }
-        for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, 30 + i * 18, 228));
-        }
+    }
+
+    public InscriptionTableMenu(int id, Inventory inv, FriendlyByteBuf data) {
+        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level.getBlockEntity(data.readBlockPos()))));
     }
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack stack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot.hasItem()) {
-            ItemStack slotstack = slot.getItem();
-            stack = slotstack.copy();
-            if (pIndex > 0) {
-                if (slots.get(0).mayPlace(slotstack)) {
-                    if (!moveItemStackTo(slotstack, 0, 1, false)) return ItemStack.EMPTY;
-                } else if (!moveItemStackTo(slotstack, 1, slots.size(), pIndex < 10)) return ItemStack.EMPTY;
-            } else if (!moveItemStackTo(slotstack, 1, slots.size(), true))
-                return ItemStack.EMPTY;
-            if (slotstack.isEmpty()) {
+            Slot tableSlot = slots.get(0);
+            ItemStack stack = slot.getItem();
+            ItemStack originalStack = stack.copy();
+            if (pIndex == 0) {
+                if (!moveItemStackTo(stack, 1, 37, false)) return ItemStack.EMPTY;
+            } else if (pIndex > 0 && pIndex < 10) {
+                if (tableSlot.getItem() == ItemStack.EMPTY && tableSlot.mayPlace(stack) && !moveItemStackTo(stack, 0, 1, false))
+                    return ItemStack.EMPTY;
+                else if (!moveItemStackTo(stack, 10, slots.size(), false)) return ItemStack.EMPTY;
+            } else if (pIndex > 9 && pIndex < slots.size()) {
+                if (tableSlot.getItem() == ItemStack.EMPTY && tableSlot.mayPlace(stack) && !moveItemStackTo(stack, 0, 1, false))
+                    return ItemStack.EMPTY;
+                else if (!moveItemStackTo(stack, 1, 10, true)) return ItemStack.EMPTY;
+            }
+            if (stack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
+            return originalStack;
         }
-        return stack;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -74,32 +86,45 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         table.stopOpen(player);
     }
 
-    public InscriptionTableMenu(int id, Inventory inv, FriendlyByteBuf data) {
-        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level.getBlockEntity(data.readBlockPos()))));
-    }
-
     @Override
     public boolean stillValid(Player player) {
-        return this.table.stillValid(player);
+        return table.stillValid(player);
     }
 
+    /**
+     * @return The spell name, or null if there is no name.
+     */
     public Optional<String> getSpellName() {
-        return Optional.ofNullable(this.table).map(InscriptionTableBlockEntity::getSpellName);
+        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
     }
 
+    /**
+     * @return The max allowed shape groups.
+     */
     public int allowedShapeGroups() {
         return Config.SERVER.MAX_SHAPE_GROUPS.get();
     }
 
+    /**
+     * Sends the menu data to the server.
+     *
+     * @param name        The name of the spell.
+     * @param spellStack  The spell stack.
+     * @param shapeGroups The shape groups.
+     */
     public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
-        Function<ResourceLocation, ISpellPart> registryAccess = ArsMagicaAPI.get().getSpellPartRegistry()::getValue;
-        Spell spell = Spell.of(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
+        var api = ArsMagicaAPI.get();
+        Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
+        ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
         table.onSync(name, spell);
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }
 
-    public Optional<Spell> getSpellRecipe() {
-        return Optional.ofNullable(this.table).map(InscriptionTableBlockEntity::getSpellRecipe);
+    /**
+     * @return An optional containing the spell recipe, or an empty optional if there is no spell recipe laid out yet.
+     */
+    public Optional<ISpell> getSpellRecipe() {
+        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);
     }
 
     private static class InscriptionTableSlot extends Slot {
@@ -122,6 +147,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
         @Override
         public Optional<ItemStack> tryRemove(int p_150642_, int p_150643_, Player player) {
+            player.getLevel().playSound(null, table.getBlockPos().getX(), table.getBlockPos().getY(), table.getBlockPos().getZ(), AMSounds.INSCRIPTION_TABLE_TAKE_BOOK.get(), SoundSource.BLOCKS, 1f, 1f);
             return super.tryRemove(p_150642_, p_150643_, player).flatMap(stack -> stack.getItem() instanceof ISpellItem ? Optional.of(stack) : table.saveRecipe(player, stack));
         }
 
@@ -137,8 +163,8 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void set(ItemStack stack) {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
-                Spell spell = SpellItem.getSpell(stack);
-                this.table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
+                ISpell spell = SpellItem.getSpell(stack);
+                table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
             }
         }
     }

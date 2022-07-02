@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,82 +30,100 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class InscriptionTableBlockEntity extends BlockEntity implements Container, MenuProvider {
-    private static final Component DEFAULT_NAME     = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
-    public static final  String    SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
-    public static final  String    INVENTORY_KEY    = ArsMagicaAPI.MOD_ID+":inventory";
-    public static final  String    SPELL_NAME_KEY   = ArsMagicaAPI.MOD_ID+":spell_name";
-
-    private           ItemStack stack = ItemStack.EMPTY;
-    private @Nullable Spell     spellRecipe;
-    private @Nullable String    spellName;
-    private           boolean   open;
+    public static final String SPELL_RECIPE_KEY = ArsMagicaAPI.MOD_ID + ":spell_recipe";
+    public static final String INVENTORY_KEY = ArsMagicaAPI.MOD_ID + ":inventory";
+    public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+    private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
+    private ItemStack stack = ItemStack.EMPTY;
+    private @Nullable ISpell spellRecipe;
+    private @Nullable String spellName;
+    private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(AMBlockEntities.INSCRIPTION_TABLE.get(), pWorldPosition, pBlockState);
     }
 
+    /**
+     * @param name   The spell name.
+     * @param author The spell author.
+     * @param spell  The spell.
+     * @return A written book with the spell written onto it.
+     */
+    public static ItemStack makeRecipe(String name, String author, ISpell spell) {
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        SpellItem.saveSpell(book, spell);
+        CompoundTag tag = book.getOrCreateTag();
+        tag.putString(WrittenBookItem.TAG_TITLE, name);
+        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
+        ListTag pages = new ListTag();
+        makeSpellRecipePages(pages, spell);
+        tag.put(WrittenBookItem.TAG_PAGES, pages);
+        return book;
+    }
+
+    private static void makeSpellRecipePages(ListTag pages, ISpell spell) {
+        // TODO
+    }
+
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        this.stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
+        stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
         if (pTag.contains(SPELL_RECIPE_KEY)) {
-            this.spellRecipe = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
+            spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
         if (pTag.contains(SPELL_NAME_KEY)) {
-            this.spellName = pTag.getString(SPELL_NAME_KEY);
+            spellName = pTag.getString(SPELL_NAME_KEY);
         }
     }
 
-    public void onSync(@Nullable String name, @Nullable Spell spell) {
-        this.spellName = name;
-        this.spellRecipe = spell;
-        this.setChanged();
+    /**
+     * Synchronizes the block entity.
+     *
+     * @param name  The spell name.
+     * @param spell The spell.
+     */
+    public void onSync(@Nullable String name, @Nullable ISpell spell) {
+        spellName = name;
+        spellRecipe = spell;
+        setChanged();
     }
 
     @Nullable
     public String getSpellName() {
-        return this.spellName;
+        return spellName;
     }
 
     @Nullable
-    public Spell getSpellRecipe() {
-        return this.spellRecipe;
+    public ISpell getSpellRecipe() {
+        return spellRecipe;
     }
 
+    /**
+     * @param player The player creating the spell.
+     * @param stack  The written book item stack.
+     * @return The given item stack with the spell written onto it, or just the given item stack if there is no spell laid out yet.
+     */
     public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
         return Optional.ofNullable(getSpellRecipe())
-                       .map(spell -> {
-                           if (spell.isEmpty()) return stack;
-                           ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-                           SpellItem.saveSpell(book, spell);
-                           CompoundTag tag = book.getOrCreateTag();
-                           tag.putString(WrittenBookItem.TAG_TITLE, Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()));
-                           tag.putString(WrittenBookItem.TAG_AUTHOR, player.getDisplayName().getString());
-                           ListTag pages = new ListTag();
-                           makeSpellRecipePages(pages, player, spell);
-                           tag.put(WrittenBookItem.TAG_PAGES, pages);
-                           return book;
-                       });
-    }
-
-    private static void makeSpellRecipePages(ListTag pages, Player player, Spell spell) {
-        // TODO how to do this datadriven (re-resolve on reload)
+                .map(spell -> {
+                    if (spell.isEmpty()) return stack;
+                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
+                });
     }
 
     @Override
     protected void saveAdditional(CompoundTag pCompound) {
         super.saveAdditional(pCompound);
-        pCompound.put(INVENTORY_KEY, this.stack.save(new CompoundTag()));
-        if (this.spellName != null) {
-            pCompound.putString(SPELL_NAME_KEY, this.spellName);
+        pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
+        if (spellName != null) {
+            pCompound.putString(SPELL_NAME_KEY, spellName);
         }
-        if (this.spellRecipe != null) {
-            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, this.spellRecipe)
-                                                       .getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        if (spellRecipe != null) {
+            pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 
-    @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
@@ -118,10 +136,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public Component getDisplayName() {
-        return DEFAULT_NAME;
+        return TITLE;
     }
 
-    @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
         if (isOpen()) return null;
@@ -149,7 +166,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public boolean isEmpty() {
-        return this.stack.isEmpty();
+        return stack.isEmpty();
     }
 
     @Override
@@ -160,8 +177,8 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public ItemStack removeItem(int pIndex, int pCount) {
         if (pIndex == 0) {
-            ItemStack split = this.stack.split(pCount);
-            if (this.stack.isEmpty()) {
+            ItemStack split = stack.split(pCount);
+            if (stack.isEmpty()) {
                 onRemove();
             }
             return split;
@@ -172,9 +189,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public ItemStack removeItemNoUpdate(int pIndex) {
         if (pIndex == 0) {
-            ItemStack itemstack = this.stack;
-            this.stack = ItemStack.EMPTY;
-            this.onRemove();
+            ItemStack itemstack = stack;
+            stack = ItemStack.EMPTY;
+            onRemove();
             return itemstack;
         }
         return ItemStack.EMPTY;
@@ -187,7 +204,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void setItem(int pIndex, ItemStack pStack) {
-        this.stack = pStack;
+        stack = pStack;
     }
 
     @Override
@@ -198,16 +215,16 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public void clearContent() {
-        this.stack = ItemStack.EMPTY;
+        stack = ItemStack.EMPTY;
     }
 
     @Override
     public void setChanged() {
         super.setChanged();
-        // stub
+        // TODO
     }
 
     private void onRemove() {
-        // stub
+        // TODO
     }
 }

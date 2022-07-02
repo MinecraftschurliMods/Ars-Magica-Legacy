@@ -1,0 +1,18 @@
+{
+  "name": {
+    "text": "Ender Bolt"
+  },
+  "icon": "arsmagicalegacy:beam-magenta-3",
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:random_teleport"
+    ],
+    "data": {}
+  }
+}

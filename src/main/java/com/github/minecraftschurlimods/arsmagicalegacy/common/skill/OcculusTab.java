@@ -45,16 +45,6 @@ public final class OcculusTab implements IOcculusTab {
     private final int index;
     private ResourceLocation id;
 
-    /**
-     * Creates a new OcculusTab.
-     *
-     * @param rendererClass The renderer class name.
-     * @param background    The background resource location.
-     * @param icon          The tab icon.
-     * @param width         The width.
-     * @param height        The height.
-     * @param index         The tab index.
-     */
     public OcculusTab(String rendererClass, ResourceLocation background, ResourceLocation icon, int width, int height, int startX, int startY, int index) {
         this.rendererClass = rendererClass;
         this.background = background;
@@ -67,38 +57,14 @@ public final class OcculusTab implements IOcculusTab {
         rendererFactory = Lazy.concurrentOf(OcculusTabRendererFactory.of(getRenderer()));
     }
 
-    /**
-     * Creates a new OcculusTab.
-     *
-     * @param rendererClass The renderer class name.
-     * @param background    The background resource location.
-     * @param icon          The tab icon.
-     * @param width         The width.
-     * @param height        The height.
-     * @param index         The tab index.
-     */
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private OcculusTab(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon, int width, int height, int startX, int startY, int index) {
         this(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index);
     }
 
-    /**
-     * Creates a new OcculusTab. Also sets the tab id.
-     *
-     * @param id            The tab id.
-     * @param rendererClass The renderer class name.
-     * @param background    The background resource location.
-     * @param icon          The tab icon.
-     * @param width         The width.
-     * @param height        The height.
-     * @param index         The tab index.
-     */
     public OcculusTab(ResourceLocation id, String rendererClass, ResourceLocation background, ResourceLocation icon, int width, int height, int startX, int startY, int index) {
         this(rendererClass, background, icon, width, height, startX, startY, index);
         setId(id);
-    }
-
-    void setId(ResourceLocation id) {
-        this.id = id;
     }
 
     private Optional<ResourceLocation> getIconOpt() {
@@ -151,6 +117,13 @@ public final class OcculusTab implements IOcculusTab {
         return id;
     }
 
+    void setId(ResourceLocation id) {
+        this.id = id;
+    }
+
+    /**
+     * @return The name of this occulus tab's renderer class.
+     */
     public String getRenderer() {
         return rendererClass;
     }

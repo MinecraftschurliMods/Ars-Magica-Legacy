@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ITI",
+    " V ",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "T": {
+      "tag": "forge:gems/topaz"
+    },
+    "V": {
+      "tag": "forge:dusts/vinteum"
+    }
+  },
+  "result": {
+    "item": "arsmagicalegacy:crystal_wrench"
+  }
+}

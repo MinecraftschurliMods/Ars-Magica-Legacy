@@ -2,5 +2,20 @@
   "manaCost": 1.0,
   "reagents": [],
   "affinities": {},
-  "recipe": []
+  "recipe": [
+    {
+      "ingredient": {
+        "tag": "forge:dusts/vinteum"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
+        "item": "arsmagicalegacy:cerublossom"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    }
+  ]
 }

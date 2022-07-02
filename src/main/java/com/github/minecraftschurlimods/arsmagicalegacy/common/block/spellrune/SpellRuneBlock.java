@@ -7,6 +7,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,10 +18,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class SpellRuneBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACE = BlockStateProperties.FACING;
     public static final Map<Direction, VoxelShape> COLLISION_SHAPES = Map.of(
@@ -37,10 +38,14 @@ public class SpellRuneBlock extends Block implements EntityBlock {
         registerDefaultState(getStateDefinition().any().setValue(FACE, Direction.DOWN));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new SpellRuneBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public RenderShape getRenderShape(final BlockState pState) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
@@ -55,8 +60,9 @@ public class SpellRuneBlock extends Block implements EntityBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (pLevel.isClientSide()) return;
-        ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        if (!pLevel.isClientSide()) {
+            ((SpellRuneBlockEntity) pLevel.getBlockEntity(pPos)).collide(pLevel, pPos, pEntity, pState.getValue(FACE));
+        }
     }
 
     @Override

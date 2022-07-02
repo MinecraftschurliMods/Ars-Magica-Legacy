@@ -1,0 +1,26 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.name",
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:nature_guardian_spawn_egg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:nature_guardian",
+      "text": "Recommended magic level: 70"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page2.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.bosses.nature_guardian.page2.title"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:dryad",
+      "text": "Dryads spawn in forests. They can be lured with saplings and boost nearby plants' growth."
+    }
+  ]
+}

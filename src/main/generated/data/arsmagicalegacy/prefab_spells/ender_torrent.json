@@ -1,0 +1,20 @@
+{
+  "name": {
+    "text": "Ender Torrent"
+  },
+  "icon": "arsmagicalegacy:light-magenta-3",
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile",
+        "arsmagicalegacy:velocity",
+        "arsmagicalegacy:aoe"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:silence",
+      "arsmagicalegacy:knockback"
+    ],
+    "data": {}
+  }
+}

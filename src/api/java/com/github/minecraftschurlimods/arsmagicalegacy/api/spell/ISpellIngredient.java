@@ -1,86 +1,52 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Interface representing an ingredient for spell crafting.
  */
 public interface ISpellIngredient {
-    /**
-     * The codec used to serialize and deserialize any ingredient.
-     */
-    Codec<ISpellIngredient> CODEC = CompoundTag.CODEC.flatXmap(tag -> {
-        String type = tag.getString("type");
-        tag.remove("type");
-        return ArsMagicaAPI.get()
-                           .getSpellDataManager()
-                           .getSpellIngredientCodec(new ResourceLocation(type))
-                           .decode(NbtOps.INSTANCE, tag)
-                           .map(Pair::getFirst);
-    }, ingredient -> ArsMagicaAPI.get()
-                                 .getSpellDataManager()
-                                 .getSpellIngredientCodec(ingredient.getType())
-                                 .encodeStart(NbtOps.INSTANCE, ingredient)
-                                 .map(CompoundTag.class::cast)
-                                 .map(tag -> {
-                                     tag.putString("type", ingredient.getType().toString());
-                                     return tag;
-                                 }));
+    Codec<ISpellIngredient> CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientCodec);
+    Codec<ISpellIngredient> NETWORK_CODEC = ResourceLocation.CODEC.dispatch("type", ISpellIngredient::getType, ArsMagicaAPI.get().getSpellDataManager()::getSpellIngredientNetworkCodec);
 
     /**
-     * The codec used to serialize and deserialize any ingredient in a network context.
-     */
-    Codec<ISpellIngredient> NETWORK_CODEC = CompoundTag.CODEC.flatXmap(tag -> {
-        String type = tag.getString("type");
-        tag.remove("type");
-        return ArsMagicaAPI.get()
-                           .getSpellDataManager()
-                           .getSpellIngredientNetworkCodec(new ResourceLocation(type))
-                           .decode(NbtOps.INSTANCE, tag)
-                           .map(Pair::getFirst);
-    }, ingredient -> ArsMagicaAPI.get()
-                                 .getSpellDataManager()
-                                 .getSpellIngredientNetworkCodec(ingredient.getType())
-                                 .encodeStart(NbtOps.INSTANCE, ingredient)
-                                 .map(CompoundTag.class::cast)
-                                 .map(tag -> {
-                                     tag.putString("type", ingredient.getType().toString());
-                                     return tag;
-                                 }));
-
-    /**
-     * Get the resourcelocation of the type.
+     * @return The id of this type.
      */
     ResourceLocation getType();
 
     /**
-     * Get the tooltip.
+     * @return The tooltip of this type.
      */
-    Component getTooltip();
+    List<Component> getTooltip();
 
     /**
-     * Check if this can combine with the other.
+     * @param other The other ingredient to check.
+     * @return If this ingredient can combine with the other given ingredient.
      */
     boolean canCombine(ISpellIngredient other);
 
     /**
-     * Combine this with the other.
-     * @return the combined ingredient
+     * @param other The other ingredient to combine this one with.
+     * @return This ingredient, combined with the other one.
      */
-    @Nullable ISpellIngredient combine(ISpellIngredient other);
+    @Nullable
+    ISpellIngredient combine(ISpellIngredient other);
 
     /**
-     * Consume this ingredient. Return the remainder of this.
-     * @return the remainder of this
+     * Consumes this ingredient.
+     *
+     * @param level The level in which this ingredient is consumed.
+     * @param pos   The position at which this ingredient is consumed.
+     * @return The leftover of the consumption.
      */
-    @Nullable ISpellIngredient consume(Level level, BlockPos pos);
+    @Nullable
+    ISpellIngredient consume(Level level, BlockPos pos);
 }

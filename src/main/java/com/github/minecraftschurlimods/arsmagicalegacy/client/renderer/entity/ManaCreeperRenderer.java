@@ -10,13 +10,13 @@ import org.jetbrains.annotations.NotNull;
 public class ManaCreeperRenderer extends CreeperRenderer {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/mana_creeper.png");
 
-    public ManaCreeperRenderer(final EntityRendererProvider.Context p_173958_) {
-        super(p_173958_);
+    public ManaCreeperRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
-    @NotNull
     @Override
-    public ResourceLocation getTextureLocation(@NotNull final Creeper pEntity) {
+    @NotNull
+    public ResourceLocation getTextureLocation(final @NotNull Creeper pEntity) {
         return TEXTURE;
     }
 }

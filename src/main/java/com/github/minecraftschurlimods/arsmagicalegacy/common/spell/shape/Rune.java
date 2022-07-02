@@ -26,7 +26,7 @@ public class Rune extends AbstractShape {
         BlockPos pos = bHit.getBlockPos().relative(direction);
         BlockState blockState = level.getBlockState(pos);
         if (!blockState.isAir()) return SpellCastResult.EFFECT_FAILED;
-        level.setBlock(pos, AMBlocks.SPELL_RUNE.get().defaultBlockState().setValue(SpellRuneBlock.FACE, direction.getOpposite()), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+        level.setBlock(pos, AMBlocks.SPELL_RUNE.get().defaultBlockState().setValue(SpellRuneBlock.FACE, direction.getOpposite()), Block.UPDATE_ALL);
         ((SpellRuneBlockEntity) level.getBlockEntity(pos)).setSpell(spell, caster, index, awardXp);
         return SpellCastResult.SUCCESS;
     }

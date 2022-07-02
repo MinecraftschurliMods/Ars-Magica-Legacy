@@ -18,7 +18,7 @@ public class AffinityEssenceItem extends Item implements IAffinityItem {
     @Override
     public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
         if (allowdedIn(pCategory)) {
-            ArsMagicaAPI.IArsMagicaAPI api = ArsMagicaAPI.get();
+            var api = ArsMagicaAPI.get();
             for (IAffinity affinity : api.getAffinityRegistry()) {
                 if (IAffinity.NONE.equals(affinity.getRegistryName())) continue;
                 pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getRegistryName()));

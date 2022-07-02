@@ -17,22 +17,22 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     public static final SpellStack EMPTY = of(List.of());
 
     /**
-     * Create a spell stack from alist of parts.
+     * Creates a spell stack from a list of parts.
      *
-     * @param parts the list of parts to construct the spell stack with
-     * @return the created spell stack
-     * @throws MalformedSpellStackException when a modifier is the first element of the parts list
+     * @param parts The list of parts to create the spell stack from.
+     * @return The newly created spell stack.
+     * @throws ShapeGroup.MalformedShapeGroupException If a modifier is the first element of the parts list.
      */
     public static SpellStack of(ISpellPart... parts) throws MalformedSpellStackException {
         return of(List.of(parts));
     }
 
     /**
-     * Create a spell stack from alist of parts.
+     * Creates a spell stack from a list of parts.
      *
-     * @param parts the list of parts to construct the spell stack with
-     * @return the created spell stack
-     * @throws MalformedSpellStackException when a modifier is the first element of the parts list
+     * @param parts The list of parts to create the spell stack from.
+     * @return The newly created spell stack.
+     * @throws ShapeGroup.MalformedShapeGroupException If a modifier is the first element of the parts list.
      */
     public static SpellStack of(List<ISpellPart> parts) throws MalformedSpellStackException {
         List<Pair<ISpellPart, List<ISpellModifier>>> partsWithModifiers = new ArrayList<>();
@@ -47,9 +47,9 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
             }
             if (part instanceof ISpellShape shape) {
                 if (currentMods != null)
-                    throw new MalformedSpellStackException("A shape can not come after the first component!", parts);
+                    throw new MalformedSpellStackException("A shape cannot come after a component!", parts);
                 if (locked)
-                    throw new MalformedSpellStackException("A shape can not come after a terminus shape!", parts);
+                    throw new MalformedSpellStackException("A shape cannot come after an end shape!", parts);
                 currentMods = new ArrayList<>();
                 partsWithModifiers.add(Pair.of(shape, Collections.unmodifiableList(currentMods)));
                 if (shape.isEndShape()) {
@@ -64,9 +64,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     }
 
     /**
-     * Get the unmodifiable list of parts in this spell stack.
-     *
-     * @return the unmodifiable list of parts in this spell stack
+     * @return An unmodifiable list of all spell parts in this spell stack.
      */
     @UnmodifiableView
     @Contract(pure = true)
@@ -76,9 +74,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     }
 
     /**
-     * Get the unmodifiable list of parts with modifiers in this spell stack.
-     *
-     * @return the unmodifiable list of parts with modifiers in this spell stack
+     * @return An unmodifiable list of all spell parts with their associated modifiers in this spell stack.
      */
     @UnmodifiableView
     @Contract(pure = true)
@@ -88,19 +84,17 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
     }
 
     /**
-     * Check if this shape group is empty.
-     *
-     * @return true, if this shape group is empty
+     * @return Whether this spell stack is empty or not.
      */
     public boolean isEmpty() {
         return parts().isEmpty();
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SpellStack that = (SpellStack) o;
+        SpellStack that = (SpellStack) o;
         return (isEmpty() && that.isEmpty()) || parts().equals(that.parts());
     }
 
@@ -121,9 +115,7 @@ public record SpellStack(List<ISpellPart> parts, List<Pair<ISpellPart, List<ISpe
         }
 
         /**
-         * Get the list of parts that caused the exception.
-         *
-         * @return the list of parts that caused the exception
+         * @return A list of spell parts that caused the exception.
          */
         public List<ISpellPart> getParts() {
             return parts;

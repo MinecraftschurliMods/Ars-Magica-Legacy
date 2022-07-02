@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,41 +13,37 @@ import java.util.Set;
  */
 public interface ISkillManager extends IDataManager<ISkill> {
     /**
-     * Get the skills for a given occulus tab.
-     *
-     * @param id the occulus tab to query for
-     * @return the skills for the given occulus tab
+     * @param id The id of the occulus tab to get the skills for.
+     * @return The skills in the given occulus tab.
      */
     Set<ISkill> getSkillsForOcculusTab(ResourceLocation id);
 
     /**
-     * Get the {@link ISkill} for the id or empty.
-     *
-     * @param id the id of the requested {@link ISkill}
-     * @return an {@link Optional} of the requested {@link ISkill} or {@link Optional#empty()} if it is not loaded
+     * @param tab The occulus tab to get the skills for.
+     * @return The skills in the given occulus tab.
+     */
+    Set<ISkill> getSkillsForOcculusTab(IOcculusTab tab);
+
+    /**
+     * @param id The id of the skill to get.
+     * @return The skill, or null if the skill is not loaded.
      */
     Optional<ISkill> getOptional(ResourceLocation id);
 
     /**
-     * Get the {@link ISkill} for the id or throw.
-     *
-     * @param id the id of the requested {@link ISkill}
-     * @return the requested {@link ISkill}
-     */
-    ISkill get(ResourceLocation id);
-
-    /**
-     * Get the {@link ISkill} for the id or null.
-     *
-     * @param id the id of the requested {@link ISkill}
-     * @return the requested {@link ISkill} or null if it is not loaded
+     * @param id The id of the skill to get.
+     * @return The skill, or null if the skill is not loaded.
      */
     ISkill getNullable(ResourceLocation id);
 
     /**
-     * Get all loaded {@link ISkill}s.
-     *
-     * @return an unmodifiable collection of all loaded {@link ISkill}s
+     * @param id The id of the skill to get.
+     * @return The skill. Throws an exception if the skill is not loaded.
+     */
+    ISkill get(ResourceLocation id);
+
+    /**
+     * @return An unmodifiable collection of all skills.
      */
     Collection<ISkill> getSkills();
 }

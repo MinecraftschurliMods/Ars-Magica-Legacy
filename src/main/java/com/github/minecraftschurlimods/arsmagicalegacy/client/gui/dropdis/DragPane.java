@@ -71,33 +71,39 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
     public void updateNarration(NarrationElementOutput narrationElementOutput) {
     }
 
-    @Nullable
     @Override
     public GuiEventListener getFocused() {
         return getDragged();
     }
 
+    /**
+     * Adds a new drop area to this pane.
+     *
+     * @param dropArea The drop area to add.
+     * @param <T>      The type of the drop area-
+     * @return The given drop area, with the required drag handlers set on ít.
+     */
     public <T extends DropArea> T addDropArea(T dropArea) {
-        this.dropAreas.add(dropArea);
+        dropAreas.add(dropArea);
         dropArea.setDragHandler(this);
         return dropArea;
     }
 
     @Override
     public Draggable getDragged() {
-        return this.dragged;
+        return dragged;
     }
 
     @Override
-    public void setDragged(Draggable draggable, DropArea source) {
-        this.dragged = draggable;
-        this.dragSource = source;
+    public void setDragged(@Nullable Draggable draggable, @Nullable DropArea source) {
+        dragged = draggable;
+        dragSource = source;
     }
 
     @Override
     public void returnToSource() {
-        this.dragSource.add(this.dragged);
-        this.dragged.setVisible(false);
-        this.dragged = null;
+        dragSource.add(dragged);
+        dragged.setVisible(false);
+        dragged = null;
     }
 }

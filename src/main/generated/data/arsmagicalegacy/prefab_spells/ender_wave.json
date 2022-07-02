@@ -1,0 +1,21 @@
+{
+  "name": {
+    "text": "Ender Wave"
+  },
+  "icon": "arsmagicalegacy:wind-magenta-3",
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:wave",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:range",
+        "arsmagicalegacy:touch"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:silence",
+      "arsmagicalegacy:knockback"
+    ],
+    "data": {}
+  }
+}

@@ -8,8 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
-public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPacket {
+import java.util.Optional;
 
+public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPacket {
     public BEClientSyncPacket(BlockEntity blockEntity) {
         this(blockEntity.getBlockPos(), blockEntity.getUpdateTag());
     }
@@ -20,12 +21,12 @@ public record BEClientSyncPacket(BlockPos pos, CompoundTag tag) implements IPack
 
     @Override
     public void serialize(FriendlyByteBuf buf) {
-        buf.writeBlockPos(this.pos);
-        buf.writeNbt(this.tag);
+        buf.writeBlockPos(pos);
+        buf.writeNbt(tag);
     }
 
     @Override
     public void handle(NetworkEvent.Context ctx) {
-        ctx.enqueueWork(() -> Minecraft.getInstance().level.getBlockEntity(pos).load(tag));
+        ctx.enqueueWork(() -> Optional.ofNullable(Minecraft.getInstance().level).map(level -> level.getBlockEntity(pos)).ifPresent(blockEntity -> blockEntity.load(tag())));
     }
 }

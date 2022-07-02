@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.telekinesis",
+  "name": "skill.arsmagicalegacy.telekinesis.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/telekinesis.png",
   "pages": [

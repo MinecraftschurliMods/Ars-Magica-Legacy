@@ -1,0 +1,25 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.bosses.lightning_guardian.name",
+  "category": "arsmagicalegacy:bosses",
+  "icon": "arsmagicalegacy:lightning_guardian_spawn_egg",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.lightning_guardian.page0.text"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "arsmagicalegacy:lightning_guardian",
+      "text": "Recommended magic level: 80"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.bosses.lightning_guardian.page2.title",
+      "multiblock_id": "arsmagicalegacy:lightning_guardian_spawn_ritual"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.bosses.lightning_guardian.page3.text"
+    }
+  ]
+}

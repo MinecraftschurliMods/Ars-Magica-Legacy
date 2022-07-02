@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Vinteum Torches are crafted in a simplistic way, and glow with the same brightness as a standard torch. They are just an aesthetic alternative."
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.vinteum_torch.page0.text"
     },
     {
       "type": "patchouli:crafting",

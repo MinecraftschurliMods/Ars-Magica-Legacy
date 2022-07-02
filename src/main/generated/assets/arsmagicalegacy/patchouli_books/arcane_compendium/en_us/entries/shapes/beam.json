@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.shapes.beam",
+  "name": "skill.arsmagicalegacy.beam.name",
   "category": "arsmagicalegacy:shapes",
   "icon": "arsmagicalegacy:textures/icon/skill/beam.png",
   "pages": [

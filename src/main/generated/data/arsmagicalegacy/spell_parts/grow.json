@@ -1,8 +1,8 @@
 {
-  "manaCost": 17.4,
+  "manaCost": 80.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:nature": 0.02
+    "arsmagicalegacy:nature": 0.01
   },
   "recipe": [
     {
@@ -14,14 +14,14 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:logs"
+        "item": "minecraft:bone_meal"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "item": "minecraft:bone_meal"
+        "tag": "arsmagicalegacy:witchwood_logs"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

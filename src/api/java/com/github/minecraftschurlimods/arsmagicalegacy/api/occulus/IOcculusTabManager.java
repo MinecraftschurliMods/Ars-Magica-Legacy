@@ -11,42 +11,32 @@ import java.util.Optional;
  */
 public interface IOcculusTabManager extends IDataManager<IOcculusTab> {
     /**
-     * Get the {@link IOcculusTab} for the id or empty.
-     *
-     * @param id the id of the requested {@link IOcculusTab}
-     * @return an {@link Optional} of the requested {@link IOcculusTab} or {@link Optional#empty()} if it is not loaded
+     * @param id The id of the occulus tab to get.
+     * @return An optional of the occulus tab, or an empty optional if the occulus tab is not loaded.
      */
     Optional<IOcculusTab> getOptional(ResourceLocation id);
 
     /**
-     * Get the {@link IOcculusTab} for the id or null.
-     *
-     * @param id the id of the requested {@link IOcculusTab}
-     * @return the requested {@link IOcculusTab} or null if it is not loaded
+     * @param id The id of the occulus tab to get.
+     * @return The occulus tab, or null if the occulus tab is not loaded.
      */
     IOcculusTab getNullable(ResourceLocation id);
 
     /**
-     * Get the {@link IOcculusTab} for the id or throw.
-     *
-     * @param id the id of the requested {@link IOcculusTab}
-     * @return the requested {@link IOcculusTab}
+     * @param id The id of the occulus tab to get.
+     * @return The occulus tab. Throws an exception if the occulus tab is not loaded.
      */
     IOcculusTab get(ResourceLocation id);
 
     /**
-     * Get an unmodifiable collection of all tabs.
-     *
-     * @return the collection of all tabs
+     * @return An unmodifiable collection of all tabs.
      */
     Collection<IOcculusTab> getTabs();
 
     /**
-     * Get the {@link IOcculusTab} by index.
-     *
-     * @param index the index to fetch
-     * @return the {@link IOcculusTab} at the index
-     * @throws ArrayIndexOutOfBoundsException if the index is out of bounds
+     * @param index The index to get the occulus tab for.
+     * @return The occulus tab at the given index.
+     * @throws ArrayIndexOutOfBoundsException If no occulus tab exists by that index.
      */
     IOcculusTab getByIndex(int index) throws ArrayIndexOutOfBoundsException;
 }

@@ -24,14 +24,16 @@ plugins {
 
 //=============================================
 
+/*
 mixin {
     add sourceSets.main, "arsmagicalegacy.refmap.json"
     config 'arsmagicalegacy.mixins.json'
     dumpTargetOnFailure true
 }
+*/
 
 editorconfig {
-    excludes = ['**/run/**', '**/*.psd', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*']
+    excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*', '**/*.bbmodel']
     excludeNonSourceFiles = true
 }
 
@@ -72,53 +74,53 @@ configurations {
     library
     modAPI
     runtimeMod
+    include { transitive = false }
+
+    sourceSets.forEach {
+        Configuration extLib
+        Configuration impl
+        Configuration compile
+        Configuration runtime
+        Configuration rcp
+        Configuration ccp
+        if (it.name == "main") {
+            extLib = create("externalLibrary")
+            impl = implementation
+            compile = compileOnly
+            runtime = runtimeOnly
+            rcp = runtimeClasspath
+            ccp = compileClasspath
+        } else {
+            extLib = create(it.name + "ExternalLibrary")
+            impl = getByName(it.name + "Implementation")
+            compile = getByName(it.name + "CompileOnly")
+            runtime = getByName(it.name + "RuntimeOnly")
+            rcp = getByName(it.name + "RuntimeClasspath")
+            ccp = getByName(it.name + "CompileClasspath")
+        }
+        impl.extendsFrom(extLib)
+        compile.extendsFrom(library)
+        compile.extendsFrom(modAPI)
+        if (it.name != "api") {
+            if (it.name != "main") {
+                rcp.extendsFrom(minecraft)
+            }
+            runtime.extendsFrom(runtimeMod)
+        }
+        if (it.name != "main") {
+            ccp.extendsFrom(minecraft)
+        }
+        impl.extendsFrom(include)
+    }
+}
+
+configurations {
     datagenLibrary {
         canBeConsumed = false
         canBeResolved = true
         transitive = false
     }
-    include {
-        canBeConsumed = false
-        canBeResolved = true
-        transitive = false
-    }
-
-    apiExternalLibrary
-    externalLibrary
-    dataExternalLibrary
-    testExternalLibrary
-
-    apiImplementation.extendsFrom(apiExternalLibrary)
-    implementation.extendsFrom(externalLibrary)
-    dataImplementation.extendsFrom(dataExternalLibrary)
-    testImplementation.extendsFrom(testExternalLibrary)
-
-    apiCompileOnly.extendsFrom(library)
-    compileOnly.extendsFrom(library)
-    dataCompileOnly.extendsFrom(library)
-    testCompileOnly.extendsFrom(library)
-
-    apiCompileOnly.extendsFrom(modAPI)
-    compileOnly.extendsFrom(modAPI)
-    dataCompileOnly.extendsFrom(modAPI)
-    testCompileOnly.extendsFrom(modAPI)
-
-    runtimeOnly.extendsFrom(runtimeMod)
-    dataRuntimeOnly.extendsFrom(runtimeMod)
-    testRuntimeOnly.extendsFrom(runtimeMod)
-
-    apiImplementation.extendsFrom(include)
-    implementation.extendsFrom(include)
-    dataImplementation.extendsFrom(include)
-    testImplementation.extendsFrom(include)
-
     dataImplementation.extendsFrom(datagenLibrary)
-
-    apiCompileClasspath.extendsFrom(minecraft)
-    dataCompileClasspath.extendsFrom(minecraft)
-    dataRuntimeClasspath.extendsFrom(minecraft)
-    testCompileClasspath.extendsFrom(minecraft)
-    testRuntimeClasspath.extendsFrom(minecraft)
 }
 
 repositories {
@@ -133,7 +135,7 @@ repositories {
     }
     maven {
         name = 'Minecraftschurli Maven'
-        url = 'https://minecraftschurli.ddns.net/repository'
+        url = 'https://minecraftschurli.ddns.net/repository/maven-public/'
         content {
             includeGroup 'com.github.ichhabehunger54'
             includeGroup 'com.github.minecraftschurli'
@@ -144,6 +146,13 @@ repositories {
         url = 'https://dvs1.progwml6.com/files/maven/'
         content {
             includeGroup 'mezz.jei'
+        }
+    }
+    maven {
+        name = 'mcjty maven'
+        url = "https://maven.k-4u.nl"
+        content {
+            includeGroup 'mcjty.theoneprobe'
         }
     }
     maven {
@@ -161,13 +170,13 @@ repositories {
             includeGroup 'vazkii.patchouli'
         }
     }
-    maven {
-        name = 'CuresMaven'
+    /*maven {
+        name = 'CurseMaven'
         url = "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
-    }
+    }*/
     /*maven {
         name = 'saps Maven'
         url = 'https://maven.saps.dev/minecraft/'
@@ -187,8 +196,9 @@ dependencies {
     //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}:api")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-forge-api:${project.jei_version}")
+    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
@@ -198,39 +208,21 @@ dependencies {
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
-    runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
-    //runtimeMod fg.deobf("com.blamejared.controlling:Controlling:8.+") {transitive false}
-    runtimeMod fg.deobf("curse.maven:fast-leaf-decay-230976:3556541")
-    runtimeMod fg.deobf("curse.maven:configured-457570:3559398") // config screen
-    runtimeMod fg.deobf("curse.maven:catalogue-459701:3559402") // better mod menu
+    // theoneprobe for integration
+    modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
+    runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
+
+    if (!System.getenv('GITHUB_ACTIONS')) {
+        runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
+        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
+    }
 
     // add internal libraries
-    var projects = subprojects.collect {it.path }
-    if (projects.contains(':projects:easyimclib')) {
-        include project(path: ':projects:easyimclib', configuration: 'deobfJar')
-    } else {
-        include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.1-1.0-SNAPSHOT')
-    }
-    if (projects.contains(':projects:simplenetlib')) {
-        include project(path: ':projects:simplenetlib', configuration: 'deobfJar')
-    } else {
-        include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.1-1.0-SNAPSHOT')
-    }
-    if (projects.contains(':projects:codeclib')) {
-        include project(path: ':projects:codeclib', configuration: 'deobfJar')
-    } else {
-        include fg.deobf('com.github.minecraftschurli:codeclib:1.18.1-1.0-SNAPSHOT')
-    }
-    if (projects.contains(':projects:betterkeybindlib')) {
-        include project(path: ':projects:betterkeybindlib', configuration: 'deobfJar')
-    } else {
-        include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.1-1.0-SNAPSHOT')
-    }
-    if (projects.contains(':projects:patchouli_datagen')) {
-        datagenLibrary project(path: ':projects:patchouli_datagen', configuration: 'deobfJar')
-    } else {
-        datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen:1.18.1-1.0-SNAPSHOT')
-    }
+    include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen-forge-1.18.2:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
 
@@ -240,7 +232,7 @@ dependencies {
     testImplementation sourceSets.api.output
     testImplementation sourceSets.main.output
 
-    library 'org.jetbrains:annotations:22.0.0'
+    library 'org.jetbrains:annotations:23.0.0'
 }
 
 minecraft {
@@ -250,9 +242,11 @@ minecraft {
         client {
             ideaModule "${project.name.replace(' ', '_')}.main"
             property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
+                source sourceSets.test as SourceSet
             }
         }
         server {
@@ -273,20 +267,19 @@ minecraft {
                 source sourceSets.main as SourceSet
                 source sourceSets.data as SourceSet
             }
-            lazyToken('minecraft_classpath') {
-                configurations.dataExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-            }
         }
-        test {
+        gameTestServer {
             ideaModule "${project.name.replace(' ', '_')}.test"
+            singleInstance true
+            setForceExit false // To allow integration tests to run in CI
+            jvmArg '-ea' // Enable assertions
             property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.enabledGameTestNamespaces', "${project.mod_id}"
+
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet
                 source sourceSets.test as SourceSet
-            }
-            lazyToken ('minecraft_classpath') {
-                configurations.testExternalLibrary.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
             }
         }
     }
@@ -298,19 +291,19 @@ minecraft {
 
 def replaceIn = ['META-INF/mods.toml']
 def replaceProperties = [
-        'version': project.version,
-        'mod_id': project.mod_id,
-        'mod_url': project.mod_url,
-        'mod_name': project.mod_name,
-        'mod_author': project.mod_author,
-        'mod_credits': project.mod_credits,
-        'mc_version_range': project.mc_version_range,
-        'jei_version_range': project.jei_version_range,
-        'forge_version_range': project.forge_version_range,
-        'loader_version_range': project.loader_version_range,
-        'curios_version_range': project.curios_version_range,
+        'version'                : project.version,
+        'mod_id'                 : project.mod_id,
+        'mod_url'                : project.mod_url,
+        'mod_name'               : project.mod_name,
+        'mod_author'             : project.mod_author,
+        'mod_credits'            : project.mod_credits,
+        'mc_version_range'       : project.mc_version_range,
+        'jei_version_range'      : project.jei_version_range,
+        'forge_version_range'    : project.forge_version_range,
+        'loader_version_range'   : project.loader_version_range,
+        'curios_version_range'   : project.curios_version_range,
         'patchouli_version_range': project.patchouli_version_range,
-        'issue_tracker_url': "https://github.com/${project.github}/issues"
+        'issue_tracker_url'      : "https://github.com/${project.github}/issues"
 ]
 
 processResources {
@@ -328,7 +321,7 @@ processResources {
 }
 
 javadoc {
-    source sourceSets.api.allJava
+    source = sourceSets.api.allJava
     options.encoding = 'UTF-8'
     options.tags = [
             'side:a:Side:',
@@ -336,7 +329,7 @@ javadoc {
             'implSpec:a:Implementation Requirements:',
             'implNote:a:Implementation Note:'
     ]
-    if(JavaVersion.current().isJava9Compatible()) {
+    if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
 }
@@ -344,7 +337,7 @@ javadoc {
 jar {
     from sourceSets.main.output
     from sourceSets.api.output
-    from configurations.include.collect {it.isDirectory() ? it : zipTree(it) }, {
+    from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
         exclude 'LICENSE'
         exclude '**/META_INF/**'
     }
@@ -380,21 +373,22 @@ tasks.withType(Jar).configureEach {
     from 'LICENSE.md'
     manifest {
         mainAttributes([
-                'Maven-Artifact': "${project.mod_group}:${project.archivesBaseName}:${project.version}",
-                'Specification-Title': archivesBaseName,
-                'Specification-Vendor': "${project.vendor}",
-                'Specification-Version': '1',
-                'Implementation-Title': "${archivesBaseName}${extension}",
+                'Maven-Artifact'        : "${project.mod_group}:${project.archivesBaseName}:${project.version}",
+                'Specification-Title'   : archivesBaseName,
+                'Specification-Vendor'  : "${project.vendor}",
+                'Specification-Version' : '1',
+                'Implementation-Title'  : "${archivesBaseName}${extension}",
                 'Implementation-Version': "${project.mod_version}",
-                'Implementation-Vendor': "${project.vendor}",
-                'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On': "${project.mc_version}-${project.forge_version}",
-                'Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'FMLModType': 'MOD'
+                'Implementation-Vendor' : "${project.vendor}",
+                'Built-On-Java'         : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On'              : "${project.mc_version}-${project.forge_version}",
+                'Timestamp'             : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLModType'            : 'MOD'
         ])
     }
 
     exclude '**/*.psd'
+    exclude '**/*.bbmodel'
 }
 
 artifacts {
@@ -419,13 +413,13 @@ task setupGithubActions() {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
         println "##[set-output name=version;]${project.version}"
-        if(project.hasProperty('curse_project_id')) {
+        if (project.hasProperty('curse_project_id')) {
             println "##[set-output name=project_id;]${project.curse_project_id}"
             println "##[set-output name=curse_versions;]${project.curse_versions}"
-            if(project.hasProperty('curse_title')) {
+            if (project.hasProperty('curse_title')) {
                 println "##[set-output name=curse_title;]${project.curse_title}"
             }
-            if(project.hasProperty('curse_relations')) {
+            if (project.hasProperty('curse_relations')) {
                 println "##[set-output name=curse_relations;]${project.curse_relations}"
             }
         }
@@ -445,7 +439,7 @@ tasks.withType(GenerateModuleMetadata) {
 }
 
 publishing {
-    publications.create(project.archivesBaseName+'ToMaven', MavenPublication) {
+    publications.create(project.archivesBaseName + 'ToMaven', MavenPublication) {
         artifacts = [apiJar, deobfJar]
         groupId = project.group
         artifactId = project.archivesBaseName
@@ -496,7 +490,7 @@ publishing {
             }
             withXml {
                 asNode().dependencies.dependency.each { dep ->
-                    if(dep.version.last().value().last().contains('_mapped_')) {
+                    if (dep.version.last().value().last().contains('_mapped_')) {
                         assert dep.parent().remove(dep)
                     }
                 }
@@ -506,9 +500,9 @@ publishing {
     repositories {
         maven {
             if (
-                (System.getenv("MAVEN_USER") != null) &&
-                (System.getenv("MAVEN_PASSWORD") != null) &&
-                (System.getenv("MAVEN_URL") != null)
+            (System.getenv("MAVEN_USER") != null) &&
+                    (System.getenv("MAVEN_PASSWORD") != null) &&
+                    (System.getenv("MAVEN_URL") != null)
             ) {
                 url System.getenv("MAVEN_URL")
                 credentials {

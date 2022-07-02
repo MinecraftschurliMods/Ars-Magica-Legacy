@@ -1,0 +1,16 @@
+{
+  "name": "skill.arsmagicalegacy.contingency_damage.name",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/contingency_damage.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_damage.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:contingency_damage"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/contingency_damage"
+}

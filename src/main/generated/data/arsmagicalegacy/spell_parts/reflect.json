@@ -1,5 +1,5 @@
 {
-  "manaCost": 1440.0,
+  "manaCost": 480.0,
   "reagents": [],
   "affinities": {
     "arsmagicalegacy:arcane": 0.05
@@ -7,14 +7,14 @@
   "recipe": [
     {
       "ingredient": {
-        "item": "arsmagicalegacy:white_rune"
+        "item": "arsmagicalegacy:light_gray_rune"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
     },
     {
       "ingredient": {
-        "tag": "forge:storage_blocks/iron"
+        "tag": "forge:rods/blaze"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
@@ -28,7 +28,7 @@
     },
     {
       "ingredient": {
-        "tag": "minecraft:logs"
+        "tag": "arsmagicalegacy:witchwood_logs"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
