@@ -1,9 +1,5 @@
-# Version 1.18.2-1.1.2
-
-## Fixes
-
-- Fixed getting fall damage from low heights
+# Version 1.19-1.1.2
 
 ## Changes
 
-- Added the altar power to the TOP info
+- Update to 1.19
