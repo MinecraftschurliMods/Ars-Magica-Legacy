@@ -1,48 +1,9 @@
-# Version 1.18.2-1.1.0
-
-## Update
-
-- Update to Forge 40.1.0
-
-## Additions
-
-### Abilities
-
-- Added abilities!
-- Abilities are slight buffs or debuffs to the player that activate once the player has delved deep enough into an affinity
-- Every affinity has a normal buff starting at either 1% and scaling up or starting at 25% depth, one debuff starting at 50% depth, and a special buff at 100% depth
-- Ender is the exception to this, it has two buffs and two debuffs starting at 50%, with a special one at 100%. The debuffs vanish at 100% as well.
-
-### Rituals
-
-- Rituals are now heavily customizable through datapacks
-- Lightning Guardian spawning now correctly works
-
-### Dryads
-
-- Added dryads!
-- Dryads are passive humanoid mobs that spawn in large groups (15-25 dryads) in forests
-- They can be lured with saplings and passively bonemeal nearby plants
-- If 20 dryads are slain within a minute, the Nature Guardian spawns
-- All values can be tweaked through the config
-
-### Spell Book
-
-- Added the spell book
-- It can be used to store multiple spells in one slot
-- Spells can be managed by shift-opening the book, the selected spell can be switched via shift-scrolling
+# Version 1.18.2-1.1.1
 
 ## Fixes
 
-- Fixed a copy-paste error with wall and wave shapes that could crash the game
-- Prefab spells now show up correctly in JEI
-- The levelup advancement trigger now correctly fires
-- Commands received an internal cleanup, they should now work correctly
-- Various fixes and cleanups
-
-## Compatibility
-
-- Added compatibility with JEI versions 10 and up
+- Fixed a crash that occured when a player that has no affinity data would jump
+- Added information about the affinities and abilities to the Arcane Compendium
 
 # Previous Versions
 
@@ -273,12 +234,33 @@
 - Max Mana and Max Burnout increase with magic level ups
 - A level requires 2.4 * (1.2 ^ next level) magic XP (level 1 -> level 2 requires ~30 casts of a Projectile-Dig spell)
 
+### Spell Book
+
+- Added the spell book
+- It can be used to store multiple spells in one slot
+- Spells can be managed by shift-opening the book, the selected spell can be switched via shift-scrolling
+
 ### Affinites
 
 - Added 10 affinites: water, fire, earth, air, ice, lightning, life, nature, arcane, ender
 - Added an Affinity Essence item and an Affinity Tome item for each of these affinities
 - Added temporary crafting recipes for the Affinity Essences
 - Affinities are planned to give both positive and negative traits in the future, keep that in mind when playing
+
+### Abilities
+
+- Added abilities!
+- Abilities are slight buffs or debuffs to the player that activate once the player has delved deep enough into an affinity
+- Every affinity has a normal buff starting at either 1% and scaling up or starting at 25% depth, one debuff starting at 50% depth, and a special buff at 100% depth
+- Ender is the exception to this, it has two buffs and two debuffs starting at 50%, with a special one at 100%. The debuffs vanish at 100% as well.
+
+### Dryads
+
+- Added dryads!
+- Dryads are passive humanoid mobs that spawn in large groups (15-25 dryads) in forests
+- They can be lured with saplings and passively bonemeal nearby plants
+- If 20 dryads are slain within a minute, the Nature Guardian spawns
+- All values can be tweaked through the config
 
 ### Bosses
 
