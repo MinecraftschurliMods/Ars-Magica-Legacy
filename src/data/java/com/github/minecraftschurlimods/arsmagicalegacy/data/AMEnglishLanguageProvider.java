@@ -143,6 +143,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.NATURE_SCYTHE);
+        addItem(AMItems.WINTERS_GRASP, "Winter's Grasp");
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
