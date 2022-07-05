@@ -27,7 +27,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpel
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
-import com.github.minecraftschurlimods.easyimclib.IMCHandler;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -43,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final IMCHandler IMC_HANDLER = IMCHandler.create(ArsMagicaAPI.MOD_ID);
     public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 1);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
@@ -56,7 +54,6 @@ public final class ArsMagicaLegacy {
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        IMC_HANDLER.init(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
         ServerInit.init();
