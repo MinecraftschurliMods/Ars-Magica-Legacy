@@ -20,18 +20,20 @@ public class ShrinkEffect extends AMMobEffect {
 
     @Override
     public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
-        var f = minShrink() / (pAmplifier / alpha() + 1);
-        return f - 1;
+        return minShrink() / (pAmplifier / alpha() + 1) - 1;
     }
 
-    private double alpha() {
+    /**
+     * @return The alpha factor for calculating the new size.
+     */
+    public static double alpha() {
         return 2;
     }
 
     /**
      * @return The shrink factor for level 0 of the effect.
      */
-    private double minShrink() {
+    public static double minShrink() {
         return 0.75;
     }
 }

@@ -63,12 +63,18 @@ final class EffectHandler {
         if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.get())) {
             event.setDistance(event.getDistance() * (Objects.requireNonNull(entity.getEffect(AMMobEffects.GRAVITY_WELL.get())).getAmplifier() + 1));
         }
+        if (entity.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
+            event.setDistance(event.getDistance() * ((float) Objects.requireNonNull(entity.getAttribute(AMAttributes.SCALE.get())).getValue() + 1));
+        }
     }
 
     private static void livingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (event.getSource() != DamageSource.OUT_OF_WORLD && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
+        }
+        if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
+            event.setAmount(event.getAmount() * ((float) Objects.requireNonNull(living.getAttribute(AMAttributes.SCALE.get())).getValue() + 1));
         }
     }
 
