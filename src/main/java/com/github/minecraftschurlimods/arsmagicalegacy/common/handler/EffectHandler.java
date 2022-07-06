@@ -5,8 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
@@ -126,8 +126,13 @@ final class EffectHandler {
         if (!(event.getEntity() instanceof LivingEntity living) || !living.isAddedToWorld()) return;
         float factor = (float) living.getAttributeValue(AMAttributes.SCALE.get());
         if (factor == 1) return;
-        event.setNewSize(event.getNewSize().scale(factor), true);
-        if (living instanceof Player) {
+        EntityDimensions newSize = event.getNewSize();
+        EntityDimensions scaledSize = newSize.scale(factor);
+        float eyeHeight = living.getEyeHeightAccess(event.getPose(), newSize);
+        float scaledEyeHeight = living.getEyeHeightAccess(event.getPose(), scaledSize);
+        boolean manuallyUpdateEyeHeight = eyeHeight == scaledEyeHeight;
+        event.setNewSize(scaledSize, !manuallyUpdateEyeHeight);
+        if (manuallyUpdateEyeHeight) {
             event.setNewEyeHeight(event.getNewEyeHeight() * factor);
         }
     }
