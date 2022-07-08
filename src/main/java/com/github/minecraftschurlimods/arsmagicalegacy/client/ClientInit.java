@@ -55,6 +55,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Na
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -80,6 +81,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ForgeModelBakery;
@@ -115,6 +117,8 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::itemColors);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::mouseScroll);
+        forgeBus.addListener(ClientInit::entityRenderPre);
+        forgeBus.addListener(ClientInit::entityRenderPost);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -249,6 +253,17 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
+    }
+
+    private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
+        pre.getPoseStack().pushPose();
+        float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.get());
+        if (factor == 1) return;
+        pre.getPoseStack().scale(factor, factor, factor);
+    }
+
+    private static void entityRenderPost(RenderLivingEvent.Post<?, ?> post) {
+        post.getPoseStack().popPose();
     }
 
     private static void itemColors(ColorHandlerEvent.Item event) {

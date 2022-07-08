@@ -15,6 +15,6 @@ jobs:
           days-before-pr-close: -1
           exempt-all-milestones: true
           exempt-all-assignees: true
-          exempt-issue-labels: 'fixed in dev'
+          exempt-issue-labels: 'fixed in dev,feature'
           stale-issue-label: 'stale'
           stale-pr-label: 'stale'
