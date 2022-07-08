@@ -44,8 +44,10 @@ archivesBaseName = "${project.mod_id}"
 if (System.getenv('RELEASE_TYPE') != null) {
     status = System.getenv('RELEASE_TYPE').toLowerCase()
     if (status == 'snapshot') status = status.toUpperCase()
-    version = "${version}-${status}"
+} else {
+    status = 'SNAPSHOT'
 }
+version = "${version}-${status}"
 
 java {
     withSourcesJar()
@@ -76,42 +78,28 @@ configurations {
     runtimeMod
     include { transitive = false }
 
-    sourceSets.forEach {
-        Configuration extLib
-        Configuration impl
-        Configuration compile
-        Configuration runtime
-        Configuration rcp
-        Configuration ccp
-        if (it.name == "main") {
-            extLib = create("externalLibrary")
-            impl = implementation
-            compile = compileOnly
-            runtime = runtimeOnly
-            rcp = runtimeClasspath
-            ccp = compileClasspath
-        } else {
-            extLib = create(it.name + "ExternalLibrary")
-            impl = getByName(it.name + "Implementation")
-            compile = getByName(it.name + "CompileOnly")
-            runtime = getByName(it.name + "RuntimeOnly")
-            rcp = getByName(it.name + "RuntimeClasspath")
-            ccp = getByName(it.name + "CompileClasspath")
-        }
+    sourceSets.forEach((SourceSet sourceSet) -> {
+        Configuration extLib = create(sourceSet.getTaskName(null, 'externalLibrary'))
+        Configuration impl = getByName(sourceSet.implementationConfigurationName)
+        Configuration compile = getByName(sourceSet.compileOnlyConfigurationName)
+        Configuration runtime = getByName(sourceSet.runtimeOnlyConfigurationName)
+        Configuration ccp = getByName(sourceSet.compileClasspathConfigurationName)
+        Configuration rcp = getByName(sourceSet.runtimeClasspathConfigurationName)
         impl.extendsFrom(extLib)
         compile.extendsFrom(library)
         compile.extendsFrom(modAPI)
-        if (it.name != "api") {
-            if (it.name != "main") {
+        if (sourceSet.name != "api") {
+            if (sourceSet.name != "main") {
                 rcp.extendsFrom(minecraft)
             }
             runtime.extendsFrom(runtimeMod)
         }
-        if (it.name != "main") {
+        if (sourceSet.name != "main") {
             ccp.extendsFrom(minecraft)
         }
         impl.extendsFrom(include)
-    }
+    })
+    jarJar.extendsFrom(include)
 }
 
 configurations {
@@ -139,6 +127,7 @@ repositories {
         content {
             includeGroup 'com.github.ichhabehunger54'
             includeGroup 'com.github.minecraftschurli'
+            includeGroup 'com.github.minecraftschurlimods'
         }
     }
     maven {
@@ -218,10 +207,15 @@ dependencies {
     }
 
     // add internal libraries
-    include fg.deobf('com.github.minecraftschurli:easyimclib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT')
-    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT')
+    include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    }
+    include fg.deobf('com.github.minecraftschurli:codeclib:1.18.2-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    }
+    include fg.deobf('com.github.minecraftschurli:betterkeybindlib:1.18.2-1.0-SNAPSHOT') {
+        jarJar.ranged(it, '[1.18.2-1.0-SNAPSHOT,)')
+    }
     datagenLibrary fg.deobf('com.github.minecraftschurli:patchouli_datagen-forge-1.18.2:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output
@@ -289,28 +283,15 @@ minecraft {
     }
 }
 
-def replaceIn = ['META-INF/mods.toml']
-def replaceProperties = [
-        'version'                : project.version,
-        'mod_id'                 : project.mod_id,
-        'mod_url'                : project.mod_url,
-        'mod_name'               : project.mod_name,
-        'mod_author'             : project.mod_author,
-        'mod_credits'            : project.mod_credits,
-        'mc_version_range'       : project.mc_version_range,
-        'jei_version_range'      : project.jei_version_range,
-        'forge_version_range'    : project.forge_version_range,
-        'loader_version_range'   : project.loader_version_range,
-        'curios_version_range'   : project.curios_version_range,
-        'patchouli_version_range': project.patchouli_version_range,
-        'issue_tracker_url'      : "https://github.com/${project.github}/issues"
-]
+project.ext.issue_tracker_url = "https://github.com/${project.github}/issues"
 
 processResources {
-    inputs.properties replaceProperties
+    Map<String, ?> buildProps = project.properties.clone()
+    buildProps.values().removeIf { !it.getClass().isPrimitive() && !(it instanceof CharSequence) }
+    inputs.properties buildProps
 
-    filesMatching(replaceIn) {
-        expand replaceProperties
+    filesMatching(['META-INF/mods.toml']) {
+        expand buildProps
     }
     // minify json files
     doLast {
@@ -349,6 +330,10 @@ sourcesJar {
     from sourceSets.api.allSource
 }
 
+tasks.jarJar.configure {
+    from sourceSets.api.output
+}
+
 task apiJar(type: Jar, dependsOn: apiClasses) {
     archiveClassifier.set('api')
     from sourceSets.api.allSource
@@ -372,7 +357,7 @@ tasks.withType(Jar).configureEach {
     }
     from 'LICENSE.md'
     manifest {
-        mainAttributes([
+        attributes([
                 'Maven-Artifact'        : "${project.mod_group}:${project.archivesBaseName}:${project.version}",
                 'Specification-Title'   : archivesBaseName,
                 'Specification-Vendor'  : "${project.vendor}",
@@ -445,6 +430,7 @@ publishing {
         artifactId = project.archivesBaseName
         version = project.version
         from components.java
+        jarJar.component(it)
         pom {
             name = project.mod_name
             url = project.mod_url
@@ -486,13 +472,6 @@ publishing {
                     name = '"Don\'t Be a Jerk" License'
                     url = "https://github.com/${rootProject.github}/blob/version/${project.mc_version}/LICENSE.md"
                     distribution = 'repo'
-                }
-            }
-            withXml {
-                asNode().dependencies.dependency.each { dep ->
-                    if (dep.version.last().value().last().contains('_mapped_')) {
-                        assert dep.parent().remove(dep)
-                    }
                 }
             }
         }
