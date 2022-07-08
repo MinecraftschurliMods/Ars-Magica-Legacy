@@ -12,7 +12,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
@@ -35,7 +34,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
@@ -161,12 +159,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public IRiftHelper getRiftHelper() {
         return RiftHelper.instance();
-    }
-
-    @Unmodifiable
-    @Override
-    public IShrinkHelper getShrinkHelper() {
-        return ShrinkHelper.instance();
     }
 
     @Unmodifiable
