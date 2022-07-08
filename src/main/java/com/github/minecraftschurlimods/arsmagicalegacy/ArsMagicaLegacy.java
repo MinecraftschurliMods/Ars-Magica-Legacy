@@ -12,7 +12,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ShrinkHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
@@ -93,6 +92,5 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(ShrinkHelper.ShrinkSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

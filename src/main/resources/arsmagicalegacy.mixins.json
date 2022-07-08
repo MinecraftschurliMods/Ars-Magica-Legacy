@@ -4,10 +4,13 @@
   "package": "com.github.minecraftschurlimods.arsmagicalegacy.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "arsmagicalegacy.refmap.json",
-  "mixins": [
+  "client": [
+    "client.ClientPacketListenerMixin"
   ],
-  "client": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "EntityMixin"
+  ]
 }
