@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardi
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class EnderGuardianRenderer extends MobRenderer<EnderGuardian, EnderGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ender_guardian.png");
@@ -16,8 +15,7 @@ public class EnderGuardianRenderer extends MobRenderer<EnderGuardian, EnderGuard
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull EnderGuardian pEntity) {
+    public ResourceLocation getTextureLocation(EnderGuardian pEntity) {
         return TEXTURE;
     }
 }

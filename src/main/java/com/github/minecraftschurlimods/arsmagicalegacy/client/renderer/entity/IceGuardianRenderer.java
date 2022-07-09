@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class IceGuardianRenderer extends MobRenderer<IceGuardian, IceGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/ice_guardian.png");
@@ -16,8 +15,7 @@ public class IceGuardianRenderer extends MobRenderer<IceGuardian, IceGuardianMod
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull IceGuardian pEntity) {
+    public ResourceLocation getTextureLocation(IceGuardian pEntity) {
         return TEXTURE;
     }
 }

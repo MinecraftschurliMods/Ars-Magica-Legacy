@@ -1,14 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 public abstract class NonLiving3DModelRenderer<T extends Entity, M extends EntityModel<T>> extends EntityRenderer<T> {

@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuard
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class NatureGuardianRenderer extends MobRenderer<NatureGuardian, NatureGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/nature_guardian.png");
@@ -16,8 +15,7 @@ public class NatureGuardianRenderer extends MobRenderer<NatureGuardian, NatureGu
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull NatureGuardian pEntity) {
+    public ResourceLocation getTextureLocation(NatureGuardian pEntity) {
         return TEXTURE;
     }
 }

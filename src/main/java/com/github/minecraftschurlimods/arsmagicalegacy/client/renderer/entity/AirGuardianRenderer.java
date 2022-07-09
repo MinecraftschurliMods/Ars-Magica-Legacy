@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class AirGuardianRenderer extends MobRenderer<AirGuardian, AirGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/air_guardian.png");
@@ -16,8 +15,7 @@ public class AirGuardianRenderer extends MobRenderer<AirGuardian, AirGuardianMod
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull AirGuardian pEntity) {
+    public ResourceLocation getTextureLocation(AirGuardian pEntity) {
         return TEXTURE;
     }
 }

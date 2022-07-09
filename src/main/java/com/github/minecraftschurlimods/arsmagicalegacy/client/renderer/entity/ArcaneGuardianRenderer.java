@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuard
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class ArcaneGuardianRenderer extends MobRenderer<ArcaneGuardian, ArcaneGuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/arcane_guardian.png");
@@ -16,8 +15,7 @@ public class ArcaneGuardianRenderer extends MobRenderer<ArcaneGuardian, ArcaneGu
     }
 
     @Override
-    @NotNull
-    public ResourceLocation getTextureLocation(final @NotNull ArcaneGuardian pEntity) {
+    public ResourceLocation getTextureLocation(ArcaneGuardian pEntity) {
         return TEXTURE;
     }
 }

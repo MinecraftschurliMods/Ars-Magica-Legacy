@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Natur
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureScythe;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class NatureScytheRenderer extends NonLiving3DModelRenderer<NatureScythe, NatureScytheModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/entity/nature_guardian.png");
@@ -15,7 +14,7 @@ public class NatureScytheRenderer extends NonLiving3DModelRenderer<NatureScythe,
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final @NotNull NatureScythe pEntity) {
+    public ResourceLocation getTextureLocation(NatureScythe pEntity) {
         return TEXTURE;
     }
 }
