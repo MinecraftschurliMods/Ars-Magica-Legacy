@@ -92,7 +92,7 @@ public class IceGuardian extends AbstractBoss {
         goalSelector.addGoal(4, new LaunchArmGoal(this));
     }
 
-    public void returnOneArm() {
+    public void returnArm() {
         if (!hasLeftArm) {
             hasLeftArm = true;
         } else if (!hasRightArm) {
@@ -100,7 +100,7 @@ public class IceGuardian extends AbstractBoss {
         }
     }
 
-    public void launchOneArm() {
+    public void launchArm() {
         if (hasLeftArm) {
             hasLeftArm = false;
         } else if (hasRightArm) {

@@ -3,9 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -21,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.entity.PartEntity;
@@ -89,7 +86,11 @@ public class NatureScythe extends Entity {
             remove(RemovalReason.KILLED);
             return;
         }
-        if (level.isClientSide()) return;
+        if (tickCount > 200) {
+            returnToOwner();
+        } else if (tickCount > 100) {
+            setHasHit();
+        }
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE);
         if (result.getType() == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) result).getEntity();
@@ -98,24 +99,13 @@ public class NatureScythe extends Entity {
             }
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 living.hurt(AMDamageSources.NATURE_SCYTHE, 10);
-                if (!hasHit) {
-                    setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
-                    hasHit = true;
-                }
+                setHasHit();
             }
-            if (hasHit && entity == getOwner()) {
-                LivingEntity living = getOwner();
-                if (living instanceof NatureGuardian guardian) {
-                    guardian.hasScythe = true;
-                } else if (living instanceof Player player && !player.addItem(getStack())) {
-                    ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
-                    level.addFreshEntity(item);
-                }
-                remove(RemovalReason.KILLED);
+            if (hasHit && distanceTo(getOwner()) < 2) {
+                returnToOwner();
             }
-        } else if (result.getType() == HitResult.Type.BLOCK && !hasHit) {
-            setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
-            hasHit = true;
+        } else if (result.getType() == HitResult.Type.BLOCK) {
+            setHasHit();
         }
         setPos(position().add(getDeltaMovement()));
     }
@@ -136,5 +126,23 @@ public class NatureScythe extends Entity {
 
     public void setStack(ItemStack stack) {
         entityData.set(STACK, stack);
+    }
+
+    private void setHasHit() {
+        if (!hasHit) {
+            setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
+            hasHit = true;
+        }
+    }
+
+    private void returnToOwner() {
+        LivingEntity owner = getOwner();
+        if (owner instanceof NatureGuardian guardian) {
+            guardian.hasScythe = true;
+        } else if (owner instanceof Player player && !player.addItem(getStack())) {
+            ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
+            level.addFreshEntity(item);
+        }
+        remove(RemovalReason.KILLED);
     }
 }

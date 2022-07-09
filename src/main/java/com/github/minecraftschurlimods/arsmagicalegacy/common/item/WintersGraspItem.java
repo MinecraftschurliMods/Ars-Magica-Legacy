@@ -18,7 +18,7 @@ public class WintersGraspItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide()) {
             WintersGrasp entity = WintersGrasp.create(pLevel);
-            entity.moveTo(pPlayer.getEyePosition().add(pPlayer.getLookAngle()));
+            entity.moveTo(pPlayer.position().add(0, 1, 0).add(pPlayer.getLookAngle()));
             entity.setDeltaMovement(pPlayer.getLookAngle());
             entity.setXRot(pPlayer.getXRot());
             entity.setYRot(pPlayer.getYRot());
@@ -26,6 +26,7 @@ public class WintersGraspItem extends Item {
             entity.setStack(pPlayer.getItemInHand(pUsedHand));
             pLevel.addFreshEntity(entity);
         }
+        pPlayer.setItemInHand(pUsedHand, ItemStack.EMPTY);
         return super.use(pLevel, pPlayer, pUsedHand);
     }
 }

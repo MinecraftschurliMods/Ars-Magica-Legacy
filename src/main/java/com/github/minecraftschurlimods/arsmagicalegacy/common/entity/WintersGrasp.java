@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -12,14 +13,20 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-// TODO
 public class WintersGrasp extends Entity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(WintersGrasp.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(WintersGrasp.class, EntityDataSerializers.ITEM_STACK);
+    private boolean hasHit = false;
 
     public WintersGrasp(EntityType<? extends WintersGrasp> type, Level level) {
         super(type, level);
@@ -52,9 +59,9 @@ public class WintersGrasp extends Entity {
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putInt("Owner", entityData.get(OWNER));
-        CompoundTag icon = new CompoundTag();
-        entityData.get(STACK).save(icon);
-        tag.put("Stack", icon);
+        CompoundTag stack = new CompoundTag();
+        entityData.get(STACK).save(stack);
+        tag.put("Stack", stack);
     }
 
     @Override
@@ -74,7 +81,34 @@ public class WintersGrasp extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+        if (getOwner() == null) {
+            remove(RemovalReason.KILLED);
+            return;
+        }
+        if (tickCount > 200) {
+            returnToOwner();
+        } else if (tickCount > 100) {
+            setHasHit();
+        }
+        HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE);
+        if (result.getType() == HitResult.Type.ENTITY) {
+            Entity entity = ((EntityHitResult) result).getEntity();
+            if (entity instanceof PartEntity) {
+                entity = ((PartEntity<?>) entity).getParent();
+            }
+            if (entity instanceof LivingEntity living && entity != getOwner() && !hasPassenger(entity)) {
+                living.hurt(DamageSource.FREEZE, 2);
+                if (getPassengers().size() == 0 && canAddPassenger(entity)) {
+                    entity.startRiding(this, true);
+                }
+                setHasHit();
+            }
+            if (hasHit && distanceTo(getOwner()) < 2) {
+                returnToOwner();
+            }
+        } else if (result.getType() == HitResult.Type.BLOCK) {
+            setHasHit();
+        }
         setPos(position().add(getDeltaMovement()));
     }
 
@@ -94,5 +128,24 @@ public class WintersGrasp extends Entity {
 
     public void setStack(ItemStack stack) {
         entityData.set(STACK, stack);
+    }
+
+    private void setHasHit() {
+        if (!hasHit) {
+            setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
+            hasHit = true;
+        }
+    }
+
+    private void returnToOwner() {
+        LivingEntity owner = getOwner();
+        if (owner instanceof IceGuardian guardian) {
+            guardian.returnArm();
+            getPassengers().forEach(Entity::stopRiding);
+        } else if (owner instanceof Player player && !player.addItem(getStack())) {
+            ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
+            level.addFreshEntity(item);
+        }
+        remove(RemovalReason.KILLED);
     }
 }
