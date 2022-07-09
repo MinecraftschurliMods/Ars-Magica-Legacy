@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class NatureScytheModel extends AMEntityModel<NatureScythe> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nature_scythe"), "main");
@@ -39,11 +40,17 @@ public class NatureScytheModel extends AMEntityModel<NatureScythe> {
     @Override
     public void setupAnim(NatureScythe pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        float rot = (float) (pAgeInTicks * Math.PI / 30);
-        rod.xRot = rot;
-        head.xRot = rot;
-        blade1.xRot = rot;
-        blade2.xRot = degToRad(30) + rot;
-        blade3.xRot = degToRad(60) + rot;
+        float xRot = degToRad(pHeadPitch + pAgeInTicks * 36);
+        float yRot = degToRad(-pNetHeadYaw);
+        rod.xRot = xRot;
+        head.xRot = xRot;
+        blade1.xRot = xRot;
+        blade2.xRot = xRot + degToRad(30);
+        blade3.xRot = xRot + degToRad(60);
+        rod.yRot = yRot;
+        head.yRot = yRot;
+        blade1.yRot = yRot;
+        blade2.yRot = yRot;
+        blade3.yRot = yRot;
     }
 }

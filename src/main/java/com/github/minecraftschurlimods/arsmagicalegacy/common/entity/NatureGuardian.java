@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 public class NatureGuardian extends AbstractBoss {
+    public boolean hasScythe = true;
     private float spinRotation = 0;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {

@@ -20,12 +20,11 @@ public class NatureScytheItem extends Item {
             NatureScythe entity = NatureScythe.create(pLevel);
             entity.moveTo(pPlayer.getEyePosition().add(pPlayer.getLookAngle()));
             entity.setDeltaMovement(pPlayer.getLookAngle());
-            entity.setXRot(pPlayer.getXRot());
-            entity.setYRot(pPlayer.getYRot());
             entity.setOwner(pPlayer);
             entity.setStack(pPlayer.getItemInHand(pUsedHand));
             pLevel.addFreshEntity(entity);
         }
-        return super.use(pLevel, pPlayer, pUsedHand);
+        pPlayer.setItemInHand(pUsedHand, ItemStack.EMPTY);
+        return InteractionResultHolder.success(ItemStack.EMPTY);
     }
 }

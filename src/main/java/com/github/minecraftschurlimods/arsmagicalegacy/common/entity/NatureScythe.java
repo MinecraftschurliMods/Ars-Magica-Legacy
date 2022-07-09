@@ -1,7 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -12,14 +16,21 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-// TODO
 public class NatureScythe extends Entity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(NatureScythe.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(NatureScythe.class, EntityDataSerializers.ITEM_STACK);
+    private boolean hasHit = false;
 
     public NatureScythe(EntityType<? extends NatureScythe> type, Level level) {
         super(type, level);
@@ -52,9 +63,9 @@ public class NatureScythe extends Entity {
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putInt("Owner", entityData.get(OWNER));
-        CompoundTag icon = new CompoundTag();
-        entityData.get(STACK).save(icon);
-        tag.put("Stack", icon);
+        CompoundTag stack = new CompoundTag();
+        entityData.get(STACK).save(stack);
+        tag.put("Stack", stack);
     }
 
     @Override
@@ -74,7 +85,38 @@ public class NatureScythe extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+        if (getOwner() == null) {
+            remove(RemovalReason.KILLED);
+            return;
+        }
+        if (level.isClientSide()) return;
+        HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE);
+        if (result.getType() == HitResult.Type.ENTITY) {
+            Entity entity = ((EntityHitResult) result).getEntity();
+            if (entity instanceof PartEntity) {
+                entity = ((PartEntity<?>) entity).getParent();
+            }
+            if (entity instanceof LivingEntity living && entity != getOwner()) {
+                living.hurt(AMDamageSources.NATURE_SCYTHE, 10);
+                if (!hasHit) {
+                    setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
+                    hasHit = true;
+                }
+            }
+            if (hasHit && entity == getOwner()) {
+                LivingEntity living = getOwner();
+                if (living instanceof NatureGuardian guardian) {
+                    guardian.hasScythe = true;
+                } else if (living instanceof Player player && !player.addItem(getStack())) {
+                    ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
+                    level.addFreshEntity(item);
+                }
+                remove(RemovalReason.KILLED);
+            }
+        } else if (result.getType() == HitResult.Type.BLOCK && !hasHit) {
+            setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
+            hasHit = true;
+        }
         setPos(position().add(getDeltaMovement()));
     }
 

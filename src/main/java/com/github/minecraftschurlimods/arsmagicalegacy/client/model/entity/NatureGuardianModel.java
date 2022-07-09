@@ -72,7 +72,7 @@ public class NatureGuardianModel extends AMBossEntityModel<NatureGuardian> {
     public void setupAnim(NatureGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         for (ModelPart mp : scythe) {
-            mp.visible = true;
+            mp.visible = pEntity.hasScythe;
         }
     }
 }
