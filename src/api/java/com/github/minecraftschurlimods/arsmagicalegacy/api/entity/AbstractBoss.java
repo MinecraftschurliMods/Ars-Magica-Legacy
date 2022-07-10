@@ -44,6 +44,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 bossEvent.addPlayer(player);
             }
         }
+        setIdle();
     }
 
     @Override
@@ -118,7 +119,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     @Override
     public void kill() {
-        super.kill();
         remove(Entity.RemovalReason.KILLED);
         bossEvent.setProgress(0);
         bossEvent.setVisible(false);

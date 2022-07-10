@@ -101,7 +101,7 @@ public class WaterGuardianModel extends AMBossEntityModel<WaterGuardian> {
     @Override
     public void setupAnim(WaterGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        float rot = (float) (((pAgeInTicks + pEntity.getSpinRotation()) % 360) * Math.PI / 180);
+        float rot = degToRad(pAgeInTicks + pEntity.getSpinRotation());
         innerOrb1.yRot = -(float) (Math.PI / 2) + rot;
         outerOrb1.yRot = rot;
         innerOrb2.yRot = -(float) Math.PI + rot;
@@ -114,7 +114,7 @@ public class WaterGuardianModel extends AMBossEntityModel<WaterGuardian> {
         rod2.yRot = -(float) (3 * Math.PI / 4) + rot;
         rod3.yRot = -(float) (Math.PI / 4) + rot;
         rod4.yRot = (float) (Math.PI / 4) + rot;
-        float swing = Mth.sin(degToRad(pAgeInTicks % 360 * 4)) * 0.1f;
+        float swing = Mth.sin(degToRad(pAgeInTicks * 4)) * 0.1f;
         northernTentacle.xRot = -swing;
         easternTentacle.zRot = swing;
         southernTentacle.xRot = swing;

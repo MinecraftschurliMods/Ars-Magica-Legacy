@@ -30,8 +30,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardian extends AbstractBoss {
-    private static final String KEY = "isClone";
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
+    private boolean spin = false;
     private float spinRotation = 0;
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
@@ -79,13 +79,13 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean(KEY, isClone());
+        pCompound.putBoolean("IsClone", isClone());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        entityData.set(IS_CLONE, pCompound.getBoolean(KEY));
+        entityData.set(IS_CLONE, pCompound.getBoolean("IsClone"));
     }
 
     @Override
@@ -96,7 +96,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
+        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10 : super.getWalkTargetValue(pPos, pLevel);
     }
 
     @Override
@@ -116,8 +116,8 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (level.isClientSide() && getAction() == WaterGuardianAction.SPINNING) {
-            spinRotation = (spinRotation + 30) % 360;
+        if (spin) {
+            spinRotation += 30;
         }
         if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
             remove(RemovalReason.KILLED);
@@ -129,14 +129,13 @@ public class WaterGuardian extends AbstractBoss {
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (isClone() && master != null) {
             master.clearClones();
+            return false;
         } else if (hasClones()) {
             clearClones();
-        } else if (!isClone() && random.nextInt(10) < 5) return false;
-        if (pSource == DamageSource.LIGHTNING_BOLT) {
+            return false;
+        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE) {
-            pAmount = 0;
-        }
+        } else if (pSource == DamageSource.FREEZE || pSource == DamageSource.DROWN || (!isClone() && random.nextBoolean())) return false;
         return super.hurt(pSource, pAmount);
     }
 
@@ -144,10 +143,20 @@ public class WaterGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(4, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 12, 18));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 10, 10));
-        goalSelector.addGoal(3, new CloneGoal(this));
-        goalSelector.addGoal(3, new SpinGoal<>(this, WaterGuardianAction.SPINNING, DamageSource.mobAttack(this)));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 10, 10));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 12, 18));
+        goalSelector.addGoal(2, new CloneGoal(this));
+        goalSelector.addGoal(2, new SpinGoal<>(this, WaterGuardianAction.SPINNING, DamageSource.mobAttack(this)));
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId == 56) {
+            spin = true;
+        } else if (pId == 57) {
+            spin = false;
+        }
+        super.handleEntityEvent(pId);
     }
 
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
@@ -161,11 +170,11 @@ public class WaterGuardian extends AbstractBoss {
 
     public void clearClones() {
         if (clone1 != null) {
-            clone1.remove(RemovalReason.KILLED);
+            clone1.kill();
             clone1 = null;
         }
         if (clone2 != null) {
-            clone2.remove(RemovalReason.KILLED);
+            clone2.kill();
             clone2 = null;
         }
     }

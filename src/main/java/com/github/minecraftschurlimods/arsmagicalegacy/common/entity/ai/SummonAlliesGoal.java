@@ -17,7 +17,7 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
     private boolean hasCasted = false;
 
     public SummonAlliesGoal(LifeGuardian boss, List<EntityType<? extends Mob>> list) {
-        super(boss, LifeGuardian.LifeGuardianAction.CASTING);
+        super(boss, LifeGuardian.LifeGuardianAction.CASTING, 20);
         this.list = list;
     }
 
@@ -30,13 +30,13 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
     @Override
     public void tick() {
         super.tick();
-        if (cooldownTicks >= 20) {
+        if (ticks >= 20) {
             SoundEvent sound = getAttackSound();
             if (sound != null) {
                 boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat() * 0.5f);
             }
             perform();
-            cooldownTicks = 0;
+            ticks = 0;
             hasCasted = true;
         }
     }

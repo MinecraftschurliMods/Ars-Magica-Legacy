@@ -13,7 +13,7 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
     @Override
     public void tick() {
         super.tick();
-        if (cooldownTicks >= 20 && cooldownTicks <= 30) {
+        if (ticks >= 20 && ticks <= 30) {
             perform();
         }
     }

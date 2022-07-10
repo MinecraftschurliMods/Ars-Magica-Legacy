@@ -29,10 +29,6 @@ public class EnderTorrentGoal extends ExecuteSpellGoal<EnderGuardian> {
             } else {
                 caster.lookAt(caster.getTarget(), 180, 180);
             }
-            if (castTicks > 100) {
-                castTicks = 0;
-                cooldownTicks = 0;
-            }
         }
     }
 }
