@@ -41,8 +41,10 @@ version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
 
 if (System.getenv('RELEASE_TYPE') != null) {
-    status = System.getenv('RELEASE_TYPE').toLowerCase()
-    if (status == 'snapshot') status = status.toUpperCase()
+    if (!System.getenv('RELEASE_TYPE').equalsIgnoreCase('release')) {
+        status = System.getenv('RELEASE_TYPE').toLowerCase()
+        if (status == 'snapshot') status = status.toUpperCase()
+    }
 } else {
     status = 'SNAPSHOT'
 }
