@@ -95,10 +95,10 @@ public class LifeGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 16, 80));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 16, 4));
-//        goalSelector.addGoal(3, new SummonAlliesGoal(this, List.of(AMEntities.EARTH_ELEMENTAL.get(), AMEntities.FIRE_ELEMENTAL.get(), AMEntities.MANA_ELEMENTAL.get(), AMEntities.DARKLING.get())));
-        goalSelector.addGoal(3, new SummonAlliesGoal(this, List.of(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.WITCH)));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 80));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 20));
+//        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(AMEntities.EARTH_ELEMENTAL.get(), AMEntities.FIRE_ELEMENTAL.get(), AMEntities.MANA_ELEMENTAL.get(), AMEntities.DARKLING.get())));
+        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.WITCH)));
     }
 
     public void addQueuedMinion(LivingEntity minion) {

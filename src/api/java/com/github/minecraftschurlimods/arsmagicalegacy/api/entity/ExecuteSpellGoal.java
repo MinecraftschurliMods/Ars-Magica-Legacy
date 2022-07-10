@@ -15,7 +15,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     protected final int duration;
     protected int ticks = 0;
 
-    public ExecuteSpellGoal(T caster, ISpell spell, int duration, int cooldown) {
+    public ExecuteSpellGoal(T caster, ISpell spell, int duration) {
         this.caster = caster;
         this.spell = spell;
         this.duration = duration;

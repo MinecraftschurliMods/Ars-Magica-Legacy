@@ -88,8 +88,8 @@ public class IceGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(2, new SmashGoal<>(this, IceGuardianAction.SMASH, DamageSource.FREEZE));
-        goalSelector.addGoal(3, new StrikeGoal<>(this, IceGuardianAction.STRIKE, DamageSource.FREEZE));
-        goalSelector.addGoal(4, new LaunchArmGoal(this));
+        goalSelector.addGoal(2, new StrikeGoal<>(this, IceGuardianAction.STRIKE, DamageSource.FREEZE));
+        goalSelector.addGoal(2, new LaunchArmGoal(this));
     }
 
     public void returnArm() {

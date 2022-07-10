@@ -71,8 +71,8 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 10));
-        goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
     }

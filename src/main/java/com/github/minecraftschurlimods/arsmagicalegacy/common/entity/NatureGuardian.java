@@ -84,10 +84,10 @@ public class NatureGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(3, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
+        goalSelector.addGoal(2, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new StrikeGoal<>(this, NatureGuardianAction.STRIKE, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(3, new ThrowScytheGoal(this));
-        goalSelector.addGoal(5, new ShieldBashGoal(this));
+        goalSelector.addGoal(2, new ThrowScytheGoal(this));
+        goalSelector.addGoal(2, new ShieldBashGoal(this));
     }
 
     public enum NatureGuardianAction implements Action {

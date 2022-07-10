@@ -77,8 +77,8 @@ public class AirGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(1, new WhirlwindGoal(this));
         goalSelector.addGoal(2, new HurricaneGoal(this));
+        goalSelector.addGoal(2, new WhirlwindGoal(this));
     }
 
     public enum AirGuardianAction implements Action {

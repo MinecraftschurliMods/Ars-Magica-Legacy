@@ -70,7 +70,7 @@ public class EarthGuardian extends AbstractBoss {
         goalSelector.addGoal(1, new DispelGoal<>(this));
         goalSelector.addGoal(2, new SmashGoal<>(this, EarthGuardianAction.SMASH, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new StrikeGoal<>(this, EarthGuardianAction.STRIKE, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(1, new ThrowRockGoal(this));
+        goalSelector.addGoal(2, new ThrowRockGoal(this));
     }
 
     public enum EarthGuardianAction implements Action {
