@@ -21,6 +21,8 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * Mostly taken from McJty's tutorials and the Botania mod.
  * {@see https://github.com/VazkiiMods/Botania/blob/master/src/main/java/vazkii/botania/common/item/ItemFlowerBag.java}
@@ -39,7 +41,7 @@ public class RuneBagItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide()) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         if (pPlayer instanceof ServerPlayer sp) {
-            NetworkHooks.openGui(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), Component.empty()), buf -> buf.writeEnum(pUsedHand));
+            NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), Component.empty()), buf -> buf.writeEnum(pUsedHand));
         }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }

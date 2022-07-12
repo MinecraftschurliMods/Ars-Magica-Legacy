@@ -18,7 +18,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -66,11 +66,11 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements Rit
     }
 
     public static ItemDropRitualTrigger stacksExact(ItemStack... itemsStacks) {
-        return new ItemDropRitualTrigger(Arrays.stream(itemsStacks).<Ingredient>map(NBTIngredient::of).toList());
+        return new ItemDropRitualTrigger(Arrays.stream(itemsStacks).<Ingredient>map(StrictNBTIngredient::of).toList());
     }
 
     public static ItemDropRitualTrigger stackExact(ItemStack itemsStack) {
-        return ItemDropRitualTrigger.ingredient(NBTIngredient.of(itemsStack));
+        return ItemDropRitualTrigger.ingredient(StrictNBTIngredient.of(itemsStack));
     }
 
     @Override

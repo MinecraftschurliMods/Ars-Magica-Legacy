@@ -14,6 +14,8 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
+import net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority;
+
 public class Draggable extends AbstractContainerEventHandler implements Widget, NarratableEntry {
     private final Component name;
     private final TextureAtlasSprite sprite;

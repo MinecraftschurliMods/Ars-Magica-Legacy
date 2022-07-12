@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public record EntitySpawnRitualEffect(EntityType<?> entityType, Optional<CompoundTag> spawnData, Optional<Component> customName, boolean usePlayer) implements RitualEffect {
     public static final Codec<EntitySpawnRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ForgeRegistries.ENTITIES.getCodec().fieldOf("entity_type").forGetter(EntitySpawnRitualEffect::entityType),
+            ForgeRegistries.ENTITY_TYPES.getCodec().fieldOf("entity_type").forGetter(EntitySpawnRitualEffect::entityType),
             CompoundTag.CODEC.optionalFieldOf("spawn_data").forGetter(EntitySpawnRitualEffect::spawnData),
             CodecHelper.COMPONENT.optionalFieldOf("custom_name").forGetter(EntitySpawnRitualEffect::customName),
             Codec.BOOL.optionalFieldOf("use_player", false).forGetter(EntitySpawnRitualEffect::usePlayer)

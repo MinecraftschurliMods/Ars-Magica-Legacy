@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.resources.ResourceLocation;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class OcculusTabButton extends Button {
     private static final int SIZE = 22;
     private final int index;

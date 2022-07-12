@@ -12,14 +12,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public final class SpellBookHUD extends GuiComponent implements IIngameOverlay {
+public final class SpellBookHUD extends GuiComponent implements IGuiOverlay {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/spell_book.png");
 
     @Override
-    public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {
+    public void render(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -31,7 +31,7 @@ public final class SpellBookHUD extends GuiComponent implements IIngameOverlay {
         }
     }
 
-    private void renderSpellBookHUD(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height, ItemStack spellBook) {
+    private void renderSpellBookHUD(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height, ItemStack spellBook) {
         SimpleContainer active = SpellBookItem.getContainer(spellBook).active();
         final int selected = SpellBookItem.getSelectedSlot(spellBook);
         if (selected != -1) {

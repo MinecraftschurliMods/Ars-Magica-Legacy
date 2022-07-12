@@ -7,29 +7,30 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.BakedModelWrapper;
 
 public class SpellBookModel extends BakedModelWrapper<BakedModel> {
-    private ItemTransforms.TransformType cameraTransformType;
-
-    public SpellBookModel(final BakedModel originalModel) {
+    public SpellBookModel(BakedModel originalModel) {
         super(originalModel);
     }
 
     @Override
-    public BakedModel handlePerspective(final ItemTransforms.TransformType cameraTransformType, final PoseStack poseStack) {
-        this.cameraTransformType = cameraTransformType;
-        return ForgeHooksClient.handlePerspective(this, cameraTransformType, poseStack);
+    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+        return new TransformModel(cameraTransformType);
     }
 
-    @Override
-    public boolean doesHandlePerspectives() {
-        return true;
-    }
+    private class TransformModel extends BakedModelWrapper<BakedModel> {
+        private final ItemTransforms.TransformType cameraTransformType;
 
-    @Override
-    public boolean isCustomRenderer() {
-        return isHand();
-    }
+        public TransformModel(ItemTransforms.TransformType cameraTransformType) {
+            super(SpellBookModel.this);
+            this.cameraTransformType = cameraTransformType;
+        }
 
-    private boolean isHand() {
-        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+        @Override
+        public boolean isCustomRenderer() {
+            return isHand();
+        }
+
+        private boolean isHand() {
+            return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+        }
     }
 }

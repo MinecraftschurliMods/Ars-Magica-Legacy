@@ -115,7 +115,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) {
             pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
         }
-        NetworkHooks.openGui((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
+        NetworkHooks.openScreen((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
         pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
         return InteractionResult.CONSUME;
     }

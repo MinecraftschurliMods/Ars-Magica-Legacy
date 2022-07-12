@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 import java.util.function.Predicate;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class InlayBlock extends BaseRailBlock {
     public static final EnumProperty<RailShape> SHAPE = EnumProperty.create("shape", RailShape.class, ((Predicate<RailShape>) RailShape::isAscending).negate());
 

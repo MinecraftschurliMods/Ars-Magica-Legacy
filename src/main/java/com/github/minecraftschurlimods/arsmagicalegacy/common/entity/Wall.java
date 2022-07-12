@@ -29,6 +29,8 @@ import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 public class Wall extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX    = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);

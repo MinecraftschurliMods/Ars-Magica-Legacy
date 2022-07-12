@@ -14,6 +14,8 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
+import net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority;
+
 public class SkillPointPanel extends Screen implements NarratableEntry {
     private static final ResourceLocation SKILL_POINT_BG = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/skill_points.png");
 

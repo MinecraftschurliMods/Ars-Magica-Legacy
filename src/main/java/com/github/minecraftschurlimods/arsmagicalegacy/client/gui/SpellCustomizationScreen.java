@@ -16,12 +16,14 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.GuiUtils;
-import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.client.gui.ScreenUtils;
+import net.minecraftforge.client.gui.widget.ScrollPanel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority;
 
 public class SpellCustomizationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
@@ -131,9 +133,9 @@ public class SpellCustomizationScreen extends Screen {
                 y += relativeY * ICON_MARGIN;
                 if (y > 0 && y < bottom) {
                     if (icon.equals(selected)) {
-                        GuiUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
+                        ScreenUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
                     } else if (icon.equals(hovered)) {
-                        GuiUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
+                        ScreenUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
                     }
                     blit(mStack, x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
                 }

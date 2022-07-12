@@ -30,7 +30,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
+import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -46,6 +46,7 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        // TODO: move render types here when MinecraftForge/MinecraftForge#8852 is merged
         altarCoreBlock(ALTAR_CORE);
         airBlock(ALTAR_VIEW);
         simpleBlock(MAGIC_WALL);
@@ -79,7 +80,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         stairsBlock(WITCHWOOD_STAIRS, WITCHWOOD_PLANKS);
         fenceBlock(WITCHWOOD_FENCE, WITCHWOOD_PLANKS);
         fenceGateBlock(WITCHWOOD_FENCE_GATE, WITCHWOOD_PLANKS);
-        //doorBlock(WITCHWOOD_DOOR);//TODO: Fix door model forge#8687
+        doorBlock(WITCHWOOD_DOOR);
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
@@ -347,7 +348,7 @@ class AMBlockStateProvider extends BlockStateProvider {
             if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
                 return ConfiguredModel.builder().modelFile(models().getBuilder(texture + (state.getValue(AbstractFurnaceBlock.LIT) ? "_lit" : ""))
                         .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
-                        .customLoader(OBJLoaderBuilder::begin)
+                        .customLoader(ObjModelBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
                         .end()
                         .texture("tex", state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/" + texture + "_lit") : blockTexture(block.get()))
@@ -370,7 +371,7 @@ class AMBlockStateProvider extends BlockStateProvider {
             if (state.getValue(CelestialPrismBlock.HALF) == DoubleBlockHalf.LOWER) {
                 return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
                         .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
-                        .customLoader(OBJLoaderBuilder::begin)
+                        .customLoader(ObjModelBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
                         .end()
                         .texture("tex", blockTexture(block.get()))

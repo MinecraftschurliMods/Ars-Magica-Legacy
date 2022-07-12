@@ -8,13 +8,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -39,7 +39,7 @@ final class EffectHandler {
         forgeBus.addListener(EffectHandler::entitySize);
     }
 
-    private static void entityJoinWorld(EntityJoinWorldEvent event) {
+    private static void entityJoinWorld(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof LivingEntity entity)) return;
         for (MobEffectInstance instance : entity.getActiveEffects()) {
             if (instance.getEffect() instanceof AMMobEffect effect) {
@@ -49,14 +49,14 @@ final class EffectHandler {
     }
 
     private static void livingJump(LivingEvent.LivingJumpEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
             entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1), 0));
         }
     }
 
     private static void livingFall(LivingFallEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
             event.setDistance(event.getDistance() / (1.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1)));
         }
@@ -69,7 +69,7 @@ final class EffectHandler {
     }
 
     private static void livingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (event.getSource() != DamageSource.OUT_OF_WORLD && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
         }
@@ -79,7 +79,7 @@ final class EffectHandler {
     }
 
     private static void livingDeath(LivingDeathEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.hasEffect(AMMobEffects.TEMPORAL_ANCHOR.get())) {
             entity.removeEffect(AMMobEffects.TEMPORAL_ANCHOR.get());
             event.setCanceled(true);
@@ -104,21 +104,21 @@ final class EffectHandler {
         }
     }
 
-    private static void potionAdded(PotionEvent.PotionAddedEvent event) {
-        if (!event.getEntity().level.isClientSide() && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
-            effect.startEffect(event.getEntityLiving(), event.getPotionEffect());
+    private static void potionAdded(MobEffectEvent.Added event) {
+        if (!event.getEntity().level.isClientSide() && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+            effect.startEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
-    private static void potionExpiry(PotionEvent.PotionExpiryEvent event) {
-        if (!event.getEntity().level.isClientSide() && !(event.getPotionEffect() == null) && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
-            effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
+    private static void potionExpiry(MobEffectEvent.Expired event) {
+        if (!event.getEntity().level.isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+            effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
-    private static void potionRemove(PotionEvent.PotionRemoveEvent event) {
-        if (!event.getEntity().level.isClientSide() && !(event.getPotionEffect() == null) && event.getPotionEffect().getEffect() instanceof AMMobEffect effect) {
-            effect.stopEffect(event.getEntityLiving(), event.getPotionEffect());
+    private static void potionRemove(MobEffectEvent.Remove event) {
+        if (!event.getEntity().level.isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+            effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 

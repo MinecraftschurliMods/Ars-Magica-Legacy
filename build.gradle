@@ -185,7 +185,7 @@ dependencies {
 
     // jei for integration
     modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+    //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
@@ -211,8 +211,8 @@ dependencies {
     include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT') {
         jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
-    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT') {
-        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
+    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.1-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.1-SNAPSHOT,)')
     }
     datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 

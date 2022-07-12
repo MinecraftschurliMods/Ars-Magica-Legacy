@@ -161,7 +161,7 @@ class AMLootTableProvider extends LootTableProvider {
                 ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
                 if (isNonLiving(entitytype)) {
                     if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)
-                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, ForgeRegistries.ENTITIES.getKey(entitytype)));
+                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, ForgeRegistries.ENTITY_TYPES.getKey(entitytype)));
                 } else if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
                     LootTable.Builder loottable$builder = lootTables.remove(resourcelocation);
                     if (loottable$builder == null) continue;
