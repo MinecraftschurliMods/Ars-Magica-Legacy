@@ -19,8 +19,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class WizardsChalkItem extends BlockItem {
     public WizardsChalkItem(Properties pProperties) {
         super(AMBlocks.WIZARDS_CHALK.get(), pProperties);

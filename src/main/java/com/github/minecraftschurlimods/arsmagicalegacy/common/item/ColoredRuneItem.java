@@ -6,8 +6,6 @@ import net.minecraft.world.item.Item;
 
 import java.util.Map;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ColoredRuneItem extends Item {
     private static final Map<DyeColor, ColoredRuneItem> ITEM_BY_COLOR = Maps.newEnumMap(DyeColor.class);
     private final DyeColor dyeColor;

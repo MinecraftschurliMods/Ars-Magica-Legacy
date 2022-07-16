@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import java.util.Map.Entry;
-
 public final class AbilityManager extends CodecDataManager<IAbilityData> implements IAbilityManager {
     private static final Lazy<AbilityManager> INSTANCE = Lazy.concurrentOf(AbilityManager::new);
 

@@ -34,8 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.entity.Entity.RemovalReason;
-
 public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION         = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);

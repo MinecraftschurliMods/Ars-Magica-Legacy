@@ -10,8 +10,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class AffinityEssenceItem extends Item implements IAffinityItem {
     public AffinityEssenceItem(Properties properties) {
         super(properties);

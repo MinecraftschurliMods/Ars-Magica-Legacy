@@ -23,8 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority;
-
 public class SpellCustomizationScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_customization.png");
     private static final int ICON_SIZE = 15;

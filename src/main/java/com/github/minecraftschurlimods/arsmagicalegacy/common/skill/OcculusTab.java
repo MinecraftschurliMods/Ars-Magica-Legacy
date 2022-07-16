@@ -9,8 +9,6 @@ import net.minecraftforge.common.util.Lazy;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab.OcculusTabRendererFactory;
-
 public final class OcculusTab implements IOcculusTab {
     private static final String DEFAULT_RENDERER = "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer";
     //@formatter:off

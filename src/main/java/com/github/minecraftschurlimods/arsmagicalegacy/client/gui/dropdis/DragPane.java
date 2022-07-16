@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority;
-
 public class DragPane extends AbstractContainerEventHandler implements NarratableEntry, Widget, DragHandler {
     private final List<DropArea> dropAreas = new ArrayList<>();
     private final int x;

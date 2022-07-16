@@ -54,8 +54,6 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.CONFIGURED_FEATURES;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.PLACED_FEATURES;
 
-import net.minecraftforge.common.world.BiomeModifier.Phase;
-
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @NonExtendable
 public interface AMFeatures {

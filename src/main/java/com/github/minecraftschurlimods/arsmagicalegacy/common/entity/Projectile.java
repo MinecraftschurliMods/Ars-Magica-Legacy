@@ -30,8 +30,6 @@ import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.world.entity.Entity.RemovalReason;
-
 public class Projectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);

@@ -34,8 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.entity.Entity.RemovalReason;
-
 public class Zone extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION         = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
