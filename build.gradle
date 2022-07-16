@@ -41,14 +41,15 @@ version = "${project.mc_version}-${project.mod_version}"
 archivesBaseName = "${project.mod_id}"
 
 if (System.getenv('RELEASE_TYPE') != null) {
-    if (!System.getenv('RELEASE_TYPE').equalsIgnoreCase('release')) {
-        status = System.getenv('RELEASE_TYPE').toLowerCase()
-        if (status == 'snapshot') status = status.toUpperCase()
-    }
+    status = System.getenv('RELEASE_TYPE').toLowerCase()
+    if (status == 'snapshot') status = status.toUpperCase()
 } else {
     status = 'SNAPSHOT'
 }
-version = "${version}-${status}"
+
+if (status != 'release') {
+    version = "${version}-${status}"
+}
 
 java {
     withSourcesJar()
