@@ -1,4 +1,4 @@
-// 1.19	2022-06-09T11:19:28.6371131	Altar Structure Materials[arsmagicalegacy]
+// 1.19	2022-07-16T15:18:20.2041397	Altar Structure Materials[arsmagicalegacy]
 601860506fd5da5c3c92c3b5daef6e4146b7c7b2 data/arsmagicalegacy/altar/cap/chimerite.json
 1427f268fd1891e226bf077b5f834a90aa78fa43 data/arsmagicalegacy/altar/cap/coal.json
 bcc8effb27ceab1f0b877717b474b889b1ebdd44 data/arsmagicalegacy/altar/cap/copper.json
@@ -37,8 +37,10 @@ e472e20c6409208ab2abdf66d3da20771d6ab8b6 data/arsmagicalegacy/altar/structure/de
 3a50587c6a110a3ce84b7639068ae4e7d7dcc909 data/arsmagicalegacy/altar/structure/exposed_cut_copper.json
 429beb4281b87a86ebe8a24ab2dbdc37dbeb8ef1 data/arsmagicalegacy/altar/structure/granite.json
 1ad8789d7628ee78969171ae6de656900a2f79ce data/arsmagicalegacy/altar/structure/jungle_planks.json
+6642c856c945fa29ce7b39ea463bb35931945701 data/arsmagicalegacy/altar/structure/mangrove_planks.json
 27435c4ca44c989fd7fe1b3d2c5ecfaf35c84ad0 data/arsmagicalegacy/altar/structure/mossy_cobblestone.json
 5e099d0c9558a74ea776d11670720d43418c97eb data/arsmagicalegacy/altar/structure/mossy_stone_bricks.json
+3f76ba3846033815e4d9a480b6fcae68088c9c4a data/arsmagicalegacy/altar/structure/mud_bricks.json
 bdba583508c7e7649839d793d91311892ce6ae35 data/arsmagicalegacy/altar/structure/nether_bricks.json
 6e6b1eb11cabb2e5924aaecf9e4dc28dca44d524 data/arsmagicalegacy/altar/structure/oak_planks.json
 b5385e2afaa4b256db3a27d7448e7780160291ba data/arsmagicalegacy/altar/structure/oxidized_cut_copper.json

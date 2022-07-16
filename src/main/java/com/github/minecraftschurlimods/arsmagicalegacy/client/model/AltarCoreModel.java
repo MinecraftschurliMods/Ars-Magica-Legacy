@@ -44,7 +44,7 @@ public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
             BlockState camoState = data.get(AltarCoreBlockEntity.CAMO_STATE);
             if (camoState != null) {
                 BakedModel blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(camoState);
-                return blockModel.getRenderTypes(camoState, rand, ModelData.EMPTY);
+                return ChunkRenderTypeSet.union(blockModel.getRenderTypes(camoState, rand, ModelData.EMPTY), super.getRenderTypes(state, rand, data));
             }
         }
         return super.getRenderTypes(state, rand, data);
