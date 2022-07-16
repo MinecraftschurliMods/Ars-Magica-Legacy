@@ -599,6 +599,7 @@
   "item.minecraft.tipped_arrow.effect.standard_mana": "Arrow of Standard Mana",
   "itemGroup.arsmagicalegacy": "Ars Magica: Legacy",
   "itemGroup.arsmagicalegacy.prefab_spells": "Ars Magica: Legacy - Prefab Spells",
+  "message.arsmagicalegacy.altar_power": "Power: %s",
   "message.arsmagicalegacy.hold_shift_for_details": "Hold Shift for details",
   "message.arsmagicalegacy.no_teleport": "You are too distorted to teleport!",
   "message.arsmagicalegacy.no_teleport_nether": "The nether's force forbids you to simply teleport out of it!",
