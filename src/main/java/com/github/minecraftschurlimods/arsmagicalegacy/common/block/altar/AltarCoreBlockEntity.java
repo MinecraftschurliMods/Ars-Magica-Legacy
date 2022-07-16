@@ -394,6 +394,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     /**
+     * @return The power level of the altar.
+     */
+    public int getPowerLevel() {
+        return powerLevel;
+    }
+
+    /**
      * @return Whether the altar has enough power or not.
      */
     public boolean hasEnoughPower() {

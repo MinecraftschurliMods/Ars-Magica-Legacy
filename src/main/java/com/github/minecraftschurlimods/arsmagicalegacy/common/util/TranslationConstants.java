@@ -36,4 +36,5 @@ public interface TranslationConstants {
     String PREVENT                        = "message." + ArsMagicaAPI.MOD_ID + ".prevent";
     String SPELL_CAST                     = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String TIER                           = "message." + ArsMagicaAPI.MOD_ID + ".tier";
+    String ALTAR_POWER                    = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
 }
