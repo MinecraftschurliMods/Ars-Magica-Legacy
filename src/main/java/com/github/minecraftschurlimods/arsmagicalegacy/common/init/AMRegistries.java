@@ -47,13 +47,13 @@ public interface AMRegistries {
     DeferredRegister<SoundEvent>                     SOUND_EVENTS               = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,                    ArsMagicaAPI.MOD_ID);
     DeferredRegister<Potion>                         POTIONS                    = DeferredRegister.create(ForgeRegistries.POTIONS,                         ArsMagicaAPI.MOD_ID);
     DeferredRegister<Enchantment>                    ENCHANTMENTS               = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,                    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityType<?>>                  ENTITIES                   = DeferredRegister.create(ForgeRegistries.ENTITIES,                        ArsMagicaAPI.MOD_ID);
-    DeferredRegister<BlockEntityType<?>>             BLOCK_ENTITIES             = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES,                  ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityType<?>>                  ENTITIES                   = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,                        ArsMagicaAPI.MOD_ID);
+    DeferredRegister<BlockEntityType<?>>             BLOCK_ENTITIES             = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,                  ArsMagicaAPI.MOD_ID);
     DeferredRegister<ParticleType<?>>                PARTICLE_TYPES             = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,                  ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MenuType<?>>                    MENU_TYPES                 = DeferredRegister.create(ForgeRegistries.CONTAINERS,                      ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MenuType<?>>                    MENU_TYPES                 = DeferredRegister.create(ForgeRegistries.MENU_TYPES,                      ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>>            RECIPE_SERIALIZERS         = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,              ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>                    STAT_TYPES                 = DeferredRegister.create(ForgeRegistries.STAT_TYPES,                      ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityDataSerializer<?>>        DATA_SERIALIZERS           = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS,           ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityDataSerializer<?>>        DATA_SERIALIZERS           = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,           ArsMagicaAPI.MOD_ID);
     DeferredRegister<ConfiguredFeature<?,?>>         CONFIGURED_FEATURES        = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY,            ArsMagicaAPI.MOD_ID);
     DeferredRegister<PlacedFeature>                  PLACED_FEATURES            = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY,                ArsMagicaAPI.MOD_ID);
     DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, ArsMagicaAPI.MOD_ID);

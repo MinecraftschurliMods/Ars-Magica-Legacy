@@ -161,7 +161,7 @@ public final class Spell implements ISpell {
                 }
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
                 if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    api.getAffinityHelper().applyAffinityShift(event.getPlayer(), event.affinity, event.shift);
+                    api.getAffinityHelper().applyAffinityShift(event.getEntity(), event.affinity, event.shift);
                     MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, shift.floatValue(), false));
                 }
             }
@@ -223,7 +223,7 @@ public final class Spell implements ISpell {
         for (ISpellPart part : parts()) {
             ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(part);
             if (data != null && part.getType() == ISpellPart.SpellPartType.COMPONENT) {
-                cost += data.burnout();
+                cost += data.getBurnout();
             }
         }
         SpellEvent.BurnoutCost event = new SpellEvent.BurnoutCost(caster, this, cost);

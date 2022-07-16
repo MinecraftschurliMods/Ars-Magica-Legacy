@@ -20,7 +20,9 @@ class AMAltarStructureMaterialProvider extends AltarStructureMaterialProvider {
         addStructureMaterial("jungle_planks", Blocks.JUNGLE_PLANKS, (StairBlock) Blocks.JUNGLE_STAIRS, 1);
         addStructureMaterial("acacia_planks", Blocks.ACACIA_PLANKS, (StairBlock) Blocks.ACACIA_STAIRS, 1);
         addStructureMaterial("dark_oak_planks", Blocks.DARK_OAK_PLANKS, (StairBlock) Blocks.DARK_OAK_STAIRS, 1);
+        addStructureMaterial("mangrove_planks", Blocks.MANGROVE_PLANKS, (StairBlock) Blocks.MANGROVE_STAIRS, 1);
         addStructureMaterial("cobblestone", Blocks.COBBLESTONE, (StairBlock) Blocks.COBBLESTONE_STAIRS, 2);
+        addStructureMaterial("mud_bricks", Blocks.MUD_BRICKS, (StairBlock) Blocks.MUD_BRICK_STAIRS, 2);
         addStructureMaterial("mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, (StairBlock) Blocks.MOSSY_COBBLESTONE_STAIRS, 2);
         addStructureMaterial("cobbled_deepslate", Blocks.COBBLED_DEEPSLATE, (StairBlock) Blocks.COBBLED_DEEPSLATE_STAIRS, 2);
         addStructureMaterial("andesite", Blocks.ANDESITE, (StairBlock) Blocks.ANDESITE_STAIRS, 2);

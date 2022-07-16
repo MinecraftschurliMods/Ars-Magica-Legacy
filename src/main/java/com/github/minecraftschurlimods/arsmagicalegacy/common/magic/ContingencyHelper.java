@@ -27,9 +27,9 @@ public final class ContingencyHelper implements IContingencyHelper {
     private static final Capability<Contingency> CONTINGENCY = CapabilityManager.get(new CapabilityToken<>() {});
 
     private ContingencyHelper() {
-        MinecraftForge.EVENT_BUS.addListener((LivingDeathEvent event) -> triggerContingency(event.getEntityLiving(), ContingencyType.DEATH));
-        MinecraftForge.EVENT_BUS.addListener((LivingFallEvent event) -> triggerContingency(event.getEntityLiving(), ContingencyType.FALL));
-        MinecraftForge.EVENT_BUS.addListener((LivingDamageEvent event) -> triggerContingency(event.getEntityLiving(), ContingencyType.DAMAGE));
+        MinecraftForge.EVENT_BUS.addListener((LivingDeathEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DEATH));
+        MinecraftForge.EVENT_BUS.addListener((LivingFallEvent event) -> triggerContingency(event.getEntity(), ContingencyType.FALL));
+        MinecraftForge.EVENT_BUS.addListener((LivingDamageEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DAMAGE));
     }
 
     public static ContingencyHelper instance() {

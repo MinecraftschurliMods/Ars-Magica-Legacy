@@ -69,7 +69,7 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue LEVELING_BASE;
         public final ForgeConfigSpec.DoubleValue LEVELING_MULTIPLIER;
         public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
-        public final ForgeConfigSpec.IntValue DAMAGE;
+        public final ForgeConfigSpec.DoubleValue DAMAGE;
         public final ForgeConfigSpec.IntValue DURATION;
         public final ForgeConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
         public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
@@ -138,7 +138,7 @@ public final class Config {
             DAMAGE = builder
                     .comment("Damage of damage-based components, in half hearts.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.damage")
-                    .defineInRange("damage", 6, 1, Short.MAX_VALUE);
+                    .defineInRange("damage", 6.0, 1, Short.MAX_VALUE);
             DURATION = builder
                     .comment("Duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.duration")

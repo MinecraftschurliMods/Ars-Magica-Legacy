@@ -52,12 +52,12 @@ public interface AMSpellParts {
     RegistryObject<Contingency>        CONTINGENCY_FIRE    = SPELL_PARTS.register("contingency_fire",    () -> new Contingency(ContingencyType.FIRE));
     RegistryObject<Contingency>        CONTINGENCY_FALL    = SPELL_PARTS.register("contingency_fall",    () -> new Contingency(ContingencyType.FALL));
 
-    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), LivingEntity::canBreatheUnderwater));
-    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE.get(), Entity::fireImmune));
-    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, Config.SERVER.DAMAGE.get(), e -> !e.canFreeze()));
-    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, Config.SERVER.DAMAGE.get()));
-    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), e -> (float) (e.isInvertedHealAndHarm() ? -Config.SERVER.DAMAGE.get() : Config.SERVER.DAMAGE.get())));
-    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), Config.SERVER.DAMAGE.get()));
+    RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE, LivingEntity::canBreatheUnderwater));
+    RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE, Entity::fireImmune));
+    RegistryObject<Damage>             FROST_DAMAGE        = SPELL_PARTS.register("frost_damage",        () -> new Damage(e -> DamageSource.FREEZE, Config.SERVER.DAMAGE, e -> !e.canFreeze()));
+    RegistryObject<Damage>             LIGHTNING_DAMAGE    = SPELL_PARTS.register("lightning_damage",    () -> new Damage(e -> DamageSource.LIGHTNING_BOLT, Config.SERVER.DAMAGE));
+    RegistryObject<Damage>             MAGIC_DAMAGE        = SPELL_PARTS.register("magic_damage",        () -> new Damage(e -> DamageSource.indirectMagic(e, null), e -> (e.isInvertedHealAndHarm() ? -Config.SERVER.DAMAGE.get() : Config.SERVER.DAMAGE.get())));
+    RegistryObject<Damage>             PHYSICAL_DAMAGE     = SPELL_PARTS.register("physical_damage",     () -> new Damage(e -> e instanceof Player p ? DamageSource.playerAttack(p) : DamageSource.mobAttack(e), Config.SERVER.DAMAGE));
     RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));

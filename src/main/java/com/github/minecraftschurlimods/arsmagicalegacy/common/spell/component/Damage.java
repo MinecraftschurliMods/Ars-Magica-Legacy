@@ -16,36 +16,37 @@ import net.minecraft.world.phys.EntityHitResult;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Damage extends AbstractComponent {
     private final Function<LivingEntity, DamageSource> damageSourceFunction;
-    private final Function<LivingEntity, Float> damage;
+    private final Function<LivingEntity, Double> damage;
     private final Predicate<LivingEntity> failIf;
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Float> damage, Predicate<LivingEntity> failIf) {
+    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Double> damage, Predicate<LivingEntity> failIf) {
         super(SpellPartStats.DAMAGE, SpellPartStats.HEALING);
         this.damageSourceFunction = damageSourceFunction;
         this.damage = damage;
         this.failIf = failIf;
     }
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage, Predicate<LivingEntity> failIf) {
-        this(damageSourceFunction, e -> damage, failIf);
+    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Supplier<Double> damage, Predicate<LivingEntity> failIf) {
+        this(damageSourceFunction, e -> damage.get(), failIf);
     }
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Float> damage) {
+    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Function<LivingEntity, Double> damage) {
         this(damageSourceFunction, damage, e -> false);
     }
 
-    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, float damage) {
-        this(damageSourceFunction, e -> damage, e -> false);
+    public Damage(Function<LivingEntity, DamageSource> damageSourceFunction, Supplier<Double> damage) {
+        this(damageSourceFunction, e -> damage.get(), e -> false);
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
         if (failIf.test(living)) return SpellCastResult.EFFECT_FAILED;
-        float damage = this.damage.apply(living);
+        float damage = this.damage.apply(living).floatValue();
         if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed() && damage > 0)
             return SpellCastResult.EFFECT_FAILED;
         if (damage < 0) {

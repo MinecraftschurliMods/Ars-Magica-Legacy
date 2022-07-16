@@ -50,6 +50,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Na
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -69,15 +70,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -89,11 +89,6 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import java.util.Map;
 
 public final class ClientInit {
-    public static IIngameOverlay MANA_HUD;
-    public static IIngameOverlay BURNOUT_HUD;
-    public static IIngameOverlay XP_HUD;
-    public static IIngameOverlay SHAPE_GROUP_HUD;
-    public static IIngameOverlay SPELL_BOOK_HUD;
 
     /**
      * Registers the client event handlers.
@@ -109,14 +104,15 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerLayerDefinitions);
         modEventBus.addListener(ClientInit::registerRenderers);
         modEventBus.addListener(ClientInit::itemColors);
+        modEventBus.addListener(ClientInit::registerHUDs);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::mouseScroll);
+        forgeBus.addListener(ClientInit::entityRenderPre);
+        forgeBus.addListener(ClientInit::entityRenderPost);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
         registerMenuScreens();
-        registerRenderTypes();
-        registerHUDs();
         CompatManager.clientInit(event);
     }
 
@@ -128,37 +124,12 @@ public final class ClientInit {
         MenuScreens.register(AMMenuTypes.SPELL_BOOK.get(), SpellBookScreen::new);
     }
 
-    private static void registerRenderTypes() {
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.AUM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.CERUBLOSSOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.DESERT_NOVA.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.TARMA_ROOT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WAKEBLOOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_AUM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_CERUBLOSSOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_DESERT_NOVA.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_TARMA_ROOT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_WAKEBLOOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.IRON_INLAY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.REDSTONE_INLAY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.GOLD_INLAY.get(), RenderType.cutout());
-    }
-
-    private static void registerHUDs() {
-        MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
-        BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
-        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
-        SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
-        SPELL_BOOK_HUD = OverlayRegistry.registerOverlayBottom("spell_book_hud", new SpellBookHUD());
+    private static void registerHUDs(RegisterGuiOverlaysEvent event) {
+        event.registerBelowAll("mana_hud", new ManaHUD());
+        event.registerBelowAll("burnout_hud", new BurnoutHUD());
+        event.registerBelowAll("xp_hud", new XpHUD());
+        event.registerBelowAll("shape_group_hud", new ShapeGroupHUD());
+        event.registerBelowAll("spell_book_hud", new SpellBookHUD());
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -166,7 +137,7 @@ public final class ClientInit {
         event.registerReloadListener(SkillIconAtlas.instance());
     }
 
-    private static void modelRegister(ModelRegistryEvent event) {
+    private static void modelRegister(ModelEvent.RegisterAdditional event) {
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
@@ -175,20 +146,20 @@ public final class ClientInit {
                 IForgeRegistry<IAffinity> affinities = api.getAffinityRegistry();
                 for (IAffinity affinity : affinities) {
                     if (!IAffinity.NONE.equals(affinities.getKey(affinity))) {
-                        ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
+                        event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
             }
             if (item instanceof ISkillPointItem) {
                 for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
-                    ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
+                    event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }
         }
     }
 
-    private static void modelBake(ModelBakeEvent event) {
-        Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
+    private static void modelBake(BakingCompleted event) {
+        Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
@@ -240,11 +211,22 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
     }
 
-    private static void itemColors(ColorHandlerEvent.Item event) {
-        event.getItemColors().register((stack, tintIndex) -> tintIndex == 0 && stack.getItem() instanceof DyeableLeatherItem dyeable ? dyeable.getColor(stack) : -1, AMItems.SPELL_BOOK.get());
+    private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
+        pre.getPoseStack().pushPose();
+        float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.get());
+        if (factor == 1) return;
+        pre.getPoseStack().scale(factor, factor, factor);
     }
 
-    private static void mouseScroll(InputEvent.MouseScrollEvent event) {
+    private static void entityRenderPost(RenderLivingEvent.Post<?, ?> post) {
+        post.getPoseStack().popPose();
+    }
+
+    private static void itemColors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> tintIndex == 0 && stack.getItem() instanceof DyeableLeatherItem dyeable ? dyeable.getColor(stack) : -1, AMItems.SPELL_BOOK.get());
+    }
+
+    private static void mouseScroll(InputEvent.MouseScrollingEvent event) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || !player.isCrouching()) return;
         ItemStack item = player.getMainHandItem();

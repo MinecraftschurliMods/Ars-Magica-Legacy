@@ -134,8 +134,8 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
                 int burnTime = obeliskFuel.burnTime();
                 int perTick = obeliskFuel.etheriumPerTick();
                 if (burnTime > 0 && perTick > 0 && etheriumProvider.canStore(perTick * burnTime)) {
-                    if (slot.hasContainerItem()) {
-                        slot = slot.getContainerItem();
+                    if (slot.hasCraftingRemainingItem()) {
+                        slot = slot.getCraftingRemainingItem();
                     } else {
                         slot.shrink(1);
                     }

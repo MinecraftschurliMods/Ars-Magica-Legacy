@@ -7,16 +7,19 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockElementFace;
+import net.minecraft.client.renderer.block.model.BlockFaceUV;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -26,10 +29,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.ItemTextureQuadConverter;
+import net.minecraftforge.client.model.data.ModelData;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -48,26 +51,19 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             return super.resolve(model, stack, level, entity, seed);
         }
     };
-    private ItemTransforms.TransformType cameraTransformType;
 
     public SpellItemModel(BakedModel originalModel) {
         super(originalModel);
     }
 
     @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        this.cameraTransformType = cameraTransformType;
+    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         Player player = Minecraft.getInstance().player;
-        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand() || cameraTransformType == ItemTransforms.TransformType.GROUND || icon.isEmpty()) {
-            return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
+        if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !isHand(cameraTransformType) || cameraTransformType == ItemTransforms.TransformType.GROUND || icon.isEmpty()) {
+            return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
-        super.handlePerspective(cameraTransformType, poseStack);
-        return this;
-    }
-
-    @Override
-    public boolean doesHandlePerspectives() {
-        return true;
+        super.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
+        return new TransformModel(cameraTransformType);
     }
 
     @Override
@@ -76,41 +72,59 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public boolean isCustomRenderer() {
-        return isHand() || super.isCustomRenderer();
-    }
-
-    private boolean isHand() {
-        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
-    }
-
-    @Override
     public boolean usesBlockLight() {
         return false;
     }
 
-    @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
-        if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
-            ResourceLocation key = icon.get();
-            try {
-                return CACHE.get(key, () -> {
-                    TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(key);
-                    return List.of(ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 8.504f / 16f, sprite, Direction.SOUTH, -1, 2));
-                });
-            } catch (ExecutionException ignored) {
-            }
+    private static boolean isHand(ItemTransforms.TransformType cameraTransformType) {
+        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+    }
+
+    private class TransformModel extends BakedModelWrapper<BakedModel> {
+        private final ItemTransforms.TransformType cameraTransformType;
+
+        public TransformModel(ItemTransforms.TransformType cameraTransformType) {
+            super(SpellItemModel.this);
+            this.cameraTransformType = cameraTransformType;
         }
-        return super.getQuads(state, side, rand);
-    }
 
-    @Override
-    public boolean isLayered() {
-        return cameraTransformType == ItemTransforms.TransformType.GUI;
-    }
+        @NotNull
+        @Override
+        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
+            if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
+                ResourceLocation key = icon.get();
+                try {
+                    return CACHE.get(key, () -> {
+                        TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(key);
+                        return List.of(genQuad(sprite));
+                    });
+                } catch (ExecutionException ignored) {
+                }
+            }
+            return super.getQuads(state, side, rand);
+        }
 
-    @Override
-    public List<Pair<BakedModel, RenderType>> getLayerModels(ItemStack itemStack, boolean fabulous) {
-        return Collections.singletonList(Pair.of(this, fabulous ? SPELL_ICON_FAB : SPELL_ICON));
+        private static BakedQuad genQuad(TextureAtlasSprite sprite) {
+            return new FaceBakery().bakeQuad(
+                    new Vector3f(0.0F, 0.0F, 8.504f), new Vector3f(16.0F, 16.0F, 8.504f),
+                    new BlockElementFace(null, 2, sprite.getName().toString(), new BlockFaceUV(new float[]{ 0.0F, 0.0F, 16.0F, 16.0F }, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true,
+                    sprite.getName()
+            );
+        }
+
+        @Override
+        public List<RenderType> getRenderTypes(ItemStack itemStack, boolean fabulous) {
+            return List.of(fabulous ? SPELL_ICON_FAB : SPELL_ICON);
+        }
+
+        @Override
+        public boolean isCustomRenderer() {
+            return isHand(cameraTransformType) || super.isCustomRenderer();
+        }
+
+        @Override
+        public List<BakedModel> getRenderPasses(ItemStack itemStack, boolean fabulous) {
+            return List.of(this);
+        }
     }
 }

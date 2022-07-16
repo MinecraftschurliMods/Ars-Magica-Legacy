@@ -24,6 +24,7 @@ jobs:
           MAVEN_URL: ${{ secrets.MAVEN_URL }}
           MAVEN_USER: ${{ secrets.MAVEN_USER }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          RELEASE_TYPE: release
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
         with:
           arguments: setupGithubActions build publish

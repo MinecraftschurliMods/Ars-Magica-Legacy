@@ -32,13 +32,13 @@ final class TickHandler {
         forgeBus.addListener(TickHandler::playerTick);
     }
 
-    private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    private static void livingUpdate(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
         if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
         }
-        if (event.getEntityLiving().isOnFire()) {
-            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntityLiving(), ContingencyType.FIRE);
+        if (event.getEntity().isOnFire()) {
+            ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntity(), ContingencyType.FIRE);
         }
     }
 

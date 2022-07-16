@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,7 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelData;
 
 public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
 
@@ -35,11 +36,12 @@ public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
         if (!player.isCreative() && !player.hasEffect(AMMobEffects.TRUE_SIGHT.get())) return;
         BlockState blockState = blockEntity.getBlockState();
         BlockPos blockPos = blockEntity.getBlockPos();
-        IModelData modelData = blockEntity.getModelData();
+        ModelData modelData = blockEntity.getModelData();
         long seed = blockState.getSeed(blockPos);
         BakedModel blockModel = dispatcher.getBlockModel(blockState);
         RandomSource random = level.random;
-        VertexConsumer buffer = bufferSource.getBuffer(ItemBlockRenderTypes.getRenderType(blockState, false));
-        dispatcher.getModelRenderer().tesselateBlock(level, blockModel, blockState, blockPos, poseStack, buffer, false, random, seed, packedOverlay, modelData);
+        RenderType renderType = ItemBlockRenderTypes.getRenderType(blockState, false);
+        VertexConsumer buffer = bufferSource.getBuffer(renderType);
+        dispatcher.getModelRenderer().tesselateBlock(level, blockModel, blockState, blockPos, poseStack, buffer, false, random, seed, packedOverlay, modelData, renderType);
     }
 }

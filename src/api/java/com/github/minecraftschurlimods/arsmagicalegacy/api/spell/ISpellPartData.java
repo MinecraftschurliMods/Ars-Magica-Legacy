@@ -41,5 +41,5 @@ public interface ISpellPartData {
     /**
      * @return The burnout for this spell part.
      */
-    float burnout();
+    float getBurnout();
 }

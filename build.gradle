@@ -24,13 +24,12 @@ plugins {
 
 //=============================================
 
-/*
+
 mixin {
-    add sourceSets.main, "arsmagicalegacy.refmap.json"
-    config 'arsmagicalegacy.mixins.json'
+    add sourceSets.main, "${project.mod_id}.refmap.json"
+    config "${project.mod_id}.mixins.json"
     dumpTargetOnFailure true
 }
-*/
 
 editorconfig {
     excludes = ['**/run/**', '**/*.psd', '**/*.nbt', '**/out/**', '**/.idea/**', '**/*.ogg', '**/gradlew*', '**/*.bbmodel']
@@ -47,7 +46,10 @@ if (System.getenv('RELEASE_TYPE') != null) {
 } else {
     status = 'SNAPSHOT'
 }
-version = "${version}-${status}"
+
+if (status != 'release') {
+    version = "${version}-${status}"
+}
 
 java {
     withSourcesJar()
@@ -180,11 +182,10 @@ repositories {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.mc_version}-${project.forge_version}"
-    //annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-1.18.2-common-api:${project.jei_version}")
-    modAPI fg.deobf("mezz.jei:jei-1.18.2-forge-api:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
     //runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
 
     // curios for additional inventory slots
@@ -211,8 +212,8 @@ dependencies {
     include fg.deobf('com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT') {
         jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
-    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.0-SNAPSHOT') {
-        jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
+    include fg.deobf('com.github.minecraftschurlimods:betterkeybindlib:1.19-1.1-SNAPSHOT') {
+        jarJar.ranged(it, '[1.19-1.1-SNAPSHOT,)')
     }
     datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 

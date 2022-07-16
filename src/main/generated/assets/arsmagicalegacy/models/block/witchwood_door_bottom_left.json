@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "arsmagicalegacy:block/witchwood_door_bottom",
+    "top": "arsmagicalegacy:block/witchwood_door_top"
+  }
+}

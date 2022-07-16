@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public final class ClientHelper {
@@ -15,6 +16,16 @@ public final class ClientHelper {
     @Nullable
     public static Player getLocalPlayer() {
         return Minecraft.getInstance().player;
+    }
+
+    /**
+     * @return The current level of the player logged into the current Minecraft instance.
+     */
+    @Nullable
+    public static Level getLocalLevel() {
+        Player localPlayer = getLocalPlayer();
+        if (localPlayer == null) return null;
+        return localPlayer.level;
     }
 
     /**

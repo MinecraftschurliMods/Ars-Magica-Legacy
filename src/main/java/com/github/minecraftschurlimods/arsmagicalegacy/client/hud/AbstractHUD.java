@@ -7,14 +7,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public abstract class AbstractHUD extends GuiComponent implements IIngameOverlay {
+public abstract class AbstractHUD extends GuiComponent implements IGuiOverlay {
     public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/bar.png");
 
     @Override
-    public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {
+    public void render(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height) {
         if (!Minecraft.getInstance().options.hideGui && gui.shouldDrawSurvivalElements()) {
             render(mStack, width, height, partialTicks);
         }

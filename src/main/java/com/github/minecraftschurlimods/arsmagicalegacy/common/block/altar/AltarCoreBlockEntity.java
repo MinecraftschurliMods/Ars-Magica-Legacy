@@ -44,7 +44,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -73,8 +73,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public static final String CAMO_KEY = ArsMagicaAPI.MOD_ID + ":camo";
     public static final String ALTAR_POWER_KEY = ArsMagicaAPI.MOD_ID + ":altar_power_key";
     public static final String REQUIRED_POWER_KEY = ArsMagicaAPI.MOD_ID + ":required_power_key";
-    private final ModelDataMap modelData = new ModelDataMap.Builder().withProperty(CAMO_STATE).build();
     private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
+    private BlockState camoState;
     public int checkCounter;
     @Nullable
     private AltarStructureMaterial structureMaterial;
@@ -176,7 +176,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         direction = null;
         powerLevel = -1;
         recipe = null;
-        modelData.setData(CAMO_STATE, null);
+        camoState = null;
         sync();
         setChanged();
     }
@@ -208,7 +208,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                 structureMaterial = manager.getStructureMaterial(getLevel().getBlockState(getBlockPos().relative(direction.getClockWise())).getBlock()).orElse(null);
                 capMaterial = manager.getCapMaterial(getLevel().getBlockState(getBlockPos().relative(direction).relative(direction.getClockWise(), 2)).getBlock()).orElse(null);
                 leverPos = relative.relative(direction.getClockWise(), 4).above(1);
-                modelData.setData(CAMO_STATE, getLevel().getBlockState(getBlockPos().relative(direction.getClockWise())));
+                camoState = getLevel().getBlockState(getBlockPos().relative(direction.getClockWise()));
                 break;
             }
         }
@@ -275,13 +275,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         powerLevel = pTag.getInt(ALTAR_POWER_KEY);
         requiredPower = pTag.getInt(REQUIRED_POWER_KEY);
         if (pTag.contains(CAMO_KEY)) {
-            modelData.setData(CAMO_STATE, BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
+            camoState = BlockState.CODEC.decode(NbtOps.INSTANCE, pTag.get(CAMO_KEY))
                     .map(Pair::getFirst)
                     .get()
                     .mapRight(DataResult.PartialResult::message)
                     .ifRight(ArsMagicaLegacy.LOGGER::warn)
                     .left()
-                    .orElse(null));
+                    .orElse(null);
         }
         super.load(pTag);
     }
@@ -295,8 +295,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public void saveAltar(CompoundTag tag, boolean forNetwork) {
         tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, boundPositions).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf().encodeStart(NbtOps.INSTANCE, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        if (modelData.getData(CAMO_STATE) != null) {
-            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, modelData.getData(CAMO_STATE)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        if (camoState != null) {
+            tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, camoState).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 
@@ -376,8 +376,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     @NotNull
     @Override
-    public ModelDataMap getModelData() {
-        return modelData;
+    public ModelData getModelData() {
+        return ModelData.builder().with(CAMO_STATE, camoState).build();
     }
 
     @NotNull
@@ -391,6 +391,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
      */
     public boolean isMultiblockFormed() {
         return getBlockState().hasProperty(AltarCoreBlock.FORMED) && getBlockState().getValue(AltarCoreBlock.FORMED);
+    }
+
+    /**
+     * @return The power level of the altar.
+     */
+    public int getPowerLevel() {
+        return powerLevel;
     }
 
     /**

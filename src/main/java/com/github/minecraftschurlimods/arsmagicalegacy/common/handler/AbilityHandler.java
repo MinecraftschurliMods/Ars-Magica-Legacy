@@ -25,7 +25,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -46,7 +46,7 @@ final class AbilityHandler {
     }
 
     private static void livingDeath(LivingDeathEvent event) {
-        if (event.getEntityLiving().isInvertedHealAndHarm()) return;
+        if (event.getEntity().isInvertedHealAndHarm()) return;
         if (event.getSource().getEntity() instanceof Player player) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;
@@ -59,7 +59,7 @@ final class AbilityHandler {
     }
 
     private static void livingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (event.getSource().getEntity() instanceof Player player) {
             var api = ArsMagicaAPI.get();
             var manager = api.getAbilityManager();
@@ -106,7 +106,7 @@ final class AbilityHandler {
     }
 
     private static void livingJump(LivingEvent.LivingJumpEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.isDeadOrDying()) return;
         if (entity instanceof Player player) {
             var api = ArsMagicaAPI.get();
@@ -121,7 +121,7 @@ final class AbilityHandler {
     }
 
     private static void livingFall(LivingFallEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+        LivingEntity entity = event.getEntity();
         if (entity.isDeadOrDying()) return;
         if (entity instanceof Player player) {
             var api = ArsMagicaAPI.get();
@@ -149,16 +149,16 @@ final class AbilityHandler {
         }
     }
 
-    private static void potionApplicable(PotionEvent.PotionApplicableEvent event) {
+    private static void potionApplicable(MobEffectEvent.Applicable event) {
         var api = ArsMagicaAPI.get();
         IAbilityData ability = api.getAbilityManager().get(AMAbilities.POISON_RESISTANCE.getId());
-        if (event.getEntityLiving() instanceof Player player && event.getPotionEffect().getEffect() == MobEffects.POISON && ability.test(player)) {
+        if (event.getEntity() instanceof Player player && event.getEffectInstance().getEffect() == MobEffects.POISON && ability.test(player)) {
             event.setResult(Event.Result.DENY);
         }
     }
 
     private static void manaCostPre(SpellEvent.ManaCost.Pre event) {
-        LivingEntity caster = event.getEntityLiving();
+        LivingEntity caster = event.getEntity();
         if (caster instanceof Player player) {
             var api = ArsMagicaAPI.get();
             IAbilityData ability = api.getAbilityManager().get(AMAbilities.MANA_REDUCTION.getId());
@@ -173,7 +173,7 @@ final class AbilityHandler {
         var manager = api.getAbilityManager();
         var helper = api.getAffinityHelper();
         IAffinity affinity = event.affinity;
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         AttributeMap attributes = player.getAttributes();
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).removeModifier(AbilityUUIDs.SWIM_SPEED);
         attributes.getInstance(Attributes.ATTACK_SPEED).removeModifier(AbilityUUIDs.HASTE);
@@ -223,7 +223,7 @@ final class AbilityHandler {
     }
 
     private static void spellCastPost(SpellEvent.Cast.Post event) {
-        if (event.getEntityLiving() instanceof Player player) {
+        if (event.getEntity() instanceof Player player) {
             IAbilityData ability = ArsMagicaAPI.get().getAbilityManager().get(AMAbilities.CLARITY.getId());
             if (ability.test(player) && player.getLevel().getRandom().nextBoolean()) {
                 player.addEffect(new MobEffectInstance(AMMobEffects.CLARITY.get(), 1200));
