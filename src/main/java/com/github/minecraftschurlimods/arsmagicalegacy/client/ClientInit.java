@@ -113,7 +113,6 @@ public final class ClientInit {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         registerMenuScreens();
-        registerRenderTypes();
         CompatManager.clientInit(event);
     }
 
@@ -123,32 +122,6 @@ public final class ClientInit {
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
         MenuScreens.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
         MenuScreens.register(AMMenuTypes.SPELL_BOOK.get(), SpellBookScreen::new);
-    }
-
-    @SuppressWarnings("removal")
-    private static void registerRenderTypes() {
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.AUM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.CERUBLOSSOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.DESERT_NOVA.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.TARMA_ROOT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.WAKEBLOOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_AUM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_CERUBLOSSOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_DESERT_NOVA.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_TARMA_ROOT.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_WAKEBLOOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_TORCH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.VINTEUM_WALL_TORCH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.IRON_INLAY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.REDSTONE_INLAY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlocks.GOLD_INLAY.get(), RenderType.cutout());
     }
 
     private static void registerHUDs(RegisterGuiOverlaysEvent event) {

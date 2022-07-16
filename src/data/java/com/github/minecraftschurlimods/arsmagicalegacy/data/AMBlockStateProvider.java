@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -46,10 +47,9 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        // TODO: move render types here when MinecraftForge/MinecraftForge#8852 is merged
         altarCoreBlock(ALTAR_CORE);
         airBlock(ALTAR_VIEW);
-        simpleBlock(MAGIC_WALL);
+        simpleBlock(MAGIC_WALL, "translucent");
         obeliskBlock(OBELISK);
         celestialPrismBlock(CELESTIAL_PRISM);
         blackAuremBlock(BLACK_AUREM);
@@ -111,6 +111,15 @@ class AMBlockStateProvider extends BlockStateProvider {
     }
 
     /**
+     * Adds a simple block model that uses its block id as the texture name on all six sides.
+     *
+     * @param block The block to generate the model for.
+     */
+    private void simpleBlock(Supplier<? extends Block> block, String renderType) {
+        simpleBlock(block.get(), modelFile -> new ConfiguredModel[]{ new ConfiguredModel(((BlockModelBuilder) modelFile).renderType(renderType))});
+    }
+
+    /**
      * Adds a block model that uses block/air as the parent.
      *
      * @param block The block to generate the model for.
@@ -147,7 +156,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block The block to generate the model for.
      */
     private void crossBlock(RegistryObject<? extends Block> block) {
-        simpleBlock(block.get(), models().cross(block.getId().getPath(), blockTexture(block.get())));
+        simpleBlock(block.get(), models().cross(block.getId().getPath(), blockTexture(block.get())).renderType("cutout"));
     }
 
     /**
@@ -157,7 +166,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param plant The plant to place inside the flower pot.
      */
     private void flowerPotBlock(RegistryObject<? extends Block> pot, Supplier<? extends Block> plant) {
-        simpleBlock(pot.get(), models().withExistingParent(pot.getId().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(plant.get())));
+        simpleBlock(pot.get(), models().withExistingParent(pot.getId().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(plant.get())).renderType("cutout"));
     }
 
     /**
@@ -207,7 +216,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block The block to generate the model for.
      */
     private void doorBlock(RegistryObject<? extends DoorBlock> block) {
-        doorBlock(block.get(), block.getId().getPath().replace("_door", ""), modLoc("block/" + block.getId().getPath() + "_bottom"), modLoc("block/" + block.getId().getPath() + "_top"));
+        doorBlockWithRenderType(block.get(), block.getId().getPath().replace("_door", ""), modLoc("block/" + block.getId().getPath() + "_bottom"), modLoc("block/" + block.getId().getPath() + "_top"), "cutout");
     }
 
     /**
@@ -216,7 +225,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block The block to generate the model for.
      */
     private void trapdoorBlock(Supplier<? extends TrapDoorBlock> block) {
-        trapdoorBlock(block.get(), blockTexture(block.get()), true);
+        trapdoorBlockWithRenderType(block.get(), blockTexture(block.get()), true, "cutout");
     }
 
     /**
@@ -278,8 +287,8 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param wallTorch The WallTorchBlock to generate the model for.
      */
     private void torchBlock(RegistryObject<? extends TorchBlock> torch, RegistryObject<? extends WallTorchBlock> wallTorch) {
-        ModelFile file = models().withExistingParent(torch.getId().getPath(), "block/template_torch").texture("torch", modLoc("block/" + torch.getId().getPath()));
-        ModelFile wallFile = models().withExistingParent(wallTorch.getId().getPath(), "block/template_torch_wall").texture("torch", modLoc("block/" + torch.getId().getPath()));
+        ModelFile file = models().withExistingParent(torch.getId().getPath(), "block/template_torch").texture("torch", modLoc("block/" + torch.getId().getPath())).renderType("cutout");
+        ModelFile wallFile = models().withExistingParent(wallTorch.getId().getPath(), "block/template_torch_wall").texture("torch", modLoc("block/" + torch.getId().getPath())).renderType("cutout");
         getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
         getVariantBuilder(wallTorch.get()).forAllStates(state -> switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case EAST -> ConfiguredModel.builder().modelFile(wallFile).build();
@@ -297,10 +306,10 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void railBlock(RegistryObject<? extends BaseRailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
-        ModelFile straight = models().withExistingParent(block.getId().getPath(), mcLoc("block/rail")).texture("rail", texture);
-        ModelFile curved = models().withExistingParent(block.getId().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner"));
-        ModelFile raisedNE = models().withExistingParent(block.getId().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture);
-        ModelFile raisedSW = models().withExistingParent(block.getId().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture);
+        ModelFile straight = models().withExistingParent(block.getId().getPath(), mcLoc("block/rail")).texture("rail", texture).renderType("cutout");
+        ModelFile curved = models().withExistingParent(block.getId().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner")).renderType("cutout");
+        ModelFile raisedNE = models().withExistingParent(block.getId().getPath() + "_raised_ne", mcLoc("block/template_rail_raised_ne")).texture("rail", texture).renderType("cutout");
+        ModelFile raisedSW = models().withExistingParent(block.getId().getPath() + "_raised_sw", mcLoc("block/template_rail_raised_sw")).texture("rail", texture).renderType("cutout");
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
             //noinspection deprecation
@@ -327,13 +336,13 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void altarCoreBlock(RegistryObject<? extends AltarCoreBlock> block) {
         String texture = block.getId().getPath();
         getVariantBuilder(block.get())
-                .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(cubeAll(block.get())).addModel()
+                .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(((BlockModelBuilder) cubeAll(block.get())).renderType("translucent")).addModel()
                 .partialState().with(AltarCoreBlock.FORMED, true).modelForState().modelFile(models().getBuilder(texture + "_overlay")
                         .texture("particle", "block/" + texture)
                         .texture("overlay", "block/" + texture + "_overlay")
                         .parent(models().getExistingFile(new ResourceLocation("block/block")))
                         .element().from(0, 0, 0).to(16, 0, 16).face(Direction.DOWN).texture("#overlay")
-                        .end().end()
+                        .end().end().renderType("translucent")
                 ).addModel();
     }
 
@@ -350,6 +359,9 @@ class AMBlockStateProvider extends BlockStateProvider {
                         .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
                         .customLoader(ObjModelBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
+                        .emissiveAmbient(false)
+                        .automaticCulling(false)
+                        .shadeQuads(false)
                         .end()
                         .texture("tex", state.getValue(AbstractFurnaceBlock.LIT) ? modLoc("block/" + texture + "_lit") : blockTexture(block.get()))
                         .texture("particle", mcLoc("block/stone_bricks"))
@@ -400,7 +412,7 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void wizardsChalkBlock(RegistryObject<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
         for (int i = 0; i < models.length; i++) {
-            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i));
+            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i)).renderType("cutout");
         }
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]);

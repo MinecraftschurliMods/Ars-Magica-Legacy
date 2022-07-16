@@ -90,7 +90,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
         @NotNull
         @Override
-        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
+        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
             if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
                 ResourceLocation key = icon.get();
                 try {
@@ -101,7 +101,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
                 } catch (ExecutionException ignored) {
                 }
             }
-            return super.getQuads(state, side, rand, extraData, renderType);
+            return super.getQuads(state, side, rand);
         }
 
         private static BakedQuad genQuad(TextureAtlasSprite sprite) {
@@ -120,6 +120,11 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         @Override
         public boolean isCustomRenderer() {
             return isHand(cameraTransformType) || super.isCustomRenderer();
+        }
+
+        @Override
+        public List<BakedModel> getRenderPasses(ItemStack itemStack, boolean fabulous) {
+            return List.of(this);
         }
     }
 }
