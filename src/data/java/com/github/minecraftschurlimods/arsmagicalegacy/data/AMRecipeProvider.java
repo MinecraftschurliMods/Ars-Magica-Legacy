@@ -34,7 +34,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -480,7 +480,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(Tags.Items.CROPS_POTATO)
                 .requires(Items.ICE)
                 .requires(Items.SUGAR)
-                .requires(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
+                .requires(PartialNBTIngredient.of(Items.POTION, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER).getOrCreateTag()))
                 .unlockedBy("has_ice", has(Items.ICE))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.MAGE_HELMET.get())
@@ -523,7 +523,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern(" E ")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', StrictNBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
+                .define('E', PartialNBTIngredient.of(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.AIR.get()).getOrCreateTag()))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -533,7 +533,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("OOO")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', StrictNBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', PartialNBTIngredient.of(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.EARTH.get()).getOrCreateTag()))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -543,7 +543,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("O O")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', StrictNBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
+                .define('E', PartialNBTIngredient.of(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag()))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -552,7 +552,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("GRG")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', StrictNBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
+                .define('E', PartialNBTIngredient.of(AMItems.AFFINITY_ESSENCE.get(), helper.getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag()))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
