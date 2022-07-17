@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
@@ -19,8 +19,8 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
     public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
         if (allowedIn(pCategory)) {
             var api = ArsMagicaAPI.get();
-            for (IAffinity affinity : api.getAffinityRegistry()) {
-                if (IAffinity.NONE.equals(affinity.getId())) continue;
+            for (Affinity affinity : api.getAffinityRegistry()) {
+                if (Affinity.NONE.equals(affinity.getId())) continue;
                 pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getId()));
             }
         }

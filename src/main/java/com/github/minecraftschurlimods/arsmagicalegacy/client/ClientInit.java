@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
@@ -143,15 +143,15 @@ public final class ClientInit {
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
             if (item instanceof IAffinityItem) {
-                IForgeRegistry<IAffinity> affinities = api.getAffinityRegistry();
-                for (IAffinity affinity : affinities) {
-                    if (!IAffinity.NONE.equals(affinities.getKey(affinity))) {
+                IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
+                for (Affinity affinity : affinities) {
+                    if (!Affinity.NONE.equals(affinities.getKey(affinity))) {
                         event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
             }
             if (item instanceof ISkillPointItem) {
-                for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
+                for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
                     event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }

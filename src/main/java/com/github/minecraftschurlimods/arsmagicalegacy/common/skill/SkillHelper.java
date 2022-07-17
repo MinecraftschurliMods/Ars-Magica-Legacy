@@ -2,10 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
@@ -64,7 +65,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean knows(Player player, ISkill skill) {
+    public boolean knows(Player player, Skill skill) {
         return getKnowledgeHolder(player).knows(skill);
     }
 
@@ -74,7 +75,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean canLearn(Player player, ISkill skill) {
+    public boolean canLearn(Player player, Skill skill) {
         return getKnowledgeHolder(player).canLearn(skill);
     }
 
@@ -86,7 +87,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void learn(Player player, ISkill skill) {
+    public void learn(Player player, Skill skill) {
         getKnowledgeHolder(player).learn(skill);
         AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId());
         syncToPlayer(player);
@@ -99,7 +100,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void forget(Player player, ISkill skill) {
+    public void forget(Player player, Skill skill) {
         getKnowledgeHolder(player).forget(skill);
         syncToPlayer(player);
     }
@@ -122,7 +123,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public int getSkillPoint(Player player, ISkillPoint point) {
+    public int getSkillPoint(Player player, SkillPoint point) {
         return getKnowledgeHolder(player).getSkillPoint(point);
     }
 
@@ -133,7 +134,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void addSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
+    public void addSkillPoint(Player player, SkillPoint skillPoint, int amount) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
         syncToPlayer(player);
     }
@@ -145,7 +146,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void addSkillPoint(Player player, ISkillPoint skillPoint) {
+    public void addSkillPoint(Player player, SkillPoint skillPoint) {
         getKnowledgeHolder(player).addSkillPoint(skillPoint);
         syncToPlayer(player);
     }
@@ -158,7 +159,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount) {
+    public boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount) {
         boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
         syncToPlayer(player);
         return success;
@@ -172,7 +173,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean consumeSkillPoint(Player player, ISkillPoint skillPoint) {
+    public boolean consumeSkillPoint(Player player, SkillPoint skillPoint) {
         boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
         syncToPlayer(player);
         return success;
@@ -184,7 +185,7 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public ItemStack getOrbForSkillPoint(ISkillPoint skillPoint) {
+    public ItemStack getOrbForSkillPoint(SkillPoint skillPoint) {
         return getStackForSkillPoint(AMItems.INFINITY_ORB.get(), skillPoint);
     }
 
@@ -196,13 +197,13 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ISkillPoint skillPoint) {
+    public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, SkillPoint skillPoint) {
         return getStackForSkillPoint(item, skillPoint.getId());
     }
 
     @Nullable
     @Override
-    public ISkillPoint getSkillPointForStack(ItemStack stack) {
+    public SkillPoint getSkillPointForStack(ItemStack stack) {
         if (stack.getItem() instanceof ISkillPointItem item) {
             return item.getSkillPoint(stack);
         }
@@ -296,7 +297,7 @@ public final class SkillHelper implements ISkillHelper {
          *
          * @param skill The skill to add.
          */
-        public void learn(ISkill skill) {
+        public void learn(Skill skill) {
             learn(skill.getId());
         }
 
@@ -304,7 +305,7 @@ public final class SkillHelper implements ISkillHelper {
          * Adds all skills in the registry to the known skills list.
          */
         public synchronized void learnAll() {
-            for (ISkill skill : ArsMagicaAPI.get().getSkillManager().getSkills()) {
+            for (Skill skill : ArsMagicaAPI.get().getSkillRegistry()) {
                 skills.add(skill.getId());
             }
         }
@@ -323,7 +324,7 @@ public final class SkillHelper implements ISkillHelper {
          *
          * @param skill The skill to remove.
          */
-        public void forget(ISkill skill) {
+        public void forget(Skill skill) {
             forget(skill.getId());
         }
 
@@ -335,26 +336,27 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         /**
-         * @param skill The id of the skill to check.
+         * @param skillId The id of the skill to check.
          * @return Whether the given skill can be learned or not.
          */
-        public synchronized boolean canLearn(ResourceLocation skill) {
-            var skillManager = ArsMagicaAPI.get().getSkillManager();
-            ISkill iSkill = skillManager.get(skill);
+        public synchronized boolean canLearn(ResourceLocation skillId) {
+            var skillRegistry = ArsMagicaAPI.get().getSkillRegistry();
+            Skill skill = skillRegistry.getValue(skillId);
+            if (skill == null) return false;
             boolean canLearn = true;
-            for (ResourceLocation rl : iSkill.getCost().keySet()) {
-                if (skillPoints.getOrDefault(rl, 0) < iSkill.getCost().get(rl)) {
+            for (ResourceLocation rl : skill.cost().keySet()) {
+                if (skillPoints.getOrDefault(rl, 0) < skill.cost().get(rl)) {
                     canLearn = false;
                 }
             }
-            return canLearn && skills.containsAll(skillManager.get(skill).getParents());
+            return canLearn && skills.containsAll(skill.parents());
         }
 
         /**
          * @param skill The skill to check.
          * @return Whether the given skill can be learned or not.
          */
-        public boolean canLearn(ISkill skill) {
+        public boolean canLearn(Skill skill) {
             return canLearn(skill.getId());
         }
 
@@ -370,7 +372,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param skill The skill to check.
          * @return Whether the given skill is in the known skills list or not.
          */
-        public boolean knows(ISkill skill) {
+        public boolean knows(Skill skill) {
             return knows(skill.getId());
         }
 
@@ -392,7 +394,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param skillPoint The skill point to add.
          * @param amount     The amount to add.
          */
-        public void addSkillPoint(ISkillPoint skillPoint, int amount) {
+        public void addSkillPoint(SkillPoint skillPoint, int amount) {
             addSkillPoint(skillPoint.getId(), amount);
         }
 
@@ -410,7 +412,7 @@ public final class SkillHelper implements ISkillHelper {
          *
          * @param skillPoint The skill point to add.
          */
-        public void addSkillPoint(ISkillPoint skillPoint) {
+        public void addSkillPoint(SkillPoint skillPoint) {
             addSkillPoint(skillPoint, 1);
         }
 
@@ -436,7 +438,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param amount     The amount to remove.
          * @return True if the operation succeeded, false otherwise.
          */
-        public boolean consumeSkillPoint(ISkillPoint skillPoint, int amount) {
+        public boolean consumeSkillPoint(SkillPoint skillPoint, int amount) {
             return consumeSkillPoint(skillPoint.getId(), amount);
         }
 
@@ -456,7 +458,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param skillPoint The skill point to remove.
          * @return True if the operation succeeded, false otherwise.
          */
-        public boolean consumeSkillPoint(ISkillPoint skillPoint) {
+        public boolean consumeSkillPoint(SkillPoint skillPoint) {
             return consumeSkillPoint(skillPoint, 1);
         }
 
@@ -472,7 +474,7 @@ public final class SkillHelper implements ISkillHelper {
          * @param skillPoint The skill point type to check.
          * @return The amount of skill points of the given type that are present in this holder.
          */
-        public int getSkillPoint(ISkillPoint skillPoint) {
+        public int getSkillPoint(SkillPoint skillPoint) {
             return getSkillPoint(skillPoint.getId());
         }
 

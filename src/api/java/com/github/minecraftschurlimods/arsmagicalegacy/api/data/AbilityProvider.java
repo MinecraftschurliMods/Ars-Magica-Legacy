@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -78,7 +79,7 @@ public abstract class AbilityProvider implements DataProvider {
      * @param bounds   The ability's bounds.
      * @return A new ability.
      */
-    protected AbilityBuilder createAbility(ResourceLocation ability, IAffinity affinity, MinMaxBounds.Doubles bounds) {
+    protected AbilityBuilder createAbility(ResourceLocation ability, Affinity affinity, MinMaxBounds.Doubles bounds) {
         return AbilityBuilder.create(ability).setAffinity(affinity.getId()).setBounds(bounds);
     }
 }

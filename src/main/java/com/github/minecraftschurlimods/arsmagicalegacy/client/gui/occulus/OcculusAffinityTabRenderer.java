@@ -3,9 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,13 +28,13 @@ import java.util.Optional;
 public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
     private static final NumberFormat RANGE_FORMAT = NumberFormat.getPercentInstance();
 
-    public OcculusAffinityTabRenderer(IOcculusTab occulusTab, Screen parent) {
+    public OcculusAffinityTabRenderer(OcculusTab occulusTab, Screen parent) {
         super(occulusTab, parent);
     }
 
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        RenderSystem.setShaderTexture(0, occulusTab.getBackground());
+        RenderSystem.setShaderTexture(0, occulusTab.background());
         RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), 0, 0, 1, 1);
     }
 
@@ -49,12 +49,12 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         int cX = width / 2;
         int cY = height / 2;
         List<Component> drawString = new ArrayList<>();
-        List<IAffinity> affinities = new ArrayList<>(registry.getValues());
+        List<Affinity> affinities = new ArrayList<>(registry.getValues());
         affinities.sort(null);
         Player player = getPlayer();
         assert player != null;
-        for (IAffinity aff : affinities) {
-            if (Objects.equals(aff.getId(), IAffinity.NONE)) continue;
+        for (Affinity aff : affinities) {
+            if (Objects.equals(aff.getId(), Affinity.NONE)) continue;
             double depth = helper.getAffinityDepth(player, aff) / 100;
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
@@ -71,15 +71,15 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             currentID++;
             int displace = (int) ((Math.max(affStartX1, affStartX2) - Math.min(affStartX1, affStartX2) + Math.max(affStartY1, affStartY2) - Math.min(affStartY1, affStartY2)) / 2);
             if (depth > 0.01F) {
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.getColor(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.getColor(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.getColor(), displace, 1.1F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.getColor(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 1.1F);
             } else {
-                RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
-                RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.getColor());
+                RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
+                RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
             }
-            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth * 100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.getColor());
+            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth * 100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
@@ -88,7 +88,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
             getItemRenderer().renderAndDecorateFakeItem(helper.getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
-                drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.getColor())));
+                drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
                 var abilityManager = api.getAbilityManager();
                 List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
                 IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();

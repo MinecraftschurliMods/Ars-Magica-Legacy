@@ -6,10 +6,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMAltarStructureMaterialProvider extends AltarStructureMaterialProvider {
-    AMAltarStructureMaterialProvider(DataGenerator generator) {
-        super(ArsMagicaAPI.MOD_ID, generator);
+    AMAltarStructureMaterialProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        super(ArsMagicaAPI.MOD_ID, generator, existingFileHelper);
     }
 
     @Override

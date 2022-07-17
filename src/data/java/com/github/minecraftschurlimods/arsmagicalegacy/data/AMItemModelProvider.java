@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -198,15 +198,15 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
+     * Adds an item model for this item for each affinity, excluding {@link Affinity#NONE}.
      *
      * @param item The affinity item to add this for.
      * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
      */
     private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
-        for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(IAffinity.NONE)) continue;
+        for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+            if (affinity.getId().equals(Affinity.NONE)) continue;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
@@ -220,7 +220,7 @@ class AMItemModelProvider extends ItemModelProvider {
      */
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
-        for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
+        for (SkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }

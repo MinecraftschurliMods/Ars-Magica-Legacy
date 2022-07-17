@@ -6,11 +6,11 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.DATA_SERIALIZERS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ENTITY_DATA_SERIALIZERS;
 
 @NonExtendable
 public interface AMDataSerializers {
-    RegistryObject<CodecEntityDataSerializer<ISpell>> SPELL = DATA_SERIALIZERS.register("spell", () -> new CodecEntityDataSerializer<>(ISpell.CODEC));
+    RegistryObject<CodecEntityDataSerializer<ISpell>> SPELL = ENTITY_DATA_SERIALIZERS.register("spell", () -> new CodecEntityDataSerializer<>(ISpell.CODEC));
 
     /**
      * Empty method that is required for classloading

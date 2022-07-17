@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.resources.ResourceLocation;
@@ -54,7 +54,7 @@ public class AbilityBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_ -> this")
-    public AbilityBuilder setAffinity(IAffinity affinity) {
+    public AbilityBuilder setAffinity(Affinity affinity) {
         return setAffinity(Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getKey(affinity)));
     }
 

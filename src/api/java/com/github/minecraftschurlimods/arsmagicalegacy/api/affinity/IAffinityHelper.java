@@ -19,7 +19,7 @@ public interface IAffinityHelper {
      * @param affinity The affinity to get the essence stack for.
      * @return An item stack containing the affinity essence.
      */
-    ItemStack getEssenceForAffinity(IAffinity affinity);
+    ItemStack getEssenceForAffinity(Affinity affinity);
 
     /**
      * @param affinity The id of the affinity to get the tome stack for.
@@ -31,12 +31,12 @@ public interface IAffinityHelper {
      * @param affinity The affinity to get the tome stack for.
      * @return An item stack containing the affinity tome.
      */
-    ItemStack getTomeForAffinity(IAffinity affinity);
+    ItemStack getTomeForAffinity(Affinity affinity);
 
     /**
      * @param item     The item to make the item stack from.
      * @param affinity The id of the affinity to set on the item stack.
-     * @param <T>      The item implementing IAffinityItem.
+     * @param <T>      The item implementing AffinityItem.
      * @return An item stack of the given item with the given affinity stored in it.
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation affinity);
@@ -44,16 +44,16 @@ public interface IAffinityHelper {
     /**
      * @param item     The item to make the item stack from.
      * @param affinity The affinity to set on the item stack.
-     * @param <T>      The item implementing IAffinityItem.
+     * @param <T>      The item implementing AffinityItem.
      * @return An item stack of the given item with the given affinity stored in it.
      */
-    <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity);
+    <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity);
 
     /**
      * @param stack The stack to get the affinity from.
      * @return The affinity stored in the stack, or the NONE affinity if the stack does not contain one.
      */
-    IAffinity getAffinityForStack(ItemStack stack);
+    Affinity getAffinityForStack(ItemStack stack);
 
     /**
      * @param player   The player to get the affinity depth for.
@@ -67,7 +67,7 @@ public interface IAffinityHelper {
      * @param affinity The affinity to get the depth for.
      * @return The depth of the given player in the given affinity.
      */
-    double getAffinityDepth(Player player, IAffinity affinity);
+    double getAffinityDepth(Player player, Affinity affinity);
 
     /**
      * @param player   The player to set the affinity depth for.
@@ -81,7 +81,7 @@ public interface IAffinityHelper {
      * @param affinity The affinity to set the depth for.
      * @param amount   The amount the affinity should have.
      */
-    void setAffinityDepth(Player player, IAffinity affinity, float amount);
+    void setAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
      * Applies the affinity shift for the given player and affinity.
@@ -99,5 +99,5 @@ public interface IAffinityHelper {
      * @param affinity The affinity to shift.
      * @param shift    The amount to shift.
      */
-    void applyAffinityShift(Player player, IAffinity affinity, float shift);
+    void applyAffinityShift(Player player, Affinity affinity, float shift);
 }

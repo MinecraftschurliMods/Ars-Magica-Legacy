@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

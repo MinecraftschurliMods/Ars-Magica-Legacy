@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:utility",
+  "parents": [
+    "arsmagicalegacy:create_water"
+  ],
+  "x": 255,
+  "y": 255
+}

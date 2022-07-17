@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -28,7 +28,7 @@ public class SkillPointOverrideModel extends BakedModelWrapper<BakedModel> {
     private static class SkillPointItemOverrides extends ItemOverrides {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-            ISkillPoint skillPoint = ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(stack);
+            SkillPoint skillPoint = ArsMagicaAPI.get().getSkillHelper().getSkillPointForStack(stack);
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_" + skillPoint.getId().getPath());
             return Minecraft.getInstance().getModelManager().getModel(rl);
         }

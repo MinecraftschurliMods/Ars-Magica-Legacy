@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Consumer;
@@ -21,8 +22,8 @@ class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation UTILITY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility");
     private static final ResourceLocation TALENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent");
 
-    protected AMSkillProvider(DataGenerator generator) {
-        super(ArsMagicaAPI.MOD_ID, generator);
+    protected AMSkillProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        super(ArsMagicaAPI.MOD_ID, generator, existingFileHelper);
     }
 
     @Override

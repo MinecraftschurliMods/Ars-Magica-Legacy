@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -155,15 +155,15 @@ public interface ISpell {
      * @return A map from affinity to double, representing the affinity shift of the spell for each affinity.
      */
     @UnmodifiableView
-    Map<IAffinity, Double> affinityShifts();
+    Map<Affinity, Double> affinityShifts();
 
     /**
      * @return A set of affinities containing the affinities of this spell.
      */
-    Set<IAffinity> affinities();
+    Set<Affinity> affinities();
 
     /**
      * @return The affinity that the given spell has the greatest shift in.
      */
-    IAffinity primaryAffinity();
+    Affinity primaryAffinity();
 }

@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
@@ -83,7 +83,7 @@ public class SkillCommand {
     }
 
     private static int listAllSkills(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(createSkillListComponent(ArsMagicaAPI.get().getSkillManager().getSkills().stream()), true);
+        context.getSource().sendSuccess(createSkillListComponent(ArsMagicaAPI.get().getSkillRegistry().getValues().stream()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -106,16 +106,16 @@ public class SkillCommand {
     private static int listUnknownSkills(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getSkillHelper();
-        var skillManager = api.getSkillManager();
-        context.getSource().sendSuccess(createSkillListComponent(skillManager.getSkills().stream().filter(skill -> knowledgeHelper.knows(player, skill))), true);
+        var skillRegistry = api.getSkillRegistry();
+        context.getSource().sendSuccess(createSkillListComponent(skillRegistry.getValues().stream().filter(skill -> knowledgeHelper.knows(player, skill))), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int listKnownSkills(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
-        var skillManager = api.getSkillManager();
+        var skillRegistry = api.getSkillRegistry();
         var knowledgeHelper = api.getSkillHelper();
-        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> skillManager.getOptional(skill).stream())), true);
+        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> Optional.ofNullable(skillRegistry.getValue(skill)).stream())), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -149,7 +149,7 @@ public class SkillCommand {
 
     private static int forgetSkill(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var helper = ArsMagicaAPI.get().getSkillHelper();
-        ISkill skill = getSkillFromRegistry(context);
+        Skill skill = getSkillFromRegistry(context);
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
             if (!helper.knows(player, skill)) {
@@ -198,7 +198,7 @@ public class SkillCommand {
 
     private static int learnSkill(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var helper = ArsMagicaAPI.get().getSkillHelper();
-        ISkill skill = getSkillFromRegistry(context);
+        Skill skill = getSkillFromRegistry(context);
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
             if (helper.knows(player, skill)) {
@@ -217,18 +217,18 @@ public class SkillCommand {
         return players.size();
     }
 
-    private static ISkill getSkillFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static Skill getSkillFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "skill");
-        Optional<ISkill> skill = ArsMagicaAPI.get().getSkillManager().getOptional(rl);
+        Optional<Skill> skill = Optional.ofNullable(ArsMagicaAPI.get().getSkillRegistry().getValue(rl));
         if (skill.isEmpty()) throw ERROR_UNKNOWN_SKILL.create(rl);
         return skill.get();
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillManager().getSkills().stream().map(ISkill::getId), builder);
+        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillRegistry().getValues().stream().map(Skill::getId), builder);
     }
 
-    private static Component createSkillListComponent(Stream<ISkill> stream) {
+    private static Component createSkillListComponent(Stream<Skill> stream) {
         return stream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(Component.translatable(""));
     }
 }

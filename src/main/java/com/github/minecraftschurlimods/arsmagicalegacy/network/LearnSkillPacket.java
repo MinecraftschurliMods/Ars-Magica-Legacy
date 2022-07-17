@@ -29,7 +29,7 @@ public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
         var api = ArsMagicaAPI.get();
         var skillHelper = api.getSkillHelper();
         ServerPlayer sender = ctx.getSender();
-        api.getSkillManager().get(skill()).getCost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
+        api.getSkillRegistry().getValue(skill()).cost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
         skillHelper.learn(sender, skill());
     }
 }

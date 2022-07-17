@@ -3,10 +3,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
@@ -105,12 +105,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.IRON_INLAY);
         blockIdTranslation(AMBlocks.REDSTONE_INLAY);
         blockIdTranslation(AMBlocks.GOLD_INLAY);
-        for (RegistryObject<IAffinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
+        for (RegistryObject<Affinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
-        for (RegistryObject<ISkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
+        for (RegistryObject<SkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
@@ -529,7 +529,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param skillPoint The skillPoint to generate the translation for.
      */
-    private void skillPointIdTranslation(RegistryObject<? extends ISkillPoint> skillPoint) {
+    private void skillPointIdTranslation(RegistryObject<? extends SkillPoint> skillPoint) {
         addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
     }
 
@@ -538,7 +538,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param affinity The affinity to generate the translation for.
      */
-    private void affinityIdTranslation(RegistryObject<? extends IAffinity> affinity) {
+    private void affinityIdTranslation(RegistryObject<? extends Affinity> affinity) {
         addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
     }
 
@@ -615,7 +615,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinity    The affinity to add the translation for.
      * @param translation The translation for the affinity.
      */
-    private void addAffinity(Supplier<? extends IAffinity> affinity, String translation) {
+    private void addAffinity(Supplier<? extends Affinity> affinity, String translation) {
         add(affinity.get(), translation);
     }
 
@@ -625,7 +625,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinityItem The affinity item to add the translation for.
      * @param affinity     The affinity to generate the translation from.
      */
-    private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity) {
+    private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends Affinity> affinity) {
         affinityItemIdTranslation(affinityItem.getId(), affinity.getId());
     }
 
@@ -647,7 +647,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinity     The affinity to generate the translation from.
      * @param translation  The custom translation to use.
      */
-    private void affinityItemTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends IAffinity> affinity, String translation) {
+    private void affinityItemTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends Affinity> affinity, String translation) {
         affinityItemTranslation(affinityItem.getId(), affinity.getId(), translation);
     }
 
@@ -668,7 +668,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPoint  The skill point to add the translation for.
      * @param translation The translation for the skill point.
      */
-    private void addSkillPoint(Supplier<? extends ISkillPoint> skillPoint, String translation) {
+    private void addSkillPoint(Supplier<? extends SkillPoint> skillPoint, String translation) {
         add(skillPoint.get(), translation);
     }
 
@@ -678,7 +678,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPointItem The skill point item to add the translation for.
      * @param skillPoint     The skill point to generate the translation from.
      */
-    private void skillPointItemIdTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends ISkillPoint> skillPoint) {
+    private void skillPointItemIdTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends SkillPoint> skillPoint) {
         skillPointItemIdTranslation(skillPointItem.getId(), skillPoint.getId());
     }
 
@@ -700,7 +700,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPoint     The skill point to generate the translation from.
      * @param translation    The custom translation to use.
      */
-    private void skillPointItemTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends ISkillPoint> skillPoint, String translation) {
+    private void skillPointItemTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends SkillPoint> skillPoint, String translation) {
         skillPointItemTranslation(skillPointItem.getId(), skillPoint.getId(), translation);
     }
 

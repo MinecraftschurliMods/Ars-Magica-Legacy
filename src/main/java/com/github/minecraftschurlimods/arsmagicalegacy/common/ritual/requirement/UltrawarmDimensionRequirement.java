@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

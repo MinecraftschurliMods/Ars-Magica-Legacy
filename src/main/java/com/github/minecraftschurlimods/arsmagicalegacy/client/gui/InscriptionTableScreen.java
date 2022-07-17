@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
@@ -89,12 +90,14 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     protected void init() {
         super.init();
         var api = ArsMagicaAPI.get();
-        var skillManager = api.getSkillManager();
+        var skillRegistry = api.getSkillRegistry();
         var spellPartRegistry = api.getSpellPartRegistry();
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
-            return StringUtils.containsIgnoreCase(skillManager.get(spellPart).getDisplayName().getString(), value);
+            Skill skill = skillRegistry.getValue(spellPart);
+            if (skill == null) return false;
+            return StringUtils.containsIgnoreCase(skill.getDisplayName().getString(), value);
         };
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
@@ -131,7 +134,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 .stream()
                 .sorted(Comparator.comparing(ISpellPart::getType).thenComparing(ISpellPart::getId))
                 .map(ISpellPart::getId)
-                .toList(), rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl), skillManager.get(rl).getDisplayName())));
+                .toList(), rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl), skillRegistry.getValue(rl).getDisplayName())));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
         DropValidator.WithData<ResourceLocation> dropValidator = ((DropValidator.WithData<ISpellPart>) this::isValidInShapeGroup).map(spellPartRegistry::getValue);
@@ -284,11 +287,11 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void setFromRecipe(ISpell spell) {
-        var skillManager = ArsMagicaAPI.get().getSkillManager();
+        var skillRegistry = ArsMagicaAPI.get().getSkillRegistry();
         spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0, spellStackDropZone != null ? spellStackDropZone.getY() : 0, 141, 18, ICON_SIZE, ICON_SIZE, 4, spellStackDropZone);
         spellStackDropZone.clear();
         for (ISpellPart iSpellPart : spell.spellStack().parts()) {
-            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getId()), skillManager.get(iSpellPart.getId()).getDisplayName(), iSpellPart.getId()));
+            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getId()), skillRegistry.getValue(iSpellPart.getId()).getDisplayName(), iSpellPart.getId()));
         }
         int i = 0;
         for (ShapeGroup shapeGroup : spell.shapeGroups()) {
@@ -301,7 +304,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }
             zone.clear();
             for (ISpellPart spellPart : shapeGroup.parts()) {
-                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getId()), skillManager.get(spellPart.getId()).getDisplayName(), spellPart.getId()));
+                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getId()), skillRegistry.getValue(spellPart.getId()).getDisplayName(), spellPart.getId()));
             }
             if (shapeGroupDropZones.size() > i) {
                 shapeGroupDropZones.set(i, zone);

@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
@@ -12,10 +12,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
@@ -34,14 +38,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -70,12 +74,12 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public IForgeRegistry<ISkillPoint> getSkillPointRegistry() {
+    public IForgeRegistry<SkillPoint> getSkillPointRegistry() {
         return AMRegistries.SKILL_POINT_REGISTRY.get();
     }
 
     @Override
-    public IForgeRegistry<IAffinity> getAffinityRegistry() {
+    public IForgeRegistry<Affinity> getAffinityRegistry() {
         return AMRegistries.AFFINITY_REGISTRY.get();
     }
 
@@ -95,13 +99,38 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public ISkillManager getSkillManager() {
-        return SkillManager.instance();
+    public IForgeRegistry<Skill> getSkillRegistry() {
+        return AMRegistries.SKILL_REGISTRY.get();
     }
 
     @Override
-    public IOcculusTabManager getOcculusTabManager() {
-        return OcculusTabManager.instance();
+    public IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
+        return AMRegistries.RITUAL_TRIGGER_TYPE_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry() {
+        return AMRegistries.RITUAL_REQUIREMENT_TYPE_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
+        return AMRegistries.RITUAL_EFFECT_TYPE_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<Ritual> getRitualRegistry() {
+        return AMRegistries.RITUAL_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<OcculusTab> getOcculusTabRegistry() {
+        return AMRegistries.OCCULUS_TAB_REGISTRY.get();
+    }
+
+    @Override
+    public IForgeRegistry<SpellTransformation> getSpellTransformationRegistry() {
+        return AMRegistries.SPELL_TRANSFORMATION_REGISTRY.get();
     }
 
     @Override

@@ -41,6 +41,7 @@ import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.util.ArrayList;
@@ -163,6 +164,12 @@ public interface AMFeatures {
     private static PlacedFeature placement(Holder<ConfiguredFeature<?, ?>> feature, PlacementModifier... modifiers) {
         return new PlacedFeature(feature, Arrays.asList(modifiers));
     }
+
+    /**
+     * Empty method that is required for classloading
+     */
+    @ApiStatus.Internal
+    static void register() {}
 
     class Modifier implements BiomeModifier {
 

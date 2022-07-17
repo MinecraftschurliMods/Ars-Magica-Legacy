@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -54,7 +54,7 @@ public class SpellPartPage implements ICustomComponent {
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
         ResourceLocation registryName = this._part.getId();
-        ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
+        Skill skill = ArsMagicaAPI.get().getSkillRegistry().getValue(registryName);
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
@@ -130,7 +130,8 @@ public class SpellPartPage implements ICustomComponent {
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
             ResourceLocation registryName = modifier.getId();
-            ISkill skill = ArsMagicaAPI.get().getSkillManager().get(registryName);
+            Skill skill = ArsMagicaAPI.get().getSkillRegistry().getValue(registryName);
+            if (skill == null) continue;
             if (i % 7 == 0) {
                 startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);
                 yOffset += 16;

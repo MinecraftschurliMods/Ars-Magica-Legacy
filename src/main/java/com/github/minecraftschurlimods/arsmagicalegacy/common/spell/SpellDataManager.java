@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
@@ -79,7 +79,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         return NETWORK_CODECS.containsKey(type) ? (Codec<ISpellIngredient>) NETWORK_CODECS.get(type) : getSpellIngredientCodec(type);
     }
 
-    private record SpellPartData(List<ISpellIngredient> recipe, Map<IAffinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, Supplier<Float> burnout) implements ISpellPartData {
+    private record SpellPartData(List<ISpellIngredient> recipe, Map<Affinity, Float> affinityShifts, List<Either<Ingredient, ItemStack>> reagents, float manaCost, Supplier<Float> burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
                 Codec.unboundedMap(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
@@ -96,7 +96,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
         ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.<Supplier<Float>>map(v -> (() -> v)).orElse(() -> (float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
 
         @Override
-        public Set<IAffinity> affinities() {
+        public Set<Affinity> affinities() {
             return affinityShifts().keySet();
         }
 

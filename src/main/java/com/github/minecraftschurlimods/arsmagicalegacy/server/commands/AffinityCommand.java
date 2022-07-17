@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
@@ -84,7 +84,7 @@ public class AffinityCommand {
         return addAffinity(EntityArgument.getPlayers(context, "target"), getAffinityFromRegistry(context), context);
     }
 
-    private static int addAffinity(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+    private static int addAffinity(Collection<ServerPlayer> players, Affinity affinity, CommandContext<CommandSourceStack> context) {
         double amount = DoubleArgumentType.getDouble(context, "amount");
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
@@ -110,7 +110,7 @@ public class AffinityCommand {
         return setAffinity(EntityArgument.getPlayers(context, "target"), getAffinityFromRegistry(context), context);
     }
 
-    private static int setAffinity(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+    private static int setAffinity(Collection<ServerPlayer> players, Affinity affinity, CommandContext<CommandSourceStack> context) {
         double amount = DoubleArgumentType.getDouble(context, "amount");
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
@@ -139,7 +139,7 @@ public class AffinityCommand {
     private static int resetAffinities(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         for (ServerPlayer player : players) {
-            for (IAffinity affinity : api.getAffinityRegistry()) {
+            for (Affinity affinity : api.getAffinityRegistry()) {
                 api.getAffinityHelper().setAffinityDepth(player, affinity, 0f);
             }
         }
@@ -159,14 +159,14 @@ public class AffinityCommand {
         return getAffinity(EntityArgument.getPlayer(context, "target"), getAffinityFromRegistry(context), context);
     }
 
-    private static int getAffinity(ServerPlayer player, IAffinity affinity, CommandContext<CommandSourceStack> context) {
+    private static int getAffinity(ServerPlayer player, Affinity affinity, CommandContext<CommandSourceStack> context) {
         context.getSource().sendSuccess(Component.translatable(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static IAffinity getAffinityFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static Affinity getAffinityFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "affinity");
-        IAffinity affinity = ArsMagicaAPI.get().getAffinityRegistry().getValue(rl);
+        Affinity affinity = ArsMagicaAPI.get().getAffinityRegistry().getValue(rl);
         if (affinity == null) throw ERROR_UNKNOWN_AFFINITY.create(rl);
         return affinity;
     }

@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:defense",
+  "parents": [
+    "arsmagicalegacy:dispel"
+  ],
+  "x": 300,
+  "y": 165
+}

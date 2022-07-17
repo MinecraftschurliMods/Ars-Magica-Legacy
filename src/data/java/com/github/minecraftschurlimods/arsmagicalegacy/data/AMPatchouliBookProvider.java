@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -33,8 +33,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
     private final AMAbilityProvider abilities;
     private final LanguageProvider lang;
 
-    AMPatchouliBookProvider(DataGenerator generator, String modid, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
-        super(generator, modid, includeClient, includeServer);
+    AMPatchouliBookProvider(DataGenerator generator, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
+        super(generator, ArsMagicaAPI.MOD_ID, includeClient, includeServer);
         this.abilities = abilities;
         this.lang = lang;
     }
@@ -300,7 +300,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         shapes.build();
         components.build();
         modifiers.build();
-        TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(IAffinity.WATER))
+        TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(Affinity.WATER))
                 .setSortnum(8);
         affinities.addEntry("affinities", "Affinities", new ItemStack(Items.NETHER_STAR))
                 .setPriority(true)
@@ -309,9 +309,9 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Reports about lost affinity tomes have been spreading as well, though how to obtain or use them is currently subject to investigation.")
                 .build();
         var abilityRegistry = api.getAbilityRegistry();
-        for (final IAffinity affinity : api.getAffinityRegistry()) {
+        for (final Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
-            if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(IAffinity.NONE)) continue;
+            if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE)) continue;
             TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
             entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));

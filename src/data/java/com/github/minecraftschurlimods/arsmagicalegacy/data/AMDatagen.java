@@ -5,9 +5,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandl
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.data.event.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,24 +27,23 @@ public class AMDatagen {
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
         generator.addProvider(evt.includeServer(), abilityProvider);
-        generator.addProvider(true, new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
+        generator.addProvider(true, new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         generator.addProvider(evt.includeClient(), new AMBlockStateProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeClient(), new AMItemModelProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeClient(), lang);
         generator.addProvider(evt.includeClient(), new AMSoundDefinitionsProvider(generator, existingFileHelper));
-        AMSkillProvider skillProvider = new AMSkillProvider(generator);
+        AMSkillProvider skillProvider = new AMSkillProvider(generator, existingFileHelper);
         generator.addProvider(evt.includeServer(), skillProvider);
         generator.addProvider(evt.includeServer(), new AMAdvancementProvider(generator, existingFileHelper, skillProvider));
         generator.addProvider(evt.includeServer(), new AMLootTableProvider(generator));
         generator.addProvider(evt.includeServer(), new AMRecipeProvider(generator));
         AMTagsProvider.add(evt.includeServer(), generator, existingFileHelper);
-        generator.addProvider(evt.includeServer(), new AMAltarStructureMaterialProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMAltarStructureMaterialProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMObeliskFuelProvider(generator));
-        generator.addProvider(evt.includeServer(), new AMOcculusTabProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMOcculusTabProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMPrefabSpellProvider(generator));
         generator.addProvider(evt.includeServer(), new AMSpellPartDataProvider(generator));
-        generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator));
-        generator.addProvider(evt.includeServer(), new AMRitualProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator, existingFileHelper));
+        generator.addProvider(evt.includeServer(), new AMRitualProvider(generator, existingFileHelper));
     }
-
 }

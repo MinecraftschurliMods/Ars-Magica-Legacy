@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.ability;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.IDataManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public interface IAbilityManager extends IDataManager<IAbilityData> {
      * @param affinity The affinity to check.
      * @return All abilities for the given affinity.
      */
-    List<ResourceLocation> getAbilitiesForAffinity(IAffinity affinity);
+    List<ResourceLocation> getAbilitiesForAffinity(Affinity affinity);
 
     /**
      * @param affinity The id of the affinity to check.

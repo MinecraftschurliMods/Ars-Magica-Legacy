@@ -1,53 +1,42 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * Base class for occulus tab data generators.
  */
 public abstract class OcculusTabProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
+    private final JsonCodecProvider<OcculusTab> provider;
+    private final Map<ResourceLocation, OcculusTab> data = new HashMap<>();
     private final String namespace;
 
-    protected OcculusTabProvider(String namespace, DataGenerator generator) {
+    protected OcculusTabProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
         this.namespace = namespace;
-        this.generator = generator;
+        this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), OcculusTab.REGISTRY_KEY, data);
     }
 
     protected abstract void createOcculusTabs(Consumer<OcculusTabBuilder> consumer);
 
     @Internal
     @Override
-    public void run(CachedOutput pCache) {
-        Set<ResourceLocation> ids = new HashSet<>();
-        createOcculusTabs(consumer -> {
-            if (!ids.add(consumer.getId()))
-                throw new IllegalStateException("Duplicate occulus tab " + consumer.getId());
-            else {
-                try {
-                    DataProvider.saveStable(pCache, consumer.serialize(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/occulus_tabs/" + consumer.getId().getPath() + ".json"));
-                } catch (IOException e) {
-                    LOGGER.error("Couldn't save occulus tab {}", consumer.getId(), e);
-                }
-            }
-        });
-    }
-
-    @Override
-    public String getName() {
-        return "Occulus Tabs[" + namespace + "]";
+    public void run(CachedOutput pCache) throws IOException {
+        createOcculusTabs(occulusTabBuilder -> data.put(occulusTabBuilder.getId(), occulusTabBuilder.build()));
+        provider.run(pCache);
     }
 
     /**

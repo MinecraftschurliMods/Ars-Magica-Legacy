@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,7 +15,7 @@ public record RitualStructureRequirement(ResourceLocation structure) implements 
     ).apply(inst, RitualStructureRequirement::new));
 
     @Override
-    public boolean test(final Player player, final ServerLevel level, final BlockPos pos) {
+    public boolean test(Player player, ServerLevel level, BlockPos pos) {
         return PatchouliCompat.getMultiblockMatcher(structure).test(level, pos);
     }
 

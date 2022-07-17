@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -103,7 +103,7 @@ public class SkillPointCommand {
         return addSkillPoint(EntityArgument.getPlayers(context, "target"), getSkillPointFromRegistry(context), context, IntegerArgumentType.getInteger(context, "amount"));
     }
 
-    private static int addSkillPoint(Collection<ServerPlayer> players, ISkillPoint skillPoint, CommandContext<CommandSourceStack> context, int amount) {
+    private static int addSkillPoint(Collection<ServerPlayer> players, SkillPoint skillPoint, CommandContext<CommandSourceStack> context, int amount) {
         for (ServerPlayer player : players) {
             ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, skillPoint, amount);
         }
@@ -131,7 +131,7 @@ public class SkillPointCommand {
         return consumeSkillPoint(EntityArgument.getPlayers(context, "target"), getSkillPointFromRegistry(context), context, IntegerArgumentType.getInteger(context, "amount"));
     }
 
-    private static int consumeSkillPoint(Collection<ServerPlayer> players, ISkillPoint skillPoint, CommandContext<CommandSourceStack> context, int amount) {
+    private static int consumeSkillPoint(Collection<ServerPlayer> players, SkillPoint skillPoint, CommandContext<CommandSourceStack> context, int amount) {
         var helper = ArsMagicaAPI.get().getSkillHelper();
         for (ServerPlayer player : players) {
             helper.consumeSkillPoint(player, skillPoint, Math.min(amount, helper.getSkillPoint(player, skillPoint)));
@@ -152,7 +152,7 @@ public class SkillPointCommand {
         return setSkillPoint(EntityArgument.getPlayers(context, "target"), getSkillPointFromRegistry(context), context);
     }
 
-    private static int setSkillPoint(Collection<ServerPlayer> players, ISkillPoint skillPoint, CommandContext<CommandSourceStack> context) {
+    private static int setSkillPoint(Collection<ServerPlayer> players, SkillPoint skillPoint, CommandContext<CommandSourceStack> context) {
         var helper = ArsMagicaAPI.get().getSkillHelper();
         int amount = IntegerArgumentType.getInteger(context, "amount");
         for (ServerPlayer player : players) {
@@ -183,7 +183,7 @@ public class SkillPointCommand {
         var helper = api.getSkillHelper();
         var registry = api.getSkillPointRegistry();
         for (ServerPlayer player : players) {
-            for (ISkillPoint skillPoint : registry) {
+            for (SkillPoint skillPoint : registry) {
                 helper.consumeSkillPoint(player, skillPoint, helper.getSkillPoint(player, skillPoint));
             }
         }
@@ -203,16 +203,16 @@ public class SkillPointCommand {
         return getSkillPoint(EntityArgument.getPlayers(context, "target"), getSkillPointFromRegistry(context), context);
     }
 
-    private static int getSkillPoint(Collection<ServerPlayer> players, ISkillPoint skillPoint, CommandContext<CommandSourceStack> context) {
+    private static int getSkillPoint(Collection<ServerPlayer> players, SkillPoint skillPoint, CommandContext<CommandSourceStack> context) {
         for (ServerPlayer player : players) {
             context.getSource().sendSuccess(Component.translatable(SKILL_POINT_GET, player.getDisplayName(), ArsMagicaAPI.get().getSkillHelper().getSkillPoint(player, skillPoint), skillPoint.getDisplayName()), true);
         }
         return players.size();
     }
 
-    private static ISkillPoint getSkillPointFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static SkillPoint getSkillPointFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "skill_point");
-        ISkillPoint skillPoint = ArsMagicaAPI.get().getSkillPointRegistry().getValue(rl);
+        SkillPoint skillPoint = ArsMagicaAPI.get().getSkillPointRegistry().getValue(rl);
         if (skillPoint == null) throw ERROR_UNKNOWN_SKILL_POINT.create(rl);
         return skillPoint;
     }

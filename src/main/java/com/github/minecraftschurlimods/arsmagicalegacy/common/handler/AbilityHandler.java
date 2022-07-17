@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
@@ -172,7 +172,7 @@ final class AbilityHandler {
         var api = ArsMagicaAPI.get();
         var manager = api.getAbilityManager();
         var helper = api.getAffinityHelper();
-        IAffinity affinity = event.affinity;
+        Affinity affinity = event.affinity;
         Player player = event.getEntity();
         AttributeMap attributes = player.getAttributes();
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).removeModifier(AbilityUUIDs.SWIM_SPEED);

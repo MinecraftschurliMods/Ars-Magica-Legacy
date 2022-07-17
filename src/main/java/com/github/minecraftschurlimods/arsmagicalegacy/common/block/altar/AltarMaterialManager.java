@@ -1,25 +1,20 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
-import com.github.minecraftschurlimods.codeclib.CodecDataManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.Optional;
 
 public final class AltarMaterialManager {
     private static final Lazy<AltarMaterialManager> INSTANCE = Lazy.concurrentOf(AltarMaterialManager::new);
-    private final Logger logger = LoggerFactory.getLogger(AltarMaterialManager.class);
-    public final CodecDataManager<AltarStructureMaterial> structure = new CodecDataManager<>(ArsMagicaAPI.MOD_ID, "altar/structure", AltarStructureMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
-    public final CodecDataManager<AltarCapMaterial> cap = new CodecDataManager<>(ArsMagicaAPI.MOD_ID, "altar/cap", AltarCapMaterial.CODEC, logger).subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+
+    private AltarMaterialManager() {}
 
     /**
      * @return The only instance of this class.
@@ -33,7 +28,7 @@ public final class AltarMaterialManager {
      * @return An optional containing the structure material of the given block, or an empty optional if no structure material was found.
      */
     public Optional<AltarStructureMaterial> getStructureMaterial(Block block) {
-        return structure.values().stream().filter(mat -> mat.block() == block || mat.stair() == block).findFirst();
+        return getStructureRegistry().getValues().stream().filter(mat -> mat.block() == block || mat.stair() == block).findFirst();
     }
 
     /**
@@ -41,7 +36,7 @@ public final class AltarMaterialManager {
      * @return An optional containing the cap material of the given block, or an empty optional if no cap material was found.
      */
     public Optional<AltarCapMaterial> getCapMaterial(Block block) {
-        return cap.values().stream().filter(mat -> mat.cap() == block).findFirst();
+        return getCapRegistry().getValues().stream().filter(mat -> mat.cap() == block).findFirst();
     }
 
     /**
@@ -50,7 +45,8 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public AltarStructureMaterial getRandomStructureMaterial(int r) {
-        return structure.size() > 0 ? structure.values().toArray(AltarStructureMaterial[]::new)[r % structure.size()] : null;
+        int size = getStructureRegistry().getValues().size();
+        return size > 0 ? getStructureRegistry().getValues().toArray(AltarStructureMaterial[]::new)[r % size] : null;
     }
 
     /**
@@ -59,7 +55,8 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public AltarCapMaterial getRandomCapMaterial(int r) {
-        return cap.size() > 0 ? cap.values().toArray(AltarCapMaterial[]::new)[r % cap.size()] : null;
+        int size = getCapRegistry().getValues().size();
+        return size > 0 ? getCapRegistry().getValues().toArray(AltarCapMaterial[]::new)[r % size] : null;
     }
 
     /**
@@ -68,7 +65,7 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public ResourceLocation getId(AltarStructureMaterial structureMaterial) {
-        return structure.entrySet().stream().filter(entry -> entry.getValue().equals(structureMaterial)).map(Map.Entry::getKey).findFirst().orElse(null);
+        return getStructureRegistry().getKey(structureMaterial);
     }
 
     /**
@@ -77,7 +74,7 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public ResourceLocation getId(AltarCapMaterial capMaterial) {
-        return cap.entrySet().stream().filter(entry -> entry.getValue().equals(capMaterial)).map(Map.Entry::getKey).findFirst().orElse(null);
+        return getCapRegistry().getKey(capMaterial);
     }
 
     /**
@@ -86,7 +83,7 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public AltarStructureMaterial getStructureMaterial(ResourceLocation location) {
-        return structure.get(location);
+        return getStructureRegistry().getValue(location);
     }
 
     /**
@@ -95,6 +92,14 @@ public final class AltarMaterialManager {
      */
     @Nullable
     public AltarCapMaterial getCapMaterial(ResourceLocation location) {
-        return cap.get(location);
+        return getCapRegistry().getValue(location);
+    }
+
+    private static IForgeRegistry<AltarStructureMaterial> getStructureRegistry() {
+        return AMRegistries.ALTAR_STRUCTURE_MATERIAL_REGISTRY.get();
+    }
+
+    private static IForgeRegistry<AltarCapMaterial> getCapRegistry() {
+        return AMRegistries.ALTAR_CAP_MATERIAL_REGISTRY.get();
     }
 }

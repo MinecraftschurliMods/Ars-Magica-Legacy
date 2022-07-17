@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.ability;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.world.entity.player.Player;
 
@@ -19,7 +19,7 @@ public interface IAbilityData extends Predicate<Player> {
     /**
      * @return The affinity the ability belongs to.
      */
-    IAffinity affinity();
+    Affinity affinity();
 
     @Override
     default boolean test(Player player) {
