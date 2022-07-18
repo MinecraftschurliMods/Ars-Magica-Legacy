@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -18,7 +18,7 @@ public final class SkillManager {
                 logger.warn("Skill {} is missing parents {}. It will be removed!", skill.getId(), new HashSet<>(skill.parents()).removeAll(data.keySet()));
                 err = true;
             }
-            OcculusTab tab = ArsMagicaAPI.get().getOcculusTabRegistry().getValue(skill.occulusTab());
+            OcculusTab tab = RegistryAccess.BUILTIN.get().registryOrThrow(OcculusTab.REGISTRY_KEY).get(skill.occulusTab());
             if (tab == null) {
                 logger.warn("The occulus tab {} for skill {} is not available. The skill will be removed!", skill.occulusTab(), skill.getId());
                 return true;

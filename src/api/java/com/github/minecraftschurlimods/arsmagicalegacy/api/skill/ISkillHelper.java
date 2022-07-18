@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public interface ISkillHelper {
      * @param skill  The skill to check for.
      * @return True if the given player knows the given skill, false otherwise.
      */
-    boolean knows(Player player, Skill skill);
+    boolean knows(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * @param player The player to check the skill requirements for.
@@ -38,7 +39,7 @@ public interface ISkillHelper {
      * @param skill  The skill to check for.
      * @return True if the given player can learn the given skill, false otherwise.
      */
-    boolean canLearn(Player player, Skill skill);
+    boolean canLearn(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Unlocks the given skill for the given player.
@@ -54,7 +55,7 @@ public interface ISkillHelper {
      * @param player The player to unlock the skill for.
      * @param skill  The skill to unlock.
      */
-    void learn(Player player, Skill skill);
+    void learn(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Locks the given skill for the given player.
@@ -70,14 +71,14 @@ public interface ISkillHelper {
      * @param player The player to lock the skill for.
      * @param skill  The skill to lock.
      */
-    void forget(Player player, Skill skill);
+    void forget(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Unlocks all skills for the given player.
      *
      * @param player The player to unlock the skills for.
      */
-    void learnAll(Player player);
+    void learnAll(Player player, RegistryAccess registryAccess);
 
     /**
      * Locks all skills for the given player.

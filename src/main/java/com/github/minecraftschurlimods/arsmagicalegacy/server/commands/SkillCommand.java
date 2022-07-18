@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -17,6 +16,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -83,7 +83,7 @@ public class SkillCommand {
     }
 
     private static int listAllSkills(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(createSkillListComponent(ArsMagicaAPI.get().getSkillRegistry().getValues().stream()), true);
+        context.getSource().sendSuccess(createSkillListComponent(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream(), context.getSource().registryAccess()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -106,16 +106,18 @@ public class SkillCommand {
     private static int listUnknownSkills(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
         var knowledgeHelper = api.getSkillHelper();
-        var skillRegistry = api.getSkillRegistry();
-        context.getSource().sendSuccess(createSkillListComponent(skillRegistry.getValues().stream().filter(skill -> knowledgeHelper.knows(player, skill))), true);
+        var registryAccess = context.getSource().registryAccess();
+        var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
+        context.getSource().sendSuccess(createSkillListComponent(skillRegistry.stream().filter(skill -> knowledgeHelper.knows(player, skill, registryAccess)), registryAccess), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int listKnownSkills(ServerPlayer player, CommandContext<CommandSourceStack> context) {
         var api = ArsMagicaAPI.get();
-        var skillRegistry = api.getSkillRegistry();
+        var registryAccess = context.getSource().registryAccess();
+        var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
         var knowledgeHelper = api.getSkillHelper();
-        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> Optional.ofNullable(skillRegistry.getValue(skill)).stream())), true);
+        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> Optional.ofNullable(skillRegistry.get(skill)).stream()), registryAccess), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -150,15 +152,16 @@ public class SkillCommand {
     private static int forgetSkill(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var helper = ArsMagicaAPI.get().getSkillHelper();
         Skill skill = getSkillFromRegistry(context);
+        var registryAccess = context.getSource().registryAccess();
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
-            if (!helper.knows(player, skill)) {
+            if (!helper.knows(player, skill, registryAccess)) {
                 context.getSource().sendFailure(Component.translatable(SKILL_NOT_YET_KNOWN, skill.getDisplayName(), player.getDisplayName()));
                 return 0;
             }
         }
         for (ServerPlayer player : players) {
-            helper.forget(player, skill);
+            helper.forget(player, skill, registryAccess);
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
@@ -178,7 +181,7 @@ public class SkillCommand {
 
     private static int learnAllSkills(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) {
         for (ServerPlayer player : players) {
-            ArsMagicaAPI.get().getSkillHelper().learnAll(player);
+            ArsMagicaAPI.get().getSkillHelper().learnAll(player, context.getSource().registryAccess());
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
@@ -199,15 +202,16 @@ public class SkillCommand {
     private static int learnSkill(Collection<ServerPlayer> players, CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var helper = ArsMagicaAPI.get().getSkillHelper();
         Skill skill = getSkillFromRegistry(context);
+        var registryAccess = context.getSource().registryAccess();
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
-            if (helper.knows(player, skill)) {
+            if (helper.knows(player, skill, registryAccess)) {
                 context.getSource().sendFailure(Component.translatable(SKILL_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
                 return 0;
             }
         }
         for (ServerPlayer player : players) {
-            helper.learn(player, skill);
+            helper.learn(player, skill, registryAccess);
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
@@ -219,16 +223,16 @@ public class SkillCommand {
 
     private static Skill getSkillFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "skill");
-        Optional<Skill> skill = Optional.ofNullable(ArsMagicaAPI.get().getSkillRegistry().getValue(rl));
+        Optional<Skill> skill = Optional.ofNullable(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(rl));
         if (skill.isEmpty()) throw ERROR_UNKNOWN_SKILL.create(rl);
         return skill.get();
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillRegistry().getValues().stream().map(Skill::getId), builder);
+        return SharedSuggestionProvider.suggestResource(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream().map(Skill::getId), builder);
     }
 
-    private static Component createSkillListComponent(Stream<Skill> stream) {
-        return stream.map(ITranslatable::getDisplayName).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(Component.translatable(""));
+    private static Component createSkillListComponent(Stream<Skill> stream, RegistryAccess registryAccess) {
+        return stream.map(skill -> skill.getDisplayName(registryAccess)).reduce((component, component2) -> component.copy().append("\n").append(component2)).orElse(Component.translatable(""));
     }
 }

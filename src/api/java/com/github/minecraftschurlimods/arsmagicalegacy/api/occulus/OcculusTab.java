@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
@@ -50,24 +51,24 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     /**
      * @return The location of the background texture for this skill tree.
      */
-    @Override
-    public ResourceLocation background() {
+    public ResourceLocation background(RegistryAccess access) {
         if (background != null) return background;
-        return new ResourceLocation(getId().getNamespace(), "textures/gui/occulus/" + getId().getPath() + ".png");
+        ResourceLocation id = getId(access);
+        return new ResourceLocation(id.getNamespace(), "textures/gui/occulus/" + id.getPath() + ".png");
     }
 
     /**
      * @return The location of the icon texture for this skill tree.
      */
-    @Override
-    public ResourceLocation icon() {
+    public ResourceLocation icon(RegistryAccess access) {
         if (icon != null) return icon;
-        return new ResourceLocation(getId().getNamespace(), "textures/icon/" + getId().getPath() + ".png");
+        ResourceLocation id = getId(access);
+        return new ResourceLocation(id.getNamespace(), "textures/icon/" + id.getPath() + ".png");
     }
 
     @Override
-    public ResourceLocation getId() {
-        return ArsMagicaAPI.get().getOcculusTabRegistry().getKey(this);
+    public ResourceLocation getId(RegistryAccess registryAccess) {
+        return registryAccess.registryOrThrow(REGISTRY_KEY).getKey(this);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface DragHandler {
     /**
      * @return The currently dragged element.
      */
-    Draggable getDragged();
+    @Nullable Draggable getDragged();
 
     /**
      * Sets the dragged element.

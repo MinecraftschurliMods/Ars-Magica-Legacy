@@ -34,7 +34,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        RenderSystem.setShaderTexture(0, occulusTab.background());
+        RenderSystem.setShaderTexture(0, occulusTab.background(getMinecraft().getConnection().registryAccess()));
         RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), 0, 0, 1, 1);
     }
 

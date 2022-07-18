@@ -14,10 +14,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -54,7 +57,7 @@ public class SpellPartPage implements ICustomComponent {
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
         ResourceLocation registryName = this._part.getId();
-        Skill skill = ArsMagicaAPI.get().getSkillRegistry().getValue(registryName);
+        Skill skill = Minecraft.getInstance().level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(registryName);
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
@@ -127,10 +130,11 @@ public class SpellPartPage implements ICustomComponent {
         int startX = 0;
         int yOffset = -6;
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
+        Registry<Skill> skillRegistry = RegistryAccess.BUILTIN.get().registryOrThrow(Skill.REGISTRY_KEY);
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
             ResourceLocation registryName = modifier.getId();
-            Skill skill = ArsMagicaAPI.get().getSkillRegistry().getValue(registryName);
+            Skill skill = skillRegistry.get(registryName);
             if (skill == null) continue;
             if (i % 7 == 0) {
                 startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);

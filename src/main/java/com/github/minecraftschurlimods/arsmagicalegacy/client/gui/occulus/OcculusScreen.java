@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -27,6 +28,7 @@ public class OcculusScreen extends Screen {
     private Button prevPage;
     private Button nextPage;
     private OcculusTabRenderer activeTab;
+    private int activeTabIndex;
 
     public OcculusScreen() {
         super(TITLE);
@@ -41,18 +43,21 @@ public class OcculusScreen extends Screen {
     protected void init() {
         posX = width / 2 - guiWidth / 2;
         posY = height / 2 - guiHeight / 2;
-        var registry = ArsMagicaAPI.get().getOcculusTabRegistry();
+        var registry = minecraft.level.registryAccess().registryOrThrow(OcculusTab.REGISTRY_KEY);
         int tabSize = 22;
         for (OcculusTab tab : registry) {
             int tabIndex = tab.index();
             addRenderableWidget(new OcculusTabButton(tabIndex, 7 + ((tabIndex % 8) * (tabSize + 2)), -tabSize, tab, pButton -> setActiveTab(tabIndex)));
         }
-        maxPage = (int) Math.floor((float) (registry.getValues().size() - 1) / 16F);
+        maxPage = (int) Math.floor((float) (registry.size() - 1) / 16F);
         nextPage = addRenderableWidget(new Button(guiWidth + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
         prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, Component.literal("<"), this::prevPage));
         nextPage.active = page < maxPage;
         prevPage.active = false;
         addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), guiWidth, guiHeight);
+        if (activeTab == null) {
+            setActiveTab(activeTabIndex);
+        }
         addRenderableWidget(activeTab).init(tabWidth, tabHeight, width, height, posX + 7, posY + 7);
     }
 
@@ -99,10 +104,12 @@ public class OcculusScreen extends Screen {
     }
 
     private void setActiveTab(int tabIndex) {
-        clearWidgets();
-        OcculusTab tab = ArsMagicaAPI.get().getOcculusTabRegistry().getValues().stream().sorted(Comparator.comparing(OcculusTab::index)).toArray(OcculusTab[]::new)[tabIndex];
-        activeTab = tab.rendererFactory().get().create(tab, this);
+        activeTabIndex = tabIndex;
         if (minecraft != null) {
+            clearWidgets();
+            Registry<OcculusTab> occulusTabRegistry = minecraft.level.registryAccess().registryOrThrow(OcculusTab.REGISTRY_KEY);
+            OcculusTab tab = occulusTabRegistry.stream().sorted(Comparator.comparing(OcculusTab::index)).toArray(OcculusTab[]::new)[tabIndex];
+            activeTab = tab.rendererFactory().get().create(tab, this);
             init();
         }
     }

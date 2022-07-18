@@ -12,13 +12,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
@@ -42,7 +39,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.mojang.serialization.Codec;
@@ -99,11 +95,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public IForgeRegistry<Skill> getSkillRegistry() {
-        return AMRegistries.SKILL_REGISTRY.get();
-    }
-
-    @Override
     public IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
         return AMRegistries.RITUAL_TRIGGER_TYPE_REGISTRY.get();
     }
@@ -116,21 +107,6 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
         return AMRegistries.RITUAL_EFFECT_TYPE_REGISTRY.get();
-    }
-
-    @Override
-    public IForgeRegistry<Ritual> getRitualRegistry() {
-        return AMRegistries.RITUAL_REGISTRY.get();
-    }
-
-    @Override
-    public IForgeRegistry<OcculusTab> getOcculusTabRegistry() {
-        return AMRegistries.OCCULUS_TAB_REGISTRY.get();
-    }
-
-    @Override
-    public IForgeRegistry<SpellTransformation> getSpellTransformationRegistry() {
-        return AMRegistries.SPELL_TRANSFORMATION_REGISTRY.get();
     }
 
     @Override

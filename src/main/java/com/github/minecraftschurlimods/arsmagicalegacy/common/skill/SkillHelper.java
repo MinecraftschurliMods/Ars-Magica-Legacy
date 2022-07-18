@@ -2,11 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
@@ -14,6 +13,7 @@ import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,8 +65,8 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean knows(Player player, Skill skill) {
-        return getKnowledgeHolder(player).knows(skill);
+    public boolean knows(Player player, Skill skill, RegistryAccess registryAccess) {
+        return getKnowledgeHolder(player).knows(skill, registryAccess);
     }
 
     @Override
@@ -75,8 +75,8 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean canLearn(Player player, Skill skill) {
-        return getKnowledgeHolder(player).canLearn(skill);
+    public boolean canLearn(Player player, Skill skill, RegistryAccess registryAccess) {
+        return getKnowledgeHolder(player).canLearn(skill, registryAccess);
     }
 
     @Override
@@ -87,9 +87,9 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void learn(Player player, Skill skill) {
-        getKnowledgeHolder(player).learn(skill);
-        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId());
+    public void learn(Player player, Skill skill, RegistryAccess registryAccess) {
+        getKnowledgeHolder(player).learn(skill, registryAccess);
+        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId(registryAccess));
         syncToPlayer(player);
     }
 
@@ -100,14 +100,14 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public void forget(Player player, Skill skill) {
-        getKnowledgeHolder(player).forget(skill);
+    public void forget(Player player, Skill skill, RegistryAccess registryAccess) {
+        getKnowledgeHolder(player).forget(skill, registryAccess);
         syncToPlayer(player);
     }
 
     @Override
-    public void learnAll(Player player) {
-        getKnowledgeHolder(player).learnAll();
+    public void learnAll(Player player, RegistryAccess registryAccess) {
+        getKnowledgeHolder(player).learnAll(registryAccess);
         syncToPlayer(player);
     }
 
@@ -297,15 +297,15 @@ public final class SkillHelper implements ISkillHelper {
          *
          * @param skill The skill to add.
          */
-        public void learn(Skill skill) {
-            learn(skill.getId());
+        public void learn(Skill skill, RegistryAccess registryAccess) {
+            learn(skill.getId(registryAccess));
         }
 
         /**
          * Adds all skills in the registry to the known skills list.
          */
-        public synchronized void learnAll() {
-            for (Skill skill : ArsMagicaAPI.get().getSkillRegistry()) {
+        public synchronized void learnAll(RegistryAccess registryAccess) {
+            for (Skill skill : registryAccess.registryOrThrow(Skill.REGISTRY_KEY)) {
                 skills.add(skill.getId());
             }
         }
@@ -324,8 +324,8 @@ public final class SkillHelper implements ISkillHelper {
          *
          * @param skill The skill to remove.
          */
-        public void forget(Skill skill) {
-            forget(skill.getId());
+        public void forget(Skill skill, RegistryAccess registryAccess) {
+            forget(skill.getId(registryAccess));
         }
 
         /**
@@ -340,8 +340,8 @@ public final class SkillHelper implements ISkillHelper {
          * @return Whether the given skill can be learned or not.
          */
         public synchronized boolean canLearn(ResourceLocation skillId) {
-            var skillRegistry = ArsMagicaAPI.get().getSkillRegistry();
-            Skill skill = skillRegistry.getValue(skillId);
+            var skillRegistry = RegistryAccess.BUILTIN.get().registryOrThrow(Skill.REGISTRY_KEY);
+            Skill skill = skillRegistry.get(skillId);
             if (skill == null) return false;
             boolean canLearn = true;
             for (ResourceLocation rl : skill.cost().keySet()) {
@@ -356,8 +356,8 @@ public final class SkillHelper implements ISkillHelper {
          * @param skill The skill to check.
          * @return Whether the given skill can be learned or not.
          */
-        public boolean canLearn(Skill skill) {
-            return canLearn(skill.getId());
+        public boolean canLearn(Skill skill, RegistryAccess registryAccess) {
+            return canLearn(skill.getId(registryAccess));
         }
 
         /**
@@ -372,8 +372,8 @@ public final class SkillHelper implements ISkillHelper {
          * @param skill The skill to check.
          * @return Whether the given skill is in the known skills list or not.
          */
-        public boolean knows(Skill skill) {
-            return knows(skill.getId());
+        public boolean knows(Skill skill, RegistryAccess registryAccess) {
+            return knows(skill.getId(registryAccess));
         }
 
         /**

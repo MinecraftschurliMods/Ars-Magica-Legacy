@@ -90,12 +90,13 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     protected void init() {
         super.init();
         var api = ArsMagicaAPI.get();
-        var skillRegistry = api.getSkillRegistry();
+        var registryAccess = getMinecraft().getConnection().registryAccess();
+        var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
         var spellPartRegistry = api.getSpellPartRegistry();
         Predicate<ResourceLocation> searchFilter = spellPart -> {
             String value = searchBar.getValue();
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
-            Skill skill = skillRegistry.getValue(spellPart);
+            Skill skill = skillRegistry.get(spellPart);
             if (skill == null) return false;
             return StringUtils.containsIgnoreCase(skill.getDisplayName().getString(), value);
         };
@@ -134,7 +135,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 .stream()
                 .sorted(Comparator.comparing(ISpellPart::getType).thenComparing(ISpellPart::getId))
                 .map(ISpellPart::getId)
-                .toList(), rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl), skillRegistry.getValue(rl).getDisplayName())));
+                .toList(), rl -> Pair.of(SkillIconAtlas.instance().getSprite(rl), skillRegistry.get(rl).getDisplayName(registryAccess))));
         searchBar.setResponder(s -> sourceBox.update());
         int offsetX = leftPos + SHAPE_GROUP_X;
         DropValidator.WithData<ResourceLocation> dropValidator = ((DropValidator.WithData<ISpellPart>) this::isValidInShapeGroup).map(spellPartRegistry::getValue);
@@ -286,12 +287,18 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         }
     }
 
+    @Override
+    public Minecraft getMinecraft() {
+        return minecraft != null ? minecraft : Minecraft.getInstance();
+    }
+
     private void setFromRecipe(ISpell spell) {
-        var skillRegistry = ArsMagicaAPI.get().getSkillRegistry();
+        var registryAccess = getMinecraft().getConnection().registryAccess();
+        var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
         spellStackDropZone = new BasicDropZone(spellStackDropZone != null ? spellStackDropZone.getX() : 0, spellStackDropZone != null ? spellStackDropZone.getY() : 0, 141, 18, ICON_SIZE, ICON_SIZE, 4, spellStackDropZone);
         spellStackDropZone.clear();
         for (ISpellPart iSpellPart : spell.spellStack().parts()) {
-            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getId()), skillRegistry.getValue(iSpellPart.getId()).getDisplayName(), iSpellPart.getId()));
+            spellStackDropZone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(iSpellPart.getId()), skillRegistry.get(iSpellPart.getId()).getDisplayName(registryAccess), iSpellPart.getId()));
         }
         int i = 0;
         for (ShapeGroup shapeGroup : spell.shapeGroups()) {
@@ -304,7 +311,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }
             zone.clear();
             for (ISpellPart spellPart : shapeGroup.parts()) {
-                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getId()), skillRegistry.getValue(spellPart.getId()).getDisplayName(), spellPart.getId()));
+                zone.add(new DraggableWithData<>(0, 0, 0, 0, SkillIconAtlas.instance().getSprite(spellPart.getId()), skillRegistry.get(spellPart.getId()).getDisplayName(registryAccess), spellPart.getId()));
             }
             if (shapeGroupDropZones.size() > i) {
                 shapeGroupDropZones.set(i, zone);

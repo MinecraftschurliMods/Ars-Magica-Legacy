@@ -11,13 +11,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
@@ -26,7 +23,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -107,11 +103,6 @@ public interface ArsMagicaAPI {
      */
     IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
 
-    /**
-     * @return The registry for skills.
-     */
-    IForgeRegistry<Skill> getSkillRegistry();
-
     @Experimental
     IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
 
@@ -120,13 +111,6 @@ public interface ArsMagicaAPI {
 
     @Experimental
     IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
-
-    @Experimental
-    IForgeRegistry<Ritual> getRitualRegistry();
-
-    IForgeRegistry<OcculusTab> getOcculusTabRegistry();
-
-    IForgeRegistry<SpellTransformation> getSpellTransformationRegistry();
 
     /**
      * @return The spell data manager instance.

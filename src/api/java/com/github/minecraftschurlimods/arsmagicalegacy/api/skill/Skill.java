@@ -10,6 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
@@ -45,8 +46,8 @@ public record Skill(Set<ResourceLocation> parents, Map<ResourceLocation, Integer
     }
 
     @Override
-    public ResourceLocation getId() {
-        return ArsMagicaAPI.get().getSkillRegistry().getKey(this);
+    public ResourceLocation getId(RegistryAccess access) {
+        return access.registryOrThrow(REGISTRY_KEY).getKey(this);
     }
 
     @Override

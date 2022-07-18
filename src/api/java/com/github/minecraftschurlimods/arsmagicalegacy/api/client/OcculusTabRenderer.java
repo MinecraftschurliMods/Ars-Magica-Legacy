@@ -34,8 +34,8 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     protected int posY;
 
     protected OcculusTabRenderer(OcculusTab occulusTab, Screen parent) {
-        textureHeight = occulusTab.height();
-        textureWidth = occulusTab.width();
+        this.textureHeight = occulusTab.height();
+        this.textureWidth = occulusTab.width();
         this.occulusTab = occulusTab;
         this.parent = parent;
     }
