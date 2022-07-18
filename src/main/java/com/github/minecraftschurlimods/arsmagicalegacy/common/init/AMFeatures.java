@@ -12,10 +12,12 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.LakeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
@@ -58,28 +60,30 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @NonExtendable
 public interface AMFeatures {
-    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>         CHIMERITE_FEATURE      = CONFIGURED_FEATURES.register("chimerite_ore",   () -> ore(AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F));
-    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>         VINTEUM_FEATURE        = CONFIGURED_FEATURES.register("vinteum_ore",     () -> ore(AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F));
-    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>         TOPAZ_FEATURE          = CONFIGURED_FEATURES.register("topaz_ore",       () -> ore(AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F));
-    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>         TOPAZ_EXTRA_FEATURE    = CONFIGURED_FEATURES.register("topaz_ore_extra", () -> ore(AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F));
-    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> AUM_FEATURE            = CONFIGURED_FEATURES.register("aum",             () -> flower(64, AMBlocks.AUM));
-    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> CERUBLOSSOM_FEATURE    = CONFIGURED_FEATURES.register("cerublossom",     () -> flower(64, AMBlocks.CERUBLOSSOM));
-    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> DESERT_NOVA_FEATURE    = CONFIGURED_FEATURES.register("desert_nova",     () -> flower(64, AMBlocks.DESERT_NOVA));
-    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> TARMA_ROOT_FEATURE     = CONFIGURED_FEATURES.register("tarma_root",      () -> flower(64, AMBlocks.TARMA_ROOT));
-    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>> WAKEBLOOM_FEATURE      = CONFIGURED_FEATURES.register("wakebloom",       () -> flower(64, AMBlocks.WAKEBLOOM));
-    RegistryObject<ConfiguredFeature<TreeConfiguration, ?>>        WITCHWOOD_TREE_FEATURE = CONFIGURED_FEATURES.register("witchwood_tree",  () -> tree(AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty())));
+    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>          CHIMERITE_FEATURE           = CONFIGURED_FEATURES.register("chimerite_ore",       () -> ore(AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F));
+    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>          VINTEUM_FEATURE             = CONFIGURED_FEATURES.register("vinteum_ore",         () -> ore(AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F));
+    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>          TOPAZ_FEATURE               = CONFIGURED_FEATURES.register("topaz_ore",           () -> ore(AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F));
+    RegistryObject<ConfiguredFeature<OreConfiguration, ?>>          TOPAZ_EXTRA_FEATURE         = CONFIGURED_FEATURES.register("topaz_ore_extra",     () -> ore(AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F));
+    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>>  AUM_FEATURE                 = CONFIGURED_FEATURES.register("aum",                 () -> flower(64, AMBlocks.AUM));
+    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>>  CERUBLOSSOM_FEATURE         = CONFIGURED_FEATURES.register("cerublossom",         () -> flower(64, AMBlocks.CERUBLOSSOM));
+    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>>  DESERT_NOVA_FEATURE         = CONFIGURED_FEATURES.register("desert_nova",         () -> flower(64, AMBlocks.DESERT_NOVA));
+    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>>  TARMA_ROOT_FEATURE          = CONFIGURED_FEATURES.register("tarma_root",          () -> flower(64, AMBlocks.TARMA_ROOT));
+    RegistryObject<ConfiguredFeature<RandomPatchConfiguration, ?>>  WAKEBLOOM_FEATURE           = CONFIGURED_FEATURES.register("wakebloom",           () -> flower(64, AMBlocks.WAKEBLOOM));
+    RegistryObject<ConfiguredFeature<TreeConfiguration, ?>>         WITCHWOOD_TREE_FEATURE      = CONFIGURED_FEATURES.register("witchwood_tree",      () -> tree(AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty())));
+    RegistryObject<ConfiguredFeature<LakeFeature.Configuration, ?>> LIQUID_ESSENCE_LAKE_FEATURE = CONFIGURED_FEATURES.register("liquid_essence_lake", () -> feature(Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(AMBlocks.LIQUID_ESSENCE.get()), BlockStateProvider.simple(Blocks.GRASS_BLOCK))));
 
-    RegistryObject<PlacedFeature> CHIMERITE_PLACEMENT       = PLACED_FEATURES.register("chimerite_placement", () -> orePlacement(CHIMERITE_FEATURE.getHolder().get(), 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16))));
-    RegistryObject<PlacedFeature> VINTEUM_PLACEMENT         = PLACED_FEATURES.register("vinteum_ore",         () -> orePlacement(VINTEUM_FEATURE.getHolder().get(), 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80))));
-    RegistryObject<PlacedFeature> TOPAZ_PLACEMENT           = PLACED_FEATURES.register("topaz_ore",           () -> orePlacement(TOPAZ_FEATURE.getHolder().get(), 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
-    RegistryObject<PlacedFeature> TOPAZ_EXTRA_PLACEMENT     = PLACED_FEATURES.register("topaz_ore_extra",     () -> orePlacement(TOPAZ_EXTRA_FEATURE.getHolder().get(), 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480))));
-    RegistryObject<PlacedFeature> AUM_PLACEMENT             = PLACED_FEATURES.register("aum",                 () -> flowerPlacement(AUM_FEATURE.getHolder().get(), 32));
-    RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT     = PLACED_FEATURES.register("cerublossom",         () -> flowerPlacement(CERUBLOSSOM_FEATURE.getHolder().get(), 32));
-    RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT     = PLACED_FEATURES.register("desert_nova",         () -> flowerPlacement(DESERT_NOVA_FEATURE.getHolder().get(), 32));
-    RegistryObject<PlacedFeature> TARMA_ROOT_PLACEMENT      = PLACED_FEATURES.register("tarma_root",          () -> flowerPlacement(TARMA_ROOT_FEATURE.getHolder().get(), 32));
-    RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT       = PLACED_FEATURES.register("wakebloom",           () -> flowerPlacement(WAKEBLOOM_FEATURE.getHolder().get(), 32));
-    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT  = PLACED_FEATURES.register("witchwood_tree",      () -> treePlacement(WITCHWOOD_TREE_FEATURE.getHolder().get(), AMBlocks.WITCHWOOD_SAPLING));
-    RegistryObject<PlacedFeature> WITCHWOOD_TREE_VEGETATION = PLACED_FEATURES.register("trees_witchwood",     () -> treeVegetation(WITCHWOOD_TREE_FEATURE.getHolder().get(), PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING));
+    RegistryObject<PlacedFeature> CHIMERITE_PLACEMENT           = PLACED_FEATURES.register("chimerite_placement", () -> orePlacement(CHIMERITE_FEATURE.getHolder().get(), 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16))));
+    RegistryObject<PlacedFeature> VINTEUM_PLACEMENT             = PLACED_FEATURES.register("vinteum_ore",         () -> orePlacement(VINTEUM_FEATURE.getHolder().get(), 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80))));
+    RegistryObject<PlacedFeature> TOPAZ_PLACEMENT               = PLACED_FEATURES.register("topaz_ore",           () -> orePlacement(TOPAZ_FEATURE.getHolder().get(), 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
+    RegistryObject<PlacedFeature> TOPAZ_EXTRA_PLACEMENT         = PLACED_FEATURES.register("topaz_ore_extra",     () -> orePlacement(TOPAZ_EXTRA_FEATURE.getHolder().get(), 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480))));
+    RegistryObject<PlacedFeature> AUM_PLACEMENT                 = PLACED_FEATURES.register("aum",                 () -> flowerPlacement(AUM_FEATURE.getHolder().get(), 32));
+    RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT         = PLACED_FEATURES.register("cerublossom",         () -> flowerPlacement(CERUBLOSSOM_FEATURE.getHolder().get(), 32));
+    RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT         = PLACED_FEATURES.register("desert_nova",         () -> flowerPlacement(DESERT_NOVA_FEATURE.getHolder().get(), 32));
+    RegistryObject<PlacedFeature> TARMA_ROOT_PLACEMENT          = PLACED_FEATURES.register("tarma_root",          () -> flowerPlacement(TARMA_ROOT_FEATURE.getHolder().get(), 32));
+    RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT           = PLACED_FEATURES.register("wakebloom",           () -> flowerPlacement(WAKEBLOOM_FEATURE.getHolder().get(), 32));
+    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT      = PLACED_FEATURES.register("witchwood_tree",      () -> treePlacement(WITCHWOOD_TREE_FEATURE.getHolder().get(), AMBlocks.WITCHWOOD_SAPLING));
+    RegistryObject<PlacedFeature> WITCHWOOD_TREE_VEGETATION     = PLACED_FEATURES.register("trees_witchwood",     () -> treeVegetation(WITCHWOOD_TREE_FEATURE.getHolder().get(), PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING));
+    RegistryObject<PlacedFeature> LIQUID_ESSENCE_LAKE_PLACEMENT = PLACED_FEATURES.register("liquid_essence_lake", () -> placement(Holder.hackyErase(LIQUID_ESSENCE_LAKE_FEATURE.getHolder().get()), RarityFilter.onAverageOnceEvery(500), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()));
 
     RegistryObject<Codec<BiomeModifier>> MODIFIER_CODEC = BIOME_MODIFIER_SERIALIZERS.register("modifier", () -> Codec.unit(new Modifier()));
     RegistryObject<BiomeModifier> MODIFIER = BIOME_MODIFIERS.register("modifier", Modifier::new);
@@ -182,6 +186,7 @@ public interface AMFeatures {
                     generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CHIMERITE_PLACEMENT.getHolder().get());
                     generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, VINTEUM_PLACEMENT.getHolder().get());
                     generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_PLACEMENT.getHolder().get());
+                    generationSettings.addFeature(GenerationStep.Decoration.LAKES, LIQUID_ESSENCE_LAKE_PLACEMENT.getHolder().get());
                     if (biome.is(BiomeTags.IS_MOUNTAIN)) {
                         generationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_EXTRA_PLACEMENT.getHolder().get());
                     }

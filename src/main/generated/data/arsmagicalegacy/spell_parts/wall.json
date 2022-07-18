@@ -35,9 +35,9 @@
       "type": "arsmagicalegacy:etherium",
       "amount": 2500,
       "types": [
+        "LIGHT",
         "NEUTRAL",
-        "DARK",
-        "LIGHT"
+        "DARK"
       ]
     }
   ]

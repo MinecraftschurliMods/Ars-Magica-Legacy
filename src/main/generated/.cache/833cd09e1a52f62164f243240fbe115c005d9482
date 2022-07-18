@@ -1,4 +1,4 @@
-// 1.19	2022-07-18T00:33:47.5232131	Item Models: arsmagicalegacy
+// 1.19	2022-07-18T22:56:07.1536552	Item Models: arsmagicalegacy
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/affinity_essence.json
 6e0b262bb6740bdbe7b3564e182497239ff375ac assets/arsmagicalegacy/models/item/affinity_essence_air.json
 84174d0bc6eb1016c4946a0937eb7ec35e19f1d8 assets/arsmagicalegacy/models/item/affinity_essence_arcane.json
@@ -67,6 +67,7 @@ b8d7707941aa5120979431bb89c54c0f18600ec0 assets/arsmagicalegacy/models/item/infi
 3e3d968958428483ce14a4b63ebfef6f55f9a27f assets/arsmagicalegacy/models/item/light_blue_rune.json
 f23802e331e186775bfb9211aab6c426820e1f6a assets/arsmagicalegacy/models/item/light_gray_rune.json
 7de8caeb86db5ef926a02117b3d614ec253cf4e8 assets/arsmagicalegacy/models/item/lime_rune.json
+4319de210acacaaef02eb277be8e7c7332a553cd assets/arsmagicalegacy/models/item/liquid_essence_bucket.json
 4efd9f80996b62a4cfa761ba92fa1e1eb3741e4e assets/arsmagicalegacy/models/item/magenta_rune.json
 d2009a05fd1491bd1054981535286fd1232d8fc8 assets/arsmagicalegacy/models/item/mage_boots.json
 81fa2919df0cd12ecc8acf0464fe921d3a47e867 assets/arsmagicalegacy/models/item/mage_chestplate.json

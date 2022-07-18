@@ -1,4 +1,4 @@
-// 1.19	2022-07-18T00:33:47.5452112	Block States: arsmagicalegacy
+// 1.19	2022-07-18T21:23:16.0437428	Block States: arsmagicalegacy
 9ff96b56b738b4ea85e1140167a077e69db0178f assets/arsmagicalegacy/blockstates/altar_core.json
 3dff9e1ec59415779195d2abfa9f07bc17b428a1 assets/arsmagicalegacy/blockstates/altar_view.json
 beb7ab7de7f6ae890282ef38e36400685d083d78 assets/arsmagicalegacy/blockstates/aum.json
@@ -14,6 +14,7 @@ c3a58e44c492a0628efe6a8247b330cdef358886 assets/arsmagicalegacy/blockstates/deep
 2b8a5ca05f8b1618544a0b4b93112dd9e803e01f assets/arsmagicalegacy/blockstates/desert_nova.json
 41b38daf530d6e2699de3e77d6dc7cf796d6641d assets/arsmagicalegacy/blockstates/gold_inlay.json
 7340a1466afec6385b0b91134414ec740e63107d assets/arsmagicalegacy/blockstates/iron_inlay.json
+8b41ba7ee1d20724ac2582cbf0bc2f5a5ccf552f assets/arsmagicalegacy/blockstates/liquid_essence.json
 1a7daa060ad204c8f6414ba8ec5753894a487384 assets/arsmagicalegacy/blockstates/magic_wall.json
 7cae732aa1a031540d4d291df27eb98115c8bac5 assets/arsmagicalegacy/blockstates/moonstone_block.json
 b7adcf17a7e4c5b1df798c2b817f13b8846a4f5a assets/arsmagicalegacy/blockstates/moonstone_ore.json
@@ -74,6 +75,7 @@ e3a8dc0483c6edd6321063b2fb1c0c90ccd5c521 assets/arsmagicalegacy/models/block/gol
 78b62ccdd78980899e5e46c42a1d45b4110af148 assets/arsmagicalegacy/models/block/iron_inlay_corner.json
 0e0494bf163016af4825f84ca85d4fc905fbc8bf assets/arsmagicalegacy/models/block/iron_inlay_raised_ne.json
 21932c8e246fe644b49f2856eb16e27a7840d9a7 assets/arsmagicalegacy/models/block/iron_inlay_raised_sw.json
+20cf8c4fd53b517b1d5fd0727e0da3d06473f150 assets/arsmagicalegacy/models/block/liquid_essence.json
 473f1e7e192c4cb45e6bf4de44f822d82cfd8978 assets/arsmagicalegacy/models/block/magic_wall.json
 c9879977d87892fecdebebd013240ac3e2e053c6 assets/arsmagicalegacy/models/block/moonstone_block.json
 778c9d6a21bf9053f451dc0252597b7722870cfd assets/arsmagicalegacy/models/block/moonstone_ore.json

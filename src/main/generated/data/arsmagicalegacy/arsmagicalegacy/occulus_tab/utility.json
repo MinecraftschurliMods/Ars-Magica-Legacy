@@ -1,8 +1,5 @@
 {
   "index": 2,
-  "renderer": "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusSkillTreeTabRenderer",
   "start_x": 136,
-  "start_y": 46,
-  "texture_height": 1024,
-  "texture_width": 1024
+  "start_y": 46
 }

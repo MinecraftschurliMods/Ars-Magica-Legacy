@@ -37,6 +37,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -48,26 +49,31 @@ import java.util.function.Supplier;
 
 @NonExtendable
 public interface AMRegistries {
-    // Deferred Registers for vanilla/forge registries
-    DeferredRegister<Block>                          BLOCKS                     = DeferredRegister.create(ForgeRegistries.BLOCKS,                          ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Fluid>                          FLUIDS                     = DeferredRegister.create(ForgeRegistries.FLUIDS,                          ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Item>                           ITEMS                      = DeferredRegister.create(ForgeRegistries.ITEMS,                           ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MobEffect>                      MOB_EFFECTS                = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,                     ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Attribute>                      ATTRIBUTES                 = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,                      ArsMagicaAPI.MOD_ID);
-    DeferredRegister<SoundEvent>                     SOUND_EVENTS               = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,                    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Potion>                         POTIONS                    = DeferredRegister.create(ForgeRegistries.POTIONS,                         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Enchantment>                    ENCHANTMENTS               = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,                    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityType<?>>                  ENTITY_TYPES               = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,                    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<BlockEntityType<?>>             BLOCK_ENTITY_TYPES         = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,              ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ParticleType<?>>                PARTICLE_TYPES             = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,                  ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MenuType<?>>                    MENU_TYPES                 = DeferredRegister.create(ForgeRegistries.MENU_TYPES,                      ArsMagicaAPI.MOD_ID);
-    DeferredRegister<RecipeSerializer<?>>            RECIPE_SERIALIZERS         = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,              ArsMagicaAPI.MOD_ID);
-    DeferredRegister<StatType<?>>                    STAT_TYPES                 = DeferredRegister.create(ForgeRegistries.STAT_TYPES,                      ArsMagicaAPI.MOD_ID);
+    // Deferred Registers for vanilla registries
+    DeferredRegister<Block>               BLOCKS             = DeferredRegister.create(ForgeRegistries.BLOCKS,             ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Fluid>               FLUIDS             = DeferredRegister.create(ForgeRegistries.FLUIDS,             ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Item>                ITEMS              = DeferredRegister.create(ForgeRegistries.ITEMS,              ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MobEffect>           MOB_EFFECTS        = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,        ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Attribute>           ATTRIBUTES         = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<SoundEvent>          SOUND_EVENTS       = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Potion>              POTIONS            = DeferredRegister.create(ForgeRegistries.POTIONS,            ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Enchantment>         ENCHANTMENTS       = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityType<?>>       ENTITY_TYPES       = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES     = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,     ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MenuType<?>>         MENU_TYPES         = DeferredRegister.create(ForgeRegistries.MENU_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<StatType<?>>         STAT_TYPES         = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
+
+    // Deferred Registers for forge registries
+    DeferredRegister<FluidType>                      FLUID_TYPES                = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,                ArsMagicaAPI.MOD_ID);
     DeferredRegister<EntityDataSerializer<?>>        ENTITY_DATA_SERIALIZERS    = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ConfiguredFeature<?,?>>         CONFIGURED_FEATURES        = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY,            ArsMagicaAPI.MOD_ID);
-    DeferredRegister<PlacedFeature>                  PLACED_FEATURES            = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY,                ArsMagicaAPI.MOD_ID);
     DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<BiomeModifier>                  BIOME_MODIFIERS            = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIERS,            ArsMagicaAPI.MOD_ID);
+
+    // Deferred Registers for vanilla/forge datapack registries
+    DeferredRegister<BiomeModifier>          BIOME_MODIFIERS     = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ConfiguredFeature<?,?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<PlacedFeature>          PLACED_FEATURES     = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY,     ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for custom registries
     DeferredRegister<SkillPoint>                         SKILL_POINTS             = DeferredRegister.create(SkillPoint.REGISTRY_KEY,        ArsMagicaAPI.MOD_ID);
@@ -113,6 +119,7 @@ public interface AMRegistries {
     @Internal
     static void init(IEventBus bus) {
         AMBlocks.register();
+        AMFluids.register();
         AMItems.register();
         AMMobEffects.register();
         AMAttributes.register();
@@ -123,17 +130,18 @@ public interface AMRegistries {
         AMStats.register();
         bus.addListener(AMStats::onRegister);
         AMDataSerializers.register();
+        AMFeatures.register();
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
         AMAbilities.register();
         AMContingencyTypes.register();
         AMRituals.register();
-        AMFeatures.register();
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);
         MOB_EFFECTS.register(bus);
+        ATTRIBUTES.register(bus);
         SOUND_EVENTS.register(bus);
         POTIONS.register(bus);
         ENCHANTMENTS.register(bus);
@@ -143,21 +151,21 @@ public interface AMRegistries {
         MENU_TYPES.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
-        ATTRIBUTES.register(bus);
+        FLUID_TYPES.register(bus);
         ENTITY_DATA_SERIALIZERS.register(bus);
-        CONFIGURED_FEATURES.register(bus);
-        PLACED_FEATURES.register(bus);
         BIOME_MODIFIER_SERIALIZERS.register(bus);
         BIOME_MODIFIERS.register(bus);
+        CONFIGURED_FEATURES.register(bus);
+        PLACED_FEATURES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
         SPELL_PARTS.register(bus);
         ABILITIES.register(bus);
         CONTINGENCY_TYPE.register(bus);
-        SKILLS.register(bus);
         RITUAL_TRIGGER_TYPES.register(bus);
         RITUAL_REQUIREMENT_TYPES.register(bus);
         RITUAL_EFFECT_TYPES.register(bus);
+        SKILLS.register(bus);
         RITUALS.register(bus);
         OCCULUS_TABS.register(bus);
         SPELL_TRANSFORMATIONS.register(bus);

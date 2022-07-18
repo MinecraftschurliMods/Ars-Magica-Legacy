@@ -1,8 +1,4 @@
 {
   "index": 3,
-  "renderer": "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer",
-  "start_x": 0,
-  "start_y": 0,
-  "texture_height": 1024,
-  "texture_width": 1024
+  "renderer": "com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer"
 }

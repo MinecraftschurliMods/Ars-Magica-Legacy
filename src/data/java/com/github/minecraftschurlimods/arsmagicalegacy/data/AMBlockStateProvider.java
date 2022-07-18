@@ -99,6 +99,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         railBlock(IRON_INLAY);
         railBlock(REDSTONE_INLAY);
         railBlock(GOLD_INLAY);
+        simpleBlock(LIQUID_ESSENCE.get(), models().getBuilder(LIQUID_ESSENCE.getId().getPath()).texture("particle", modLoc("block/"+LIQUID_ESSENCE.getId().getPath()+"_still")));
     }
 
     /**

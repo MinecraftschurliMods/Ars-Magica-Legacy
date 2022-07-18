@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -109,6 +110,7 @@ public interface AMBlocks {
     RegistryObject<InlayBlock>            IRON_INLAY               = BLOCKS.register("iron_inlay",               () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
     RegistryObject<InlayBlock>            REDSTONE_INLAY           = BLOCKS.register("redstone_inlay",           () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
     RegistryObject<InlayBlock>            GOLD_INLAY               = BLOCKS.register("gold_inlay",               () -> new InlayBlock(BlockBehaviour.Properties.copy(Blocks.RAIL)));
+    RegistryObject<LiquidBlock>           LIQUID_ESSENCE           = BLOCKS.register("liquid_essence",           () -> new LiquidBlock(AMFluids.LIQUID_ESSENCE, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noLootTable().lightLevel((state) -> 5)));
 
     private static RegistryObject<FlowerPotBlock> flowerPot(RegistryObject<? extends BushBlock> flower) {
         RegistryObject<FlowerPotBlock> register = BLOCKS.register("potted_" + flower.getId().getPath(), () -> new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), flower, FLOWER_POT));
