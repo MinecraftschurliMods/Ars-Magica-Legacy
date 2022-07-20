@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
+import com.github.minecraftschurlimods.betterhudlib.HUDElement;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -39,18 +40,102 @@ public final class Config {
      * Class holding the client config values.
      */
     public static final class Client {
-        public final ForgeConfigSpec.IntValue HUD_HORIZONTAL_OFFSET;
-        public final ForgeConfigSpec.IntValue HUD_VERTICAL_OFFSET;
+        public final ForgeConfigSpec.IntValue MANA_X;
+        public final ForgeConfigSpec.IntValue MANA_Y;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> MANA_ANCHOR_X;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> MANA_ANCHOR_Y;
+        public final ForgeConfigSpec.IntValue BURNOUT_X;
+        public final ForgeConfigSpec.IntValue BURNOUT_Y;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> BURNOUT_ANCHOR_X;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> BURNOUT_ANCHOR_Y;
+        public final ForgeConfigSpec.IntValue XP_X;
+        public final ForgeConfigSpec.IntValue XP_Y;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> XP_ANCHOR_X;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> XP_ANCHOR_Y;
+        public final ForgeConfigSpec.IntValue SPELL_BOOK_X;
+        public final ForgeConfigSpec.IntValue SPELL_BOOK_Y;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> SPELL_BOOK_ANCHOR_X;
+        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> SPELL_BOOK_ANCHOR_Y;
 
         private Client(ForgeConfigSpec.Builder builder) {
-            HUD_HORIZONTAL_OFFSET = builder
-                    .comment("Horizontal offset of the hud, from the center of the screen.")
-                    .translation(TranslationConstants.CONFIG + "hud_horizontal_offset")
-                    .defineInRange("hud_horizontal_offset", -210, Short.MIN_VALUE, Short.MAX_VALUE);
-            HUD_VERTICAL_OFFSET = builder
-                    .comment("Vertical offset of the hud, from the bottom of the screen.")
-                    .translation(TranslationConstants.CONFIG + "hud_vertical_offset")
-                    .defineInRange("hud_vertical_offset", 3, 0, Short.MAX_VALUE);
+            builder.comment("HUD Elements").push("hud_elements");
+            builder.push("mana");
+            MANA_X = builder
+                    .comment("Horizontal position of the mana bar.")
+                    .translation(TranslationConstants.CONFIG + "mana_x")
+                    .defineInRange("mana_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+            MANA_Y = builder
+                    .comment("Vertical position of the mana bar.")
+                    .translation(TranslationConstants.CONFIG + "mana_y")
+                    .defineInRange("mana_y", 23, Short.MIN_VALUE, Short.MAX_VALUE);
+            MANA_ANCHOR_X = builder
+                    .comment("Horizontal anchor of the mana bar.")
+                    .translation(TranslationConstants.CONFIG + "mana_anchor_x")
+                    .defineEnum("mana_anchor_x", HUDElement.AnchorX.CENTER);
+            MANA_ANCHOR_Y = builder
+                    .comment("Horizontal anchor of the mana bar.")
+                    .translation(TranslationConstants.CONFIG + "mana_anchor_y")
+                    .defineEnum("mana_anchor_y", HUDElement.AnchorY.BOTTOM);
+            builder.pop();
+            builder.push("burnout");
+            BURNOUT_X = builder
+                    .comment("Horizontal position of the burnout bar.")
+                    .translation(TranslationConstants.CONFIG + "burnout_x")
+                    .defineInRange("burnout_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+            BURNOUT_Y = builder
+                    .comment("Vertical position of the burnout bar.")
+                    .translation(TranslationConstants.CONFIG + "burnout_y")
+                    .defineInRange("burnout_y", 13, Short.MIN_VALUE, Short.MAX_VALUE);
+            BURNOUT_ANCHOR_X = builder
+                    .comment("Horizontal anchor of the burnout bar.")
+                    .translation(TranslationConstants.CONFIG + "burnout_anchor_x")
+                    .defineEnum("burnout_anchor_x", HUDElement.AnchorX.CENTER);
+            BURNOUT_ANCHOR_Y = builder
+                    .comment("Horizontal anchor of the burnout bar.")
+                    .translation(TranslationConstants.CONFIG + "burnout_anchor_y")
+                    .defineEnum("burnout_anchor_y", HUDElement.AnchorY.BOTTOM);
+            builder.pop();
+            builder.push("xp");
+            XP_X = builder
+                    .comment("Horizontal position of the magic xp bar.")
+                    .translation(TranslationConstants.CONFIG + "xp_x")
+                    .defineInRange("xp_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+            XP_Y = builder
+                    .comment("Vertical position of the magic xp bar.")
+                    .translation(TranslationConstants.CONFIG + "xp_y")
+                    .defineInRange("xp_y", 33, Short.MIN_VALUE, Short.MAX_VALUE);
+            XP_ANCHOR_X = builder
+                    .comment("Horizontal anchor of the magic xp bar.")
+                    .translation(TranslationConstants.CONFIG + "xp_anchor_x")
+                    .defineEnum("xp_anchor_x", HUDElement.AnchorX.CENTER);
+            XP_ANCHOR_Y = builder
+                    .comment("Horizontal anchor of the magic xp bar.")
+                    .translation(TranslationConstants.CONFIG + "xp_anchor_y")
+                    .defineEnum("xp_anchor_y", HUDElement.AnchorY.BOTTOM);
+            builder.pop();
+            builder.push("spell_book");
+            SPELL_BOOK_X = builder
+                    .comment("Horizontal position of the spell book hud.")
+                    .translation(TranslationConstants.CONFIG + "spell_book_x")
+                    .defineInRange("spell_book_x", 100, Short.MIN_VALUE, Short.MAX_VALUE);
+            SPELL_BOOK_Y = builder
+                    .comment("Vertical position of the spell book hud.")
+                    .translation(TranslationConstants.CONFIG + "spell_book_y")
+                    .defineInRange("spell_book_y", 19, Short.MIN_VALUE, Short.MAX_VALUE);
+            SPELL_BOOK_ANCHOR_X = builder
+                    .comment("Horizontal anchor of the spell book hud.")
+                    .translation(TranslationConstants.CONFIG + "spell_book_anchor_x")
+                    .defineEnum("spell_book_anchor_x", HUDElement.AnchorX.CENTER);
+            SPELL_BOOK_ANCHOR_Y = builder
+                    .comment("Horizontal anchor of the spell book hud.")
+                    .translation(TranslationConstants.CONFIG + "spell_book_anchor_y")
+                    .defineEnum("spell_book_anchor_y", HUDElement.AnchorY.BOTTOM);
+            builder.pop();
+            builder.pop();
+        }
+
+        public void save() {
+            clientSpec.save();
         }
     }
 

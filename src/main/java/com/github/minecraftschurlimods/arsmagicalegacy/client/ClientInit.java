@@ -60,6 +60,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
+import com.github.minecraftschurlimods.betterhudlib.HUDManager;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -98,6 +99,7 @@ public final class ClientInit {
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Keybinds.init(modEventBus);
+        HUDManager.enableKeybind();
         modEventBus.addListener(ClientInit::clientSetup);
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
         modEventBus.addListener(ClientInit::modelRegister);
