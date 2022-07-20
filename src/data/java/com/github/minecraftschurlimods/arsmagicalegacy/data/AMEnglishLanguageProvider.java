@@ -6,8 +6,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -437,6 +437,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add("potion.potency.7", "VII");
         add("potion.potency.8", "IX");
         add("potion.potency.9", "X");
+        add("hud_manager.open", "Open HUD Manager");
     }
 
     /**
