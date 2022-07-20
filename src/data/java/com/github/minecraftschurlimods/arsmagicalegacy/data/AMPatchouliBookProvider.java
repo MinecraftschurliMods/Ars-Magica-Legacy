@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -308,17 +308,15 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("Shifting into an affinity bears individual side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
                 .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Reports about lost affinity tomes have been spreading as well, though how to obtain or use them is currently subject to investigation.")
                 .build();
-        var abilityRegistry = api.getAbilityRegistry();
         for (final Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE)) continue;
             TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
             entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
-            for (final ResourceLocation abilityId : abilities.getAbilitiesForAffinity(id)) {
-                IAbility ability = abilityRegistry.getValue(abilityId);
-                if (ability == null) continue;
-                entry.addSimpleTextPage(ability.getTranslationKey() + ".description", ability.getTranslationKey() + ".name");
+            for (ResourceLocation abilityId : abilities.getAbilitiesForAffinity(id)) {
+                String translationKey = Util.makeDescriptionId(Ability.ABILITY, abilityId);
+                entry.addSimpleTextPage(translationKey + ".description", translationKey + ".name");
             }
             entry.build();
         }

@@ -1,17 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,31 +21,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class PrefabSpellProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger();
     private final DataGenerator generator;
     private final String namespace;
-    private final Map<ResourceLocation, JsonElement> data = new HashMap<>();
+    private final Map<ResourceLocation, PrefabSpell> data = new HashMap<>();
+    private final JsonCodecProvider<PrefabSpell> provider;
 
-    public PrefabSpellProvider(String namespace, DataGenerator generator) {
+    public PrefabSpellProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
         this.namespace = namespace;
         this.generator = generator;
+        this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), PrefabSpell.REGISTRY_KEY, data);
     }
 
     protected abstract void createPrefabSpells();
 
     @Override
-    public void run(CachedOutput pCache) {
+    public void run(CachedOutput pCache) throws IOException {
         createPrefabSpells();
-        for (Map.Entry<ResourceLocation, JsonElement> entry : data.entrySet()) {
-            ResourceLocation id = entry.getKey();
-            JsonElement spell = entry.getValue();
-            try {
-                DataProvider.saveStable(pCache, spell, generator.getOutputFolder().resolve("data/" + id.getNamespace() + "/prefab_spells/" + id.getPath() + ".json"));
-            } catch (IOException e) {
-                LOGGER.error("Couldn't save prefab spell {}", id, e);
-            }
-        }
+        provider.run(pCache);
     }
 
     @Override
@@ -110,7 +104,7 @@ public abstract class PrefabSpellProvider implements DataProvider {
             json.add("name", Component.Serializer.toJsonTree(name));
             json.addProperty("icon", icon.toString());
             json.add("spell", ISpell.CODEC.encodeStart(JsonOps.INSTANCE, spell).getOrThrow(false, LOGGER::warn));
-            data.put(id, json);
+            data.put(id, new PrefabSpell(name, spell, icon));
         }
     }
 }

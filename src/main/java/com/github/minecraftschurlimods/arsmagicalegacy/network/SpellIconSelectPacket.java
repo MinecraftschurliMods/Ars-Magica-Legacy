@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -36,8 +36,8 @@ public record SpellIconSelectPacket(String name, ResourceLocation icon) implemen
             if (item.isEmpty()) {
                 item = sender.getOffhandItem();
             }
-            SpellItem.setSpellIcon(item, icon());
-            SpellItem.setSpellName(item, name());
+            ISpellItem.setSpellIcon(item, icon());
+            ISpellItem.setSpellName(item, name());
         });
     }
 }

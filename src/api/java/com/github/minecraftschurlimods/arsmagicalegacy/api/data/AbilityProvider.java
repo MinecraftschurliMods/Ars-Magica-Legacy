@@ -1,34 +1,33 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class AbilityProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
     private final String namespace;
-    private final Multimap<ResourceLocation, ResourceLocation> abilitiesByAffinity = HashMultimap.create();
+    private final Map<ResourceLocation, Ability> abilities = new HashMap<>();
+    private final JsonCodecProvider<Ability> provider;
 
-    protected AbilityProvider(String namespace, DataGenerator generator) {
+    protected AbilityProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
         this.namespace = namespace;
-        this.generator = generator;
+        this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), Ability.REGISTRY_KEY, abilities);
     }
 
     /**
@@ -38,29 +37,25 @@ public abstract class AbilityProvider implements DataProvider {
      * @return The abilities for the given affinity.
      */
     public Collection<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
-        return Collections.unmodifiableCollection(abilitiesByAffinity.get(affinity));
+        return abilities.entrySet().stream().filter(ability -> ability.getValue().affinity().getId().equals(affinity)).map(Map.Entry::getKey).toList();
     }
 
     protected abstract void createAbilities(Consumer<AbilityBuilder> consumer);
 
     @Internal
     @Override
-    public void run(CachedOutput pCache) {
-        Set<ResourceLocation> ids = new HashSet<>();
-        createAbilities(consumer -> {
-            if (!ids.add(consumer.getId())) throw new IllegalStateException("Duplicate ability " + consumer.getId());
-            abilitiesByAffinity.put(consumer.getAffinity(), consumer.getId());
-            try {
-                DataProvider.saveStable(pCache, consumer.serialize(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/affinity_abilities/" + consumer.getId().getPath() + ".json"));
-            } catch (IOException e) {
-                LOGGER.error("Couldn't save ability {}", consumer.getId(), e);
-            }
-        });
+    public void run(CachedOutput pCache) throws IOException {
+        createAbilities(builder -> abilities.put(builder.getId(), builder.build()));
+        provider.run(pCache);
     }
 
     @Override
     public String getName() {
         return "Abilities[" + namespace + "]";
+    }
+
+    public Ability get(ResourceLocation id) {
+        return abilities.get(id);
     }
 
     /**
@@ -70,7 +65,7 @@ public abstract class AbilityProvider implements DataProvider {
      * @return A new ability.
      */
     protected AbilityBuilder createAbility(ResourceLocation ability, ResourceLocation affinity, MinMaxBounds.Doubles bounds) {
-        return AbilityBuilder.create(ability).setAffinity(affinity).setBounds(bounds);
+        return AbilityBuilder.create(ability).withAffinity(affinity).withBounds(bounds);
     }
 
     /**
@@ -80,6 +75,6 @@ public abstract class AbilityProvider implements DataProvider {
      * @return A new ability.
      */
     protected AbilityBuilder createAbility(ResourceLocation ability, Affinity affinity, MinMaxBounds.Doubles bounds) {
-        return AbilityBuilder.create(ability).setAffinity(affinity.getId()).setBounds(bounds);
+        return AbilityBuilder.create(ability).withAffinity(affinity.getId()).withBounds(bounds);
     }
 }

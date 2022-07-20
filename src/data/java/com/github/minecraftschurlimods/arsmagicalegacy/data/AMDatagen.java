@@ -24,8 +24,8 @@ public class AMDatagen {
         LOGGER.info("Running Datagens");
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
-        LanguageProvider lang = new AMEnglishLanguageProvider(generator);
-        AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
+        AMAbilityProvider abilityProvider = new AMAbilityProvider(generator, existingFileHelper);
+        LanguageProvider lang = new AMEnglishLanguageProvider(generator, abilityProvider);
         generator.addProvider(evt.includeServer(), abilityProvider);
         generator.addProvider(true, new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         generator.addProvider(evt.includeClient(), new AMBlockStateProvider(generator, existingFileHelper));
@@ -41,7 +41,7 @@ public class AMDatagen {
         generator.addProvider(evt.includeServer(), new AMAltarStructureMaterialProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMObeliskFuelProvider(generator));
         generator.addProvider(evt.includeServer(), new AMOcculusTabProvider(generator, existingFileHelper));
-        generator.addProvider(evt.includeServer(), new AMPrefabSpellProvider(generator));
+        generator.addProvider(evt.includeServer(), new AMPrefabSpellProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMSpellPartDataProvider(generator));
         generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMRitualProvider(generator, existingFileHelper));

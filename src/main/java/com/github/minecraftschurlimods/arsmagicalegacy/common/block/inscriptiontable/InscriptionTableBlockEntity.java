@@ -3,8 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -50,7 +50,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      */
     public static ItemStack makeRecipe(String name, String author, ISpell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        SpellItem.saveSpell(book, spell);
+        ISpellItem.saveSpell(book, spell);
         CompoundTag tag = book.getOrCreateTag();
         tag.putString(WrittenBookItem.TAG_TITLE, name);
         tag.putString(WrittenBookItem.TAG_AUTHOR, author);

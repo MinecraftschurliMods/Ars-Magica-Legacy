@@ -1,0 +1,7 @@
+{
+  "affinity": "arsmagicalegacy:earth",
+  "bounds": {
+    "max": 1,
+    "min": 0.01
+  }
+}

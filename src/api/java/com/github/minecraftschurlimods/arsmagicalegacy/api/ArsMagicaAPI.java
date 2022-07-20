@@ -1,7 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
@@ -94,11 +92,6 @@ public interface ArsMagicaAPI {
     IForgeRegistry<ISpellPart> getSpellPartRegistry();
 
     /**
-     * @return The registry for abilities.
-     */
-    IForgeRegistry<IAbility> getAbilityRegistry();
-
-    /**
      * @return The registry for contingency types.
      */
     IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
@@ -116,11 +109,6 @@ public interface ArsMagicaAPI {
      * @return The spell data manager instance.
      */
     ISpellDataManager getSpellDataManager();
-
-    /**
-     * @return The ability manager instance.
-     */
-    IAbilityManager getAbilityManager();
 
     /**
      * @return The spell data manager instance.

@@ -13,13 +13,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.enderman_thorns.description",
-      "title": "ability.arsmagicalegacy.enderman_thorns.name"
+      "text": "ability.arsmagicalegacy.nether_damage_water.description",
+      "title": "ability.arsmagicalegacy.nether_damage_water.name"
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.nether_damage_water.description",
-      "title": "ability.arsmagicalegacy.nether_damage_water.name"
+      "text": "ability.arsmagicalegacy.enderman_thorns.description",
+      "title": "ability.arsmagicalegacy.enderman_thorns.name"
     },
     {
       "type": "patchouli:text",

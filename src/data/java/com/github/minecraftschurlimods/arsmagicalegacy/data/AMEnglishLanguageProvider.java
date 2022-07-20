@@ -2,9 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.data.AbilityProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
@@ -17,7 +18,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations;
 import net.minecraft.Util;
@@ -36,14 +37,17 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Supplier;
 
 class AMEnglishLanguageProvider extends AMLanguageProvider {
-    AMEnglishLanguageProvider(DataGenerator generator) {
+    private final AbilityProvider abilities;
+
+    AMEnglishLanguageProvider(DataGenerator generator, AbilityProvider abilities) {
         super(generator, "en_us");
+        this.abilities = abilities;
     }
 
     @Override
     protected void addTranslations() {
         itemGroupTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        itemGroupTranslation(PrefabSpellManager.ITEM_CATEGORY, ArsMagicaLegacy.getModName() + " - Prefab Spells");
+        itemGroupTranslation(SpellItem.PREFAB_SPELLS_TAB, ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
@@ -463,8 +467,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param ability The ability to generate the translation for.
      */
-    private void abilityIdTranslation(final RegistryObject<? extends IAbility> ability, String description) {
-        addAbility(ability, idToTranslation(ability.getId().getPath()), description);
+    private void abilityIdTranslation(ResourceLocation ability, String description) {
+        addAbility(ability, idToTranslation(ability.getPath()), description);
     }
 
     /**
@@ -596,8 +600,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param name        The translation for the abilities name.
      * @param description The translation for the abilities description.
      */
-    private void addAbility(Supplier<? extends IAbility> ability, String name, String description) {
-        add(ability.get(), name, description);
+    private void addAbility(ResourceLocation ability, String name, String description) {
+        add(Util.makeDescriptionId(Ability.ABILITY, ability) + ".name", name);
+        add(Util.makeDescriptionId(Ability.ABILITY, ability) + ".description", description);
     }
 
     /**

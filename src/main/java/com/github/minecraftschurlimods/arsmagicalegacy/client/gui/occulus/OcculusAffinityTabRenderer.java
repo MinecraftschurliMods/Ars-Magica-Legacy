@@ -1,8 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
@@ -13,11 +12,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -43,6 +41,8 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         var api = ArsMagicaAPI.get();
         var helper = api.getAffinityHelper();
         var registry = api.getAffinityRegistry();
+        RegistryAccess registryAccess = getMinecraft().getConnection().registryAccess();
+        var abilityRegistry = registryAccess.registryOrThrow(Ability.REGISTRY_KEY);
         int affNum = registry.getValues().size() - 1;
         int portion = 360 / affNum;
         int currentID = 0;
@@ -89,18 +89,14 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             getItemRenderer().renderAndDecorateFakeItem(helper.getEssenceForAffinity(aff), drawX + posX, drawY + posY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
-                var abilityManager = api.getAbilityManager();
-                List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
-                IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();
-                abilities.sort((o1, o2) -> (int)((Objects.requireNonNullElse(abilityManager.get(o1).bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(abilityManager.get(o2).bounds().getMin(), 0D) * 100)));
-                abilities.forEach(resourceLocation -> {
-                    IAbilityData abilityData = abilityManager.get(resourceLocation);
-                    boolean test = abilityData.test(player);
-                    IAbility value = abilityRegistry.getValue(resourceLocation);
-                    assert value != null;
-                    MutableComponent component = value.getDisplayName().copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
+                abilityRegistry.stream()
+                               .filter(ability -> aff.getId().equals(ability.affinity().getId()))
+                               .sorted((o1, o2) -> (int) ((Objects.requireNonNullElse(o1.bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(o2.bounds().getMin(), 0D) * 100)))
+                               .forEach(ability -> {
+                    boolean test = ability.test(player);
+                    MutableComponent component = ability.getDisplayName(registryAccess).copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
                     if (Screen.hasShiftDown()) {
-                        MinMaxBounds.Doubles range = abilityData.bounds();
+                        MinMaxBounds.Doubles range = ability.bounds();
                         Double lower = range.getMin();
                         Double upper = range.getMax();
                         if (lower != null || upper != null) {
