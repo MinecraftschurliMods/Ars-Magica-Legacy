@@ -64,6 +64,7 @@ public interface AMRegistries {
     DeferredRegister<MenuType<?>>         MENU_TYPES         = DeferredRegister.create(ForgeRegistries.MENU_TYPES,         ArsMagicaAPI.MOD_ID);
     DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
     DeferredRegister<StatType<?>>         STAT_TYPES         = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ResourceLocation>    CUSTOM_STATS       = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY,      ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for forge registries
     DeferredRegister<FluidType>                      FLUID_TYPES                = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,                ArsMagicaAPI.MOD_ID);
@@ -151,6 +152,7 @@ public interface AMRegistries {
         MENU_TYPES.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         STAT_TYPES.register(bus);
+        CUSTOM_STATS.register(bus);
         FLUID_TYPES.register(bus);
         ENTITY_DATA_SERIALIZERS.register(bus);
         BIOME_MODIFIER_SERIALIZERS.register(bus);

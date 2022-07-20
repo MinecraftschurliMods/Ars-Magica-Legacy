@@ -127,7 +127,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
             }
             return InteractionResult.SUCCESS;
         } else {
-            pPlayer.awardStat(AMStats.INTERACT_WITH_OCCULUS);
+            pPlayer.awardStat(AMStats.INTERACT_WITH_OCCULUS.get());
             return InteractionResult.CONSUME;
         }
     }

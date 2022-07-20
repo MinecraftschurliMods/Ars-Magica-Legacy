@@ -1,37 +1,39 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.CUSTOM_STATS;
 
 @NonExtendable
 public interface AMStats {
-    Map<ResourceLocation, StatFormatter> STAT_REGISTER = new HashMap<>();
+    Map<ResourceLocation, StatFormatter> FORMATTERS = new HashMap<>();
 
-    ResourceLocation INTERACT_WITH_OBELISK           = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_obelisk"),           StatFormatter.DEFAULT);
-    ResourceLocation INTERACT_WITH_OCCULUS           = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_occulus"),           StatFormatter.DEFAULT);
-    ResourceLocation INTERACT_WITH_INSCRIPTION_TABLE = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "interact_with_inscription_table"), StatFormatter.DEFAULT);
-    ResourceLocation SPELL_CAST                      = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_cast"),                      StatFormatter.DEFAULT);
-    ResourceLocation RITUALS_TRIGGERED               = register(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"),               StatFormatter.DEFAULT);
+    RegistryObject<ResourceLocation> INTERACT_WITH_OBELISK           = register("interact_with_obelisk",           StatFormatter.DEFAULT);
+    RegistryObject<ResourceLocation> INTERACT_WITH_OCCULUS           = register("interact_with_occulus",           StatFormatter.DEFAULT);
+    RegistryObject<ResourceLocation> INTERACT_WITH_INSCRIPTION_TABLE = register("interact_with_inscription_table", StatFormatter.DEFAULT);
+    RegistryObject<ResourceLocation> SPELL_CAST                      = register("spell_cast",                      StatFormatter.DEFAULT);
+    RegistryObject<ResourceLocation> RITUALS_TRIGGERED               = register("rituals_triggered",               StatFormatter.DEFAULT);
 
-    private static ResourceLocation register(ResourceLocation location, StatFormatter formatter) {
-        STAT_REGISTER.put(location, formatter);
-        return location;
+    private static RegistryObject<ResourceLocation> register(String name, StatFormatter formatter) {
+        AtomicReference<RegistryObject<ResourceLocation>> ref = new AtomicReference<>();
+        var reg = CUSTOM_STATS.register(name, () -> ref.get().getId());
+        FORMATTERS.put(reg.getId(), formatter);
+        ref.set(reg);
+        return reg;
     }
 
     static void onRegister(FMLCommonSetupEvent event) {
-        STAT_REGISTER.forEach((location, formatter) -> {
-            Registry.register(Registry.CUSTOM_STAT, location, location);
-            Stats.CUSTOM.get(location, formatter);
-        });
+        CUSTOM_STATS.getEntries().forEach((reg) -> Stats.CUSTOM.get(reg.get(), FORMATTERS.get(reg.getId())));
     }
 
     /**

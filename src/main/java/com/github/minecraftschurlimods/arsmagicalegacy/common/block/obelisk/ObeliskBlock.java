@@ -54,7 +54,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
         BlockEntity blockentity = level.getBlockEntity(pos.below(level.getBlockState(pos).getValue(PART).ordinal()));
         if (blockentity instanceof ObeliskBlockEntity obeliskBlockEntity) {
             player.openMenu(obeliskBlockEntity);
-            player.awardStat(AMStats.INTERACT_WITH_OBELISK);
+            player.awardStat(AMStats.INTERACT_WITH_OBELISK.get());
         }
     }
 

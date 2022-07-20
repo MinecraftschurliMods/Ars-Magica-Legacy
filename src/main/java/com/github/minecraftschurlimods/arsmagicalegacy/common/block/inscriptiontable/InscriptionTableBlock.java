@@ -116,7 +116,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
             pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
         }
         NetworkHooks.openScreen((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
-        pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE);
+        pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE.get());
         return InteractionResult.CONSUME;
     }
 

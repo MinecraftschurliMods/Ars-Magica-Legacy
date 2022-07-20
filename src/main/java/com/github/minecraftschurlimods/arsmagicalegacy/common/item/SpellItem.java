@@ -176,7 +176,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         if (entity instanceof Player player) {
             if (result.isConsume()) {
-                player.awardStat(AMStats.SPELL_CAST);
+                player.awardStat(AMStats.SPELL_CAST.get());
             }
             if (result.isFail()) {
                 player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
@@ -266,7 +266,7 @@ public class SpellItem extends Item implements ISpellItem {
             }
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
-                    player.awardStat(AMStats.SPELL_CAST);
+                    player.awardStat(AMStats.SPELL_CAST.get());
                 }
                 if (result.isFail()) {
                     player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
