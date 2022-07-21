@@ -16,7 +16,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMFluids {
-    RegistryObject<FluidType> LIQUID_ESSENCE_TYPE = FLUID_TYPES.register("liquid_essence", () -> new FluidType(FluidType.Properties.create()) {
+    RegistryObject<FluidType> LIQUID_ESSENCE_TYPE = FLUID_TYPES.register("liquid_essence", () -> new FluidType(FluidType.Properties.create().fallDistanceModifier(0F)) {
         @Override
         public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
             consumer.accept(new IClientFluidTypeExtensions() {
