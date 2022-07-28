@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
@@ -12,6 +13,8 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.FilledBucketTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -37,6 +40,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -52,6 +56,23 @@ class AMRecipeProvider extends RecipeProvider {
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
+        generateRecipes(consumer, AMBlockFamilies.WITCHWOOD_PLANKS.get());
+        planksFromLogs(consumer, AMBlocks.WITCHWOOD_PLANKS.get(), AMTags.Items.WITCHWOOD_LOGS);
+        woodFromLogs(consumer, AMBlocks.WITCHWOOD.get(), AMBlocks.WITCHWOOD_LOG.get());
+        woodFromLogs(consumer, AMBlocks.STRIPPED_WITCHWOOD.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get());
+        nineBlockStorageRecipes(consumer, AMItems.VINTEUM_DUST.get(), AMTags.Items.DUSTS_VINTEUM, AMBlocks.VINTEUM_BLOCK.get(), AMTags.Items.STORAGE_BLOCKS_VINTEUM);
+        nineBlockStorageRecipes(consumer, AMItems.CHIMERITE.get(), AMTags.Items.GEMS_CHIMERITE, AMBlocks.CHIMERITE_BLOCK.get(), AMTags.Items.STORAGE_BLOCKS_CHIMERITE);
+        nineBlockStorageRecipes(consumer, AMItems.TOPAZ.get(), AMTags.Items.GEMS_TOPAZ, AMBlocks.TOPAZ_BLOCK.get(), AMTags.Items.STORAGE_BLOCKS_TOPAZ);
+        nineBlockStorageRecipes(consumer, AMItems.MOONSTONE.get(), AMTags.Items.GEMS_MOONSTONE, AMBlocks.MOONSTONE_BLOCK.get(), AMTags.Items.STORAGE_BLOCKS_MOONSTONE);
+        nineBlockStorageRecipes(consumer, AMItems.SUNSTONE.get(), AMTags.Items.GEMS_SUNSTONE, AMBlocks.SUNSTONE_BLOCK.get(), AMTags.Items.STORAGE_BLOCKS_SUNSTONE);
+        oreSmelting(consumer, List.of(AMItems.VINTEUM_ORE.get(), AMItems.DEEPSLATE_VINTEUM_ORE.get()), AMItems.VINTEUM_DUST.get(), 0.7F, 200, "vinteum_dust");
+        oreSmelting(consumer, List.of(AMItems.CHIMERITE_ORE.get(), AMItems.DEEPSLATE_CHIMERITE_ORE.get()), AMItems.CHIMERITE.get(), 0.7F, 200, "chimerite_dust");
+        oreSmelting(consumer, List.of(AMItems.TOPAZ_ORE.get(), AMItems.DEEPSLATE_TOPAZ_ORE.get()), AMItems.TOPAZ.get(), 0.7F, 200, "topaz_dust");
+        oreSmelting(consumer, List.of(AMItems.MOONSTONE_ORE.get(), AMItems.DEEPSLATE_MOONSTONE_ORE.get()), AMItems.MOONSTONE.get(), 0.7F, 200, "moonstone_dust");
+        oreBlasting(consumer, List.of(AMItems.VINTEUM_ORE.get(), AMItems.DEEPSLATE_VINTEUM_ORE.get()), AMItems.VINTEUM_DUST.get(), 0.7F, 100, "vinteum_dust");
+        oreBlasting(consumer, List.of(AMItems.CHIMERITE_ORE.get(), AMItems.DEEPSLATE_CHIMERITE_ORE.get()), AMItems.CHIMERITE.get(), 0.7F, 100, "chimerite_dust");
+        oreBlasting(consumer, List.of(AMItems.TOPAZ_ORE.get(), AMItems.DEEPSLATE_TOPAZ_ORE.get()), AMItems.TOPAZ.get(), 0.7F, 100, "topaz_dust");
+        oreBlasting(consumer, List.of(AMItems.MOONSTONE_ORE.get(), AMItems.DEEPSLATE_MOONSTONE_ORE.get()), AMItems.MOONSTONE.get(), 0.7F, 100, "moonstone_dust");
         ShapelessRecipeBuilder.shapeless(Items.PINK_DYE)
                 .requires(AMItems.AUM.get())
                 .unlockedBy("item", has(AMItems.AUM.get()))
@@ -74,8 +95,10 @@ class AMRecipeProvider extends RecipeProvider {
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":magenta_dye");
         ShapelessNBTRecipeBuilder.shapeless(ArsMagicaAPI.get().getBookStack().getItem(), ArsMagicaAPI.get().getBookStack().getOrCreateTag())
                 .requires(Items.BOOK)
-                .requires(AMItems.VINTEUM_DUST.get())
-                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
+                .requires(AMItems.LIQUID_ESSENCE_BUCKET.get())
+                .unlockedBy("has_liquid_essence_bucket", has(AMItems.LIQUID_ESSENCE_BUCKET.get()))
+                .unlockedBy("in_liquid_essence", insideOf(AMBlocks.LIQUID_ESSENCE.get()))
+                .unlockedBy("filled_liquid_essence_bucket", FilledBucketTrigger.TriggerInstance.filledBucket(ItemPredicate.Builder.item().of(AMItems.LIQUID_ESSENCE_BUCKET.get()).build()))
                 .save(consumer, ArsMagicaAPI.MOD_ID + ":arcane_compendium");
         ShapedRecipeBuilder.shaped(AMItems.OCCULUS.get())
                 .pattern("SGS")
@@ -146,136 +169,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(Items.FLINT)
                 .requires(Items.PAPER)
                 .unlockedBy("has_vinteum_dust", has(AMTags.Items.DUSTS_VINTEUM))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.CHIMERITE.get(), 9)
-                .requires(AMTags.Items.STORAGE_BLOCKS_CHIMERITE)
-                .unlockedBy("has_chimerite_block", has(AMItems.CHIMERITE_BLOCK.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.CHIMERITE_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMTags.Items.GEMS_CHIMERITE)
-                .unlockedBy("has_chimerite", has(AMItems.CHIMERITE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.TOPAZ.get(), 9)
-                .requires(AMTags.Items.STORAGE_BLOCKS_TOPAZ)
-                .unlockedBy("has_topaz_block", has(AMItems.TOPAZ_BLOCK.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.TOPAZ_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMTags.Items.GEMS_TOPAZ)
-                .unlockedBy("has_topaz", has(AMItems.TOPAZ.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.VINTEUM_DUST.get(), 9)
-                .requires(AMTags.Items.STORAGE_BLOCKS_VINTEUM)
-                .unlockedBy("has_vinteum_block", has(AMItems.VINTEUM_BLOCK.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.VINTEUM_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMTags.Items.DUSTS_VINTEUM)
-                .unlockedBy("has_vinteum_dust", has(AMItems.VINTEUM_DUST.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.MOONSTONE.get(), 9)
-                .requires(AMTags.Items.STORAGE_BLOCKS_MOONSTONE)
-                .unlockedBy("has_moonstone_block", has(AMItems.MOONSTONE_BLOCK.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.MOONSTONE_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMTags.Items.GEMS_MOONSTONE)
-                .unlockedBy("has_moonstone", has(AMItems.MOONSTONE.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.SUNSTONE.get(), 9)
-                .requires(AMTags.Items.STORAGE_BLOCKS_SUNSTONE)
-                .unlockedBy("has_sunstone_block", has(AMItems.SUNSTONE_BLOCK.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.SUNSTONE_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMTags.Items.GEMS_SUNSTONE)
-                .unlockedBy("has_sunstone", has(AMItems.SUNSTONE.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD.get(), 3)
-                .group("bark")
-                .pattern("##")
-                .pattern("##")
-                .define('#', AMItems.WITCHWOOD_LOG.get())
-                .unlockedBy("has_witchwood_log", has(AMItems.WITCHWOOD_LOG.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.STRIPPED_WITCHWOOD.get(), 3)
-                .group("bark")
-                .pattern("##")
-                .pattern("##")
-                .define('#', AMItems.STRIPPED_WITCHWOOD_LOG.get())
-                .unlockedBy("has_stripped_witchwood_log", has(AMItems.STRIPPED_WITCHWOOD_LOG.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.WITCHWOOD_PLANKS.get(), 4)
-                .group("planks")
-                .requires(AMTags.Items.WITCHWOOD_LOGS)
-                .unlockedBy("has_witchwood_logs", has(AMTags.Items.WITCHWOOD_LOGS))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_SLAB.get(), 6)
-                .group("wooden_slab")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_STAIRS.get(), 4)
-                .group("wooden_stairs")
-                .pattern("#  ")
-                .pattern("## ")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_FENCE.get(), 3)
-                .group("wooden_fence")
-                .pattern("#-#")
-                .pattern("#-#")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .define('-', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_FENCE_GATE.get())
-                .group("wooden_fence_gate")
-                .pattern("-#-")
-                .pattern("-#-")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .define('-', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_DOOR.get(), 3)
-                .group("wooden_door")
-                .pattern("##")
-                .pattern("##")
-                .pattern("##")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_TRAPDOOR.get(), 2)
-                .group("wooden_trapdoor")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.WITCHWOOD_BUTTON.get())
-                .group("wooden_button")
-                .requires(AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_PRESSURE_PLATE.get())
-                .group("wooden_pressure_plate")
-                .pattern("##")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.BLANK_RUNE.get(), 2)
                 .pattern(" # ")
@@ -556,6 +449,15 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
+    }
+
+    protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pUnpacked, TagKey<Item> pUnpackedTag, ItemLike pPacked, TagKey<Item> pPackedTag) {
+        nineBlockStorageRecipes(pFinishedRecipeConsumer, pUnpacked, pUnpackedTag, pPacked, pPackedTag, getSimpleRecipeName(pPacked), null, getSimpleRecipeName(pUnpacked), null);
+    }
+
+    protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pUnpacked, TagKey<Item> pUnpackedTag, ItemLike pPacked, TagKey<Item> pPackedTag, String pPackingRecipeName, @Nullable String pPackingRecipeGroup, String pUnpackingRecipeName, @Nullable String pUnpackingRecipeGroup) {
+        ShapelessRecipeBuilder.shapeless(pUnpacked, 9).requires(pPackedTag).group(pUnpackingRecipeGroup).unlockedBy(getHasName(pPacked), has(pPacked)).save(pFinishedRecipeConsumer, new ResourceLocation(pUnpackingRecipeName));
+        ShapedRecipeBuilder.shaped(pPacked).define('#', pUnpackedTag).pattern("###").pattern("###").pattern("###").group(pPackingRecipeGroup).unlockedBy(getHasName(pUnpacked), has(pUnpacked)).save(pFinishedRecipeConsumer, new ResourceLocation(pPackingRecipeName));
     }
 
     private static class ShapedNBTRecipeBuilder {
