@@ -79,7 +79,7 @@ public class FireGuardian extends AbstractBoss {
                 }
             }
         }
-        if (ticksInAction > 10 && getAction() == FireGuardianAction.LONG_CASTING) {
+        if (getTicksInAction() > 10 && getAction() == FireGuardianAction.LONG_CASTING) {
             if (getTarget() != null) {
                 lookAt(getTarget(), 10, 10);
             }

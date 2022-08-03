@@ -68,9 +68,19 @@ public class EarthGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SmashGoal<>(this, EarthGuardianAction.SMASH, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(2, new StrikeGoal<>(this, EarthGuardianAction.STRIKE, DamageSource.mobAttack(this)));
+//        goalSelector.addGoal(2, new SmashGoal<>(this, EarthGuardianAction.SMASH, DamageSource.mobAttack(this)));
+//        goalSelector.addGoal(2, new StrikeGoal<>(this, EarthGuardianAction.STRIKE, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new ThrowRockGoal(this));
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId == 56) {
+            action = EarthGuardianAction.THROWING;
+        } else if (pId == 57) {
+            setIdle();
+        }
+        super.handleEntityEvent(pId);
     }
 
     public enum EarthGuardianAction implements Action {

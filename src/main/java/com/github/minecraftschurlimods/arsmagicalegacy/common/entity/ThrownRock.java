@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -87,20 +88,8 @@ public class ThrownRock extends Entity {
         if (hit.getType() != HitResult.Type.MISS) {
             newPos = hit.getLocation();
         }
-        Entity entity = null;
-        double distance = -1;
-        for (Entity e : level.getEntities(this, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1, 1, 1))) {
-            if (!e.canBeCollidedWith() || e == getOwner()) continue;
-            AABB aabb = e.getBoundingBox().inflate(0.3F, 0.3F, 0.3F);
-            Optional<Vec3> vec3 = aabb.clip(oldPos, newPos);
-            if (vec3.isEmpty()) continue;
-            double d = oldPos.distanceTo(vec3.get());
-            if (distance == -1 || d < distance) {
-                entity = e;
-                distance = d;
-            }
-        }
-        if (!level.isClientSide()) {
+        if (hit.getType() == HitResult.Type.ENTITY && !level.isClientSide()) {
+            Entity entity = ((EntityHitResult) hit).getEntity();
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 if (!living.isBlocking()) {
                     entity.hurt(AMDamageSources.THROWN_ROCK, 10);

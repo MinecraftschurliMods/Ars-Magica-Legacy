@@ -40,12 +40,12 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
         addCube(pd, "core3", 32, 0, -3, -3, -3, 6, 6, 6, 0, -2, 0);
         addCube(pd, "right_shoulder_pad", 0, 39, -3, -3, -5, 6, 6, 10, -8, -10, 0, 0, 0, 35);
         addCube(pd, "right_shoulder", 0, 23, -4, -4, -4, 8, 8, 8, -8, -10, 0, 0, 0, 35);
-        addCube(pd, "right_arm", 32, 12, -2, 4.5f, -2, 4, 8, 4, -8, -10, 0);
-        addCube(pd, "right_hand", 48, 12, -1.5f, 12.5f, -1.5f, 3, 10, 3, -8, -10, 0);
+        addCube(pd, "right_arm", 32, 12, -2, 3.5f, -2, 4, 8, 4, -8, -10, 0);
+        addCube(pd, "right_hand", 48, 12, -1.5f, 11.5f, -1.5f, 3, 10, 3, -8, -10, 0);
         addCube(pd, "left_shoulder_pad", 0, 39, -3, -3, -5, 6, 6, 10, 8, -10, 0, 0, 0, -35);
         addCube(pd, "left_shoulder", 0, 23, -4, -4, -4, 8, 8, 8, 8, -10, 0, 0, 0, -35);
-        addCube(pd, "left_arm", 32, 12, -2, 4.5f, -2, 4, 8, 4, 8, -10, 0);
-        addCube(pd, "left_hand", 48, 12, -1.5f, 12.5f, -1.5f, 3, 10, 3, 8, -10, 0);
+        addCube(pd, "left_arm", 32, 12, -2, 3.5f, -2, 4, 8, 4, 8, -10, 0);
+        addCube(pd, "left_hand", 48, 12, -1.5f, 11.5f, -1.5f, 3, 10, 3, 8, -10, 0);
         addCube(pd, "rod", 32, 24, -1, -8, -1, 2, 16, 2, 0, 12, 0);
         addCube(pd, "rod1", 40, 24, 2, -5, -3, 1, 10, 1, 0, 12, 0);
         addCube(pd, "rod2", 40, 24, 2, -5, 2, 1, 10, 1, 0, 12, 0);
@@ -60,8 +60,82 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
     @Override
     public void setupAnim(EarthGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        boolean visible = pEntity.getAction() == EarthGuardian.EarthGuardianAction.THROWING;
         for (ModelPart mp : rock) {
-            mp.visible = false;
+            mp.visible = visible;
+        }
+        if (visible) {
+            //            float leftArmRotX;
+            //            float ticksInCurrentAction = pEntity.getTicksInAction() + pLimbSwing;
+            //            float maxDegreesX = 120;
+            //            float finalDegrees = 180;
+            //            float actionTicks = 8;
+            //            float fastActionTicks = 10;
+            //            float holdTicks = 7;
+            //            float riseTicks = 5;
+            //            if (ticksInCurrentAction < actionTicks) {
+            //                float pct = ticksInCurrentAction / actionTicks;
+            //                float degrees = -maxDegreesX * pct;
+            //                leftArmRotX = degToRad(degrees);
+            ////                GL11.glRotatef(-degrees / 2, 1, 0, 0);
+            ////                GL11.glTranslatef(0, pct, 0);
+            //            } else if (ticksInCurrentAction < actionTicks + fastActionTicks) {
+            //                float pct = 1.0f - ticksInCurrentAction / fastActionTicks + actionTicks / fastActionTicks;
+            //                float degrees = -finalDegrees * (1.0f - pct) - maxDegreesX;
+            //                leftArmRotX = degToRad(degrees);
+            ////                GL11.glRotatef((maxDegreesX * pct) / 2, 1, 0, 0);
+            ////                GL11.glTranslatef(0, pct, 0);
+            //            } else if (ticksInCurrentAction < actionTicks + fastActionTicks + holdTicks) {
+            //                float degrees = -finalDegrees - maxDegreesX;
+            //                leftArmRotX = degToRad(degrees);
+            //            } else {
+            //                float pct = 1.0f - ticksInCurrentAction / riseTicks + actionTicks / riseTicks + fastActionTicks / riseTicks + holdTicks / riseTicks;
+            //                float degrees = (-finalDegrees - maxDegreesX) * pct;
+            //                leftArmRotX = degToRad(degrees);
+            //            }
+            //            for (ModelPart mp : leftArm) {
+            //                mp.xRot = leftArmRotX;
+            //            }
+            //            for (ModelPart mp : rightArm) {
+            //                mp.xRot = leftArmRotX;
+            //            }
+            //            for (ModelPart mp : rock) {
+            //                mp.xRot = leftArmRotX;
+            //            }
+            int ticks = pEntity.getTicksInAction();
+            if (ticks < 10) {
+                float offset = pAgeInTicks - pEntity.tickCount;
+                float rot = 18 * (ticks + offset);
+                for (ModelPart mp : rightArm) {
+                    mp.xRot = -rot;
+                }
+                for (ModelPart mp : leftArm) {
+                    mp.xRot = -rot;
+                }
+                for (ModelPart mp : rock) {
+                    mp.xRot = 180 - rot;
+                }
+            } else if (ticks > 13) {
+/*
+                float rot = 180 - 18 * (15 - ticks + pAgeInTicks - pEntity.tickCount);
+                for (ModelPart mp : rightArm) {
+                    mp.xRot = rot;
+                }
+                for (ModelPart mp : leftArm) {
+                    mp.xRot = rot;
+                }
+                for (ModelPart mp : rock) {
+                    mp.xRot = 180 - rot;
+                }
+*/
+            }
+        } else {
+            for (ModelPart mp : rightArm) {
+                mp.xRot = 0;
+            }
+            for (ModelPart mp : leftArm) {
+                mp.xRot = 0;
+            }
         }
     }
 }

@@ -77,7 +77,7 @@ public class EnderGuardian extends AbstractBoss {
         }
         ticksSinceLastAttack++;
         if (getAction() == EnderGuardianAction.LONG_CASTING) {
-            if (ticksInAction == 32) {
+            if (getTicksInAction() == 32) {
                 level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
             }
         }
@@ -157,7 +157,7 @@ public class EnderGuardian extends AbstractBoss {
 
     public float getWingFlapSpeed() {
         Action action = getAction();
-        if (action == EnderGuardianAction.CHARGE) return ticksInAction < 15 ? 0.25f : 0.75f;
+        if (action == EnderGuardianAction.CHARGE) return getTicksInAction() < 15 ? 0.25f : 0.75f;
         return action == EnderGuardianAction.CASTING ? 0.5f : action == EnderGuardianAction.STRIKE ? 0.4f : 0.25f;
     }
 

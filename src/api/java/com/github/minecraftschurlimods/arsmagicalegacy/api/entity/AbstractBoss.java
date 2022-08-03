@@ -2,6 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +21,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -26,9 +31,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
+    private static final EntityDataAccessor<Integer> TICKS_IN_ACTION = SynchedEntityData.defineId(AbstractBoss.class, EntityDataSerializers.INT);
     private final ServerBossEvent bossEvent;
     private int ticksSinceLastPlayerScan = 0;
-    protected int ticksInAction = 0;
     protected Action action;
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level) {
@@ -38,13 +43,30 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level, BossEvent.BossBarColor color) {
         super(type, level);
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
-        maxUpStep = 1.02F;
         if (!level.isClientSide()) {
             for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
                 bossEvent.addPlayer(player);
             }
         }
         setIdle();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("TicksInAction", getTicksInAction());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        setTicksInAction(pCompound.getInt("TicksInAction"));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TICKS_IN_ACTION, 0);
     }
 
     @Override
@@ -68,13 +90,20 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
+    public float getStepHeight() {
+        return 1.02f;
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 10));
-        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Pig.class, 8.0F));
+        goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, 10, true, false, null));
     }
 
     @Override
@@ -90,7 +119,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 }
             }
         }
-        ticksInAction++;
+        setTicksInAction(getTicksInAction() + 1);
     }
 
     @Override
@@ -163,7 +192,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      */
     public void setAction(Action action) {
         this.action = action;
-        ticksInAction = 0;
+        setTicksInAction(0);
     }
 
     /**
@@ -194,7 +223,16 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return The amount of ticks the boss is already using the current action.
      */
     public int getTicksInAction() {
-        return ticksInAction;
+        return entityData.get(TICKS_IN_ACTION);
+    }
+
+    /**
+     * Sets a new ticks in action value.
+     *
+     * @param ticksInAction The new value to set.
+     */
+    public void setTicksInAction(int ticksInAction) {
+        entityData.set(TICKS_IN_ACTION, ticksInAction);
     }
 
     private void updatePlayers() {

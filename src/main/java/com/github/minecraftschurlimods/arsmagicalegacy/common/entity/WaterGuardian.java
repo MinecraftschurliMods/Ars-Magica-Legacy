@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class WaterGuardian extends AbstractBoss {
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
-    private boolean spin = false;
     private float spinRotation = 0;
     private WaterGuardian master = null;
     private WaterGuardian clone1 = null;
@@ -116,7 +115,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (spin) {
+        if (action == WaterGuardianAction.SPINNING) {
             spinRotation += 30;
         }
         if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
@@ -152,9 +151,9 @@ public class WaterGuardian extends AbstractBoss {
     @Override
     public void handleEntityEvent(byte pId) {
         if (pId == 56) {
-            spin = true;
+            action = WaterGuardianAction.SPINNING;
         } else if (pId == 57) {
-            spin = false;
+            setIdle();
         }
         super.handleEntityEvent(pId);
     }
