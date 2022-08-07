@@ -93,7 +93,7 @@ public class NatureGuardian extends AbstractBoss {
     public enum NatureGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
-        SPINNING(160),
+        SPINNING(40),
         STRIKE(20),
         SHIELD_BASH(15),
         THROWING(15);

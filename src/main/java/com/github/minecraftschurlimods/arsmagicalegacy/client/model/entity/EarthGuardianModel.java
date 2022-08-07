@@ -65,47 +65,9 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
             mp.visible = visible;
         }
         if (visible) {
-            //            float leftArmRotX;
-            //            float ticksInCurrentAction = pEntity.getTicksInAction() + pLimbSwing;
-            //            float maxDegreesX = 120;
-            //            float finalDegrees = 180;
-            //            float actionTicks = 8;
-            //            float fastActionTicks = 10;
-            //            float holdTicks = 7;
-            //            float riseTicks = 5;
-            //            if (ticksInCurrentAction < actionTicks) {
-            //                float pct = ticksInCurrentAction / actionTicks;
-            //                float degrees = -maxDegreesX * pct;
-            //                leftArmRotX = degToRad(degrees);
-            ////                GL11.glRotatef(-degrees / 2, 1, 0, 0);
-            ////                GL11.glTranslatef(0, pct, 0);
-            //            } else if (ticksInCurrentAction < actionTicks + fastActionTicks) {
-            //                float pct = 1.0f - ticksInCurrentAction / fastActionTicks + actionTicks / fastActionTicks;
-            //                float degrees = -finalDegrees * (1.0f - pct) - maxDegreesX;
-            //                leftArmRotX = degToRad(degrees);
-            ////                GL11.glRotatef((maxDegreesX * pct) / 2, 1, 0, 0);
-            ////                GL11.glTranslatef(0, pct, 0);
-            //            } else if (ticksInCurrentAction < actionTicks + fastActionTicks + holdTicks) {
-            //                float degrees = -finalDegrees - maxDegreesX;
-            //                leftArmRotX = degToRad(degrees);
-            //            } else {
-            //                float pct = 1.0f - ticksInCurrentAction / riseTicks + actionTicks / riseTicks + fastActionTicks / riseTicks + holdTicks / riseTicks;
-            //                float degrees = (-finalDegrees - maxDegreesX) * pct;
-            //                leftArmRotX = degToRad(degrees);
-            //            }
-            //            for (ModelPart mp : leftArm) {
-            //                mp.xRot = leftArmRotX;
-            //            }
-            //            for (ModelPart mp : rightArm) {
-            //                mp.xRot = leftArmRotX;
-            //            }
-            //            for (ModelPart mp : rock) {
-            //                mp.xRot = leftArmRotX;
-            //            }
-            int ticks = pEntity.getTicksInAction();
-            if (ticks < 10) {
-                float offset = pAgeInTicks - pEntity.tickCount;
-                float rot = 18 * (ticks + offset);
+            float ticks = (pEntity.getTicksInAction() + pLimbSwing) % 15;
+            if (ticks < 13) {
+                float rot = degToRad(30 * Math.min(ticks, 6));
                 for (ModelPart mp : rightArm) {
                     mp.xRot = -rot;
                 }
@@ -113,10 +75,9 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
                     mp.xRot = -rot;
                 }
                 for (ModelPart mp : rock) {
-                    mp.xRot = 180 - rot;
+                    mp.xRot = degToRad(180) - rot;
                 }
             } else if (ticks > 13) {
-/*
                 float rot = 180 - 18 * (15 - ticks + pAgeInTicks - pEntity.tickCount);
                 for (ModelPart mp : rightArm) {
                     mp.xRot = rot;
@@ -127,7 +88,6 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
                 for (ModelPart mp : rock) {
                     mp.xRot = 180 - rot;
                 }
-*/
             }
         } else {
             for (ModelPart mp : rightArm) {

@@ -5,5 +5,5 @@ import net.minecraft.world.damagesource.DamageSource;
 public interface AMDamageSources {
     DamageSource NATURE_SCYTHE = new DamageSource("nature_scythe");
     DamageSource THROWN_ROCK = new DamageSource("thrown_rock");
-    DamageSource WIND = new DamageSource("wind");
+    DamageSource WIND = new DamageSource("wind").bypassArmor();
 }

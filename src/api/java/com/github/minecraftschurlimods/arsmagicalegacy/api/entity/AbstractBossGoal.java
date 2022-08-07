@@ -23,6 +23,11 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public boolean canUse() {
         return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.getRandom().nextBoolean();
     }

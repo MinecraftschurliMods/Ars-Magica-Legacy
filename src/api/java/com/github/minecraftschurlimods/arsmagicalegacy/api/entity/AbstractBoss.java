@@ -31,8 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
-    private static final EntityDataAccessor<Integer> TICKS_IN_ACTION = SynchedEntityData.defineId(AbstractBoss.class, EntityDataSerializers.INT);
     private final ServerBossEvent bossEvent;
+    private int ticksInAction = 0;
     private int ticksSinceLastPlayerScan = 0;
     protected Action action;
 
@@ -49,24 +49,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
             }
         }
         setIdle();
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("TicksInAction", getTicksInAction());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        setTicksInAction(pCompound.getInt("TicksInAction"));
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(TICKS_IN_ACTION, 0);
     }
 
     @Override
@@ -97,13 +79,11 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 10));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Pig.class, 8.0F));
-        goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, 10, true, false, null));
+        goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 1));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8F));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 2, true, false, null));
     }
 
     @Override
@@ -119,7 +99,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 }
             }
         }
-        setTicksInAction(getTicksInAction() + 1);
+        ticksInAction++;
     }
 
     @Override
@@ -192,7 +172,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      */
     public void setAction(Action action) {
         this.action = action;
-        setTicksInAction(0);
+        ticksInAction = 0;
     }
 
     /**
@@ -223,16 +203,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return The amount of ticks the boss is already using the current action.
      */
     public int getTicksInAction() {
-        return entityData.get(TICKS_IN_ACTION);
-    }
-
-    /**
-     * Sets a new ticks in action value.
-     *
-     * @param ticksInAction The new value to set.
-     */
-    public void setTicksInAction(int ticksInAction) {
-        entityData.set(TICKS_IN_ACTION, ticksInAction);
+        return ticksInAction;
     }
 
     private void updatePlayers() {

@@ -57,8 +57,12 @@ public class AirGuardian extends AbstractBoss {
         if (level.isClientSide()) {
             // Particles
         }
-        if (getY() < 128) {
+        if (getY() > 150) {
+            setDeltaMovement(getDeltaMovement().x(), Math.min(getDeltaMovement().y(), 0), getDeltaMovement().z());
+        } else if (getY() < 128) {
             remove(RemovalReason.KILLED);
+        } else if (getY() < 136) {
+            setDeltaMovement(getDeltaMovement().x(), Math.max(getDeltaMovement().y(), 0.1), getDeltaMovement().z());
         }
         super.aiStep();
     }
@@ -69,6 +73,8 @@ public class AirGuardian extends AbstractBoss {
             pAmount /= 2;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2;
+        } else if (pSource.isProjectile()) {
+            pAmount = 0;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -84,7 +90,7 @@ public class AirGuardian extends AbstractBoss {
     public enum AirGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
-        SPINNING(160);
+        SPINNING(40);
 
         private final int maxActionTime;
 

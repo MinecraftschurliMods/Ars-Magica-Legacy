@@ -95,6 +95,7 @@ public class ThrownRock extends Entity {
                     entity.hurt(AMDamageSources.THROWN_ROCK, 10);
                 } else if (living instanceof Player player && random.nextFloat() < 0.25f) {
                     player.getCooldowns().addCooldown(Items.SHIELD, 100);
+                    player.stopUsingItem();
                     level.broadcastEntityEvent(player, (byte) 30);
                 }
                 setRemoved(RemovalReason.KILLED);

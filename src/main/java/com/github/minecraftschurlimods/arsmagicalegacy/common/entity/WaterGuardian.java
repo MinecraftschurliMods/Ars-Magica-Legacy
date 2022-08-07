@@ -190,7 +190,7 @@ public class WaterGuardian extends AbstractBoss {
     public enum WaterGuardianAction implements Action {
         IDLE(-1),
         CASTING(-1),
-        SPINNING(160),
+        SPINNING(40),
         CLONE(30);
 
         private final int maxActionTime;
