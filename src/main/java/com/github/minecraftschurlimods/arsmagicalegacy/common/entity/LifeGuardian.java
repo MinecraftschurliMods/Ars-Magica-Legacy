@@ -105,18 +105,31 @@ public class LifeGuardian extends AbstractBoss {
         queuedMinions.add(minion);
     }
 
+    @Override
+    public Action[] getActions() {
+        return LifeGuardianAction.values();
+    }
+
     public enum LifeGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        LifeGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        LifeGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

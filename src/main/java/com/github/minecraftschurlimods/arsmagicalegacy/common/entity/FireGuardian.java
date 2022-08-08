@@ -74,7 +74,7 @@ public class FireGuardian extends AbstractBoss {
             if (level.isClientSide()) {
                 // Particles
             } else {
-                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
+                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
                     e.hurt(DamageSource.ON_FIRE, 5);
                 }
             }
@@ -95,11 +95,11 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.DROWN) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.FREEZE) {
-            pAmount /= 3f;
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -125,19 +125,32 @@ public class FireGuardian extends AbstractBoss {
         }
     }
 
+    @Override
+    public Action[] getActions() {
+        return FireGuardianAction.values();
+    }
+
     public enum FireGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        LONG_CASTING(-1);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        LONG_CASTING(-1, ACTION_1_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        FireGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        FireGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

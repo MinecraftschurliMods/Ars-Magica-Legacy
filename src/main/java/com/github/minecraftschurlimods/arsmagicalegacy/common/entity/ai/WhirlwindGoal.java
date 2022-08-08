@@ -10,6 +10,11 @@ public class WhirlwindGoal extends AbstractBossGoal<AirGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getRandom().nextBoolean();
+    }
+
+    @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
             Whirlwind entity = Whirlwind.create(boss.getLevel());

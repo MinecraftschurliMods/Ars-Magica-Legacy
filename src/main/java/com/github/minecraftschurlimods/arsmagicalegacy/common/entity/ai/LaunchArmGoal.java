@@ -13,12 +13,7 @@ public class LaunchArmGoal extends AbstractBossGoal<IceGuardian> {
 
     @Override
     public boolean canUse() {
-        return (boss.hasRightArm() || boss.hasLeftArm()) && super.canUse();
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return (boss.hasRightArm() || boss.hasLeftArm()) && super.canContinueToUse();
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4 && (boss.hasRightArm() || boss.hasLeftArm());
     }
 
     @Override

@@ -67,12 +67,11 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isMagic()) {
-            pAmount *= 2;
-        } else if (pSource == DamageSource.DROWN) {
-            pAmount *= 4;
+        if (pSource == DamageSource.DROWN) {
+            pAmount *= 3;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount *= -1;
+            heal(pAmount);
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -95,20 +94,32 @@ public class LightningGuardian extends AbstractBoss {
         setNoGravity(action == LightningGuardianAction.LONG_CASTING);
     }
 
+    @Override
+    public Action[] getActions() {
+        return LightningGuardianAction.values();
+    }
+
     public enum LightningGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        CHARGE(-1),
-        LONG_CASTING(-1);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        LONG_CASTING(-1, ACTION_1_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        LightningGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        LightningGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

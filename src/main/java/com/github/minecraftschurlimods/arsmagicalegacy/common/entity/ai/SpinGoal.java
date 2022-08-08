@@ -14,6 +14,11 @@ public class SpinGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 2 && boss.distanceTo(boss.getTarget()) <= 4;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         boss.getLevel().broadcastEntityEvent(boss, (byte) 56);

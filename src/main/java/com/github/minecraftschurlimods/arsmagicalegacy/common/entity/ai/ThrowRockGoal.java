@@ -10,6 +10,11 @@ public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         boss.getLevel().broadcastEntityEvent(boss, (byte) 56);

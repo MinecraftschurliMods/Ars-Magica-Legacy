@@ -10,6 +10,11 @@ public class ShadowstepGoal extends AbstractBossGoal<EnderGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getRandom().nextBoolean();
+    }
+
+    @Override
     public void perform() {
         if (boss.getTarget() != null) {
             Vec3 facing = boss.getTarget().getViewVector(1);

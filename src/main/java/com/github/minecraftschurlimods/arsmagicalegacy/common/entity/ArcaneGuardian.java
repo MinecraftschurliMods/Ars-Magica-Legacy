@@ -64,18 +64,31 @@ public class ArcaneGuardian extends AbstractBoss {
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 50));
     }
 
+    @Override
+    public Action[] getActions() {
+        return ArcaneGuardianAction.values();
+    }
+
     public enum ArcaneGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        ArcaneGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        ArcaneGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

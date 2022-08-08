@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -60,11 +61,20 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
     @Override
     public void setupAnim(EarthGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        boolean visible = pEntity.getAction() == EarthGuardian.EarthGuardianAction.THROWING;
+        AbstractBoss.Action action = pEntity.getAction();
         for (ModelPart mp : rock) {
-            mp.visible = visible;
+            mp.visible = action == EarthGuardian.EarthGuardianAction.THROWING;
         }
-        if (visible) {
+        for (ModelPart mp : rightArm) {
+            mp.xRot = 0;
+        }
+        for (ModelPart mp : leftArm) {
+            mp.xRot = 0;
+        }
+        if (action == EarthGuardian.EarthGuardianAction.THROWING) {
+            for (ModelPart mp : rock) {
+                mp.visible = true;
+            }
             float ticks = (pEntity.getTicksInAction() + pLimbSwing) % 15;
             if (ticks < 13) {
                 float rot = degToRad(30 * Math.min(ticks, 6));
@@ -86,15 +96,25 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
                     mp.xRot = rot;
                 }
                 for (ModelPart mp : rock) {
-                    mp.xRot = 180 - rot;
+                    mp.xRot = degToRad(180) - rot;
                 }
             }
-        } else {
-            for (ModelPart mp : rightArm) {
-                mp.xRot = 0;
-            }
-            for (ModelPart mp : leftArm) {
-                mp.xRot = 0;
+        } else if (action == EarthGuardian.EarthGuardianAction.SMASH) {
+            float ticks = (pEntity.getTicksInAction() + pLimbSwing) % 20 - 10;
+            if (ticks < 0) {
+                for (ModelPart mp : rightArm) {
+                    mp.y = ticks;
+                }
+                for (ModelPart mp : rightArm) {
+                    mp.y = ticks;
+                }
+            } else if (ticks >= 0) {
+                for (ModelPart mp : rightArm) {
+                    mp.y = -ticks;
+                }
+                for (ModelPart mp : rightArm) {
+                    mp.y = -ticks;
+                }
             }
         }
     }

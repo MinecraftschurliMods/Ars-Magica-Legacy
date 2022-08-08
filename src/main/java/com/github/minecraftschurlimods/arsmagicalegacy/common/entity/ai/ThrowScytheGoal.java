@@ -10,6 +10,11 @@ public class ThrowScytheGoal extends AbstractBossGoal<NatureGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4;
+    }
+
+    @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
             NatureScythe entity = NatureScythe.create(boss.getLevel());

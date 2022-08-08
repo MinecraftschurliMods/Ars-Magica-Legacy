@@ -75,10 +75,10 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE) {
-            pAmount = 0;
-        } else if (pSource.isFire()) {
+        if (pSource.isFire()) {
             pAmount *= 2f;
+        } else if (pSource == DamageSource.FREEZE) {
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -87,8 +87,8 @@ public class IceGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SmashGoal<>(this, IceGuardianAction.SMASH, DamageSource.FREEZE));
         goalSelector.addGoal(2, new StrikeGoal<>(this, IceGuardianAction.STRIKE, DamageSource.FREEZE));
+        goalSelector.addGoal(2, new SmashGoal<>(this, IceGuardianAction.SMASH, DamageSource.FREEZE));
         goalSelector.addGoal(2, new LaunchArmGoal(this));
     }
 
@@ -116,21 +116,34 @@ public class IceGuardian extends AbstractBoss {
         return hasRightArm;
     }
 
+    @Override
+    public Action[] getActions() {
+        return IceGuardianAction.values();
+    }
+
     public enum IceGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        SMASH(20),
-        STRIKE(20),
-        LAUNCHING(30);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        STRIKE(20, ACTION_1_ID),
+        SMASH(20, ACTION_2_ID),
+        LAUNCHING(30, ACTION_3_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        IceGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        IceGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

@@ -59,7 +59,7 @@ public class EarthGuardian extends AbstractBoss {
         if (pSource == DamageSource.FREEZE) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount /= 4f;
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -68,36 +68,39 @@ public class EarthGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SmashGoal<>(this, EarthGuardianAction.SMASH, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new StrikeGoal<>(this, EarthGuardianAction.STRIKE, DamageSource.mobAttack(this)));
+        goalSelector.addGoal(2, new SmashGoal<>(this, EarthGuardianAction.SMASH, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new ThrowRockGoal(this));
     }
 
     @Override
-    public void handleEntityEvent(byte pId) {
-        if (pId == 56) {
-            action = EarthGuardianAction.THROWING;
-        } else if (pId == 57) {
-            setIdle();
-        }
-        super.handleEntityEvent(pId);
+    public Action[] getActions() {
+        return EarthGuardianAction.values();
     }
 
     public enum EarthGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        SMASH(20),
-        STRIKE(20),
-        THROWING(15);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        STRIKE(20, ACTION_1_ID),
+        SMASH(20, ACTION_2_ID),
+        THROWING(20, ACTION_3_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        EarthGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        EarthGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

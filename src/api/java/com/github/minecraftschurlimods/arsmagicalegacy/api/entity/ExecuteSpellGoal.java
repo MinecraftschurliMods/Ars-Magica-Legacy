@@ -22,6 +22,16 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     }
 
     @Override
+    public boolean isInterruptable() {
+        return false;
+    }
+
+    @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public boolean canUse() {
         return !caster.isCastingSpell() && caster.getTarget() != null && !caster.getTarget().isDeadOrDying() && caster.getRandom().nextBoolean();
     }

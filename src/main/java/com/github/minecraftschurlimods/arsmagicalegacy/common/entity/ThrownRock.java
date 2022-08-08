@@ -93,10 +93,12 @@ public class ThrownRock extends Entity {
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 if (!living.isBlocking()) {
                     entity.hurt(AMDamageSources.THROWN_ROCK, 10);
-                } else if (living instanceof Player player && random.nextFloat() < 0.25f) {
-                    player.getCooldowns().addCooldown(Items.SHIELD, 100);
+                } else if (living instanceof Player player) {
                     player.stopUsingItem();
-                    level.broadcastEntityEvent(player, (byte) 30);
+                    if (random.nextFloat() < 0.25f) {
+                        player.getCooldowns().addCooldown(Items.SHIELD, 100);
+                        level.broadcastEntityEvent(player, (byte) 30);
+                    }
                 }
                 setRemoved(RemovalReason.KILLED);
             }

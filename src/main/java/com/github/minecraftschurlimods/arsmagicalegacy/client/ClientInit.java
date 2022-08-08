@@ -248,6 +248,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), WintersGraspRenderer::new);
         event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), NatureScytheRenderer::new);
         event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), ThrownRockRenderer::new);
+        event.registerEntityRenderer(AMEntities.SHOCKWAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
         event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
         event.registerEntityRenderer(AMEntities.MAGE.get(), EmptyRenderer::new);

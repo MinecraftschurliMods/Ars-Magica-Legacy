@@ -8,6 +8,11 @@ public class ProtectGoal extends DispelGoal<EnderGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return !caster.isCastingSpell() && caster.getTarget() != null && !caster.getTarget().isDeadOrDying() && caster.getRandom().nextBoolean() && (caster.getActiveEffects().size() > 0 || caster.isOnFire());
+    }
+
+    @Override
     public void stop() {
         super.stop();
         caster.clearFire();

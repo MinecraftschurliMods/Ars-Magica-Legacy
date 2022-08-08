@@ -11,6 +11,11 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getRandom().nextBoolean();
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (ticks >= 20 && ticks <= 30) {

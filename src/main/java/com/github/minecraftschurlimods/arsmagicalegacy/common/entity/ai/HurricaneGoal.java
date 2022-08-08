@@ -17,6 +17,11 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
     }
 
     @Override
+    public boolean canUse() {
+        return super.canUse() && boss.getRandom().nextBoolean();
+    }
+
+    @Override
     public void tick() {
         Level level = boss.getLevel();
         if (!level.isClientSide()) {

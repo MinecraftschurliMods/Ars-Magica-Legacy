@@ -81,11 +81,6 @@ public class EnderGuardian extends AbstractBoss {
                 level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
             }
         }
-        if (getAction() == EnderGuardianAction.CHARGE) {
-            if (getNoActionTime() == 0) {
-                setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() + 1.5f, getDeltaMovement().z());
-            }
-        }
         if (shouldFlapWings()) {
             wingFlapTime += getWingFlapSpeed() * 20f;
             if (wingFlapTime % (50 * getWingFlapSpeed()) == 0) {
@@ -97,11 +92,8 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isMagic()) {
+        if (pSource.isMagic() || pSource == DamageSource.DROWN) {
             pAmount *= 2f;
-        }
-        if (pSource == DamageSource.DROWN) {
-            pAmount *= 1.5f;
         }
         if (pSource.getEntity() instanceof EnderMan) {
             pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
@@ -112,23 +104,6 @@ public class EnderGuardian extends AbstractBoss {
             if (spawn != null) {
                 moveTo(spawn.x(), spawn.y(), spawn.z());
                 setAction(EnderGuardianAction.IDLE);
-            } else {
-                remove(RemovalReason.KILLED);
-            }
-            super.hurt(pSource, pAmount);
-            return false;
-        }
-        ticksSinceLastAttack = 0;
-        if (!level.isClientSide() && pSource.getEntity() != null && pSource.getEntity() instanceof Player) {
-            if (pSource == getLastDamageSource()) {
-                hitCount++;
-                if (hitCount > 5) {
-                    heal(pAmount / 4);
-                }
-                super.hurt(pSource, pAmount);
-                return false;
-            } else {
-                hitCount = 1;
             }
         }
         return super.hurt(pSource, pAmount);
@@ -137,14 +112,13 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(1, new ProtectGoal(this));
+        goalSelector.addGoal(2, new EnderRushGoal(this));
+        goalSelector.addGoal(2, new ShadowstepGoal(this));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 20));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 20));
-        goalSelector.addGoal(2, new EnderRushGoal(this));
         goalSelector.addGoal(2, new EnderTorrentGoal(this));
         goalSelector.addGoal(2, new OtherworldlyRoarGoal(this));
-        goalSelector.addGoal(2, new ProtectGoal(this));
-        goalSelector.addGoal(2, new ShadowstepGoal(this));
     }
 
     public int getTicksSinceLastAttack() {
@@ -157,12 +131,11 @@ public class EnderGuardian extends AbstractBoss {
 
     public float getWingFlapSpeed() {
         Action action = getAction();
-        if (action == EnderGuardianAction.CHARGE) return getTicksInAction() < 15 ? 0.25f : 0.75f;
-        return action == EnderGuardianAction.CASTING ? 0.5f : action == EnderGuardianAction.STRIKE ? 0.4f : 0.25f;
+        return action == EnderGuardianAction.CASTING ? 0.5f : 0.25f;
     }
 
     public boolean shouldFlapWings() {
-        return getAction() != EnderGuardianAction.LONG_CASTING && getAction() != EnderGuardianAction.SHIELD_BASH;
+        return getAction() != EnderGuardianAction.LONG_CASTING;
     }
 
     @Override
@@ -173,22 +146,32 @@ public class EnderGuardian extends AbstractBoss {
         }
     }
 
+    @Override
+    public Action[] getActions() {
+        return EnderGuardianAction.values();
+    }
+
     public enum EnderGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        CHARGE(-1),
-        LONG_CASTING(-1),
-        STRIKE(20),
-        SHIELD_BASH(15);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        LONG_CASTING(-1, ACTION_1_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        EnderGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        EnderGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

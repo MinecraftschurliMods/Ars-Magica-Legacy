@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShieldBashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowScytheGoal;
@@ -72,10 +71,11 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isFire()) {
+        if (pSource.isFire() || pSource == DamageSource.FREEZE) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE) {
-            pAmount *= 1.5f;
+        } else if (pSource == DamageSource.DROWN) {
+            heal(pAmount);
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -84,28 +84,39 @@ public class NatureGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new StrikeGoal<>(this, NatureGuardianAction.STRIKE, DamageSource.mobAttack(this)));
+        goalSelector.addGoal(2, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new ThrowScytheGoal(this));
-        goalSelector.addGoal(2, new ShieldBashGoal(this));
+    }
+
+    @Override
+    public Action[] getActions() {
+        return NatureGuardianAction.values();
     }
 
     public enum NatureGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        SPINNING(40),
-        STRIKE(20),
-        SHIELD_BASH(15),
-        THROWING(15);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        STRIKE(20, ACTION_1_ID),
+        SPINNING(40, ACTION_2_ID),
+        THROWING(20, ACTION_3_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        NatureGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        NatureGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

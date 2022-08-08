@@ -51,7 +51,7 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return null;
     }
 
@@ -125,7 +125,7 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource pSource, float pAmount) {
         if (isClone() && master != null) {
             master.clearClones();
             return false;
@@ -134,7 +134,10 @@ public class WaterGuardian extends AbstractBoss {
             return false;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE || pSource == DamageSource.DROWN || (!isClone() && random.nextBoolean())) return false;
+        } else if (pSource == DamageSource.DROWN) {
+            heal(pAmount);
+            return false;
+        } else if (pSource == DamageSource.FREEZE || !isClone() && random.nextBoolean()) return false;
         return super.hurt(pSource, pAmount);
     }
 
@@ -142,10 +145,10 @@ public class WaterGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 10));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 12));
         goalSelector.addGoal(2, new CloneGoal(this));
         goalSelector.addGoal(2, new SpinGoal<>(this, WaterGuardianAction.SPINNING, DamageSource.mobAttack(this)));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 10));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 12));
     }
 
     @Override
@@ -187,20 +190,33 @@ public class WaterGuardian extends AbstractBoss {
         this.master = master;
     }
 
+    @Override
+    public Action[] getActions() {
+        return WaterGuardianAction.values();
+    }
+
     public enum WaterGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        SPINNING(40),
-        CLONE(30);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        CLONE(30, ACTION_1_ID),
+        SPINNING(40, ACTION_2_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        WaterGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        WaterGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }

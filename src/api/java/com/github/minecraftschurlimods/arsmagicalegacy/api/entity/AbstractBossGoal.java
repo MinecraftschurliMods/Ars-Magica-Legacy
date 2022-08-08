@@ -10,6 +10,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     public final T boss;
     public final AbstractBoss.Action action;
     protected final int duration;
+    protected final int cooldown;
     protected int ticks = 0;
 
     public AbstractBossGoal(T boss, AbstractBoss.Action action) {
@@ -17,9 +18,19 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     }
 
     public AbstractBossGoal(T boss, AbstractBoss.Action action, int duration) {
+        this(boss, action, duration, 0);
+    }
+
+    public AbstractBossGoal(T boss, AbstractBoss.Action action, int duration, int cooldown) {
         this.boss = boss;
         this.action = action;
         this.duration = duration;
+        this.cooldown = cooldown;
+    }
+
+    @Override
+    public boolean isInterruptable() {
+        return false;
     }
 
     @Override
@@ -29,12 +40,12 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canUse() {
-        return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.getRandom().nextBoolean();
+        return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return boss.getAction() == action && boss.getTarget() != null && !boss.getTarget().isDeadOrDying();
+        return true;
     }
 
     @Override
@@ -54,19 +65,20 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
             boss.getNavigation().moveTo(target.getX() + Math.cos(angle) * 6, target.getY(), target.getZ() + Math.sin(angle) * 6, 0.5f);
         } else if (!boss.canAttack(target)) {
             boss.getNavigation().moveTo(target, 0.5f);
-        } else {
-            boss.setAction(action);
-            ticks++;
-            performTick();
-            if (ticks >= duration) {
-                SoundEvent sound = getAttackSound();
-                if (sound != null) {
-                    boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat());
-                }
-                perform();
-                ticks = 0;
-                stop();
+        }
+        boss.setAction(action);
+        ticks++;
+        performTick();
+        if (ticks >= duration) {
+            SoundEvent sound = getAttackSound();
+            if (sound != null) {
+                boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat());
             }
+            perform();
+        }
+        if (ticks >= duration + cooldown) {
+            ticks = 0;
+            stop();
         }
     }
 

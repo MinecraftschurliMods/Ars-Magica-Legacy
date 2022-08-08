@@ -135,11 +135,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         updatePlayers();
     }
 
-    @Nullable
-    public SoundEvent getAttackSound() {
-        return null;
-    }
-
     @Override
     public boolean canCastSpell() {
         return action == getIdleAction();
@@ -155,8 +150,26 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         if (isCastingSpell) {
             action = getCastingAction();
         } else if (action == getCastingAction()) {
-            action = getIdleAction();
+            setIdle();
         }
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        for (Action a : getActions()) {
+            if (a.getAnimationId() == pId) {
+                action = a;
+            }
+        }
+        super.handleEntityEvent(pId);
+    }
+
+    /**
+     * @return The attack sound of this boss, or null if no attack sound should be played.
+     */
+    @Nullable
+    public SoundEvent getAttackSound() {
+        return null;
     }
 
     /**
@@ -173,6 +186,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public void setAction(Action action) {
         this.action = action;
         ticksInAction = 0;
+        level.broadcastEntityEvent(this, action.getAnimationId());
     }
 
     /**
@@ -190,6 +204,13 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     /**
+     * @return The amount of ticks the boss is already using the current action.
+     */
+    public int getTicksInAction() {
+        return ticksInAction;
+    }
+
+    /**
      * @return The action representing an idle state.
      */
     public abstract Action getIdleAction();
@@ -200,16 +221,14 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public abstract Action getCastingAction();
 
     /**
-     * @return The amount of ticks the boss is already using the current action.
+     * @return All actions this boss can have.
      */
-    public int getTicksInAction() {
-        return ticksInAction;
-    }
+    protected abstract Action[] getActions();
 
     private void updatePlayers() {
         if (!level.isClientSide()) {
             Set<ServerPlayer> newSet = new HashSet<>();
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192)))) {
                 bossEvent.addPlayer(player);
                 startSeenByPlayer(player);
                 newSet.add(player);
@@ -227,9 +246,20 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * Marker interface for actions the bosses can use.
      */
     public interface Action {
+        byte IDLE_ID = (byte) 24;
+        byte CASTING_ID = (byte) 25;
+        byte ACTION_1_ID = (byte) 26;
+        byte ACTION_2_ID = (byte) 27;
+        byte ACTION_3_ID = (byte) 28;
+
         /**
          * @return The time using this action requires.
          */
         int getMaxActionTime();
+
+        /**
+         * @return The animation id, used in {@code broadcastEntityEvent} and {@code handleEntityEvent}.
+         */
+        byte getAnimationId();
     }
 }

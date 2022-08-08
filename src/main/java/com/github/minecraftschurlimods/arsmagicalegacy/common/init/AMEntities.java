@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardi
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Shockwave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WintersGrasp;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
@@ -49,6 +50,7 @@ public interface AMEntities {
     RegistryObject<EntityType<WintersGrasp>>      WINTERS_GRASP      = ENTITIES.register("winters_grasp",      () -> EntityType.Builder.of(WintersGrasp::new,      MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("winters_grasp"));
     RegistryObject<EntityType<NatureScythe>>      NATURE_SCYTHE      = ENTITIES.register("nature_scythe",      () -> EntityType.Builder.of(NatureScythe::new,      MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("nature_scythe"));
     RegistryObject<EntityType<ThrownRock>>        THROWN_ROCK        = ENTITIES.register("thrown_rock",        () -> EntityType.Builder.of(ThrownRock::new,        MobCategory.MISC)   .clientTrackingRange(8).sized( 0.5F,  0.5F).build("thrown_rock"));
+    RegistryObject<EntityType<Shockwave>>         SHOCKWAVE          = ENTITIES.register("shockwave",          () -> EntityType.Builder.of(Shockwave::new,         MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("shockwave"));
     RegistryObject<EntityType<Whirlwind>>         WHIRLWIND          = ENTITIES.register("whirlwind",          () -> EntityType.Builder.of(Whirlwind::new,         MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("whirlwind"));
     RegistryObject<EntityType<Dryad>>             DRYAD              = ENTITIES.register("dryad",              () -> EntityType.Builder.of(Dryad::new,             MobCategory.AMBIENT).clientTrackingRange(8).sized(    1,     2).build("dryad"));
     RegistryObject<EntityType<Mage>>              MAGE               = ENTITIES.register("mage",               () -> EntityType.Builder.of(Mage::new,              MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     2).build("mage"));

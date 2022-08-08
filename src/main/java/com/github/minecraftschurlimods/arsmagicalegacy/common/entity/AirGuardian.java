@@ -69,12 +69,10 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isMagic()) {
-            pAmount /= 2;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount *= 2;
+        if (pSource == DamageSource.LIGHTNING_BOLT) {
+            pAmount *= 2f;
         } else if (pSource.isProjectile()) {
-            pAmount = 0;
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -87,19 +85,32 @@ public class AirGuardian extends AbstractBoss {
         goalSelector.addGoal(2, new WhirlwindGoal(this));
     }
 
+    @Override
+    public Action[] getActions() {
+        return AirGuardianAction.values();
+    }
+
     public enum AirGuardianAction implements Action {
-        IDLE(-1),
-        CASTING(-1),
-        SPINNING(40);
+        IDLE(-1, IDLE_ID),
+        CASTING(-1, CASTING_ID),
+        SPINNING(40, ACTION_1_ID);
 
         private final int maxActionTime;
+        private final byte animationId;
 
-        AirGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
+        AirGuardianAction(int maxActionTime, byte animationId) {
+            this.maxActionTime = maxActionTime;
+            this.animationId = animationId;
         }
 
+        @Override
         public int getMaxActionTime() {
             return maxActionTime;
+        }
+
+        @Override
+        public byte getAnimationId() {
+            return animationId;
         }
     }
 }
