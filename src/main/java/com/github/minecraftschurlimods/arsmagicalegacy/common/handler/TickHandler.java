@@ -20,9 +20,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.LightLayer;
+import net.minecraftforge.common.capabilities.CapabilityProvider;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+
+import java.lang.reflect.Field;
 
 import java.util.Objects;
 
@@ -34,6 +38,8 @@ final class TickHandler {
         forgeBus.addListener(TickHandler::livingUpdate);
         forgeBus.addListener(TickHandler::playerTick);
     }
+
+    private static final Field CAP_PROVIDER_VALID = ObfuscationReflectionHelper.findField(CapabilityProvider.class, "valid");
 
     private static void livingUpdate(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
@@ -68,15 +74,15 @@ final class TickHandler {
     }
 
     private static void playerTickServerEnd(final Player player) {
-
+        // NOOP
     }
 
     private static void playerTickClientStart(final Player player) {
-
+        // NOOP
     }
 
     private static void playerTickClientEnd(final Player player) {
-
+        // NOOP
     }
 
     private static void manaAndBurnoutRegen(final Player player) {
@@ -92,6 +98,11 @@ final class TickHandler {
         var api = ArsMagicaAPI.get();
         var manager = player.getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         var helper = api.getAffinityHelper();
+        try {
+            if (!(boolean)CAP_PROVIDER_VALID.get(player)) return;
+        } catch (IllegalAccessException ignored) {
+            return;
+        }
         Ability ability;
         if (!player.isCreative()) {
             ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE);

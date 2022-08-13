@@ -176,15 +176,8 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
-        for (EntityType<?> entity : ForgeRegistries.ENTITY_TYPES) {
-            EntityType<? extends LivingEntity> living;
-            try {
-                //noinspection unchecked
-                living = (EntityType<? extends LivingEntity>) entity;
-            } catch (ClassCastException e) {
-                continue;
-            }
-            event.add(living, AMAttributes.SCALE.get());
+        for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
+            event.add(entity, AMAttributes.SCALE.get());
         }
     }
 
