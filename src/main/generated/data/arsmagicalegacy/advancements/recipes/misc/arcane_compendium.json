@@ -1,28 +1,46 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "filled_liquid_essence_bucket": {
+      "conditions": {
+        "item": {
+          "items": [
+            "arsmagicalegacy:liquid_essence_bucket"
+          ]
+        }
+      },
+      "trigger": "minecraft:filled_bucket"
+    },
+    "has_liquid_essence_bucket": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:liquid_essence_bucket"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "arsmagicalegacy:arcane_compendium"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_vinteum_dust": {
+    "in_liquid_essence": {
       "conditions": {
-        "items": [
-          {
-            "items": [
-              "arsmagicalegacy:vinteum_dust"
-            ]
-          }
-        ]
+        "block": "arsmagicalegacy:liquid_essence"
       },
-      "trigger": "minecraft:inventory_changed"
+      "trigger": "minecraft:enter_block"
     }
   },
   "requirements": [
     [
-      "has_vinteum_dust",
+      "has_liquid_essence_bucket",
+      "in_liquid_essence",
+      "filled_liquid_essence_bucket",
       "has_the_recipe"
     ]
   ],

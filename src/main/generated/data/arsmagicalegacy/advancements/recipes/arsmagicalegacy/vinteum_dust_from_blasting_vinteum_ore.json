@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:vinteum_dust_from_blasting_vinteum_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_vinteum_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:vinteum_ore"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_vinteum_ore",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:vinteum_dust_from_blasting_vinteum_ore"
+    ]
+  }
+}

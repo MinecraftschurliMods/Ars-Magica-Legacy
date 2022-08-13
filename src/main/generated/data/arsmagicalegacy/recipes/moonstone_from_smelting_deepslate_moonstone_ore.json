@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "moonstone_dust",
+  "ingredient": {
+    "item": "arsmagicalegacy:deepslate_moonstone_ore"
+  },
+  "result": "arsmagicalegacy:moonstone"
+}

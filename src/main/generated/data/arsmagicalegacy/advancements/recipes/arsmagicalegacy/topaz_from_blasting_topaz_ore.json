@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:topaz_from_blasting_topaz_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_topaz_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:topaz_ore"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_topaz_ore",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:topaz_from_blasting_topaz_ore"
+    ]
+  }
+}

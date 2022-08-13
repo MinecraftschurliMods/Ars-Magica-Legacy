@@ -1,4 +1,4 @@
-// 1.19	2022-07-18T00:33:47.5512114	Altar Structure Materials[arsmagicalegacy]
+// 1.19.2	2022-08-10T18:25:08.8083886	Altar Structure Materials[arsmagicalegacy]
 601860506fd5da5c3c92c3b5daef6e4146b7c7b2 data/arsmagicalegacy/arsmagicalegacy/altar/cap/chimerite.json
 1427f268fd1891e226bf077b5f834a90aa78fa43 data/arsmagicalegacy/arsmagicalegacy/altar/cap/coal.json
 bcc8effb27ceab1f0b877717b474b889b1ebdd44 data/arsmagicalegacy/arsmagicalegacy/altar/cap/copper.json
@@ -9,9 +9,11 @@ fe5d9d76a4ba9585e470f69710898aabb3b677ae data/arsmagicalegacy/arsmagicalegacy/al
 dcc0dd60784484a9c96fb5d9d90d011ed4ec2f6d data/arsmagicalegacy/arsmagicalegacy/altar/cap/gold.json
 3def04e82b8bd1486b7b365c2b034b17f3e4bd9e data/arsmagicalegacy/arsmagicalegacy/altar/cap/iron.json
 a20bbd5415c9ef91790f1f875e04bf6009148832 data/arsmagicalegacy/arsmagicalegacy/altar/cap/lapis.json
+b8d527ee99a136e9f7ae389f56d672051b8faf09 data/arsmagicalegacy/arsmagicalegacy/altar/cap/moonstone.json
 49aa69983b190921415b199467b18d0c9fc028d1 data/arsmagicalegacy/arsmagicalegacy/altar/cap/netherite.json
 ec60a3e9dfc0c63fd7564980b4797ace513f6927 data/arsmagicalegacy/arsmagicalegacy/altar/cap/oxidized_copper.json
 4a60d27f5b553d0d50f35742a9cc7dbdcc17a0b0 data/arsmagicalegacy/arsmagicalegacy/altar/cap/redstone.json
+8b73db73e8f1a4553c66dde2549494a9c84c5edd data/arsmagicalegacy/arsmagicalegacy/altar/cap/sunstone.json
 d56db3fb5b2421a4a87c89eb0558399780e856e5 data/arsmagicalegacy/arsmagicalegacy/altar/cap/topaz.json
 846e2db4f6a02a47b291ee5203a50e390a74e70d data/arsmagicalegacy/arsmagicalegacy/altar/cap/vinteum.json
 5d0865ab2cf97fb68480aac9de2c11f3ad04e47e data/arsmagicalegacy/arsmagicalegacy/altar/cap/waxed_copper.json
@@ -61,6 +63,7 @@ d93b964525dc2d508c4594b69fa261097403e6d6 data/arsmagicalegacy/arsmagicalegacy/al
 29103f0cf21c41a64d9879356821009b58df4c4b data/arsmagicalegacy/arsmagicalegacy/altar/structure/smooth_red_sandstone.json
 6403c37fc9e11126e6cc5fe984d61e7f3769510f data/arsmagicalegacy/arsmagicalegacy/altar/structure/smooth_sandstone.json
 3ad12701b4b495929f092ee0776b6412bd1f0250 data/arsmagicalegacy/arsmagicalegacy/altar/structure/spruce_planks.json
+12896e62508bb1f823cc6a3cdb4b65c4d719be82 data/arsmagicalegacy/arsmagicalegacy/altar/structure/stone.json
 d85e8cde738154c3aa818c3943628ff7e9906c32 data/arsmagicalegacy/arsmagicalegacy/altar/structure/stone_bricks.json
 298e27ad9e1659a9e9a404a605cec58a37e8136c data/arsmagicalegacy/arsmagicalegacy/altar/structure/warped_planks.json
 b6a984c0a67c578e62b9d27ac4408069cdcbda55 data/arsmagicalegacy/arsmagicalegacy/altar/structure/waxed_cut_copper.json

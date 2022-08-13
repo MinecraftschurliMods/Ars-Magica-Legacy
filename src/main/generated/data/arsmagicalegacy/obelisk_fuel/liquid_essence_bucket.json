@@ -1,0 +1,7 @@
+{
+  "burn_time": 1000,
+  "etherium_per_tick": 2,
+  "input": {
+    "item": "arsmagicalegacy:liquid_essence_bucket"
+  }
+}

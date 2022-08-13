@@ -456,8 +456,8 @@ class AMRecipeProvider extends RecipeProvider {
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pUnpacked, TagKey<Item> pUnpackedTag, ItemLike pPacked, TagKey<Item> pPackedTag, String pPackingRecipeName, @Nullable String pPackingRecipeGroup, String pUnpackingRecipeName, @Nullable String pUnpackingRecipeGroup) {
-        ShapelessRecipeBuilder.shapeless(pUnpacked, 9).requires(pPackedTag).group(pUnpackingRecipeGroup).unlockedBy(getHasName(pPacked), has(pPacked)).save(pFinishedRecipeConsumer, new ResourceLocation(pUnpackingRecipeName));
-        ShapedRecipeBuilder.shaped(pPacked).define('#', pUnpackedTag).pattern("###").pattern("###").pattern("###").group(pPackingRecipeGroup).unlockedBy(getHasName(pUnpacked), has(pUnpacked)).save(pFinishedRecipeConsumer, new ResourceLocation(pPackingRecipeName));
+        ShapelessRecipeBuilder.shapeless(pUnpacked, 9).requires(pPackedTag).group(pUnpackingRecipeGroup).unlockedBy(getHasName(pPacked), has(pPacked)).save(pFinishedRecipeConsumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, pUnpackingRecipeName));
+        ShapedRecipeBuilder.shaped(pPacked).define('#', pUnpackedTag).pattern("###").pattern("###").pattern("###").group(pPackingRecipeGroup).unlockedBy(getHasName(pUnpacked), has(pUnpacked)).save(pFinishedRecipeConsumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, pPackingRecipeName));
     }
 
     private static class ShapedNBTRecipeBuilder {

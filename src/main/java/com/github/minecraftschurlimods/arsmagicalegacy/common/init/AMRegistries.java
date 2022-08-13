@@ -33,10 +33,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -70,12 +67,6 @@ public interface AMRegistries {
     // Deferred Registers for forge registries
     DeferredRegister<FluidType>                      FLUID_TYPES                = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,                ArsMagicaAPI.MOD_ID);
     DeferredRegister<EntityDataSerializer<?>>        ENTITY_DATA_SERIALIZERS    = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, ArsMagicaAPI.MOD_ID);
-
-    // Deferred Registers for vanilla/forge datapack registries
-    DeferredRegister<BiomeModifier>          BIOME_MODIFIERS     = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIERS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ConfiguredFeature<?,?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<PlacedFeature>          PLACED_FEATURES     = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY,     ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for custom registries
     DeferredRegister<SkillPoint>                         SKILL_POINTS             = DeferredRegister.create(SkillPoint.REGISTRY_KEY,        ArsMagicaAPI.MOD_ID);
@@ -86,17 +77,7 @@ public interface AMRegistries {
     DeferredRegister<Codec<? extends RitualRequirement>> RITUAL_REQUIREMENT_TYPES = DeferredRegister.create(RitualRequirement.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
     DeferredRegister<Codec<? extends RitualEffect>>      RITUAL_EFFECT_TYPES      = DeferredRegister.create(RitualEffect.REGISTRY_KEY,      ArsMagicaAPI.MOD_ID);
 
-    // Deferred Registries for custom datapack registries (do not use to register, use a data generator instead)
-    DeferredRegister<Ability>                ABILITIES                 = DeferredRegister.create(Ability.REGISTRY_KEY,                ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Skill>                  SKILLS                    = DeferredRegister.create(Skill.REGISTRY_KEY,                  ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Ritual>                 RITUALS                   = DeferredRegister.create(Ritual.REGISTRY_KEY,                 ArsMagicaAPI.MOD_ID);
-    DeferredRegister<OcculusTab>             OCCULUS_TABS              = DeferredRegister.create(OcculusTab.REGISTRY_KEY,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<SpellTransformation>    SPELL_TRANSFORMATIONS     = DeferredRegister.create(SpellTransformation.REGISTRY_KEY,    ArsMagicaAPI.MOD_ID);
-    DeferredRegister<AltarStructureMaterial> ALTAR_STRUCTURE_MATERIALS = DeferredRegister.create(AltarStructureMaterial.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<AltarCapMaterial>       ALTAR_CAP_MATERIALS       = DeferredRegister.create(AltarCapMaterial.REGISTRY_KEY,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<PrefabSpell>            PREFAB_SPELLS             = DeferredRegister.create(PrefabSpell.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
-
-    // Custom registries get via ArsMagicaAPI.get().getXYZRegistry()
+    // region Custom registries get via ArsMagicaAPI.get().getXYZRegistry()
     Supplier<IForgeRegistry<SkillPoint>>                         SKILL_POINT_REGISTRY             = SKILL_POINTS.makeRegistry(() -> new RegistryBuilder<SkillPoint>().setDefaultKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "none")));
     Supplier<IForgeRegistry<Affinity>>                           AFFINITY_REGISTRY                = AFFINITIES.makeRegistry(() -> new RegistryBuilder<Affinity>().setDefaultKey(Affinity.NONE));
     Supplier<IForgeRegistry<ISpellPart>>                         SPELL_PART_REGISTRY              = SPELL_PARTS.makeRegistry(RegistryBuilder::new);
@@ -104,16 +85,7 @@ public interface AMRegistries {
     Supplier<IForgeRegistry<Codec<? extends RitualTrigger>>>     RITUAL_TRIGGER_TYPE_REGISTRY     = RITUAL_TRIGGER_TYPES.makeRegistry(RegistryBuilder::new);
     Supplier<IForgeRegistry<Codec<? extends RitualRequirement>>> RITUAL_REQUIREMENT_TYPE_REGISTRY = RITUAL_REQUIREMENT_TYPES.makeRegistry(RegistryBuilder::new);
     Supplier<IForgeRegistry<Codec<? extends RitualEffect>>>      RITUAL_EFFECT_TYPE_REGISTRY      = RITUAL_EFFECT_TYPES.makeRegistry(RegistryBuilder::new);
-
-    // Custom datapack registries get via RegistryAccess
-    Supplier<IForgeRegistry<Ability>>                ABILITY_REGISTRY                  = ABILITIES.makeRegistry(() -> new RegistryBuilder<Ability>().dataPackRegistry(Ability.DIRECT_CODEC, Ability.DIRECT_CODEC));
-    Supplier<IForgeRegistry<Skill>>                  SKILL_REGISTRY                    = SKILLS.makeRegistry(() -> new RegistryBuilder<Skill>().dataPackRegistry(Skill.DIRECT_CODEC, Skill.DIRECT_CODEC));
-    Supplier<IForgeRegistry<Ritual>>                 RITUAL_REGISTRY                   = RITUALS.makeRegistry(() -> new RegistryBuilder<Ritual>().dataPackRegistry(Ritual.DIRECT_CODEC));
-    Supplier<IForgeRegistry<OcculusTab>>             OCCULUS_TAB_REGISTRY              = OCCULUS_TABS.makeRegistry(() -> new RegistryBuilder<OcculusTab>().dataPackRegistry(OcculusTab.CODEC, OcculusTab.CODEC));
-    Supplier<IForgeRegistry<SpellTransformation>>    SPELL_TRANSFORMATION_REGISTRY     = SPELL_TRANSFORMATIONS.makeRegistry(() -> new RegistryBuilder<SpellTransformation>().dataPackRegistry(SpellTransformation.DIRECT_CODEC));
-    Supplier<IForgeRegistry<AltarStructureMaterial>> ALTAR_STRUCTURE_MATERIAL_REGISTRY = ALTAR_STRUCTURE_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarStructureMaterial>().dataPackRegistry(AltarStructureMaterial.CODEC, AltarStructureMaterial.CODEC));
-    Supplier<IForgeRegistry<AltarCapMaterial>>       ALTAR_CAP_MATERIAL_REGISTRY       = ALTAR_CAP_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarCapMaterial>().dataPackRegistry(AltarCapMaterial.CODEC, AltarCapMaterial.CODEC));
-    Supplier<IForgeRegistry<PrefabSpell>>            PREFAB_SPELL_REGISTRY             = PREFAB_SPELLS.makeRegistry(() -> new RegistryBuilder<PrefabSpell>().dataPackRegistry(PrefabSpell.DIRECT_CODEC, PrefabSpell.DIRECT_CODEC));
+    // endregion
 
     /**
      * Registers the registries to the given event bus.
@@ -134,12 +106,12 @@ public interface AMRegistries {
         AMStats.register();
         bus.addListener(AMStats::onRegister);
         AMDataSerializers.register();
-        AMFeatures.register();
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
         AMContingencyTypes.register();
         AMRituals.register();
+
         BLOCKS.register(bus);
         FLUIDS.register(bus);
         ITEMS.register(bus);
@@ -157,18 +129,37 @@ public interface AMRegistries {
         CUSTOM_STATS.register(bus);
         FLUID_TYPES.register(bus);
         ENTITY_DATA_SERIALIZERS.register(bus);
-        BIOME_MODIFIER_SERIALIZERS.register(bus);
-        BIOME_MODIFIERS.register(bus);
-        CONFIGURED_FEATURES.register(bus);
-        PLACED_FEATURES.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
         SPELL_PARTS.register(bus);
-        ABILITIES.register(bus);
         CONTINGENCY_TYPE.register(bus);
         RITUAL_TRIGGER_TYPES.register(bus);
         RITUAL_REQUIREMENT_TYPES.register(bus);
         RITUAL_EFFECT_TYPES.register(bus);
+
+        // region Deferred Registries for custom datapack registries (do not use to register, use a data generator instead)
+        DeferredRegister<Ability>                ABILITIES                 = DeferredRegister.create(Ability.REGISTRY_KEY,                ArsMagicaAPI.MOD_ID);
+        DeferredRegister<Skill>                  SKILLS                    = DeferredRegister.create(Skill.REGISTRY_KEY,                  ArsMagicaAPI.MOD_ID);
+        DeferredRegister<Ritual>                 RITUALS                   = DeferredRegister.create(Ritual.REGISTRY_KEY,                 ArsMagicaAPI.MOD_ID);
+        DeferredRegister<OcculusTab>             OCCULUS_TABS              = DeferredRegister.create(OcculusTab.REGISTRY_KEY,             ArsMagicaAPI.MOD_ID);
+        DeferredRegister<SpellTransformation>    SPELL_TRANSFORMATIONS     = DeferredRegister.create(SpellTransformation.REGISTRY_KEY,    ArsMagicaAPI.MOD_ID);
+        DeferredRegister<AltarStructureMaterial> ALTAR_STRUCTURE_MATERIALS = DeferredRegister.create(AltarStructureMaterial.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
+        DeferredRegister<AltarCapMaterial>       ALTAR_CAP_MATERIALS       = DeferredRegister.create(AltarCapMaterial.REGISTRY_KEY,       ArsMagicaAPI.MOD_ID);
+        DeferredRegister<PrefabSpell>            PREFAB_SPELLS             = DeferredRegister.create(PrefabSpell.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
+        // endregion
+
+        // region Custom datapack registries get via RegistryAccess
+        ABILITIES.makeRegistry(() -> new RegistryBuilder<Ability>().dataPackRegistry(Ability.DIRECT_CODEC, Ability.DIRECT_CODEC));
+        SKILLS.makeRegistry(() -> new RegistryBuilder<Skill>().dataPackRegistry(Skill.DIRECT_CODEC, Skill.DIRECT_CODEC));
+        RITUALS.makeRegistry(() -> new RegistryBuilder<Ritual>().dataPackRegistry(Ritual.DIRECT_CODEC));
+        OCCULUS_TABS.makeRegistry(() -> new RegistryBuilder<OcculusTab>().dataPackRegistry(OcculusTab.CODEC, OcculusTab.CODEC));
+        SPELL_TRANSFORMATIONS.makeRegistry(() -> new RegistryBuilder<SpellTransformation>().dataPackRegistry(SpellTransformation.DIRECT_CODEC));
+        ALTAR_STRUCTURE_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarStructureMaterial>().dataPackRegistry(AltarStructureMaterial.CODEC, AltarStructureMaterial.CODEC));
+        ALTAR_CAP_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarCapMaterial>().dataPackRegistry(AltarCapMaterial.CODEC, AltarCapMaterial.CODEC));
+        PREFAB_SPELLS.makeRegistry(() -> new RegistryBuilder<PrefabSpell>().dataPackRegistry(PrefabSpell.DIRECT_CODEC, PrefabSpell.DIRECT_CODEC));
+        // endregion
+
+        ABILITIES.register(bus);
         SKILLS.register(bus);
         RITUALS.register(bus);
         OCCULUS_TABS.register(bus);

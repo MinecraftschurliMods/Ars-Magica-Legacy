@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "vinteum_dust",
+  "ingredient": {
+    "item": "arsmagicalegacy:deepslate_vinteum_ore"
+  },
+  "result": "arsmagicalegacy:vinteum_dust"
+}

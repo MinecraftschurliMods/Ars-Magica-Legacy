@@ -45,5 +45,6 @@ public class AMDatagen {
         generator.addProvider(evt.includeServer(), new AMSpellPartDataProvider(generator));
         generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMRitualProvider(generator, existingFileHelper));
+        generator.addProvider(evt.includeServer(), new AMWorldgenProvider(generator, existingFileHelper));
     }
 }

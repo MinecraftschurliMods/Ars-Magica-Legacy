@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_features",
+  "biomes": {
+    "type": "forge:and",
+    "values": [
+      "#minecraft:is_overworld",
+      "#forge:is_spooky"
+    ]
+  },
+  "features": "arsmagicalegacy:trees_witchwood",
+  "step": "vegetal_decoration"
+}

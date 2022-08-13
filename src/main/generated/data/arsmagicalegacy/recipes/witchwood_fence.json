@@ -3,15 +3,15 @@
   "group": "wooden_fence",
   "key": {
     "#": {
-      "item": "arsmagicalegacy:witchwood_planks"
-    },
-    "-": {
       "tag": "forge:rods/wooden"
+    },
+    "W": {
+      "item": "arsmagicalegacy:witchwood_planks"
     }
   },
   "pattern": [
-    "#-#",
-    "#-#"
+    "W#W",
+    "W#W"
   ],
   "result": {
     "count": 3,

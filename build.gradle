@@ -28,6 +28,7 @@ plugins {
 mixin {
     add sourceSets.main, "${project.mod_id}.refmap.json"
     config "${project.mod_id}.mixins.json"
+    config "${project.mod_id}_data.mixins.json"
     dumpTargetOnFailure true
 }
 
@@ -71,7 +72,7 @@ sourceSets {
         srcDirs += 'src/main/generated'
         exclude '.cache'
     }
-    data.resources.srcDirs = []
+    data {}
 }
 
 configurations {
@@ -185,8 +186,8 @@ dependencies {
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
 
     // jei for integration
-    modAPI fg.deobf("mezz.jei:jei-${project.mc_version}-common-api:${project.jei_version}")
-    runtimeMod fg.deobf("mezz.jei:jei-${project.mc_version}-forge:${project.jei_version}")
+    modAPI fg.deobf("mezz.jei:jei-1.19.1-common-api:${project.jei_version}")
+    runtimeMod fg.deobf("mezz.jei:jei-1.19.1-forge:${project.jei_version}")
 
     // curios for additional inventory slots
     modAPI fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}:api")
@@ -202,7 +203,7 @@ dependencies {
 
     if (!System.getenv('GITHUB_ACTIONS')) {
         runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
-        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
+        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.1:${project.controlling_version}")
     }
 
     // add internal libraries
