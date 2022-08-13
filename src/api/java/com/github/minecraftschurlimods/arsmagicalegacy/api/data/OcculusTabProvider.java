@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;

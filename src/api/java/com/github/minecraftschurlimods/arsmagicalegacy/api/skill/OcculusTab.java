@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.occulus;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;

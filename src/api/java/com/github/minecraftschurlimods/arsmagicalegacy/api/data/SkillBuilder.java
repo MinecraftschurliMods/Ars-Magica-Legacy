@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import net.minecraft.resources.ResourceLocation;

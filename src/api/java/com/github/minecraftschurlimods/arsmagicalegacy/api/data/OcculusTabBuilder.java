@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 

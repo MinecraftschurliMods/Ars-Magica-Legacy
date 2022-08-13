@@ -1,7 +1,6 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.ability;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
