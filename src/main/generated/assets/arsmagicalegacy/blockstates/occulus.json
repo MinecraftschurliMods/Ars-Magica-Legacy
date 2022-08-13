@@ -4,6 +4,9 @@
       "model": "arsmagicalegacy:block/occulus",
       "y": 90
     },
+    "facing=north": {
+      "model": "arsmagicalegacy:block/occulus"
+    },
     "facing=south": {
       "model": "arsmagicalegacy:block/occulus",
       "y": 180
@@ -11,9 +14,6 @@
     "facing=west": {
       "model": "arsmagicalegacy:block/occulus",
       "y": 270
-    },
-    "facing=north": {
-      "model": "arsmagicalegacy:block/occulus"
     }
   }
 }

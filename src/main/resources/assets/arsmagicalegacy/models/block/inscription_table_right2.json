@@ -1,5 +1,6 @@
 {
   "parent": "block/block",
+  "render_type": "minecraft:cutout",
   "textures": {
     "cloth": "arsmagicalegacy:block/inscription_table_cloth"
   },
