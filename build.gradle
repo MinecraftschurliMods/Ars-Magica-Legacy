@@ -122,6 +122,19 @@ configurations {
     dataImplementation.extendsFrom(datagenLibrary)
 }
 
+def github(RepositoryHandler rep, String ownerRepo) {
+    if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
+        rep.maven {
+            name = "${ownerRepo}"
+            url = "https://maven.pkg.github.com/${ownerRepo}"
+            credentials {
+                username = "${project.github_packages_user}"
+                password = "${project.github_packages_token}"
+            }
+        }
+    }
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -213,6 +226,9 @@ dependencies {
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     if (!System.getenv('GITHUB_ACTIONS')) {
+        if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
+            println 'Using github packages'
+        }
         runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
     }
