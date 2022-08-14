@@ -24,6 +24,15 @@ plugins {
 
 //=============================================
 
+if (project.rootProject.file("local.properties").exists()) {
+    try (def stream = project.rootProject.file("local.properties").newDataInputStream()) {
+        def properties = new Properties()
+        properties.load(stream)
+        properties.forEach { key, value ->
+            project.ext.set(key, value)
+        }
+    }
+}
 
 mixin {
     add sourceSets.main, "${project.mod_id}.refmap.json"
