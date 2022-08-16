@@ -218,6 +218,7 @@ public final class ClientInit {
 
     private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
         pre.getPoseStack().pushPose();
+        if (pre.getEntity().getAttribute(AMAttributes.SCALE.get()) == null) return;
         float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.get());
         if (factor == 1) return;
         pre.getPoseStack().scale(factor, factor, factor);

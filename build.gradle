@@ -24,6 +24,15 @@ plugins {
 
 //=============================================
 
+if (project.rootProject.file("local.properties").exists()) {
+    try (def stream = project.rootProject.file("local.properties").newDataInputStream()) {
+        def properties = new Properties()
+        properties.load(stream)
+        properties.forEach { key, value ->
+            project.ext.set(key, value)
+        }
+    }
+}
 
 mixin {
     add sourceSets.main, "${project.mod_id}.refmap.json"
@@ -111,6 +120,19 @@ configurations {
         transitive = false
     }
     dataImplementation.extendsFrom(datagenLibrary)
+}
+
+def github(RepositoryHandler rep, String ownerRepo) {
+    if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
+        rep.maven {
+            name = "${ownerRepo}"
+            url = "https://maven.pkg.github.com/${ownerRepo}"
+            credentials {
+                username = "${project.github_packages_user}"
+                password = "${project.github_packages_token}"
+            }
+        }
+    }
 }
 
 repositories {
@@ -201,6 +223,9 @@ dependencies {
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     if (!System.getenv('GITHUB_ACTIONS')) {
+        if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
+            println 'Using github packages'
+        }
         runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.1:${project.controlling_version}")
     }

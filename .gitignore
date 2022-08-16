@@ -116,3 +116,4 @@ run/
 /src/generated/resources/.cache/
 !run/client/options.txt
 !run/server/eula.txt
+/local.properties

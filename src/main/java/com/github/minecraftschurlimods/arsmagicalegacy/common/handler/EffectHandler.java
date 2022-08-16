@@ -124,6 +124,7 @@ final class EffectHandler {
 
     private static void entitySize(EntityEvent.Size event) {
         if (!(event.getEntity() instanceof LivingEntity living) || !living.isAddedToWorld()) return;
+        if (living.getAttribute(AMAttributes.SCALE.get()) == null) return;
         float factor = (float) living.getAttributeValue(AMAttributes.SCALE.get());
         if (factor == 1) return;
         EntityDimensions newSize = event.getNewSize();
