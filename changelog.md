@@ -1,9 +1,5 @@
-# Version 1.18.2-1.1.2
+# Version 1.18.2-1.1.4
 
 ## Fixes
 
-- Fixed getting fall damage from low heights
-
-## Changes
-
-- Added the altar power to the TOP info
+- Fixed crash when other mods f*** with entity attributes or use the wrong event to register them.
