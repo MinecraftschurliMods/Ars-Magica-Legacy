@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;

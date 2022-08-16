@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.ability;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
