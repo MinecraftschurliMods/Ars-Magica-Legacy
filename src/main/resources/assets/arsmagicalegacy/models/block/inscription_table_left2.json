@@ -1,5 +1,6 @@
 {
   "parent": "block/block",
+  "render_type": "minecraft:cutout",
   "textures": {
     "book_3": "arsmagicalegacy:block/inscription_table_book_3",
     "book_4": "arsmagicalegacy:block/inscription_table_book_4",

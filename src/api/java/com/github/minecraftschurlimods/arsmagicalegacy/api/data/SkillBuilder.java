@@ -1,12 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.SerializationException;
 import org.jetbrains.annotations.Contract;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ public class SkillBuilder {
      * @return A new builder for the skill.
      */
     @Contract("_, _ -> new")
-    public static SkillBuilder create(ResourceLocation id, IOcculusTab occulusTab) {
+    public static SkillBuilder create(ResourceLocation id, OcculusTab occulusTab) {
         return new SkillBuilder(id).setOcculusTab(occulusTab);
     }
 
@@ -79,7 +76,7 @@ public class SkillBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_, _ -> this")
-    public SkillBuilder addCost(ISkillPoint point, int amt) {
+    public SkillBuilder addCost(SkillPoint point, int amt) {
         return addCost(point.getId(), amt);
     }
 
@@ -101,7 +98,7 @@ public class SkillBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_ -> this")
-    public SkillBuilder addCost(ISkillPoint point) {
+    public SkillBuilder addCost(SkillPoint point) {
         return addCost(point, 1);
     }
 
@@ -124,7 +121,7 @@ public class SkillBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_ -> this")
-    public SkillBuilder addParent(ISkill parent) {
+    public SkillBuilder addParent(Skill parent) {
         return addParent(parent.getId());
     }
 
@@ -194,7 +191,7 @@ public class SkillBuilder {
      * @return This builder, for chaining.
      */
     @Contract("_ -> this")
-    protected SkillBuilder setOcculusTab(IOcculusTab occulusTab) {
+    protected SkillBuilder setOcculusTab(OcculusTab occulusTab) {
         return setOcculusTab(occulusTab.getId());
     }
 
@@ -213,25 +210,7 @@ public class SkillBuilder {
     /**
      * @return The serialized occulus tab.
      */
-    JsonObject serialize() {
-        JsonObject json = new JsonObject();
-        json.addProperty("occulus_tab", occulusTab.toString());
-        if (x == null || y == null) throw new SerializationException("A skill needs a position!");
-        json.addProperty("x", this.x);
-        json.addProperty("y", this.y);
-        if (hidden != null) {
-            json.addProperty("hidden", this.hidden);
-        }
-        if (!parents.isEmpty()) {
-            JsonArray parents = new JsonArray();
-            this.parents.forEach(id -> parents.add(id.toString()));
-            json.add("parents", parents);
-        }
-        if (!cost.isEmpty()) {
-            JsonObject cost = new JsonObject();
-            this.cost.forEach((id, amt) -> cost.addProperty(id.toString(), amt));
-            json.add("cost", cost);
-        }
-        return json;
+    Skill build() {
+        return new Skill(parents, cost, occulusTab, x, y, hidden != null ? hidden : false);
     }
 }

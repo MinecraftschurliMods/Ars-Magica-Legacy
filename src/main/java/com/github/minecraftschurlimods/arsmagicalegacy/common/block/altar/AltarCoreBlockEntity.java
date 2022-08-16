@@ -8,12 +8,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumCon
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
@@ -197,7 +197,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private boolean checkMultiblockInternal() {
         if (getLevel() == null) return false;
-        AltarMaterialManager manager = AltarMaterialManager.instance();
+        var structureRegistry = getLevel().registryAccess().registryOrThrow(AltarStructureMaterial.REGISTRY_KEY);
+        var capRegistry = getLevel().registryAccess().registryOrThrow(AltarCapMaterial.REGISTRY_KEY);
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockPos relative = getBlockPos().relative(direction, 2).relative(direction.getCounterClockWise(), 2).below(3);
             BlockState blockState = getLevel().getBlockState(relative);
@@ -205,8 +206,10 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                 this.direction = direction;
                 lecternPos = relative;
                 viewPos = relative.above();
-                structureMaterial = manager.getStructureMaterial(getLevel().getBlockState(getBlockPos().relative(direction.getClockWise())).getBlock()).orElse(null);
-                capMaterial = manager.getCapMaterial(getLevel().getBlockState(getBlockPos().relative(direction).relative(direction.getClockWise(), 2)).getBlock()).orElse(null);
+                Block sBlock = getLevel().getBlockState(getBlockPos().relative(direction.getClockWise())).getBlock();
+                structureMaterial = structureRegistry.stream().filter(mat -> mat.block() == sBlock || mat.stair() == sBlock).findFirst().orElse(null);
+                Block cBlock = getLevel().getBlockState(getBlockPos().relative(direction).relative(direction.getClockWise(), 2)).getBlock();
+                capMaterial = capRegistry.stream().filter(mat -> mat.cap() == cBlock).findFirst().orElse(null);
                 leverPos = relative.relative(direction.getClockWise(), 4).above(1);
                 camoState = getLevel().getBlockState(getBlockPos().relative(direction.getClockWise()));
                 break;
@@ -342,8 +345,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private ItemStack makeSpell() {
         ItemStack stack = new ItemStack(AMItems.SPELL.get());
-        SpellItem.saveSpell(stack, SpellItem.getSpell(getBook()));
-        SpellItem.setSpellName(stack, getBook().getOrCreateTag().getString(WrittenBookItem.TAG_TITLE));
+        ISpellItem.saveSpell(stack, ISpellItem.getSpell(getBook()));
+        ISpellItem.setSpellName(stack, getBook().getOrCreateTag().getString(WrittenBookItem.TAG_TITLE));
         return stack;
     }
 
@@ -426,7 +429,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (recipe == null || recipe.isEmpty()) {
-            Optional.of(SpellItem.getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            Optional.of(ISpellItem.getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
                 requiredPower = this.recipe.size();
             }, () -> {

@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,12 +21,12 @@ public interface ISpellPartData {
     /**
      * @return The affinity shifts for this spell part.
      */
-    Map<IAffinity, Float> affinityShifts();
+    Map<Affinity, Float> affinityShifts();
 
     /**
      * @return The affinities for this spell part.
      */
-    Set<IAffinity> affinities();
+    Set<Affinity> affinities();
 
     /**
      * @return The reagents for this spell part.

@@ -49,6 +49,7 @@ jobs:
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-sources.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-javadoc.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-deobf.jar
+            build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-all.jar
           body: >
              ${{ steps.changelog.outputs.content }}
       - name: CF upload
@@ -60,7 +61,7 @@ jobs:
           token: ${{ secrets.CF_API_TOKEN }}
           project_id: ${{ steps.build.outputs.project_id }}
           game_versions: ${{ steps.build.outputs.curse_versions }}
-          file_path: build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}.jar
+          file_path: build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-all.jar
           relations: ${{ steps.build.outputs.curse_relations }}
           changelog_type: markdown
           changelog: >

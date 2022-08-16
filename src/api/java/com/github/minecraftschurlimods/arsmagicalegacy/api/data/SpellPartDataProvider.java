@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.google.gson.JsonArray;
@@ -207,7 +207,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(Supplier<IAffinity> affinity, float shift) {
+        public SpellPartDataBuilder withAffinity(Supplier<Affinity> affinity, float shift) {
             return withAffinity(affinity.get(), shift);
         }
 
@@ -217,7 +217,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(IAffinity affinity, float shift) {
+        public SpellPartDataBuilder withAffinity(Affinity affinity, float shift) {
             affinities.put(affinity.getId(), shift);
             return this;
         }

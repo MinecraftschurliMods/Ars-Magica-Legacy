@@ -2,18 +2,16 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
@@ -40,15 +38,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.OcculusTabManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
@@ -183,15 +176,8 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
-        for (EntityType<?> entity : ForgeRegistries.ENTITY_TYPES) {
-            EntityType<? extends LivingEntity> living;
-            try {
-                //noinspection unchecked
-                living = (EntityType<? extends LivingEntity>) entity;
-            } catch (ClassCastException e) {
-                continue;
-            }
-            event.add(living, AMAttributes.SCALE.get());
+        for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
+            event.add(entity, AMAttributes.SCALE.get());
         }
     }
 
@@ -220,17 +206,9 @@ public final class EventHandler {
     }
 
     private static void addReloadListener(AddReloadListenerEvent event) {
-        event.addListener(OcculusTabManager.instance());
-        event.addListener(SkillManager.instance());
         event.addListener(SpellDataManager.instance());
-        event.addListener(AbilityManager.instance());
-        event.addListener(AltarMaterialManager.instance().cap);
-        event.addListener(AltarMaterialManager.instance().structure);
         event.addListener(TierMapping.instance());
-        event.addListener(PrefabSpellManager.instance());
         event.addListener(ObeliskFuelManager.instance());
-        event.addListener(SpellTransformationManager.instance());
-        event.addListener(RitualManager.instance());
     }
 
     private static void entityJoinWorld(EntityJoinLevelEvent event) {
@@ -291,8 +269,8 @@ public final class EventHandler {
                 if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
                 ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
                 if (dataForPart == null) continue;
-                Set<IAffinity> affinities = dataForPart.affinities();
-                for (IAffinity aff : affinities) {
+                Set<Affinity> affinities = dataForPart.affinities();
+                for (Affinity aff : affinities) {
                     double value = api.getAffinityHelper().getAffinityDepth(player, aff);
                     if (value > 0) {
                         cost -= (float) (cost * (0.5f * value / 100f));
@@ -310,10 +288,10 @@ public final class EventHandler {
         if (level == 1) {
             api.getSkillHelper().addSkillPoint(player, AMSkillPoints.BLUE.getId(), Config.SERVER.EXTRA_BLUE_SKILL_POINTS.get());
         }
-        for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
-            int minEarnLevel = iSkillPoint.minEarnLevel();
-            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.levelsForPoint() == 0) {
-                api.getSkillHelper().addSkillPoint(player, iSkillPoint);
+        for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
+            int minEarnLevel = skillPoint.minEarnLevel();
+            if (level >= minEarnLevel && (level - minEarnLevel) % skillPoint.levelsForPoint() == 0) {
+                api.getSkillHelper().addSkillPoint(player, skillPoint);
                 event.getEntity().getLevel().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }
         }

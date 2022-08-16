@@ -89,6 +89,7 @@ public class DragPane extends AbstractContainerEventHandler implements Narratabl
         return dropArea;
     }
 
+    @Nullable
     @Override
     public Draggable getDragged() {
         return dragged;

@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public interface ISkillHelper {
      * @param skill  The skill to check for.
      * @return True if the given player knows the given skill, false otherwise.
      */
-    boolean knows(Player player, ISkill skill);
+    boolean knows(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * @param player The player to check the skill requirements for.
@@ -38,7 +39,7 @@ public interface ISkillHelper {
      * @param skill  The skill to check for.
      * @return True if the given player can learn the given skill, false otherwise.
      */
-    boolean canLearn(Player player, ISkill skill);
+    boolean canLearn(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Unlocks the given skill for the given player.
@@ -54,7 +55,7 @@ public interface ISkillHelper {
      * @param player The player to unlock the skill for.
      * @param skill  The skill to unlock.
      */
-    void learn(Player player, ISkill skill);
+    void learn(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Locks the given skill for the given player.
@@ -70,14 +71,14 @@ public interface ISkillHelper {
      * @param player The player to lock the skill for.
      * @param skill  The skill to lock.
      */
-    void forget(Player player, ISkill skill);
+    void forget(Player player, Skill skill, RegistryAccess registryAccess);
 
     /**
      * Unlocks all skills for the given player.
      *
      * @param player The player to unlock the skills for.
      */
-    void learnAll(Player player);
+    void learnAll(Player player, RegistryAccess registryAccess);
 
     /**
      * Locks all skills for the given player.
@@ -98,7 +99,7 @@ public interface ISkillHelper {
      * @param point  The skill point to get the amount for.
      * @return The amount of skill points of the given skill point type the given player has.
      */
-    int getSkillPoint(Player player, ISkillPoint point);
+    int getSkillPoint(Player player, SkillPoint point);
 
     /**
      * Adds skill points of a given type to a given player.
@@ -116,7 +117,7 @@ public interface ISkillHelper {
      * @param skillPoint The skill point type to add.
      * @param amount     The amount of skill points to add.
      */
-    void addSkillPoint(Player player, ISkillPoint skillPoint, int amount);
+    void addSkillPoint(Player player, SkillPoint skillPoint, int amount);
 
     /**
      * Adds a skill point of a given type to a given player.
@@ -132,7 +133,7 @@ public interface ISkillHelper {
      * @param player     The player to add the skill point to.
      * @param skillPoint The skill point type to add.
      */
-    void addSkillPoint(Player player, ISkillPoint skillPoint);
+    void addSkillPoint(Player player, SkillPoint skillPoint);
 
     /**
      * Consumes skill points of a given type for a given player.
@@ -152,7 +153,7 @@ public interface ISkillHelper {
      * @param amount     The amount of skill points to consume.
      * @return Whether the consumption was successful or not.
      */
-    boolean consumeSkillPoint(Player player, ISkillPoint skillPoint, int amount);
+    boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount);
 
     /**
      * Consumes one skill point of a given type for a given player.
@@ -170,7 +171,7 @@ public interface ISkillHelper {
      * @param skillPoint The skill point type to consume.
      * @return Whether the consumption was successful or not.
      */
-    boolean consumeSkillPoint(Player player, ISkillPoint skillPoint);
+    boolean consumeSkillPoint(Player player, SkillPoint skillPoint);
 
     /**
      * @param skillPoint The id of the skill point type to get the orb stack for.
@@ -182,7 +183,7 @@ public interface ISkillHelper {
      * @param skillPoint The skill point type to get the orb stack for.
      * @return An item stack containing the orb.
      */
-    ItemStack getOrbForSkillPoint(ISkillPoint skillPoint);
+    ItemStack getOrbForSkillPoint(SkillPoint skillPoint);
 
     /**
      * @param item       The item to make the item stack from.
@@ -198,14 +199,14 @@ public interface ISkillHelper {
      * @param <T>        The item implementing ISkillPointItem.
      * @return An item stack of the given item with the given skill point type stored in it.
      */
-    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ISkillPoint skillPoint);
+    <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, SkillPoint skillPoint);
 
     /**
      * @param stack The stack to get the skill point type from.
      * @return The skill point type stored in the stack, or null if the stack does not contain one.
      */
     @Nullable
-    ISkillPoint getSkillPointForStack(ItemStack stack);
+    SkillPoint getSkillPointForStack(ItemStack stack);
 
     /**
      * @param player The player to get the skills for.

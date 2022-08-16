@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.thorns.description",
-      "title": "ability.arsmagicalegacy.thorns.name"
+      "text": "ability.arsmagicalegacy.saturation.description",
+      "title": "ability.arsmagicalegacy.saturation.name"
     },
     {
       "type": "patchouli:text",
@@ -23,8 +23,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.saturation.description",
-      "title": "ability.arsmagicalegacy.saturation.name"
+      "text": "ability.arsmagicalegacy.thorns.description",
+      "title": "ability.arsmagicalegacy.thorns.name"
     }
   ]
 }

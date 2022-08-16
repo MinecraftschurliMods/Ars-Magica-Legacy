@@ -1,9 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
@@ -17,7 +18,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -147,11 +147,11 @@ public final class Spell implements ISpell {
         }
         MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
-            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && SkillManager.instance().containsKey(AFFINITY_GAINS);
+            boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
-            Map<IAffinity, Double> affinityShifts = affinityShifts();
-            for (Map.Entry<IAffinity, Double> entry : affinityShifts.entrySet()) {
-                IAffinity affinity = entry.getKey();
+            Map<Affinity, Double> affinityShifts = affinityShifts();
+            for (Map.Entry<Affinity, Double> entry : affinityShifts.entrySet()) {
+                Affinity affinity = entry.getKey();
                 Double shift = entry.getValue();
                 if (continuous) {
                     shift /= 4;
@@ -274,7 +274,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public Map<IAffinity, Double> affinityShifts() {
+    public Map<Affinity, Double> affinityShifts() {
         return partsWithModifiers()
                 .stream()
                 .map(Pair::getFirst)
@@ -287,7 +287,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public Set<IAffinity> affinities() {
+    public Set<Affinity> affinities() {
         return partsWithModifiers().stream()
                 .map(Pair::getFirst)
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
@@ -299,7 +299,7 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public IAffinity primaryAffinity() {
+    public Affinity primaryAffinity() {
         return affinityShifts().entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue())

@@ -1,0 +1,15 @@
+{
+  "cost": {
+    "arsmagicalegacy:green": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:offense",
+  "parents": [
+    "arsmagicalegacy:lightning_damage",
+    "arsmagicalegacy:magic_damage",
+    "arsmagicalegacy:frost_damage",
+    "arsmagicalegacy:fire_damage"
+  ],
+  "x": 210,
+  "y": 165
+}

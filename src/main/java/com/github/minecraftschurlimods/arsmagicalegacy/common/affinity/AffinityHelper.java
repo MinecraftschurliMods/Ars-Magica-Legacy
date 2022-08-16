@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -72,7 +72,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public ItemStack getEssenceForAffinity(IAffinity affinity) {
+    public ItemStack getEssenceForAffinity(Affinity affinity) {
         return getEssenceForAffinity(affinity.getId());
     }
 
@@ -82,7 +82,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public ItemStack getTomeForAffinity(IAffinity affinity) {
+    public ItemStack getTomeForAffinity(Affinity affinity) {
         return getTomeForAffinity(affinity.getId());
     }
 
@@ -94,14 +94,14 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, IAffinity affinity) {
+    public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity) {
         return getStackForAffinity(item, affinity.getId());
     }
 
     @Override
-    public IAffinity getAffinityForStack(ItemStack stack) {
+    public Affinity getAffinityForStack(ItemStack stack) {
         if (stack.getItem() instanceof IAffinityItem item) return item.getAffinity(stack);
-        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(IAffinity.NONE));
+        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(Affinity.NONE));
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public double getAffinityDepth(Player player, IAffinity affinity) {
+    public double getAffinityDepth(Player player, Affinity affinity) {
         return getAffinityDepth(player, affinity.getId());
     }
 
@@ -123,7 +123,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public void setAffinityDepth(Player player, IAffinity affinity, float amount) {
+    public void setAffinityDepth(Player player, Affinity affinity, float amount) {
         setAffinityDepth(player, affinity.getId(), amount);
     }
 
@@ -133,7 +133,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public void applyAffinityShift(Player player, IAffinity affinity, float shift) {
+    public void applyAffinityShift(Player player, Affinity affinity, float shift) {
         if (affinity.getId() == Affinity.NONE) return;
         AffinityHolder storage = getAffinityHolder(player);
         float adjacentDecrement = shift * ADJACENT_FACTOR;
@@ -146,13 +146,13 @@ public final class AffinityHelper implements IAffinityHelper {
         for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
             storage.subtractFromAffinity(adjacent, adjacentDecrement);
         }
-        for (ResourceLocation minorOpposite : affinity.getMinorOpposingAffinities()) {
+        for (ResourceLocation minorOpposite : affinity.minorOpposites()) {
             storage.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
         }
-        for (ResourceLocation majorOpposite : affinity.getMajorOpposingAffinities()) {
+        for (ResourceLocation majorOpposite : affinity.majorOpposites()) {
             storage.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
         }
-        ResourceLocation directOpposite = affinity.getDirectOpposingAffinity();
+        ResourceLocation directOpposite = affinity.directOpposite();
         storage.subtractFromAffinity(directOpposite, shift);
         if (player instanceof ServerPlayer sp) {
             syncToPlayer(sp);
@@ -255,7 +255,7 @@ public final class AffinityHelper implements IAffinityHelper {
          * @param affinity The affinity to get the depth for.
          * @return The depth for the given affinity.
          */
-        public double getAffinityDepth(IAffinity affinity) {
+        public double getAffinityDepth(Affinity affinity) {
             return getAffinityDepth(affinity.getId());
         }
 

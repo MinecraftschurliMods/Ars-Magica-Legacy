@@ -11,7 +11,6 @@ public interface TranslationConstants {
     String SPELL_INVALID                  = "item."    + ArsMagicaAPI.MOD_ID + ".spell.invalid";
     String SPELL_INVALID_DESCRIPTION      = "item."    + ArsMagicaAPI.MOD_ID + ".spell.invalid.description";
     String SPELL_MANA_COST                = "item."    + ArsMagicaAPI.MOD_ID + ".spell.mana_cost";
-    String SPELL_PREFAB_NAME              = "item."    + ArsMagicaAPI.MOD_ID + ".spell.prefab.name";
     String SPELL_REAGENTS                 = "item."    + ArsMagicaAPI.MOD_ID + ".spell.reagents";
     String SPELL_RECIPE_TITLE             = "item."    + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";
     String SPELL_UNKNOWN                  = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown";

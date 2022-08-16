@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +30,7 @@ public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
         var api = ArsMagicaAPI.get();
         var skillHelper = api.getSkillHelper();
         ServerPlayer sender = ctx.getSender();
-        api.getSkillManager().get(skill()).getCost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
+        sender.getLevel().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(skill()).cost().forEach((resourceLocation, integer) -> skillHelper.consumeSkillPoint(sender, resourceLocation, integer));
         skillHelper.learn(sender, skill());
     }
 }

@@ -1,0 +1,297 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "left"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left2",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "left",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left3",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "left",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "right"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right1",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "right",
+        "tier": "3|2|1"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right2",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "right",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right3",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "right",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left"
+      },
+      "when": {
+        "facing": "south",
+        "half": "left"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left2"
+      },
+      "when": {
+        "facing": "south",
+        "half": "left",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left3"
+      },
+      "when": {
+        "facing": "south",
+        "half": "left",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right"
+      },
+      "when": {
+        "facing": "south",
+        "half": "right"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right1"
+      },
+      "when": {
+        "facing": "south",
+        "half": "right",
+        "tier": "3|2|1"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right2"
+      },
+      "when": {
+        "facing": "south",
+        "half": "right",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right3"
+      },
+      "when": {
+        "facing": "south",
+        "half": "right",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "left"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left2",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "left",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left3",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "left",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "right"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right1",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "right",
+        "tier": "3|2|1"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right2",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "right",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right3",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "right",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "left"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left2",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "left",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_left3",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "left",
+        "tier": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "right"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right1",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "right",
+        "tier": "3|2|1"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right2",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "right",
+        "tier": "3|2"
+      }
+    },
+    {
+      "apply": {
+        "model": "arsmagicalegacy:block/inscription_table_right3",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "right",
+        "tier": "3"
+      }
+    }
+  ]
+}

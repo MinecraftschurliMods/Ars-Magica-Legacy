@@ -11,25 +11,25 @@ import java.util.Objects;
  */
 public interface ISkillPointItem {
     /**
-     * Get the {@link ISkillPoint} stored in the {@link ItemStack}.
+     * Get the {@link SkillPoint} stored in the {@link ItemStack}.
      *
-     * @param stack the {@link ItemStack} that has the {@link ISkillPoint} stored in it
-     * @return the stored {@link ISkillPoint}
+     * @param stack the {@link ItemStack} that has the {@link SkillPoint} stored in it
+     * @return the stored {@link SkillPoint}
      */
-    default ISkillPoint getSkillPoint(ItemStack stack) {
+    default SkillPoint getSkillPoint(ItemStack stack) {
         var registry = ArsMagicaAPI.get().getSkillPointRegistry();
         ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.getRegistryName().toString()));
         return Objects.requireNonNull(registry.getValue(key));
     }
 
     /**
-     * Set the {@link ISkillPoint} stored in the {@link ItemStack}
+     * Set the {@link SkillPoint} stored in the {@link ItemStack}
      *
-     * @param stack      the {@link ItemStack} to set the {@link ISkillPoint} for
-     * @param skillPoint the {@link ISkillPoint} to set
-     * @return the {@link ItemStack} with the {@link ISkillPoint} stored in it
+     * @param stack      the {@link ItemStack} to set the {@link SkillPoint} for
+     * @param skillPoint the {@link SkillPoint} to set
+     * @return the {@link ItemStack} with the {@link SkillPoint} stored in it
      */
-    default ItemStack setSkillPoint(ItemStack stack, ISkillPoint skillPoint) {
+    default ItemStack setSkillPoint(ItemStack stack, SkillPoint skillPoint) {
         stack.getOrCreateTag().putString(ArsMagicaAPI.get().getSkillPointRegistry().getRegistryName().toString(), skillPoint.getId().toString());
         return stack;
     }

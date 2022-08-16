@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalk
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import net.minecraft.core.Direction;
@@ -31,10 +32,12 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.*;
@@ -48,6 +51,8 @@ class AMBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         altarCoreBlock(ALTAR_CORE);
+        inscriptionTableBlock(INSCRIPTION_TABLE);
+        horizontalBlock(OCCULUS.get(), models().getExistingFile(modLoc("block/occulus")));
         airBlock(ALTAR_VIEW);
         simpleBlock(MAGIC_WALL, "translucent");
         obeliskBlock(OBELISK);
@@ -99,6 +104,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         railBlock(IRON_INLAY);
         railBlock(REDSTONE_INLAY);
         railBlock(GOLD_INLAY);
+        simpleBlock(LIQUID_ESSENCE.get(), models().getBuilder(LIQUID_ESSENCE.getId().getPath()).texture("particle", modLoc("block/" + LIQUID_ESSENCE.getId().getPath() + "_still")));
     }
 
     /**
@@ -448,5 +454,31 @@ class AMBlockStateProvider extends BlockStateProvider {
                     .end()
             ).build();
         });
+    }
+
+    /**
+     * Adds an inscription table block state definition.
+     * @param block The block to generate the block state definition for.
+     */
+    private void inscriptionTableBlock(RegistryObject<? extends InscriptionTableBlock> block) {
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+        for (Direction facing : InscriptionTableBlock.FACING.getPossibleValues()) {
+            for (InscriptionTableBlock.Half half : InscriptionTableBlock.HALF.getPossibleValues()) {
+                for (int tier : InscriptionTableBlock.TIER.getPossibleValues()) {
+                    if (tier == 1 && half == InscriptionTableBlock.Half.LEFT) continue;
+                    ModelFile.ExistingModelFile existingFile = models().getExistingFile(modLoc("block/inscription_table_" + half.getSerializedName() + (tier > 0 ? tier : "")));
+                    MultiPartBlockStateBuilder.PartBuilder partBuilder = builder.part().rotationY((int) facing.toYRot()).modelFile(existingFile).addModel();
+                    partBuilder.condition(InscriptionTableBlock.FACING, facing);
+                    partBuilder.condition(InscriptionTableBlock.HALF, half);
+                    if (tier > 0) {
+                        ArrayList<Integer> ints = new ArrayList<>();
+                        for (int i = 3; i >= tier; i--) {
+                            ints.add(i);
+                        }
+                        partBuilder.condition(InscriptionTableBlock.TIER, ints.toArray(new Integer[0]));
+                    }
+                }
+            }
+        }
     }
 }

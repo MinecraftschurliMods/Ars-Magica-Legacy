@@ -2,8 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -38,8 +38,8 @@ public class SpellCustomizationScreen extends Screen {
         super(Component.empty());
         editBox = new EditBox(font, 0, 0, 0, 0, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
-        SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
-        SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
+        ISpellItem.getSpellName(stack).ifPresent(editBox::setValue);
+        ISpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
     }
 
     @Override

@@ -4,7 +4,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -38,10 +39,13 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, PrefabSpellManager.instance().values()
-                .stream()
-                .map(IPrefabSpell::makeSpell)
-                .toList());
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                ClientHelper.getRegistryAccess()
+                            .registryOrThrow(PrefabSpell.REGISTRY_KEY)
+                            .stream()
+                            .map(IPrefabSpell::makeSpell)
+                            .toList());
     }
 
     public static class AffinitySubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {

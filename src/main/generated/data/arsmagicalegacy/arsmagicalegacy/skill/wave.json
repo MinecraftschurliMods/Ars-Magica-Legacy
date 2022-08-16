@@ -1,0 +1,13 @@
+{
+  "cost": {
+    "arsmagicalegacy:red": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:offense",
+  "parents": [
+    "arsmagicalegacy:damage",
+    "arsmagicalegacy:velocity"
+  ],
+  "x": 255,
+  "y": 300
+}

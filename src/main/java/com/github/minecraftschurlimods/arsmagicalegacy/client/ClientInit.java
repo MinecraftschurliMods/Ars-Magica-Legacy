@@ -2,10 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
@@ -54,11 +54,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
+import com.github.minecraftschurlimods.betterhudlib.HUDManager;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -70,12 +72,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -97,6 +99,7 @@ public final class ClientInit {
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Keybinds.init(modEventBus);
+        HUDManager.enableKeybind();
         modEventBus.addListener(ClientInit::clientSetup);
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
         modEventBus.addListener(ClientInit::modelRegister);
@@ -114,6 +117,8 @@ public final class ClientInit {
     private static void clientSetup(FMLClientSetupEvent event) {
         registerMenuScreens();
         CompatManager.clientInit(event);
+        ItemBlockRenderTypes.setRenderLayer(AMFluids.LIQUID_ESSENCE.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMFluids.FLOWING_LIQUID_ESSENCE.get(), RenderType.translucent());
     }
 
     private static void registerMenuScreens() {
@@ -143,15 +148,15 @@ public final class ClientInit {
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
             if (item instanceof IAffinityItem) {
-                IForgeRegistry<IAffinity> affinities = api.getAffinityRegistry();
-                for (IAffinity affinity : affinities) {
-                    if (!IAffinity.NONE.equals(affinities.getKey(affinity))) {
+                IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
+                for (Affinity affinity : affinities) {
+                    if (!Affinity.NONE.equals(affinities.getKey(affinity))) {
                         event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
             }
             if (item instanceof ISkillPointItem) {
-                for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
+                for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
                     event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
             }
@@ -213,6 +218,7 @@ public final class ClientInit {
 
     private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
         pre.getPoseStack().pushPose();
+        if (pre.getEntity().getAttribute(AMAttributes.SCALE.get()) == null) return;
         float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.get());
         if (factor == 1) return;
         pre.getPoseStack().scale(factor, factor, factor);

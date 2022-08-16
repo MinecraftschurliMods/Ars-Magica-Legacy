@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "arsmagicalegacy:green": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:utility",
+  "parents": [
+    "arsmagicalegacy:invisibility"
+  ],
+  "x": 30,
+  "y": 255
+}

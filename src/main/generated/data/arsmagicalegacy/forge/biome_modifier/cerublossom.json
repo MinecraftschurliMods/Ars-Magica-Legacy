@@ -1,0 +1,18 @@
+{
+  "type": "forge:add_features",
+  "biomes": {
+    "type": "forge:and",
+    "values": [
+      "#minecraft:is_overworld",
+      {
+        "type": "forge:or",
+        "values": [
+          "#minecraft:is_jungle",
+          "#forge:is_swamp"
+        ]
+      }
+    ]
+  },
+  "features": "arsmagicalegacy:cerublossom",
+  "step": "vegetal_decoration"
+}

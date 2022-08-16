@@ -7,10 +7,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 class AMPrefabSpellProvider extends PrefabSpellProvider {
-    AMPrefabSpellProvider(DataGenerator generator) {
-        super(ArsMagicaAPI.MOD_ID, generator);
+    AMPrefabSpellProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        super(ArsMagicaAPI.MOD_ID, generator, existingFileHelper);
     }
 
     @Override

@@ -1,19 +1,22 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
-import com.google.gson.JsonObject;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.SerializationException;
 import org.jetbrains.annotations.Contract;
 
 import java.util.function.Consumer;
 
 public class OcculusTabBuilder {
     private final ResourceLocation id;
-    private Integer index;
-    private Integer startX;
-    private Integer startY;
-    private String renderer;
+    private String renderer = OcculusTab.DEFAULT_RENDERER;
+    private int index;
+    private int startX = 0;
+    private int startY = 0;
+    private int width = OcculusTab.TEXTURE_WIDTH;
+    private int height = OcculusTab.TEXTURE_HEIGHT;
+    private ResourceLocation background;
+    private ResourceLocation icon;
 
     protected OcculusTabBuilder(ResourceLocation id) {
         this.id = id;
@@ -71,6 +74,54 @@ public class OcculusTabBuilder {
     }
 
     /**
+     * Sets the width of the occulus tab.
+     *
+     * @param width The width to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
+    /**
+     * Sets the height of the occulus tab.
+     *
+     * @param height The height to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setHeight(int height) {
+        this.height = height;
+        return this;
+    }
+
+    /**
+     * Sets the background of the occulus tab.
+     *
+     * @param background The background to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setBackground(ResourceLocation background) {
+        this.background = background;
+        return this;
+    }
+
+    /**
+     * Sets the icon of the occulus tab.
+     *
+     * @param icon The icon to set.
+     * @return This builder, for chaining.
+     */
+    @Contract("_ -> this")
+    public OcculusTabBuilder setIcon(ResourceLocation icon) {
+        this.icon = icon;
+        return this;
+    }
+
+    /**
      * Sets the renderer class of the occulus tab.
      *
      * @param renderer The renderer class to set.
@@ -108,13 +159,7 @@ public class OcculusTabBuilder {
     /**
      * @return The serialized occulus tab.
      */
-    JsonObject serialize() {
-        JsonObject json = new JsonObject();
-        if (index == null) throw new SerializationException("An occulus tab needs an index!");
-        json.addProperty("index", this.index);
-        json.addProperty("renderer", this.renderer);
-        json.addProperty("start_x", this.startX);
-        json.addProperty("start_y", this.startY);
-        return json;
+    OcculusTab build() {
+        return new OcculusTab(renderer, background, icon, width, height, startX, startY, index, null);
     }
 }

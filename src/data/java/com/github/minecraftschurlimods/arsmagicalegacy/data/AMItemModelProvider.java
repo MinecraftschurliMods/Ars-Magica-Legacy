@@ -1,11 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -116,19 +117,20 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(BATTLEMAGE_CHESTPLATE);
         itemGenerated(BATTLEMAGE_LEGGINGS);
         itemGenerated(BATTLEMAGE_BOOTS);
-        spawnEggItem(AMItems.DRYAD_SPAWN_EGG);
-        spawnEggItem(AMItems.MAGE_SPAWN_EGG);
-        spawnEggItem(AMItems.MANA_CREEPER_SPAWN_EGG);
-        spawnEggItem(AMItems.WATER_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.FIRE_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.EARTH_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.AIR_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.ICE_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.LIGHTNING_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.NATURE_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
-        spawnEggItem(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(DRYAD_SPAWN_EGG);
+        spawnEggItem(MAGE_SPAWN_EGG);
+        spawnEggItem(MANA_CREEPER_SPAWN_EGG);
+        spawnEggItem(WATER_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(FIRE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(EARTH_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(AIR_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(ICE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(LIGHTNING_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(NATURE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(LIFE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(ARCANE_GUARDIAN_SPAWN_EGG);
+        spawnEggItem(ENDER_GUARDIAN_SPAWN_EGG);
+        withExistingParent(LIQUID_ESSENCE_BUCKET, new ResourceLocation("forge", "item/bucket")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(AMFluids.LIQUID_ESSENCE.get()).end();
     }
 
     /**
@@ -198,15 +200,15 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
+     * Adds an item model for this item for each affinity, excluding {@link Affinity#NONE}.
      *
      * @param item The affinity item to add this for.
      * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
      */
     private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
-        for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(IAffinity.NONE)) continue;
+        for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+            if (affinity.getId().equals(Affinity.NONE)) continue;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
@@ -220,7 +222,7 @@ class AMItemModelProvider extends ItemModelProvider {
      */
     private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
         getBuilder(item.getId().toString());
-        for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
+        for (SkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
             singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }

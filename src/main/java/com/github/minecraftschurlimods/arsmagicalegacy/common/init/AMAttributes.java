@@ -9,6 +9,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTRIBUTES;
+
 @NonExtendable
 public interface AMAttributes {
     RegistryObject<Attribute> MAX_MANA      = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
@@ -20,12 +22,12 @@ public interface AMAttributes {
 
     private static RegistryObject<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
-        return AMRegistries.ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
+        return ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
     }
 
     private static RegistryObject<Attribute> registerBool(String id, boolean defaultValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
-        return AMRegistries.ATTRIBUTES.register(id, () -> new BooleanAttribute(key, defaultValue).setSyncable(syncable));
+        return ATTRIBUTES.register(id, () -> new BooleanAttribute(key, defaultValue).setSyncable(syncable));
     }
 
     class BooleanAttribute extends RangedAttribute {

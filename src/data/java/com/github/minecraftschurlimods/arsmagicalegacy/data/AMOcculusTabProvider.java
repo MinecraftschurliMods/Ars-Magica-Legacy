@@ -5,12 +5,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.data.OcculusTabBuilde
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.OcculusTabProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusAffinityTabRenderer;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.Consumer;
 
 class AMOcculusTabProvider extends OcculusTabProvider {
-    AMOcculusTabProvider(DataGenerator generator) {
-        super(ArsMagicaAPI.MOD_ID, generator);
+    AMOcculusTabProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        super(ArsMagicaAPI.MOD_ID, generator, existingFileHelper);
+    }
+
+    @Override
+    public String getName() {
+        return "AMOcculusTabs";
     }
 
     @Override

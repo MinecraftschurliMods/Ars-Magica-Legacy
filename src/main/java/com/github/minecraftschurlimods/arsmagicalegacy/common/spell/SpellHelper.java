@@ -3,13 +3,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.Mth;
@@ -186,8 +186,8 @@ public final class SpellHelper implements ISpellHelper {
 
     @Override
     public void nextShapeGroup(ItemStack stack) {
-        ISpell spell = SpellItem.getSpell(stack);
+        ISpell spell = ISpellItem.getSpell(stack);
         spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
-        SpellItem.saveSpell(stack, spell);
+        ISpellItem.saveSpell(stack, spell);
     }
 }

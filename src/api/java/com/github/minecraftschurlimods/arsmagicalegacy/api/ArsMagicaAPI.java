@@ -1,8 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
@@ -11,10 +9,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
@@ -22,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -32,6 +32,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
+import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -78,12 +79,12 @@ public interface ArsMagicaAPI {
     /**
      * @return The registry for skill points.
      */
-    IForgeRegistry<ISkillPoint> getSkillPointRegistry();
+    IForgeRegistry<SkillPoint> getSkillPointRegistry();
 
     /**
      * @return The registry for affinities.
      */
-    IForgeRegistry<IAffinity> getAffinityRegistry();
+    IForgeRegistry<Affinity> getAffinityRegistry();
 
     /**
      * @return The registry for spell parts.
@@ -91,34 +92,23 @@ public interface ArsMagicaAPI {
     IForgeRegistry<ISpellPart> getSpellPartRegistry();
 
     /**
-     * @return The registry for abilities.
-     */
-    IForgeRegistry<IAbility> getAbilityRegistry();
-
-    /**
      * @return The registry for contingency types.
      */
     IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
 
-    /**
-     * @return The skill manager instance.
-     */
-    ISkillManager getSkillManager();
+    @Experimental
+    IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
 
-    /**
-     * @return The occulus tab manager instance.
-     */
-    IOcculusTabManager getOcculusTabManager();
+    @Experimental
+    IForgeRegistry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry();
+
+    @Experimental
+    IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
 
     /**
      * @return The spell data manager instance.
      */
     ISpellDataManager getSpellDataManager();
-
-    /**
-     * @return The ability manager instance.
-     */
-    IAbilityManager getAbilityManager();
 
     /**
      * @return The spell data manager instance.

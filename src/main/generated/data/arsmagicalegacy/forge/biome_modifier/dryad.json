@@ -1,0 +1,16 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": {
+    "type": "forge:and",
+    "values": [
+      "#minecraft:is_overworld",
+      "#minecraft:is_forest"
+    ]
+  },
+  "spawners": {
+    "type": "arsmagicalegacy:dryad",
+    "maxCount": 25,
+    "minCount": 15,
+    "weight": 2
+  }
+}

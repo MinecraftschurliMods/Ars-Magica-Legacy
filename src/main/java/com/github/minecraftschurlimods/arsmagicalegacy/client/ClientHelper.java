@@ -4,9 +4,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellCustomiza
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ClientHelper {
@@ -57,5 +62,13 @@ public final class ClientHelper {
      */
     public static void updateStepHeight(Player player, float stepHeight) {
         player.maxUpStep = stepHeight;
+    }
+
+    @NotNull
+    public static RegistryAccess getRegistryAccess() {
+        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return RegistryAccess.BUILTIN.get();
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        if (connection == null) return RegistryAccess.BUILTIN.get();
+        return connection.registryAccess();
     }
 }

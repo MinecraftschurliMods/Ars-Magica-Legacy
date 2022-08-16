@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.client;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class OcculusTabRenderer extends AbstractContainerEventHandler implements Widget, NarratableEntry {
     protected final int textureHeight;
     protected final int textureWidth;
-    protected final IOcculusTab occulusTab;
+    protected final OcculusTab occulusTab;
     protected final Screen parent;
     protected int screenWidth;
     protected int screenHeight;
@@ -33,9 +33,9 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     protected int posX;
     protected int posY;
 
-    protected OcculusTabRenderer(IOcculusTab occulusTab, Screen parent) {
-        textureHeight = occulusTab.getHeight();
-        textureWidth = occulusTab.getWidth();
+    protected OcculusTabRenderer(OcculusTab occulusTab, Screen parent) {
+        this.textureHeight = occulusTab.height();
+        this.textureWidth = occulusTab.width();
         this.occulusTab = occulusTab;
         this.parent = parent;
     }

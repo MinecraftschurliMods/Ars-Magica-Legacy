@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
@@ -119,9 +119,9 @@ public final class AMUtil {
      */
     public static ItemStack getSpellStack(LivingEntity entity) {
         ItemStack stack = entity.getMainHandItem();
-        if (SpellItem.getSpell(stack) != ISpell.EMPTY) return stack;
+        if (ISpellItem.getSpell(stack) != ISpell.EMPTY) return stack;
         stack = entity.getOffhandItem();
-        return SpellItem.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
+        return ISpellItem.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
     }
 
     /**

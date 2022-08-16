@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "chimerite_dust",
+  "ingredient": {
+    "item": "arsmagicalegacy:chimerite_ore"
+  },
+  "result": "arsmagicalegacy:chimerite"
+}

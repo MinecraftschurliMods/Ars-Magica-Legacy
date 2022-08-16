@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -28,8 +28,8 @@ public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
     private static class AffinityItemOverrides extends ItemOverrides {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-            IAffinity affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(stack);
-            if (affinity.getId().equals(IAffinity.NONE)) return model;
+            Affinity affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(stack);
+            if (affinity.getId().equals(Affinity.NONE)) return model;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_" + affinity.getId().getPath());
             return Minecraft.getInstance().getModelManager().getModel(rl);
         }

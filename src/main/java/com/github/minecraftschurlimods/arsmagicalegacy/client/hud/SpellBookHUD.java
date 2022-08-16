@@ -1,42 +1,58 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
+import com.github.minecraftschurlimods.betterhudlib.HUDElement;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public final class SpellBookHUD extends GuiComponent implements IGuiOverlay {
+public final class SpellBookHUD extends HUDElement {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/spell_book.png");
 
+    public SpellBookHUD() {
+        super(Config.CLIENT.SPELL_BOOK_ANCHOR_X, Config.CLIENT.SPELL_BOOK_ANCHOR_Y, Config.CLIENT.SPELL_BOOK_X::get, Config.CLIENT.SPELL_BOOK_Y::get, () -> 148, () -> 22);
+    }
+
     @Override
-    public void render(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height) {
+    public void draw(ForgeGui forgeGui, PoseStack poseStack, float partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || Minecraft.getInstance().options.hideGui) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (mainHand.getItem() instanceof SpellBookItem) {
-            renderSpellBookHUD(gui, mStack, partialTicks, width, height, mainHand);
+            renderSpellBookHUD(forgeGui, poseStack, mainHand);
         } else if (offHand.getItem() instanceof SpellBookItem) {
-            renderSpellBookHUD(gui, mStack, partialTicks, width, height, offHand);
+            renderSpellBookHUD(forgeGui, poseStack, offHand);
         }
     }
 
-    private void renderSpellBookHUD(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height, ItemStack spellBook) {
+    @Override
+    protected void onPositionUpdate(AnchorX anchorX, AnchorY anchorY, int x, int y) {
+        Config.CLIENT.SPELL_BOOK_ANCHOR_X.set(anchorX);
+        Config.CLIENT.SPELL_BOOK_ANCHOR_Y.set(anchorY);
+        Config.CLIENT.SPELL_BOOK_X.set(x);
+        Config.CLIENT.SPELL_BOOK_Y.set(y);
+    }
+
+    @Override
+    protected void save() {
+        Config.CLIENT.save();
+    }
+
+    private void renderSpellBookHUD(ForgeGui gui, PoseStack mStack, ItemStack spellBook) {
         SimpleContainer active = SpellBookItem.getContainer(spellBook).active();
         final int selected = SpellBookItem.getSelectedSlot(spellBook);
         if (selected != -1) {
             mStack.pushPose();
-            mStack.translate(width / 2f + 100, height - 19, 100);
             mStack.scale(0.75f, 0.75f, 0.75f);
             mStack.pushPose();
             RenderSystem.setShaderTexture(0, TEXTURE);

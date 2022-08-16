@@ -18,11 +18,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
@@ -134,6 +136,7 @@ public interface AMItems {
     RegistryObject<ForgeSpawnEggItem>            LIFE_GUARDIAN_SPAWN_EGG      = ITEMS.register("life_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.LIFE_GUARDIAN, 0x12e780, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ARCANE_GUARDIAN_SPAWN_EGG    = ITEMS.register("arcane_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ARCANE_GUARDIAN, 0x7f3280, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ENDER_GUARDIAN_SPAWN_EGG     = ITEMS.register("ender_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ENDER_GUARDIAN, 0x000000, 0xc9bc2f, ITEM_64));
+    RegistryObject<BucketItem>                   LIQUID_ESSENCE_BUCKET        = ITEMS.register("liquid_essence_bucket", () -> new BucketItem(AMFluids.LIQUID_ESSENCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(TAB)));
 
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);

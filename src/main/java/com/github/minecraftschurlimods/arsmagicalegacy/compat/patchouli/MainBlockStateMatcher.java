@@ -1,8 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,12 +14,13 @@ class MainBlockStateMatcher implements IStateMatcher {
     private final TriPredicate<BlockGetter, BlockPos, BlockState> predicate;
 
     MainBlockStateMatcher() {
-        this.predicate = (blockGetter, blockPos, state) -> AltarMaterialManager.instance().getStructureMaterial(state.getBlock()).map(AltarStructureMaterial::block).filter(state::is).isPresent();
+        this.predicate = (blockGetter, blockPos, state) -> RegistryAccess.BUILTIN.get().registryOrThrow(AltarStructureMaterial.REGISTRY_KEY).stream().anyMatch(mat -> state.is(mat.block()));
     }
 
     @Override
     public BlockState getDisplayedState(long ticks) {
-        AltarStructureMaterial mat = AltarMaterialManager.instance().getRandomStructureMaterial(Math.toIntExact(ticks / 20));
+        Registry<AltarStructureMaterial> registry = RegistryAccess.BUILTIN.get().registryOrThrow(AltarStructureMaterial.REGISTRY_KEY);
+        AltarStructureMaterial mat = registry.stream().toArray(AltarStructureMaterial[]::new)[Math.toIntExact(ticks / 20) % registry.size()];
         if (mat == null) return Blocks.AIR.defaultBlockState();
         return mat.block().defaultBlockState();
     }

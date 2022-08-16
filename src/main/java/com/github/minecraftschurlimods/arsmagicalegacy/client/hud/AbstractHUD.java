@@ -1,34 +1,29 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
+import com.github.minecraftschurlimods.betterhudlib.HUDElement;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
-public abstract class AbstractHUD extends GuiComponent implements IGuiOverlay {
+public abstract class AbstractHUD extends HUDElement {
     public static final ResourceLocation BAR_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/hud/bar.png");
+    private final EnumValue<AnchorX> anchorX;
+    private final EnumValue<AnchorY> anchorY;
+    private final IntValue x;
+    private final IntValue y;
 
-    @Override
-    public void render(ForgeGui gui, PoseStack mStack, float partialTicks, int width, int height) {
-        if (!Minecraft.getInstance().options.hideGui && gui.shouldDrawSurvivalElements()) {
-            render(mStack, width, height, partialTicks);
-        }
+    protected AbstractHUD(EnumValue<AnchorX> anchorX, EnumValue<AnchorY> anchorY, IntValue x, IntValue y, int width, int height) {
+        super(anchorX, anchorY, x::get, y::get, () -> width, () -> height);
+        this.anchorX = anchorX;
+        this.anchorY = anchorY;
+        this.x = x;
+        this.y = y;
     }
-
-    /**
-     * Renders the HUD.
-     *
-     * @param mStack       The pose stack to use.
-     * @param width        The width to use.
-     * @param height       The height to use.
-     * @param partialTicks The partial ticks value to use.
-     */
-    protected abstract void render(PoseStack mStack, int width, int height, float partialTicks);
 
     /**
      * Renders a bar.
@@ -61,5 +56,18 @@ public abstract class AbstractHUD extends GuiComponent implements IGuiOverlay {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         mStack.popPose();
+    }
+
+    @Override
+    protected void onPositionUpdate(AnchorX anchorX, AnchorY anchorY, int x, int y) {
+        this.anchorX.set(anchorX);
+        this.anchorY.set(anchorY);
+        this.x.set(x);
+        this.y.set(y);
+    }
+
+    @Override
+    protected void save() {
+        Config.CLIENT.save();
     }
 }

@@ -4,20 +4,17 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.DataResult;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -46,68 +43,16 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SpellItem extends Item implements ISpellItem {
-    public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
-    private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
-    private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final CreativeModeTab PREFAB_SPELLS_TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID + ".prefab_spells") {
+        @Override
+        public ItemStack makeIcon() {
+            return AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY);
+        }
+    };
 
     public SpellItem() {
         super(new Item.Properties().stacksTo(1));
-    }
-
-    /**
-     * @param stack The stack to get the spell icon for.
-     * @return An optional containing the spell icon id, or an empty optional if the given stack does not have a spell icon.
-     */
-    public static Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
-    }
-
-    /**
-     * Sets the given icon to the given stack.
-     *
-     * @param stack The stack to set the icon on.
-     * @param icon  The icon to set.
-     */
-    public static void setSpellIcon(ItemStack stack, ResourceLocation icon) {
-        stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
-    }
-
-    /**
-     * @param stack The stack to get the spell name for.
-     * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
-     */
-    public static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
-    }
-
-    /**
-     * Sets the given name to the given stack.
-     *
-     * @param stack The stack to set the name on.
-     * @param name  The name to set.
-     */
-    public static void setSpellName(ItemStack stack, String name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
-    }
-
-    /**
-     * Sets the given spell to the given stack.
-     *
-     * @param stack The stack to set the spell on.
-     * @param spell The spell to set.
-     */
-    public static void saveSpell(ItemStack stack, ISpell spell) {
-        stack.getOrCreateTag().put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
-    }
-
-    /**
-     * @param stack The stack to get the spell for.
-     * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
-     */
-    public static ISpell getSpell(ItemStack stack) {
-        if (stack.isEmpty()) return ISpell.EMPTY;
-        return ISpell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(ISpell.EMPTY);
     }
 
     @Override
@@ -121,7 +66,7 @@ public class SpellItem extends Item implements ISpellItem {
             pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
             return;
         }
-        ISpell spell = getSpell(pStack);
+        ISpell spell = ISpellItem.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) {
             pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
@@ -149,9 +94,9 @@ public class SpellItem extends Item implements ISpellItem {
             if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
                 return Component.translatable(TranslationConstants.SPELL_UNKNOWN);
         }
-        ISpell spell = getSpell(pStack);
+        ISpell spell = ISpellItem.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
-        return getSpellName(pStack).<Component>map(Component::literal).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
+        return ISpellItem.getSpellName(pStack).<Component>map(Component::literal).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -167,22 +112,22 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
         if (entity.level.isClientSide()) return;
-        ISpell spell = getSpell(stack);
+        ISpell spell = ISpellItem.getSpell(stack);
         if (!spell.isContinuous()) return;
         SpellCastResult result = spell.cast(entity, entity.level, count - 1, true, true);
-        SoundEvent sound = getSpell(stack).primaryAffinity().getLoopSound();
+        SoundEvent sound = ISpellItem.getSpell(stack).primaryAffinity().getLoopSound();
         if (sound != null) {
             entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
         }
         if (entity instanceof Player player) {
             if (result.isConsume()) {
-                player.awardStat(AMStats.SPELL_CAST);
+                player.awardStat(AMStats.SPELL_CAST.get());
             }
             if (result.isFail()) {
                 player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
             }
         }
-        saveSpell(stack, spell);
+        ISpellItem.saveSpell(stack, spell);
     }
 
     @Override
@@ -190,7 +135,7 @@ public class SpellItem extends Item implements ISpellItem {
         var api = ArsMagicaAPI.get();
         if (pLivingEntity instanceof Player player) {
             if (!api.getMagicHelper().knowsMagic(player)) return;
-            Optional<ResourceLocation> spellIcon = getSpellIcon(pStack);
+            Optional<ResourceLocation> spellIcon = ISpellItem.getSpellIcon(pStack);
             if (spellIcon.isPresent()) {
                 castSpell(pLevel, player, player.getUsedItemHand(), pStack);
             } else {
@@ -234,7 +179,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (item.getItem() instanceof SpellBookItem) {
             item = SpellBookItem.getSelectedSpell(item);
         }
-        Optional<ResourceLocation> spellIcon = getSpellIcon(item);
+        Optional<ResourceLocation> spellIcon = ISpellItem.getSpellIcon(item);
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
         } else {
@@ -245,34 +190,34 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (category == PrefabSpellManager.ITEM_CATEGORY) {
-            PrefabSpellManager.instance().values().stream().map(IPrefabSpell::makeSpell).forEach(items::add);
+        if (category == PREFAB_SPELLS_TAB) {
+            ClientHelper.getRegistryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).stream().map(IPrefabSpell::makeSpell).forEach(items::add);
         }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
-        ISpell spell = getSpell(stack);
+        ISpell spell = ISpellItem.getSpell(stack);
         if (spell.isContinuous()) {
-            LOGGER.trace("{} starts casting continuous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} starts casting continuous spell {}", entity, ISpellItem.getSpellName(stack));
             entity.startUsingItem(hand);
         } else {
-            LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, ISpellItem.getSpellName(stack));
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
-            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
-            SoundEvent sound = getSpell(stack).primaryAffinity().getCastSound();
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, ISpellItem.getSpellName(stack), result);
+            SoundEvent sound = ISpellItem.getSpell(stack).primaryAffinity().getCastSound();
             if (sound != null) {
                 entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
             }
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
-                    player.awardStat(AMStats.SPELL_CAST);
+                    player.awardStat(AMStats.SPELL_CAST.get());
                 }
                 if (result.isFail()) {
                     player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
                 }
             }
         }
-        saveSpell(stack, spell);
+        ISpellItem.saveSpell(stack, spell);
     }
 }
