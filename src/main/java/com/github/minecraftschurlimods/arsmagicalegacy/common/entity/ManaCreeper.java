@@ -19,7 +19,7 @@ public class ManaCreeper extends Creeper {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.getAvailableGoals().stream().filter(goal -> goal.getGoal() instanceof AvoidEntityGoal<?>).forEach(goal -> goalSelector.removeGoal(goal.getGoal()));
+        goalSelector.getAvailableGoals().removeIf(goal -> goal.getGoal() instanceof AvoidEntityGoal<?>);
     }
 
     @Override
