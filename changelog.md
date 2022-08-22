@@ -1,7 +1,5 @@
-# Version 1.19.2-1.1.4
+# Version 1.19.2-1.1.5
 
-## Changes
+## Fixes
 
-- Update to 1.19.2
-- Moved some Datapack stuff
-- Added HUD management
+- Fixed crash.
