@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.TriPredicate;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat.getRegistry;
-
 class StairBlockStateMatcher implements IStateMatcher {
     private final Direction direction;
     private final Half half;
@@ -22,12 +20,12 @@ class StairBlockStateMatcher implements IStateMatcher {
     public StairBlockStateMatcher(Direction direction, Half half) {
         this.direction = direction;
         this.half = half;
-        this.predicate = (blockGetter, blockPos, state) -> getRegistry(blockGetter, AltarStructureMaterial.REGISTRY_KEY).stream().anyMatch(mat -> state.is(mat.stair())) && state.getValue(StairBlock.FACING) == direction && state.getValue(StairBlock.HALF) == half;
+        this.predicate = (blockGetter, blockPos, state) -> PatchouliCompat.getRegistry(blockGetter, AltarStructureMaterial.REGISTRY_KEY).stream().anyMatch(mat -> state.is(mat.stair())) && state.getValue(StairBlock.FACING) == direction && state.getValue(StairBlock.HALF) == half;
     }
 
     @Override
     public BlockState getDisplayedState(long ticks) {
-        Registry<AltarStructureMaterial> registry = getRegistry(null, AltarStructureMaterial.REGISTRY_KEY);
+        Registry<AltarStructureMaterial> registry = PatchouliCompat.getRegistry(null, AltarStructureMaterial.REGISTRY_KEY);
         AltarStructureMaterial mat = registry.stream().toArray(AltarStructureMaterial[]::new)[Math.toIntExact(ticks / 20) % registry.size()];
         if (mat == null) return Blocks.AIR.defaultBlockState();
         return mat.stair().defaultBlockState().setValue(StairBlock.FACING, direction).setValue(StairBlock.HALF, half);
