@@ -28,7 +28,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.IStateMatcher;
@@ -299,7 +298,6 @@ public class PatchouliCompat implements ICompatHandler {
         ).setSymmetrical(true));
     }
 
-    @NotNull
     static <T> Registry<T> getRegistry(@Nullable BlockGetter blockGetter, ResourceKey<Registry<T>> key) {
         return (blockGetter instanceof Level level ? level.registryAccess() : switch (EffectiveSide.get()) {
             case CLIENT -> ClientHelper.getRegistryAccess();
