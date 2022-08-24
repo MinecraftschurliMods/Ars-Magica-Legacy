@@ -9,8 +9,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,7 +66,7 @@ public final class ClientHelper {
 
     @NotNull
     public static RegistryAccess getRegistryAccess() {
-        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return RegistryAccess.BUILTIN.get();
+        if (EffectiveSide.get().isServer()) return ServerLifecycleHooks.getCurrentServer().registryAccess();
         ClientPacketListener connection = Minecraft.getInstance().getConnection();
         if (connection == null) return RegistryAccess.BUILTIN.get();
         return connection.registryAccess();
