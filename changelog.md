@@ -4,3 +4,4 @@
 
 - Fixed divide by 0 in patchouli book.
 - Fixed altar core not updating camo state correctly.
+- Fixed `KnowledgeHolder#skillPoints` being immutable.
