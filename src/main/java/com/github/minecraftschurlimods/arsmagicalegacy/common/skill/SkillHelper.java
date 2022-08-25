@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
@@ -265,7 +266,10 @@ public final class SkillHelper implements ISkillHelper {
         //@formatter:off
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.setOf(ResourceLocation.CODEC).fieldOf("skills").forGetter(KnowledgeHolder::skills),
-                Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT).fieldOf("skill_points").forGetter(KnowledgeHolder::skillPoints)
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT)
+                     .xmap((Function<Map<ResourceLocation,Integer>, Map<ResourceLocation,Integer>>) HashMap::new, Function.identity())
+                     .fieldOf("skill_points")
+                     .forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
         //@formatter:on
 

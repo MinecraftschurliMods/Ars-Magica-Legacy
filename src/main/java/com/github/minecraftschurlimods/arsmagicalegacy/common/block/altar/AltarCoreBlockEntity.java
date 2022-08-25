@@ -285,6 +285,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                     .ifRight(ArsMagicaLegacy.LOGGER::warn)
                     .left()
                     .orElse(null);
+            requestModelDataUpdate();
         }
         super.load(pTag);
     }
