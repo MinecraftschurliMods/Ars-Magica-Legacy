@@ -35,6 +35,14 @@ public final class ColorUtil {
     }
 
     /**
+     * @param color The color to get the alpha value for.
+     * @return The alpha value of the given color.
+     */
+    public static float getAlpha(int color) {
+        return (0xFF & (color >> 24)) / 255f;
+    }
+
+    /**
      * @param rgbColor The rgb color to be converted.
      * @return A float array representing the hue, saturation and brightness of the given rgb color.
      */

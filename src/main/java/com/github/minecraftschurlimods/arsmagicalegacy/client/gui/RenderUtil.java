@@ -32,6 +32,12 @@ public final class RenderUtil {
      * @param width  The width of the line.
      */
     public static void gradientLine2d(PoseStack stack, float startX, float startY, float endX, float endY, int zLevel, int color1, int color2, float width) {
+        if (ColorUtil.getAlpha(color1) == 0) {
+            color1 = 0xFF000000 | color1;
+        }
+        if (ColorUtil.getAlpha(color2) == 0) {
+            color2 = 0xFF000000 | color2;
+        }
         stack.pushPose();
         Matrix4f pose = stack.last().pose();
         RenderSystem.enableBlend();
@@ -43,8 +49,8 @@ public final class RenderUtil {
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         RenderSystem.lineWidth(width);
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), 1f).normal(1, 1, 0).endVertex();
-        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), 1f).normal(1, 1, 0).endVertex();
+        buf.vertex(pose, startX, startY, zLevel).color(ColorUtil.getRed(color1), ColorUtil.getGreen(color1), ColorUtil.getBlue(color1), ColorUtil.getAlpha(color1)).normal(1, 1, 0).endVertex();
+        buf.vertex(pose, endX, endY, zLevel).color(ColorUtil.getRed(color2), ColorUtil.getGreen(color2), ColorUtil.getBlue(color2), ColorUtil.getAlpha(color2)).normal(1, 1, 0).endVertex();
         BufferUploader.drawWithShader(buf.end());
         RenderSystem.lineWidth(1);
         RenderSystem.enableCull();

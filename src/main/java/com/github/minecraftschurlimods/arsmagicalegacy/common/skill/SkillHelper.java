@@ -71,13 +71,13 @@ public final class SkillHelper implements ISkillHelper {
     }
 
     @Override
-    public boolean canLearn(Player player, ResourceLocation skill) {
-        return getKnowledgeHolder(player).canLearn(skill);
+    public boolean canLearn(Player player, ResourceLocation skill, RegistryAccess registryAccess) {
+        return getKnowledgeHolder(player).canLearn(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).getOptional(skill).orElseThrow());
     }
 
     @Override
-    public boolean canLearn(Player player, Skill skill, RegistryAccess registryAccess) {
-        return getKnowledgeHolder(player).canLearn(skill, registryAccess);
+    public boolean canLearn(Player player, Skill skill) {
+        return getKnowledgeHolder(player).canLearn(skill);
     }
 
     @Override
@@ -267,7 +267,7 @@ public final class SkillHelper implements ISkillHelper {
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.setOf(ResourceLocation.CODEC).fieldOf("skills").forGetter(KnowledgeHolder::skills),
                 Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT)
-                     .xmap((Function<Map<ResourceLocation,Integer>, Map<ResourceLocation,Integer>>) HashMap::new, Function.identity())
+                     .<Map<ResourceLocation,Integer>>xmap(HashMap::new, Function.identity())
                      .fieldOf("skill_points")
                      .forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
@@ -340,13 +340,10 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         /**
-         * @param skillId The id of the skill to check.
+         * @param skill The skill to check.
          * @return Whether the given skill can be learned or not.
          */
-        public synchronized boolean canLearn(ResourceLocation skillId) {
-            var skillRegistry = RegistryAccess.BUILTIN.get().registryOrThrow(Skill.REGISTRY_KEY);
-            Skill skill = skillRegistry.get(skillId);
-            if (skill == null) return false;
+        public synchronized boolean canLearn(Skill skill) {
             boolean canLearn = true;
             for (ResourceLocation rl : skill.cost().keySet()) {
                 if (skillPoints.getOrDefault(rl, 0) < skill.cost().get(rl)) {
@@ -354,14 +351,6 @@ public final class SkillHelper implements ISkillHelper {
                 }
             }
             return canLearn && skills.containsAll(skill.parents());
-        }
-
-        /**
-         * @param skill The skill to check.
-         * @return Whether the given skill can be learned or not.
-         */
-        public boolean canLearn(Skill skill, RegistryAccess registryAccess) {
-            return canLearn(skill.getId(registryAccess));
         }
 
         /**

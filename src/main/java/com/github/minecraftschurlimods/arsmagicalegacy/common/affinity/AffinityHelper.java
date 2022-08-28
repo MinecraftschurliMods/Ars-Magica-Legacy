@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
@@ -116,7 +117,8 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
-        getAffinityHolder(player).subtractFromAffinity(affinity, (float) getAffinityHolder(player).getAffinityDepth(affinity) - amount);
+        AffinityHolder holder = getAffinityHolder(player);
+        holder.subtractFromAffinity(affinity, (float) holder.getAffinityDepth(affinity) - amount);
         if (player instanceof ServerPlayer sp) {
             syncToPlayer(sp);
         }
@@ -203,7 +205,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     public static final class AffinityHolder {
         public static final Codec<AffinityHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE).fieldOf("depths").forGetter(AffinityHolder::depths),
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE).<Map<ResourceLocation, Double>>xmap(HashMap::new, Function.identity()).fieldOf("depths").forGetter(AffinityHolder::depths),
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
         private final Map<ResourceLocation, Double> depths;

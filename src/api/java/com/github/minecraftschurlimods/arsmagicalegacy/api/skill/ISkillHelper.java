@@ -32,14 +32,14 @@ public interface ISkillHelper {
      * @param skill  The id of the skill to check for.
      * @return True if the given player can learn the given skill, false otherwise.
      */
-    boolean canLearn(Player player, ResourceLocation skill);
+    boolean canLearn(Player player, ResourceLocation skill, RegistryAccess registryAccess);
 
     /**
      * @param player The player to check the skill requirements for.
      * @param skill  The skill to check for.
      * @return True if the given player can learn the given skill, false otherwise.
      */
-    boolean canLearn(Player player, Skill skill, RegistryAccess registryAccess);
+    boolean canLearn(Player player, Skill skill);
 
     /**
      * Unlocks the given skill for the given player.
