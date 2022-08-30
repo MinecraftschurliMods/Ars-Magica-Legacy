@@ -397,6 +397,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CAST + "not_enough_mana", "Not enough mana!");
         add(TranslationConstants.SPELL_CAST + "silenced", "Silence!");
         add(TranslationConstants.TIER, "Tier: %s");
+        add(TranslationConstants.ALTAR_POWER, "Power: %s");
         add(TranslationConstants.RANGE_LOWER, "Min: %s");
         add(TranslationConstants.RANGE_UPPER, "Max: %s");
         add(TranslationConstants.SPELL_PART_MODIFIES, "Modifies");

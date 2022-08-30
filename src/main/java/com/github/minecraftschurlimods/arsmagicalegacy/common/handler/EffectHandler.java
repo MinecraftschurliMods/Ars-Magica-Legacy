@@ -64,7 +64,7 @@ final class EffectHandler {
             event.setDistance(event.getDistance() * (Objects.requireNonNull(entity.getEffect(AMMobEffects.GRAVITY_WELL.get())).getAmplifier() + 1));
         }
         if (entity.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
-            event.setDistance(event.getDistance() * ((float) Objects.requireNonNull(entity.getAttribute(AMAttributes.SCALE.get())).getValue() + 1));
+            event.setDistance(event.getDistance() * ((float) Objects.requireNonNull(entity.getAttribute(AMAttributes.SCALE.get())).getValue()));
         }
     }
 
@@ -74,7 +74,7 @@ final class EffectHandler {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
         }
         if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
-            event.setAmount(event.getAmount() * ((float) Objects.requireNonNull(living.getAttribute(AMAttributes.SCALE.get())).getValue() + 1));
+            event.setAmount(event.getAmount() * ((float) Objects.requireNonNull(living.getAttribute(AMAttributes.SCALE.get())).getValue()));
         }
     }
 
@@ -124,6 +124,7 @@ final class EffectHandler {
 
     private static void entitySize(EntityEvent.Size event) {
         if (!(event.getEntity() instanceof LivingEntity living) || !living.isAddedToWorld()) return;
+        if (living.getAttribute(AMAttributes.SCALE.get()) == null) return;
         float factor = (float) living.getAttributeValue(AMAttributes.SCALE.get());
         if (factor == 1) return;
         EntityDimensions newSize = event.getNewSize();

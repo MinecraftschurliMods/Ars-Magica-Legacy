@@ -19,9 +19,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.LightLayer;
+import net.minecraftforge.common.capabilities.CapabilityProvider;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+
+import java.lang.reflect.Field;
 
 /**
  * Holds the living and player tick event handlers. These get special treatment as these events should not have more than one event handler per mod.
@@ -31,6 +35,8 @@ final class TickHandler {
         forgeBus.addListener(TickHandler::livingUpdate);
         forgeBus.addListener(TickHandler::playerTick);
     }
+
+    private static final Field CAP_PROVIDER_VALID = ObfuscationReflectionHelper.findField(CapabilityProvider.class, "valid");
 
     private static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
@@ -65,15 +71,15 @@ final class TickHandler {
     }
 
     private static void playerTickServerEnd(final Player player) {
-
+        // NOOP
     }
 
     private static void playerTickClientStart(final Player player) {
-
+        // NOOP
     }
 
     private static void playerTickClientEnd(final Player player) {
-
+        // NOOP
     }
 
     private static void manaAndBurnoutRegen(final Player player) {
@@ -89,6 +95,11 @@ final class TickHandler {
         var api = ArsMagicaAPI.get();
         var manager = api.getAbilityManager();
         var helper = api.getAffinityHelper();
+        try {
+            if (!(boolean)CAP_PROVIDER_VALID.get(player)) return;
+        } catch (IllegalAccessException ignored) {
+            return;
+        }
         IAbilityData ability;
         if (!player.isCreative()) {
             if (manager.hasAbility(player, AMAbilities.WATER_DAMAGE_FIRE.getId()) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
@@ -121,7 +132,10 @@ final class TickHandler {
             FrostWalkerEnchantment.onEntityMoved(player, player.getLevel(), player.blockPosition(), 1);
         }
         AttributeMap attributes = player.getAttributes();
-        attributes.getInstance(Attributes.MAX_HEALTH).removeModifier(AbilityUUIDs.HEALTH_REDUCTION);
+        if (attributes.hasAttribute(Attributes.MAX_HEALTH)) {
+            //noinspection ConstantConditions
+            attributes.getInstance(Attributes.MAX_HEALTH).removeModifier(AbilityUUIDs.HEALTH_REDUCTION);
+        }
         boolean shouldReapplyHealthReduction = false;
         ability = manager.get(AMAbilities.LIGHT_HEALTH_REDUCTION.getId());
         if (player.getLevel().getBrightness(LightLayer.SKY, player.blockPosition()) == 15 && ability.test(player)) {
@@ -131,7 +145,8 @@ final class TickHandler {
         if (player.isInWaterOrBubble() && ability.test(player)) {
             shouldReapplyHealthReduction = true;
         }
-        if (shouldReapplyHealthReduction) {
+        if (shouldReapplyHealthReduction && attributes.hasAttribute(Attributes.MAX_HEALTH)) {
+            //noinspection ConstantConditions
             attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepth(player, ability.affinity()) * 4, AttributeModifier.Operation.ADDITION));
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());

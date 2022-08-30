@@ -93,7 +93,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.OptionalInt;
@@ -221,15 +220,8 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
-        for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
-            EntityType<? extends LivingEntity> living;
-            try {
-                //noinspection unchecked
-                living = (EntityType<? extends LivingEntity>) entity;
-            } catch (ClassCastException e) {
-                continue;
-            }
-            event.add(living, AMAttributes.SCALE.get());
+        for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
+            event.add(entity, AMAttributes.SCALE.get());
         }
     }
 
