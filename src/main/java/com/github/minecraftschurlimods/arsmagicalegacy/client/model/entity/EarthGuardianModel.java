@@ -88,12 +88,12 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
                     mp.xRot = degToRad(180) - rot;
                 }
             } else if (ticks > 13) {
-                float rot = 180 - 18 * (15 - ticks + pAgeInTicks - pEntity.tickCount);
+                float rot = degToRad(180 - 18 * (15 - ticks + pAgeInTicks - pEntity.tickCount));
                 for (ModelPart mp : rightArm) {
-                    mp.xRot = rot;
+                    mp.xRot = -rot;
                 }
                 for (ModelPart mp : leftArm) {
-                    mp.xRot = rot;
+                    mp.xRot = -rot;
                 }
                 for (ModelPart mp : rock) {
                     mp.xRot = degToRad(180) - rot;
@@ -105,16 +105,25 @@ public class EarthGuardianModel extends AMBossEntityModel<EarthGuardian> {
                 for (ModelPart mp : rightArm) {
                     mp.y = ticks;
                 }
-                for (ModelPart mp : rightArm) {
+                for (ModelPart mp : leftArm) {
                     mp.y = ticks;
                 }
             } else if (ticks >= 0) {
                 for (ModelPart mp : rightArm) {
                     mp.y = -ticks;
                 }
-                for (ModelPart mp : rightArm) {
+                for (ModelPart mp : leftArm) {
                     mp.y = -ticks;
                 }
+            }
+        } else if (action == EarthGuardian.EarthGuardianAction.STRIKE) {
+            float ticks = (pEntity.getTicksInAction() + pLimbSwing) % 20;
+            float rot = ticks <= 6 ? degToRad(30 * Math.min(ticks, 6)) : degToRad(180 - 30 * Math.min(ticks - 6, 6));
+            for (ModelPart mp : rightArm) {
+                mp.xRot = -rot;
+            }
+            for (ModelPart mp : leftArm) {
+                mp.xRot = -rot;
             }
         }
     }

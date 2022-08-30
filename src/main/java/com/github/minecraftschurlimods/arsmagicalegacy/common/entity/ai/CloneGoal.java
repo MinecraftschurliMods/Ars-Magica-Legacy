@@ -11,7 +11,7 @@ public class CloneGoal extends AbstractBossGoal<WaterGuardian> {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) <= 2;
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 2;
     }
 
     @Override

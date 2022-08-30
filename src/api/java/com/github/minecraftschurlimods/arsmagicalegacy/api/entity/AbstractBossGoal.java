@@ -40,12 +40,12 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canUse() {
-        return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying();
+        return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget());
     }
 
     @Override
     public boolean canContinueToUse() {
-        return true;
+        return boss.getAction() == action;
     }
 
     @Override
@@ -63,8 +63,6 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
         if (boss.distanceToSqr(target) > 64) {
             double angle = -Math.atan2(target.getZ() - boss.getZ(), target.getX() - boss.getX());
             boss.getNavigation().moveTo(target.getX() + Math.cos(angle) * 6, target.getY(), target.getZ() + Math.sin(angle) * 6, 0.5f);
-        } else if (!boss.canAttack(target)) {
-            boss.getNavigation().moveTo(target, 0.5f);
         }
         boss.setAction(action);
         ticks++;

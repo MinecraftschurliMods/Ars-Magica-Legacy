@@ -15,7 +15,7 @@ public class StrikeGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 2 && boss.distanceTo(boss.getTarget()) <= 4;
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) <= 2;
     }
 
     @Override
