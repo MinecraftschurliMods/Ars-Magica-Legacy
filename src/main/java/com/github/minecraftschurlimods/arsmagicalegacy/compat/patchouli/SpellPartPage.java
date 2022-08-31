@@ -9,6 +9,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -20,7 +21,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -130,7 +130,7 @@ public class SpellPartPage implements ICustomComponent {
         int startX = 0;
         int yOffset = -6;
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
-        Registry<Skill> skillRegistry = RegistryAccess.BUILTIN.get().registryOrThrow(Skill.REGISTRY_KEY);
+        Registry<Skill> skillRegistry = ClientHelper.getRegistry(Skill.REGISTRY_KEY);
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
             ResourceLocation registryName = modifier.getId();

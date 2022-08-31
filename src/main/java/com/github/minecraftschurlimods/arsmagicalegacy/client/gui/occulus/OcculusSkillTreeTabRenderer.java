@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRend
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
@@ -61,7 +62,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        RenderSystem.setShaderTexture(0, occulusTab.background(getMinecraft().getConnection().registryAccess()));
+        RenderSystem.setShaderTexture(0, occulusTab.background(ClientHelper.getRegistryAccess()));
         float scaledOffsetX = offsetX * SCALE;
         float scaledOffsetY = offsetY * SCALE;
         float scaledWidth = width * (1 / SCALE);
@@ -81,10 +82,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     protected void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        Player player = getMinecraft().player;
+        Player player = ClientHelper.getLocalPlayer();
         if (player == null) return;
         var api = ArsMagicaAPI.get();
-        var registryAccess = getMinecraft().getConnection().registryAccess();
+        var registryAccess = ClientHelper.getRegistryAccess();
         var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
         var occulusTabRegistry = registryAccess.registryOrThrow(OcculusTab.REGISTRY_KEY);
         var helper = api.getSkillHelper();
@@ -107,29 +108,35 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             float cX = skill.x() + SKILL_SIZE / 2 + 1;
             float cY = skill.y() + SKILL_SIZE / 2 + 1;
             setBlitOffset(1);
-            boolean hasPrereq = helper.canLearn(player, skill, registryAccess) || knows;
+            boolean hasPrereq = helper.canLearn(player, skill) || knows;
             for (ResourceLocation parentId : skill.parents()) {
                 Optional<Skill> parent = Optional.ofNullable(skillRegistry.get(parentId));
                 if (parent.isEmpty()) continue;
                 Skill parentSkill = parent.get();
                 float parentCX = parentSkill.x() + SKILL_SIZE / 2 + 1;
                 float parentCY = parentSkill.y() + SKILL_SIZE / 2 + 1;
-                int color = (knows ? ColorUtil.KNOWS_COLOR : getColorForLine(parentSkill, skill) & ColorUtil.UNKNOWN_SKILL_LINE_COLOR_MASK);
-                if (!hasPrereq) {
-                    color = ColorUtil.BLACK;
+                int color;
+                int offset;
+                // TODO polish line rendering
+                if (hasPrereq) {
+                    color = (knows ? ColorUtil.KNOWS_COLOR : getColorForLine(parentSkill, skill) & ColorUtil.UNKNOWN_SKILL_LINE_COLOR_MASK) | 0xFF000000;
+                    offset = getBlitOffset();
+                } else {
+                    color = ColorUtil.BLACK | 0xFF000000;
+                    offset = getBlitOffset() - 1;
                 }
                 if (cX != parentCX) {
-                    RenderUtil.lineThick2d(stack, parentCX, cY, cX, cY, getBlitOffset(), color);
+                    RenderUtil.lineThick2d(stack, parentCX, cY, cX, cY, offset, color);
                 }
                 if (cY != parentCY) {
-                    RenderUtil.lineThick2d(stack, parentCX, parentCY, parentCX, cY, getBlitOffset(), color);
+                    RenderUtil.lineThick2d(stack, parentCX, parentCY, parentCX, cY, offset, color);
                 }
             }
         }
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         for (Skill skill : skills) {
             boolean knows = helper.knows(player, skill, registryAccess);
-            boolean hasPrereq = helper.canLearn(player, skill, registryAccess) || knows;
+            boolean hasPrereq = helper.canLearn(player, skill) || knows;
             if (!hasPrereq) {
                 RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1);
             } else if (!knows) {
@@ -152,7 +159,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             if (mouseX >= skill.x() && mouseX <= skill.x() + SKILL_SIZE && mouseY >= skill.y() && mouseY <= skill.y() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
                 list.add(skill.getDisplayName(registryAccess).copy().withStyle(style -> style.withColor(getColorForSkill(skill))));
-                if (helper.canLearn(player, skill, registryAccess) || helper.knows(player, skill, registryAccess)) {
+                if (helper.canLearn(player, skill) || helper.knows(player, skill, registryAccess)) {
                     list.add(skill.getDescription(registryAccess).copy().withStyle(ChatFormatting.DARK_GRAY));
                 } else {
                     list.add(MISSING_REQUIREMENTS);
@@ -177,7 +184,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             Player player = getMinecraft().player;
             var registryAccess = getMinecraft().getConnection().registryAccess();
             if (player != null && hoverItem != null && !helper.knows(player, hoverItem, registryAccess)) {
-                if (helper.canLearn(player, hoverItem, registryAccess) || player.isCreative()) {
+                if (helper.canLearn(player, hoverItem) || player.isCreative()) {
                     ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
                 }
             } else {
