@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     protected final T caster;
-    protected final ISpell spell;
-    protected final int duration;
+    public final ISpell spell;
+    public final int duration;
     protected int ticks = 0;
 
     public ExecuteSpellGoal(T caster, ISpell spell, int duration) {
@@ -45,6 +45,9 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     public void stop() {
         super.stop();
         caster.setIsCastingSpell(false);
+        if (caster instanceof AbstractBoss boss) {
+            boss.setCurrentSpellDuration(-1);
+        }
     }
 
     @Override
@@ -60,6 +63,9 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
             caster.getNavigation().moveTo(target, 0.5f);
         } else {
             caster.setIsCastingSpell(true);
+            if (caster instanceof AbstractBoss boss) {
+                boss.setCurrentSpellDuration(duration);
+            }
             ticks++;
             if (ticks >= duration) {
                 SoundEvent sound = getAttackSound();

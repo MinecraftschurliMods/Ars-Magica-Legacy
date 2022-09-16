@@ -19,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Pig;
@@ -31,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
+    public static final EntityDataAccessor<Integer> CURRENT_SPELL_DURATION = SynchedEntityData.defineId(AbstractBoss.class, EntityDataSerializers.INT);
     private final ServerBossEvent bossEvent;
     private int ticksInAction = 0;
     private int ticksSinceLastPlayerScan = 0;
@@ -49,6 +51,24 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
             }
         }
         setIdle();
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(CURRENT_SPELL_DURATION, -1);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("CurrentSpellDuration", entityData.get(CURRENT_SPELL_DURATION));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        entityData.set(CURRENT_SPELL_DURATION, pCompound.getInt("CurrentSpellDuration"));
     }
 
     @Override
@@ -148,7 +168,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            action = getCastingAction();
+            setAction(getCastingAction());
         } else if (action == getCastingAction()) {
             setIdle();
         }
@@ -208,6 +228,22 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      */
     public int getTicksInAction() {
         return ticksInAction;
+    }
+
+    /**
+     * @return The duration of the currently active {@link ExecuteSpellGoal}, or -1 if the current goal is not an {@link ExecuteSpellGoal}.
+     */
+    public int getCurrentSpellDuration() {
+        return entityData.get(CURRENT_SPELL_DURATION);
+    }
+
+    /**
+     * Sets the current spell duration value.
+     *
+     * @param duration The duration value to set.
+     */
+    public void setCurrentSpellDuration(int duration) {
+        entityData.set(CURRENT_SPELL_DURATION, duration);
     }
 
     /**

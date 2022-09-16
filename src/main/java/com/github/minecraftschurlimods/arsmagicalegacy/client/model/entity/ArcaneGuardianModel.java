@@ -9,15 +9,20 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Set;
+
 public class ArcaneGuardianModel extends AMBossEntityModel<ArcaneGuardian> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_guardian"), "main");
     private final ModelPart rune;
+    private final Set<ModelPart> arm;
+    private final Set<ModelPart> hand;
 
     public ArcaneGuardianModel(ModelPart root) {
         rune = addPart(root, "rune", false);
         addParts(root, "neck", "body", "rod", "rod1", "rod2", "rod3", "rod4", "upper_left_arm", "lower_left_arm", "left_hand", "book", "robe_top", "robe_front", "right_leg", "robe_back_right", "robe_right", "left_leg", "robe_back_left", "robe_left");
         addHeadParts(root, "head", "hood_top", "hood_right", "hood_left", "hood_back");
-        addPositiveSwingingParts(root, "upper_right_arm", "lower_right_arm", "right_hand", "wand");
+        arm = addPositiveSwingingParts(root, "upper_right_arm", "lower_right_arm");
+        hand = addPositiveSwingingParts(root, "right_hand", "wand");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -59,5 +64,19 @@ public class ArcaneGuardianModel extends AMBossEntityModel<ArcaneGuardian> {
     public void setupAnim(ArcaneGuardian pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         rune.zRot = degToRad(pAgeInTicks);
+        int duration = pEntity.getCurrentSpellDuration();
+        if (pEntity.isCastingSpell() && duration >= 0) {
+            float ticks = (pEntity.getTicksInAction() + pLimbSwing) % duration;
+            float xRot = degToRad(ticks < 6 ? -ticks * 15 : ticks > duration - 6 ? -(duration - ticks) * 15 : -90);
+            float yRot = degToRad(ticks < 6 ? ticks * 5 : ticks > duration - 6 ? (duration - ticks) * 5 : ticks >= duration - 14 && ticks <= duration - 6 ? -(duration - ticks - 10) * 7.5f : -30);
+            for (ModelPart mp : arm) {
+                mp.xRot = xRot;
+                mp.yRot = yRot;
+            }
+            for (ModelPart mp : hand) {
+                mp.xRot = degToRad(90) + xRot;
+                mp.yRot = yRot;
+            }
+        }
     }
 }
