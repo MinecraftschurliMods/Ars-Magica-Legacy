@@ -27,18 +27,28 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class WaterGuardian extends AbstractBoss {
-    private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
-    private float spinRotation = 0;
-    private WaterGuardian master = null;
-    private WaterGuardian clone1 = null;
-    private WaterGuardian clone2 = null;
+public class WaterGuardian extends AbstractBoss implements IAnimatable {
+    private static final EntityDataAccessor<Boolean> IS_CLONE     = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
+    private final        AnimationFactory            factory      = new AnimationFactory(this);
+    private              float                       spinRotation = 0;
+    private              WaterGuardian               master       = null;
+    private              WaterGuardian               clone1       = null;
+    private              WaterGuardian               clone2       = null;
+    private AnimationController<WaterGuardian> idleController;
+    private AnimationController<WaterGuardian> spinController;
 
     public WaterGuardian(EntityType<? extends WaterGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
         setPathfindingMalus(BlockPathTypes.WATER, 0);
+        noCulling = true;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -61,7 +71,7 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return null;
     }
 
@@ -135,9 +145,8 @@ public class WaterGuardian extends AbstractBoss {
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
         } else if (pSource == DamageSource.DROWN) {
-            heal(pAmount);
             return false;
-        } else if (pSource == DamageSource.FREEZE || !isClone() && random.nextBoolean()) return false;
+        }
         return super.hurt(pSource, pAmount);
     }
 
@@ -145,20 +154,10 @@ public class WaterGuardian extends AbstractBoss {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new CloneGoal(this));
+        //        goalSelector.addGoal(2, new CloneGoal(this));
         goalSelector.addGoal(2, new SpinGoal<>(this, WaterGuardianAction.SPINNING, DamageSource.mobAttack(this)));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 10));
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 12));
-    }
-
-    @Override
-    public void handleEntityEvent(byte pId) {
-        if (pId == 56) {
-            action = WaterGuardianAction.SPINNING;
-        } else if (pId == 57) {
-            setIdle();
-        }
-        super.handleEntityEvent(pId);
     }
 
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
@@ -195,13 +194,34 @@ public class WaterGuardian extends AbstractBoss {
         return WaterGuardianAction.values();
     }
 
-    public enum WaterGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        CLONE(30, ACTION_1_ID),
-        SPINNING(40, ACTION_2_ID);
+    @Override
+    public void registerControllers(AnimationData data) {
+        idleController = new AnimationController<>(this, "idleController", 5, e -> {
+            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation.water_guardian.idle"));
+            return PlayState.CONTINUE;
+        });
+        spinController = new AnimationController<>(this, "spinController", 5, e -> {
+            if (action == WaterGuardianAction.CASTING || action == WaterGuardianAction.SPINNING) {
+                e.getController().setAnimation(new AnimationBuilder().addAnimation("animation.water_guardian.spin"));
+                return PlayState.CONTINUE;
+            } else {
+                e.getController().clearAnimationCache();
+                return PlayState.STOP;
+            }
+        });
+        data.addAnimationController(idleController);
+        data.addAnimationController(spinController);
+    }
 
-        private final int maxActionTime;
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
+    }
+
+    public enum WaterGuardianAction implements Action {
+        IDLE(-1, IDLE_ID), CASTING(-1, CASTING_ID), CLONE(30, ACTION_1_ID), SPINNING(40, ACTION_2_ID);
+
+        private final int  maxActionTime;
         private final byte animationId;
 
         WaterGuardianAction(int maxActionTime, byte animationId) {

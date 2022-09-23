@@ -21,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreMod
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
@@ -31,13 +32,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGu
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LifeGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LightningGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureScytheModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellRuneBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AMGeckolibRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AirGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ArcaneGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.DryadRenderer;
@@ -50,10 +51,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Li
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.LightningGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureScytheRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureScytheRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WintersGraspRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -214,7 +214,6 @@ public final class ClientInit {
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
         event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
         event.registerLayerDefinition(AirGuardianModel.LAYER_LOCATION, AirGuardianModel::createBodyLayer);
@@ -235,7 +234,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
-        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
+        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("water_guardian")));
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
         event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), AirGuardianRenderer::new);

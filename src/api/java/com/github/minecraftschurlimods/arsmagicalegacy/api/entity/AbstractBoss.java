@@ -19,10 +19,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -148,6 +146,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     @Override
     public void kill() {
+        hurtTime = 10;
         remove(Entity.RemovalReason.KILLED);
         bossEvent.setProgress(0);
         bossEvent.setVisible(false);
@@ -188,7 +187,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return The attack sound of this boss, or null if no attack sound should be played.
      */
     @Nullable
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return null;
     }
 

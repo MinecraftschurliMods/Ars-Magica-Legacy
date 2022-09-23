@@ -38,6 +38,8 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.example.GeckoLibMod;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
@@ -53,6 +55,7 @@ public final class ArsMagicaLegacy {
             throw LOGGER.throwing(new IllegalStateException("API was not initialized!"));
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
+        GeckoLib.initialize();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         AMRegistries.init(bus);
         EventHandler.register(bus);
