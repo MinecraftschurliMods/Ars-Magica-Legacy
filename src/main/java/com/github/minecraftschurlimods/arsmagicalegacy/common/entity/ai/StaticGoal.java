@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class StaticGoal extends AbstractBossGoal<LightningGuardian> {
     public StaticGoal(LightningGuardian boss) {
-        super(boss, LightningGuardian.LightningGuardianAction.LONG_CASTING, 60);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override

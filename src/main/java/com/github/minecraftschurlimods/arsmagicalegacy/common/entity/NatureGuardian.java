@@ -14,10 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class NatureGuardian extends AbstractBoss {
     public boolean hasScythe = true;
-    private float spinRotation = 0;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
@@ -43,29 +43,21 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return AMSounds.NATURE_GUARDIAN_ATTACK.get();
     }
 
     @Override
-    public Action getIdleAction() {
-        return NatureGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return NatureGuardianAction.CASTING;
-    }
-
-    public float getSpinRotation() {
-        return spinRotation;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new SpinGoal<>(this));
+        goalSelector.addGoal(2, new StrikeGoal<>(this));
+        goalSelector.addGoal(2, new ThrowScytheGoal(this));
     }
 
     @Override
     public void aiStep() {
-        if (level.isClientSide() && getAction() == NatureGuardianAction.SPINNING) {
-            spinRotation = (spinRotation + 30) % 360;
-        }
         super.aiStep();
     }
 
@@ -81,42 +73,6 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new StrikeGoal<>(this, NatureGuardianAction.STRIKE, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(2, new SpinGoal<>(this, NatureGuardianAction.SPINNING, DamageSource.mobAttack(this)));
-        goalSelector.addGoal(2, new ThrowScytheGoal(this));
-    }
-
-    @Override
-    public Action[] getActions() {
-        return NatureGuardianAction.values();
-    }
-
-    public enum NatureGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        STRIKE(20, ACTION_1_ID),
-        SPINNING(40, ACTION_2_ID),
-        THROWING(20, ACTION_3_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        NatureGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
+    public void registerControllers(AnimationData data) {
     }
 }

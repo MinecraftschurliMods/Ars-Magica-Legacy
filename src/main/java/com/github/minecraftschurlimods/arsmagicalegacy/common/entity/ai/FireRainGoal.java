@@ -1,11 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
 
 public class FireRainGoal extends AbstractBossGoal<FireGuardian> {
     public FireRainGoal(FireGuardian boss) {
-        super(boss, FireGuardian.FireGuardianAction.LONG_CASTING, 10);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override

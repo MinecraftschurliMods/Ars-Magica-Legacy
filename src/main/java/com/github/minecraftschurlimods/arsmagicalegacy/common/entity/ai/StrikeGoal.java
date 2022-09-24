@@ -6,11 +6,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public class StrikeGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
-    private final DamageSource damageSource;
-
-    public StrikeGoal(T boss, AbstractBoss.Action action, DamageSource damageSource) {
-        super(boss, action);
-        this.damageSource = damageSource;
+    public StrikeGoal(T boss) {
+        super(boss, AbstractBoss.Action.STRIKE, 10, 10);
     }
 
     @Override
@@ -21,7 +18,7 @@ public class StrikeGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     @Override
     public void perform() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().expandTowards(Math.cos(boss.getYRot()) * 2, 0, Math.sin(boss.getYRot()) * 2).inflate(2.5, 2, 2.5), e -> !(e instanceof AbstractBoss))) {
-            e.hurt(damageSource, 4);
+            e.hurt(DamageSource.mobAttack(boss), 4);
         }
     }
 }

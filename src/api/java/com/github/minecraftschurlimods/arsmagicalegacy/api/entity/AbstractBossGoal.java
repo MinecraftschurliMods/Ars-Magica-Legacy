@@ -13,10 +13,6 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     protected final int cooldown;
     protected int ticks = 0;
 
-    public AbstractBossGoal(T boss, AbstractBoss.Action action) {
-        this(boss, action, action.getMaxActionTime());
-    }
-
     public AbstractBossGoal(T boss, AbstractBoss.Action action, int duration) {
         this(boss, action, duration, 0);
     }
@@ -40,7 +36,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canUse() {
-        return boss.isIdle() && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget());
+        return boss.getAction() == AbstractBoss.Action.IDLE && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget());
     }
 
     @Override
@@ -51,7 +47,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     @Override
     public void stop() {
         super.stop();
-        boss.setIdle();
+        boss.setAction(AbstractBoss.Action.IDLE);
     }
 
     @Override
@@ -67,7 +63,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
         boss.setAction(action);
         ticks++;
         performTick();
-        if (ticks >= duration) {
+        if (ticks == duration) {
             SoundEvent sound = getAttackSound();
             if (sound != null) {
                 boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat());

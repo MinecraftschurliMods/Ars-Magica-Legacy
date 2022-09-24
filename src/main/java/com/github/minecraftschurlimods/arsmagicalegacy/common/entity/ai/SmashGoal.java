@@ -8,11 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
-    private final DamageSource damageSource;
-
-    public SmashGoal(T boss, AbstractBoss.Action action, DamageSource damageSource) {
-        super(boss, action, 10, 10);
-        this.damageSource = damageSource;
+    public SmashGoal(T boss) {
+        super(boss, AbstractBoss.Action.SMASH, 10, 10);
     }
 
     @Override
@@ -23,7 +20,7 @@ public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     @Override
     public void perform() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(4, 2, 4), e -> !(e instanceof AbstractBoss))) {
-            e.hurt(damageSource, 8);
+            e.hurt(DamageSource.mobAttack(boss), 8);
             if (!boss.getLevel().isClientSide()) {
                 for (int i = -2; i <= 2; i++) {
                     Shockwave entity = Shockwave.create(boss.getLevel());

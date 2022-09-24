@@ -17,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,18 +50,18 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return AMSounds.LIFE_GUARDIAN_ATTACK.get();
     }
 
     @Override
-    public Action getIdleAction() {
-        return LifeGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return LifeGuardianAction.CASTING;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+//        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(AMEntities.EARTH_ELEMENTAL.get(), AMEntities.FIRE_ELEMENTAL.get(), AMEntities.MANA_ELEMENTAL.get(), AMEntities.DARKLING.get())));
+        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.WITCH)));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 20));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 20));
     }
 
     @Override
@@ -92,44 +93,10 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 80));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 20));
-//        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(AMEntities.EARTH_ELEMENTAL.get(), AMEntities.FIRE_ELEMENTAL.get(), AMEntities.MANA_ELEMENTAL.get(), AMEntities.DARKLING.get())));
-        goalSelector.addGoal(2, new SummonAlliesGoal(this, List.of(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.WITCH)));
+    public void registerControllers(AnimationData data) {
     }
 
     public void addQueuedMinion(LivingEntity minion) {
         queuedMinions.add(minion);
-    }
-
-    @Override
-    public Action[] getActions() {
-        return LifeGuardianAction.values();
-    }
-
-    public enum LifeGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        LifeGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class LightningGuardian extends AbstractBoss {
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
@@ -43,18 +44,20 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return AMSounds.LIGHTNING_GUARDIAN_ATTACK.get();
     }
 
     @Override
-    public Action getIdleAction() {
-        return LightningGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return LightningGuardianAction.CASTING;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 200));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 200));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 200));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 200));
+        goalSelector.addGoal(2, new LightningRodGoal(this));
+        goalSelector.addGoal(2, new StaticGoal(this));
     }
 
     @Override
@@ -77,49 +80,12 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 300));
-        goalSelector.addGoal(2, new LightningRodGoal(this));
-        goalSelector.addGoal(2, new StaticGoal(this));
+    public void registerControllers(AnimationData data) {
     }
 
     @Override
     public void setAction(Action action) {
         super.setAction(action);
-        setNoGravity(action == LightningGuardianAction.LONG_CASTING);
-    }
-
-    @Override
-    public Action[] getActions() {
-        return LightningGuardianAction.values();
-    }
-
-    public enum LightningGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        LONG_CASTING(-1, ACTION_1_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        LightningGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
+        setNoGravity(action == Action.LONG_CAST);
     }
 }

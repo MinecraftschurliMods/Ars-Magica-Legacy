@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LifeGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
@@ -17,7 +18,7 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
     private boolean hasCasted = false;
 
     public SummonAlliesGoal(LifeGuardian boss, List<EntityType<? extends Mob>> list) {
-        super(boss, LifeGuardian.LifeGuardianAction.CASTING, 20);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
         this.list = list;
     }
 

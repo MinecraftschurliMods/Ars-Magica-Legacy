@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
     public HurricaneGoal(AirGuardian boss) {
-        super(boss, AirGuardian.AirGuardianAction.SPINNING);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override

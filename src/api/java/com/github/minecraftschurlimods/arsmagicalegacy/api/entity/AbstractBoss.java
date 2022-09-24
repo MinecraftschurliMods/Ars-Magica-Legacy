@@ -2,10 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,16 +21,18 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractBoss extends Monster implements ISpellCasterEntity {
-    public static final EntityDataAccessor<Integer> CURRENT_SPELL_DURATION = SynchedEntityData.defineId(AbstractBoss.class, EntityDataSerializers.INT);
+public abstract class AbstractBoss extends Monster implements ISpellCasterEntity, IAnimatable {
+    private final AnimationFactory factory;
     private final ServerBossEvent bossEvent;
     private int ticksInAction = 0;
     private int ticksSinceLastPlayerScan = 0;
-    protected Action action;
+    private Action action = Action.IDLE;
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level) {
         this(type, level, BossEvent.BossBarColor.PINK);
@@ -42,31 +40,14 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level, BossEvent.BossBarColor color) {
         super(type, level);
+        noCulling = true;
+        factory = new AnimationFactory(this);
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         if (!level.isClientSide()) {
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0.0D, 128.0D, 0.0D, 192.0D)))) {
+            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192.0D)))) {
                 bossEvent.addPlayer(player);
             }
         }
-        setIdle();
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(CURRENT_SPELL_DURATION, -1);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("CurrentSpellDuration", entityData.get(CURRENT_SPELL_DURATION));
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        entityData.set(CURRENT_SPELL_DURATION, pCompound.getInt("CurrentSpellDuration"));
     }
 
     @Override
@@ -121,6 +102,16 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
+    public void handleEntityEvent(byte pId) {
+        for (Action a : Action.values()) {
+            if (a.id == pId) {
+                action = a;
+            }
+        }
+        super.handleEntityEvent(pId);
+    }
+
+    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof AbstractBoss) return false;
         if (pSource == DamageSource.IN_WALL) {
@@ -156,31 +147,26 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     @Override
     public boolean canCastSpell() {
-        return action == getIdleAction();
+        return action == Action.IDLE;
     }
 
     @Override
     public boolean isCastingSpell() {
-        return action == getCastingAction();
+        return action == Action.CAST;
     }
 
     @Override
     public void setIsCastingSpell(boolean isCastingSpell) {
         if (isCastingSpell) {
-            setAction(getCastingAction());
-        } else if (action == getCastingAction()) {
-            setIdle();
+            setAction(Action.CAST);
+        } else if (action == Action.CAST) {
+            setAction(Action.IDLE);
         }
     }
 
     @Override
-    public void handleEntityEvent(byte pId) {
-        for (Action a : getActions()) {
-            if (a.getAnimationId() == pId) {
-                action = a;
-            }
-        }
-        super.handleEntityEvent(pId);
+    public AnimationFactory getFactory() {
+        return factory;
     }
 
     /**
@@ -200,26 +186,13 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
 
     /**
      * Sets the current action.
+     *
      * @param action The action to set.
      */
     public void setAction(Action action) {
         this.action = action;
         ticksInAction = 0;
-        level.broadcastEntityEvent(this, action.getAnimationId());
-    }
-
-    /**
-     * @return Whether this boss is currently in idle state or not.
-     */
-    public boolean isIdle() {
-        return action == getIdleAction();
-    }
-
-    /**
-     * Sets this boss into idle state.
-     */
-    public void setIdle() {
-        setAction(getIdleAction());
+        level.broadcastEntityEvent(this, action.id);
     }
 
     /**
@@ -228,37 +201,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public int getTicksInAction() {
         return ticksInAction;
     }
-
-    /**
-     * @return The duration of the currently active {@link ExecuteSpellGoal}, or -1 if the current goal is not an {@link ExecuteSpellGoal}.
-     */
-    public int getCurrentSpellDuration() {
-        return entityData.get(CURRENT_SPELL_DURATION);
-    }
-
-    /**
-     * Sets the current spell duration value.
-     *
-     * @param duration The duration value to set.
-     */
-    public void setCurrentSpellDuration(int duration) {
-        entityData.set(CURRENT_SPELL_DURATION, duration);
-    }
-
-    /**
-     * @return The action representing an idle state.
-     */
-    public abstract Action getIdleAction();
-
-    /**
-     * @return The action representing a casting state.
-     */
-    public abstract Action getCastingAction();
-
-    /**
-     * @return All actions this boss can have.
-     */
-    protected abstract Action[] getActions();
 
     private void updatePlayers() {
         if (!level.isClientSide()) {
@@ -277,24 +219,13 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         }
     }
 
-    /**
-     * Marker interface for actions the bosses can use.
-     */
-    public interface Action {
-        byte IDLE_ID = (byte) 24;
-        byte CASTING_ID = (byte) 25;
-        byte ACTION_1_ID = (byte) 26;
-        byte ACTION_2_ID = (byte) 27;
-        byte ACTION_3_ID = (byte) 28;
+    public enum Action {
+        IDLE(-1), CAST(-2), LONG_CAST(-3), SMASH(-4), SPIN(-5), STRIKE(-6), THROW(-7);
 
-        /**
-         * @return The time using this action requires.
-         */
-        int getMaxActionTime();
+        public final byte id;
 
-        /**
-         * @return The animation id, used in {@code broadcastEntityEvent} and {@code handleEntityEvent}.
-         */
-        byte getAnimationId();
+        Action(int id) {
+            this.id = (byte) id;
+        }
     }
 }

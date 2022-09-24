@@ -1,12 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Whirlwind;
 
 public class WhirlwindGoal extends AbstractBossGoal<AirGuardian> {
     public WhirlwindGoal(AirGuardian boss) {
-        super(boss, AirGuardian.AirGuardianAction.SPINNING);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override

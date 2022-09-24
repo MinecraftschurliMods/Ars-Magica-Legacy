@@ -1,12 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureScythe;
 
 public class ThrowScytheGoal extends AbstractBossGoal<NatureGuardian> {
     public ThrowScytheGoal(NatureGuardian boss) {
-        super(boss, NatureGuardian.NatureGuardianAction.THROWING);
+        super(boss, AbstractBoss.Action.THROW, 20);
     }
 
     @Override

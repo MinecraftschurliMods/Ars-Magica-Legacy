@@ -45,9 +45,6 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     public void stop() {
         super.stop();
         caster.setIsCastingSpell(false);
-        if (caster instanceof AbstractBoss boss) {
-            boss.setCurrentSpellDuration(-1);
-        }
     }
 
     @Override
@@ -63,9 +60,6 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
             caster.getNavigation().moveTo(target, 0.5f);
         } else {
             caster.setIsCastingSpell(true);
-            if (caster instanceof AbstractBoss boss) {
-                boss.setCurrentSpellDuration(duration);
-            }
             ticks++;
             if (ticks >= duration) {
                 SoundEvent sound = getAttackSound();

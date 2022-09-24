@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class ArcaneGuardian extends AbstractBoss {
     public ArcaneGuardian(EntityType<? extends ArcaneGuardian> type, Level level) {
@@ -41,18 +42,8 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return AMSounds.ARCANE_GUARDIAN_ATTACK.get();
-    }
-
-    @Override
-    public Action getIdleAction() {
-        return ArcaneGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return ArcaneGuardianAction.CASTING;
     }
 
     @Override
@@ -65,30 +56,6 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     @Override
-    public Action[] getActions() {
-        return ArcaneGuardianAction.values();
-    }
-
-    public enum ArcaneGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        ArcaneGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
+    public void registerControllers(AnimationData data) {
     }
 }

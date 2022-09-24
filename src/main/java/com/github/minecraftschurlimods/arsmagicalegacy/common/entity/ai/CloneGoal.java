@@ -1,12 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 
 public class CloneGoal extends AbstractBossGoal<WaterGuardian> {
     public CloneGoal(WaterGuardian boss) {
-        super(boss, WaterGuardian.WaterGuardianAction.CLONE);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override
@@ -16,9 +17,7 @@ public class CloneGoal extends AbstractBossGoal<WaterGuardian> {
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            boss.setClones(spawnClone(), spawnClone());
-        }
+        boss.setClones(spawnClone(), spawnClone());
     }
 
     private WaterGuardian spawnClone() {

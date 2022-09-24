@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
 import net.minecraft.world.damagesource.DamageSource;
@@ -7,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
     public EnderRushGoal(EnderGuardian boss) {
-        super(boss, EnderGuardian.EnderGuardianAction.LONG_CASTING, 30);
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override

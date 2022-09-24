@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LaunchArmGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowArmGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class IceGuardian extends AbstractBoss {
     private boolean hasRightArm = true;
@@ -44,23 +45,17 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return null;
     }
 
     @Override
-    public Action getIdleAction() {
-        return IceGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return IceGuardianAction.CASTING;
-    }
-
-    @Override
-    public boolean canFreeze() {
-        return false;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new SmashGoal<>(this));
+        goalSelector.addGoal(2, new StrikeGoal<>(this));
+        goalSelector.addGoal(2, new ThrowArmGoal(this));
     }
 
     @Override
@@ -84,20 +79,12 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SmashGoal<>(this, IceGuardianAction.SMASH, DamageSource.FREEZE));
-        goalSelector.addGoal(2, new StrikeGoal<>(this, IceGuardianAction.STRIKE, DamageSource.FREEZE));
-        goalSelector.addGoal(2, new LaunchArmGoal(this));
+    public void registerControllers(AnimationData data) {
     }
 
-    public void returnArm() {
-        if (!hasLeftArm) {
-            hasLeftArm = true;
-        } else if (!hasRightArm) {
-            hasRightArm = true;
-        }
+    @Override
+    public boolean canFreeze() {
+        return false;
     }
 
     public void launchArm() {
@@ -108,42 +95,19 @@ public class IceGuardian extends AbstractBoss {
         }
     }
 
+    public void returnArm() {
+        if (!hasLeftArm) {
+            hasLeftArm = true;
+        } else if (!hasRightArm) {
+            hasRightArm = true;
+        }
+    }
+
     public boolean hasLeftArm() {
         return hasLeftArm;
     }
 
     public boolean hasRightArm() {
         return hasRightArm;
-    }
-
-    @Override
-    public Action[] getActions() {
-        return IceGuardianAction.values();
-    }
-
-    public enum IceGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        STRIKE(20, ACTION_1_ID),
-        SMASH(20, ACTION_2_ID),
-        LAUNCHING(30, ACTION_3_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        IceGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
     }
 }

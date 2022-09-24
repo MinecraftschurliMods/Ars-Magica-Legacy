@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class AirGuardian extends AbstractBoss {
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
@@ -38,18 +39,16 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return null;
     }
 
     @Override
-    public Action getIdleAction() {
-        return AirGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return AirGuardianAction.CASTING;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new HurricaneGoal(this));
+        goalSelector.addGoal(2, new WhirlwindGoal(this));
     }
 
     @Override
@@ -78,39 +77,6 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new HurricaneGoal(this));
-        goalSelector.addGoal(2, new WhirlwindGoal(this));
-    }
-
-    @Override
-    public Action[] getActions() {
-        return AirGuardianAction.values();
-    }
-
-    public enum AirGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        SPINNING(40, ACTION_1_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        AirGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
-        }
+    public void registerControllers(AnimationData data) {
     }
 }

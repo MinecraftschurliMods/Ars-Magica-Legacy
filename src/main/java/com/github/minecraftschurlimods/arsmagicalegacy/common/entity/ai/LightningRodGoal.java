@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBossGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -16,7 +17,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
     private boolean hasThrown = false;
 
     public LightningRodGoal(LightningGuardian boss) {
-        super(boss, LightningGuardian.LightningGuardianAction.LONG_CASTING);
+        super(boss, AbstractBoss.Action.LONG_CAST, 160);
     }
 
     @Override

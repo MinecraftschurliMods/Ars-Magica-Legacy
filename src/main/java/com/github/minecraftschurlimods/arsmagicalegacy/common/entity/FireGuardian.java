@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class FireGuardian extends AbstractBoss {
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
@@ -48,23 +48,18 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    public SoundEvent getAttackSound() {
+    protected SoundEvent getAttackSound() {
         return AMSounds.FIRE_GUARDIAN_ATTACK.get();
     }
 
     @Override
-    public Action getIdleAction() {
-        return FireGuardianAction.IDLE;
-    }
-
-    @Override
-    public Action getCastingAction() {
-        return FireGuardianAction.CASTING;
-    }
-
-    @Override
-    public boolean fireImmune() {
-        return true;
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new FireRainGoal(this));
+        goalSelector.addGoal(2, new FlamethrowerGoal(this));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
+        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
     }
 
     @Override
@@ -79,7 +74,7 @@ public class FireGuardian extends AbstractBoss {
                 }
             }
         }
-        if (getTicksInAction() > 10 && getAction() == FireGuardianAction.LONG_CASTING) {
+        if (getTicksInAction() > 10 && getAction() == Action.LONG_CAST) {
             if (getTarget() != null) {
                 lookAt(getTarget(), 10, 10);
             }
@@ -105,13 +100,12 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 30));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 30));
-        goalSelector.addGoal(2, new FireRainGoal(this));
-        goalSelector.addGoal(2, new FlamethrowerGoal(this));
+    public void registerControllers(AnimationData data) {
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
     }
 
     public void flamethrower() {
@@ -122,35 +116,6 @@ public class FireGuardian extends AbstractBoss {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3), e -> !(e instanceof AbstractBoss))) {
                 e.hurt(DamageSource.ON_FIRE, 5);
             }
-        }
-    }
-
-    @Override
-    public Action[] getActions() {
-        return FireGuardianAction.values();
-    }
-
-    public enum FireGuardianAction implements Action {
-        IDLE(-1, IDLE_ID),
-        CASTING(-1, CASTING_ID),
-        LONG_CASTING(-1, ACTION_1_ID);
-
-        private final int maxActionTime;
-        private final byte animationId;
-
-        FireGuardianAction(int maxActionTime, byte animationId) {
-            this.maxActionTime = maxActionTime;
-            this.animationId = animationId;
-        }
-
-        @Override
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
-
-        @Override
-        public byte getAnimationId() {
-            return animationId;
         }
     }
 }
