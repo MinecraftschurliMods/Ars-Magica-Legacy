@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
@@ -28,22 +27,22 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return AMSounds.NATURE_GUARDIAN_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.NATURE_GUARDIAN_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return AMSounds.NATURE_GUARDIAN_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.NATURE_GUARDIAN_ATTACK.get();
     }
 
@@ -74,5 +73,6 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.addAnimationController(createIdleAnimationController(this, "nature_guardian"));
     }
 }

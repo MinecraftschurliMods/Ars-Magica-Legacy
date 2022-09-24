@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
@@ -30,22 +29,22 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return AMSounds.ICE_GUARDIAN_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return null;
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return AMSounds.ICE_GUARDIAN_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
@@ -80,6 +79,7 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.addAnimationController(createIdleAnimationController(this, "ice_guardian"));
     }
 
     @Override

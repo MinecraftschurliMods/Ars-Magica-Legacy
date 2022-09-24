@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricaneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
@@ -24,22 +23,22 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return null;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return null;
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return null;
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
@@ -78,5 +77,6 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.addAnimationController(createIdleAnimationController(this, "air_guardian"));
     }
 }

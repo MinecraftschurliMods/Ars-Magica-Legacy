@@ -1,5 +1,6 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;

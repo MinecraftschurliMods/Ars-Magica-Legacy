@@ -1,9 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -29,22 +28,22 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.LIGHTNING_GUARDIAN_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return AMSounds.LIGHTNING_GUARDIAN_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.LIGHTNING_GUARDIAN_ATTACK.get();
     }
 
@@ -81,6 +80,7 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.addAnimationController(createIdleAnimationController(this, "lightning_guardian"));
     }
 
     @Override

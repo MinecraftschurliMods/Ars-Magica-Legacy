@@ -1,5 +1,6 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerBossEvent;
@@ -22,6 +23,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.HashSet;
@@ -48,6 +52,20 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
                 bossEvent.addPlayer(player);
             }
         }
+    }
+
+    /**
+     * Creates a new idle animation controller.
+     *
+     * @param boss The entity to create the animation controller for.
+     * @param name The registry name of the entity to create the animation controller for.
+     * @return A new idle animation controller.
+     */
+    public static AnimationController<? extends AbstractBoss> createIdleAnimationController(AbstractBoss boss, String name) {
+        return new AnimationController<>(boss, "idleController", 5, e -> {
+            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + name + ".idle"));
+            return PlayState.CONTINUE;
+        });
     }
 
     @Override
@@ -173,7 +191,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return The attack sound of this boss, or null if no attack sound should be played.
      */
     @Nullable
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 

@@ -1,12 +1,13 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.entity;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
@@ -33,7 +34,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
 
     @Override
     public boolean canUse() {
-        return !caster.isCastingSpell() && caster.getTarget() != null && !caster.getTarget().isDeadOrDying() && caster.getRandom().nextBoolean();
+        return caster.canCastSpell() && caster.getTarget() != null && !caster.getTarget().isDeadOrDying() && caster.getRandom().nextBoolean();
     }
 
     @Override

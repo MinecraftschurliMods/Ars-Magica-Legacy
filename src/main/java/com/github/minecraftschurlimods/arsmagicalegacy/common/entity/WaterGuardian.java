@@ -1,10 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.CloneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -48,22 +47,22 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return AMSounds.WATER_GUARDIAN_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return null;
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return AMSounds.WATER_GUARDIAN_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return null;
     }
 
@@ -135,6 +134,20 @@ public class WaterGuardian extends AbstractBoss {
         goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 12));
     }
 
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(createIdleAnimationController(this, "water_guardian"));
+        data.addAnimationController(new AnimationController<>(this, "spinController", 5, e -> {
+            if (getAction() == Action.CAST || getAction() == Action.SPIN) {
+                e.getController().setAnimation(new AnimationBuilder().addAnimation("animation.water_guardian.spin"));
+                return PlayState.CONTINUE;
+            } else {
+                e.getController().clearAnimationCache();
+                return PlayState.STOP;
+            }
+        }));
+    }
+
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
         this.clone1 = clone1;
         this.clone2 = clone2;
@@ -162,22 +175,5 @@ public class WaterGuardian extends AbstractBoss {
     public void setMaster(WaterGuardian master) {
         entityData.set(IS_CLONE, true);
         this.master = master;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "idleController", 5, e -> {
-            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation.water_guardian.idle"));
-            return PlayState.CONTINUE;
-        }));
-        data.addAnimationController(new AnimationController<>(this, "spinController", 5, e -> {
-            if (getAction() == Action.CAST || getAction() == Action.SPIN) {
-                e.getController().setAnimation(new AnimationBuilder().addAnimation("animation.water_guardian.spin"));
-                return PlayState.CONTINUE;
-            } else {
-                e.getController().clearAnimationCache();
-                return PlayState.STOP;
-            }
-        }));
     }
 }

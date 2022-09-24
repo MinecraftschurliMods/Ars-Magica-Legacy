@@ -1,8 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ExecuteSpellGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.ISpellCasterEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
