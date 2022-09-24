@@ -25,10 +25,9 @@ import org.apache.logging.log4j.LogManager;
 
 public final class RitualManager extends CodecDataManager<Ritual> {
     private static final Lazy<RitualManager> INSTANCE = Lazy.concurrentOf(RitualManager::new);
-
-    private static final BiMap<ResourceLocation, Codec<? extends RitualTrigger>>     ritualTriggerCodecs     = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualTrigger>> ritualTriggerCodecs = HashBiMap.create();
     private static final BiMap<ResourceLocation, Codec<? extends RitualRequirement>> ritualRequirementCodecs = HashBiMap.create();
-    private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>>      ritualEffectCodecs      = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>> ritualEffectCodecs = HashBiMap.create();
 
     private RitualManager() {
         super("am_rituals", Ritual.CODEC, LogManager.getLogger());
@@ -81,9 +80,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_summon"), EntitySummonTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item_drop"), ItemDropRitualTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "game_event"), GameEventRitualTrigger.CODEC);
-
         registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_entity"), EntitySpawnRitualEffect.CODEC);
-
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "biome"), BiomeRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension"), DimensionRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension_type"), DimensionTypeRequirement.CODEC);

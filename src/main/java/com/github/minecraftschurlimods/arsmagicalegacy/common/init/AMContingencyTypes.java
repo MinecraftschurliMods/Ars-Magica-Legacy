@@ -2,8 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.CONTINGENCY_TYPE;
 

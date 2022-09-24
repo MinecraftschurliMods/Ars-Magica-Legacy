@@ -96,7 +96,7 @@ final class TickHandler {
         var manager = api.getAbilityManager();
         var helper = api.getAffinityHelper();
         try {
-            if (!(boolean)CAP_PROVIDER_VALID.get(player)) return;
+            if (!(boolean) CAP_PROVIDER_VALID.get(player)) return;
         } catch (IllegalAccessException ignored) {
             return;
         }

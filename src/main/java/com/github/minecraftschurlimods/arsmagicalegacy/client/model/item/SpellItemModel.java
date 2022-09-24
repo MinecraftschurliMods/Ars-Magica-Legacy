@@ -38,7 +38,6 @@ import java.util.concurrent.ExecutionException;
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON = RenderType.itemEntityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
-
     private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
     private Optional<ResourceLocation> icon;
     private final ItemOverrides overrides = new ItemOverrides() {

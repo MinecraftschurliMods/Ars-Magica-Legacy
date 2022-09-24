@@ -9,8 +9,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbIt
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.NatureScytheItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WintersGraspItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;

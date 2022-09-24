@@ -3,11 +3,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarMaterialManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
@@ -38,7 +38,6 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod(ArsMagicaAPI.MOD_ID)

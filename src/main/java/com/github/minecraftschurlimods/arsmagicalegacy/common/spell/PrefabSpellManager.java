@@ -36,7 +36,6 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
             return AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY);
         }
     };
-
     private static final Lazy<PrefabSpellManager> INSTANCE = Lazy.concurrentOf(PrefabSpellManager::new);
 
     private PrefabSpellManager() {

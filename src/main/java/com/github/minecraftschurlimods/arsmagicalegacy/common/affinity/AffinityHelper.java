@@ -245,6 +245,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
         /**
          * Synchronizes the affinity holder.
+         *
          * @param affinityHolder The affinity holder to synchronize.
          */
         public void onSync(AffinityHolder affinityHolder) {
