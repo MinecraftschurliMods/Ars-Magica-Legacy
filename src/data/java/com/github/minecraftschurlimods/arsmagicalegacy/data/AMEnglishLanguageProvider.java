@@ -345,8 +345,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("max_shape_groups", "The maximum number of shape groups allowed for new spells.");
         configTranslation("mana.base", "The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.multiplier", "The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
+        configTranslation("mana.regen_multiplier", "The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.");
         configTranslation("burnout.base", "The base value for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).");
         configTranslation("burnout.multiplier", "The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).");
+        configTranslation("burnout.regen_multiplier", "The multiplier for burnout regeneration. Burnout regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.");
         configTranslation("leveling.base", "The base value for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
         configTranslation("leveling.multiplier", "The multiplier for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
@@ -445,6 +447,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
         add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
         add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
+        add("key." + ArsMagicaAPI.MOD_ID + ".configure_spell", "Configure Spell");
+        add("key." + ArsMagicaAPI.MOD_ID + ".next_shape_group", "Next Shape Group");
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
         add("potion.potency.7", "VII");

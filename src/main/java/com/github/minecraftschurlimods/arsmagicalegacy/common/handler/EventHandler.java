@@ -354,12 +354,20 @@ public final class EventHandler {
             maxManaAttr.setBaseValue(newMaxMana);
             manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
+        AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN.get());
+        if (manaRegenAttr != null) {
+            manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get() );
+        }
         float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (level - 1);
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
             IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
+        }
+        AttributeInstance burnoutRegenAttr = player.getAttribute(AMAttributes.BURNOUT_REGEN.get());
+        if (burnoutRegenAttr != null) {
+            burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get() );
         }
         event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
     }
