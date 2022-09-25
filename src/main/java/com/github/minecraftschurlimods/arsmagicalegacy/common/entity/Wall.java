@@ -105,8 +105,8 @@ public class Wall extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        Vec3 a = new Vec3(getX() - Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() - Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
-        Vec3 b = new Vec3(getX() + Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() + Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
+        Vec3 a = new Vec3(getX() - Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() - Math.sin(Math.toRadians(getYRot())) * getRadius());
+        Vec3 b = new Vec3(getX() + Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() + Math.sin(Math.toRadians(getYRot())) * getRadius());
         double minX = getX() - getRadius();
         double minY = getY() - 1;
         double minZ = getZ() - getRadius();

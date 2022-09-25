@@ -123,7 +123,8 @@ public class Zone extends Entity implements ItemSupplier {
         for (int i = 0; i < 8; ++i) {
             level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), (random.nextDouble() - 0.5D) * 2D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2D);
         }
-        if (!level.isClientSide() && tickCount % 10 == 0) {
+        if (level.isClientSide()) return;
+        if (tickCount % 10 == 0) {
             List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY(), getZ() - getRadius(), getX() + getRadius(), getY() + getBbHeight(), getZ() + getRadius()));
             for (Entity entity : list) {
                 if (entity == this) continue;

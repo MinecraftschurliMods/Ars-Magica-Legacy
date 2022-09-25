@@ -118,7 +118,6 @@ public class Projectile extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        if (level.isClientSide()) return;
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
@@ -137,11 +136,11 @@ public class Projectile extends Entity implements ItemSupplier {
                 }
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
-            } else {
+            } else if (!level.isClientSide()) {
                 ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
-        } else if (result.getType().equals(HitResult.Type.ENTITY)) {
+        } else if (result.getType().equals(HitResult.Type.ENTITY) && !level.isClientSide()) {
             Entity entity = ((EntityHitResult) result).getEntity();
             if (entity instanceof PartEntity) {
                 entity = ((PartEntity<?>) entity).getParent();

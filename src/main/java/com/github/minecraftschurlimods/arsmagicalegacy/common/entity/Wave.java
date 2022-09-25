@@ -126,7 +126,8 @@ public class Wave extends Entity implements ItemSupplier {
         for (int i = 0; i < 8; ++i) {
             level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5), getY() + (2d * random.nextDouble() - 1d) * 0.5, getRandomZ(0.5), (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
         }
-        if (!level.isClientSide() && tickCount % 10 == 0) {
+        if (level.isClientSide()) return;
+        if (tickCount % 10 == 0) {
             List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY() - getRadius(), getZ() - getRadius(), getX() + getRadius(), getY() + getRadius(), getZ() + getRadius()));
             for (Entity entity : list) {
                 if (entity == this) continue;
