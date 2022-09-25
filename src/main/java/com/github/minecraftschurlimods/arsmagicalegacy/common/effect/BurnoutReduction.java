@@ -2,16 +2,27 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
+import java.util.Objects;
+
+// Special handling is needed as calling addAttributeModifier(AMAtrributes.BURNOUT_REGEN.get(), ...) causes errors during registration
 public class BurnoutReduction extends AMMobEffect {
+    private static final java.util.UUID UUID = java.util.UUID.fromString("4D02B930-DF3D-441E-898D-36A38689E485");
+
     public BurnoutReduction() {
         super(MobEffectCategory.BENEFICIAL, 0xcc0000);
-        if (AMAttributes.BURNOUT_REGEN.isPresent()) {
-            addAttributeModifier(AMAttributes.BURNOUT_REGEN.get(), "4D02B930-DF3D-441E-898D-36A38689E485", 0.3, AttributeModifier.Operation.ADDITION);
-        } else {
-            addAttributeModifier(new RangedAttribute("burnout_regen", 0.2, 0, Short.MAX_VALUE).setSyncable(false), "4D02B930-DF3D-441E-898D-36A38689E485", 0.3, AttributeModifier.Operation.ADDITION);
-        }
+    }
+
+    @Override
+    public void startEffect(LivingEntity entity, MobEffectInstance effect) {
+        Objects.requireNonNull(entity.getAttributes().getInstance(AMAttributes.BURNOUT_REGEN.get())).addTransientModifier(new AttributeModifier(UUID, "burnout_reduction_mob_effect", (effect.getAmplifier() + 1) * 0.5, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    }
+
+    @Override
+    public void stopEffect(LivingEntity entity, MobEffectInstance effect) {
+        Objects.requireNonNull(entity.getAttributes().getInstance(AMAttributes.BURNOUT_REGEN.get())).removeModifier(UUID);
     }
 }
