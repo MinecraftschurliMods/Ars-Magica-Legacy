@@ -69,8 +69,11 @@ public class EnderGuardian extends AbstractBoss {
         if (spawn == null) {
             spawn = position();
         }
+        if (tickCount % 10 == 0) {
+            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
+        }
         if (getAction() == Action.LONG_CAST) {
-            if (getTicksInAction() == 32) {
+            if (getTicksInAction() == 20) {
                 level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
             }
         }

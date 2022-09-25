@@ -1,6 +1,122 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
+		"animation.ice_guardian.base": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"right_core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"right_core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				},
+				"right_core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"left_core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"left_core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				},
+				"left_core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				},
+				"core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"cubes": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				},
+				"rods": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				}
+			}
+		},
 		"animation.ice_guardian.idle": {
 			"loop": true,
 			"animation_length": 4,
