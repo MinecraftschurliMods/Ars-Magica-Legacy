@@ -1,9 +1,51 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "animation.nature_guardian.idle": {
-      "loop": true
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.nature_guardian.idle": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"left_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 0, -5],
+							"easing": "easeInOutSine"
+						},
+						"4.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 0, 5],
+							"easing": "easeInOutSine"
+						},
+						"4.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"animation.nature_guardian.spin": {
+			"loop": true
+		},
+		"animation.nature_guardian.strike": {
+			"loop": true
+		},
+		"animation.nature_guardian.throw": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }

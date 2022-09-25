@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.LightningRodGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StaticGoal;
@@ -50,13 +49,12 @@ public class LightningGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 200));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 200));
-        goalSelector.addGoal(2, new LightningRodGoal(this));
-        goalSelector.addGoal(2, new StaticGoal(this));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 200));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 200));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_rune")).spell(), 200));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "scramble_synapses")).spell(), 200));
+        goalSelector.addGoal(1, new LightningRodGoal(this));
+        goalSelector.addGoal(1, new StaticGoal(this));
     }
 
     @Override
@@ -80,7 +78,10 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "lightning_guardian"));
+        data.addAnimationController(createActionAnimationController("lightning_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("lightning_guardian", "cast", Action.CAST));
+        data.addAnimationController(createActionAnimationController("lightning_guardian", "long_cast", Action.LONG_CAST));
+        data.addAnimationController(createActionAnimationController("lightning_guardian", "spin", Action.SPIN));
     }
 
     @Override

@@ -8,11 +8,17 @@ import net.minecraft.world.entity.Mob;
 
 public class DispelGoal<T extends Mob & ISpellCasterEntity> extends ExecuteSpellGoal<T> {
     public DispelGoal(T caster) {
-        super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 10);
+        super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 0);
     }
 
     @Override
     public boolean canUse() {
-        return caster.getActiveEffects().size() > 0 && super.canUse();
+        return (caster.getActiveEffects().size() > 0 || caster.isOnFire()) && super.canUse();
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        caster.clearFire();
     }
 }

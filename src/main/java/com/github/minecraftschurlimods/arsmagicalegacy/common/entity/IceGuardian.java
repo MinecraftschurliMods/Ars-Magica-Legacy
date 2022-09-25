@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowArmGoal;
@@ -51,10 +50,9 @@ public class IceGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SmashGoal<>(this));
-        goalSelector.addGoal(2, new StrikeGoal<>(this));
-        goalSelector.addGoal(2, new ThrowArmGoal(this));
+        goalSelector.addGoal(1, new SmashGoal<>(this));
+        goalSelector.addGoal(1, new StrikeGoal<>(this));
+        goalSelector.addGoal(1, new ThrowArmGoal(this));
     }
 
     @Override
@@ -79,7 +77,11 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "ice_guardian"));
+        data.addAnimationController(createBaseAnimationController("ice_guardian"));
+        data.addAnimationController(createActionAnimationController("ice_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("ice_guardian", "smash", Action.SMASH));
+        data.addAnimationController(createActionAnimationController("ice_guardian", "strike", Action.STRIKE));
+        data.addAnimationController(createActionAnimationController("ice_guardian", "throw", Action.THROW));
     }
 
     @Override

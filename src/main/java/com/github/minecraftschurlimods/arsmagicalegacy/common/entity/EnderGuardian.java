@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderRus
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderTorrentGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.OtherworldlyRoarGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ProtectGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShadowstepGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -57,13 +56,12 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new ProtectGoal(this));
-        goalSelector.addGoal(2, new EnderRushGoal(this));
-        goalSelector.addGoal(2, new ShadowstepGoal(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 20));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 20));
-        goalSelector.addGoal(2, new EnderTorrentGoal(this));
-        goalSelector.addGoal(2, new OtherworldlyRoarGoal(this));
+        goalSelector.addGoal(1, new EnderRushGoal(this));
+        goalSelector.addGoal(1, new ShadowstepGoal(this));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 20));
+        goalSelector.addGoal(1, new EnderTorrentGoal(this));
+        goalSelector.addGoal(1, new OtherworldlyRoarGoal(this));
     }
 
     @Override
@@ -100,6 +98,9 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "ender_guardian"));
+        data.addAnimationController(createBaseAnimationController("ender_guardian"));
+        data.addAnimationController(createActionAnimationController("ender_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("ender_guardian", "cast", Action.CAST));
+        data.addAnimationController(createActionAnimationController("ender_guardian", "cast", Action.LONG_CAST));
     }
 }

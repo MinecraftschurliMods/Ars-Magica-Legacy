@@ -1,9 +1,75 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "animation.air_guardian.idle": {
-      "loop": true
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.air_guardian.base": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				},
+				"core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 0, 5],
+							"easing": "easeInOutSine"
+						},
+						"4.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 0, -5],
+							"easing": "easeInOutSine"
+						},
+						"4.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"animation.air_guardian.cast": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }

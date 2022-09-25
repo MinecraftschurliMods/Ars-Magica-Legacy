@@ -1,9 +1,61 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "animation.earth_guardian.idle": {
-      "loop": true
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.earth_guardian.base": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				},
+				"core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"rods": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				}
+			}
+		},
+		"animation.earth_guardian.smash": {
+			"loop": true
+		},
+		"animation.earth_guardian.strike": {
+			"loop": true
+		},
+		"animation.earth_guardian.throw": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }

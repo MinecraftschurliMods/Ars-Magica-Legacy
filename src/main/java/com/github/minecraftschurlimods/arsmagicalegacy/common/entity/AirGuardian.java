@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricaneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -45,9 +44,8 @@ public class AirGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new HurricaneGoal(this));
-        goalSelector.addGoal(2, new WhirlwindGoal(this));
+        goalSelector.addGoal(1, new HurricaneGoal(this));
+        goalSelector.addGoal(1, new WhirlwindGoal(this));
     }
 
     @Override
@@ -77,6 +75,7 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "air_guardian"));
+        data.addAnimationController(createBaseAnimationController("air_guardian"));
+        data.addAnimationController(createActionAnimationController("air_guardian", "cast", Action.LONG_CAST));
     }
 }

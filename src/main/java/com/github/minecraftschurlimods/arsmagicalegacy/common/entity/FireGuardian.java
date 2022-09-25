@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FireRainGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.FlamethrowerGoal;
@@ -54,11 +53,10 @@ public class FireGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new FireRainGoal(this));
-        goalSelector.addGoal(2, new FlamethrowerGoal(this));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
-        goalSelector.addGoal(2, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
+        goalSelector.addGoal(1, new FireRainGoal(this));
+        goalSelector.addGoal(1, new FlamethrowerGoal(this));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
     }
 
     @Override
@@ -100,7 +98,9 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "fire_guardian"));
+        data.addAnimationController(createActionAnimationController("fire_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("fire_guardian", "cast", Action.CAST));
+        data.addAnimationController(createActionAnimationController("fire_guardian", "cast", Action.LONG_CAST));
     }
 
     @Override

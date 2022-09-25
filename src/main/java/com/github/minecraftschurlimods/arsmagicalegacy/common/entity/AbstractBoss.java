@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerBossEvent;
@@ -55,16 +56,35 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     /**
-     * Creates a new idle animation controller.
+     * Creates a new animation controller that plays this boss's base animation.
      *
-     * @param boss The entity to create the animation controller for.
-     * @param name The registry name of the entity to create the animation controller for.
-     * @return A new idle animation controller.
+     * @param registryName The registry name of this boss.
+     * @return A new animation controller that plays this boss's base animation.
      */
-    public static AnimationController<? extends AbstractBoss> createIdleAnimationController(AbstractBoss boss, String name) {
-        return new AnimationController<>(boss, "idleController", 5, e -> {
-            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + name + ".idle"));
+    public AnimationController<? extends AbstractBoss> createBaseAnimationController(String registryName) {
+        return new AnimationController<>(this, "base_controller", 5, e -> {
+            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + ".base"));
             return PlayState.CONTINUE;
+        });
+    }
+
+    /**
+     * Creates a new animation controller that plays the given animation if the given action is currently active.
+     *
+     * @param registryName The registry name of the boss to create the animation controller for.
+     * @param name The name of the animation to play.
+     * @param action The action for which the animation should be played.
+     * @return A new animation controller that plays the given animation if the given action is currently active.
+     */
+    public AnimationController<? extends AbstractBoss> createActionAnimationController(String registryName, String name, Action action) {
+        return new AnimationController<>(this, name + "_controller", 5, e -> {
+            if (getAction() == action) {
+                e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + "." + name));
+                return PlayState.CONTINUE;
+            } else {
+                e.getController().clearAnimationCache();
+                return PlayState.STOP;
+            }
         });
     }
 
@@ -96,9 +116,10 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1, 1));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8F));
-        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new DispelGoal<>(this));
+        goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1, 1));
+        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8F));
+        goalSelector.addGoal(2, new RandomLookAroundGoal(this));
         targetSelector.addGoal(0, new HurtByTargetGoal(this));
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 2, true, false, null));
     }

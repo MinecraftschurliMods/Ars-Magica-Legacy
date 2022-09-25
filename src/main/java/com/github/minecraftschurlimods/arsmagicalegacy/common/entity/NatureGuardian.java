@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SpinGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowScytheGoal;
@@ -49,10 +48,9 @@ public class NatureGuardian extends AbstractBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
-        goalSelector.addGoal(2, new SpinGoal<>(this));
-        goalSelector.addGoal(2, new StrikeGoal<>(this));
-        goalSelector.addGoal(2, new ThrowScytheGoal(this));
+        goalSelector.addGoal(1, new SpinGoal<>(this));
+        goalSelector.addGoal(1, new StrikeGoal<>(this));
+        goalSelector.addGoal(1, new ThrowScytheGoal(this));
     }
 
     @Override
@@ -73,6 +71,10 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(createIdleAnimationController(this, "nature_guardian"));
+        data.addAnimationController(createBaseAnimationController("nature_guardian"));
+        data.addAnimationController(createActionAnimationController("nature_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("nature_guardian", "spin", Action.SPIN));
+        data.addAnimationController(createActionAnimationController("nature_guardian", "strike", Action.STRIKE));
+        data.addAnimationController(createActionAnimationController("nature_guardian", "throw", Action.THROW));
     }
 }
