@@ -64,7 +64,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return A new animation controller that plays this boss's base animation.
      */
     public AnimationController<? extends AbstractBoss> createBaseAnimationController(String registryName) {
-        return new AnimationController<>(this, "base_controller", 5, e -> {
+        return new AnimationController<>(this, "base_controller", 2, e -> {
             e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + ".base"));
             return PlayState.CONTINUE;
         });
@@ -79,7 +79,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return A new animation controller that plays the given animation if the given action is currently active.
      */
     public AnimationController<? extends AbstractBoss> createActionAnimationController(String registryName, String name, Action action) {
-        return new AnimationController<>(this, name + "_controller", 5, e -> {
+        return new AnimationController<>(this, action.name() + "_controller", 2, e -> {
             if (getAction() == action) {
                 e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + "." + name));
                 return PlayState.CONTINUE;

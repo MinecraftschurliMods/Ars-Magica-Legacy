@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class SpinGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     public SpinGoal(T boss) {
-        super(boss, AbstractBoss.Action.SPIN, 40);
+        super(boss, AbstractBoss.Action.SPIN, 20);
     }
 
     @Override

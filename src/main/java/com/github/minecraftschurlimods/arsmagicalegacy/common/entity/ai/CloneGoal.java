@@ -6,12 +6,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 
 public class CloneGoal extends AbstractBossGoal<WaterGuardian> {
     public CloneGoal(WaterGuardian boss) {
-        super(boss, AbstractBoss.Action.LONG_CAST, 20);
+        super(boss, AbstractBoss.Action.LONG_CAST, 40);
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 2;
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 2 && !boss.isClone() && !boss.hasClones();
     }
 
     @Override

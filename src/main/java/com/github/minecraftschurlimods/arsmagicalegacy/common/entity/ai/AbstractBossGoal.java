@@ -37,7 +37,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canUse() {
-        return boss.getAction() == AbstractBoss.Action.IDLE && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget());
+        return boss.getAction() == AbstractBoss.Action.IDLE && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget()) && boss.getLevel().getRandom().nextBoolean();
     }
 
     @Override

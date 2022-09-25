@@ -125,16 +125,22 @@ public class WaterGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new CloneGoal(this));
         goalSelector.addGoal(1, new SpinGoal<>(this));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 20));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 40));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 40));
     }
 
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(createBaseAnimationController("water_guardian"));
+        data.addAnimationController(createActionAnimationController("water_guardian", "idle", Action.IDLE));
         data.addAnimationController(createActionAnimationController("water_guardian", "cast", Action.CAST));
         data.addAnimationController(createActionAnimationController("water_guardian", "cast", Action.LONG_CAST));
         data.addAnimationController(createActionAnimationController("water_guardian", "spin", Action.SPIN));
+    }
+
+    @Override
+    public boolean canCastSpell() {
+        return super.canCastSpell() && !isClone();
     }
 
     public void setClones(WaterGuardian clone1, WaterGuardian clone2) {
