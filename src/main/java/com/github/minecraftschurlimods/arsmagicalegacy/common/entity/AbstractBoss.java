@@ -4,6 +4,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEnt
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -89,12 +91,36 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (hasCustomName()) {
+            bossEvent.setName(getDisplayName());
+        }
+    }
+
+    @Override
+    public void setCustomName(@Nullable Component pName) {
+        super.setCustomName(pName);
+        bossEvent.setName(getDisplayName());
+    }
+
+    @Override
     public boolean canBeCollidedWith() {
         return true;
     }
 
     @Override
+    public boolean canCollideWith(Entity pEntity) {
+        return isAlive();
+    }
+
+    @Override
     public boolean canBeLeashed(Player pPlayer) {
+        return false;
+    }
+
+    @Override
+    public boolean canRide(Entity pEntity) {
         return false;
     }
 
