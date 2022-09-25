@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class StrikeGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     public StrikeGoal(T boss) {
-        super(boss, AbstractBoss.Action.STRIKE, 10, 10);
+        super(boss, AbstractBoss.Action.STRIKE, 5, 15);
     }
 
     @Override

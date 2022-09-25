@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     public SmashGoal(T boss) {
-        super(boss, AbstractBoss.Action.SMASH, 10, 10);
+        super(boss, AbstractBoss.Action.SMASH, 5, 15);
     }
 
     @Override
@@ -20,14 +20,14 @@ public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     public void perform() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(4, 2, 4), e -> !(e instanceof AbstractBoss))) {
             e.hurt(DamageSource.mobAttack(boss), 8);
-            if (!boss.getLevel().isClientSide()) {
-                for (int i = -2; i <= 2; i++) {
-                    Shockwave entity = Shockwave.create(boss.getLevel());
-                    Vec3 movement = boss.getLookAngle().yRot((float) (Math.PI / 36 * i));
-                    entity.setDeltaMovement(movement.x(), 0, movement.z());
-                    entity.setPos(boss.getX() + movement.x(), boss.getY(), boss.getZ() + movement.z());
-                    boss.getLevel().addFreshEntity(entity);
-                }
+        }
+        if (!boss.getLevel().isClientSide()) {
+            for (int i = -10; i <= 10; i++) {
+                Shockwave entity = Shockwave.create(boss.getLevel());
+                Vec3 movement = boss.getLookAngle().yRot((float) (Math.PI / 180 * i));
+                entity.setDeltaMovement(movement.x(), 0, movement.z());
+                entity.setPos(boss.getX() + movement.x(), boss.getY(), boss.getZ() + movement.z());
+                boss.getLevel().addFreshEntity(entity);
             }
         }
     }

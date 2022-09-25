@@ -6,24 +6,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownRock;
 
 public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     public ThrowRockGoal(EarthGuardian boss) {
-        super(boss, AbstractBoss.Action.THROW, 20);
+        super(boss, AbstractBoss.Action.THROW, 15, 5);
     }
 
     @Override
     public boolean canUse() {
         return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        boss.getLevel().broadcastEntityEvent(boss, (byte) 56);
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
-        boss.getLevel().broadcastEntityEvent(boss, (byte) 57);
     }
 
     @Override

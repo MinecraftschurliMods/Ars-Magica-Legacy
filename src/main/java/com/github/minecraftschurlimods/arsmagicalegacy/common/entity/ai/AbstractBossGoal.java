@@ -46,6 +46,12 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
     }
 
     @Override
+    public void start() {
+        super.start();
+        boss.setAction(action);
+    }
+
+    @Override
     public void stop() {
         super.stop();
         boss.setAction(AbstractBoss.Action.IDLE);
@@ -61,7 +67,6 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
             double angle = -Math.atan2(target.getZ() - boss.getZ(), target.getX() - boss.getX());
             boss.getNavigation().moveTo(target.getX() + Math.cos(angle) * 6, target.getY(), target.getZ() + Math.sin(angle) * 6, 0.5f);
         }
-        boss.setAction(action);
         ticks++;
         performTick();
         if (ticks == duration) {

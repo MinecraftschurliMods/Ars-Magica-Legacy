@@ -53,9 +53,9 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE) {
+        if (pSource == DamageSource.FREEZE || pSource == DamageSource.DROWN) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+        } else if (pSource.isFire() || pSource == DamageSource.LIGHTNING_BOLT) {
             return false;
         }
         return super.hurt(pSource, pAmount);
