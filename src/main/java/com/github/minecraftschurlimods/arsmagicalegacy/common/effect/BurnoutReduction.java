@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.Objects;
@@ -18,7 +19,11 @@ public class BurnoutReduction extends AMMobEffect {
 
     @Override
     public void startEffect(LivingEntity entity, MobEffectInstance effect) {
-        Objects.requireNonNull(entity.getAttributes().getInstance(AMAttributes.BURNOUT_REGEN.get())).addTransientModifier(new AttributeModifier(UUID, "burnout_reduction_mob_effect", (effect.getAmplifier() + 1) * 0.5, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        AttributeInstance attribute = Objects.requireNonNull(entity.getAttributes().getInstance(AMAttributes.BURNOUT_REGEN.get()));
+        if (attribute.getModifier(UUID) != null) {
+            attribute.removeModifier(UUID);
+        }
+        attribute.addTransientModifier(new AttributeModifier(UUID, "burnout_reduction_mob_effect", (effect.getAmplifier() + 1) * 0.5, AttributeModifier.Operation.MULTIPLY_TOTAL));
     }
 
     @Override
