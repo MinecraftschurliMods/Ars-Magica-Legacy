@@ -6,12 +6,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Whirlwind;
 
 public class WhirlwindGoal extends AbstractBossGoal<AirGuardian> {
     public WhirlwindGoal(AirGuardian boss) {
-        super(boss, AbstractBoss.Action.LONG_CAST, 20);
+        super(boss, AbstractBoss.Action.LONG_CAST, 40);
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getRandom().nextBoolean();
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4;
     }
 
     @Override

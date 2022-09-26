@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricaneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,25 +50,10 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    public void aiStep() {
-        if (level.isClientSide()) {
-            // Particles
-        }
-        if (getY() > 150) {
-            setDeltaMovement(getDeltaMovement().x(), Math.min(getDeltaMovement().y(), 0), getDeltaMovement().z());
-        } else if (getY() < 128) {
-            remove(RemovalReason.KILLED);
-        } else if (getY() < 136) {
-            setDeltaMovement(getDeltaMovement().x(), Math.max(getDeltaMovement().y(), 0.1), getDeltaMovement().z());
-        }
-        super.aiStep();
-    }
-
-    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource.isProjectile()) {
+        } else if (pSource.isProjectile() || pSource.isFall() || pSource == AMDamageSources.WIND) {
             return false;
         }
         return super.hurt(pSource, pAmount);

@@ -12,12 +12,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
     public HurricaneGoal(AirGuardian boss) {
-        super(boss, AbstractBoss.Action.LONG_CAST, 20);
+        super(boss, AbstractBoss.Action.LONG_CAST, 40);
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getRandom().nextBoolean();
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) <= 4;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
                 continue;
             }
             if (e instanceof LivingEntity living) {
-                living.hurt(AMDamageSources.WIND, 12);
+                living.hurt(AMDamageSources.WIND, 6);
             }
             Vec3 movement = boss.getEyePosition().subtract(e.position()).normalize();
             e.push(-movement.x() * 2.5, 2.5, -movement.z() * 2.5);

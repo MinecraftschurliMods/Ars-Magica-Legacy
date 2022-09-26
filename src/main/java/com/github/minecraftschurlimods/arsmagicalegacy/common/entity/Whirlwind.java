@@ -79,12 +79,12 @@ public class Whirlwind extends Entity {
             if (!level.isClientSide && level.getRandom().nextInt(100) < 10) {
                 int slot = pPlayer.getInventory().items.size() + level.getRandom().nextInt(4);
                 ItemStack stack = pPlayer.getInventory().getItem(slot).copy();
+                pPlayer.getInventory().setItem(slot, ItemStack.EMPTY);
                 if (!pPlayer.getInventory().add(stack)) {
                     ItemEntity item = new ItemEntity(level, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), stack);
                     item.setDeltaMovement(level.getRandom().nextDouble() * 0.2 - 0.1, level.getRandom().nextDouble() * 0.2 - 0.1, level.getRandom().nextDouble() * 0.2 - 0.1);
                     level.addFreshEntity(item);
                 }
-                pPlayer.getInventory().setItem(slot, ItemStack.EMPTY);
             }
             pPlayer.hurt(AMDamageSources.WIND, 6);
             pPlayer.setDeltaMovement(getDeltaMovement().x() + level.getRandom().nextFloat() * 0.2f, getDeltaMovement().y() + 0.8, getDeltaMovement().z() + level.getRandom().nextFloat() * 0.2f);
