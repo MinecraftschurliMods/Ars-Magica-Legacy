@@ -101,12 +101,12 @@ public final class Config {
                     .comment("The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "mana.base")
                     .worldRestart()
-                    .defineInRange("base", 100., 0, 1000000);
+                    .defineInRange("base", 200., 0, 1000000);
             MANA_MULTIPLIER = builder
                     .comment("The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "mana.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 20., 0, 1000000);
+                    .defineInRange("multiplier", 25., 0, 1000000);
             MANA_REGEN_MULTIPLIER = builder
                     .comment("The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
                     .translation(TranslationConstants.CONFIG + "mana.regen_multiplier")
@@ -118,12 +118,12 @@ public final class Config {
                     .comment("The base value for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.base")
                     .worldRestart()
-                    .defineInRange("base", 100., 0, 1000000);
+                    .defineInRange("base", 200., 0, 1000000);
             BURNOUT_MULTIPLIER = builder
                     .comment("The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 10., 0, 1000000);
+                    .defineInRange("multiplier", 25., 0, 1000000);
             BURNOUT_REGEN_MULTIPLIER = builder
                     .comment("The multiplier for burnout regeneration. Burnout regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
                     .translation(TranslationConstants.CONFIG + "burnout.regen_multiplier")
