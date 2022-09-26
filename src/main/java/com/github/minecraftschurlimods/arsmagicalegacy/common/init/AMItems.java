@@ -113,7 +113,7 @@ public interface AMItems {
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                        = ITEMS.register("spell", SpellItem::new);
     RegistryObject<SpellBookItem>                SPELL_BOOK                   = ITEMS.register("spell_book", SpellBookItem::new);
-    RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
     RegistryObject<ManaMartiniItem>              MANA_MARTINI                 = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
     RegistryObject<MageArmorItem>                MAGE_HELMET                  = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 5));
     RegistryObject<MageArmorItem>                MAGE_CHESTPLATE              = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 5));
