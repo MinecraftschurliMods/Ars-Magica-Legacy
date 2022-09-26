@@ -128,6 +128,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
+        forgeBus.addListener(EventHandler::playerRespawn);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
@@ -304,6 +305,13 @@ public final class EventHandler {
         if (helper.knowsMagic(event.getPlayer())) return;
         if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getCrafting())) return;
         helper.awardXp(event.getPlayer(), 0);
+    }
+
+    private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        AttributeInstance maxManaAttr = event.getPlayer().getAttribute(AMAttributes.MAX_MANA.get());
+        if (maxManaAttr != null) {
+            ArsMagicaAPI.get().getManaHelper().increaseMana(event.getPlayer(), (float) (maxManaAttr.getBaseValue() / 2));
+        }
     }
 
     private static void livingDamage(LivingDamageEvent event) {
