@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class EarthGuardian extends AbstractBoss {
+    public boolean shouldRenderRock;
+
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
     }
@@ -68,5 +70,15 @@ public class EarthGuardian extends AbstractBoss {
         data.addAnimationController(createActionAnimationController("earth_guardian", "smash", Action.SMASH));
         data.addAnimationController(createActionAnimationController("earth_guardian", "strike", Action.STRIKE));
         data.addAnimationController(createActionAnimationController("earth_guardian", "throw", Action.THROW));
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId == -8) {
+            shouldRenderRock = true;
+        } else if (pId == -9) {
+            shouldRenderRock = false;
+        }
+        super.handleEntityEvent(pId);
     }
 }

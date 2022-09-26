@@ -15,6 +15,12 @@ public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     }
 
     @Override
+    public void performTick() {
+        super.performTick();
+        boss.getLevel().broadcastEntityEvent(boss, ticks > 2 && ticks < 16 ? (byte) -8 : (byte) -9);
+    }
+
+    @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
             ThrownRock entity = ThrownRock.create(boss.getLevel());
