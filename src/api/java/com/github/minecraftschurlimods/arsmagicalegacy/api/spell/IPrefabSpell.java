@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public interface IPrefabSpell {
+public interface IPrefabSpell extends Comparable<IPrefabSpell> {
     /**
      * @return The encoded spell of this prefab spell.
      */
