@@ -50,12 +50,14 @@ public class FireGuardian extends AbstractBoss {
         return AMSounds.FIRE_GUARDIAN_ATTACK.get();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FireRainGoal(this));
         goalSelector.addGoal(1, new FlamethrowerGoal(this));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_fire_bolt")).spell(), 20));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
     }
 

@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.BossNearestAttackableTargetGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -147,7 +147,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8F));
         goalSelector.addGoal(2, new RandomLookAroundGoal(this));
         targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 2, true, false, null));
+        targetSelector.addGoal(1, new BossNearestAttackableTargetGoal<>(this, Player.class, 2, true, false, null));
     }
 
     @Override

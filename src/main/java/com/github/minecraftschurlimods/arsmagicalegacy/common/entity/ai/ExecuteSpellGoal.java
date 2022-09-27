@@ -10,13 +10,15 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     protected final T caster;
     public final ISpell spell;
     public final int duration;
     protected int ticks = 0;
 
-    public ExecuteSpellGoal(T caster, ISpell spell, int duration) {
+    public ExecuteSpellGoal(T caster, @Nullable ISpell spell, int duration) {
         this.caster = caster;
         this.spell = spell;
         this.duration = duration;
@@ -67,7 +69,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
                 if (sound != null) {
                     caster.getLevel().playSound(null, caster, sound, SoundSource.HOSTILE, 1f, 0.5f + caster.getLevel().getRandom().nextFloat());
                 }
-                spell.cast(caster, caster.getLevel(), 0, false, false);
+                Objects.requireNonNull(getSpell(caster)).cast(caster, caster.getLevel(), 0, false, false);
                 ticks = 0;
                 stop();
             }
@@ -80,5 +82,14 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
     @Nullable
     protected SoundEvent getAttackSound() {
         return caster instanceof AbstractBoss boss ? boss.getAttackSound() : null;
+    }
+
+    /**
+     * @param caster The entity casting the spell.
+     * @return The spell to be cast.
+     */
+    @Nullable
+    protected ISpell getSpell(T caster) {
+        return spell;
     }
 }

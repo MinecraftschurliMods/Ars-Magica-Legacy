@@ -11,13 +11,12 @@
         "arsmagicalegacy:range",
         "arsmagicalegacy:range",
         "arsmagicalegacy:range",
-        "arsmagicalegacy:range",
         "arsmagicalegacy:range"
       ]
     ],
     "spell_stack": [
       "arsmagicalegacy:blindness",
-      "arsmagicalegacy:silence",
+      "arsmagicalegacy:slowness",
       "arsmagicalegacy:knockback"
     ],
     "data": {}

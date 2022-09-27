@@ -10,8 +10,7 @@
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:lightning_damage",
-      "arsmagicalegacy:damage"
+      "arsmagicalegacy:lightning_damage"
     ],
     "data": {}
   }

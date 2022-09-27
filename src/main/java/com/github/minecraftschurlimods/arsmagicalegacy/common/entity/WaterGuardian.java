@@ -120,12 +120,14 @@ public class WaterGuardian extends AbstractBoss {
         return super.hurt(pSource, pAmount);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new CloneGoal(this));
         goalSelector.addGoal(1, new SpinGoal<>(this));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 40));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_water_bolt")).spell(), 40));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 40));
     }
 

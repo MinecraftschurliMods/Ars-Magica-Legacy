@@ -1,8 +1,8 @@
 {
   "name": {
-    "text": "Water Bolt"
+    "text": "Strong Earth Bolt"
   },
-  "icon": "arsmagicalegacy:beam_blue_3",
+  "icon": "arsmagicalegacy:lightning_acid_3",
   "spell": {
     "shape_groups": [
       [
@@ -10,7 +10,8 @@
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:drowning_damage"
+      "arsmagicalegacy:physical_damage",
+      "arsmagicalegacy:knockback"
     ],
     "data": {}
   }

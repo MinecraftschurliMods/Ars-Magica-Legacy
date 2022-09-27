@@ -53,6 +53,7 @@ public class EnderGuardian extends AbstractBoss {
         return AMSounds.ENDER_GUARDIAN_ATTACK.get();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void registerGoals() {
         super.registerGoals();

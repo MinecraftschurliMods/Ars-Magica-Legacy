@@ -39,7 +39,28 @@
 			}
 		},
 		"animation.arcane_guardian.cast": {
-			"loop": true
+			"animation_length": 1,
+			"bones": {
+				"right_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-90, -10, 0],
+							"easing": "easeInSine"
+						},
+						"0.8333": {
+							"vector": [-90, 10, 0],
+							"easing": "easeInBack"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInBack"
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

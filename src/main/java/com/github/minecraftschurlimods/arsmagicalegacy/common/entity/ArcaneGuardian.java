@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteRandomSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HealGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.manager.AnimationData;
+
+import java.util.List;
 
 public class ArcaneGuardian extends AbstractBoss {
     public ArcaneGuardian(EntityType<? extends ArcaneGuardian> type, Level level) {
@@ -45,12 +48,29 @@ public class ArcaneGuardian extends AbstractBoss {
         return AMSounds.ARCANE_GUARDIAN_ATTACK.get();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new HealGoal<>(this));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_bolt")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteRandomSpellGoal<>(this, List.of(
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "earth_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ice_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_bolt")).spell()
+        ), 20));
+        goalSelector.addGoal(1, new ExecuteRandomSpellGoal<>(this, List.of(
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_water_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_fire_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_earth_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_lightning_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_ice_bolt")).spell(),
+                PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_arcane_bolt")).spell()
+        ), 20));
         goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "blink")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "debuff")).spell(), 20));
     }
 
     @Override
