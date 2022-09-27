@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteBossSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteRandomSpellGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteSpellGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HealGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
@@ -69,8 +69,8 @@ public class ArcaneGuardian extends AbstractBoss {
                 PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_ice_bolt")).spell(),
                 PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_arcane_bolt")).spell()
         ), 20));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "blink")).spell(), 20));
-        goalSelector.addGoal(1, new ExecuteSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "debuff")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "blink")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "debuff")).spell(), 20));
     }
 
     @Override

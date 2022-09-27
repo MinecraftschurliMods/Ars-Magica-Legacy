@@ -42,7 +42,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return boss.getAction() == action;
+        return boss.getAction() == action && boss.getTicksInAction() <= duration * 2;
     }
 
     @Override

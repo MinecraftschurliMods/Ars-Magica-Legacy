@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellCasterEntity;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -81,7 +80,7 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
      */
     @Nullable
     protected SoundEvent getAttackSound() {
-        return caster instanceof AbstractBoss boss ? boss.getAttackSound() : null;
+        return null;
     }
 
     /**

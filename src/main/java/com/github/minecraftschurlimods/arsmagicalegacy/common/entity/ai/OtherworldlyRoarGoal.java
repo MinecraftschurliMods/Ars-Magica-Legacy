@@ -7,7 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellM
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
-public class OtherworldlyRoarGoal extends ExecuteSpellGoal<EnderGuardian> {
+public class OtherworldlyRoarGoal extends ExecuteBossSpellGoal<EnderGuardian> {
     public OtherworldlyRoarGoal(EnderGuardian caster) {
         super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "otherworldly_roar")).spell(), 0);
     }

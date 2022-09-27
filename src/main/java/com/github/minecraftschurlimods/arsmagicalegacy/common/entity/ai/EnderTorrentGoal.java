@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class EnderTorrentGoal extends ExecuteSpellGoal<EnderGuardian> {
+public class EnderTorrentGoal extends ExecuteBossSpellGoal<EnderGuardian> {
     public EnderTorrentGoal(EnderGuardian caster) {
         super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 0);
     }
