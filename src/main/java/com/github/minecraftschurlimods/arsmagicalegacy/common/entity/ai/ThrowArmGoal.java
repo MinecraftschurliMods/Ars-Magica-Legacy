@@ -8,12 +8,12 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
     public ThrowArmGoal(IceGuardian boss) {
-        super(boss, AbstractBoss.Action.THROW, 20);
+        super(boss, AbstractBoss.Action.THROW, 10, 10);
     }
 
     @Override
     public boolean canUse() {
-        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4 && (boss.hasRightArm() || boss.hasLeftArm());
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4 && boss.canLaunchArm();
     }
 
     @Override
@@ -25,8 +25,11 @@ public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
             WintersGrasp entity = WintersGrasp.create(boss.getLevel());
-            entity.moveTo(boss.getX(), boss.getY() + boss.getEyeHeight(), boss.getZ());
+            entity.moveTo(boss.position().add(0, 1, 0).add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
+            entity.setXRot(boss.getXRot());
+            entity.setYRot(boss.getYRot());
+            entity.setOwner(boss);
             boss.getLevel().addFreshEntity(entity);
             boss.launchArm();
         }

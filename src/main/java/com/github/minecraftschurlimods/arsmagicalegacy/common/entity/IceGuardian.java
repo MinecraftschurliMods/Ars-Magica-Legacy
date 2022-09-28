@@ -16,8 +16,7 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class IceGuardian extends AbstractBoss {
-    private boolean hasRightArm = true;
-    private boolean hasLeftArm = true;
+    private int arms = 2;
 
     public IceGuardian(EntityType<? extends IceGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.BLUE);
@@ -59,7 +58,7 @@ public class IceGuardian extends AbstractBoss {
     public void aiStep() {
         if (this.tickCount % 100 == 0) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
-                e.hurt(DamageSource.FREEZE, 5);
+                e.hurt(DamageSource.FREEZE, 4);
             }
         }
         super.aiStep();
@@ -89,27 +88,29 @@ public class IceGuardian extends AbstractBoss {
         return false;
     }
 
-    public void launchArm() {
-        if (hasLeftArm) {
-            hasLeftArm = false;
-        } else if (hasRightArm) {
-            hasRightArm = false;
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId <= -8 && pId >= -10) {
+            arms = pId + 8;
         }
+        super.handleEntityEvent(pId);
+    }
+
+    public void launchArm() {
+        arms--;
+        level.broadcastEntityEvent(this, (byte) (arms - 8));
     }
 
     public void returnArm() {
-        if (!hasLeftArm) {
-            hasLeftArm = true;
-        } else if (!hasRightArm) {
-            hasRightArm = true;
-        }
+        arms++;
+        level.broadcastEntityEvent(this, (byte) (arms - 8));
     }
 
-    public boolean hasLeftArm() {
-        return hasLeftArm;
+    public boolean canLaunchArm() {
+        return arms > 0;
     }
 
-    public boolean hasRightArm() {
-        return hasRightArm;
+    public int getArmCount() {
+        return arms;
     }
 }

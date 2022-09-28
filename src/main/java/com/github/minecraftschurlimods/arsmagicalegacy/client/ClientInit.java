@@ -21,6 +21,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGec
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureScytheModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
@@ -213,7 +214,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("fire_guardian")));
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new EarthGuardianModel()));
         event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("air_guardian")));
-        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("ice_guardian")));
+        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new IceGuardianModel()));
         event.registerEntityRenderer(AMEntities.LIGHTNING_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("lightning_guardian")));
         event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("nature_guardian")));
         event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("life_guardian")));

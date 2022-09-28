@@ -14,7 +14,7 @@ public class EarthGuardianModel extends AMGeckolibHeadModel<EarthGuardian> {
     @Override
     public void setLivingAnimations(EarthGuardian entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = getAnimationProcessor().getBone("rock");
-        head.setHidden(!(entity.getAction() == AbstractBoss.Action.THROW && entity.shouldRenderRock));
+        IBone rock = getAnimationProcessor().getBone("rock");
+        rock.setHidden(!(entity.getAction() == AbstractBoss.Action.THROW && entity.shouldRenderRock));
     }
 }
