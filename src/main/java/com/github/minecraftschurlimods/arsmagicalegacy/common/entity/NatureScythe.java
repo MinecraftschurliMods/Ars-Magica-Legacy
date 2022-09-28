@@ -28,6 +28,7 @@ public class NatureScythe extends Entity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(NatureScythe.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(NatureScythe.class, EntityDataSerializers.ITEM_STACK);
     private boolean hasHit = false;
+    private int hitTicks = -1;
 
     public NatureScythe(EntityType<? extends NatureScythe> type, Level level) {
         super(type, level);
@@ -86,9 +87,9 @@ public class NatureScythe extends Entity {
             remove(RemovalReason.KILLED);
             return;
         }
-        if (tickCount > 200) {
+        if (hitTicks != -1 && tickCount / 2 > hitTicks) {
             returnToOwner();
-        } else if (tickCount > 100) {
+        } else if (tickCount > 50) {
             setHasHit();
         }
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE);
@@ -98,10 +99,10 @@ public class NatureScythe extends Entity {
                 entity = ((PartEntity<?>) entity).getParent();
             }
             if (entity instanceof LivingEntity living && entity != getOwner()) {
-                living.hurt(AMDamageSources.NATURE_SCYTHE, 10);
+                living.hurt(AMDamageSources.NATURE_SCYTHE, 12);
                 setHasHit();
             }
-            if (hasHit && distanceTo(getOwner()) < 2) {
+            if (hasHit && distanceTo(getOwner()) < 4) {
                 returnToOwner();
             }
         } else if (result.getType() == HitResult.Type.BLOCK) {
@@ -132,13 +133,14 @@ public class NatureScythe extends Entity {
         if (!hasHit) {
             setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
             hasHit = true;
+            hitTicks = tickCount;
         }
     }
 
     private void returnToOwner() {
         LivingEntity owner = getOwner();
         if (owner instanceof NatureGuardian guardian) {
-            guardian.hasScythe = true;
+            guardian.setHasScythe(true);
         } else if (owner instanceof Player player && !player.addItem(getStack())) {
             ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
             level.addFreshEntity(item);

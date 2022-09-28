@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class NatureGuardian extends AbstractBoss {
-    public boolean hasScythe = true;
+    private boolean hasScythe = true;
 
     public NatureGuardian(EntityType<? extends NatureGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
@@ -76,5 +76,24 @@ public class NatureGuardian extends AbstractBoss {
         data.addAnimationController(createActionAnimationController("nature_guardian", "spin", Action.SPIN));
         data.addAnimationController(createActionAnimationController("nature_guardian", "strike", Action.STRIKE));
         data.addAnimationController(createActionAnimationController("nature_guardian", "throw", Action.THROW));
+    }
+
+    @Override
+    public void handleEntityEvent(byte pId) {
+        if (pId == -8) {
+            hasScythe = false;
+        } else if (pId == -9) {
+            hasScythe = true;
+        }
+        super.handleEntityEvent(pId);
+    }
+
+    public boolean hasScythe() {
+        return hasScythe;
+    }
+
+    public void setHasScythe(boolean hasScythe) {
+        this.hasScythe = hasScythe;
+        level.broadcastEntityEvent(this, (byte) (hasScythe ? -9 : -8));
     }
 }

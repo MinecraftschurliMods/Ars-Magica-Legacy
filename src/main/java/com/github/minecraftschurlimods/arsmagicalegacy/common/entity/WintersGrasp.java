@@ -27,6 +27,7 @@ public class WintersGrasp extends Entity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(WintersGrasp.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(WintersGrasp.class, EntityDataSerializers.ITEM_STACK);
     private boolean hasHit = false;
+    private int hitTicks = -1;
 
     public WintersGrasp(EntityType<? extends WintersGrasp> type, Level level) {
         super(type, level);
@@ -85,7 +86,7 @@ public class WintersGrasp extends Entity {
             remove(RemovalReason.KILLED);
             return;
         }
-        if (tickCount > 100) {
+        if (hitTicks != -1 && tickCount / 2 > hitTicks) {
             returnToOwner();
         } else if (tickCount > 50) {
             setHasHit();
@@ -134,6 +135,7 @@ public class WintersGrasp extends Entity {
         if (!hasHit) {
             setDeltaMovement(getDeltaMovement().multiply(-1, -1, -1));
             hasHit = true;
+            hitTicks = tickCount;
         }
     }
 

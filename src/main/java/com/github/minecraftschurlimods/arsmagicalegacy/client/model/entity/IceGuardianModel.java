@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -15,8 +14,8 @@ public class IceGuardianModel extends AMGeckolibHeadModel<IceGuardian> {
     public void setLivingAnimations(IceGuardian entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone rightArm = getAnimationProcessor().getBone("right_arm");
-        rightArm.setHidden(entity.getAction() == AbstractBoss.Action.THROW && entity.getArmCount() <= 1);
+        rightArm.setHidden(entity.getArmCount() <= 1);
         IBone leftArm = getAnimationProcessor().getBone("left_arm");
-        leftArm.setHidden(entity.getAction() == AbstractBoss.Action.THROW && !entity.canLaunchArm());
+        leftArm.setHidden(!entity.canLaunchArm());
     }
 }

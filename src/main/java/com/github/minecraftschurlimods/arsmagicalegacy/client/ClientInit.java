@@ -22,6 +22,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGec
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureScytheModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
@@ -216,7 +217,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("air_guardian")));
         event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new IceGuardianModel()));
         event.registerEntityRenderer(AMEntities.LIGHTNING_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("lightning_guardian")));
-        event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("nature_guardian")));
+        event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new NatureGuardianModel()));
         event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("life_guardian")));
         event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("arcane_guardian")));
         event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("ender_guardian")));
