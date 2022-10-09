@@ -211,6 +211,8 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.BLIZZARD.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.FIRE_RAIN.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("water_guardian")));
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("fire_guardian")));
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new EarthGuardianModel()));
@@ -253,7 +255,7 @@ public final class ClientInit {
 
     private static void mouseScroll(InputEvent.MouseScrollEvent event) {
         Player player = ClientHelper.getLocalPlayer();
-        if (player == null || !player.isCrouching()) return;
+        if (player == null || !player.isShiftKeyDown()) return;
         ItemStack item = player.getMainHandItem();
         if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) {
             item = player.getOffhandItem();
