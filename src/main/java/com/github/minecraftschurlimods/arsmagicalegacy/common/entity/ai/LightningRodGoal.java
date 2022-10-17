@@ -21,12 +21,12 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
 
     @Override
     public boolean canUse() {
-        return (!hasBolted || !hasThrown) && super.canUse();
+        return super.canUse();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return (!hasBolted || !hasThrown) && super.canContinueToUse();
+        return super.canContinueToUse();
     }
 
     @Override
@@ -43,28 +43,23 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
     @Override
     public void tick() {
         super.tick();
-        int ticks = boss.getTicksInAction();
         LivingEntity target = boss.getTarget();
         if (target == null) return;
+        if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
+            boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+        }
         if (ticks <= 20) {
             startPos = new Vec3((float) target.getX(), (float) target.getY(), (float) target.getZ());
-            return;
-        }
-        if (ticks > 80 && ticks <= 140) {
-            if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
-                boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
-            }
-        }
-        if (ticks <= 80) {
-            boss.teleportTo(startPos.x(), startPos.y() + (ticks - 25) * 0.1, startPos.z());
-            target.setNoGravity(true);
+        } else if (ticks <= 80) {
+            target.moveTo(startPos.x(), startPos.y() + (ticks - 25) * 0.1, startPos.z());
+            target.fallDistance = 0;
             if (!boss.getLevel().isClientSide() && ticks == 30) {
                 boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
         } else if (ticks <= 100) {
-            boss.teleportTo(startPos.x(), startPos.y() + 6, startPos.z());
+            target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
         } else if (ticks <= 140) {
-            boss.teleportTo(startPos.x(), startPos.y() + 6, startPos.z());
+            target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
             if (ticks > 120) {
                 target.hurt(DamageSource.LIGHTNING_BOLT, 3);
             }
@@ -78,8 +73,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
             hasThrown = true;
             target.push(0, -3, 0);
             target.fallDistance = 5;
-            target.setNoGravity(false);
-        } else if (ticks > 160 && !hasBolted) {
+        } else if (ticks <= 160 && !hasBolted) {
             hasBolted = true;
             LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, boss.getLevel());
             bolt.setPos(target.getX(), target.getY(), target.getZ());
