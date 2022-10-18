@@ -10,7 +10,7 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class EnderTorrentGoal extends ExecuteBossSpellGoal<EnderGuardian> {
     public EnderTorrentGoal(EnderGuardian caster) {
-        super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 0);
+        super(caster, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10);
     }
 
     @Override

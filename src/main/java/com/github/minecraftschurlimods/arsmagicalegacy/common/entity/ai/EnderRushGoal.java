@@ -29,11 +29,11 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
         Vec3 a = new Vec3(boss.getX(), boss.getY(), boss.getZ());
         Vec3 b = new Vec3(boss.getTarget().getX(), boss.getTarget().getY(), boss.getTarget().getZ());
         if (a.distanceToSqr(b) > 4) {
-            Vec3 movement = a.subtract(b).normalize().scale(-5);
+            Vec3 movement = boss.position().add(a.subtract(b).normalize().scale(-5));
             boss.moveTo(movement.x(), movement.y(), movement.z());
         } else {
-            if (boss.getTarget().hurt(DamageSource.mobAttack(boss), 15) && boss.getTarget().getHealth() <= 0) {
-                boss.heal(200);
+            if (boss.getTarget().hurt(DamageSource.mobAttack(boss), 10)) {
+                boss.heal(10);
             }
         }
     }

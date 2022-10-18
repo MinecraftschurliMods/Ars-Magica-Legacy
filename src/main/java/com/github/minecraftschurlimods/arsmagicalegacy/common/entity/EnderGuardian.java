@@ -19,12 +19,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class EnderGuardian extends AbstractBoss {
-    private Vec3 spawn;
-
     public EnderGuardian(EntityType<? extends EnderGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.PURPLE);
     }
@@ -67,9 +64,6 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (spawn == null) {
-            spawn = position();
-        }
         if (tickCount % 10 == 0) {
             level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
         }
@@ -83,19 +77,13 @@ public class EnderGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isMagic() || pSource == DamageSource.DROWN) {
-            pAmount *= 2f;
-        }
         if (pSource.getEntity() instanceof EnderMan) {
             pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
             heal(10);
             return false;
         }
-        if (pSource == DamageSource.OUT_OF_WORLD) {
-            if (spawn != null) {
-                moveTo(spawn.x(), spawn.y(), spawn.z());
-                setAction(Action.IDLE);
-            }
+        if (pSource.isMagic() || pSource == DamageSource.DROWN) {
+            pAmount *= 2f;
         }
         return super.hurt(pSource, pAmount);
     }
