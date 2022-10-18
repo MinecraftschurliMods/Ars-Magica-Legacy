@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.jump_boost",
+  "name": "skill.arsmagicalegacy.jump_boost.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/jump_boost.png",
   "pages": [

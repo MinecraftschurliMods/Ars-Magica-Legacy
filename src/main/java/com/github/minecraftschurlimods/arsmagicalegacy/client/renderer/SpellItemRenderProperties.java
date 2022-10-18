@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -20,5 +21,13 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
 
     @Override
     public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        if (stack.getItem() instanceof SpellBookItem) {
+            stack = SpellBookItem.getSelectedSpell(stack);
+        }
+        renderSpellInHandEffect(stack, transformType, poseStack, buffer, packedLight, packedOverlay);
+    }
+
+    private void renderSpellInHandEffect(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        // TODO render spell effect in hand
     }
 }

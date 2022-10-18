@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +35,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
     private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
     private ItemStack stack = ItemStack.EMPTY;
-    private @Nullable Spell spellRecipe;
+    private @Nullable ISpell spellRecipe;
     private @Nullable String spellName;
     private boolean open;
 
@@ -49,7 +49,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @param spell  The spell.
      * @return A written book with the spell written onto it.
      */
-    public static ItemStack makeRecipe(String name, String author, Spell spell) {
+    public static ItemStack makeRecipe(String name, String author, ISpell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         SpellItem.saveSpell(book, spell);
         CompoundTag tag = book.getOrCreateTag();
@@ -61,7 +61,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return book;
     }
 
-    private static void makeSpellRecipePages(ListTag pages, Spell spell) {
+    private static void makeSpellRecipePages(ListTag pages, ISpell spell) {
         // TODO
     }
 
@@ -70,7 +70,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         super.load(pTag);
         stack = ItemStack.of(pTag.getCompound(INVENTORY_KEY));
         if (pTag.contains(SPELL_RECIPE_KEY)) {
-            spellRecipe = Spell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
+            spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
         if (pTag.contains(SPELL_NAME_KEY)) {
             spellName = pTag.getString(SPELL_NAME_KEY);
@@ -83,7 +83,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @param name  The spell name.
      * @param spell The spell.
      */
-    public void onSync(@Nullable String name, @Nullable Spell spell) {
+    public void onSync(@Nullable String name, @Nullable ISpell spell) {
         spellName = name;
         spellRecipe = spell;
         setChanged();
@@ -95,7 +95,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     @Nullable
-    public Spell getSpellRecipe() {
+    public ISpell getSpellRecipe() {
         return spellRecipe;
     }
 
@@ -120,7 +120,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
             pCompound.putString(SPELL_NAME_KEY, spellName);
         }
         if (spellRecipe != null) {
-            pCompound.put(SPELL_RECIPE_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+            pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
     }
 

@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.disarm",
+  "name": "skill.arsmagicalegacy.disarm.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/disarm.png",
   "pages": [

@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.entangle",
+  "name": "skill.arsmagicalegacy.entangle.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/entangle.png",
   "pages": [

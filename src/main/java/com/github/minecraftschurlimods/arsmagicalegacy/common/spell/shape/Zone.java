@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -33,7 +32,7 @@ public class Zone extends AbstractShape {
             zone.setOwner(caster);
             zone.setGravity(0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit));
             zone.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit));
-            zone.setSpell((Spell) spell);
+            zone.setSpell(spell);
             level.addFreshEntity(zone);
         }
         return SpellCastResult.SUCCESS;

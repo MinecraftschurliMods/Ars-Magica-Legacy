@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.daylight",
+  "name": "skill.arsmagicalegacy.daylight.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/daylight.png",
   "pages": [

@@ -73,11 +73,11 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(WITCHWOOD_PLANKS);
         blockItem(WITCHWOOD_SLAB);
         blockItem(WITCHWOOD_STAIRS);
-        withExistingParent(WITCHWOOD_FENCE, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_fence_inventory"));
+        withExistingParent(WITCHWOOD_FENCE, modLoc("block/witchwood_fence_inventory"));
         blockItem(WITCHWOOD_FENCE_GATE);
         itemGenerated(WITCHWOOD_DOOR);
-        withExistingParent(WITCHWOOD_TRAPDOOR, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_trapdoor_bottom"));
-        withExistingParent(WITCHWOOD_BUTTON, new ResourceLocation(ArsMagicaAPI.MOD_ID, "block/witchwood_button_inventory"));
+        withExistingParent(WITCHWOOD_TRAPDOOR, modLoc("block/witchwood_trapdoor_bottom"));
+        withExistingParent(WITCHWOOD_BUTTON, modLoc("block/witchwood_button_inventory"));
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
@@ -100,6 +100,10 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         spellItem(SPELL);
+//        getBuilder(SPELL.getId().getPath());
+//        withExistingParent(SPELL_BOOK, mcLoc("item/generated"))
+//                .texture("layer0", modLoc("item/spell_book_cover"))
+//                .texture("layer1", modLoc("item/spell_book_decoration"));
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
         itemGenerated(MAGE_HELMET);

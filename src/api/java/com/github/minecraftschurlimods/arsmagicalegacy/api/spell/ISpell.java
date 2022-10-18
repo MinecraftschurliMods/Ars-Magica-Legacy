@@ -1,8 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +29,15 @@ public interface ISpell {
     String CURRENT_SHAPE_GROUP_KEY = "current_shape_group";
     String SPELL_STACK_KEY = "spell_stack";
     String DATA_KEY = "data";
+
+    //@formatter:off
+    Codec<ISpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            ShapeGroup.CODEC.listOf().fieldOf(SHAPE_GROUPS_KEY).forGetter(ISpell::shapeGroups),
+            SpellStack.CODEC.fieldOf(SPELL_STACK_KEY).forGetter(ISpell::spellStack),
+            CompoundTag.CODEC.fieldOf(DATA_KEY).forGetter(ISpell::additionalData)
+    ).apply(inst, (shapeGroups, spellStack, compoundTag) -> ArsMagicaAPI.get().makeSpell(shapeGroups, spellStack, compoundTag)));
+    //@formatter:on
+    ISpell EMPTY = ArsMagicaAPI.get().makeSpell(SpellStack.EMPTY);
 
     /**
      * @return Whether the spell is continuous or not.

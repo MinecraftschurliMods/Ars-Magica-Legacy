@@ -2,6 +2,7 @@
   "name": {
     "text": "Chaos Water Bolt"
   },
+  "icon": "arsmagicalegacy:fire-arrows-sky-3",
   "spell": {
     "shape_groups": [
       [
@@ -14,6 +15,5 @@
       "arsmagicalegacy:knockback"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:fire-arrows-sky-3"
+  }
 }

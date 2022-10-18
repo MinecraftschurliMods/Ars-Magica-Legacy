@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.rune_procs",
+  "name": "skill.arsmagicalegacy.rune_procs.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/rune_procs.png",
   "pages": [

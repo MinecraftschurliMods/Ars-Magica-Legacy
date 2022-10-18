@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -29,7 +28,7 @@ public class Wall extends AbstractShape {
             wall.setIndex(index);
             wall.setOwner(caster);
             wall.setRadius(helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit));
-            wall.setSpell((Spell) spell);
+            wall.setSpell(spell);
             level.addFreshEntity(wall);
         }
         return SpellCastResult.SUCCESS;

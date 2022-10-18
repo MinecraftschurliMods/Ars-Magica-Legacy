@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.slow_falling",
+  "name": "skill.arsmagicalegacy.slow_falling.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/slow_falling.png",
   "pages": [

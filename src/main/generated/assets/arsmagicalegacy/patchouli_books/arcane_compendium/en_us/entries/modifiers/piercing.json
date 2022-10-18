@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.piercing",
+  "name": "skill.arsmagicalegacy.piercing.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/piercing.png",
   "pages": [

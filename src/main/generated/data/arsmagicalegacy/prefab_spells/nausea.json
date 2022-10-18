@@ -2,6 +2,7 @@
   "name": {
     "text": "Nausea"
   },
+  "icon": "arsmagicalegacy:enchant-acid-3",
   "spell": {
     "shape_groups": [
       [
@@ -12,6 +13,5 @@
       "arsmagicalegacy:nausea"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:enchant-acid-3"
+  }
 }

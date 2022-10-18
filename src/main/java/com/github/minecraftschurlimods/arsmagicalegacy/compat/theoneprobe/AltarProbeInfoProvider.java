@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.compat.theoneprobe;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -10,6 +11,7 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -31,6 +33,7 @@ class AltarProbeInfoProvider implements IProbeInfoProvider {
         BlockEntity blockEntity = level.getBlockEntity(iProbeHitData.getPos());
         if (blockEntity instanceof AltarCoreBlockEntity altarCoreBlockEntity) {
             Collection<BlockPos> blockPos = altarCoreBlockEntity.getBoundPositions();
+            iProbeInfo.mcText(new TranslatableComponent(TranslationConstants.ALTAR_POWER, altarCoreBlockEntity.getPowerLevel()));
             if (probeMode == ProbeMode.NORMAL) {
                 IProbeInfo horizontal = iProbeInfo.horizontal(iProbeInfo.defaultLayoutStyle().borderColor(0xffddddff).alignment(ElementAlignment.ALIGN_CENTER).bottomPadding(3));
                 blockPos.forEach(pos -> horizontal.item(level.getBlockState(pos).getCloneItemStack(new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true), level, pos, player), iProbeInfo.defaultItemStyle().height(15)));

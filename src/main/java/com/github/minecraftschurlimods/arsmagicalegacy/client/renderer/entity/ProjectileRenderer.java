@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
 public class ProjectileRenderer extends ThrownItemRenderer<Projectile> {
-    public ProjectileRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
+    public ProjectileRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 }

@@ -1,0 +1,16 @@
+{
+  "name": "skill.arsmagicalegacy.contingency_death.name",
+  "category": "arsmagicalegacy:shapes",
+  "icon": "arsmagicalegacy:textures/icon/skill/contingency_death.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.contingency_death.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:contingency_death"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/contingency_death"
+}

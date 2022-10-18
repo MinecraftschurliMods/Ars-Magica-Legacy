@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMateria
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumConsumer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
@@ -13,7 +14,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
@@ -394,6 +394,13 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     /**
+     * @return The power level of the altar.
+     */
+    public int getPowerLevel() {
+        return powerLevel;
+    }
+
+    /**
      * @return Whether the altar has enough power or not.
      */
     public boolean hasEnoughPower() {
@@ -419,7 +426,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (recipe == null || recipe.isEmpty()) {
-            Optional.of(SpellItem.getSpell(getBook())).filter(Spell::isValid).filter(((Predicate<Spell>) Spell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            Optional.of(SpellItem.getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
                 requiredPower = this.recipe.size();
             }, () -> {

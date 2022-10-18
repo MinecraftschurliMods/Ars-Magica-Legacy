@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.velocity",
+  "name": "skill.arsmagicalegacy.velocity.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/velocity.png",
   "pages": [

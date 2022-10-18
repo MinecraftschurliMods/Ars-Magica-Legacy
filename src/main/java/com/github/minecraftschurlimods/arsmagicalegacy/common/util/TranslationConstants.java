@@ -27,6 +27,8 @@ public interface TranslationConstants {
     String RANGE_UPPER                    = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.affinity.ability.range.max";
     String RIFT_TITLE                     = "screen."  + ArsMagicaAPI.MOD_ID + ".rift.title";
     String SPELL_CUSTOMIZATION_TITLE      = "screen."  + ArsMagicaAPI.MOD_ID + ".spell_customization.title";
+    String SPELL_PART_MODIFIES            = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modifies";
+    String SPELL_PART_MODIFIED_BY         = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modified_by";
     String CONFIG                         = "config."  + ArsMagicaAPI.MOD_ID + ".";
     String HOLD_SHIFT_FOR_DETAILS         = "message." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String NO_TELEPORT                    = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport";
@@ -34,4 +36,5 @@ public interface TranslationConstants {
     String PREVENT                        = "message." + ArsMagicaAPI.MOD_ID + ".prevent";
     String SPELL_CAST                     = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String TIER                           = "message." + ArsMagicaAPI.MOD_ID + ".tier";
+    String ALTAR_POWER                    = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
 }

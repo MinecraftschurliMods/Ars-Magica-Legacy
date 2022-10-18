@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.DefaultSpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -12,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.AoE;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Channel;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Contingency;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Rune;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Self;
@@ -43,7 +45,12 @@ public interface AMSpellParts {
     RegistryObject<Wall>               WALL                = SPELL_PARTS.register("wall",                Wall::new);
     RegistryObject<Wave>               WAVE                = SPELL_PARTS.register("wave",                Wave::new);
     RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
-    // TODO contingencies: damage, death, fall, fire, health
+
+    RegistryObject<Contingency>        CONTINGENCY_DEATH   = SPELL_PARTS.register("contingency_death",   () -> new Contingency(ContingencyType.DEATH));
+    RegistryObject<Contingency>        CONTINGENCY_DAMAGE  = SPELL_PARTS.register("contingency_damage",  () -> new Contingency(ContingencyType.DAMAGE));
+    RegistryObject<Contingency>        CONTINGENCY_HEALTH  = SPELL_PARTS.register("contingency_health",  () -> new Contingency(ContingencyType.HEALTH));
+    RegistryObject<Contingency>        CONTINGENCY_FIRE    = SPELL_PARTS.register("contingency_fire",    () -> new Contingency(ContingencyType.FIRE));
+    RegistryObject<Contingency>        CONTINGENCY_FALL    = SPELL_PARTS.register("contingency_fall",    () -> new Contingency(ContingencyType.FALL));
 
     RegistryObject<Damage>             DROWNING_DAMAGE     = SPELL_PARTS.register("drowning_damage",     () -> new Damage(e -> DamageSource.DROWN, Config.SERVER.DAMAGE.get(), LivingEntity::canBreatheUnderwater));
     RegistryObject<Damage>             FIRE_DAMAGE         = SPELL_PARTS.register("fire_damage",         () -> new Damage(e -> DamageSource.IN_FIRE, Config.SERVER.DAMAGE.get(), Entity::fireImmune));
@@ -92,6 +99,7 @@ public interface AMSpellParts {
     RegistryObject<DivineIntervention> DIVINE_INTERVENTION = SPELL_PARTS.register("divine_intervention", DivineIntervention::new);
     RegistryObject<Drought>            DROUGHT             = SPELL_PARTS.register("drought",             Drought::new);
     RegistryObject<EnderIntervention>  ENDER_INTERVENTION  = SPELL_PARTS.register("ender_intervention",  EnderIntervention::new);
+    RegistryObject<Explosion>          EXPLOSION           = SPELL_PARTS.register("explosion",           Explosion ::new);
     RegistryObject<FallingStar>        FALLING_STAR        = SPELL_PARTS.register("falling_star",        FallingStar::new);
     RegistryObject<FireRain>           FIRE_RAIN           = SPELL_PARTS.register("fire_rain",           FireRain::new);
     RegistryObject<Fling>              FLING               = SPELL_PARTS.register("fling",               Fling::new);

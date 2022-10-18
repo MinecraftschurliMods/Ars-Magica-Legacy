@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server.commands;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -20,6 +21,7 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
@@ -86,7 +88,11 @@ public class AffinityCommand {
         double amount = DoubleArgumentType.getDouble(context, "amount");
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
-            helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepth(player, affinity) + amount));
+            AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
+                helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepth(player, affinity) + amount));
+                MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
+            }
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
@@ -106,8 +112,13 @@ public class AffinityCommand {
 
     private static int setAffinity(Collection<ServerPlayer> players, IAffinity affinity, CommandContext<CommandSourceStack> context) {
         double amount = DoubleArgumentType.getDouble(context, "amount");
+        var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
-            ArsMagicaAPI.get().getAffinityHelper().setAffinityDepth(player, affinity, (float) amount);
+            AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
+                helper.setAffinityDepth(player, affinity, (float) amount);
+                MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
+            }
         }
         if (players.size() == 1) {
             context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);

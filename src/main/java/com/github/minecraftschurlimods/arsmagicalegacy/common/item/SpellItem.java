@@ -1,13 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
@@ -99,17 +101,17 @@ public class SpellItem extends Item implements ISpellItem {
      * @param stack The stack to set the spell on.
      * @param spell The spell to set.
      */
-    public static void saveSpell(ItemStack stack, Spell spell) {
-        stack.getOrCreateTag().put(SPELL_KEY, Spell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
+    public static void saveSpell(ItemStack stack, ISpell spell) {
+        stack.getOrCreateTag().put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(LOGGER::warn).left().orElse(new CompoundTag()));
     }
 
     /**
      * @param stack The stack to get the spell for.
      * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
      */
-    public static Spell getSpell(ItemStack stack) {
-        if (stack.isEmpty()) return Spell.EMPTY;
-        return Spell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(Spell.EMPTY);
+    public static ISpell getSpell(ItemStack stack) {
+        if (stack.isEmpty()) return ISpell.EMPTY;
+        return ISpell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(SpellItem.LOGGER::warn).left().orElse(ISpell.EMPTY);
     }
 
     @Override
@@ -123,7 +125,7 @@ public class SpellItem extends Item implements ISpellItem {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
             return;
         }
-        Spell spell = getSpell(pStack);
+        ISpell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) {
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
@@ -151,7 +153,7 @@ public class SpellItem extends Item implements ISpellItem {
             if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
                 return new TranslatableComponent(TranslationConstants.SPELL_UNKNOWN);
         }
-        Spell spell = getSpell(pStack);
+        ISpell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
         return getSpellName(pStack).<Component>map(TextComponent::new).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
     }
@@ -176,7 +178,7 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
         if (entity.level.isClientSide()) return;
-        Spell spell = getSpell(stack);
+        ISpell spell = getSpell(stack);
         if (!spell.isContinuous()) return;
         SpellCastResult result = spell.cast(entity, entity.level, count - 1, true, true);
         SoundEvent sound = getSpell(stack).primaryAffinity().getLoopSound();
@@ -215,6 +217,9 @@ public class SpellItem extends Item implements ISpellItem {
         var api = ArsMagicaAPI.get();
         ItemStack heldItem = player.getItemInHand(hand);
         if (!api.getMagicHelper().knowsMagic(player)) return InteractionResultHolder.fail(heldItem);
+        if (heldItem.getItem() instanceof SpellBookItem) {
+            heldItem = SpellBookItem.getSelectedSpell(heldItem);
+        }
         if (heldItem.hasTag()) {
             assert heldItem.getTag() != null;
             String icon = heldItem.getTag().getString(SPELL_ICON_KEY);
@@ -237,6 +242,9 @@ public class SpellItem extends Item implements ISpellItem {
         if (player == null) return InteractionResult.FAIL;
         if (!api.getMagicHelper().knowsMagic(player)) return InteractionResult.FAIL;
         ItemStack item = context.getItemInHand();
+        if (item.getItem() instanceof SpellBookItem) {
+            item = SpellBookItem.getSelectedSpell(item);
+        }
         Optional<ResourceLocation> spellIcon = getSpellIcon(item);
         if (spellIcon.isPresent()) {
             castSpell(context.getLevel(), context.getPlayer(), context.getHand(), item);
@@ -249,13 +257,13 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PrefabSpellManager.ITEM_CATEGORY) {
-            PrefabSpellManager.instance().values().stream().map(PrefabSpellManager.PrefabSpell::makeSpell).forEach(items::add);
+            PrefabSpellManager.instance().values().stream().map(IPrefabSpell::makeSpell).forEach(items::add);
         }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
-        Spell spell = getSpell(stack);
+        ISpell spell = getSpell(stack);
         if (spell.isContinuous()) {
             LOGGER.trace("{} starts casting continuous spell {}", entity, getSpellName(stack));
             entity.startUsingItem(hand);

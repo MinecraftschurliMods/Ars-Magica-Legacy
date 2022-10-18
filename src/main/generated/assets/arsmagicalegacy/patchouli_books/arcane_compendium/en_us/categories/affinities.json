@@ -1,0 +1,6 @@
+{
+  "name": "item.arsmagicalegacy.arcane_compendium.affinities.name",
+  "description": "item.arsmagicalegacy.arcane_compendium.affinities.description",
+  "icon": "arsmagicalegacy:affinity_essence{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+  "sortnum": 8
+}

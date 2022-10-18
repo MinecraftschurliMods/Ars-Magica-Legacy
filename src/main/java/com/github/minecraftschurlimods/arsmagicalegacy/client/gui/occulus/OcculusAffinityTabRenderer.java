@@ -6,12 +6,15 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.Range;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -94,7 +97,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 var abilityManager = api.getAbilityManager();
                 List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
                 IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();
-                abilities.sort((o1, o2) -> (int)((abilityManager.get(o1).range().min() * 100) - (abilityManager.get(o2).range().min() * 100)));
+                abilities.sort((o1, o2) -> (int)((Objects.requireNonNullElse(abilityManager.get(o1).bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(abilityManager.get(o2).bounds().getMin(), 0D) * 100)));
                 abilities.forEach(resourceLocation -> {
                     IAbilityData abilityData = abilityManager.get(resourceLocation);
                     boolean test = abilityData.test(player);
@@ -102,19 +105,19 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                     assert value != null;
                     MutableComponent component = value.getDisplayName().copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
                     if (Screen.hasShiftDown()) {
-                        Range range = abilityData.range();
-                        boolean lower = range.hasLowerBound();
-                        boolean upper = range.hasUpperBound();
-                        if (lower || upper) {
-                            TextComponent cmp = new TextComponent("(");
-                            if (lower) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(range.min())));
-                                if (upper) {
+                        MinMaxBounds.Doubles range = abilityData.bounds();
+                        Double lower = range.getMin();
+                        Double upper = range.getMax();
+                        if (lower != null || upper != null) {
+                            TextComponent cmp = new TextComponent(" (");
+                            if (lower != null) {
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
+                                if (upper != null) {
                                     cmp.append(", ");
                                 }
                             }
-                            if (upper) {
-                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(range.max())));
+                            if (upper != null) {
+                                cmp.append(new TranslatableComponent(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
                             }
                             cmp.append(")");
                             component.append(cmp);
@@ -129,8 +132,8 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 drawString.add(new TranslatableComponent(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
             pMatrixStack.pushPose();
-            pMatrixStack.translate(0, -1, 0);
-            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX, pMouseY, getFont());
+            pMatrixStack.translate(-posX, -posY, 0);
+            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX+posX, pMouseY+posY, getFont());
             pMatrixStack.popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);

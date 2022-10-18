@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.NBTIngredient;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -36,6 +35,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -460,6 +460,15 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('P', Items.PAPER)
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(AMItems.SPELL_BOOK.get())
+                .pattern("SLL")
+                .pattern("SPP")
+                .pattern("SLL")
+                .define('S', Tags.Items.STRING)
+                .define('L', Tags.Items.LEATHER)
+                .define('P', Items.PAPER)
+                .unlockedBy("has_paper", has(Items.PAPER))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.MANA_CAKE.get(), 3)
                 .requires(Tags.Items.CROPS_WHEAT)
                 .requires(Items.SUGAR)
@@ -472,7 +481,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .requires(Tags.Items.CROPS_POTATO)
                 .requires(Items.ICE)
                 .requires(Items.SUGAR)
-                .requires(new NBTIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
+                .requires(NBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)))
                 .unlockedBy("has_ice", has(Items.ICE))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.MAGE_HELMET.get())
@@ -515,7 +524,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern(" E ")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.AIR.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -525,7 +534,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("OOO")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.EARTH.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -535,7 +544,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("O O")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.FIRE.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
@@ -544,7 +553,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .pattern("GRG")
                 .define('O', Items.OBSIDIAN)
                 .define('G', Tags.Items.INGOTS_GOLD)
-                .define('E', new NBTIngredient(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
+                .define('E', NBTIngredient.of(helper.getEssenceForAffinity(AMAffinities.WATER.get())))
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);

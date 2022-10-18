@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartSta
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,6 +28,10 @@ public class Ignition extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
+        if (target.getEntity() instanceof Creeper creeper && !creeper.isIgnited()) {
+            creeper.ignite();
+            return SpellCastResult.SUCCESS;
+        }
         if (target.getEntity().isOnFire()) return SpellCastResult.EFFECT_FAILED;
         target.getEntity().setSecondsOnFire((int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(3, SpellPartStats.DURATION, modifiers, spell, caster, target));
         return SpellCastResult.SUCCESS;

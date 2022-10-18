@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.mana_blast",
+  "name": "skill.arsmagicalegacy.mana_blast.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/mana_blast.png",
   "pages": [

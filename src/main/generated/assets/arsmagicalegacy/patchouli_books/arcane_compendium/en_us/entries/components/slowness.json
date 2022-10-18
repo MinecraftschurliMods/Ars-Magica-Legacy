@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.slowness",
+  "name": "skill.arsmagicalegacy.slowness.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/slowness.png",
   "pages": [

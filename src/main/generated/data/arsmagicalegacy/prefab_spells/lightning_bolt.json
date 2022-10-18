@@ -2,6 +2,7 @@
   "name": {
     "text": "Lightning Bolt"
   },
+  "icon": "arsmagicalegacy:lighting-eerie-3",
   "spell": {
     "shape_groups": [
       [
@@ -13,6 +14,5 @@
       "arsmagicalegacy:damage"
     ],
     "data": {}
-  },
-  "icon": "arsmagicalegacy:lighting-eerie-3"
+  }
 }

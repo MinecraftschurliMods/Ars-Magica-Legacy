@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.components.transplace",
+  "name": "skill.arsmagicalegacy.transplace.name",
   "category": "arsmagicalegacy:components",
   "icon": "arsmagicalegacy:textures/icon/skill/transplace.png",
   "pages": [

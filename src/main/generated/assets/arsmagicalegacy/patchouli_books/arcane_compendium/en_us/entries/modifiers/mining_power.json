@@ -1,5 +1,5 @@
 {
-  "name": "item.arsmagicalegacy.arcane_compendium.modifiers.mining_power",
+  "name": "skill.arsmagicalegacy.mining_power.name",
   "category": "arsmagicalegacy:modifiers",
   "icon": "arsmagicalegacy:textures/icon/skill/mining_power.png",
   "pages": [

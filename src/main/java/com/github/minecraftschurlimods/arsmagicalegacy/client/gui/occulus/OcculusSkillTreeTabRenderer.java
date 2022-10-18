@@ -99,7 +99,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         int tick = (player.tickCount % 80) >= 40 ? (player.tickCount % 40) - 20 : -(player.tickCount % 40) + 20;
         float multiplier = 0.75F + tick / 80F;
         double guiScale = getMinecraft().getWindow().getGuiScale();
-        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor((posY - 1) * guiScale), (int) (width * guiScale), (int) (height * guiScale));
+        RenderSystem.enableScissor((int) (posX * guiScale), (int) Math.floor(posY * guiScale), (int) (width * guiScale), (int) Math.floor(height * guiScale));
         for (ISkill skill : skills) {
             boolean knows = helper.knows(player, skill);
             float cX = skill.getX() + SKILL_SIZE / 2 + 1;
@@ -145,6 +145,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         }
         RenderSystem.disableScissor();
         stack.popPose();
+        if (!(mouseX > offsetX && mouseX < offsetX+width && mouseY > offsetY && mouseY < offsetY+height)) return;
         for (ISkill skill : skills) {
             if (mouseX >= skill.getX() && mouseX <= skill.getX() + SKILL_SIZE && mouseY >= skill.getY() && mouseY <= skill.getY() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();
@@ -169,7 +170,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (mouseButton == 0 && mouseX > 7 && mouseX < width && mouseY > 7 && mouseX < height) {
+        if (mouseButton == 0 && mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
             var helper = ArsMagicaAPI.get().getSkillHelper();
             Player player = getMinecraft().player;
             if (player != null && hoverItem != null && !helper.knows(player, hoverItem)) {
