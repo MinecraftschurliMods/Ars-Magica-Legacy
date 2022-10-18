@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.Flamethr
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -82,7 +83,7 @@ public class FireGuardian extends AbstractBoss {
         }
         for (Player p : level.players()) {
             if (distanceToSqr(p) < 9) {
-                p.hurt(DamageSource.ON_FIRE, 5);
+                p.hurt(DamageSource.ON_FIRE, 8);
             }
         }
         super.aiStep();
@@ -111,12 +112,14 @@ public class FireGuardian extends AbstractBoss {
     }
 
     public void flamethrower() {
+        Vec3 look = getLookAngle();
         if (level.isClientSide()) {
-            // Particles
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(ParticleTypes.FLAME, getRandomX(1), getRandomY() + 1.5, getRandomZ(1), look.x, look.y, look.z);
+            }
         } else {
-            Vec3 look = getLookAngle();
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3), e -> !(e instanceof AbstractBoss))) {
-                e.hurt(DamageSource.ON_FIRE, 5);
+                e.hurt(DamageSource.ON_FIRE, 8);
             }
         }
     }
