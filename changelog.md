@@ -1,6 +1,5 @@
-# Version 1.19.2-1.1.7
+# Version 1.19.2-1.1.8
 
-## Fixes
+## Changes
 
-- Fixed affinity depth being immutable.
-- Fixed usages of `RegistryAccess#BUILTIN`.
+- Merge Changes from 1.18 into 1.19
