@@ -16,15 +16,7 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (ticks >= 20 && ticks <= 30) {
-            perform();
-        }
-    }
-
-    @Override
-    public void perform() {
+    public void performTick() {
         if (boss.getTarget() == null) return;
         Vec3 a = new Vec3(boss.getX(), boss.getY(), boss.getZ());
         Vec3 b = new Vec3(boss.getTarget().getX(), boss.getTarget().getY(), boss.getTarget().getZ());
@@ -32,8 +24,8 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
             Vec3 movement = boss.position().add(a.subtract(b).normalize().scale(-5));
             boss.moveTo(movement.x(), movement.y(), movement.z());
         } else {
-            if (boss.getTarget().hurt(DamageSource.mobAttack(boss), 10)) {
-                boss.heal(10);
+            if (boss.getTarget().hurt(DamageSource.mobAttack(boss), 8)) {
+                boss.heal(4);
             }
         }
     }

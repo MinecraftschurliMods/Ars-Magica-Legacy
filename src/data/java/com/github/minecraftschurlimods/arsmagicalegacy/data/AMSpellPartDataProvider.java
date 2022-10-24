@@ -208,6 +208,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.GOLDEN_CARROT), 1))
                 .build();
         createSpellPartData(AMSpellParts.NAUSEA, 200f)
+                .withAffinity(AMAffinities.LIFE, 0.0001f)
                 .build();
         createSpellPartData(AMSpellParts.REGENERATION, 30f)
                 .withAffinity(AMAffinities.LIFE, 0.001f)
@@ -276,6 +277,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.WITCHWOOD_LOGS), 1))
                 .build();
         createSpellPartData(AMSpellParts.SCRAMBLE_SYNAPSES, 3000f)
+                .withAffinity(AMAffinities.LIGHTNING, 0.0001f)
                 .build();
         createSpellPartData(AMSpellParts.SHIELD, 50f)
                 .withAffinity(AMAffinities.EARTH, 0.001f)
@@ -482,6 +484,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.MANA_FOCUS.get())))
                 .build();
         createSpellPartData(AMSpellParts.MELT_ARMOR, 200f)
+                .withAffinity(AMAffinities.FIRE, 0.0001f)
                 .build();
         createSpellPartData(AMSpellParts.MOONRISE, 2000f)
                 //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))

@@ -22,7 +22,7 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
     }
 
     public SummonAlliesGoal(LifeGuardian boss, List<Function<Level, ? extends Mob>> list) {
-        super(boss, AbstractBoss.Action.LONG_CAST, 20);
+        super(boss, AbstractBoss.Action.LONG_CAST, 30);
         this.list = list;
     }
 

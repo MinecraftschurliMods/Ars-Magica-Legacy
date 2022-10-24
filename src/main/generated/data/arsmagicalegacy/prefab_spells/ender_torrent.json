@@ -12,8 +12,9 @@
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:silence",
-      "arsmagicalegacy:knockback"
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:knockback",
+      "arsmagicalegacy:damage"
     ],
     "data": {}
   }

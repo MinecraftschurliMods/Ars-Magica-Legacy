@@ -48,32 +48,27 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
         if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
             boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
         }
-        if (ticks <= 20) {
+        if (ticks <= 10) {
             startPos = new Vec3((float) target.getX(), (float) target.getY(), (float) target.getZ());
-        } else if (ticks <= 80) {
-            target.moveTo(startPos.x(), startPos.y() + (ticks - 25) * 0.1, startPos.z());
+        } else if (ticks <= 40) {
+            target.moveTo(startPos.x(), startPos.y() + (ticks - 10) * 0.2, startPos.z());
             target.fallDistance = 0;
             if (!boss.getLevel().isClientSide() && ticks == 30) {
                 boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
-        } else if (ticks <= 100) {
+        } else if (ticks <= 80) {
             target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
-        } else if (ticks <= 140) {
-            target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
-            if (ticks > 120) {
-                target.hurt(DamageSource.LIGHTNING_BOLT, 3);
+            if (ticks > 50) {
+                target.hurt(DamageSource.LIGHTNING_BOLT, 20);
             }
             if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
                 boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
-            if (boss.getLevel().isClientSide()) {
-                // Particle
-            }
-        } else if (ticks <= 150 && !hasThrown) {
+        } else if (ticks <= 90 && !hasThrown) {
             hasThrown = true;
-            target.push(0, -3, 0);
-            target.fallDistance = 5;
-        } else if (ticks <= 160 && !hasBolted) {
+            target.push(0, -4, 0);
+            target.fallDistance = 8;
+        } else if (ticks <= 100 && !hasBolted) {
             hasBolted = true;
             LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, boss.getLevel());
             bolt.setPos(target.getX(), target.getY(), target.getZ());

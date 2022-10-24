@@ -89,12 +89,12 @@ class AMPrefabSpellProvider extends PrefabSpellProvider {
                 ShapeGroup.of(AMSpellParts.PROJECTILE.get())
         ));
         addPrefabSpell("ender_torrent", "Ender Torrent", new ResourceLocation(ArsMagicaAPI.MOD_ID, "light_magenta_3"), api.makeSpell(
-                SpellStack.of(AMSpellParts.SILENCE.get(), AMSpellParts.KNOCKBACK.get()),
+                SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.KNOCKBACK.get(), AMSpellParts.DAMAGE.get()),
                 ShapeGroup.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.VELOCITY.get(), AMSpellParts.AOE.get())
         ));
         addPrefabSpell("ender_wave", "Ender Wave", new ResourceLocation(ArsMagicaAPI.MOD_ID, "wind_magenta_3"), api.makeSpell(
-                SpellStack.of(AMSpellParts.SILENCE.get(), AMSpellParts.KNOCKBACK.get()),
-                ShapeGroup.of(AMSpellParts.WAVE.get(), AMSpellParts.RANGE.get(), AMSpellParts.RANGE.get(), AMSpellParts.TOUCH.get())
+                SpellStack.of(AMSpellParts.MAGIC_DAMAGE.get(), AMSpellParts.KNOCKBACK.get(), AMSpellParts.DAMAGE.get()),
+                ShapeGroup.of(AMSpellParts.WAVE.get(), AMSpellParts.RANGE.get())
         ));
         addPrefabSpell("heal_self", "Heal Self", new ResourceLocation(ArsMagicaAPI.MOD_ID, "heart_royal_3"), api.makeSpell(
                 SpellStack.of(AMSpellParts.HEAL.get()),

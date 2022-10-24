@@ -73,7 +73,7 @@ public class LifeGuardian extends AbstractBoss {
             entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_AXE));
             return entity;
         }, EntityType.WITCH::create)));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 30));
         goalSelector.addGoal(1, new HealGoal<>(this));
     }
 

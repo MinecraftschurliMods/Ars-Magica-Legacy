@@ -56,8 +56,8 @@ public class EnderGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new EnderRushGoal(this));
         goalSelector.addGoal(1, new ShadowstepGoal(this));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 20));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 20));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 10));
         goalSelector.addGoal(1, new EnderTorrentGoal(this));
         goalSelector.addGoal(1, new OtherworldlyRoarGoal(this));
     }
