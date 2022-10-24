@@ -9,9 +9,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbIt
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.NatureScytheItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WintersGraspItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
@@ -136,8 +134,8 @@ public interface AMItems {
     RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG              = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG               = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG       = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
-    RegistryObject<NatureScytheItem>             NATURE_SCYTHE                = ITEMS.register("nature_scythe", NatureScytheItem::new);
-    RegistryObject<WintersGraspItem>             WINTERS_GRASP                = ITEMS.register("winters_grasp", WintersGraspItem::new);
+//    RegistryObject<NatureScytheItem>             NATURE_SCYTHE                = ITEMS.register("nature_scythe", NatureScytheItem::new);
+//    RegistryObject<WintersGraspItem>             WINTERS_GRASP                = ITEMS.register("winters_grasp", WintersGraspItem::new);
 
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
