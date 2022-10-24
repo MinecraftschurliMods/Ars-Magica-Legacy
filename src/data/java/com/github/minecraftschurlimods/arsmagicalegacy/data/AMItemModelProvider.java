@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,80 @@ import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AFFINITY_ESSENCE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AFFINITY_TOME;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ALTAR_CORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ARCANE_ASH;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ARCANE_COMPOUND;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AUM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_BOOTS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_CHESTPLATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_HELMET;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_LEGGINGS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BLACK_AUREM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BLANK_RUNE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CELESTIAL_PRISM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CERUBLOSSOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.COLORED_RUNE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CRYSTAL_WRENCH;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_CHIMERITE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_MOONSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_TOPAZ_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_VINTEUM_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DESERT_NOVA;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.GOLD_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.INFINITY_ORB;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.IRON_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_BOOTS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_CHESTPLATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_HELMET;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_LEGGINGS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGIC_WALL;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGITECH_GOGGLES;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MANA_CAKE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MANA_MARTINI;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.OBELISK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.OCCULUS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.PURIFIED_VINTEUM_DUST;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.REDSTONE_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.RUNE_BAG;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL_BOOK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL_PARCHMENT;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.STRIPPED_WITCHWOOD;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.STRIPPED_WITCHWOOD_LOG;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TARMA_ROOT;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_DUST;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_TORCH;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WAKEBLOOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_BUTTON;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_DOOR;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_FENCE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_FENCE_GATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_LEAVES;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_LOG;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_PLANKS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_PRESSURE_PLATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_SAPLING;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_SLAB;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_STAIRS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_TRAPDOOR;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WIZARDS_CHALK;
 
 class AMItemModelProvider extends ItemModelProvider {
     AMItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -28,18 +102,18 @@ class AMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
+        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", modLoc("item/arcane_compendium"));
         skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()
-                .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-                .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
-                .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
+            .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+            .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
+            .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
+            .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
+            .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
         blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
         itemGenerated(WIZARDS_CHALK);
@@ -100,10 +174,7 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_TOME);
         itemGenerated(SPELL_PARCHMENT);
         spellItem(SPELL);
-//        getBuilder(SPELL.getId().getPath());
-//        withExistingParent(SPELL_BOOK, mcLoc("item/generated"))
-//                .texture("layer0", modLoc("item/spell_book_cover"))
-//                .texture("layer1", modLoc("item/spell_book_decoration"));
+        spellBookItem(SPELL_BOOK);
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
         itemGenerated(MAGE_HELMET);
@@ -164,7 +235,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param name The texture id to use.
      */
     private void itemHandheld(RegistryObject<? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", modLoc(name));
     }
 
     /**
@@ -225,15 +296,28 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity.
+     * Adds an item model for this item for each affinity. Uses arsmagicalegacy:item/spell_handheld as the parent.
      *
      * @param item The spell item to add this for.
      * @param <T>  An {@link Item} that must also implement {@link ISpellItem}.
      */
     private <T extends Item & ISpellItem> void spellItem(RegistryObject<T> item) {
+        getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
-            singleTexture(rl.toString(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/spell_handheld"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            singleTexture(rl.toString(), modLoc("item/spell_handheld"), "texture", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
+    }
+
+    /**
+     * Adds an item model for this item, and a handheld version to be used by a {@link SpellBookModel}.
+     *
+     * @param item The item to generate the model for.
+     */
+    private void spellBookItem(RegistryObject<? extends Item> item) {
+        getBuilder(item.getId().toString());
+        withExistingParent(item.getId().getPath() + "_handheld", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + item.getId().getPath() + "_cover"))
+            .texture("layer1", modLoc("item/" + item.getId().getPath() + "_decoration"));
     }
 }

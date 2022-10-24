@@ -1,22 +1,44 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.BakedModelWrapper;
+import org.jetbrains.annotations.Nullable;
 
 public class SpellBookModel extends BakedModelWrapper<BakedModel> {
-    private ItemTransforms.TransformType cameraTransformType;
+    private ItemStack stack;
+    private final ItemOverrides overrides = new ItemOverrides() {
+        @Override
+        public BakedModel resolve(BakedModel model, ItemStack pStack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+            stack = SpellBookItem.getSelectedSpell(pStack);
+            return super.resolve(model, pStack, level, entity, seed);
+        }
+    };
 
-    public SpellBookModel(final BakedModel originalModel) {
+    public SpellBookModel(BakedModel originalModel) {
         super(originalModel);
     }
 
     @Override
-    public BakedModel handlePerspective(final ItemTransforms.TransformType cameraTransformType, final PoseStack poseStack) {
-        this.cameraTransformType = cameraTransformType;
-        return ForgeHooksClient.handlePerspective(this, cameraTransformType, poseStack);
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+        LocalPlayer player = ClientHelper.getLocalPlayer();
+        if (player != null && ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
+            ResourceLocation affinity = SpellItem.getSpell(stack).primaryAffinity().getId();
+            return SpellItemModel.getPerspectiveModel(new ResourceLocation(affinity.getNamespace(), "item/" + AMItems.SPELL.getId().getPath() + "_" + affinity.getPath()), cameraTransformType, poseStack);
+        }
+        return SpellItemModel.getPerspectiveModel(new ResourceLocation(AMItems.SPELL_BOOK.getId().getNamespace(), "item/" + AMItems.SPELL_BOOK.getId().getPath() + "_handheld"), cameraTransformType, poseStack);
     }
 
     @Override
@@ -25,11 +47,17 @@ public class SpellBookModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public boolean isCustomRenderer() {
-        return isHand();
+    public ItemOverrides getOverrides() {
+        return overrides;
     }
 
-    private boolean isHand() {
-        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+    @Override
+    public boolean isCustomRenderer() {
+        return false;
+    }
+
+    @Override
+    public boolean usesBlockLight() {
+        return false;
     }
 }

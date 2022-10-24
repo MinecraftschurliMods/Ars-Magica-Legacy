@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -9,24 +10,28 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockElementFace;
+import net.minecraft.client.renderer.block.model.BlockFaceUV;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.ItemTextureQuadConverter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -39,54 +44,29 @@ import java.util.concurrent.ExecutionException;
 public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON = RenderType.itemEntityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
-
-    private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
     private Optional<ResourceLocation> icon;
+    private IAffinity affinity;
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             icon = SpellItem.getSpellIcon(stack);
+            if (!stack.isEmpty()) {
+                affinity = SpellItem.getSpell(stack).primaryAffinity();
+            }
             return super.resolve(model, stack, level, entity, seed);
         }
     };
-    private ItemTransforms.TransformType cameraTransformType;
 
     public SpellItemModel(BakedModel originalModel) {
         super(originalModel);
     }
 
-    @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        this.cameraTransformType = cameraTransformType;
-        Player player = ClientHelper.getLocalPlayer();
-        if (player != null) {
-            if (!ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) || cameraTransformType == ItemTransforms.TransformType.GROUND || cameraTransformType == ItemTransforms.TransformType.FIXED || icon.isEmpty()) {
-                return Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory")).handlePerspective(cameraTransformType, poseStack);
-            } else {
-
-            }
-        }
-        super.handlePerspective(cameraTransformType, poseStack);
-        return this;
+    static boolean isHand(ItemTransforms.TransformType cameraTransformType) {
+        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType.firstPerson();
     }
 
-    @Override
-    public boolean doesHandlePerspectives() {
-        return true;
-    }
-
-    @Override
-    public ItemOverrides getOverrides() {
-        return overrides;
-    }
-
-    @Override
-    public boolean isCustomRenderer() {
-        return isHand() || super.isCustomRenderer();
-    }
-
-    private boolean isHand() {
-        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+    static BakedModel getPerspectiveModel(ResourceLocation modelLocation, ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+        return Minecraft.getInstance().getModelManager().getModel(modelLocation).handlePerspective(cameraTransformType, poseStack);
     }
 
     @Override
@@ -95,27 +75,75 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        if (cameraTransformType == ItemTransforms.TransformType.GUI && icon.isPresent()) {
-            ResourceLocation key = icon.get();
-            try {
-                return CACHE.get(key, () -> {
-                    TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(key);
-                    return List.of(ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 8.504f / 16f, sprite, Direction.SOUTH, -1, 2));
-                });
-            } catch (ExecutionException ignored) {
-            }
+    public boolean isCustomRenderer() {
+        return false;
+    }
+
+    @Override
+    public ItemOverrides getOverrides() {
+        return overrides;
+    }
+
+    @Override
+    public boolean doesHandlePerspectives() {
+        return true;
+    }
+
+    @Override
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+        LocalPlayer player = ClientHelper.getLocalPlayer();
+        if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
+            return getPerspectiveModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"), cameraTransformType, poseStack);
         }
-        return super.getQuads(state, side, rand);
+        if (isHand(cameraTransformType) && affinity != null) {
+            return getPerspectiveModel(new ResourceLocation(affinity.getId().getNamespace(), "item/spell_" + affinity.getId().getPath()), cameraTransformType, poseStack);
+        }
+        if (icon.isEmpty() || cameraTransformType != ItemTransforms.TransformType.GUI) {
+            return getPerspectiveModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"), cameraTransformType, poseStack);
+        }
+        super.handlePerspective(cameraTransformType, poseStack);
+        return new SpellIconModel(this, cameraTransformType, icon.get());
     }
 
-    @Override
-    public boolean isLayered() {
-        return cameraTransformType == ItemTransforms.TransformType.GUI;
-    }
+    private static class SpellIconModel extends BakedModelWrapper<BakedModel> {
+        private final Cache<ResourceLocation, List<BakedQuad>> CACHE = CacheBuilder.newBuilder().maximumSize(5).build();
+        private final ItemTransforms.TransformType cameraTransformType;
+        private final ResourceLocation icon;
 
-    @Override
-    public List<Pair<BakedModel, RenderType>> getLayerModels(ItemStack itemStack, boolean fabulous) {
-        return Collections.singletonList(Pair.of(this, fabulous ? SPELL_ICON_FAB : SPELL_ICON));
+        public SpellIconModel(BakedModel originalModel, ItemTransforms.TransformType cameraTransformType, ResourceLocation icon) {
+            super(originalModel);
+            this.cameraTransformType = cameraTransformType;
+            this.icon = icon;
+        }
+
+        @NotNull
+        @Override
+        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
+            if (cameraTransformType == ItemTransforms.TransformType.GUI) {
+                try {
+                    return CACHE.get(icon, () -> {
+                        TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(icon);
+                        return List.of(new FaceBakery().bakeQuad(new Vector3f(0, 0, 8.504f), new Vector3f(16, 16, 8.504f), new BlockElementFace(null, 2, sprite.getName().toString(), new BlockFaceUV(new float[]{0, 0, 16, 16}, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true, sprite.getName()));
+                    });
+                } catch (ExecutionException ignored) {
+                }
+            }
+            return super.getQuads(state, side, rand);
+        }
+
+        @Override
+        public boolean isCustomRenderer() {
+            return false;
+        }
+
+        @Override
+        public boolean isLayered() {
+            return cameraTransformType == ItemTransforms.TransformType.GUI;
+        }
+
+        @Override
+        public List<Pair<BakedModel, RenderType>> getLayerModels(ItemStack itemStack, boolean fabulous) {
+            return Collections.singletonList(Pair.of(this, fabulous ? SPELL_ICON_FAB : SPELL_ICON));
+        }
     }
 }
