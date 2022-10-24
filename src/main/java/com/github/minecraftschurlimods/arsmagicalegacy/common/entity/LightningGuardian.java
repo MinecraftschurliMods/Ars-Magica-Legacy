@@ -70,7 +70,7 @@ public class LightningGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.DROWN) {
-            pAmount *= 3;
+            pAmount *= 2;
         } else if (pSource == DamageSource.LIGHTNING_BOLT) {
             heal(pAmount);
             return false;
