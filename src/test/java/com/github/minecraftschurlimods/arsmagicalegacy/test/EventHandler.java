@@ -21,18 +21,12 @@ import java.util.stream.Stream;
 public class EventHandler {
     @SubscribeEvent
     static void gametest(RegisterGameTestsEvent event) throws ParserConfigurationException {
-        if (Stream.of(System.getProperty("forge.enabledGameTestNamespaces"))
-                  .flatMap(s -> Arrays.stream(s.split(",")))
-                  .anyMatch(s -> s.equals(ArsMagicaAPI.MOD_ID))) {
-            GlobalTestReporter.replaceWith(new CompoundTestReporter(
-                    new LogTestReporter(),
-                    new JUnitLikeTestReporter(new File("./logs/report-%s.xml".formatted(DateTimeFormatter.ISO_INSTANT.format(Instant.now()))))
-            ));
+        if (Stream.of(System.getProperty("forge.enabledGameTestNamespaces")).flatMap(s -> Arrays.stream(s.split(","))).anyMatch(s -> s.equals(ArsMagicaAPI.MOD_ID))) {
+            GlobalTestReporter.replaceWith(new CompoundTestReporter(new LogTestReporter(), new JUnitLikeTestReporter(new File("./logs/report-%s.xml".formatted(DateTimeFormatter.ISO_INSTANT.format(Instant.now()))))));
         }
     }
 
     private record CompoundTestReporter(TestReporter... reporters) implements TestReporter {
-
         @Override
         public void onTestFailed(final GameTestInfo testInfo) {
             for (final TestReporter reporter : reporters) {

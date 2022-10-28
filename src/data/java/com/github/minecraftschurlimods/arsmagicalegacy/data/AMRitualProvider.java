@@ -63,6 +63,14 @@ public class AMRitualProvider implements DataProvider {
         this.generator = generator;
     }
 
+    private static Path createPath(Path path, ResourceLocation resourceLocation) {
+        return path.resolve("data/" + resourceLocation.getNamespace() + "/am_rituals/" + resourceLocation.getPath() + ".json");
+    }
+
+    public static RitualBuilder builder(ResourceLocation id) {
+        return new RitualBuilder(id);
+    }
+
     @Override
     public void run(final HashCache pCache) {
         addRituals(this::addRitual);
@@ -76,22 +84,17 @@ public class AMRitualProvider implements DataProvider {
         });
     }
 
+    @Override
+    public String getName() {
+        return "AMRituals[" + ArsMagicaAPI.MOD_ID + "]";
+    }
+
     protected void addRituals(BiConsumer<ResourceLocation, Ritual> consumer) {
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_arcane_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.stackExact(ArsMagicaAPI.get().getBookStack()))
-                .with(new EntitySpawnRitualEffect(AMEntities.ARCANE_GUARDIAN.get()))
-                .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_air_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.item(AMItems.TARMA_ROOT.get()))
-                .with(new HeightRequirement(MinMaxBounds.Ints.atLeast(128)))
-                .with(new EntitySpawnRitualEffect(AMEntities.AIR_GUARDIAN.get()))
-                .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_earth_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.tags(Tags.Items.GEMS_EMERALD, AMTags.Items.GEMS_CHIMERITE, AMTags.Items.GEMS_TOPAZ))
-                .with(new EntitySpawnRitualEffect(AMEntities.EARTH_GUARDIAN.get()))
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_water_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL))
+                .with(ItemDropRitualTrigger.ingredients(Ingredient.of(ItemTags.BOATS), Ingredient.of(Items.WATER_BUCKET)))
+                .with(new BiomeRequirement(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN))
+                .with(new EntitySpawnRitualEffect(AMEntities.WATER_GUARDIAN.get()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_fire_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.FIRE_GUARDIAN_SPAWN_RITUAL))
@@ -99,29 +102,22 @@ public class AMRitualProvider implements DataProvider {
                 .with(new UltrawarmDimensionRequirement())
                 .with(new EntitySpawnRitualEffect(AMEntities.FIRE_GUARDIAN.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_water_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.WATER_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.ingredients(Ingredient.of(ItemTags.BOATS), Ingredient.of(Items.WATER_BUCKET)))
-                .with(new BiomeRequirement(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN))
-                .with(new EntitySpawnRitualEffect(AMEntities.WATER_GUARDIAN.get()))
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_earth_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.EARTH_GUARDIAN_SPAWN_RITUAL))
+                .with(ItemDropRitualTrigger.tags(Tags.Items.GEMS_EMERALD, AMTags.Items.GEMS_CHIMERITE, AMTags.Items.GEMS_TOPAZ))
+                .with(new EntitySpawnRitualEffect(AMEntities.EARTH_GUARDIAN.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ender_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL))
-                .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
-                .with(new EnderDragonDimensionRequirement())
-                .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_air_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.AIR_GUARDIAN_SPAWN_RITUAL))
+                .with(ItemDropRitualTrigger.item(AMItems.TARMA_ROOT.get()))
+                .with(new HeightRequirement(MinMaxBounds.Ints.atLeast(128)))
+                .with(new EntitySpawnRitualEffect(AMEntities.AIR_GUARDIAN.get()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ice_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.ICE_GUARDIAN_SPAWN_RITUAL))
                 .with(new EntitySummonTrigger(EntityType.SNOW_GOLEM))
-//                .with(new BiomeRequirement(Tags.Biomes.IS_FROZEN)) // TODO biome requirement
+                .with(new BiomeRequirement(Tags.Biomes.IS_COLD))
                 .with(new EntitySpawnRitualEffect(AMEntities.ICE_GUARDIAN.get()))
-                .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_life_guardian"))
-                .with(new RitualStructureRequirement(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL))
-                .with(new EntityDeathTrigger(EntityPredicate.Builder.entity().of(EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true).build()).build()))
-                .with(new MoonPhaseRequirement(0))
-                .with(new EntitySpawnRitualEffect(AMEntities.LIFE_GUARDIAN.get()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_lightning_guardian"))
                 .with(new RitualStructureRequirement(PatchouliCompat.LIGHTNING_GUARDIAN_SPAWN_RITUAL))
@@ -129,23 +125,27 @@ public class AMRitualProvider implements DataProvider {
                 .with(new EntitySpawnRitualEffect(AMEntities.LIGHTNING_GUARDIAN.get()))
                 .with(new BlockPos(0, -2, 0))
                 .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_life_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL))
+                .with(new EntityDeathTrigger(EntityPredicate.Builder.entity().of(EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true).build()).build()))
+                .with(new MoonPhaseRequirement(0))
+                .with(new EntitySpawnRitualEffect(AMEntities.LIFE_GUARDIAN.get()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_arcane_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.ARCANE_GUARDIAN_SPAWN_RITUAL))
+                .with(ItemDropRitualTrigger.stackExact(ArsMagicaAPI.get().getBookStack()))
+                .with(new EntitySpawnRitualEffect(AMEntities.ARCANE_GUARDIAN.get()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_ender_guardian"))
+                .with(new RitualStructureRequirement(PatchouliCompat.ENDER_GUARDIAN_SPAWN_RITUAL))
+                .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
+                .with(new EnderDragonDimensionRequirement())
+                .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
+                .build(consumer);
     }
 
     private void addRitual(ResourceLocation id, Ritual ritual) {
         elements.put(id, Ritual.CODEC.encodeStart(RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), ritual).getOrThrow(false, LOGGER::warn));
-    }
-
-    private static Path createPath(Path path, ResourceLocation resourceLocation) {
-        return path.resolve("data/" + resourceLocation.getNamespace() + "/am_rituals/" + resourceLocation.getPath() + ".json");
-    }
-
-    @Override
-    public String getName() {
-        return "AMRituals[" + ArsMagicaAPI.MOD_ID + "]";
-    }
-
-    public static RitualBuilder builder(ResourceLocation id) {
-        return new RitualBuilder(id);
     }
 
     protected static class RitualBuilder {
