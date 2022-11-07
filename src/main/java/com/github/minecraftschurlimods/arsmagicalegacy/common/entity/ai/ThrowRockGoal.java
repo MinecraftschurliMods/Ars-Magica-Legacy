@@ -3,6 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownRock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+
+import java.util.Objects;
 
 public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     public ThrowRockGoal(EarthGuardian boss) {
@@ -23,7 +26,7 @@ public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
-            ThrownRock entity = ThrownRock.create(boss.getLevel());
+            ThrownRock entity = Objects.requireNonNull(AMEntities.THROWN_ROCK.get().create(boss.getLevel()));
             entity.moveTo(boss.getEyePosition().add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
             entity.setOwner(boss);

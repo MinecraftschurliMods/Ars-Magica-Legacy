@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureScythe;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -8,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
+import java.util.Objects;
 
 public class NatureScytheItem extends Item {
     public NatureScytheItem() {
@@ -17,7 +20,7 @@ public class NatureScytheItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide()) {
-            NatureScythe entity = NatureScythe.create(pLevel);
+            NatureScythe entity = Objects.requireNonNull(AMEntities.NATURE_SCYTHE.get().create(pLevel));
             entity.moveTo(pPlayer.position().add(0, 1, 0).add(pPlayer.getLookAngle()));
             entity.setDeltaMovement(pPlayer.getLookAngle());
             entity.setXRot(pPlayer.getXRot());

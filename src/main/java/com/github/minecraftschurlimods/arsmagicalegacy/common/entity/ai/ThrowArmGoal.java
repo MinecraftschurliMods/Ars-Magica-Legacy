@@ -3,8 +3,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WintersGrasp;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+
+import java.util.Objects;
 
 public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
     public ThrowArmGoal(IceGuardian boss) {
@@ -24,7 +27,7 @@ public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
     @Override
     public void perform() {
         if (!boss.getLevel().isClientSide()) {
-            WintersGrasp entity = WintersGrasp.create(boss.getLevel());
+            WintersGrasp entity = Objects.requireNonNull(AMEntities.WINTERS_GRASP.get().create(boss.getLevel()));
             entity.moveTo(boss.position().add(0, 1, 0).add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
             entity.setXRot(boss.getXRot());

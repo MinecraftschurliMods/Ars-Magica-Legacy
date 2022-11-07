@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -12,6 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Blizzard extends AbstractComponent {
     public Blizzard() {
@@ -32,7 +34,7 @@ public class Blizzard extends AbstractComponent {
 
     private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard blizzard = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard.create(level);
+            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard blizzard = Objects.requireNonNull(AMEntities.BLIZZARD.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             blizzard.setPos(target.getLocation());
             blizzard.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target));

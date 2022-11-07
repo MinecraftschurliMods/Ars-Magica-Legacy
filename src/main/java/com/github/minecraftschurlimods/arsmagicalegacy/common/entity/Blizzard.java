@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,22 +29,8 @@ public class Blizzard extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.FLOAT);
 
-    /**
-     * Use {@link Projectile#create(Level)} instead.
-     */
-    @Internal
     public Blizzard(EntityType<? extends Blizzard> type, Level level) {
         super(type, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Blizzard create(Level level) {
-        return new Blizzard(AMEntities.BLIZZARD.get(), level);
     }
 
     @Override

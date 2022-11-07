@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Projectile extends AbstractShape {
     public Projectile() {
@@ -24,7 +26,7 @@ public class Projectile extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile projectile = com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile.create(level);
+            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile projectile = Objects.requireNonNull(AMEntities.PROJECTILE.get().create(level));
             projectile.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             projectile.setDeltaMovement(caster.getLookAngle());
             var api = ArsMagicaAPI.get();

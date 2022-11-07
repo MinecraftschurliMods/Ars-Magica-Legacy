@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -44,22 +42,8 @@ public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL_SERIALIZER);
 
-    /**
-     * Use {@link Wave#create(Level)} instead.
-     */
-    @Internal
     public Wave(EntityType<? extends Wave> type, Level level) {
         super(type, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Wave create(Level level) {
-        return new Wave(AMEntities.WAVE.get(), level);
     }
 
     @Override

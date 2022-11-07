@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -21,16 +20,6 @@ public class Whirlwind extends Entity {
 
     public Whirlwind(EntityType<? extends Whirlwind> type, Level level) {
         super(type, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Whirlwind create(Level level) {
-        return new Whirlwind(AMEntities.WHIRLWIND.get(), level);
     }
 
     @Override
