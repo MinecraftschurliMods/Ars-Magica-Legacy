@@ -248,7 +248,8 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PrefabSpellManager.ITEM_CATEGORY) {
-            PrefabSpellManager.instance().values()
+            PrefabSpellManager.instance()
+                    .values()
                     .stream()
                     .sorted()
                     .map(IPrefabSpell::makeSpell)
