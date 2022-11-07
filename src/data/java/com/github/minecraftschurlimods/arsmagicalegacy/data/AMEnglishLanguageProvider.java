@@ -743,7 +743,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds a damage source translation.
+     * Adds a arcane compendium entry translation.
      *
      * @param compendiumEntry The compendium entry to add the translation for.
      * @param translation     The translation to use.
