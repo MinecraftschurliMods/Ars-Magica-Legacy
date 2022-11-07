@@ -22,7 +22,7 @@ public class Wall extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall wall = Objects.requireNonNull(AMEntities.WALL.get().create(level));
+            var wall = Objects.requireNonNull(AMEntities.WALL.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             wall.setPos(helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0).getLocation());
             wall.setYRot(caster.getYHeadRot());

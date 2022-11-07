@@ -22,7 +22,7 @@ public class Zone extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone zone = Objects.requireNonNull(AMEntities.ZONE.get().create(level));
+            var zone = Objects.requireNonNull(AMEntities.ZONE.get().create(level));
             if (hit != null) {
                 zone.moveTo(hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z());
             } else {

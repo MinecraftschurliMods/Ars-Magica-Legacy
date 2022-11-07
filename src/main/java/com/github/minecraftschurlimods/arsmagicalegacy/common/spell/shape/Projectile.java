@@ -26,7 +26,7 @@ public class Projectile extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile projectile = Objects.requireNonNull(AMEntities.PROJECTILE.get().create(level));
+            var projectile = Objects.requireNonNull(AMEntities.PROJECTILE.get().create(level));
             projectile.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
             projectile.setDeltaMovement(caster.getLookAngle());
             var api = ArsMagicaAPI.get();
