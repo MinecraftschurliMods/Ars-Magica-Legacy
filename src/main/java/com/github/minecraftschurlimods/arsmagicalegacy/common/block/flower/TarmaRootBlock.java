@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.block;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;

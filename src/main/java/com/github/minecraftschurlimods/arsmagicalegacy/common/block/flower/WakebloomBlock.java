@@ -1,7 +1,9 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.block;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -12,8 +14,14 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 
 public class WakebloomBlock extends FlowerBlock {
+    //Uses regeneration and manually returns the actual effect below to circumvent problems with suppliers and laziness
     public WakebloomBlock() {
-        super(AMMobEffects.burnout_reduction, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
+        super(MobEffects.REGENERATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return (level.getFluidState(pos).getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
     }
 
     @Override
@@ -22,7 +30,7 @@ public class WakebloomBlock extends FlowerBlock {
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return (level.getFluidState(pos).getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
+    public MobEffect getSuspiciousStewEffect() {
+        return AMMobEffects.BURNOUT_REDUCTION.get();
     }
 }
