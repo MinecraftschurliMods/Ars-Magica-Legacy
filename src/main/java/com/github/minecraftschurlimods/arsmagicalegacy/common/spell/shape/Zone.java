@@ -23,7 +23,11 @@ public class Zone extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (!level.isClientSide()) {
             com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone zone = Objects.requireNonNull(AMEntities.ZONE.get().create(level));
-            zone.moveTo(hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z());
+            if (hit != null) {
+                zone.moveTo(hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z());
+            } else {
+                zone.moveTo(caster.position());
+            }
             var helper = ArsMagicaAPI.get().getSpellHelper();
             if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0) {
                 zone.setTargetNonSolid();

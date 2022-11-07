@@ -24,6 +24,13 @@ Continuation of Ars Magica 2 by Mithion
     side = "BOTH"
 
 [[dependencies.${ mod_id }]]
+    modId = "geckolib"
+    mandatory = true
+    versionRange = "${geckolib_version_range}"
+    ordering = "BEFORE"
+    side = "BOTH"
+
+[[dependencies.${ mod_id }]]
     modId = "curios"
     mandatory = false
     versionRange = "${curios_version_range}"
