@@ -25,7 +25,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPac
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
@@ -90,7 +89,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);

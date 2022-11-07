@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AgilityEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.BurnoutReduction;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.EntangleEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.FlightEffect;
@@ -32,7 +31,7 @@ public interface AMMobEffects {
     MobEffect burnout_reduction = new BurnoutReduction();
     MobEffect mana_regen        = new ManaRegenEffect();
 
-    RegistryObject<MobEffect> AGILITY           = MOB_EFFECTS.register("agility",           AgilityEffect::new);
+    RegistryObject<MobEffect> AGILITY           = MOB_EFFECTS.register("agility",           () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xade000).addAttributeModifier(ForgeMod.STEP_HEIGHT_ADDITION.get(), "C1105901-7F9E-4811-81F4-D8801749333E", 0.4, AttributeModifier.Operation.ADDITION));
     RegistryObject<MobEffect> ASTRAL_DISTORTION = MOB_EFFECTS.register("astral_distortion", () -> new AMMobEffect(MobEffectCategory.HARMFUL, 0x6c0000));
     RegistryObject<MobEffect> BURNOUT_REDUCTION = MOB_EFFECTS.register("burnout_reduction", BurnoutReduction::new);
     RegistryObject<MobEffect> CLARITY           = MOB_EFFECTS.register("clarity",           () -> new AMMobEffect(MobEffectCategory.BENEFICIAL, 0xbbffff));

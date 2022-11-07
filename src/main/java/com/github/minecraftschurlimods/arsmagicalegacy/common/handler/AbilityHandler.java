@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbilityData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
@@ -9,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ability.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -180,6 +178,7 @@ final class AbilityHandler {
         attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).removeModifier(AbilityUUIDs.GRAVITY);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SLOWNESS);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).removeModifier(AbilityUUIDs.SPEED);
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).removeModifier(AbilityUUIDs.STEP_ASSIST);
         IAbilityData ability = manager.get(AMAbilities.SWIM_SPEED.getId());
         if (affinity == ability.affinity()) {
             if (ability.test(player)) {
@@ -212,9 +211,9 @@ final class AbilityHandler {
         }
         ability = manager.get(AMAbilities.STEP_ASSIST.getId());
         if (affinity == ability.affinity()) {
-            float stepHeight = ability.test(player) ? 1f : 0.6f;
-            player.maxUpStep = stepHeight;
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new UpdateStepHeightPacket(stepHeight), player);
+            if (ability.test(player)) {
+                attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.STEP_ASSIST, "Step Assist Ability", helper.getAffinityDepth(player, affinity) * 0.4f, AttributeModifier.Operation.ADDITION));
+            }
         }
         ability = manager.get(AMAbilities.POISON_RESISTANCE.getId());
         if (affinity == ability.affinity() && ability.test(player) && player.hasEffect(MobEffects.POISON)) {
