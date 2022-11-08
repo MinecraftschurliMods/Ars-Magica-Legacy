@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -310,7 +310,7 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item, and a handheld version to be used by a {@link SpellBookModel}.
+     * Adds an item model for this item, and a handheld version to be used by a {@link SpellBookItemModel}.
      *
      * @param item The item to generate the model for.
      */

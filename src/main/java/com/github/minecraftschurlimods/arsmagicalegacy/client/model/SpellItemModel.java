@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3f;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -53,7 +56,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             if (!stack.isEmpty()) {
                 affinity = SpellItem.getSpell(stack).primaryAffinity();
             }
-            return super.resolve(model, stack, level, entity, seed);
+            return SpellItemModel.this;
         }
     };
 
@@ -66,17 +69,12 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     static BakedModel getPerspectiveModel(ResourceLocation modelLocation, ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        return Minecraft.getInstance().getModelManager().getModel(modelLocation).handlePerspective(cameraTransformType, poseStack);
-    }
-
-    @Override
-    public boolean usesBlockLight() {
-        return false;
+        return new SpellHandModel(Minecraft.getInstance().getModelManager().getModel(modelLocation));
     }
 
     @Override
     public boolean isCustomRenderer() {
-        return false;
+        return true;
     }
 
     @Override
@@ -103,6 +101,31 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         }
         super.handlePerspective(cameraTransformType, poseStack);
         return new SpellIconModel(this, cameraTransformType, icon.get());
+    }
+
+    @SuppressWarnings("deprecation")
+    public static class SpellHandModel extends SimpleBakedModel {
+        public final BakedModel originalModel;
+
+        public SpellHandModel(BakedModel originalModel) {
+            super(originalModel.getQuads(null, null, new Random(42L)), directionMap(originalModel), false, false, originalModel.isGui3d(), originalModel.getParticleIcon(), ItemTransforms.NO_TRANSFORMS, originalModel.getOverrides());
+            this.originalModel = originalModel;
+        }
+
+        @Override
+        public boolean isCustomRenderer() {
+            return true;
+        }
+
+        private static Map<Direction, List<BakedQuad>> directionMap(BakedModel model) {
+            Map<Direction, List<BakedQuad>> map = Maps.newEnumMap(Direction.class);
+            Random r = new Random();
+            for (Direction d : Direction.values()) {
+                r.setSeed(42L);
+                map.put(d, model.getQuads(null, d, r));
+            }
+            return map;
+        }
     }
 
     private static class SpellIconModel extends BakedModelWrapper<BakedModel> {

@@ -20,7 +20,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.XpHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AffinityOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
@@ -218,7 +218,7 @@ public final class ClientInit {
             }
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), ($, model) -> new SpellItemModel(model));
-        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookModel(model));
+        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), ($, model) -> new AltarCoreModel(model));
     }
 
