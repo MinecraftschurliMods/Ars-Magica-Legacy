@@ -73,6 +73,11 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
+    public boolean usesBlockLight() {
+        return false;
+    }
+
+    @Override
     public boolean isCustomRenderer() {
         return true;
     }
@@ -115,6 +120,11 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         @Override
         public boolean isCustomRenderer() {
             return true;
+        }
+
+        @Override
+        public boolean usesBlockLight() {
+            return false;
         }
 
         private static Map<Direction, List<BakedQuad>> directionMap(BakedModel model) {
