@@ -330,8 +330,8 @@ public final class EventHandler {
                 ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
                 if (dataForPart == null) continue;
                 Set<IAffinity> affinities = dataForPart.affinities();
-                for (IAffinity aff : affinities) {
-                    double value = api.getAffinityHelper().getAffinityDepth(player, aff);
+                for (IAffinity affinity : affinities) {
+                    double value = api.getAffinityHelper().getAffinityDepthOrElse(player, affinity, 0);
                     if (value > 0) {
                         cost -= (float) (cost * (0.5f * value / 100f));
                     }

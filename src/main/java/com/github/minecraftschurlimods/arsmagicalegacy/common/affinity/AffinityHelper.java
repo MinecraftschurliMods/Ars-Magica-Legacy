@@ -115,12 +115,22 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public double getAffinityDepth(Player player, ResourceLocation affinity) {
-        return player.isDeadOrDying() ? 0 : getAffinityHolder(player).getAffinityDepth(affinity);
+        return getAffinityHolder(player).getAffinityDepth(affinity);
     }
 
     @Override
     public double getAffinityDepth(Player player, IAffinity affinity) {
         return getAffinityDepth(player, affinity.getId());
+    }
+
+    @Override
+    public double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue) {
+        return player.isDeadOrDying() ? defaultValue : getAffinityDepth(player, affinity);
+    }
+
+    @Override
+    public double getAffinityDepthOrElse(Player player, IAffinity affinity, double defaultValue) {
+        return getAffinityDepthOrElse(player, affinity.getId(), defaultValue);
     }
 
     @Override

@@ -117,15 +117,15 @@ final class TickHandler {
         }
         ability = manager.get(AMAbilities.SATURATION.getId());
         if (ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)), 0, false, false));
         }
         ability = manager.get(AMAbilities.REGENERATION.getId());
         if (ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)), 0, false, false));
         }
         ability = manager.get(AMAbilities.NIGHT_VISION.getId());
         if (ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())) + 200, 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)) + 200, 0, false, false));
         }
         ability = manager.get(AMAbilities.FROST_WALKER.getId());
         if (ability.test(player)) {
@@ -147,7 +147,7 @@ final class TickHandler {
         }
         if (shouldReapplyHealthReduction && attributes.hasAttribute(Attributes.MAX_HEALTH)) {
             //noinspection ConstantConditions
-            attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepth(player, ability.affinity()) * 4, AttributeModifier.Operation.ADDITION));
+            attributes.getInstance(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -helper.getAffinityDepthOrElse(player, ability.affinity(), 0) * 4, AttributeModifier.Operation.ADDITION));
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
             }

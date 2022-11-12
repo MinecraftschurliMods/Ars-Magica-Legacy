@@ -70,6 +70,22 @@ public interface IAffinityHelper {
     double getAffinityDepth(Player player, IAffinity affinity);
 
     /**
+     * @param player       The player to get the affinity depth for.
+     * @param affinity     The id of the affinity to get the depth for.
+     * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
+     * @return The depth of the given player in the given affinity, or {@code defaultValue} if the affinity depth cannot be determined.
+     */
+    double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue);
+
+    /**
+     * @param player       The player to get the affinity depth for.
+     * @param affinity     The affinity to get the depth for.
+     * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
+     * @return The depth of the given player in the given affinity, or {@code defaultValue} if the affinity depth cannot be determined.
+     */
+    double getAffinityDepthOrElse(Player player, IAffinity affinity, double defaultValue);
+
+    /**
      * @param player   The player to set the affinity depth for.
      * @param affinity The id of the affinity to set the depth for.
      * @param amount   The amount the affinity should have.
