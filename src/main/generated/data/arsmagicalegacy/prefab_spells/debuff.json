@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "Debuff"
+    "text": "prefab_spell.arsmagicalegacy.debuff"
   },
   "icon": "arsmagicalegacy:explosion_sky_3",
   "spell": {

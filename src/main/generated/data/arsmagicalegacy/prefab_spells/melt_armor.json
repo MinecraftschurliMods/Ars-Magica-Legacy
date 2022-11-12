@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "Melt Armor"
+    "text": "prefab_spell.arsmagicalegacy.melt_armor"
   },
   "icon": "arsmagicalegacy:spawner_fire_3",
   "spell": {

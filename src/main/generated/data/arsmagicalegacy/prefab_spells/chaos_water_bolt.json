@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "Chaos Water Bolt"
+    "text": "prefab_spell.arsmagicalegacy.chaos_water_bolt"
   },
   "icon": "arsmagicalegacy:beam_red_3",
   "spell": {

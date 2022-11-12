@@ -140,8 +140,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemIdTranslation(AMItems.LIFE_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.ARCANE_GUARDIAN_SPAWN_EGG);
         itemIdTranslation(AMItems.ENDER_GUARDIAN_SPAWN_EGG);
-//        itemIdTranslation(AMItems.NATURE_SCYTHE);
-//        addItem(AMItems.WINTERS_GRASP, "Winter's Grasp");
+        //        itemIdTranslation(AMItems.NATURE_SCYTHE);
+        //        addItem(AMItems.WINTERS_GRASP, "Winter's Grasp");
         effectIdTranslation(AMMobEffects.AGILITY);
         effectIdTranslation(AMMobEffects.ASTRAL_DISTORTION);
         effectIdTranslation(AMMobEffects.BURNOUT_REDUCTION);
@@ -356,6 +356,32 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
         damageSourceTranslation("thrown_rock", "%1$s was crushed under a rock by %2$s");
         damageSourceTranslation("wind", "%1$s was torn apart by the wind");
+        prefabSpellIdTranslation("water_bolt");
+        prefabSpellIdTranslation("fire_bolt");
+        prefabSpellIdTranslation("earth_bolt");
+        prefabSpellIdTranslation("ice_bolt");
+        prefabSpellIdTranslation("lightning_bolt");
+        prefabSpellIdTranslation("arcane_bolt");
+        prefabSpellIdTranslation("strong_water_bolt");
+        prefabSpellIdTranslation("strong_fire_bolt");
+        prefabSpellIdTranslation("strong_earth_bolt");
+        prefabSpellIdTranslation("strong_ice_bolt");
+        prefabSpellIdTranslation("strong_lightning_bolt");
+        prefabSpellIdTranslation("strong_arcane_bolt");
+        prefabSpellIdTranslation("area_lightning");
+        prefabSpellIdTranslation("blink");
+        prefabSpellIdTranslation("chaos_water_bolt");
+        prefabSpellIdTranslation("debuff");
+        prefabSpellIdTranslation("dispel");
+        prefabSpellIdTranslation("ender_bolt");
+        prefabSpellIdTranslation("ender_torrent");
+        prefabSpellIdTranslation("ender_wave");
+        prefabSpellIdTranslation("heal_self");
+        prefabSpellIdTranslation("lightning_rune");
+        prefabSpellIdTranslation("melt_armor");
+        prefabSpellIdTranslation("nausea");
+        prefabSpellIdTranslation("otherworldly_roar");
+        prefabSpellIdTranslation("scramble_synapses");
         arcaneCompendiumTranslation("affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
         arcaneCompendiumTranslation("affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
         arcaneCompendiumTranslation("affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
@@ -608,8 +634,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * Adds an ability translation.
      *
      * @param ability     The ability to add the translation for.
-     * @param name        The translation for the abilities name.
-     * @param description The translation for the abilities description.
+     * @param name        The translation for the ability name.
+     * @param description The translation for the ability description.
      */
     private void addAbility(Supplier<? extends IAbility> ability, String name, String description) {
         add(ability.get(), name, description);
@@ -742,13 +768,32 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
     }
 
     /**
-     * Adds a arcane compendium entry translation.
+     * Adds an arcane compendium entry translation.
      *
      * @param compendiumEntry The compendium entry to add the translation for.
      * @param translation     The translation to use.
      */
     private void arcaneCompendiumTranslation(String compendiumEntry, String translation) {
-        add("item." + ArsMagicaAPI.MOD_ID + "arcane_compendium." + compendiumEntry, translation);
+        add("item." + ArsMagicaAPI.MOD_ID + ".arcane_compendium." + compendiumEntry, translation);
+    }
+
+    /**
+     * Adds a prefab spell translation.
+     *
+     * @param id          The prefab spell to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void prefabSpellTranslation(String id, String translation) {
+        add("prefab_spell." + ArsMagicaAPI.MOD_ID + "." + id, translation);
+    }
+
+    /**
+     * Adds a prefab spell translation.
+     *
+     * @param id The prefab spell to add the translation for.
+     */
+    private void prefabSpellIdTranslation(String id) {
+        prefabSpellTranslation(id, idToTranslation(id));
     }
 
     private void add(ITranslatable translatable, String translation) {

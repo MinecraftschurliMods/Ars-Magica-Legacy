@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "Fire Bolt"
+    "text": "prefab_spell.arsmagicalegacy.fire_bolt"
   },
   "icon": "arsmagicalegacy:beam_orange_3",
   "spell": {

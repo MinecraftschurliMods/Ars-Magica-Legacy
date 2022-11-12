@@ -66,12 +66,11 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * Adds a new prefab spell.
      *
      * @param id    The id of the prefab spell.
-     * @param name  The name of the prefab spell.
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
-    public PrefabSpellBuilder addPrefabSpell(String id, String name, ResourceLocation icon, ISpell spell) {
-        return new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName(name);
+    public PrefabSpellBuilder addPrefabSpell(String id, ResourceLocation icon, ISpell spell) {
+        return new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName("prefab_spell." + this.namespace + "." + id);
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

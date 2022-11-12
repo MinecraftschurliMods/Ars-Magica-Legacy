@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "Dispel"
+    "text": "prefab_spell.arsmagicalegacy.dispel"
   },
   "icon": "arsmagicalegacy:shield_royal_3",
   "spell": {

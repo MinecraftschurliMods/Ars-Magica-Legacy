@@ -80,7 +80,7 @@ public class SpellItem extends Item implements ISpellItem {
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
     public static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
+        return Optional.of(new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).getString()).filter(s -> !s.isEmpty());
     }
 
     /**
