@@ -23,11 +23,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> implements IPrefabSpellManager {
     public static final CreativeModeTab ITEM_CATEGORY = new CreativeModeTab(ArsMagicaAPI.MOD_ID + ".prefab_spells") {
@@ -37,9 +40,10 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
         }
     };
     private static final Lazy<PrefabSpellManager> INSTANCE = Lazy.concurrentOf(PrefabSpellManager::new);
+    private Map<IPrefabSpell, ResourceLocation> keyLookup;
 
     private PrefabSpellManager() {
-        super("prefab_spells", PrefabSpell.CODEC, LogManager.getLogger());
+        super("prefab_spells", PrefabSpell.CODEC, PrefabSpellManager::validate, LogManager.getLogger());
     }
 
     /**
@@ -47,6 +51,10 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
      */
     public static PrefabSpellManager instance() {
         return INSTANCE.get();
+    }
+
+    private static void validate(Map<ResourceLocation, IPrefabSpell> data, Logger l) {
+        instance().keyLookup = data.entrySet().stream().collect(Collectors.toUnmodifiableMap(Entry::getValue, Entry::getKey));
     }
 
     @Override
@@ -57,6 +65,10 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
     @Override
     public Optional<IPrefabSpell> getOptional(@Nullable final ResourceLocation id) {
         return getOptional((Object) id);
+    }
+
+    private ResourceLocation getId(IPrefabSpell prefabSpell) {
+        return keyLookup.get(prefabSpell);
     }
 
     public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) implements IPrefabSpell {
@@ -82,7 +94,8 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
 
         @Override
         public int compareTo(IPrefabSpell o) {
-            return name().getString().compareTo(o.name().getString());
+            PrefabSpellManager manager = PrefabSpellManager.instance();
+            return manager.getId(this).compareTo(manager.getId(o));
         }
     }
 }
