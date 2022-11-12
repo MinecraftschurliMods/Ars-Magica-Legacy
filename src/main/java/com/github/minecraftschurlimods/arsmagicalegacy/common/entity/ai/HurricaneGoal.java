@@ -47,7 +47,7 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
                 continue;
             }
             if (e instanceof LivingEntity living) {
-                living.hurt(AMDamageSources.WIND, 6);
+                living.hurt(AMDamageSources.wind(boss), 6);
             }
             Vec3 movement = boss.getEyePosition().subtract(e.position()).normalize();
             e.push(-movement.x() * 2.5, 2.5, -movement.z() * 2.5);

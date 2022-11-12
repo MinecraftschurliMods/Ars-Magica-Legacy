@@ -12,7 +12,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
@@ -24,7 +23,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTr
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -354,9 +352,10 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         configTranslation("duration", "Duration of effect-based components, in ticks.");
-        damageSourceTranslation(AMDamageSources.NATURE_SCYTHE, "%1$s was sliced open");
-        damageSourceTranslation(AMDamageSources.THROWN_ROCK, "%1$s was crushed under a rock");
-        damageSourceTranslation(AMDamageSources.WIND, "%1$s couldn't withstand such enormous wind speeds");
+        damageSourceTranslation("nature_scythe", "%1$s was ripped apart by %2$s's scythe");
+        damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
+        damageSourceTranslation("thrown_rock", "%1$s was crushed under a rock by %2$s");
+        damageSourceTranslation("wind", "%1$s was torn apart by the wind");
         arcaneCompendiumTranslation("affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
         arcaneCompendiumTranslation("affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
         arcaneCompendiumTranslation("affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
@@ -738,8 +737,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param damageSource The damage source to add the translation for.
      * @param translation  The translation to use.
      */
-    private void damageSourceTranslation(DamageSource damageSource, String translation) {
-        add("death.attack." + damageSource.getMsgId(), translation);
+    private void damageSourceTranslation(String damageSource, String translation) {
+        add("death.attack." + damageSource, translation);
     }
 
     /**

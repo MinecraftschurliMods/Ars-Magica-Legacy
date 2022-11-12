@@ -75,7 +75,7 @@ public class Whirlwind extends Entity {
                     level.addFreshEntity(item);
                 }
             }
-            pPlayer.hurt(AMDamageSources.WIND, 6);
+            pPlayer.hurt(AMDamageSources.wind(this), 6);
             pPlayer.setDeltaMovement(getDeltaMovement().x() + level.getRandom().nextFloat() * 0.2f, getDeltaMovement().y() + 0.8, getDeltaMovement().z() + level.getRandom().nextFloat() * 0.2f);
             pPlayer.fallDistance = 0f;
             cooldowns.put(pPlayer, 20);

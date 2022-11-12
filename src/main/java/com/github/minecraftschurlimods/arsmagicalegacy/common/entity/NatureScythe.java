@@ -88,7 +88,7 @@ public class NatureScythe extends Entity {
                 entity = ((PartEntity<?>) entity).getParent();
             }
             if (entity instanceof LivingEntity living && entity != getOwner()) {
-                living.hurt(AMDamageSources.NATURE_SCYTHE, 12);
+                living.hurt(AMDamageSources.natureScythe(this, getOwner()), 12);
                 setHasHit();
             }
             if (hasHit && distanceTo(getOwner()) < 4) {

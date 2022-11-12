@@ -78,7 +78,7 @@ public class ThrownRock extends Entity {
             Entity entity = ((EntityHitResult) hit).getEntity();
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 if (!living.isBlocking()) {
-                    entity.hurt(AMDamageSources.THROWN_ROCK, 6);
+                    entity.hurt(AMDamageSources.thrownRock(this, getOwner()), 6);
                 } else if (living instanceof Player player) {
                     player.stopUsingItem();
                     if (random.nextFloat() < 0.25f) {

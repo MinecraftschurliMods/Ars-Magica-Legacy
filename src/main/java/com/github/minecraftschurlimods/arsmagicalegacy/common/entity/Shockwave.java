@@ -68,7 +68,7 @@ public class Shockwave extends Entity {
         if (level.isClientSide() || pPlayer.isCreative()) return;
         Integer cd = cooldowns.get(pPlayer);
         if (cd == null || cd <= 0) {
-            pPlayer.hurt(AMDamageSources.SHOCKWAVE, 2);
+            pPlayer.hurt(AMDamageSources.shockwave(this), 2);
             cooldowns.put(pPlayer, 20);
         }
     }

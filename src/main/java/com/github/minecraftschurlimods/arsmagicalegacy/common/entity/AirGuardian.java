@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.HurricaneGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -53,7 +52,7 @@ public class AirGuardian extends AbstractBoss {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.LIGHTNING_BOLT) {
             pAmount *= 2f;
-        } else if (pSource.isProjectile() || pSource.isFall() || pSource == AMDamageSources.WIND) {
+        } else if (pSource.isProjectile() || pSource.isFall()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
