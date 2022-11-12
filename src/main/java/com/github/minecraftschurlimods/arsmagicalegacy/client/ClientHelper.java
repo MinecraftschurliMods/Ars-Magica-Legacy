@@ -15,7 +15,7 @@ public final class ClientHelper {
      * @return The player logged into the current Minecraft instance.
      */
     @Nullable
-    public static LocalPlayer getLocalPlayer() {
+    public static Player getLocalPlayer() {
         return Minecraft.getInstance().player;
     }
 

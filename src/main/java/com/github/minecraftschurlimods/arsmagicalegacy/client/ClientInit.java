@@ -292,8 +292,8 @@ public final class ClientInit {
      * Adapted from ItemInHandRenderer#renderArmWithItem
      */
     private static void renderHand(RenderHandEvent event) {
-        LocalPlayer player = ClientHelper.getLocalPlayer();
-        if (player == null || player.isInvisible()) return;
+        Player p = ClientHelper.getLocalPlayer();
+        if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
         ItemStack itemStack = event.getItemStack();
         if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty())) return;
         float swing = event.getSwingProgress();

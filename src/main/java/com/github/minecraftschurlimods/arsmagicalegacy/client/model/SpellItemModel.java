@@ -8,13 +8,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +65,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        LocalPlayer player = ClientHelper.getLocalPlayer();
+        Player player = ClientHelper.getLocalPlayer();
         if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
             return getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"));
         }
