@@ -79,8 +79,8 @@ public class SpellItem extends Item implements ISpellItem {
      * @param stack The stack to get the spell name for.
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
-    public static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).getString()).filter(s -> !s.isEmpty());
+    public static Optional<Component> getSpellName(ItemStack stack) {
+        return Optional.of((Component) new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY))).filter(s -> !s.getContents().isEmpty());
     }
 
     /**
@@ -153,7 +153,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         ISpell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
+        return getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -260,13 +260,15 @@ public class SpellItem extends Item implements ISpellItem {
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = getSpell(stack);
+        Optional<Component> component = getSpellName(stack);
+        String name = component.isEmpty() ? "" : component.get().getString();
         if (spell.isContinuous()) {
-            LOGGER.trace("{} starts casting continuous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
         } else {
-            LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
-            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             SoundEvent sound = getSpell(stack).primaryAffinity().getCastSound();
             if (sound != null) {
                 entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);

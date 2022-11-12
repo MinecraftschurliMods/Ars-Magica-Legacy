@@ -14,6 +14,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -164,7 +165,8 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
                 ISpell spell = SpellItem.getSpell(stack);
-                table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
+                Optional<Component> component = SpellItem.getSpellName(stack);
+                table.onSync(component.isEmpty() ? "" : component.get().getString(), spell.isEmpty() ? null : spell);
             }
         }
     }
