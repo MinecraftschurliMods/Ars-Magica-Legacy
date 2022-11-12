@@ -34,7 +34,7 @@ public class Blizzard extends AbstractComponent {
 
     private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard blizzard = Objects.requireNonNull(AMEntities.BLIZZARD.get().create(level));
+            var blizzard = Objects.requireNonNull(AMEntities.BLIZZARD.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             blizzard.setPos(target.getLocation());
             blizzard.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target));

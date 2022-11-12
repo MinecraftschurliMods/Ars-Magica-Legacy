@@ -34,7 +34,7 @@ public class FireRain extends AbstractComponent {
 
     private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
         if (!level.isClientSide()) {
-            com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(level));
+            var fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             fireRain.setPos(target.getLocation());
             fireRain.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target));
