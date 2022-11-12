@@ -91,11 +91,5 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
             SpellItem.setSpellIcon(stack, icon());
             return stack;
         }
-
-        @Override
-        public int compareTo(IPrefabSpell o) {
-            PrefabSpellManager manager = PrefabSpellManager.instance();
-            return manager.getId(this).compareTo(manager.getId(o));
-        }
     }
 }
