@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemHandModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,8 +33,8 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
         if (!pStack.is(AMItems.SPELL.get())) return;
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).handlePerspective(pTransformType, pPoseStack);
-        if (model instanceof SpellItemModel.SpellHandModel spellHandModel) {
-            model = spellHandModel.originalModel;
+        if (model instanceof SpellItemHandModel spellItemHandModel) {
+            model = spellItemHandModel.originalModel;
         }
         renderer.renderModelLists(model, pStack, pPackedLight, pPackedOverlay, pPoseStack, ItemRenderer.getFoilBufferDirect(pBuffer, ItemBlockRenderTypes.getRenderType(pStack, true), true, pStack.hasFoil()));
     }

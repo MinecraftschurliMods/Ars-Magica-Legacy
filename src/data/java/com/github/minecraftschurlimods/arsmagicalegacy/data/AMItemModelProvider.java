@@ -2,10 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
@@ -170,10 +167,10 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(IRON_INLAY, "block/iron_inlay");
         itemGenerated(REDSTONE_INLAY, "block/redstone_inlay");
         itemGenerated(GOLD_INLAY, "block/gold_inlay");
-        affinityItem(AFFINITY_ESSENCE);
-        affinityItem(AFFINITY_TOME);
+        affinityItem(AFFINITY_ESSENCE, true);
+        affinityItem(AFFINITY_TOME, true);
         itemGenerated(SPELL_PARCHMENT);
-        spellItem(SPELL);
+        affinityItem(SPELL, false);
         spellBookItem(SPELL_BOOK);
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
@@ -267,17 +264,17 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
+     * Adds an item model for this item for each affinity.
      *
      * @param item The affinity item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}.
+     * @param skipNone Whether to skip the model generation for {@link IAffinity#NONE} or not.
      */
-    private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
+    private void affinityItem(RegistryObject<? extends Item> item, boolean skipNone) {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(IAffinity.NONE)) continue;
+            if (affinity.getId().equals(IAffinity.NONE) && skipNone) continue;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
-            singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
 
@@ -285,27 +282,12 @@ class AMItemModelProvider extends ItemModelProvider {
      * Adds an item model for this item for each skill point.
      *
      * @param item The skill point item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link ISkillPointItem}.
      */
-    private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
+    private void skillPointItem(RegistryObject<? extends Item> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
-            singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
-        }
-    }
-
-    /**
-     * Adds an item model for this item for each affinity. Uses arsmagicalegacy:item/spell_handheld as the parent.
-     *
-     * @param item The spell item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link ISpellItem}.
-     */
-    private <T extends Item & ISpellItem> void spellItem(RegistryObject<T> item) {
-        getBuilder(item.getId().toString());
-        for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
-            singleTexture(rl.toString(), modLoc("item/spell_handheld"), "texture", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
 

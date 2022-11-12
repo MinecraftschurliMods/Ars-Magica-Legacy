@@ -1,5 +1,5 @@
 {
-  "parent": "arsmagicalegacy:item/spell_handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "arsmagicalegacy:item/spell_lightning"
   }

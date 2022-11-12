@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -33,17 +32,12 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        LocalPlayer player = ClientHelper.getLocalPlayer();
-        if (player != null && ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
-            ResourceLocation affinity = SpellItem.getSpell(stack).primaryAffinity().getId();
-            return SpellItemModel.getPerspectiveModel(new ResourceLocation(affinity.getNamespace(), "item/" + AMItems.SPELL.getId().getPath() + "_" + affinity.getPath()), cameraTransformType, poseStack);
-        }
-        return Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(AMItems.SPELL_BOOK.getId().getNamespace(), "item/" + AMItems.SPELL_BOOK.getId().getPath() + "_handheld")).handlePerspective(cameraTransformType, poseStack);
+    public boolean usesBlockLight() {
+        return false;
     }
 
     @Override
-    public boolean doesHandlePerspectives() {
+    public boolean isCustomRenderer() {
         return true;
     }
 
@@ -53,12 +47,12 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public boolean isCustomRenderer() {
-        return true;
-    }
-
-    @Override
-    public boolean usesBlockLight() {
-        return false;
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+        LocalPlayer player = ClientHelper.getLocalPlayer();
+        if (player != null && ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
+            ResourceLocation affinity = SpellItem.getSpell(stack).primaryAffinity().getId();
+            return new SpellItemHandModel(SpellItemModel.getModel(new ResourceLocation(affinity.getNamespace(), "item/" + AMItems.SPELL.getId().getPath() + "_" + affinity.getPath())));
+        }
+        return SpellItemModel.getModel(new ResourceLocation(AMItems.SPELL_BOOK.getId().getNamespace(), "item/" + AMItems.SPELL_BOOK.getId().getPath() + "_handheld")).handlePerspective(cameraTransformType, poseStack);
     }
 }
