@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.debuff"
+    "translate": "prefab_spell.arsmagicalegacy.debuff.name"
   },
   "icon": "arsmagicalegacy:explosion_sky_3",
   "spell": {

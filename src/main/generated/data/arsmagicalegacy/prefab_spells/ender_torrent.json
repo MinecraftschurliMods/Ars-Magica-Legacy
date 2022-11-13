@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.ender_torrent"
+    "translate": "prefab_spell.arsmagicalegacy.ender_torrent.name"
   },
   "icon": "arsmagicalegacy:light_magenta_3",
   "spell": {

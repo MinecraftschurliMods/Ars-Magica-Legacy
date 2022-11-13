@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.otherworldly_roar"
+    "translate": "prefab_spell.arsmagicalegacy.otherworldly_roar.name"
   },
   "icon": "arsmagicalegacy:gravity_magenta_3",
   "spell": {

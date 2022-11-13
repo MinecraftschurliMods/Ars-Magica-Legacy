@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.heal_self"
+    "translate": "prefab_spell.arsmagicalegacy.heal_self.name"
   },
   "icon": "arsmagicalegacy:heart_royal_3",
   "spell": {

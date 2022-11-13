@@ -8,9 +8,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.data.LanguageProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,10 +29,16 @@ public abstract class PrefabSpellProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private final String namespace;
     private final DataGenerator generator;
+    private final LanguageProvider languageProvider;
 
     public PrefabSpellProvider(String namespace, DataGenerator generator) {
+        this(namespace, generator, null);
+    }
+
+    public PrefabSpellProvider(String namespace, DataGenerator generator, @Nullable LanguageProvider languageProvider) {
         this.namespace = namespace;
         this.generator = generator;
+        this.languageProvider = languageProvider;
     }
 
     protected abstract void createPrefabSpells(Consumer<PrefabSpellBuilder> consumer);
@@ -38,7 +47,8 @@ public abstract class PrefabSpellProvider implements DataProvider {
     public void run(HashCache pCache) throws IOException {
         Set<ResourceLocation> ids = new HashSet<>();
         createPrefabSpells(consumer -> {
-            if (!ids.add(consumer.getId())) throw new IllegalStateException("Duplicate prefab spell " + consumer.getId());
+            if (!ids.add(consumer.getId()))
+                throw new IllegalStateException("Duplicate prefab spell " + consumer.getId());
             else {
                 save(pCache, consumer.build(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/prefab_spells/" + consumer.getId().getPath() + ".json"));
             }
@@ -54,7 +64,7 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * Adds a new prefab spell.
      *
      * @param id    The id of the prefab spell.
-     * @param name  The name of the prefab spell.
+     * @param name  The name component of the prefab spell.
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
@@ -66,11 +76,19 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * Adds a new prefab spell.
      *
      * @param id    The id of the prefab spell.
+     * @param name  The name of the prefab spell.
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
-    public PrefabSpellBuilder addPrefabSpell(String id, ResourceLocation icon, ISpell spell) {
-        return new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName("prefab_spell." + this.namespace + "." + id);
+    public PrefabSpellBuilder addPrefabSpell(String id, String name, ResourceLocation icon, ISpell spell) {
+        return addPrefabSpell(id, makeNameComponent(id, name), icon, spell);
+    }
+
+    private Component makeNameComponent(String id, String name) {
+        if (languageProvider == null) return Component.nullToEmpty(name);
+        String key = "prefab_spell." + namespace + "." + id.replace('/', '.') + ".name";
+        languageProvider.add(key, name);
+        return new TranslatableComponent(key);
     }
 
     private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {

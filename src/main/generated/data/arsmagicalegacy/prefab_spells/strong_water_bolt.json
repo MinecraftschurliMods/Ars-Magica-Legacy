@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.strong_water_bolt"
+    "translate": "prefab_spell.arsmagicalegacy.strong_water_bolt.name"
   },
   "icon": "arsmagicalegacy:lightning_blue_3",
   "spell": {

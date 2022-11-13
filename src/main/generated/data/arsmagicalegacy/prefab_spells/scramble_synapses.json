@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.scramble_synapses"
+    "translate": "prefab_spell.arsmagicalegacy.scramble_synapses.name"
   },
   "icon": "arsmagicalegacy:slice_orange_3",
   "spell": {

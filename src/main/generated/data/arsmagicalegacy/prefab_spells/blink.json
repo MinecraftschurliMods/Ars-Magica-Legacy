@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.blink"
+    "translate": "prefab_spell.arsmagicalegacy.blink.name"
   },
   "icon": "arsmagicalegacy:whirlwind_magenta_3",
   "spell": {

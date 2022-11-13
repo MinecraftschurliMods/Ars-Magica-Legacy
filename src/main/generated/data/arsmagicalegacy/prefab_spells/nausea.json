@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.nausea"
+    "translate": "prefab_spell.arsmagicalegacy.nausea.name"
   },
   "icon": "arsmagicalegacy:sword_eerie_3",
   "spell": {

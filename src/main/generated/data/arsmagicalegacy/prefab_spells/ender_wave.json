@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.ender_wave"
+    "translate": "prefab_spell.arsmagicalegacy.ender_wave.name"
   },
   "icon": "arsmagicalegacy:wind_magenta_3",
   "spell": {

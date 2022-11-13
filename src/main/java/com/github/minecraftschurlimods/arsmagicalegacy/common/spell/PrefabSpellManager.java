@@ -87,7 +87,7 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
         public ItemStack makeSpell() {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, spell());
-            SpellItem.setSpellName(stack, name().getString());
+            stack.setHoverName(name());
             SpellItem.setSpellIcon(stack, icon());
             return stack;
         }

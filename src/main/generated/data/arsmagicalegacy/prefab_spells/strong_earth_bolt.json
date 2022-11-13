@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.strong_earth_bolt"
+    "translate": "prefab_spell.arsmagicalegacy.strong_earth_bolt.name"
   },
   "icon": "arsmagicalegacy:lightning_acid_3",
   "spell": {

@@ -1,6 +1,6 @@
 {
   "name": {
-    "text": "prefab_spell.arsmagicalegacy.ice_bolt"
+    "translate": "prefab_spell.arsmagicalegacy.ice_bolt.name"
   },
   "icon": "arsmagicalegacy:beam_sky_3",
   "spell": {
