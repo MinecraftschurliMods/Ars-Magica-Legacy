@@ -29,6 +29,7 @@ public abstract class PrefabSpellProvider implements DataProvider {
     private static final Logger LOGGER = LogManager.getLogger();
     private final String namespace;
     private final DataGenerator generator;
+    @Nullable
     private final LanguageProvider languageProvider;
 
     public PrefabSpellProvider(String namespace, DataGenerator generator) {

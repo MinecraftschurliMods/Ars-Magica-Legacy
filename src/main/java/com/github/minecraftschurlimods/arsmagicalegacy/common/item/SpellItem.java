@@ -80,7 +80,13 @@ public class SpellItem extends Item implements ISpellItem {
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
     public static Optional<Component> getSpellName(ItemStack stack) {
-        return Optional.<Component>of(new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY))).filter(s -> !s.getContents().isEmpty());
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty()).map(s -> {
+            try {
+                return Component.Serializer.fromJson(s);
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 
     /**
@@ -90,7 +96,17 @@ public class SpellItem extends Item implements ISpellItem {
      * @param name  The name to set.
      */
     public static void setSpellName(ItemStack stack, String name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
+        setSpellName(stack, new TextComponent(name));
+    }
+
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name to set.
+     */
+    public static void setSpellName(ItemStack stack, Component name) {
+        stack.getOrCreateTag().putString(SPELL_NAME_KEY, Component.Serializer.toJson(name));
     }
 
     /**
@@ -260,7 +276,7 @@ public class SpellItem extends Item implements ISpellItem {
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = getSpell(stack);
-        String name = getSpellName(stack).map(Component::getString).orElse("");
+        String name = LOGGER.isTraceEnabled() ? getSpellName(stack).map(Component::getString).orElse("") : "";
         if (spell.isContinuous()) {
             LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
