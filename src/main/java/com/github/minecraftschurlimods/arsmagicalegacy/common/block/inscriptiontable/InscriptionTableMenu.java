@@ -164,9 +164,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void set(ItemStack stack) {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
-                ISpell spell = SpellItem.getSpell(stack);
-                Optional<Component> component = SpellItem.getSpellName(stack);
-                table.onSync(component.isEmpty() ? "" : component.get().getString(), spell.isEmpty() ? null : spell);
+                table.onSync(SpellItem.getSpellName(stack).map(Component::getString).orElse(""), SpellItem.getSpell(stack));
             }
         }
     }

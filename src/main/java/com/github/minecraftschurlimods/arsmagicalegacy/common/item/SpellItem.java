@@ -80,7 +80,7 @@ public class SpellItem extends Item implements ISpellItem {
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
     public static Optional<Component> getSpellName(ItemStack stack) {
-        return Optional.of((Component) new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY))).filter(s -> !s.getContents().isEmpty());
+        return Optional.<Component>of(new TranslatableComponent(stack.getOrCreateTag().getString(SPELL_NAME_KEY))).filter(s -> !s.getContents().isEmpty());
     }
 
     /**
@@ -260,8 +260,7 @@ public class SpellItem extends Item implements ISpellItem {
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = getSpell(stack);
-        Optional<Component> component = getSpellName(stack);
-        String name = component.isEmpty() ? "" : component.get().getString();
+        String name = getSpellName(stack).map(Component::getString).orElse("");
         if (spell.isContinuous()) {
             LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
