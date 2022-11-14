@@ -1,26 +1,26 @@
 {
-  "manaCost": 5.0,
-  "reagents": [],
   "affinities": {
     "arsmagicalegacy:earth": 0.001
   },
+  "manaCost": 5.0,
+  "reagents": [],
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:green_rune"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "minecraft:iron_hoe",
         "count": 1,
+        "item": "minecraft:iron_hoe",
         "nbt": "{Damage:0}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

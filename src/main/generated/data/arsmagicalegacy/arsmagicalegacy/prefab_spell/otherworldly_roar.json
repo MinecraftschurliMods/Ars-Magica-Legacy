@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:gravity_magenta_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.otherworldly_roar.name"
   },
-  "icon": "arsmagicalegacy:gravity_magenta_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -18,7 +19,6 @@
       "arsmagicalegacy:blindness",
       "arsmagicalegacy:slowness",
       "arsmagicalegacy:knockback"
-    ],
-    "data": {}
+    ]
   }
 }

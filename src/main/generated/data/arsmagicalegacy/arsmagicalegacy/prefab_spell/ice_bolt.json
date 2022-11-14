@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:beam_sky_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.ice_bolt.name"
   },
-  "icon": "arsmagicalegacy:beam_sky_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
@@ -11,7 +12,6 @@
     ],
     "spell_stack": [
       "arsmagicalegacy:frost_damage"
-    ],
-    "data": {}
+    ]
   }
 }

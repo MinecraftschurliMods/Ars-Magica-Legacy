@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:shield_royal_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.dispel.name"
   },
-  "icon": "arsmagicalegacy:shield_royal_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:self"
@@ -11,7 +12,6 @@
     ],
     "spell_stack": [
       "arsmagicalegacy:dispel"
-    ],
-    "data": {}
+    ]
   }
 }

@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "AIA",
-    "JEK",
-    "ALA"
-  ],
   "key": {
     "A": {
       "item": "arsmagicalegacy:arcane_ash"
@@ -27,9 +22,14 @@
       "item": "minecraft:vine"
     }
   },
+  "pattern": [
+    "AIA",
+    "JEK",
+    "ALA"
+  ],
   "result": {
-    "item": "arsmagicalegacy:affinity_essence",
     "count": 2,
+    "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
   }
 }

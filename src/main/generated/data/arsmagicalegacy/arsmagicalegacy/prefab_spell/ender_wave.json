@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:wind_magenta_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.ender_wave.name"
   },
-  "icon": "arsmagicalegacy:wind_magenta_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:wave",
@@ -14,7 +15,6 @@
       "arsmagicalegacy:magic_damage",
       "arsmagicalegacy:knockback",
       "arsmagicalegacy:damage"
-    ],
-    "data": {}
+    ]
   }
 }

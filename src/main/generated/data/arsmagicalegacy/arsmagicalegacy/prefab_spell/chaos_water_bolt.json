@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:beam_red_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.chaos_water_bolt.name"
   },
-  "icon": "arsmagicalegacy:beam_red_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
@@ -13,7 +14,6 @@
       "arsmagicalegacy:drowning_damage",
       "arsmagicalegacy:watery_grave",
       "arsmagicalegacy:knockback"
-    ],
-    "data": {}
+    ]
   }
 }

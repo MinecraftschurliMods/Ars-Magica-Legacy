@@ -1,34 +1,34 @@
 {
+  "affinities": {},
   "manaCost": 1.25,
   "reagents": [],
-  "affinities": {},
   "recipe": [
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "arsmagicalegacy:affinity_essence",
         "count": 1,
+        "item": "arsmagicalegacy:affinity_essence",
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "item": "minecraft:egg"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     },
     {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:healing\"}"
-      },
-      "count": 1,
-      "type": "arsmagicalegacy:ingredient"
+      }
     }
   ]
 }

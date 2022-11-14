@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:slice_orange_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.scramble_synapses.name"
   },
-  "icon": "arsmagicalegacy:slice_orange_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -13,7 +14,6 @@
     "spell_stack": [
       "arsmagicalegacy:lightning_damage",
       "arsmagicalegacy:scramble_synapses"
-    ],
-    "data": {}
+    ]
   }
 }

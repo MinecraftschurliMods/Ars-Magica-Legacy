@@ -1,9 +1,10 @@
 {
+  "icon": "arsmagicalegacy:heart_royal_3",
   "name": {
     "translate": "prefab_spell.arsmagicalegacy.heal_self.name"
   },
-  "icon": "arsmagicalegacy:heart_royal_3",
   "spell": {
+    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:self"
@@ -11,7 +12,6 @@
     ],
     "spell_stack": [
       "arsmagicalegacy:heal"
-    ],
-    "data": {}
+    ]
   }
 }
