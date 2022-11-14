@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +58,7 @@ public class Shockwave extends Entity {
         }
         cooldowns.replaceAll((k, v) -> Math.max(v - 1, 0));
         for (float f = -1.5f; f <= 1.5f; f += 0.1f) {
-            level.addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1), position().x() + f * getDeltaMovement().x() + random.nextDouble(0.5), position().y(), position().z() + f * getDeltaMovement().z() + random.nextDouble(0.5), 0, 0, 0);
+            level.addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1), position().x() + f * getDeltaMovement().x() + AMUtil.nextDouble(random, 0.5), position().y(), position().z() + f * getDeltaMovement().z() + AMUtil.nextDouble(random, 0.5), 0, 0, 0);
         }
         setPos(position().add(getDeltaMovement()));
     }

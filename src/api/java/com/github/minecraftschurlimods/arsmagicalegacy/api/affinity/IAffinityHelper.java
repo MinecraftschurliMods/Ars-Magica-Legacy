@@ -83,7 +83,7 @@ public interface IAffinityHelper {
      * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
      * @return The depth of the given player in the given affinity, or {@code defaultValue} if the affinity depth cannot be determined.
      */
-    double getAffinityDepthOrElse(Player player, IAffinity affinity, double defaultValue);
+    double getAffinityDepthOrElse(Player player, Affinity affinity, double defaultValue);
 
     /**
      * @param player   The player to set the affinity depth for.

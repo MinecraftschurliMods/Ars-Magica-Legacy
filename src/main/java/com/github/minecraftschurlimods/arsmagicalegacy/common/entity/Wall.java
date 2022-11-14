@@ -32,7 +32,7 @@ public class Wall extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL.get());
 
     public Wall(EntityType<? extends Wall> type, Level level) {
         super(type, level);
@@ -101,12 +101,12 @@ public class Wall extends Entity implements ItemSupplier {
             for (double x = minX; x <= maxX; x += 0.2) {
                 for (double y = minY; y <= maxY; y += 0.2) {
                     for (double z = minZ; z <= maxZ; z += 0.2) {
-                        double newX = x + random.nextDouble(0.2) - 0.1;
-                        double newZ = z + random.nextDouble(0.2) - 0.1;
+                        double newX = x + AMUtil.nextDouble(random, 0.2) - 0.1;
+                        double newZ = z + AMUtil.nextDouble(random, 0.2) - 0.1;
                         if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
                             Vec3 newVec = new Vec3(newX, getY(), newZ);
                             if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position()) < 0.5) {
-                                level.addParticle(ParticleTypes.PORTAL, newX, y + random.nextDouble(0.2) - 0.1, newZ, (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
+                                level.addParticle(ParticleTypes.PORTAL, newX, y + AMUtil.nextDouble(random, 0.2) - 0.1, newZ, (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
                             }
                         }
                     }

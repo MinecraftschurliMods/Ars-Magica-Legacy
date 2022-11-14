@@ -121,7 +121,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public double getAffinityDepthOrElse(Player player, IAffinity affinity, double defaultValue) {
+    public double getAffinityDepthOrElse(Player player, Affinity affinity, double defaultValue) {
         return getAffinityDepthOrElse(player, affinity.getId(), defaultValue);
     }
 

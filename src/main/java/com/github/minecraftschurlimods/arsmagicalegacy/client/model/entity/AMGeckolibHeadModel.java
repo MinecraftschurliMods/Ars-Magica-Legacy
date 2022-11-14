@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -11,13 +10,12 @@ public class AMGeckolibHeadModel<T extends IAnimatable> extends AMGeckolibModel<
         super(name);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void setLivingAnimations(T entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
-        if (customPredicate != null) {
+    public void setCustomAnimations(T animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
+        if (animationEvent != null) {
             IBone head = getAnimationProcessor().getBone("head");
-            EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
+            EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
             head.setRotationX((float) (extraData.headPitch * Math.PI / 180D));
             head.setRotationY((float) (extraData.netHeadYaw * Math.PI / 180D));
         }

@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderRushGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EnderTorrentGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ExecuteBossSpellGoal;
@@ -8,7 +9,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.Otherwor
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ShadowstepGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -56,8 +57,9 @@ public class EnderGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new EnderRushGoal(this));
         goalSelector.addGoal(1, new ShadowstepGoal(this));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, PrefabSpellManager.instance().get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 10));
+        Registry<PrefabSpell> prefabSpells = level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 10));
         goalSelector.addGoal(1, new EnderTorrentGoal(this));
         goalSelector.addGoal(1, new OtherworldlyRoarGoal(this));
     }

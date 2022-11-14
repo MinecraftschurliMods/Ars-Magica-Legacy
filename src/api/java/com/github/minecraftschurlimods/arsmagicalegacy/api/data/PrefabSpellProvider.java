@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
@@ -14,17 +13,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.data.LanguageProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class PrefabSpellProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
     private final String namespace;
     @Nullable
     private final LanguageProvider languageProvider;
@@ -37,7 +33,6 @@ public abstract class PrefabSpellProvider implements DataProvider {
 
     public PrefabSpellProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, @Nullable LanguageProvider languageProvider) {
         this.namespace = namespace;
-        this.generator = generator;
         this.languageProvider = languageProvider;
         this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), PrefabSpell.REGISTRY_KEY, data);
     }

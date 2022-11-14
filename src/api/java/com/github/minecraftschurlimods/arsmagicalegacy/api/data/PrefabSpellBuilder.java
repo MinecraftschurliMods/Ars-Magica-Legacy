@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.network.chat.Component;
@@ -47,11 +48,7 @@ public class PrefabSpellBuilder {
         return this;
     }
 
-    public JsonObject build() {
-        JsonObject json = new JsonObject();
-        json.add("name", Component.Serializer.toJsonTree(name));
-        json.addProperty("icon", icon.toString());
-        json.add("spell", ISpell.CODEC.encodeStart(JsonOps.INSTANCE, spell).getOrThrow(false, LogManager.getLogger()::warn));
-        return json;
+    public PrefabSpell build() {
+        return new PrefabSpell(name, spell, icon);
     }
 }

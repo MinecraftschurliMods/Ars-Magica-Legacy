@@ -74,7 +74,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Set;
@@ -256,9 +255,9 @@ public final class EventHandler {
     }
 
     private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        AttributeInstance maxManaAttr = event.getPlayer().getAttribute(AMAttributes.MAX_MANA.get());
+        AttributeInstance maxManaAttr = event.getEntity().getAttribute(AMAttributes.MAX_MANA.get());
         if (maxManaAttr != null) {
-            ArsMagicaAPI.get().getManaHelper().increaseMana(event.getPlayer(), (float) (maxManaAttr.getBaseValue() / 2));
+            ArsMagicaAPI.get().getManaHelper().increaseMana(event.getEntity(), (float) (maxManaAttr.getBaseValue() / 2));
         }
     }
 

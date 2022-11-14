@@ -181,6 +181,13 @@ repositories {
             includeGroup 'vazkii.patchouli'
         }
     }
+    maven {
+        name = 'GeckoLib Maven'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
+        }
+    }
     /*maven {
         name = 'CurseMaven'
         url = "https://cursemaven.com"
@@ -199,10 +206,6 @@ repositories {
     maven {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
-    }
-    maven {
-        name = 'GeckoLib Maven'
-        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
     }
 }
 

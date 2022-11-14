@@ -11,9 +11,9 @@ public class NatureGuardianModel extends AMGeckolibHeadModel<NatureGuardian> {
     }
 
     @Override
-    public void setLivingAnimations(NatureGuardian entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(NatureGuardian animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
         IBone scythe = getAnimationProcessor().getBone("scythe");
-        scythe.setHidden(!entity.hasScythe());
+        scythe.setHidden(!animatable.hasScythe());
     }
 }

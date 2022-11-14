@@ -17,17 +17,17 @@ public class AMGeckolibModel<T extends IAnimatable> extends AnimatedGeoModel<T> 
     }
 
     @Override
-    public ResourceLocation getModelLocation(T t) {
+    public ResourceLocation getModelResource(T t) {
         return MODEL_LOCATION;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(T t) {
+    public ResourceLocation getTextureResource(T t) {
         return TEXTURE_LOCATION;
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(T t) {
+    public ResourceLocation getAnimationResource(T t) {
         return ANIMATION_LOCATION;
     }
 }

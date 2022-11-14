@@ -30,6 +30,7 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +49,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level, BossEvent.BossBarColor color) {
         super(type, level);
         noCulling = true;
-        factory = new AnimationFactory(this);
+        factory = GeckoLibUtil.createFactory(this);
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         if (!level.isClientSide()) {
             for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192.0D)))) {

@@ -40,7 +40,7 @@ public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL.get());
 
     public Wave(EntityType<? extends Wave> type, Level level) {
         super(type, level);
