@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
+
 import java.util.Optional;
 
 public final class SpellTransformationManager extends CodecDataManager<SpellTransformationManager.SpellTransformation> implements ISpellTransformationManager {

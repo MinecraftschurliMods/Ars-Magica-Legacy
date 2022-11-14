@@ -1,8 +1,8 @@
 {
   "name": {
-    "text": "Ender Bolt"
+    "translate": "prefab_spell.arsmagicalegacy.ender_bolt.name"
   },
-  "icon": "arsmagicalegacy:beam-magenta-3",
+  "icon": "arsmagicalegacy:beam_jade_3",
   "spell": {
     "shape_groups": [
       [

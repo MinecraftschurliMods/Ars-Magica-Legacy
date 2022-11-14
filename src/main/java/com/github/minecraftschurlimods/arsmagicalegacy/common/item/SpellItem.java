@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
@@ -81,8 +81,14 @@ public class SpellItem extends Item implements ISpellItem {
      * @param stack The stack to get the spell name for.
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
-    public static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
+    public static Optional<Component> getSpellName(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty()).map(s -> {
+            try {
+                return Component.Serializer.fromJson(s);
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 
     /**
@@ -92,7 +98,17 @@ public class SpellItem extends Item implements ISpellItem {
      * @param name  The name to set.
      */
     public static void setSpellName(ItemStack stack, String name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
+        setSpellName(stack, new TextComponent(name));
+    }
+
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name to set.
+     */
+    public static void setSpellName(ItemStack stack, Component name) {
+        stack.getOrCreateTag().putString(SPELL_NAME_KEY, Component.Serializer.toJson(name));
     }
 
     /**
@@ -155,7 +171,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         ISpell spell = getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_INVALID);
-        return getSpellName(pStack).<Component>map(TextComponent::new).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
+        return getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : new TranslatableComponent(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -250,7 +266,12 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PrefabSpellManager.ITEM_CATEGORY) {
-            PrefabSpellManager.instance().values().stream().map(IPrefabSpell::makeSpell).forEach(items::add);
+            PrefabSpellManager.instance()
+                    .values()
+                    .stream()
+                    .sorted()
+                    .map(IPrefabSpell::makeSpell)
+                    .forEach(items::add);
         }
     }
 
@@ -262,13 +283,14 @@ public class SpellItem extends Item implements ISpellItem {
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = getSpell(stack);
+        String name = LOGGER.isTraceEnabled() ? getSpellName(stack).map(Component::getString).orElse("") : "";
         if (spell.isContinuous()) {
-            LOGGER.trace("{} starts casting continuous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
         } else {
-            LOGGER.trace("{} is casting instantaneous spell {}", entity, getSpellName(stack));
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
-            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, getSpellName(stack), result);
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             SoundEvent sound = getSpell(stack).primaryAffinity().getCastSound();
             if (sound != null) {
                 entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);

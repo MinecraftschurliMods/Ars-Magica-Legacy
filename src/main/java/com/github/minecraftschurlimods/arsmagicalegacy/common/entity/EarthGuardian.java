@@ -1,167 +1,84 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.entity.AbstractBoss;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.DispelGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthSmashGoal;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.EarthStrikeAttackGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.SmashGoal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.StrikeGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRockGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class EarthGuardian extends AbstractBoss {
-    public boolean leftArm = false;
-    private float rodRotation = 0;
-    private EarthGuardianAction action;
+    public boolean shouldRenderRock;
 
     public EarthGuardian(EntityType<? extends EarthGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.GREEN);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 1000).add(AMAttributes.MAX_BURNOUT.get(), 1000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 1000).add(AMAttributes.MAX_BURNOUT.get(), 1000);
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return AMSounds.EARTH_GUARDIAN_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    public SoundEvent getHurtSound(DamageSource pDamageSource) {
         return AMSounds.EARTH_GUARDIAN_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return AMSounds.EARTH_GUARDIAN_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getAttackSound() {
+    public SoundEvent getAttackSound() {
         return AMSounds.EARTH_GUARDIAN_ATTACK.get();
-    }
-
-    @Override
-    public void aiStep() {
-        if (ticksInAction > 40 && !level.isClientSide()) {
-            setAction(EarthGuardianAction.IDLE);
-        } else if (level.isClientSide()) {
-            updateRotations();
-        }
-        super.aiStep();
-    }
-
-    @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE) {
-            pAmount *= 2f;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
-            pAmount /= 4f;
-        }
-        return super.hurt(pSource, pAmount);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(1, new DispelGoal<>(this));
+        goalSelector.addGoal(1, new SmashGoal<>(this));
+        goalSelector.addGoal(1, new StrikeGoal<>(this));
         goalSelector.addGoal(1, new ThrowRockGoal(this));
-        goalSelector.addGoal(2, new EarthSmashGoal(this));
-        goalSelector.addGoal(2, new EarthStrikeAttackGoal(this));
     }
 
     @Override
-    public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1F);
-    }
-
-    @Override
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
-        return pLevel.getFluidState(pPos).is(FluidTags.WATER) ? 10F + pLevel.getBrightness(pPos) - 0.5F : super.getWalkTargetValue(pPos, pLevel);
-    }
-
-    @Override
-    public void travel(Vec3 pTravelVector) {
-        if (isEffectiveAi() && isInWater()) {
-            moveRelative(0.1F, pTravelVector);
-            move(MoverType.SELF, getDeltaMovement());
-            setDeltaMovement(getDeltaMovement().scale(0.9D));
-        } else {
-            super.travel(pTravelVector);
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource == DamageSource.FREEZE || pSource == DamageSource.DROWN) {
+            pAmount *= 2f;
+        } else if (pSource.isFire() || pSource == DamageSource.LIGHTNING_BOLT) {
+            return false;
         }
-    }
-
-    public boolean shouldRenderRock() {
-        return getAction() == EarthGuardianAction.THROWING_ROCK && ticksInAction > 5 && ticksInAction < 27;
-    }
-
-    public float getRodRotations() {
-        return rodRotation;
-    }
-
-    private void updateRotations() {
-        rodRotation += 0.02f;
-        rodRotation %= 360;
-    }
-
-    public EarthGuardianAction getAction() {
-        return action;
-    }
-
-    public void setAction(final EarthGuardianAction action) {
-        this.action = action;
-        ticksInAction = 0;
-        if (getAction() != action && action == EarthGuardianAction.STRIKE && level.isClientSide()) {
-            leftArm = !leftArm;
-        }
+        return super.hurt(pSource, pAmount);
     }
 
     @Override
-    public boolean canCastSpell() {
-        return action == EarthGuardianAction.IDLE;
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(createBaseAnimationController("earth_guardian"));
+        data.addAnimationController(createActionAnimationController("earth_guardian", "idle", Action.IDLE));
+        data.addAnimationController(createActionAnimationController("earth_guardian", "smash", Action.SMASH));
+        data.addAnimationController(createActionAnimationController("earth_guardian", "strike", Action.STRIKE));
+        data.addAnimationController(createActionAnimationController("earth_guardian", "throw", Action.THROW));
     }
 
     @Override
-    public boolean isCastingSpell() {
-        return action == EarthGuardianAction.CASTING;
-    }
-
-    @Override
-    public void setIsCastingSpell(boolean isCastingSpell) {
-        if (isCastingSpell) {
-            action = EarthGuardianAction.CASTING;
-        } else if (action == EarthGuardianAction.CASTING) {
-            action = EarthGuardianAction.IDLE;
+    public void handleEntityEvent(byte pId) {
+        if (pId == -8) {
+            shouldRenderRock = true;
+        } else if (pId == -9) {
+            shouldRenderRock = false;
         }
-    }
-
-    public enum EarthGuardianAction {
-        IDLE(-1),
-        CASTING(-1),
-        STRIKE(15),
-        THROWING_ROCK(30),
-        SMASH(20);
-
-        private final int maxActionTime;
-
-        EarthGuardianAction(int maxTime) {
-            maxActionTime = maxTime;
-        }
-
-        public int getMaxActionTime() {
-            return maxActionTime;
-        }
+        super.handleEntityEvent(pId);
     }
 }

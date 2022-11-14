@@ -26,12 +26,10 @@ public record SpellBookContainer(ItemStack stack, SimpleContainer active, Simple
         if (!tag.contains(SpellBookItem.SPELLS_KEY)) return;
         ListTag spells = tag.getList(SpellBookItem.SPELLS_KEY, Tag.TAG_COMPOUND);
         if (spells.size() != active.getContainerSize() + back.getContainerSize()) return;
-
         List<Tag> active = spells.subList(0, this.active.getContainerSize());
         for (int i = 0; i < active.size(); i++) {
             this.active.setItem(i, ItemStack.of((CompoundTag) active.get(i)));
         }
-
         List<Tag> back = spells.subList(this.active.getContainerSize(), this.active.getContainerSize() + this.back.getContainerSize());
         for (int i = 0; i < back.size(); i++) {
             this.back.setItem(i, ItemStack.of((CompoundTag) back.get(i)));

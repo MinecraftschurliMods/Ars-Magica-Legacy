@@ -4,8 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,32 +25,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 public class Wall extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX    = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER    = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float>   RADIUS   = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ISpell>  SPELL    = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wall.class, AMDataSerializers.SPELL_SERIALIZER);
 
-    /**
-     * Use {@link Wall#create(Level)} instead.
-     */
-    @Internal
-    public Wall(EntityType<? extends Wall> entityEntityType, Level level) {
-        super(entityEntityType, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Wall create(Level level) {
-        return new Wall(AMEntities.WALL.get(), level);
+    public Wall(EntityType<? extends Wall> type, Level level) {
+        super(type, level);
     }
 
     @Override
@@ -84,6 +68,16 @@ public class Wall extends Entity implements ItemSupplier {
     }
 
     @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        return false;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public Packet<?> getAddEntityPacket() {
         Entity entity = getOwner();
         return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
@@ -95,8 +89,8 @@ public class Wall extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        Vec3 a = new Vec3(getX() - Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() - Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
-        Vec3 b = new Vec3(getX() + Math.cos(3.1415926f / 180f * getYRot()) * getRadius(), getY(), getZ() + Math.sin(3.1415926f / 180f * getYRot()) * getRadius());
+        Vec3 a = new Vec3(getX() - Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() - Math.sin(Math.toRadians(getYRot())) * getRadius());
+        Vec3 b = new Vec3(getX() + Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() + Math.sin(Math.toRadians(getYRot())) * getRadius());
         double minX = getX() - getRadius();
         double minY = getY() - 1;
         double minZ = getZ() - getRadius();
@@ -131,6 +125,11 @@ public class Wall extends Entity implements ItemSupplier {
                 }
             }
         }
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return ItemStack.EMPTY;
     }
 
     public int getDuration() {
@@ -173,10 +172,5 @@ public class Wall extends Entity implements ItemSupplier {
 
     public void setSpell(ISpell spell) {
         entityData.set(SPELL, spell);
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return new ItemStack(AMItems.BLANK_RUNE.get());
     }
 }

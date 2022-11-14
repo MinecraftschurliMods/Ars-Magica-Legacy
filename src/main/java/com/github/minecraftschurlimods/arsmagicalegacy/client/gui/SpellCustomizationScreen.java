@@ -39,7 +39,7 @@ public class SpellCustomizationScreen extends Screen {
         super(TextComponent.EMPTY);
         editBox = new EditBox(font, 0, 0, 0, 0, new TranslatableComponent(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
-        SpellItem.getSpellName(stack).ifPresent(editBox::setValue);
+        SpellItem.getSpellName(stack).ifPresent(pText -> editBox.setValue(pText.getString()));
         SpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
     }
 

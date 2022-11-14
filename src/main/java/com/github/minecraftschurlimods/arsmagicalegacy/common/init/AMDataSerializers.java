@@ -13,7 +13,6 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 @NonExtendable
 public interface AMDataSerializers {
     EntityDataSerializer<ISpell> SPELL_SERIALIZER = new CodecEntityDataSerializer<>(ISpell.CODEC);
-
     RegistryObject<DataSerializerEntry> SPELL = DATA_SERIALIZERS.register("spell", () -> new DataSerializerEntry(SPELL_SERIALIZER));
 
     /**

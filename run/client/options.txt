@@ -141,7 +141,7 @@ key_key.toggleVisible:key.keyboard.unknown
 key_key.curios.open.desc:key.keyboard.g
 key_key.arsmagicalegacy.next_shape_group:key.keyboard.c:SHIFT
 key_key.arsmagicalegacy.configure_spell:key.keyboard.m:CONTROL
-soundCategory_master:1.0
+soundCategory_master:0.0
 soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0

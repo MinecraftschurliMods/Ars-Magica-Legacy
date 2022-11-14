@@ -111,7 +111,7 @@ public interface AMItems {
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
     RegistryObject<SpellItem>                    SPELL                        = ITEMS.register("spell", SpellItem::new);
     RegistryObject<SpellBookItem>                SPELL_BOOK                   = ITEMS.register("spell_book", SpellBookItem::new);
-    RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
     RegistryObject<ManaMartiniItem>              MANA_MARTINI                 = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
     RegistryObject<MageArmorItem>                MAGE_HELMET                  = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 5));
     RegistryObject<MageArmorItem>                MAGE_CHESTPLATE              = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 5));
@@ -121,9 +121,6 @@ public interface AMItems {
     RegistryObject<MageArmorItem>                BATTLEMAGE_CHESTPLATE        = ITEMS.register("battlemage_chestplate", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 10));
     RegistryObject<MageArmorItem>                BATTLEMAGE_LEGGINGS          = ITEMS.register("battlemage_leggings", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.LEGS, 10));
     RegistryObject<MageArmorItem>                BATTLEMAGE_BOOTS             = ITEMS.register("battlemage_boots", () -> new MageArmorItem(MageArmorItem.BATTLEMAGE_ARMOR_MATERIAL, EquipmentSlot.FEET, 10));
-    RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG              = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
-    RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG               = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
-    RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG       = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            WATER_GUARDIAN_SPAWN_EGG     = ITEMS.register("water_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.WATER_GUARDIAN, 0x324fac, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            FIRE_GUARDIAN_SPAWN_EGG      = ITEMS.register("fire_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.FIRE_GUARDIAN, 0xcb5420, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            EARTH_GUARDIAN_SPAWN_EGG     = ITEMS.register("earth_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.EARTH_GUARDIAN, 0x999999, 0xc9bc2f, ITEM_64));
@@ -134,12 +131,17 @@ public interface AMItems {
     RegistryObject<ForgeSpawnEggItem>            LIFE_GUARDIAN_SPAWN_EGG      = ITEMS.register("life_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.LIFE_GUARDIAN, 0x12e780, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ARCANE_GUARDIAN_SPAWN_EGG    = ITEMS.register("arcane_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ARCANE_GUARDIAN, 0x7f3280, 0xc9bc2f, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            ENDER_GUARDIAN_SPAWN_EGG     = ITEMS.register("ender_guardian_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.ENDER_GUARDIAN, 0x000000, 0xc9bc2f, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG              = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG               = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
+    RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG       = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
+    //TODO
+//    RegistryObject<NatureScytheItem>             NATURE_SCYTHE                = ITEMS.register("nature_scythe", NatureScytheItem::new);
+//    RegistryObject<WintersGraspItem>             WINTERS_GRASP                = ITEMS.register("winters_grasp", WintersGraspItem::new);
 
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);
     }
 
-    @SuppressWarnings("unchecked")
     private static RegistryObject<BlockItem> registerBlockItem64(RegistryObject<? extends Block> block) {
         return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), ITEM_64));
     }

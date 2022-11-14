@@ -128,6 +128,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
+        forgeBus.addListener(EventHandler::playerRespawn);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
@@ -306,6 +307,13 @@ public final class EventHandler {
         helper.awardXp(event.getPlayer(), 0);
     }
 
+    private static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        AttributeInstance maxManaAttr = event.getPlayer().getAttribute(AMAttributes.MAX_MANA.get());
+        if (maxManaAttr != null) {
+            ArsMagicaAPI.get().getManaHelper().increaseMana(event.getPlayer(), (float) (maxManaAttr.getBaseValue() / 2));
+        }
+    }
+
     private static void livingDamage(LivingDamageEvent event) {
         if (event.getEntityLiving().getHealth() * 4 < event.getEntityLiving().getMaxHealth()) {
             ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntityLiving(), ContingencyType.HEALTH);
@@ -322,8 +330,8 @@ public final class EventHandler {
                 ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
                 if (dataForPart == null) continue;
                 Set<IAffinity> affinities = dataForPart.affinities();
-                for (IAffinity aff : affinities) {
-                    double value = api.getAffinityHelper().getAffinityDepth(player, aff);
+                for (IAffinity affinity : affinities) {
+                    double value = api.getAffinityHelper().getAffinityDepthOrElse(player, affinity, 0);
                     if (value > 0) {
                         cost -= (float) (cost * (0.5f * value / 100f));
                     }
@@ -354,12 +362,20 @@ public final class EventHandler {
             maxManaAttr.setBaseValue(newMaxMana);
             manaHelper.increaseMana(player, (newMaxMana - manaHelper.getMana(player)) / 2);
         }
+        AttributeInstance manaRegenAttr = player.getAttribute(AMAttributes.MANA_REGEN.get());
+        if (manaRegenAttr != null) {
+            manaRegenAttr.setBaseValue(newMaxMana * Config.SERVER.MANA_REGEN_MULTIPLIER.get() );
+        }
         float newMaxBurnout = Config.SERVER.BURNOUT_BASE.get().floatValue() + Config.SERVER.BURNOUT_MULTIPLIER.get().floatValue() * (level - 1);
         AttributeInstance maxBurnoutAttr = player.getAttribute(AMAttributes.MAX_BURNOUT.get());
         if (maxBurnoutAttr != null) {
             IBurnoutHelper burnoutHelper = api.getBurnoutHelper();
             maxBurnoutAttr.setBaseValue(newMaxBurnout);
             burnoutHelper.decreaseBurnout(player, burnoutHelper.getBurnout(player) / 2);
+        }
+        AttributeInstance burnoutRegenAttr = player.getAttribute(AMAttributes.BURNOUT_REGEN.get());
+        if (burnoutRegenAttr != null) {
+            burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get() );
         }
         event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
     }

@@ -23,11 +23,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> implements IPrefabSpellManager {
     public static final CreativeModeTab ITEM_CATEGORY = new CreativeModeTab(ArsMagicaAPI.MOD_ID + ".prefab_spells") {
@@ -36,11 +39,11 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
             return AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY);
         }
     };
-
     private static final Lazy<PrefabSpellManager> INSTANCE = Lazy.concurrentOf(PrefabSpellManager::new);
+    private Map<IPrefabSpell, ResourceLocation> keys;
 
     private PrefabSpellManager() {
-        super("prefab_spells", PrefabSpell.CODEC, LogManager.getLogger());
+        super("prefab_spells", PrefabSpell.CODEC, PrefabSpellManager::validate, LogManager.getLogger());
     }
 
     /**
@@ -60,6 +63,14 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
         return getOptional((Object) id);
     }
 
+    public ResourceLocation getKey(IPrefabSpell spell) {
+        return keys.get(spell);
+    }
+
+    private static void validate(Map<ResourceLocation, IPrefabSpell> data, Logger l) {
+        instance().keys = data.entrySet().stream().collect(Collectors.toUnmodifiableMap(Entry::getValue, Entry::getKey));
+    }
+
     public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) implements IPrefabSpell {
         public static final Codec<IPrefabSpell> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 Codec.either(Codec.STRING, CodecHelper.COMPONENT).xmap(stringComponentEither -> stringComponentEither.mapLeft(TextComponent::new).map(Function.identity(), Function.identity()), Either::right).optionalFieldOf("name", new TranslatableComponent(TranslationConstants.SPELL_PREFAB_NAME)).forGetter(IPrefabSpell::name),
@@ -76,9 +87,15 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
         public ItemStack makeSpell() {
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
             SpellItem.saveSpell(stack, spell());
-            stack.setHoverName(name());
+            SpellItem.setSpellName(stack, name());
             SpellItem.setSpellIcon(stack, icon());
             return stack;
+        }
+
+        @Override
+        public int compareTo(IPrefabSpell o) {
+            PrefabSpellManager manager = PrefabSpellManager.instance();
+            return manager.getKey(this).compareTo(manager.getKey(o));
         }
     }
 }

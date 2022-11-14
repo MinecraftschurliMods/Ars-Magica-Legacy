@@ -1,8 +1,8 @@
 {
   "name": {
-    "text": "Nausea"
+    "translate": "prefab_spell.arsmagicalegacy.nausea.name"
   },
-  "icon": "arsmagicalegacy:enchant-acid-3",
+  "icon": "arsmagicalegacy:sword_eerie_3",
   "spell": {
     "shape_groups": [
       [

@@ -202,6 +202,10 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
     }
+    maven {
+        name = 'GeckoLib Maven'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+    }
 }
 
 dependencies {
@@ -220,6 +224,10 @@ dependencies {
     // patchouli for the guide book (arcane compendium)
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    // geckolib for animations
+    modAPI fg.deobf("software.bernie.geckolib:geckolib-forge-${project.mc_major_version}:${project.geckolib_version}")
+    runtimeMod fg.deobf("software.bernie.geckolib:geckolib-forge-${project.mc_major_version}:${project.geckolib_version}")
 
     // theoneprobe for integration
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }

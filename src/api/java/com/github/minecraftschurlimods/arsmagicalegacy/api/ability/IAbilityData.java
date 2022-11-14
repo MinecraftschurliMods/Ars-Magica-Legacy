@@ -23,6 +23,6 @@ public interface IAbilityData extends Predicate<Player> {
 
     @Override
     default boolean test(Player player) {
-        return bounds().matches(ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity()));
+        return bounds().matches(ArsMagicaAPI.get().getAffinityHelper().getAffinityDepthOrElse(player, affinity(), 0));
     }
 }

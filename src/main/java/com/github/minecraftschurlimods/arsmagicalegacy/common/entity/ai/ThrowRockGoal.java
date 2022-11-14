@@ -1,59 +1,36 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownRock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 
-public class ThrowRockGoal extends Goal {
-    private final EarthGuardian earthGuardian;
-    private LivingEntity target;
-    private int cooldown = 0;
+import java.util.Objects;
 
-    public ThrowRockGoal(EarthGuardian earthGuardian) {
-        this.earthGuardian = earthGuardian;
+public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
+    public ThrowRockGoal(EarthGuardian boss) {
+        super(boss, AbstractBoss.Action.THROW, 15, 5);
     }
 
     @Override
     public boolean canUse() {
-        if (cooldown-- > 0 || earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.IDLE || earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying())
-            return false;
-        target = earthGuardian.getTarget();
-        return true;
+        return super.canUse() && boss.getTarget() != null && boss.distanceTo(boss.getTarget()) > 4;
     }
 
     @Override
-    public boolean canContinueToUse() {
-        if (earthGuardian.getTarget() == null || earthGuardian.getTarget().isDeadOrDying() || (earthGuardian.getAction() == EarthGuardian.EarthGuardianAction.THROWING_ROCK && earthGuardian.getTicksInAction() > earthGuardian.getAction().getMaxActionTime())) {
-            earthGuardian.setAction(EarthGuardian.EarthGuardianAction.IDLE);
-            cooldown = 50;
-            return false;
-        }
-        return true;
+    public void performTick() {
+        super.performTick();
+        boss.getLevel().broadcastEntityEvent(boss, ticks > 2 && ticks < 16 ? (byte) -8 : (byte) -9);
     }
 
     @Override
-    public void tick() {
-        earthGuardian.getLookControl().setLookAt(target, 30, 30);
-        if (earthGuardian.distanceToSqr(target) > 100) {
-            earthGuardian.getNavigation().moveTo(target, 0.5f);
-        } else {
-            earthGuardian.getNavigation().recomputePath();  // is clearPathEntity() --> recomputePath()
-            if (earthGuardian.getAction() != EarthGuardian.EarthGuardianAction.THROWING_ROCK) {
-                earthGuardian.setAction(EarthGuardian.EarthGuardianAction.THROWING_ROCK);
-            }
-            if (earthGuardian.getTicksInAction() == 27) {
-                if (!earthGuardian.getLevel().isClientSide()) {
-                    earthGuardian.getLevel().playSound(null, earthGuardian, AMSounds.EARTH_GUARDIAN_HURT.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
-                }
-                earthGuardian.lookAt(target, 180, 180);
-                if (!earthGuardian.getLevel().isClientSide()) {
-//                    ThrowRock projectile = new ThrowRock(earthGuardian.getLevel(), earthGuardian, 2.0f);
-//                    earthGuardian.getLevel().addFreshEntity(projectile);
-                }
-            }
+    public void perform() {
+        if (!boss.getLevel().isClientSide()) {
+            ThrownRock entity = Objects.requireNonNull(AMEntities.THROWN_ROCK.get().create(boss.getLevel()));
+            entity.moveTo(boss.getEyePosition().add(boss.getLookAngle()));
+            entity.setDeltaMovement(boss.getLookAngle());
+            entity.setOwner(boss);
+            boss.getLevel().addFreshEntity(entity);
         }
-
     }
 }

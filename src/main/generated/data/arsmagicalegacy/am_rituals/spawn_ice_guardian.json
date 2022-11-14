@@ -9,6 +9,10 @@
     {
       "structure": "arsmagicalegacy:ice_guardian_spawn_ritual",
       "type": "arsmagicalegacy:structure"
+    },
+    {
+      "biome": "#forge:is_cold",
+      "type": "arsmagicalegacy:biome"
     }
   ],
   "effect": {

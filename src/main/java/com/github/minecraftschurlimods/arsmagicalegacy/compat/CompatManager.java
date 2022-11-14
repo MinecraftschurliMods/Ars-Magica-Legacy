@@ -33,7 +33,8 @@ public final class CompatManager {
      * @param clazz The compat handler class to register.
      */
     public static void register(Class<? extends ICompatHandler> clazz) {
-        if (!clazz.isAnnotationPresent(ModCompat.class)) throw new IllegalArgumentException("Tried to register an invalid mod compatibility handler!");
+        if (!clazz.isAnnotationPresent(ModCompat.class))
+            throw new IllegalArgumentException("Tried to register an invalid mod compatibility handler!");
         register(clazz.getAnnotation(ModCompat.class).value(), clazz);
     }
 
@@ -107,12 +108,12 @@ public final class CompatManager {
     private static <T> List<Class<? extends T>> getClasses(Class<?> annotationClass, Class<T> instanceClass) {
         Type annotationType = Type.getType(annotationClass);
         return ModList.get().getAllScanData()
-                      .stream()
-                      .map(ModFileScanData::getAnnotations)
-                      .flatMap(Collection::stream)
-                      .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
-                      .map(ModFileScanData.AnnotationData::memberName)
-                      .<Class<? extends T>>map(memberName -> {
+                .stream()
+                .map(ModFileScanData::getAnnotations)
+                .flatMap(Collection::stream)
+                .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
+                .map(ModFileScanData.AnnotationData::memberName)
+                .<Class<? extends T>>map(memberName -> {
                     try {
                         return Class.forName(memberName).asSubclass(instanceClass);
                     } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {

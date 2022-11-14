@@ -1,56 +1,27 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 
-public class FireRainGoal extends Goal {
-    private final FireGuardian fireGuardian;
-    private int cooldown = 0;
-    private int boltTicks = 0;
+import java.util.Objects;
 
-    public FireRainGoal(FireGuardian fireGuardian) {
-        this.fireGuardian = fireGuardian;
+public class FireRainGoal extends AbstractBossGoal<FireGuardian> {
+    public FireRainGoal(FireGuardian boss) {
+        super(boss, AbstractBoss.Action.LONG_CAST, 20);
     }
 
     @Override
-    public boolean canUse() {
-        if (fireGuardian.getAction() == FireGuardian.FireGuardianAction.IDLE && fireGuardian.getTarget() != null && cooldown-- <= 0) {
-            fireGuardian.setAction(FireGuardian.FireGuardianAction.CASTING);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return this.cooldown <= 0;
-    }
-
-    @Override
-    public void stop() {
-        fireGuardian.setAction(FireGuardian.FireGuardianAction.IDLE);
-        cooldown = 150;
-        boltTicks = 0;
-    }
-
-    @Override
-    public void tick() {
-        if (fireGuardian.getAction() != FireGuardian.FireGuardianAction.CASTING) {
-            fireGuardian.setAction(FireGuardian.FireGuardianAction.CASTING);
-        }
-        boltTicks++;
-        if (boltTicks == 12) {
-            if (!fireGuardian.getLevel().isClientSide()) {
-//                FireRain fire = FireRain.create(fireGuardian.getLevel());
-//                fire.setPos(fireGuardian.getX(), fireGuardian.getY(), fireGuardian.getZ());
-//                fire.setTicksToExist(300);
-//                fire.setRadius(10);
-//                fire.setCasterAndStack(host, null);
-//                fireGuardian.getLevel().addFreshEntity(fire);
-            }
-        }
-        if (boltTicks >= 23) {
-            stop();
+    public void perform() {
+        if (!boss.getLevel().isClientSide()) {
+            FireRain fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(boss.getLevel()));
+            fireRain.setPos((boss.getTarget() != null ? boss.getTarget().position() : boss.position()).add(0, 1.5, 0));
+            fireRain.setDuration(200);
+            fireRain.setOwner(boss);
+            fireRain.setDamage(2);
+            fireRain.setRadius(2);
+            boss.getLevel().addFreshEntity(fireRain);
         }
     }
 }
