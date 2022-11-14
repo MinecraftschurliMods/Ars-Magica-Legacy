@@ -14,6 +14,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -94,7 +96,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     /**
      * @return The spell name, or null if there is no name.
      */
-    public Optional<String> getSpellName() {
+    public Optional<Component> getSpellName() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
     }
 
@@ -112,7 +114,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @param spellStack  The spell stack.
      * @param shapeGroups The shape groups.
      */
-    public void sendDataToServer(String name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
+    public void sendDataToServer(Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
         ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
@@ -164,7 +166,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
             super.set(stack);
             if (stack.getItem() instanceof ISpellItem) {
                 ISpell spell = SpellItem.getSpell(stack);
-                table.onSync(SpellItem.getSpellName(stack).orElse(null), spell.isEmpty() ? null : spell);
+                table.onSync(SpellItem.getSpellName(stack).orElse(TextComponent.EMPTY), spell.isEmpty() ? null : spell);
             }
         }
     }

@@ -115,7 +115,8 @@ public final class Spell implements ISpell {
 
     @Override
     public void currentShapeGroupIndex(byte shapeGroup) {
-        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0) throw new IndexOutOfBoundsException("Invalid shape group index!");
+        if (shapeGroup >= shapeGroups().size() || shapeGroup < 0)
+            throw new IndexOutOfBoundsException("Invalid shape group index!");
         additionalData().putByte(CURRENT_SHAPE_GROUP_KEY, shapeGroup);
     }
 

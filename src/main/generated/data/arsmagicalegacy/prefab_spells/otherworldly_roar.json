@@ -1,8 +1,8 @@
 {
   "name": {
-    "text": "Otherworldly Roar"
+    "translate": "prefab_spell.arsmagicalegacy.otherworldly_roar.name"
   },
-  "icon": "arsmagicalegacy:wind-grasp-magenta-3",
+  "icon": "arsmagicalegacy:gravity_magenta_3",
   "spell": {
     "shape_groups": [
       [
@@ -11,13 +11,12 @@
         "arsmagicalegacy:range",
         "arsmagicalegacy:range",
         "arsmagicalegacy:range",
-        "arsmagicalegacy:range",
         "arsmagicalegacy:range"
       ]
     ],
     "spell_stack": [
       "arsmagicalegacy:blindness",
-      "arsmagicalegacy:silence",
+      "arsmagicalegacy:slowness",
       "arsmagicalegacy:knockback"
     ],
     "data": {}

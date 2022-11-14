@@ -36,7 +36,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     private static final Component TITLE = new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_TITLE);
     private ItemStack stack = ItemStack.EMPTY;
     private @Nullable ISpell spellRecipe;
-    private @Nullable String spellName;
+    private @Nullable Component spellName;
     private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -49,11 +49,11 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @param spell  The spell.
      * @return A written book with the spell written onto it.
      */
-    public static ItemStack makeRecipe(String name, String author, ISpell spell) {
+    public static ItemStack makeRecipe(Component name, String author, ISpell spell) {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         SpellItem.saveSpell(book, spell);
         CompoundTag tag = book.getOrCreateTag();
-        tag.putString(WrittenBookItem.TAG_TITLE, name);
+        tag.putString(WrittenBookItem.TAG_TITLE, name.getString());
         tag.putString(WrittenBookItem.TAG_AUTHOR, author);
         ListTag pages = new ListTag();
         makeSpellRecipePages(pages, spell);
@@ -73,7 +73,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
             spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
         if (pTag.contains(SPELL_NAME_KEY)) {
-            spellName = pTag.getString(SPELL_NAME_KEY);
+            spellName = Component.Serializer.fromJson(pTag.getString(SPELL_NAME_KEY));
         }
     }
 
@@ -83,14 +83,14 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @param name  The spell name.
      * @param spell The spell.
      */
-    public void onSync(@Nullable String name, @Nullable ISpell spell) {
+    public void onSync(@Nullable Component name, @Nullable ISpell spell) {
         spellName = name;
         spellRecipe = spell;
         setChanged();
     }
 
     @Nullable
-    public String getSpellName() {
+    public Component getSpellName() {
         return spellName;
     }
 
@@ -108,7 +108,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         return Optional.ofNullable(getSpellRecipe())
                 .map(spell -> {
                     if (spell.isEmpty()) return stack;
-                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE).getString()), player.getDisplayName().getString(), spell);
+                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE)), player.getDisplayName().getString(), spell);
                 });
     }
 
@@ -117,7 +117,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         super.saveAdditional(pCompound);
         pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
         if (spellName != null) {
-            pCompound.putString(SPELL_NAME_KEY, spellName);
+            pCompound.putString(SPELL_NAME_KEY, Component.Serializer.toJson(spellName));
         }
         if (spellRecipe != null) {
             pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));

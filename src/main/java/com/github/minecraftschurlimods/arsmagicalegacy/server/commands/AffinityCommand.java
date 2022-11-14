@@ -28,7 +28,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_ADD_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_ADD_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_GET;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_RESET_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_RESET_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_SET_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_SET_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_UNKNOWN;
 
 public class AffinityCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinityCommand::suggestAffinities;
@@ -90,7 +97,7 @@ public class AffinityCommand {
         for (ServerPlayer player : players) {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
             if (!MinecraftForge.EVENT_BUS.post(event)) {
-                helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepth(player, affinity) + amount));
+                helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepthOrElse(player, affinity, 0) + amount));
                 MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
         }
@@ -160,7 +167,7 @@ public class AffinityCommand {
     }
 
     private static int getAffinity(ServerPlayer player, IAffinity affinity, CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepth(player, affinity)), true);
+        context.getSource().sendSuccess(new TranslatableComponent(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepthOrElse(player, affinity, 0)), true);
         return Command.SINGLE_SUCCESS;
     }
 

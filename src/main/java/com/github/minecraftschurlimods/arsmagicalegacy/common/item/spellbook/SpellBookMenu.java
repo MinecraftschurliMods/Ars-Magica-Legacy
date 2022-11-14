@@ -54,7 +54,8 @@ public class SpellBookMenu extends AbstractContainerMenu {
             ItemStack stack = slot.getItem();
             is = stack.copy();
             if (pIndex < SpellBookItem.TOTAL_SPELL_SLOTS) {
-                if (!moveItemStackTo(stack, SpellBookItem.TOTAL_SPELL_SLOTS, SpellBookItem.TOTAL_SPELL_SLOTS + 36, true)) return ItemStack.EMPTY;
+                if (!moveItemStackTo(stack, SpellBookItem.TOTAL_SPELL_SLOTS, SpellBookItem.TOTAL_SPELL_SLOTS + 36, true))
+                    return ItemStack.EMPTY;
             } else if (stack.getItem() instanceof ISpellItem) {
                 if (!moveItemStackTo(stack, 0, SpellBookItem.TOTAL_SPELL_SLOTS, false)) return ItemStack.EMPTY;
             }

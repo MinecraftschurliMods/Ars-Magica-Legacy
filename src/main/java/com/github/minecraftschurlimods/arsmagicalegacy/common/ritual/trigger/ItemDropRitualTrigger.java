@@ -76,7 +76,8 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements Rit
     @Override
     public void register(final Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((TickEvent.PlayerTickEvent t) -> {
-            if ((t.side != LogicalSide.SERVER && !t.player.getGameProfile().getName().equals("test-mock-player")) || t.phase != TickEvent.Phase.START) return;
+            if ((t.side != LogicalSide.SERVER && !t.player.getGameProfile().getName().equals("test-mock-player")) || t.phase != TickEvent.Phase.START)
+                return;
             if (!(t.player.level instanceof ServerLevel serverLevel)) return;
             for (final ItemEntity item : serverLevel.getEntitiesOfClass(ItemEntity.class, AABB.ofSize(t.player.position(), 5, 5, 5), itemEntity -> ingredients.stream().anyMatch(ingredient -> ingredient.test(itemEntity.getItem())))) {
                 if (ritual.perform(t.player, serverLevel, item.getOnPos(), Context.EMPTY)) return;

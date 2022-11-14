@@ -8,6 +8,5 @@ import net.minecraftforge.client.gui.IIngameOverlay;
 public final class ShapeGroupHUD extends GuiComponent implements IIngameOverlay {
     @Override
     public void render(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int width, int height) {
-
     }
 }

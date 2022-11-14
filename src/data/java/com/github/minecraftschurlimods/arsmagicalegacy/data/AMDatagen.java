@@ -27,17 +27,8 @@ public class AMDatagen {
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
         if (evt.includeServer()) {
-            generator.addProvider(abilityProvider);
-        }
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
-        if (evt.includeClient()) {
-            generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
-            generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
-            generator.addProvider(lang);
-            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
-        }
-        if (evt.includeServer()) {
             AMSkillProvider skillProvider = new AMSkillProvider(generator);
+            generator.addProvider(abilityProvider);
             generator.addProvider(skillProvider);
             generator.addProvider(new AMAdvancementProvider(generator, existingFileHelper, skillProvider));
             generator.addProvider(new AMLootTableProvider(generator));
@@ -46,11 +37,17 @@ public class AMDatagen {
             generator.addProvider(new AMAltarStructureMaterialProvider(generator));
             generator.addProvider(new AMObeliskFuelProvider(generator));
             generator.addProvider(new AMOcculusTabProvider(generator));
-            generator.addProvider(new AMPrefabSpellProvider(generator));
+            generator.addProvider(new AMPrefabSpellProvider(generator, lang));
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMSpellTransformationProvider(generator));
             generator.addProvider(new AMRitualProvider(generator));
         }
+        if (evt.includeClient()) {
+            generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
+            generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
+            generator.addProvider(lang);
+            generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
+        }
+        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
     }
-
 }

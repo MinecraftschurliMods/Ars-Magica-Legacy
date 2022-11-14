@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 abstract class EntityMixin {
     @ModifyVariable(method = "getBoundingBoxForPose", at = @At(value = "STORE"))
     private EntityDimensions modifyBoundingBoxForPose(final EntityDimensions value) {
-        if (((Object)this) instanceof LivingEntity le) {
+        if (((Object) this) instanceof LivingEntity le) {
             return value.scale((float) le.getAttributeValue(AMAttributes.SCALE.get()));
         }
         return value;

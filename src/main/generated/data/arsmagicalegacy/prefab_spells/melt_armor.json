@@ -1,8 +1,8 @@
 {
   "name": {
-    "text": "Melt Armor"
+    "translate": "prefab_spell.arsmagicalegacy.melt_armor.name"
   },
-  "icon": "arsmagicalegacy:enchant-red-3",
+  "icon": "arsmagicalegacy:spawner_fire_3",
   "spell": {
     "shape_groups": [
       [

@@ -12,11 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 public class DryadModel extends HumanoidModel<Dryad> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dryad"), "main");
 
-    public DryadModel(final ModelPart pRoot) {
+    public DryadModel(ModelPart pRoot) {
         super(pRoot);
     }
 
     public static LayerDefinition createBodyLayer() {
-        return LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0f), 64, 32);
+        return LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0), 64, 32);
     }
 }

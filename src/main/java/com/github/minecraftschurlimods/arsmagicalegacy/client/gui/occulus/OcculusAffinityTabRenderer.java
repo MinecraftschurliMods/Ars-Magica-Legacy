@@ -10,9 +10,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.gui.screens.Screen;
@@ -97,7 +94,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 var abilityManager = api.getAbilityManager();
                 List<ResourceLocation> abilities = abilityManager.getAbilitiesForAffinity(aff);
                 IForgeRegistry<IAbility> abilityRegistry = api.getAbilityRegistry();
-                abilities.sort((o1, o2) -> (int)((Objects.requireNonNullElse(abilityManager.get(o1).bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(abilityManager.get(o2).bounds().getMin(), 0D) * 100)));
+                abilities.sort((o1, o2) -> (int) ((Objects.requireNonNullElse(abilityManager.get(o1).bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(abilityManager.get(o2).bounds().getMin(), 0D) * 100)));
                 abilities.forEach(resourceLocation -> {
                     IAbilityData abilityData = abilityManager.get(resourceLocation);
                     boolean test = abilityData.test(player);
@@ -133,7 +130,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             }
             pMatrixStack.pushPose();
             pMatrixStack.translate(-posX, -posY, 0);
-            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX+posX, pMouseY+posY, getFont());
+            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX + posX, pMouseY + posY, getFont());
             pMatrixStack.popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);

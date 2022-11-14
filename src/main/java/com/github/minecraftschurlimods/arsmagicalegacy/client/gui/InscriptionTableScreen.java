@@ -29,6 +29,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
@@ -69,7 +70,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         imageWidth = 220;
         imageHeight = 252;
         nameBar = new EditBox(font, 0, 0, 0, 0, NAME_LABEL);
-        pMenu.getSpellName().ifPresent(nameBar::setValue);
+        pMenu.getSpellName().ifPresent(pText -> nameBar.setValue(pText.getString()));
         pMenu.getSpellRecipe().ifPresent(this::setFromRecipe);
     }
 
@@ -80,7 +81,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void onSlotChangedInt() {
-        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        menu.sendDataToServer(new TextComponent(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
         if (menu.getSlot(0).getItem().getItem() instanceof ISpellItem) {
             menu.getSpellRecipe().ifPresent(this::setFromRecipe);
         }
@@ -117,7 +118,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         };
         nameBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 93 + topPos, 141, 12, 64, nameBar, font, NAME_LABEL));
         menu.getSpellName().ifPresent(name -> {
-            nameBar.setValue(name);
+            nameBar.setValue(name.getString());
             nameBar.setTextColor(0xffffff);
         });
         if (nameBar.getValue().equals(NAME_LABEL.getString())) {
@@ -252,7 +253,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public void onClose() {
-        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        menu.sendDataToServer(new TextComponent(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
         super.onClose();
     }
 

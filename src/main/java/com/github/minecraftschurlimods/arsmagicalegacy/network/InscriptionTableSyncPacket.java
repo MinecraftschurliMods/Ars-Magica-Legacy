@@ -5,17 +5,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiont
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.network.NetworkEvent;
 
-public record InscriptionTableSyncPacket(BlockPos blockPos, String name, ISpell spell) implements IPacket {
+public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements IPacket {
     public InscriptionTableSyncPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readUtf(), buf.readWithCodec(ISpell.CODEC));
+        this(buf.readBlockPos(), buf.readComponent(), buf.readWithCodec(ISpell.CODEC));
     }
 
     @Override
     public void serialize(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        buf.writeUtf(name);
+        buf.writeComponent(name);
         buf.writeWithCodec(ISpell.CODEC, spell);
     }
 
