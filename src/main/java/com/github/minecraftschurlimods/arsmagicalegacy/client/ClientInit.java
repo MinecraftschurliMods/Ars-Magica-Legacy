@@ -17,16 +17,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ShapeGroupHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.SpellBookHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.XpHUD;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AffinityOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookItemModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.block.AltarCoreModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibHeadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
@@ -36,7 +29,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Throw
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.AffinityOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SkillPointOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.BlackAuremBER;
@@ -223,17 +216,10 @@ public final class ClientInit {
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(AirGuardianModel.LAYER_LOCATION, AirGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(LightningGuardianModel.LAYER_LOCATION, LightningGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
+        event.registerLayerDefinition(NatureScytheModel.LAYER_LOCATION, NatureScytheModel::createBodyLayer);
+        event.registerLayerDefinition(ThrownRockModel.LAYER_LOCATION, ThrownRockModel::createBodyLayer);
+        event.registerLayerDefinition(WintersGraspModel.LAYER_LOCATION, WintersGraspModel::createBodyLayer);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

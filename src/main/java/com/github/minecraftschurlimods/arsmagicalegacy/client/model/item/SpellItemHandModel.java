@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
+package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;

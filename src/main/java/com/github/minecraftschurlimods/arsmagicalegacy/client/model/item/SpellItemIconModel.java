@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.client.model;
+package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.google.common.cache.Cache;
