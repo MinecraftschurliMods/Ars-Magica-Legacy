@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:air": 0.05
-  },
-  "manaCost": 80.0,
+  "manaCost": 40.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:air": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:yellow_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:dusts/redstone"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

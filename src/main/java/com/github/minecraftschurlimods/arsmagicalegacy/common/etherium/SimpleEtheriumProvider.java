@@ -63,6 +63,7 @@ public class SimpleEtheriumProvider implements IEtheriumProvider {
 
     /**
      * Sets a consumer callback.
+     *
      * @param callback The callback to set.
      * @return This provider, for chaining.
      */

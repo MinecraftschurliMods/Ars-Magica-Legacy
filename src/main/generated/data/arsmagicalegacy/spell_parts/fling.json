@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:air": 0.01
-  },
-  "manaCost": 40.0,
+  "manaCost": 80.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:air": 0.002
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:white_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "minecraft:piston"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

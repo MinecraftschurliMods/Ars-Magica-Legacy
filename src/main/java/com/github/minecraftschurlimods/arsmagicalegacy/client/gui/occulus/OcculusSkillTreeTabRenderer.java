@@ -154,7 +154,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         }
         RenderSystem.disableScissor();
         stack.popPose();
-        if (!(mouseX > offsetX && mouseX < offsetX+width && mouseY > offsetY && mouseY < offsetY+height)) return;
+        if (!(mouseX > offsetX && mouseX < offsetX + width && mouseY > offsetY && mouseY < offsetY + height)) return;
         for (Skill skill : skills) {
             if (mouseX >= skill.x() && mouseX <= skill.x() + SKILL_SIZE && mouseY >= skill.y() && mouseY <= skill.y() + SKILL_SIZE) {
                 List<Component> list = new ArrayList<>();

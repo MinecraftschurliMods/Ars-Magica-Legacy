@@ -143,10 +143,12 @@ key_key.jei.nextRecipePage:key.keyboard.page.down
 key_key.jei.clearSearchBar:key.mouse.right
 key_key.jei.previousCategory:key.keyboard.page.up:SHIFT
 key_key.jei.copy.recipe.id:key.keyboard.unknown
-key_key.jei.cheatOneItem2:key.mouse.right
-key_key.jei.focusSearch:key.keyboard.f:CONTROL
-key_key.jei.showUses2:key.mouse.right
-soundCategory_master:0.01986755
+key_key.toggleLiquids:key.keyboard.unknown
+key_key.toggleVisible:key.keyboard.unknown
+key_key.curios.open.desc:key.keyboard.g
+key_key.arsmagicalegacy.next_shape_group:key.keyboard.c:SHIFT
+key_key.arsmagicalegacy.configure_spell:key.keyboard.m:CONTROL
+soundCategory_master:0.0
 soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0

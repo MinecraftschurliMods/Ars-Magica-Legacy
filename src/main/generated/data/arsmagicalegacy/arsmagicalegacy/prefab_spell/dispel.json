@@ -1,10 +1,9 @@
 {
-  "icon": "arsmagicalegacy:fog-magenta-3",
   "name": {
-    "text": "Dispel"
+    "translate": "prefab_spell.arsmagicalegacy.dispel.name"
   },
+  "icon": "arsmagicalegacy:shield_royal_3",
   "spell": {
-    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:self"
@@ -12,6 +11,7 @@
     ],
     "spell_stack": [
       "arsmagicalegacy:dispel"
-    ]
+    ],
+    "data": {}
   }
 }

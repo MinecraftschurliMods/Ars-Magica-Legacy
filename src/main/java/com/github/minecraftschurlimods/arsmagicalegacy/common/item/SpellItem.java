@@ -7,8 +7,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
@@ -96,7 +96,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         ISpell spell = ISpellItem.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
-        return ISpellItem.getSpellName(pStack).<Component>map(Component::literal).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
+        return ISpellItem.getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
@@ -191,20 +191,24 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PREFAB_SPELLS_TAB) {
-            ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(IPrefabSpell::makeSpell).forEach(items::add);
+            ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY)
+                        .stream()
+                        .map(IPrefabSpell::makeSpell)
+                        .forEach(items::add);
         }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = ISpellItem.getSpell(stack);
+        String name = LOGGER.isTraceEnabled() ? ISpellItem.getSpellName(stack).map(Component::getString).orElse("") : "";
         if (spell.isContinuous()) {
-            LOGGER.trace("{} starts casting continuous spell {}", entity, ISpellItem.getSpellName(stack));
+            LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
         } else {
-            LOGGER.trace("{} is casting instantaneous spell {}", entity, ISpellItem.getSpellName(stack));
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
-            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, ISpellItem.getSpellName(stack), result);
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             SoundEvent sound = ISpellItem.getSpell(stack).primaryAffinity().getCastSound();
             if (sound != null) {
                 entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);

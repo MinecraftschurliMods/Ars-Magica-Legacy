@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:arcane": 0.01
-  },
-  "manaCost": 40.0,
+  "manaCost": 60.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.002
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:magenta_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "minecraft:milk_bucket"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

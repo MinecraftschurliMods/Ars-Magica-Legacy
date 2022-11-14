@@ -1,37 +1,37 @@
 {
-  "affinities": {
-    "arsmagicalegacy:ice": 0.01
-  },
-  "manaCost": 80.0,
+  "manaCost": 25.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ice": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:cyan_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:light_blue_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:gems/topaz"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "minecraft:ice"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

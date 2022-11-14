@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:ice": 0.05
-  },
-  "manaCost": 80.0,
+  "manaCost": 30.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ice": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:green_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:slimeballs"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

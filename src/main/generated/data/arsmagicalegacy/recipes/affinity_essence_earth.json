@@ -1,11 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AIA",
+    "JEJ",
+    "AIA"
+  ],
   "key": {
     "A": {
       "item": "arsmagicalegacy:arcane_ash"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "E": {
+      "type": "forge:partial_nbt",
+      "item": "arsmagicalegacy:affinity_essence",
+      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
     },
     "I": {
       "tag": "minecraft:dirt"
@@ -14,13 +21,9 @@
       "tag": "forge:stone"
     }
   },
-  "pattern": [
-    "AIA",
-    "JDJ",
-    "AIA"
-  ],
   "result": {
     "item": "arsmagicalegacy:affinity_essence",
+    "count": 2,
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
   }
 }

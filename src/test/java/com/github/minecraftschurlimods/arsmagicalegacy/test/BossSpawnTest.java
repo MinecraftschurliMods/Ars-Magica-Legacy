@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.test;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Dryad;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -65,31 +66,55 @@ public class BossSpawnTest {
         for (int i = 0; i < numDryads; i++) {
             final int index = i + 1;
             final Dryad dryad = helper.spawn(AMEntities.DRYAD.get(), new BlockPos(2, 3, 2));
-            helper.runAfterDelay(index+tickOffset, () -> {
+            helper.runAfterDelay(index + tickOffset, () -> {
                 dryad.hurt(DamageSource.playerAttack(player), dryad.getMaxHealth() * 2);
-                if (lastDryadKills.get(player.getGameProfile().getId()) != serverlevel.getGameTime()) helper.fail("Dryad kill time not updated");
+                if (lastDryadKills.get(player.getGameProfile().getId()) != serverlevel.getGameTime()) {
+                    helper.fail("Dryad kill time not updated");
+                }
                 if (index != numDryads) {
-                    if (dryadKills.get(player.getGameProfile().getId()) != index) helper.fail("Dryad kill count not updated");
-                } else {
-                    if (dryadKills.get(player.getGameProfile().getId()) != 0) helper.fail("Dryad kill count not updated");
+                    if (dryadKills.get(player.getGameProfile().getId()) != index) {
+                        helper.fail("Dryad kill count not updated");
+                    }
+                } else if (dryadKills.get(player.getGameProfile().getId()) != 0) {
+                    helper.fail("Dryad kill count not updated");
                 }
             });
         }
-        helper.runAfterDelay(numDryads+tickOffset+2, () -> {
+        helper.runAfterDelay(numDryads + tickOffset + 2, () -> {
             helper.assertEntityPresent(AMEntities.NATURE_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
 
-    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20, required = false)
-    public static void testArcaneGuardianSpawnRitual(GameTestHelper helper) {
+    @GameTest(template = "water_guardian_spawn_test", timeoutTicks = 20, required = false)
+    public static void testWaterGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
-        player.moveTo(helper.absolutePos(new BlockPos(2, 4, 1)), 0, 90);
+        player.moveTo(helper.absolutePos(new BlockPos(1, 4, 1)), 0, 90);
         serverlevel.addFreshEntity(player);
-        helper.runAfterDelay(2, () -> player.drop(ArsMagicaAPI.get().getBookStack(), false));
+        helper.runAfterDelay(2, () -> {
+            player.drop(new ItemStack(Items.OAK_BOAT), false);
+            player.drop(new ItemStack(Items.WATER_BUCKET), false);
+        });
         helper.runAfterDelay(10, () -> {
-            helper.assertEntityPresent(AMEntities.ARCANE_GUARDIAN.get());
+            //TODO water biome
+            //helper.assertEntityPresent(AMEntities.WATER_GUARDIAN.get());
+            cleanup(helper, player);
+        });
+    }
+
+    @GameTest(template = "fire_guardian_spawn_test", timeoutTicks = 20)
+    public static void testFireGuardianSpawnRitual(GameTestHelper helper) {
+        ServerLevel serverlevel = helper.getLevel();
+        Player player = helper.makeMockPlayer();
+        player.moveTo(helper.absolutePos(new BlockPos(1, 4, 1)), 0, 90);
+        serverlevel.addFreshEntity(player);
+        helper.runAfterDelay(2, () -> {
+            player.drop(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(Affinity.WATER), false);
+        });
+        helper.runAfterDelay(10, () -> {
+            //TODO nether
+            //helper.assertEntityPresent(AMEntities.FIRE_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
@@ -111,7 +136,22 @@ public class BossSpawnTest {
         });
     }
 
-    //TODO: ice guardian spawn ritual (needs snowy biome)
+    @GameTest(template = "air_guardian_spawn_test", timeoutTicks = 20)
+    public static void testAirGuardianSpawnRitual(GameTestHelper helper) {
+        ServerLevel serverlevel = helper.getLevel();
+        Player player = helper.makeMockPlayer();
+        player.moveTo(helper.absolutePos(new BlockPos(1, 4, 1)), 0, 90);
+        serverlevel.addFreshEntity(player);
+        helper.runAfterDelay(2, () -> {
+            player.drop(new ItemStack(AMItems.TARMA_ROOT.get()), false);
+        });
+        helper.runAfterDelay(10, () -> {
+            //TODO y > 127
+            //helper.assertEntityPresent(AMEntities.AIR_GUARDIAN.get());
+            cleanup(helper, player);
+        });
+    }
+
     @GameTest(template = "ice_guardian_spawn_test", timeoutTicks = 20, required = false)
     public static void testIceGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
@@ -124,7 +164,26 @@ public class BossSpawnTest {
             helper.setBlock(new BlockPos(1, 4, 1), Blocks.CARVED_PUMPKIN);
         });
         helper.runAfterDelay(10, () -> {
-            helper.assertEntityPresent(AMEntities.ICE_GUARDIAN.get());
+            //TODO cold biome
+            //helper.assertEntityPresent(AMEntities.ICE_GUARDIAN.get());
+            cleanup(helper, player);
+        });
+    }
+
+    @GameTest(template = "lightning_guardian_spawn_test", timeoutTicks = 20)
+    public static void testLightningGuardianSpawnRitual(GameTestHelper helper) {
+        ServerLevel serverlevel = helper.getLevel();
+        Player player = helper.makeMockPlayer();
+        player.moveTo(helper.absolutePos(new BlockPos(1, 4, 1)), 0, 90);
+        serverlevel.addFreshEntity(player);
+        helper.runAfterDelay(2, () -> {
+            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverlevel);
+            assert lightningBolt != null;
+            lightningBolt.moveTo(helper.absoluteVec(Vec3.atCenterOf(new BlockPos(1, 4, 1))));
+            serverlevel.addFreshEntity(lightningBolt);
+        });
+        helper.runAfterDelay(15, () -> {
+            helper.assertEntityPresent(AMEntities.LIGHTNING_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
@@ -149,28 +208,34 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "lightning_guardian_spawn_test", timeoutTicks = 20)
-    public static void testLightningGuardianSpawnRitual(GameTestHelper helper) {
+    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20)
+    public static void testArcaneGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
-        player.moveTo(helper.absolutePos(new BlockPos(1, 4, 1)), 0, 90);
+        player.moveTo(helper.absolutePos(new BlockPos(2, 4, 1)), 0, 90);
         serverlevel.addFreshEntity(player);
-        helper.runAfterDelay(2, () -> {
-            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverlevel);
-            assert lightningBolt != null;
-            lightningBolt.moveTo(helper.absoluteVec(Vec3.atCenterOf(new BlockPos(1, 4, 1))));
-            serverlevel.addFreshEntity(lightningBolt);
-        });
-        helper.runAfterDelay(15, () -> {
-            helper.assertEntityPresent(AMEntities.LIGHTNING_GUARDIAN.get());
+        helper.runAfterDelay(2, () -> player.drop(ArsMagicaAPI.get().getBookStack(), false));
+        helper.runAfterDelay(10, () -> {
+            helper.assertEntityPresent(AMEntities.ARCANE_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
 
-    //TODO: air guardian spawn ritual (needs y > 128)
-    //TODO: ender guardian spawn ritual (needs end dimension)
-    //TODO: fire guardian spawn ritual (needs nether dimension)
-    //TODO: water guardian spawn ritual (needs water biome)
+    @GameTest(template = "ender_guardian_spawn_test", timeoutTicks = 20)
+    public static void testEnderGuardianSpawnRitual(GameTestHelper helper) {
+        ServerLevel serverlevel = helper.getLevel();
+        Player player = helper.makeMockPlayer();
+        player.moveTo(helper.absolutePos(new BlockPos(2, 4, 2)), 0, 90);
+        serverlevel.addFreshEntity(player);
+        helper.runAfterDelay(2, () -> {
+            player.drop(new ItemStack(Items.ENDER_EYE), false);
+        });
+        helper.runAfterDelay(10, () -> {
+            //TODO end
+            //helper.assertEntityPresent(AMEntities.ENDER_GUARDIAN.get());
+            cleanup(helper, player);
+        });
+    }
 
     private static void cleanup(final GameTestHelper helper, final Player player) {
         helper.killAllEntities();

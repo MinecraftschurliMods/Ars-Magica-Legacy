@@ -1,10 +1,9 @@
 {
-  "icon": "arsmagicalegacy:light-magenta-3",
   "name": {
-    "text": "Ender Torrent"
+    "translate": "prefab_spell.arsmagicalegacy.ender_torrent.name"
   },
+  "icon": "arsmagicalegacy:light_magenta_3",
   "spell": {
-    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -13,8 +12,10 @@
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:silence",
-      "arsmagicalegacy:knockback"
-    ]
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:knockback",
+      "arsmagicalegacy:damage"
+    ],
+    "data": {}
   }
 }

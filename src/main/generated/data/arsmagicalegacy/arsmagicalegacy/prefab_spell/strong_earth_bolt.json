@@ -1,0 +1,18 @@
+{
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.strong_earth_bolt.name"
+  },
+  "icon": "arsmagicalegacy:lightning_acid_3",
+  "spell": {
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:physical_damage",
+      "arsmagicalegacy:knockback"
+    ],
+    "data": {}
+  }
+}

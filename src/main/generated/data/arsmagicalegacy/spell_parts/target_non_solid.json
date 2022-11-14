@@ -1,41 +1,41 @@
 {
-  "affinities": {},
-  "manaCost": 1.0,
+  "manaCost": 1.25,
   "reagents": [],
+  "affinities": {},
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:cerublossom"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "minecraft:poppy"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "minecraft:potion",
+        "count": 1,
         "nbt": "{Potion:\"minecraft:water\"}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

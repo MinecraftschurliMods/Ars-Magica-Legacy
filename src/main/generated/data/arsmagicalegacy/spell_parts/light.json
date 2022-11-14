@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:lightning": 0.01
-  },
-  "manaCost": 40.0,
+  "manaCost": 60.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:lightning": 0.002
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:yellow_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:vinteum_torch"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

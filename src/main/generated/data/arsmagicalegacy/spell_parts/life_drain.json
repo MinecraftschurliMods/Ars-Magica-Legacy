@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:life": 0.01
-  },
-  "manaCost": 40.0,
+  "manaCost": 5.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:life": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:magenta_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:aum"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

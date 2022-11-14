@@ -1,24 +1,24 @@
 {
-  "affinities": {},
-  "manaCost": 3.5,
+  "manaCost": 2.5,
   "reagents": [],
+  "affinities": {},
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

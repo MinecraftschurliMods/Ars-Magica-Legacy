@@ -1,18 +1,17 @@
 {
-  "icon": "arsmagicalegacy:enchant-orange-3",
   "name": {
-    "text": "Fire Bolt"
+    "translate": "prefab_spell.arsmagicalegacy.fire_bolt.name"
   },
+  "icon": "arsmagicalegacy:beam_orange_3",
   "spell": {
-    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:fire_damage",
-      "arsmagicalegacy:ignition"
-    ]
+      "arsmagicalegacy:fire_damage"
+    ],
+    "data": {}
   }
 }

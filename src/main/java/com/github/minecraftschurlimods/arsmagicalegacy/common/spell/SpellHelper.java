@@ -47,34 +47,6 @@ public final class SpellHelper implements ISpellHelper {
         return INSTANCE.get();
     }
 
-    @Nullable
-    public static Entity getPointedEntity(Level world, Entity player, double range, double collideRadius, boolean nonCollide, boolean targetWater) {
-        Entity pointedEntity = null;
-        Vec3 vec = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
-        Vec3 lookVec = player.getLookAngle();
-        List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(collideRadius, collideRadius, collideRadius));
-        double d = 0;
-        for (Entity entity : list) {
-            HitResult hit = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), ClipContext.Block.COLLIDER, targetWater ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, player));
-            if ((entity.canBeCollidedWith() || nonCollide) && hit.getType() == HitResult.Type.MISS) {
-                float f2 = Math.max(0.8F, entity.getBbWidth());
-                AABB aabb = entity.getBoundingBox().inflate(f2, f2, f2);
-                Optional<Vec3> optional = aabb.clip(vec, lookVec);
-                if (aabb.contains(vec)) {
-                    pointedEntity = entity;
-                    d = 0;
-                } else if (optional.isPresent()) {
-                    double d3 = vec.distanceTo(optional.get());
-                    if ((d3 < d) || (d == 0)) {
-                        pointedEntity = entity;
-                        d = d3;
-                    }
-                }
-            }
-        }
-        return pointedEntity;
-    }
-
     @Override
     public boolean hasReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagentsIn) {
         if (!(caster instanceof Player player)) return true;
@@ -120,6 +92,52 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
+    @Nullable
+    public Entity getPointedEntity(Entity entity, Level level, double range, boolean clipFluids) {
+        Entity result = null;
+        Vec3 vec = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
+        Vec3 lookVec = entity.getLookAngle();
+        double d = 0;
+        for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(1, 1, 1))) {
+            HitResult hit = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), new Vec3(e.getX(), e.getY() + e.getEyeHeight(), e.getZ()), ClipContext.Block.COLLIDER, clipFluids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
+            if (e.canBeCollidedWith() && hit.getType() == HitResult.Type.MISS) {
+                float size = Math.max(0.8F, e.getBbWidth());
+                AABB aabb = e.getBoundingBox().inflate(size, size, size);
+                Optional<Vec3> optional = aabb.clip(vec, lookVec);
+                if (aabb.contains(vec)) {
+                    result = e;
+                    d = 0;
+                } else if (optional.isPresent()) {
+                    double distance = vec.distanceTo(optional.get());
+                    if ((distance < d) || (d == 0)) {
+                        result = e;
+                        d = distance;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public HitResult trace(Entity entity, Level level, double range, boolean entities, boolean targetNonSolid) {
+        HitResult entityHit = null;
+        if (entities) {
+            Entity pointed = getPointedEntity(entity, level, range, targetNonSolid);
+            if (pointed != null) {
+                entityHit = new EntityHitResult(pointed);
+            }
+        }
+        float interpPitch = entity.xRotO + (entity.getXRot() - entity.xRotO);
+        float interpYaw = entity.yRotO + (entity.getYRot() - entity.yRotO);
+        float degToRad = 0.017453292F;
+        float offsetPitchCos = -Mth.cos(-interpPitch * degToRad);
+        float offsetPitchSin = Mth.sin(-interpPitch * degToRad);
+        HitResult blockHit = level.clip(new ClipContext(entity.position(), entity.position().add(Mth.sin((float) (-interpYaw * degToRad - Math.PI)) * offsetPitchCos * range, offsetPitchSin * range, Mth.cos((float) (-interpYaw * degToRad - Math.PI)) * offsetPitchCos * range), ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, entity));
+        return entityHit == null || blockHit.getLocation().distanceTo(entity.position()) < entityHit.getLocation().distanceTo(entity.position()) ? blockHit : entityHit;
+    }
+
+    @Override
     public float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target) {
         float modified = baseValue;
         for (ISpellModifier iSpellModifier : modifiers) {
@@ -132,36 +150,9 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public HitResult trace(Entity caster, Level level, double range, boolean includeEntities, boolean targetNonSolid) {
-        HitResult entityPos = null;
-        if (includeEntities) {
-            Entity pointedEntity = getPointedEntity(level, caster, range, 1, false, targetNonSolid);
-            if (pointedEntity != null) {
-                entityPos = new EntityHitResult(pointedEntity);
-            }
-        }
-        float factor = 1;
-        float interpPitch = caster.xRotO + (caster.getXRot() - caster.xRotO) * factor;
-        float interpYaw = caster.yRotO + (caster.getYRot() - caster.yRotO) * factor;
-        double interpPosX = caster.xo + (caster.getX() - caster.xo) * factor;
-        double interpPosY = caster.yo + (caster.getY() - caster.yo) * factor + caster.getEyeHeight();
-        double interpPosZ = caster.zo + (caster.getZ() - caster.zo) * factor;
-        Vec3 vec3 = new Vec3(interpPosX, interpPosY, interpPosZ);
-        float magic = 0.017453292F;
-        float offsetYawCos = Mth.cos(-interpYaw * magic - (float) Math.PI);
-        float offsetYawSin = Mth.sin(-interpYaw * magic - (float) Math.PI);
-        float offsetPitchCos = -Mth.cos(-interpPitch * magic);
-        float offsetPitchSin = Mth.sin(-interpPitch * magic);
-        float finalXOffset = offsetYawSin * offsetPitchCos;
-        float finalZOffset = offsetYawCos * offsetPitchCos;
-        Vec3 targetVector = vec3.add(finalXOffset * range, offsetPitchSin * range, finalZOffset * range);
-        HitResult mop = level.clip(new ClipContext(vec3, targetVector, ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, caster));
-        return entityPos == null || mop.getLocation().distanceTo(caster.position()) < entityPos.getLocation().distanceTo(caster.position()) ? mop : entityPos;
-    }
-
-    @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp) {
-        Pair<? extends ISpellPart, List<ISpellModifier>> part = spell.partsWithModifiers().get(index);
+        List<Pair<? extends ISpellPart, List<ISpellModifier>>> pwm = spell.partsWithModifiers();
+        Pair<? extends ISpellPart, List<ISpellModifier>> part = pwm.get(index);
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
@@ -172,7 +163,7 @@ public final class SpellHelper implements ISpellHelper {
                 if (target instanceof BlockHitResult blockHitResult) {
                     result = component.invoke(spell, caster, level, part.getSecond(), blockHitResult, index + 1, castingTicks);
                 }
-                return result;
+                return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
             }
             case SHAPE -> {
                 ISpellShape shape = (ISpellShape) part.getFirst();

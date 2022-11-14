@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

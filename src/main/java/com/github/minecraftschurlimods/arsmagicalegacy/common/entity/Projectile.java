@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
@@ -27,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 public class Projectile extends Entity implements ItemSupplier {
@@ -42,22 +40,8 @@ public class Projectile extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<ItemStack> ICON = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Projectile.class, AMDataSerializers.SPELL.get());
 
-    /**
-     * Use {@link Projectile#create(Level)} instead.
-     */
-    @Internal
-    public Projectile(EntityType<? extends Projectile> entityEntityType, Level level) {
-        super(entityEntityType, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Projectile create(Level level) {
-        return new Projectile(AMEntities.PROJECTILE.get(), level);
+    public Projectile(EntityType<? extends Projectile> type, Level level) {
+        super(type, level);
     }
 
     @Override
@@ -118,7 +102,6 @@ public class Projectile extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
-        if (level.isClientSide()) return;
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
@@ -137,11 +120,11 @@ public class Projectile extends Entity implements ItemSupplier {
                 }
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
-            } else {
+            } else if (!level.isClientSide()) {
                 ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
                 decreaseBounces();
             }
-        } else if (result.getType().equals(HitResult.Type.ENTITY)) {
+        } else if (result.getType().equals(HitResult.Type.ENTITY) && !level.isClientSide()) {
             Entity entity = ((EntityHitResult) result).getEntity();
             if (entity instanceof PartEntity) {
                 entity = ((PartEntity<?>) entity).getParent();

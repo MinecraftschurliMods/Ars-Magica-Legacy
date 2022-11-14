@@ -1,18 +1,17 @@
 {
-  "icon": "arsmagicalegacy:lighting-eerie-3",
   "name": {
-    "text": "Lightning Bolt"
+    "translate": "prefab_spell.arsmagicalegacy.lightning_bolt.name"
   },
+  "icon": "arsmagicalegacy:beam_eerie_3",
   "spell": {
-    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile"
       ]
     ],
     "spell_stack": [
-      "arsmagicalegacy:lightning_damage",
-      "arsmagicalegacy:damage"
-    ]
+      "arsmagicalegacy:lightning_damage"
+    ],
+    "data": {}
   }
 }

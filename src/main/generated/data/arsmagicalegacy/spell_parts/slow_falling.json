@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:air": 0.05
-  },
-  "manaCost": 80.0,
+  "manaCost": 30.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:air": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:white_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "minecraft:phantom_membrane"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

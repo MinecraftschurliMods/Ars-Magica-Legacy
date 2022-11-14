@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public final class NatureGuardianSpawnHandler {
-    private static final HashMap<UUID, Long>    lastDryadKills = new HashMap<>();
-    private static final HashMap<UUID, Integer> dryadKills     = new HashMap<>();
+    private static final HashMap<UUID, Long> lastDryadKills = new HashMap<>();
+    private static final HashMap<UUID, Integer> dryadKills = new HashMap<>();
 
     static void dryadDeath(LivingDeathEvent event) {
         if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;

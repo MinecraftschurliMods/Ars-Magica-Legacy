@@ -1,30 +1,30 @@
 {
-  "affinities": {
-    "arsmagicalegacy:ender": 0.4
-  },
-  "manaCost": 400.0,
+  "manaCost": 200.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:ender": 0.005
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:lime_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:ender_pearls"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "minecraft:beds"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

@@ -10,6 +10,7 @@ public interface DragHandler {
 
     /**
      * Sets the dragged element.
+     *
      * @param draggable The draggable element to set.
      * @param source    The drop area the draggable is being dragged from.
      */

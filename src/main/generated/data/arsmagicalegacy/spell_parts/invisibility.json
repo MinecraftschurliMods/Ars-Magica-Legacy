@@ -1,33 +1,33 @@
 {
-  "affinities": {
-    "arsmagicalegacy:arcane": 0.05
-  },
-  "manaCost": 80.0,
+  "manaCost": 40.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:white_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:gems/chimerite"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "minecraft:potion",
+        "count": 1,
         "nbt": "{Potion:\"minecraft:invisibility\"}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

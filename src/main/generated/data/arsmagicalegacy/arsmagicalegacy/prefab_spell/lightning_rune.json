@@ -1,10 +1,9 @@
 {
-  "icon": "arsmagicalegacy:lightning-orange-3",
   "name": {
-    "text": "Lightning Rune"
+    "translate": "prefab_spell.arsmagicalegacy.lightning_rune.name"
   },
+  "icon": "arsmagicalegacy:rune_orange_3",
   "spell": {
-    "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
@@ -14,6 +13,7 @@
     "spell_stack": [
       "arsmagicalegacy:lightning_damage",
       "arsmagicalegacy:damage"
-    ]
+    ],
+    "data": {}
   }
 }

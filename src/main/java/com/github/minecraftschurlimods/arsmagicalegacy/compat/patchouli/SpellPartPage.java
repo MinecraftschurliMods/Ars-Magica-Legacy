@@ -34,7 +34,6 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
 public class SpellPartPage implements ICustomComponent {
-
     private String part;
     private transient int x, y;
     private transient ISpellPart _part;
@@ -150,7 +149,6 @@ public class SpellPartPage implements ICustomComponent {
         }
     }
 
-
     private void renderRecipe(PoseStack poseStack, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
         if (this._part == null) return;
         ISpellPartData data = ArsMagicaAPI.get().getSpellDataManager().getDataForPart(this._part);
@@ -170,7 +168,7 @@ public class SpellPartPage implements ICustomComponent {
             RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, context.getGui().getBlitOffset(), 0x0000DD, 0xDD00DD, 2f);
             if (i < recipe.size()) {
                 poseStack.pushPose();
-                poseStack.translate(x - (int)x, y - (int)y, 0);
+                poseStack.translate(x - (int) x, y - (int) y, 0);
                 renderCraftingComponent(poseStack, context, recipe.get(i), (int) x, (int) y, mousex, mousey);
                 poseStack.popPose();
             }

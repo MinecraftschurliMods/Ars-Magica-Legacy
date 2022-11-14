@@ -1,23 +1,23 @@
 {
-  "affinities": {
-    "arsmagicalegacy:nature": 0.01
-  },
-  "manaCost": 2.0,
+  "manaCost": 5.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:nature": 0.001
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:white_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "tag": "forge:dusts/purified_vinteum"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

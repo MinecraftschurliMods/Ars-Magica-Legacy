@@ -56,16 +56,6 @@ public final class ClientHelper {
     }
 
     /**
-     * Updates the player's step height.
-     *
-     * @param player     The player to update the step height for.
-     * @param stepHeight The new step height.
-     */
-    public static void updateStepHeight(Player player, float stepHeight) {
-        player.maxUpStep = stepHeight;
-    }
-
-    /**
      * Get the local registry access.
      *
      * @return the local registry access.

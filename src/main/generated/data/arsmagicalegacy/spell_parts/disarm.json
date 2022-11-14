@@ -1,26 +1,26 @@
 {
-  "affinities": {
-    "arsmagicalegacy:arcane": 0.003
-  },
-  "manaCost": 150.0,
+  "manaCost": 60.0,
   "reagents": [],
+  "affinities": {
+    "arsmagicalegacy:arcane": 0.002
+  },
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:purple_rune"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "minecraft:iron_sword",
+        "count": 1,
         "nbt": "{Damage:0}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     }
   ]
 }

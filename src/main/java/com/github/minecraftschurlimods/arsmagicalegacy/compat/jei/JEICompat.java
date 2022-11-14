@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -17,6 +18,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
@@ -39,13 +42,12 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(
-                VanillaTypes.ITEM_STACK,
-                ClientHelper.getRegistryAccess()
-                            .registryOrThrow(PrefabSpell.REGISTRY_KEY)
-                            .stream()
-                            .map(IPrefabSpell::makeSpell)
-                            .toList());
+        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get())));
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, ClientHelper.getRegistryAccess()
+                .registryOrThrow(PrefabSpell.REGISTRY_KEY)
+                .stream()
+                .map(IPrefabSpell::makeSpell)
+                .toList());
     }
 
     public static class AffinitySubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {

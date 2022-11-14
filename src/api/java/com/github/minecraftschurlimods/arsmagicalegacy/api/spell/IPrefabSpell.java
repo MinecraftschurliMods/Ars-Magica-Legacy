@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public interface IPrefabSpell {
+public interface IPrefabSpell extends Comparable<IPrefabSpell> {
     /**
      * @return A spell item stack built from this prefab spell.
      */
