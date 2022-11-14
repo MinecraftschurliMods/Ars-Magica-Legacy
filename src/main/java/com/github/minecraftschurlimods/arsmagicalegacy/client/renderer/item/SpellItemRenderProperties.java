@@ -1,11 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellItemHandModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -20,14 +26,16 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        if (stack.getItem() instanceof SpellBookItem) {
-            stack = SpellBookItem.getSelectedSpell(stack);
+    public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if (pStack.is(AMItems.SPELL_BOOK.get())) {
+            pStack = SpellBookItem.getSelectedSpell(pStack);
         }
-        renderSpellInHandEffect(stack, transformType, poseStack, buffer, packedLight, packedOverlay);
-    }
-
-    private void renderSpellInHandEffect(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        // TODO render spell effect in hand
+        if (!pStack.is(AMItems.SPELL.get())) return;
+        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
+        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).handlePerspective(pTransformType, pPoseStack);
+        if (model instanceof SpellItemHandModel spellItemHandModel) {
+            model = spellItemHandModel.originalModel;
+        }
+        renderer.renderModelLists(model, pStack, pPackedLight, pPackedOverlay, pPoseStack, ItemRenderer.getFoilBufferDirect(pBuffer, ItemBlockRenderTypes.getRenderType(pStack, true), true, pStack.hasFoil()));
     }
 }

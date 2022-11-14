@@ -233,6 +233,7 @@ dependencies {
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
+/*
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
             println 'Using github packages'
@@ -240,6 +241,7 @@ dependencies {
         runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.1:${project.controlling_version}")
     }
+*/
 
     // add internal libraries
     include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT') {

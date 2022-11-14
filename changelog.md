@@ -4,6 +4,7 @@ The new version now uses GeckoLib 3.0.37 (or newer) as a dependency for entity r
 # Additions
 - All bosses now have proper attacks and animations! The compendium entries have been updated accordingly, and issues with the textures have been fixed.
 - Mana Creepers now roam the world! In addition to exploding, they will leave behind a Mana Vortex that will follow you for some time and consume some of your mana when too close.
+- Spells now have fancy in-hand animations!
 
 # Changes
 - Spell icons have been reorganized internally. If your spell has a missing texture icon, set a new icon by using the Ctrl+M keybind.

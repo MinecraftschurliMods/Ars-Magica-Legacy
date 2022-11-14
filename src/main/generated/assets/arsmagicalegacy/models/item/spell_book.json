@@ -1,7 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "arsmagicalegacy:item/spell_book_cover",
-    "layer1": "arsmagicalegacy:item/spell_book_decoration"
-  }
-}
+{}
