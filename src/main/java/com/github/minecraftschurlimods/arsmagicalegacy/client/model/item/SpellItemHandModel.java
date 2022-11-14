@@ -9,14 +9,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class SpellItemHandModel extends SimpleBakedModel {
-    private static final Random RANDOM = new Random(42L);
+    private static final RandomSource RANDOM = RandomSource.create(42L);
     public final BakedModel originalModel;
 
     public SpellItemHandModel(List<BakedQuad> pUnculledFaces, Map<Direction, List<BakedQuad>> pCulledFaces, boolean pHasAmbientOcclusion, boolean pUsesBlockLight, boolean pIsGui3d, TextureAtlasSprite pParticleIcon, ItemTransforms pTransforms, ItemOverrides pOverrides, BakedModel originalModel) {
@@ -25,7 +25,7 @@ public class SpellItemHandModel extends SimpleBakedModel {
     }
 
     public SpellItemHandModel(BakedModel originalModel) {
-        this(originalModel.getQuads(null, null, new Random(42L)), directionMap(originalModel), false, false, originalModel.isGui3d(), originalModel.getParticleIcon(), ItemTransforms.NO_TRANSFORMS, originalModel.getOverrides(), originalModel);
+        this(originalModel.getQuads(null, null, RandomSource.create(42L)), directionMap(originalModel), false, false, originalModel.isGui3d(), originalModel.getParticleIcon(), ItemTransforms.NO_TRANSFORMS, originalModel.getOverrides(), originalModel);
     }
 
     private static Map<Direction, List<BakedQuad>> directionMap(BakedModel model) {
@@ -48,11 +48,11 @@ public class SpellItemHandModel extends SimpleBakedModel {
     }
 
     @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        if (cameraTransformType.firstPerson()) {
-            poseStack.translate(cameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ? 0.5f : 0, 0.75f, 0);
+    public BakedModel applyTransform(ItemTransforms.TransformType transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+        if (transformType.firstPerson()) {
+            poseStack.translate(transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ? 0.5f : 0, 0.75f, 0);
         }
-        if (cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+        if (transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
             poseStack.translate(0.25f, 0.5f, 0.5f);
         }
         poseStack.scale(0.5f, 0.5f, 0);

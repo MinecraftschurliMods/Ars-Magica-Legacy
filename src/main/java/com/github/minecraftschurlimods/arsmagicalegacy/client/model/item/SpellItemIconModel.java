@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,6 +15,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
@@ -40,7 +39,7 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
         if (cameraTransformType == ItemTransforms.TransformType.GUI) {
             try {
                 return cache.get(icon, () -> {
@@ -64,12 +63,7 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public boolean isLayered() {
-        return cameraTransformType == ItemTransforms.TransformType.GUI;
-    }
-
-    @Override
-    public List<Pair<BakedModel, RenderType>> getLayerModels(ItemStack itemStack, boolean fabulous) {
-        return Collections.singletonList(Pair.of(this, fabulous ? SPELL_ICON_FAB : SPELL_ICON));
+    public List<RenderType> getRenderTypes(ItemStack itemStack, boolean fabulous) {
+        return Collections.singletonList(fabulous ? SPELL_ICON_FAB : SPELL_ICON);
     }
 }

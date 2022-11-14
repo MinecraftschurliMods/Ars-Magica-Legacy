@@ -32,7 +32,7 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
         }
         if (!pStack.is(AMItems.SPELL.get())) return;
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
-        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).handlePerspective(pTransformType, pPoseStack);
+        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).applyTransform(pTransformType, pPoseStack, false);
         if (model instanceof SpellItemHandModel spellItemHandModel) {
             model = spellItemHandModel.originalModel;
         }

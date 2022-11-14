@@ -70,12 +70,12 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
             return getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"));
         }
         if (isHand(cameraTransformType) && affinity != null) {
-            return new SpellItemHandModel(getModel(new ResourceLocation(affinity.getId().getNamespace(), "item/spell_" + affinity.getId().getPath()))).handlePerspective(cameraTransformType, poseStack);
+            return new SpellItemHandModel(getModel(new ResourceLocation(affinity.getId().getNamespace(), "item/spell_" + affinity.getId().getPath()))).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
         if (icon.isEmpty() || cameraTransformType != ItemTransforms.TransformType.GUI) {
             return getModel(new ModelResourceLocation(AMItems.SPELL_PARCHMENT.getId(), "inventory"));
         }
-        super.handlePerspective(cameraTransformType, poseStack);
+        super.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         return new SpellItemIconModel(this, cameraTransformType, icon.get());
     }
 }
