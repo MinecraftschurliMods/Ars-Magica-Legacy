@@ -2,9 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -27,18 +26,18 @@ class AMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, "item/arcane_compendium"));
+        singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", modLoc("item/arcane_compendium"));
         skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()
-                .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-                .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
-                .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
+            .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+            .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
+            .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
+            .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
+            .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
         blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
         itemGenerated(WIZARDS_CHALK);
@@ -95,13 +94,11 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(IRON_INLAY, "block/iron_inlay");
         itemGenerated(REDSTONE_INLAY, "block/redstone_inlay");
         itemGenerated(GOLD_INLAY, "block/gold_inlay");
-        affinityItem(AFFINITY_ESSENCE);
-        affinityItem(AFFINITY_TOME);
+        affinityItem(AFFINITY_ESSENCE, true);
+        affinityItem(AFFINITY_TOME, true);
         itemGenerated(SPELL_PARCHMENT);
-        getBuilder(SPELL.getId().getPath());
-        withExistingParent(SPELL_BOOK, mcLoc("item/generated"))
-                .texture("layer0", modLoc("item/spell_book_cover"))
-                .texture("layer1", modLoc("item/spell_book_decoration"));
+        affinityItem(SPELL, false);
+        spellBookItem(SPELL_BOOK);
         itemGenerated(MANA_CAKE);
         itemGenerated(MANA_MARTINI);
         itemGenerated(MAGE_HELMET);
@@ -162,7 +159,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param name The texture id to use.
      */
     private void itemHandheld(RegistryObject<? extends Item> item, String name) {
-        singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+        singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", modLoc(name));
     }
 
     /**
@@ -194,17 +191,17 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item for each affinity, excluding {@link IAffinity#NONE}.
+     * Adds an item model for this item for each affinity.
      *
      * @param item The affinity item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link IAffinityItem}
+     * @param skipNone Whether to skip the model generation for {@link IAffinity#NONE} or not.
      */
-    private <T extends Item & IAffinityItem> void affinityItem(RegistryObject<T> item) {
+    private void affinityItem(RegistryObject<? extends Item> item, boolean skipNone) {
         getBuilder(item.getId().toString());
         for (IAffinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-            if (affinity.getId().equals(IAffinity.NONE)) continue;
+            if (affinity.getId().equals(IAffinity.NONE) && skipNone) continue;
             ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), item.getId().getPath() + "_" + affinity.getId().getPath());
-            singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
     }
 
@@ -212,13 +209,24 @@ class AMItemModelProvider extends ItemModelProvider {
      * Adds an item model for this item for each skill point.
      *
      * @param item The skill point item to add this for.
-     * @param <T>  An {@link Item} that must also implement {@link ISkillPointItem}
      */
-    private <T extends Item & ISkillPointItem> void skillPointItem(RegistryObject<T> item) {
+    private void skillPointItem(RegistryObject<? extends Item> item) {
         getBuilder(item.getId().toString());
         for (ISkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
-            singleTexture(rl.toString(), new ResourceLocation("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+            singleTexture(rl.toString(), mcLoc("item/generated"), "layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
         }
+    }
+
+    /**
+     * Adds an item model for this item, and a handheld version to be used by a {@link SpellBookItemModel}.
+     *
+     * @param item The item to generate the model for.
+     */
+    private void spellBookItem(RegistryObject<? extends Item> item) {
+        getBuilder(item.getId().toString());
+        withExistingParent(item.getId().getPath() + "_handheld", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + item.getId().getPath() + "_cover"))
+            .texture("layer1", modLoc("item/" + item.getId().getPath() + "_decoration"));
     }
 }

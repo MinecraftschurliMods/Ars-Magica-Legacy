@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
@@ -28,7 +29,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.Throw
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.AffinityOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SkillPointOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.BlackAuremBER;
@@ -51,14 +52,23 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
@@ -69,6 +79,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -83,9 +94,9 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import java.util.Map;
 
 public final class ClientInit {
+    public static IIngameOverlay XP_HUD;
     public static IIngameOverlay MANA_HUD;
     public static IIngameOverlay BURNOUT_HUD;
-    public static IIngameOverlay XP_HUD;
     public static IIngameOverlay SHAPE_GROUP_HUD;
     public static IIngameOverlay SPELL_BOOK_HUD;
 
@@ -107,6 +118,7 @@ public final class ClientInit {
         forgeBus.addListener(ClientInit::mouseScroll);
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
+        forgeBus.addListener(ClientInit::renderHand);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -128,6 +140,7 @@ public final class ClientInit {
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.MAGIC_WALL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.ALTAR_CORE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WIZARDS_CHALK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlocks.SPELL_RUNE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_SAPLING.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlocks.WITCHWOOD_TRAPDOOR.get(), RenderType.cutout());
@@ -150,9 +163,9 @@ public final class ClientInit {
     }
 
     private static void registerHUDs() {
+        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
         MANA_HUD = OverlayRegistry.registerOverlayBottom("mana_hud", new ManaHUD());
         BURNOUT_HUD = OverlayRegistry.registerOverlayBottom("burnout_hud", new BurnoutHUD());
-        XP_HUD = OverlayRegistry.registerOverlayBottom("xp_hud", new XpHUD());
         SHAPE_GROUP_HUD = OverlayRegistry.registerOverlayBottom("shape_group_hud", new ShapeGroupHUD());
         SPELL_BOOK_HUD = OverlayRegistry.registerOverlayBottom("spell_book_hud", new SpellBookHUD());
     }
@@ -167,9 +180,9 @@ public final class ClientInit {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
-            if (item instanceof IAffinityItem) {
+            if (item instanceof IAffinityItem || item instanceof ISpellItem) {
                 for (IAffinity affinity : api.getAffinityRegistry()) {
-                    if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
+                    if (!IAffinity.NONE.equals(affinity.getRegistryName()) || item instanceof ISpellItem) {
                         ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
@@ -178,6 +191,9 @@ public final class ClientInit {
                 for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
                     ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
+            }
+            if (item instanceof SpellBookItem) {
+                ForgeModelBakery.addSpecialModel(new ResourceLocation(itemId.getNamespace(), "item/" + itemId.getPath() + "_handheld"));
             }
         }
     }
@@ -195,15 +211,15 @@ public final class ClientInit {
             }
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), ($, model) -> new SpellItemModel(model));
-        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookModel(model));
+        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), ($, model) -> new AltarCoreModel(model));
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(WintersGraspModel.LAYER_LOCATION, WintersGraspModel::createBodyLayer);
+        event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
         event.registerLayerDefinition(NatureScytheModel.LAYER_LOCATION, NatureScytheModel::createBodyLayer);
         event.registerLayerDefinition(ThrownRockModel.LAYER_LOCATION, ThrownRockModel::createBodyLayer);
-        event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
+        event.registerLayerDefinition(WintersGraspModel.LAYER_LOCATION, WintersGraspModel::createBodyLayer);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -265,5 +281,37 @@ public final class ClientInit {
         if (delta == 0) return;
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellBookNextSpellPacket(delta > 0));
         event.setCanceled(true);
+    }
+
+    /**
+     * Adapted from ItemInHandRenderer#renderArmWithItem
+     */
+    private static void renderHand(RenderHandEvent event) {
+        Player p = ClientHelper.getLocalPlayer();
+        if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
+        ItemStack itemStack = event.getItemStack();
+        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty())) return;
+        float swing = event.getSwingProgress();
+        float swingSqrt = Mth.sqrt(swing);
+        boolean isRightHand = (event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite()) != HumanoidArm.LEFT;
+        int armMultiplier = isRightHand ? 1 : -1;
+        PoseStack stack = event.getPoseStack();
+        stack.pushPose();
+        RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
+        stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2F))) + -0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * 45));
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * Mth.sin((float) (swing * swing * Math.PI)) * -20));
+        stack.translate(-armMultiplier, 3.6, 3.5);
+        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * 120));
+        stack.mulPose(Vector3f.XP.rotationDegrees(200));
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * -135));
+        stack.translate(armMultiplier * 5.6, 0, 0);
+        if (isRightHand) {
+            ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderRightHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
+        } else {
+            ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderLeftHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
+        }
+        stack.popPose();
     }
 }
