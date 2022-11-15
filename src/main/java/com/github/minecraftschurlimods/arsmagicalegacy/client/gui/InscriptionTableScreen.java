@@ -98,7 +98,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
             Skill skill = skillRegistry.get(spellPart);
             if (skill == null) return false;
-            return StringUtils.containsIgnoreCase(skill.getDisplayName().getString(), value);
+            return StringUtils.containsIgnoreCase(skill.getDisplayName(registryAccess).getString(), value);
         };
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
