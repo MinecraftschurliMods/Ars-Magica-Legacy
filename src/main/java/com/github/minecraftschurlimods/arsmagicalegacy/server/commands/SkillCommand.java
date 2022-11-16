@@ -229,7 +229,7 @@ public class SkillCommand {
     }
 
     private static CompletableFuture<Suggestions> suggestSkills(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream().map(Skill::getId), builder);
+        return SharedSuggestionProvider.suggestResource(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream().map(skill -> skill.getId(context.getSource().registryAccess())), builder);
     }
 
     private static Component createSkillListComponent(Stream<Skill> stream, RegistryAccess registryAccess) {
