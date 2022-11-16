@@ -14,6 +14,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
@@ -32,16 +33,14 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
 class AMEnglishLanguageProvider extends AMLanguageProvider {
-    private final AbilityProvider abilities;
-
-    AMEnglishLanguageProvider(DataGenerator generator, AbilityProvider abilities) {
+    AMEnglishLanguageProvider(DataGenerator generator) {
         super(generator, "en_us");
-        this.abilities = abilities;
     }
 
     @Override
@@ -109,6 +108,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.IRON_INLAY);
         blockIdTranslation(AMBlocks.REDSTONE_INLAY);
         blockIdTranslation(AMBlocks.GOLD_INLAY);
+        fluidIdTranslation(AMFluids.LIQUID_ESSENCE_TYPE, true);
         for (RegistryObject<Affinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
@@ -494,6 +494,19 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void blockIdTranslation(RegistryObject<? extends Block> block) {
         addBlock(block, idToTranslation(block.getId().getPath()));
+    }
+
+    /**
+     * Adds a block translation that matches the block id.
+     *
+     * @param fluid The block to generate the translation for.
+     */
+    private void fluidIdTranslation(RegistryObject<? extends FluidType> fluid, boolean hasBucket) {
+        ResourceLocation id = fluid.getId();
+        add("fluid_type." + id.getNamespace() + "." + id.getPath(), idToTranslation(id.getPath()));
+        if (hasBucket) {
+            add("item." + id.getNamespace() + "." + id.getPath() + "_bucket", idToTranslation(id.getPath()) + " Bucket");
+        }
     }
 
     /**
