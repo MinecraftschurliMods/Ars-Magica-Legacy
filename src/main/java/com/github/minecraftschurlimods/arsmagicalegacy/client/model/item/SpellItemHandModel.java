@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -50,10 +51,10 @@ public class SpellItemHandModel extends SimpleBakedModel {
     @Override
     public BakedModel applyTransform(ItemTransforms.TransformType transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         if (transformType.firstPerson()) {
-            poseStack.translate(transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ? 0.5f : 0, 0.75f, 0);
+            poseStack.translate(applyLeftHandTransform ? 0.05f : -0.05f, 0.6f, 0);
         }
         if (transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
-            poseStack.translate(0.25f, 0.5f, 0.5f);
+            poseStack.translate(0f, 0.25f, 0.1f);
         }
         poseStack.scale(0.5f, 0.5f, 0);
         return this;

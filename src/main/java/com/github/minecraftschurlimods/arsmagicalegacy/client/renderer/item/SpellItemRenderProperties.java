@@ -32,7 +32,11 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
         }
         if (!pStack.is(AMItems.SPELL.get())) return;
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
-        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).applyTransform(pTransformType, pPoseStack, false);
+        // Pops off the transformation applied by ItemRenderer before calling this, thanks to XFactHD#5288 from the Forge Discord for the fix!
+        pPoseStack.popPose();
+        pPoseStack.pushPose();
+        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).applyTransform(pTransformType, pPoseStack, pTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND);
+        pPoseStack.translate(-0.5, -0.5, -0.5);
         if (model instanceof SpellItemHandModel spellItemHandModel) {
             model = spellItemHandModel.originalModel;
         }

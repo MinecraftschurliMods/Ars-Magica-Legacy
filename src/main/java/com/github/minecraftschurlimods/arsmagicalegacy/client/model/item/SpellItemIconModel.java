@@ -66,4 +66,9 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
     public List<RenderType> getRenderTypes(ItemStack itemStack, boolean fabulous) {
         return Collections.singletonList(fabulous ? SPELL_ICON_FAB : SPELL_ICON);
     }
+
+    @Override
+    public List<BakedModel> getRenderPasses(ItemStack itemStack, boolean fabulous) {
+        return List.of(this);
+    }
 }
