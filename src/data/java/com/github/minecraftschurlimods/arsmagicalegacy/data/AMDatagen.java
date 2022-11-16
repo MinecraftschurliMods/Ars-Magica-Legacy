@@ -41,10 +41,10 @@ public class AMDatagen {
         generator.addProvider(evt.includeServer(), new AMSpellTransformationProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMRitualProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeServer(), new AMWorldgenProvider(generator, existingFileHelper));
-        generator.addProvider(true, new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         generator.addProvider(evt.includeClient(), new AMBlockStateProvider(generator, existingFileHelper));
         generator.addProvider(evt.includeClient(), new AMItemModelProvider(generator, existingFileHelper));
-        generator.addProvider(evt.includeClient(), lang);
+        generator.addProvider(true, new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         generator.addProvider(evt.includeClient(), new AMSoundDefinitionsProvider(generator, existingFileHelper));
+        generator.addProvider(evt.includeClient(), lang);
     }
 }
