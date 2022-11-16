@@ -8,6 +8,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -29,7 +30,6 @@ import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import java.util.OptionalInt;
 
 public class AMWorldgenProvider extends WorldgenProvider {
-
     AMWorldgenProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, existingFileHelper, ArsMagicaAPI.MOD_ID);
     }
@@ -79,5 +79,6 @@ public class AMWorldgenProvider extends WorldgenProvider {
         bm("witchwood_tree", new ForgeBiomeModifiers.AddFeaturesBiomeModifier(and(bt(BiomeTags.IS_OVERWORLD), bt(Tags.Biomes.IS_SPOOKY)), HolderSet.direct(pf("trees_witchwood")), GenerationStep.Decoration.VEGETAL_DECORATION));
         bm("liquid_essence_lake", new ForgeBiomeModifiers.AddFeaturesBiomeModifier(bt(BiomeTags.IS_OVERWORLD), HolderSet.direct(pf("liquid_essence_lake")), GenerationStep.Decoration.LAKES));
         bm("dryad", ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(and(bt(BiomeTags.IS_OVERWORLD), bt(BiomeTags.IS_FOREST)), new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25)));
+        bm("mana_creeper", ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(and(bt(BiomeTags.IS_OVERWORLD), not(b(Biomes.DEEP_DARK), bt(Tags.Biomes.IS_MUSHROOM))), new MobSpawnSettings.SpawnerData(AMEntities.MANA_CREEPER.get(), 10, 4, 4)));
     }
 }
