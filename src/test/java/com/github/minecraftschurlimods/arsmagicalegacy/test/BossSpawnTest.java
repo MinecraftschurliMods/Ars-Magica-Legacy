@@ -86,7 +86,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "water_guardian_spawn_test", timeoutTicks = 20, required = false)
+    @GameTest(template = "water_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO water biome
     public static void testWaterGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -97,13 +97,12 @@ public class BossSpawnTest {
             player.drop(new ItemStack(Items.WATER_BUCKET), false);
         });
         helper.runAfterDelay(10, () -> {
-            //TODO water biome
-            //helper.assertEntityPresent(AMEntities.WATER_GUARDIAN.get());
+            helper.assertEntityPresent(AMEntities.WATER_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
 
-    @GameTest(template = "fire_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "fire_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO nether
     public static void testFireGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -113,8 +112,7 @@ public class BossSpawnTest {
             player.drop(ArsMagicaAPI.get().getAffinityHelper().getEssenceForAffinity(Affinity.WATER), false);
         });
         helper.runAfterDelay(10, () -> {
-            //TODO nether
-            //helper.assertEntityPresent(AMEntities.FIRE_GUARDIAN.get());
+            helper.assertEntityPresent(AMEntities.FIRE_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
@@ -136,7 +134,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "air_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "air_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO y > 127
     public static void testAirGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -146,13 +144,12 @@ public class BossSpawnTest {
             player.drop(new ItemStack(AMItems.TARMA_ROOT.get()), false);
         });
         helper.runAfterDelay(10, () -> {
-            //TODO y > 127
-            //helper.assertEntityPresent(AMEntities.AIR_GUARDIAN.get());
+            helper.assertEntityPresent(AMEntities.AIR_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
 
-    @GameTest(template = "ice_guardian_spawn_test", timeoutTicks = 20, required = false)
+    @GameTest(template = "ice_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO cold biome
     public static void testIceGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -164,8 +161,7 @@ public class BossSpawnTest {
             helper.setBlock(new BlockPos(1, 4, 1), Blocks.CARVED_PUMPKIN);
         });
         helper.runAfterDelay(10, () -> {
-            //TODO cold biome
-            //helper.assertEntityPresent(AMEntities.ICE_GUARDIAN.get());
+            helper.assertEntityPresent(AMEntities.ICE_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
@@ -208,7 +204,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20, attempts = 2)
     public static void testArcaneGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -221,7 +217,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "ender_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "ender_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO end
     public static void testEnderGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -231,8 +227,7 @@ public class BossSpawnTest {
             player.drop(new ItemStack(Items.ENDER_EYE), false);
         });
         helper.runAfterDelay(10, () -> {
-            //TODO end
-            //helper.assertEntityPresent(AMEntities.ENDER_GUARDIAN.get());
+            helper.assertEntityPresent(AMEntities.ENDER_GUARDIAN.get());
             cleanup(helper, player);
         });
     }
