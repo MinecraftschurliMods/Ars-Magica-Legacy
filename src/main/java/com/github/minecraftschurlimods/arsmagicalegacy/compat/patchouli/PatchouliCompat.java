@@ -63,60 +63,47 @@ public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation LIFE_GUARDIAN_SPAWN_RITUAL      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "life_guardian_spawn_ritual");
     public static final ResourceLocation ARCANE_GUARDIAN_SPAWN_RITUAL    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_guardian_spawn_ritual");
     public static final ResourceLocation ENDER_GUARDIAN_SPAWN_RITUAL     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_guardian_spawn_ritual");
-
     private static final String[][] CRAFTING_ALTAR_STRUCTURE = new String[][]{
             {" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
             {" BMB ", " 6 6 ", "     ", " 5 5 ", " BMB "},
             {" BMBI", "     ", "     ", "     ", " BMB "},
             {" BMB ", "     ", "     ", "     ", " BMBL"},
             {"BBBBB", "BBBBB", "BB0BB", "BBBBB", "BBBBB"}};
-
     private static final String[][] PILLARS_STRUCTURE = new String[][]{
             {"T   T", "     ", "  U  ", "     ", "T   T"},
             {"P   P", "     ", "  M  ", "     ", "P   P"},
             {"P   P", " CCC ", " C0C ", " CCC ", "P   P"}};
-
     private static final String[][] OBELISK_CHALK_STRUCTURE = new String[][]{
             {"   ", " U ", "   "},
             {"   ", " M ", "   "},
             {"CCC", "C0C", "CCC"}};
-
     private static final String[][] CELESTIAL_PRISM_CHALK_STRUCTURE = new String[][]{
             {"   ", " P ", "   "},
             {"CCC", "C0C", "CCC"}};
-
     private static final String[][] BLACK_AUREM_CHALK_STRUCTURE = new String[][]{
             {"   ", " B ", "   "},
             {"CCC", "C0C", "CCC"}};
-
     private static final String[][] INLAY_RING = new String[][]{
             {"1N2", "E0E", "3N4"}};
-
     private static final String[][] FIRE_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"1N2", "E0E", "3N4"},
             {"OOO", "OOO", "OOO"}};
-
     private static final String[][] EARTH_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"  T  ", " 1N2 ", "TE0ET", " 3N4 ", "  T  "},
             {"AAAAA", "AOOOA", "AOCOA", "AOOOA", "AAAAA"}};
-
     private static final String[][] LIGHTNING_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"   ", " R ", "   "},
             {"   ", " I ", "   "},
             {"1N2", "E0E", "3N4"}};
-
     private static final String[][] LIFE_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"   C   ", " WWWWW ", " W   W ", "CW 0 WC", " W   W ", " WWWWW ", "   C   "}};
-
     private static final String[][] ARCANE_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"B B", "   ", "   ", "   "},
             {"B B", "   ", "   ", "   "},
             {"BLB", "1N2", "E0E", "3N4"}};
-
     private static final String[][] ENDER_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"  F  ", " 1N2 ", "FE0EF", " 3N4 ", "  F  "},
             {"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}};
-
     private static final String SPELL_PART_TEMPLATE = "{\"components\": [{\"type\": \"patchouli:custom\",\"class\": \"com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.SpellPartPage\",\"part\": \"#part\"}]}";
 
     public static BiPredicate<Level, BlockPos> getMultiblockMatcher(ResourceLocation location) {

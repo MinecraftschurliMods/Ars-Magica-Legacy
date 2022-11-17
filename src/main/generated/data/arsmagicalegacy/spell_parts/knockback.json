@@ -1,10 +1,10 @@
 {
   "affinities": {
-    "arsmagicalegacy:air": 0.01,
-    "arsmagicalegacy:earth": 0.01,
-    "arsmagicalegacy:water": 0.01
+    "arsmagicalegacy:air": 0.002,
+    "arsmagicalegacy:earth": 0.002,
+    "arsmagicalegacy:water": 0.002
   },
-  "manaCost": 40.0,
+  "manaCost": 80.0,
   "reagents": [],
   "recipe": [
     {

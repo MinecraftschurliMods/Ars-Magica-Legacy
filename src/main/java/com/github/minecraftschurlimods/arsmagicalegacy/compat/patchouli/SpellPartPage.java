@@ -21,6 +21,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -34,7 +35,6 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
 public class SpellPartPage implements ICustomComponent {
-
     private String part;
     private transient int x, y;
     private transient ISpellPart _part;
@@ -57,13 +57,14 @@ public class SpellPartPage implements ICustomComponent {
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
         RenderSystem.enableBlend();
         ResourceLocation registryName = this._part.getId();
-        Skill skill = Minecraft.getInstance().level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(registryName);
-        TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId());
+        RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
+        Skill skill = registryAccess.registryOrThrow(Skill.REGISTRY_KEY).get(registryName);
+        TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId(registryAccess));
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
         GuiComponent.blit(poseStack, cx - 2, cy - 2, context.getGui().getBlitOffset(), 20, 20, sprite);
         if (context.isAreaHovered(mouseX, mouseY, cx - 2, cy - 2, 20, 20)) {
-            context.setHoverTooltipComponents(List.of(skill.getDisplayName(), skill.getDescription()));
+            context.setHoverTooltipComponents(List.of(skill.getDisplayName(registryAccess), skill.getDescription(registryAccess)));
         }
         renderModifiers(poseStack, context, x, y, mouseX, mouseY, modifiers);
         RenderSystem.disableBlend();
@@ -130,6 +131,7 @@ public class SpellPartPage implements ICustomComponent {
         int startX = 0;
         int yOffset = -6;
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
+        RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
         Registry<Skill> skillRegistry = ClientHelper.getRegistry(Skill.REGISTRY_KEY);
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
@@ -144,12 +146,11 @@ public class SpellPartPage implements ICustomComponent {
             Screen.blit(stack, posX + startX, posY + yOffset, context.getGui().getBlitOffset(), 16, 16, SkillIconAtlas.instance().getSprite(registryName));
             RenderSystem.disableBlend();
             if (context.isAreaHovered(mouseX, mouseY, posX + startX, posY + yOffset, 16, 16)) {
-                context.setHoverTooltipComponents(List.of(skill.getDisplayName(), skill.getDescription()));
+                context.setHoverTooltipComponents(List.of(skill.getDisplayName(registryAccess), skill.getDescription(registryAccess)));
             }
             startX += 16;
         }
     }
-
 
     private void renderRecipe(PoseStack poseStack, IComponentRenderContext context, int cx, int cy, int mousex, int mousey) {
         if (this._part == null) return;
@@ -170,7 +171,7 @@ public class SpellPartPage implements ICustomComponent {
             RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, context.getGui().getBlitOffset(), 0x0000DD, 0xDD00DD, 2f);
             if (i < recipe.size()) {
                 poseStack.pushPose();
-                poseStack.translate(x - (int)x, y - (int)y, 0);
+                poseStack.translate(x - (int) x, y - (int) y, 0);
                 renderCraftingComponent(poseStack, context, recipe.get(i), (int) x, (int) y, mousex, mousey);
                 poseStack.popPose();
             }

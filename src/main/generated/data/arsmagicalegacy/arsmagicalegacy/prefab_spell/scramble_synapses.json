@@ -1,20 +1,14 @@
 {
-  "icon": "arsmagicalegacy:lighting-royal-3",
+  "icon": "arsmagicalegacy:slice_orange_3",
   "name": {
-    "text": "Scramble Synapses"
+    "translate": "prefab_spell.arsmagicalegacy.scramble_synapses.name"
   },
   "spell": {
     "data": {},
     "shape_groups": [
       [
         "arsmagicalegacy:projectile",
-        "arsmagicalegacy:aoe",
-        "arsmagicalegacy:velocity",
-        "arsmagicalegacy:range",
-        "arsmagicalegacy:range",
-        "arsmagicalegacy:range",
-        "arsmagicalegacy:range",
-        "arsmagicalegacy:range"
+        "arsmagicalegacy:velocity"
       ]
     ],
     "spell_stack": [

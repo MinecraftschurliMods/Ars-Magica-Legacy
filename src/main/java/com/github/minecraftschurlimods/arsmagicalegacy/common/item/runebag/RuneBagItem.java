@@ -12,9 +12,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
@@ -54,7 +54,7 @@ public class RuneBagItem extends Item {
         @NotNull
         @Override
         public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, lazy);
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazy);
         }
     }
 }

@@ -149,8 +149,10 @@ public final class Config {
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.DoubleValue MANA_BASE;
         public final ForgeConfigSpec.DoubleValue MANA_MULTIPLIER;
+        public final ForgeConfigSpec.DoubleValue MANA_REGEN_MULTIPLIER;
         public final ForgeConfigSpec.DoubleValue BURNOUT_BASE;
         public final ForgeConfigSpec.DoubleValue BURNOUT_MULTIPLIER;
+        public final ForgeConfigSpec.DoubleValue BURNOUT_REGEN_MULTIPLIER;
         public final ForgeConfigSpec.DoubleValue LEVELING_BASE;
         public final ForgeConfigSpec.DoubleValue LEVELING_MULTIPLIER;
         public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
@@ -184,36 +186,46 @@ public final class Config {
                     .comment("The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "mana.base")
                     .worldRestart()
-                    .defineInRange("base", 100, 0., 10000);
+                    .defineInRange("base", 200., 0, 1000000);
             MANA_MULTIPLIER = builder
                     .comment("The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "mana.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 10, 0., 10000);
+                    .defineInRange("multiplier", 25., 0, 1000000);
+            MANA_REGEN_MULTIPLIER = builder
+                    .comment("The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
+                    .translation(TranslationConstants.CONFIG + "mana.regen_multiplier")
+                    .worldRestart()
+                    .defineInRange("regen_multiplier", 0.001, 0, 1000000);
             builder.pop();
             builder.push("burnout");
             BURNOUT_BASE = builder
-                    .comment("The base value for burnout calculation. Mana is calculated as base + multiplier * (level - 1).")
+                    .comment("The base value for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.base")
                     .worldRestart()
-                    .defineInRange("base", 100, 0., 10000);
+                    .defineInRange("base", 200., 0, 1000000);
             BURNOUT_MULTIPLIER = builder
-                    .comment("The multiplier for burnout calculation. Mana is calculated as base + multiplier * (level - 1).")
+                    .comment("The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 10, 0., 10000);
+                    .defineInRange("multiplier", 25., 0, 1000000);
+            BURNOUT_REGEN_MULTIPLIER = builder
+                    .comment("The multiplier for burnout regeneration. Burnout regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
+                    .translation(TranslationConstants.CONFIG + "burnout.regen_multiplier")
+                    .worldRestart()
+                    .defineInRange("regen_multiplier", 0.001, 0, 1000000);
             builder.pop();
             builder.push("leveling");
             LEVELING_BASE = builder
                     .comment("The base value for leveling calculation. XP cost is calculated as multiplier * base ^ level.")
                     .translation(TranslationConstants.CONFIG + "leveling.base")
                     .worldRestart()
-                    .defineInRange("base", 1.2, 0., 10000);
+                    .defineInRange("base", 1.2, 0, 10000);
             LEVELING_MULTIPLIER = builder
                     .comment("The multiplier for leveling calculation. XP cost is calculated as multiplier * base ^ level.")
                     .translation(TranslationConstants.CONFIG + "leveling._base")
                     .worldRestart()
-                    .defineInRange("multiplier", 2.4, 0., 10000);
+                    .defineInRange("multiplier", 2.4, 0, 10000);
             EXTRA_BLUE_SKILL_POINTS = builder
                     .comment("The extra blue skill points a player gets on level 1.")
                     .translation(TranslationConstants.CONFIG + "leveling.extra_blue_skill_points")
@@ -223,7 +235,7 @@ public final class Config {
             DAMAGE = builder
                     .comment("Damage of damage-based components, in half hearts.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.damage")
-                    .defineInRange("damage", 6.0, 1, Short.MAX_VALUE);
+                    .defineInRange("damage", 4.0, 1, Short.MAX_VALUE);
             DURATION = builder
                     .comment("Duration of effect-based components, in ticks.")
                     .translation(TranslationConstants.CONFIG + "spell_parts.duration")
@@ -238,7 +250,7 @@ public final class Config {
             DRYAD_BONEMEAL_CHANCE = builder
                     .comment("The chance of bonemeal being applied.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_chance")
-                    .defineInRange("bonemeal_chance", 0.01, 0.0, 1.0);
+                    .defineInRange("bonemeal_chance", 0.01, 0, 1);
             DRYAD_BONEMEAL_RADIUS = builder
                     .comment("The radius of bonemeal application.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
@@ -246,7 +258,7 @@ public final class Config {
             DRYAD_KILL_COOLDOWN = builder
                     .comment("The time in seconds between killing dryads before the counter is reset.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
-                    .defineInRange("kill_cooldown", 60L, 0L, 36000L);
+                    .defineInRange("kill_cooldown", 60L, 0, 36000);
             DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
                     .comment("The number of dryads killed before a nature guardian spawns.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kills_to_nature_guardian_spawn")

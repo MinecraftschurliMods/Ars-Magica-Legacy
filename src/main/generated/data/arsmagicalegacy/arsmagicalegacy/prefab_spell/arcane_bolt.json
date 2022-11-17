@@ -1,7 +1,7 @@
 {
-  "icon": "arsmagicalegacy:air-burst-magenta-3",
+  "icon": "arsmagicalegacy:beam_magenta_3",
   "name": {
-    "text": "Arcane Bolt"
+    "translate": "prefab_spell.arsmagicalegacy.arcane_bolt.name"
   },
   "spell": {
     "data": {},

@@ -124,7 +124,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             }
             pMatrixStack.pushPose();
             pMatrixStack.translate(-posX, -posY, 0);
-            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX+posX, pMouseY+posY, getFont());
+            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX + posX, pMouseY + posY, getFont());
             pMatrixStack.popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);

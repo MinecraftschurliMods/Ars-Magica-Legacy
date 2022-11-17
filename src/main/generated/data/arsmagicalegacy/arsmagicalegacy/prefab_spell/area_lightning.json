@@ -1,7 +1,7 @@
 {
-  "icon": "arsmagicalegacy:lighting-sky-3",
+  "icon": "arsmagicalegacy:rip_water_3",
   "name": {
-    "text": "Area Lightning"
+    "translate": "prefab_spell.arsmagicalegacy.area_lightning.name"
   },
   "spell": {
     "data": {},

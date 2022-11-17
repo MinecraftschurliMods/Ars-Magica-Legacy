@@ -20,7 +20,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPac
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,6 +32,7 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
@@ -54,6 +54,7 @@ public final class ArsMagicaLegacy {
         }
         INSTANCE = this;
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
+        GeckoLib.initialize();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         AMRegistries.init(bus);
         EventHandler.register(bus);
@@ -82,7 +83,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(SpellIconSelectPacket.ID, SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.ID, BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.ID, OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(UpdateStepHeightPacket.ID, UpdateStepHeightPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SkillHelper.SkillSyncPacket.ID, SkillHelper.SkillSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(AffinityHelper.AffinitySyncPacket.ID, AffinityHelper.AffinitySyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);

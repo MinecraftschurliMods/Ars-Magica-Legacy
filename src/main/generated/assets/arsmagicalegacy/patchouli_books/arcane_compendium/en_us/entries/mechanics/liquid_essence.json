@@ -1,0 +1,21 @@
+{
+  "category": "arsmagicalegacy:mechanics",
+  "icon": "arsmagicalegacy:liquid_essence_bucket",
+  "name": "item.arsmagicalegacy.arcane_compendium.mechanics.liquid_essence.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.liquid_essence.page0.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:liquid_essence_bucket",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.liquid_essence.page1.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:arcane_compendium",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.liquid_essence.page2.text"
+    }
+  ]
+}

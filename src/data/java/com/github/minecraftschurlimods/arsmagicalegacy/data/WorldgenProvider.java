@@ -42,6 +42,7 @@ import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.holdersets.AndHolderSet;
+import net.minecraftforge.registries.holdersets.NotHolderSet;
 import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,9 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- *
- */
 public abstract class WorldgenProvider implements DataProvider {
     private final String namespace;
     private final Map<ResourceLocation, ConfiguredFeature<?, ?>> cfs = new HashMap<>();
@@ -137,23 +135,39 @@ public abstract class WorldgenProvider implements DataProvider {
         return registryAccess.registryOrThrow(Registry.BIOME_REGISTRY).getOrCreateTag(tag);
     }
 
+    protected HolderSet<Biome> b(ResourceKey<Biome> tag) {
+        return HolderSet.direct(getHolderOrThrow(Registry.BIOME_REGISTRY, tag.location()));
+    }
+
     protected abstract void generateConfiguredFeatures();
 
     protected abstract void generatePlacedFeatures();
 
     protected abstract void generateBiomeModifiers();
 
+    @SafeVarargs
     protected static HolderSet<Biome> and(HolderSet<Biome>... holders) {
         return new AndHolderSet<>(Arrays.asList(holders));
     }
 
+    @SafeVarargs
     protected static HolderSet<Biome> or(HolderSet<Biome>... holders) {
         return new OrHolderSet<>(Arrays.asList(holders));
     }
 
+    @SafeVarargs
+    protected final HolderSet<Biome> not(HolderSet<Biome>... holders) {
+        return new NotHolderSet<>(registryOrThrow(Registry.BIOME_REGISTRY), and(holders));
+    }
+
     @NotNull
     private <T> Holder<T> getHolderOrThrow(ResourceKey<Registry<T>> registryKey, ResourceLocation location) {
-        return registryAccess.registryOrThrow(registryKey).getOrCreateHolderOrThrow(ResourceKey.create(registryKey, location));
+        return registryOrThrow(registryKey).getOrCreateHolderOrThrow(ResourceKey.create(registryKey, location));
+    }
+
+    @NotNull
+    private <T> Registry<T> registryOrThrow(ResourceKey<Registry<T>> registryKey) {
+        return registryAccess.registryOrThrow(registryKey);
     }
 
     /**

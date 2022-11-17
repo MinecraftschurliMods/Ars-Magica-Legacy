@@ -2,7 +2,7 @@
   "affinities": {
     "arsmagicalegacy:earth": 0.001
   },
-  "manaCost": 10.0,
+  "manaCost": 5.0,
   "reagents": [],
   "recipe": [
     {

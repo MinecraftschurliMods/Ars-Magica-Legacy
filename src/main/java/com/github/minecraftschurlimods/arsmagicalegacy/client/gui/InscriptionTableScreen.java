@@ -69,7 +69,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         imageWidth = 220;
         imageHeight = 252;
         nameBar = new EditBox(font, 0, 0, 0, 0, NAME_LABEL);
-        pMenu.getSpellName().ifPresent(nameBar::setValue);
+        pMenu.getSpellName().ifPresent(pText -> nameBar.setValue(pText.getString()));
         pMenu.getSpellRecipe().ifPresent(this::setFromRecipe);
     }
 
@@ -80,7 +80,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void onSlotChangedInt() {
-        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        menu.sendDataToServer(Component.literal(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
         if (menu.getSlot(0).getItem().getItem() instanceof ISpellItem) {
             menu.getSpellRecipe().ifPresent(this::setFromRecipe);
         }
@@ -98,7 +98,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             if (StringUtil.isNullOrEmpty(value) || value.equals(SEARCH_LABEL.getString())) return true;
             Skill skill = skillRegistry.get(spellPart);
             if (skill == null) return false;
-            return StringUtils.containsIgnoreCase(skill.getDisplayName().getString(), value);
+            return StringUtils.containsIgnoreCase(skill.getDisplayName(registryAccess).getString(), value);
         };
         Predicate<ResourceLocation> knowsFilter = spellPart -> {
             assert Minecraft.getInstance().player != null;
@@ -122,7 +122,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         };
         nameBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 93 + topPos, 141, 12, 64, nameBar, font, NAME_LABEL));
         menu.getSpellName().ifPresent(name -> {
-            nameBar.setValue(name);
+            nameBar.setValue(name.getString());
             nameBar.setTextColor(0xffffff);
         });
         if (nameBar.getValue().equals(NAME_LABEL.getString())) {
@@ -257,7 +257,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public void onClose() {
-        menu.sendDataToServer(nameBar.getValue(), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        menu.sendDataToServer(Component.literal(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
         super.onClose();
     }
 

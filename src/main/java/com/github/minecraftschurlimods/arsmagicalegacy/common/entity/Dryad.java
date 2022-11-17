@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class Dryad extends PathfinderMob {
     private int timer = Config.SERVER.DRYAD_BONEMEAL_TIMER.get();
+
     public Dryad(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
     }

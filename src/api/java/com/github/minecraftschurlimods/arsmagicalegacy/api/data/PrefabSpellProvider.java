@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
@@ -13,31 +12,36 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.data.LanguageProvider;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class PrefabSpellProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
     private final String namespace;
+    @Nullable
+    private final LanguageProvider languageProvider;
     private final Map<ResourceLocation, PrefabSpell> data = new HashMap<>();
     private final JsonCodecProvider<PrefabSpell> provider;
 
     public PrefabSpellProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        this(namespace, generator, existingFileHelper, null);
+    }
+
+    public PrefabSpellProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, @Nullable LanguageProvider languageProvider) {
         this.namespace = namespace;
-        this.generator = generator;
+        this.languageProvider = languageProvider;
         this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), PrefabSpell.REGISTRY_KEY, data);
     }
 
-    protected abstract void createPrefabSpells();
+    protected abstract void createPrefabSpells(Consumer<PrefabSpellBuilder> consumer);
 
     @Override
     public void run(CachedOutput pCache) throws IOException {
-        createPrefabSpells();
+        createPrefabSpells(builder -> data.put(builder.getId(), builder.build()));
         provider.run(pCache);
     }
 
@@ -50,12 +54,12 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * Adds a new prefab spell.
      *
      * @param id    The id of the prefab spell.
-     * @param name  The name of the prefab spell.
+     * @param name  The name component of the prefab spell.
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
-    public void addPrefabSpell(String id, Component name, ResourceLocation icon, ISpell spell) {
-        new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName(name).build();
+    public PrefabSpellBuilder addPrefabSpell(String id, Component name, ResourceLocation icon, ISpell spell) {
+        return new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName(name);
     }
 
     /**
@@ -66,45 +70,14 @@ public abstract class PrefabSpellProvider implements DataProvider {
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
-    public void addPrefabSpell(String id, String name, ResourceLocation icon, ISpell spell) {
-        new PrefabSpellBuilder(new ResourceLocation(this.namespace, id)).withSpell(spell).withIcon(icon).withName(name).build();
+    public PrefabSpellBuilder addPrefabSpell(String id, String name, ResourceLocation icon, ISpell spell) {
+        return addPrefabSpell(id, makeNameComponent(id, name), icon, spell);
     }
 
-    public class PrefabSpellBuilder {
-        private final ResourceLocation id;
-        private ISpell           spell;
-        private Component        name;
-        private ResourceLocation icon;
-
-        public PrefabSpellBuilder(ResourceLocation id) {
-            this.id = id;
-        }
-
-        public PrefabSpellBuilder withSpell(ISpell spell) {
-            this.spell = spell;
-            return this;
-        }
-
-        public PrefabSpellBuilder withName(String name) {
-            return withName(Component.nullToEmpty(name));
-        }
-
-        public PrefabSpellBuilder withName(Component name) {
-            this.name = name;
-            return this;
-        }
-
-        public PrefabSpellBuilder withIcon(ResourceLocation icon) {
-            this.icon = icon;
-            return this;
-        }
-
-        public void build() {
-            JsonObject json = new JsonObject();
-            json.add("name", Component.Serializer.toJsonTree(name));
-            json.addProperty("icon", icon.toString());
-            json.add("spell", ISpell.CODEC.encodeStart(JsonOps.INSTANCE, spell).getOrThrow(false, LOGGER::warn));
-            data.put(id, new PrefabSpell(name, spell, icon));
-        }
+    private Component makeNameComponent(String id, String name) {
+        if (languageProvider == null) return Component.nullToEmpty(name);
+        String key = "prefab_spell." + namespace + "." + id.replace('/', '.') + ".name";
+        languageProvider.add(key, name);
+        return Component.translatable(key);
     }
 }

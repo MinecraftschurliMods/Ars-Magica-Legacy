@@ -4,8 +4,10 @@
     "A": {
       "item": "arsmagicalegacy:arcane_ash"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "E": {
+      "type": "forge:partial_nbt",
+      "item": "arsmagicalegacy:affinity_essence",
+      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
     },
     "I": {
       "tag": "minecraft:leaves"
@@ -22,10 +24,11 @@
   },
   "pattern": [
     "AIA",
-    "JDK",
+    "JEK",
     "ALA"
   ],
   "result": {
+    "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
   }

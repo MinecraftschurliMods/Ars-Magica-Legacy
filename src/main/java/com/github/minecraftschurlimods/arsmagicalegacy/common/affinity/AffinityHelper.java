@@ -116,7 +116,18 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue) {
+        return player.isDeadOrDying() ? defaultValue : getAffinityDepth(player, affinity);
+    }
+
+    @Override
+    public double getAffinityDepthOrElse(Player player, Affinity affinity, double defaultValue) {
+        return getAffinityDepthOrElse(player, affinity.getId(), defaultValue);
+    }
+
+    @Override
     public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+        if (player.isDeadOrDying()) return;
         AffinityHolder holder = getAffinityHolder(player);
         holder.subtractFromAffinity(affinity, (float) holder.getAffinityDepth(affinity) - amount);
         if (player instanceof ServerPlayer sp) {
@@ -137,6 +148,7 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public void applyAffinityShift(Player player, Affinity affinity, float shift) {
         if (affinity.getId() == Affinity.NONE) return;
+        if (player.isDeadOrDying()) return;
         AffinityHolder storage = getAffinityHolder(player);
         float adjacentDecrement = shift * ADJACENT_FACTOR;
         float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
@@ -238,6 +250,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
         /**
          * Synchronizes the affinity holder.
+         *
          * @param affinityHolder The affinity holder to synchronize.
          */
         public void onSync(AffinityHolder affinityHolder) {

@@ -1,0 +1,18 @@
+{
+  "icon": "arsmagicalegacy:lightning_eerie_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.strong_lightning_bolt.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:lightning_damage",
+      "arsmagicalegacy:blindness"
+    ]
+  }
+}

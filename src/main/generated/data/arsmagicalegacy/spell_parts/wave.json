@@ -1,6 +1,6 @@
 {
   "affinities": {},
-  "manaCost": 3.0,
+  "manaCost": 2.5,
   "reagents": [],
   "recipe": [
     {
@@ -21,9 +21,9 @@
       "type": "arsmagicalegacy:etherium",
       "amount": 2500,
       "types": [
+        "LIGHT",
         "NEUTRAL",
-        "DARK",
-        "LIGHT"
+        "DARK"
       ]
     }
   ]

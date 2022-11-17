@@ -1,0 +1,18 @@
+{
+  "icon": "arsmagicalegacy:lightning_blue_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.strong_water_bolt.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:drowning_damage",
+      "arsmagicalegacy:watery_grave"
+    ]
+  }
+}

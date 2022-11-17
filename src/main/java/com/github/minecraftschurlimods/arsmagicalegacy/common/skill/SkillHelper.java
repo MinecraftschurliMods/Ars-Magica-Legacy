@@ -310,7 +310,7 @@ public final class SkillHelper implements ISkillHelper {
          */
         public synchronized void learnAll(RegistryAccess registryAccess) {
             for (Skill skill : registryAccess.registryOrThrow(Skill.REGISTRY_KEY)) {
-                skills.add(skill.getId());
+                skills.add(skill.getId(registryAccess));
             }
         }
 

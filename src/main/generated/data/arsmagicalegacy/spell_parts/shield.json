@@ -1,8 +1,8 @@
 {
   "affinities": {
-    "arsmagicalegacy:earth": 0.05
+    "arsmagicalegacy:earth": 0.001
   },
-  "manaCost": 80.0,
+  "manaCost": 50.0,
   "reagents": [],
   "recipe": [
     {

@@ -98,7 +98,7 @@ final class TickHandler {
         var manager = player.getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         var helper = api.getAffinityHelper();
         try {
-            if (!(boolean)CAP_PROVIDER_VALID.get(player)) return;
+            if (!(boolean) CAP_PROVIDER_VALID.get(player)) return;
         } catch (IllegalAccessException ignored) {
             return;
         }
@@ -123,15 +123,15 @@ final class TickHandler {
         }
         ability = manager.get(AMAbilities.SATURATION);
         if (ability != null && ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)), 0, false, false));
         }
         ability = manager.get(AMAbilities.REGENERATION);
         if (ability != null && ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())), 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)), 0, false, false));
         }
         ability = manager.get(AMAbilities.NIGHT_VISION);
         if (ability != null && ability.test(player)) {
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepth(player, ability.affinity())) + 200, 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, (int) (20 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)) + 200, 0, false, false));
         }
         ability = manager.get(AMAbilities.FROST_WALKER);
         if (ability != null && ability.test(player)) {
@@ -153,7 +153,7 @@ final class TickHandler {
             if (waterHealthReduction != null && lightHealthReduction != null) {
                 depth = Math.max(helper.getAffinityDepth(player, lightHealthReduction.affinity()), helper.getAffinityDepth(player, waterHealthReduction.affinity()));
             } else {
-                depth = helper.getAffinityDepth(player, Objects.requireNonNullElse(waterHealthReduction, lightHealthReduction).affinity());
+                depth = helper.getAffinityDepthOrElse(player, Objects.requireNonNullElse(waterHealthReduction, lightHealthReduction).affinity(), 0);
             }
             maxHealth.addPermanentModifier(new AttributeModifier(AbilityUUIDs.HEALTH_REDUCTION, "Health Reduction Ability", -depth * 4, AttributeModifier.Operation.ADDITION));
             if (player.getHealth() > player.getMaxHealth()) {

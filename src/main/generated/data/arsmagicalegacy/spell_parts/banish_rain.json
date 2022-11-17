@@ -1,8 +1,8 @@
 {
   "affinities": {
-    "arsmagicalegacy:water": 0.1
+    "arsmagicalegacy:water": 0.005
   },
-  "manaCost": 750.0,
+  "manaCost": 200.0,
   "reagents": [],
   "recipe": [
     {

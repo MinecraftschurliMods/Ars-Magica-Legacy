@@ -4,8 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,30 +34,16 @@ import java.util.List;
 
 public class Wave extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION         = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> INDEX            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> OWNER            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float>   GRAVITY          = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float>   RADIUS           = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float>   SPEED            = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<ISpell>  SPELL            = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL.get());
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ISpell> SPELL = SynchedEntityData.defineId(Wave.class, AMDataSerializers.SPELL.get());
 
-    /**
-     * Use {@link Wave#create(Level)} instead.
-     */
-    @Internal
-    public Wave(EntityType<? extends Wave> entityEntityType, Level level) {
-        super(entityEntityType, level);
-    }
-
-    /**
-     * Creates a new instance of this class in the given level. This is necessary, as otherwise the entity registration yells at us with some weird overloading error.
-     *
-     * @param level the level to create the new instance in
-     * @return a new instance of this class in the given level
-     */
-    public static Wave create(Level level) {
-        return new Wave(AMEntities.WAVE.get(), level);
+    public Wave(EntityType<? extends Wave> type, Level level) {
+        super(type, level);
     }
 
     @Override
@@ -101,6 +85,16 @@ public class Wave extends Entity implements ItemSupplier {
     }
 
     @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        return false;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public Packet<?> getAddEntityPacket() {
         Entity entity = getOwner();
         return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
@@ -116,7 +110,8 @@ public class Wave extends Entity implements ItemSupplier {
         for (int i = 0; i < 8; ++i) {
             level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5), getY() + (2d * random.nextDouble() - 1d) * 0.5, getRandomZ(0.5), (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
         }
-        if (!level.isClientSide() && tickCount % 10 == 0) {
+        if (level.isClientSide()) return;
+        if (tickCount % 10 == 0) {
             List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY() - getRadius(), getZ() - getRadius(), getX() + getRadius(), getY() + getRadius(), getZ() + getRadius()));
             for (Entity entity : list) {
                 if (entity == this) continue;
@@ -140,6 +135,11 @@ public class Wave extends Entity implements ItemSupplier {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
             ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
         }
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return ItemStack.EMPTY;
     }
 
     public boolean getTargetNonSolid() {
@@ -206,10 +206,5 @@ public class Wave extends Entity implements ItemSupplier {
 
     public void setSpell(ISpell spell) {
         entityData.set(SPELL, spell);
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return new ItemStack(AMItems.BLANK_RUNE.get());
     }
 }

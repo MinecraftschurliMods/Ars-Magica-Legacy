@@ -69,8 +69,8 @@ public final class ContingencyHelper implements IContingencyHelper {
     @Override
     public ResourceLocation getContingencyType(LivingEntity entity) {
         return entity.getCapability(CONTINGENCY)
-                     .map(contingency -> contingency.type)
-                     .orElse(ContingencyType.NONE);
+                .map(contingency -> contingency.type)
+                .orElse(ContingencyType.NONE);
     }
 
     public static class Contingency {
@@ -79,10 +79,9 @@ public final class ContingencyHelper implements IContingencyHelper {
                 ISpell.CODEC.fieldOf("spell").forGetter(o -> o.spell),
                 Codec.INT.fieldOf("index").forGetter(o -> o.index)
         ).apply(inst, Contingency::new));
-
         private ResourceLocation type;
-        private ISpell           spell;
-        private int              index;
+        private ISpell spell;
+        private int index;
 
         private Contingency(ResourceLocation type, ISpell spell, int index) {
             this.type = type;

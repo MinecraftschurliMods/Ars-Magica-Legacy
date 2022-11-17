@@ -1,8 +1,8 @@
 {
   "affinities": {
-    "arsmagicalegacy:arcane": 0.01
+    "arsmagicalegacy:arcane": 0.001
   },
-  "manaCost": 20.0,
+  "manaCost": 5.0,
   "reagents": [],
   "recipe": [
     {

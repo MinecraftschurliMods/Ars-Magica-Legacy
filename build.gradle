@@ -181,6 +181,13 @@ repositories {
             includeGroup 'vazkii.patchouli'
         }
     }
+    maven {
+        name = 'GeckoLib Maven'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
+        }
+    }
     /*maven {
         name = 'CurseMaven'
         url = "https://cursemaven.com"
@@ -218,10 +225,15 @@ dependencies {
     modAPI fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}:api")
     runtimeMod fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
+    // geckolib for animations
+    modAPI fg.deobf("software.bernie.geckolib:geckolib-forge-${project.mc_major_version}:${project.geckolib_version}")
+    runtimeMod fg.deobf("software.bernie.geckolib:geckolib-forge-${project.mc_major_version}:${project.geckolib_version}")
+
     // theoneprobe for integration
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
+/*
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
             println 'Using github packages'
@@ -229,6 +241,7 @@ dependencies {
         runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
         runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.1:${project.controlling_version}")
     }
+*/
 
     // add internal libraries
     include fg.deobf('com.github.minecraftschurlimods:simplenetlib:1.19-1.0-SNAPSHOT') {

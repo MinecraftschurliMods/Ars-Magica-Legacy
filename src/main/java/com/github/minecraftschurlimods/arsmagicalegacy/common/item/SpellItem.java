@@ -7,13 +7,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Either;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.apache.logging.log4j.LogManager;
@@ -96,12 +98,17 @@ public class SpellItem extends Item implements ISpellItem {
         }
         ISpell spell = ISpellItem.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
-        return ISpellItem.getSpellName(pStack).<Component>map(Component::literal).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
+        return ISpellItem.getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 
     @Override
     public int getUseDuration(ItemStack pStack) {
         return 72000;
+    }
+
+    @Override
+    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+        return false;
     }
 
     @Override
@@ -191,20 +198,24 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PREFAB_SPELLS_TAB) {
-            ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(IPrefabSpell::makeSpell).forEach(items::add);
+            ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY)
+                        .stream()
+                        .map(IPrefabSpell::makeSpell)
+                        .forEach(items::add);
         }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
         if (level.isClientSide()) return;
         ISpell spell = ISpellItem.getSpell(stack);
+        String name = LOGGER.isTraceEnabled() ? ISpellItem.getSpellName(stack).map(Component::getString).orElse("") : "";
         if (spell.isContinuous()) {
-            LOGGER.trace("{} starts casting continuous spell {}", entity, ISpellItem.getSpellName(stack));
+            LOGGER.trace("{} starts casting continuous spell {}", entity, name);
             entity.startUsingItem(hand);
         } else {
-            LOGGER.trace("{} is casting instantaneous spell {}", entity, ISpellItem.getSpellName(stack));
+            LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
-            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, ISpellItem.getSpellName(stack), result);
+            LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             SoundEvent sound = ISpellItem.getSpell(stack).primaryAffinity().getCastSound();
             if (sound != null) {
                 entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);

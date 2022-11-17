@@ -1,0 +1,21 @@
+{
+  "icon": "arsmagicalegacy:explosion_sky_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.debuff.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:nausea",
+      "arsmagicalegacy:slowness",
+      "arsmagicalegacy:astral_distortion",
+      "arsmagicalegacy:entangle",
+      "arsmagicalegacy:gravity_well"
+    ]
+  }
+}

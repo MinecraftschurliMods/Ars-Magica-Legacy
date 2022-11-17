@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
@@ -9,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.UpdateStepHeightPacket;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,7 +51,7 @@ final class AbilityHandler {
             var helper = api.getAffinityHelper();
             Ability ability = player.getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.NAUSEA);
             if (ability != null && ability.test(player)) {
-                player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int) (600 * helper.getAffinityDepth(player, ability.affinity()))));
+                player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int) (600 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0))));
             }
         }
     }
@@ -66,38 +64,38 @@ final class AbilityHandler {
         if (event.getSource().getEntity() instanceof Player player) {
             Ability ability = abilityRegistry.get(AMAbilities.FIRE_PUNCH);
             if (ability != null && ability.test(player) && !entity.fireImmune()) {
-                entity.setSecondsOnFire((int) (5 * helper.getAffinityDepth(player, ability.affinity())));
+                entity.setSecondsOnFire((int) (5 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)));
             }
             ability = abilityRegistry.get(AMAbilities.FROST_PUNCH);
             if (ability != null && ability.test(player) && entity.canFreeze()) {
-                entity.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), (int) (100 * helper.getAffinityDepth(player, ability.affinity()))));
+                entity.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), (int) (100 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0))));
             }
             ability = abilityRegistry.get(AMAbilities.SMITE);
             if (ability != null && ability.test(player) && entity.getMobType() == MobType.UNDEAD) {
-                event.setAmount((float) (event.getAmount() + helper.getAffinityDepth(player, ability.affinity()) * 4));
+                event.setAmount((float) (event.getAmount() + helper.getAffinityDepthOrElse(player, ability.affinity(), 0) * 4));
             }
         }
         if (entity instanceof Player player) {
             if (!api.getMagicHelper().knowsMagic(player)) return;
             Ability ability = abilityRegistry.get(AMAbilities.THORNS);
             if (ability != null && ability.test(player) && event.getSource().getEntity() != null) {
-                event.getSource().getEntity().hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepth(player, ability.affinity())));
+                event.getSource().getEntity().hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)));
             }
             ability = abilityRegistry.get(AMAbilities.ENDERMAN_THORNS);
             if (ability != null && ability.test(player) && event.getSource().getEntity() instanceof EnderMan enderMan) {
-                enderMan.hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepth(player, ability.affinity())));
+                enderMan.hurt(event.getSource(), (float) (event.getAmount() * helper.getAffinityDepthOrElse(player, ability.affinity(), 0)));
             }
             ability = abilityRegistry.get(AMAbilities.RESISTANCE);
             if (ability != null && ability.test(player)) {
-                event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
+                event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
             ability = abilityRegistry.get(AMAbilities.FIRE_RESISTANCE);
             if (ability != null && ability.test(player) && event.getSource().isFire()) {
-                event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
+                event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
             ability = abilityRegistry.get(AMAbilities.MAGIC_DAMAGE);
             if (ability != null && ability.test(player) && event.getSource().isMagic()) {
-                event.setAmount((float) (event.getAmount() * (1 + helper.getAffinityDepth(player, ability.affinity()) / 2)));
+                event.setAmount((float) (event.getAmount() * (1 + helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
         }
     }
@@ -112,7 +110,7 @@ final class AbilityHandler {
             var helper = api.getAffinityHelper();
             Ability ability = abilityRegistry.get(AMAbilities.JUMP_BOOST);
             if (ability != null && ability.test(player)) {
-                entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.5f * helper.getAffinityDepth(player, ability.affinity()), 0));
+                entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.5f * helper.getAffinityDepthOrElse(player, ability.affinity(), 0), 0));
             }
         }
     }
@@ -127,11 +125,11 @@ final class AbilityHandler {
             var helper = api.getAffinityHelper();
             Ability ability = abilityRegistry.get(AMAbilities.FEATHER_FALLING);
             if (ability != null && ability.test(player)) {
-                event.setDistance((float) (event.getDistance() * (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
+                event.setDistance((float) (event.getDistance() * (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
             ability = abilityRegistry.get(AMAbilities.FALL_DAMAGE);
             if (ability != null && ability.test(player)) {
-                event.setDistance((float) (event.getDistance() / (1 - helper.getAffinityDepth(player, ability.affinity()) / 2)));
+                event.setDistance((float) (event.getDistance() / (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
         }
     }
@@ -159,7 +157,7 @@ final class AbilityHandler {
             var api = ArsMagicaAPI.get();
             Ability ability = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.MANA_REDUCTION);
             if (ability != null && ability.test(player)) {
-                event.setBase(event.getBase() * (float) (1 - (api.getAffinityHelper().getAffinityDepth(player, ability.affinity())) * 0.5f));
+                event.setBase(event.getBase() * (float) (1 - (api.getAffinityHelper().getAffinityDepthOrElse(player, ability.affinity(), 0)) * 0.5f));
             }
         }
     }
@@ -180,38 +178,38 @@ final class AbilityHandler {
         Ability ability = abilityRegistry.get(AMAbilities.SWIM_SPEED);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(ForgeMod.SWIM_SPEED.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SWIM_SPEED, "Swim Speed Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                attributes.getInstance(ForgeMod.SWIM_SPEED.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SWIM_SPEED, "Swim Speed Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.HASTE);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HASTE, "Haste Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                attributes.getInstance(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.HASTE, "Haste Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.GRAVITY);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.GRAVITY, "Gravity Ability", helper.getAffinityDepth(player, affinity) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                attributes.getInstance(ForgeMod.ENTITY_GRAVITY.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.GRAVITY, "Gravity Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.5f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         }
         ability = abilityRegistry.get(AMAbilities.SLOWNESS);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepth(player, affinity) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SLOWNESS, "Slowness Ability", -(helper.getAffinityDepthOrElse(player, affinity, 0) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = abilityRegistry.get(AMAbilities.SPEED);
         if (ability != null && affinity == ability.affinity()) {
             if (ability.test(player)) {
-                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepth(player, affinity) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
+                attributes.getInstance(Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier(AbilityUUIDs.SPEED, "Speed Ability", (helper.getAffinityDepthOrElse(player, affinity, 0) - Objects.requireNonNullElse(ability.bounds().getMin(), 0d)) * 0.1f, AttributeModifier.Operation.ADDITION));
             }
         }
         ability = abilityRegistry.get(AMAbilities.STEP_ASSIST);
         if (ability != null && affinity == ability.affinity()) {
-            float stepHeight = ability.test(player) ? 1f : 0.6f;
-            player.maxUpStep = stepHeight;//TODO move to attribute modifier
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new UpdateStepHeightPacket(stepHeight), player);
+            if (ability.test(player)) {
+                attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).addPermanentModifier(new AttributeModifier(AbilityUUIDs.STEP_ASSIST, "Step Assist Ability", helper.getAffinityDepthOrElse(player, affinity, 0) * 0.4f, AttributeModifier.Operation.ADDITION));
+            }
         }
         ability = abilityRegistry.get(AMAbilities.POISON_RESISTANCE);
         if (ability != null && affinity == ability.affinity() && ability.test(player) && player.hasEffect(MobEffects.POISON)) {

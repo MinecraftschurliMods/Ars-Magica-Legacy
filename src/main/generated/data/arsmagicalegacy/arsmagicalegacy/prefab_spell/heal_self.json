@@ -1,7 +1,7 @@
 {
-  "icon": "arsmagicalegacy:protect-royal-3",
+  "icon": "arsmagicalegacy:heart_royal_3",
   "name": {
-    "text": "Heal Self"
+    "translate": "prefab_spell.arsmagicalegacy.heal_self.name"
   },
   "spell": {
     "data": {},

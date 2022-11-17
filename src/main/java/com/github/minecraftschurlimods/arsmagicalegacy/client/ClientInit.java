@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
@@ -16,39 +17,31 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ShapeGroupHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.SpellBookHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.XpHUD;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AffinityOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.AltarCoreModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SkillPointOverrideModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellBookModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.SpellItemModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AirGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ArcaneGuardianModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.block.AltarCoreModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibHeadModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.AMGeckolibModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.DryadModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EarthGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.EnderGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.FireGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.IceGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LifeGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.LightningGuardianModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WaterGuardianModel;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.AltarViewBER;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.BlackAuremBER;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellRuneBER;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AirGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ArcaneGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.NatureScytheModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.ThrownRockModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity.WintersGraspModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.AffinityOverrideModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SkillPointOverrideModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellItemModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.AltarViewBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.BlackAuremBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.SpellRuneBER;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.AMGeckolibRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.DryadRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EarthGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EmptyRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.EnderGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.FireGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.IceGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.LifeGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.LightningGuardianRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ManaCreeperRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureGuardianRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ProjectileRenderer;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WaterGuardianRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.NatureScytheRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WintersGraspRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
@@ -61,13 +54,23 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.Spe
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.betterhudlib.HUDManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
@@ -79,6 +82,7 @@ import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -112,6 +116,7 @@ public final class ClientInit {
         forgeBus.addListener(ClientInit::mouseScroll);
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
+        forgeBus.addListener(ClientInit::renderHand);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -147,7 +152,7 @@ public final class ClientInit {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
-            if (item instanceof IAffinityItem) {
+            if (item instanceof IAffinityItem || item instanceof ISpellItem) {
                 IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
                 for (Affinity affinity : affinities) {
                     if (!Affinity.NONE.equals(affinities.getKey(affinity))) {
@@ -159,6 +164,9 @@ public final class ClientInit {
                 for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
                     event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
                 }
+            }
+            if (item instanceof SpellBookItem) {
+                event.register(new ResourceLocation(itemId.getNamespace(), "item/" + itemId.getPath() + "_handheld"));
             }
         }
     }
@@ -176,41 +184,43 @@ public final class ClientInit {
             }
         }
         modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL.getId(), "inventory"), ($, model) -> new SpellItemModel(model));
-        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookModel(model));
+        modelRegistry.computeIfPresent(new ModelResourceLocation(AMItems.SPELL_BOOK.getId(), "inventory"), ($, model) -> new SpellBookItemModel(model));
         modelRegistry.computeIfPresent(BlockModelShaper.stateToModelLocation(AMBlocks.ALTAR_CORE.get().getStateDefinition().any().setValue(AltarCoreBlock.FORMED, true)), ($, model) -> new AltarCoreModel(model));
     }
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(AirGuardianModel.LAYER_LOCATION, AirGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(ArcaneGuardianModel.LAYER_LOCATION, ArcaneGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EarthGuardianModel.LAYER_LOCATION, EarthGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(EnderGuardianModel.LAYER_LOCATION, EnderGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(FireGuardianModel.LAYER_LOCATION, FireGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(IceGuardianModel.LAYER_LOCATION, IceGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(LifeGuardianModel.LAYER_LOCATION, LifeGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(LightningGuardianModel.LAYER_LOCATION, LightningGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(NatureGuardianModel.LAYER_LOCATION, NatureGuardianModel::createBodyLayer);
-        event.registerLayerDefinition(WaterGuardianModel.LAYER_LOCATION, WaterGuardianModel::createBodyLayer);
         event.registerLayerDefinition(DryadModel.LAYER_LOCATION, DryadModel::createBodyLayer);
+        event.registerLayerDefinition(NatureScytheModel.LAYER_LOCATION, NatureScytheModel::createBodyLayer);
+        event.registerLayerDefinition(ThrownRockModel.LAYER_LOCATION, ThrownRockModel::createBodyLayer);
+        event.registerLayerDefinition(WintersGraspModel.LAYER_LOCATION, WintersGraspModel::createBodyLayer);
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ProjectileRenderer::new);
+        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
-        event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), AirGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), ArcaneGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), EarthGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), EnderGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), FireGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), IceGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), LifeGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.LIGHTNING_GUARDIAN.get(), LightningGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), NatureGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), WaterGuardianRenderer::new);
-        event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
+        event.registerEntityRenderer(AMEntities.BLIZZARD.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.FIRE_RAIN.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("water_guardian")));
+        event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("fire_guardian")));
+        event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new EarthGuardianModel()));
+        event.registerEntityRenderer(AMEntities.AIR_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("air_guardian")));
+        event.registerEntityRenderer(AMEntities.ICE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new IceGuardianModel()));
+        event.registerEntityRenderer(AMEntities.LIGHTNING_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("lightning_guardian")));
+        event.registerEntityRenderer(AMEntities.NATURE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new NatureGuardianModel()));
+        event.registerEntityRenderer(AMEntities.LIFE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("life_guardian")));
+        event.registerEntityRenderer(AMEntities.ARCANE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("arcane_guardian")));
+        event.registerEntityRenderer(AMEntities.ENDER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("ender_guardian")));
+        event.registerEntityRenderer(AMEntities.WINTERS_GRASP.get(), WintersGraspRenderer::new);
+        event.registerEntityRenderer(AMEntities.NATURE_SCYTHE.get(), NatureScytheRenderer::new);
+        event.registerEntityRenderer(AMEntities.THROWN_ROCK.get(), ThrownRockRenderer::new);
+        event.registerEntityRenderer(AMEntities.SHOCKWAVE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.WHIRLWIND.get(), WhirlwindRenderer::new);
         event.registerEntityRenderer(AMEntities.DRYAD.get(), DryadRenderer::new);
+        event.registerEntityRenderer(AMEntities.MAGE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.MANA_CREEPER.get(), ManaCreeperRenderer::new);
+        event.registerEntityRenderer(AMEntities.MANA_VORTEX.get(), EmptyRenderer::new);
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
@@ -234,7 +244,7 @@ public final class ClientInit {
 
     private static void mouseScroll(InputEvent.MouseScrollingEvent event) {
         Player player = ClientHelper.getLocalPlayer();
-        if (player == null || !player.isCrouching()) return;
+        if (player == null || !player.isShiftKeyDown()) return;
         ItemStack item = player.getMainHandItem();
         if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) {
             item = player.getOffhandItem();
@@ -244,5 +254,37 @@ public final class ClientInit {
         if (delta == 0) return;
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellBookNextSpellPacket(delta > 0));
         event.setCanceled(true);
+    }
+
+    /**
+     * Adapted from ItemInHandRenderer#renderArmWithItem
+     */
+    private static void renderHand(RenderHandEvent event) {
+        Player p = ClientHelper.getLocalPlayer();
+        if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
+        ItemStack itemStack = event.getItemStack();
+        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty())) return;
+        float swing = event.getSwingProgress();
+        float swingSqrt = Mth.sqrt(swing);
+        boolean isRightHand = (event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite()) != HumanoidArm.LEFT;
+        int armMultiplier = isRightHand ? 1 : -1;
+        PoseStack stack = event.getPoseStack();
+        stack.pushPose();
+        RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
+        stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2F))) + -0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * 45));
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * Mth.sin((float) (swing * swing * Math.PI)) * -20));
+        stack.translate(-armMultiplier, 3.6, 3.5);
+        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * 120));
+        stack.mulPose(Vector3f.XP.rotationDegrees(200));
+        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * -135));
+        stack.translate(armMultiplier * 5.6, 0, 0);
+        if (isRightHand) {
+            ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderRightHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
+        } else {
+            ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderLeftHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
+        }
+        stack.popPose();
     }
 }

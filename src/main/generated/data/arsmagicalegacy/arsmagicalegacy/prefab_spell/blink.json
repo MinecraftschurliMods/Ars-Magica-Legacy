@@ -1,7 +1,7 @@
 {
-  "icon": "arsmagicalegacy:fog-magenta-3",
+  "icon": "arsmagicalegacy:whirlwind_magenta_3",
   "name": {
-    "text": "Blink"
+    "translate": "prefab_spell.arsmagicalegacy.blink.name"
   },
   "spell": {
     "data": {},

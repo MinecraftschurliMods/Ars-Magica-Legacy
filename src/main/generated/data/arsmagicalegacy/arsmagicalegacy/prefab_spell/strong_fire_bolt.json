@@ -1,0 +1,18 @@
+{
+  "icon": "arsmagicalegacy:lightning_orange_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.strong_fire_bolt.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:fire_damage",
+      "arsmagicalegacy:ignition"
+    ]
+  }
+}

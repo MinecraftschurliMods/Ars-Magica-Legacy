@@ -1,0 +1,315 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.water_guardian.base": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"orbs": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 180, 0]
+						},
+						"4.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				},
+				"rods": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 180, 0]
+						},
+						"4.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				},
+				"core3": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 240]
+						},
+						"4.0": {
+							"vector": [0, 0, 600]
+						}
+					}
+				},
+				"core1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"4.0": {
+							"vector": [360, 0, 0]
+						}
+					}
+				},
+				"core2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 120, 0]
+						},
+						"4.0": {
+							"vector": [0, 480, 0]
+						}
+					}
+				}
+			}
+		},
+		"animation.water_guardian.idle": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"northern_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [-5, 0, 0],
+							"easing": "linear"
+						},
+						"3.0": {
+							"vector": [5, 0, 0],
+							"easing": "linear"
+						},
+						"4.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						}
+					}
+				},
+				"eastern_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 5]
+						},
+						"3.0": {
+							"vector": [0, 0, -5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"southern_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [5, 0, 0]
+						},
+						"3.0": {
+							"vector": [-5, 0, 0]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"western_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, -5]
+						},
+						"3.0": {
+							"vector": [0, 0, 5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"north_eastern_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [-5, 0, 5]
+						},
+						"3.0": {
+							"vector": [5, 0, -5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"south_eastern_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [5, 0, 5]
+						},
+						"3.0": {
+							"vector": [-5, 0, -5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"south_western_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [5, 0, -5]
+						},
+						"3.0": {
+							"vector": [-5, 0, 5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"north_western_tentacle": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [-5, 0, -5]
+						},
+						"3.0": {
+							"vector": [5, 0, 5]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"animation.water_guardian.cast": {
+			"animation_length": 2,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"2.0": {
+							"vector": [0, 1440, 0]
+						}
+					}
+				},
+				"northern_tentacle": {
+					"rotation": {
+						"vector": [-60, 0, 0]
+					}
+				},
+				"eastern_tentacle": {
+					"rotation": {
+						"vector": [0, 0, 60]
+					}
+				},
+				"southern_tentacle": {
+					"rotation": {
+						"vector": [60, 0, 0]
+					}
+				},
+				"western_tentacle": {
+					"rotation": {
+						"vector": [0, 0, -60]
+					}
+				},
+				"north_eastern_tentacle": {
+					"rotation": {
+						"vector": [-60, 45, 0]
+					}
+				},
+				"south_eastern_tentacle": {
+					"rotation": {
+						"vector": [60, -45, 0]
+					}
+				},
+				"south_western_tentacle": {
+					"rotation": {
+						"vector": [60, 45, 0]
+					}
+				},
+				"north_western_tentacle": {
+					"rotation": {
+						"vector": [-60, -45, 0]
+					}
+				}
+			}
+		},
+		"animation.water_guardian.spin": {
+			"animation_length": 1,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 1440, 0]
+						}
+					}
+				},
+				"northern_tentacle": {
+					"rotation": {
+						"vector": [-60, 0, 0]
+					}
+				},
+				"eastern_tentacle": {
+					"rotation": {
+						"vector": [0, 0, 60]
+					}
+				},
+				"southern_tentacle": {
+					"rotation": {
+						"vector": [60, 0, 0]
+					}
+				},
+				"western_tentacle": {
+					"rotation": {
+						"vector": [0, 0, -60]
+					}
+				},
+				"north_eastern_tentacle": {
+					"rotation": {
+						"vector": [-60, 45, 0]
+					}
+				},
+				"south_eastern_tentacle": {
+					"rotation": {
+						"vector": [60, -45, 0]
+					}
+				},
+				"south_western_tentacle": {
+					"rotation": {
+						"vector": [60, 45, 0]
+					}
+				},
+				"north_western_tentacle": {
+					"rotation": {
+						"vector": [-60, -45, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

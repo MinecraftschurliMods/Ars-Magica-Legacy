@@ -1,0 +1,17 @@
+{
+  "icon": "arsmagicalegacy:beam_acid_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.earth_bolt.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:physical_damage"
+    ]
+  }
+}

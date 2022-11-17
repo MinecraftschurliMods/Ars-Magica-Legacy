@@ -8,26 +8,18 @@ import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -42,33 +34,6 @@ public final class AMUtil {
         Vec3 d = b.subtract(a).normalize();
         double p = d.dot(c);
         return p <= 0 ? a : p >= a.distanceTo(b) ? b : a.add(d.scale(p));
-    }
-
-    /**
-     * Searches for items at the given position. If all given predicates are each matched by one of those items, the entity is spawned according to the given spawner function.
-     *
-     * @param level      The level to perform this operation in.
-     * @param pos        The position to use for this operation.
-     * @param type       The entity type to spawn.
-     * @param items      A vararg list of item predicates that must be met. One item can match multiple predicates.
-     */
-    @SafeVarargs
-    public static <T extends Entity> void consumeItemsAndSpawnEntity(Level level, BlockPos pos, EntityType<T> type, Predicate<ItemStack>... items) {
-        Set<ItemEntity> set = new HashSet<>();
-        for (Predicate<ItemStack> predicate : items) {
-            List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1), e -> predicate.test(e.getItem()));
-            if (!entities.isEmpty()) {
-                set.add(entities.get(0));
-            } else return;
-        }
-        for (ItemEntity item : set) {
-            item.kill();
-        }
-        T entity = type.create(level);
-        if (entity != null) {
-            entity.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-            level.addFreshEntity(entity);
-        }
     }
 
     /**

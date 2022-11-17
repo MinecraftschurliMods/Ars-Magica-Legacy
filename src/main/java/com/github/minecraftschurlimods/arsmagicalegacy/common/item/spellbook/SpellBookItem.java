@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.SpellItemRenderProperties;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,9 +19,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -150,7 +150,7 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
         @NotNull
         @Override
         public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, lazy);
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazy);
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
@@ -43,8 +45,26 @@ public interface ISpellItem {
      * @param stack The stack to get the spell name for.
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */
-    static Optional<String> getSpellName(ItemStack stack) {
-        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty());
+    static Optional<Component> getSpellName(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY))
+                       .filter(s -> !s.isEmpty())
+                       .map(pJson -> {
+                           try {
+                               return Component.Serializer.fromJson(pJson);
+                           } catch (JsonParseException e) {
+                               return null;
+                           }
+                       });
+    }
+
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name component to set.
+     */
+    static void setSpellName(ItemStack stack, Component name) {
+        stack.getOrCreateTag().putString(SPELL_NAME_KEY, Component.Serializer.toJson(name));
     }
 
     /**
@@ -54,7 +74,7 @@ public interface ISpellItem {
      * @param name  The name to set.
      */
     static void setSpellName(ItemStack stack, String name) {
-        stack.getOrCreateTag().putString(SPELL_NAME_KEY, name);
+        setSpellName(stack, Component.nullToEmpty(name));
     }
 
     /**

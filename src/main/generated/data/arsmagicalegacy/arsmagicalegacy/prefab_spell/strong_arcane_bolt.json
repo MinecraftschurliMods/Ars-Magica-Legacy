@@ -1,0 +1,18 @@
+{
+  "icon": "arsmagicalegacy:lightning_magenta_3",
+  "name": {
+    "translate": "prefab_spell.arsmagicalegacy.strong_arcane_bolt.name"
+  },
+  "spell": {
+    "data": {},
+    "shape_groups": [
+      [
+        "arsmagicalegacy:projectile"
+      ]
+    ],
+    "spell_stack": [
+      "arsmagicalegacy:magic_damage",
+      "arsmagicalegacy:levitation"
+    ]
+  }
+}

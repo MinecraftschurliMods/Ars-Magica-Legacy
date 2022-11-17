@@ -29,6 +29,30 @@ public interface ISpellHelper {
     void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
 
     /**
+     * Performs a ray trace and returns the entity the given entity is currently looking at.
+     *
+     * @param entity     The entity to start the ray trace from.
+     * @param level      The level to perform the ray trace in.
+     * @param range      The range of the ray trace.
+     * @param clipFluids False if fluids should block the ray trace, true if fluids should be ignored.
+     * @return The entity the given entity is currently looking at, or null if no entity was found.
+     */
+    @Nullable
+    Entity getPointedEntity(Entity entity, Level level, double range, boolean clipFluids);
+
+    /**
+     * Performs a ray trace.
+     *
+     * @param entity         The entity to start the ray trace from.
+     * @param level          The level to perform the ray trace in.
+     * @param range          The range of the ray trace.
+     * @param entities       Whether to include entities. If false, only checks blocks.
+     * @param targetNonSolid False if non-solid blocks and fluids should block the ray trace, true if non-solid blocks and fluids should be ignored.
+     * @return A hit result, representing the ray trace.
+     */
+    HitResult trace(Entity entity, Level level, double range, boolean entities, boolean targetNonSolid);
+
+    /**
      * Get the stat value modified by the modifiers.
      *
      * @param baseValue The base value for the stat.
@@ -39,18 +63,6 @@ public interface ISpellHelper {
      * @return The modified value of the stat.
      */
     float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target);
-
-    /**
-     * Performs a ray trace.
-     *
-     * @param caster          The entity casting the spell.
-     * @param level           The level the spell is cast in.
-     * @param range           The range of the ray trace.
-     * @param includeEntities Whether to include entities. If false, only checks blocks.
-     * @param targetNonSolid  Whether non-solid blocks and fluids should be included or not.
-     * @return A HitResult, representing the ray trace.
-     */
-    HitResult trace(Entity caster, Level level, double range, boolean includeEntities, boolean targetNonSolid);
 
     /**
      * Casts the spell.
