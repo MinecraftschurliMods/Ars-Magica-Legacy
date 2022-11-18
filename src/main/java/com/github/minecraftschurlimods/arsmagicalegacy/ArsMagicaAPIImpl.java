@@ -190,6 +190,13 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
+    public void openSpellRecipeGui(Level level, Player player, ItemStack stack) {
+        if (level.isClientSide()) {
+            ClientHelper.openSpellRecipeGui(stack);
+        }
+    }
+
+    @Override
     public ISpell makeSpell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
         return new Spell(shapeGroups, spellStack, additionalData);
     }

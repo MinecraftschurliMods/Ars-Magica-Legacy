@@ -115,6 +115,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
+        itemIdTranslation(AMItems.SPELL_RECIPE);
         itemIdTranslation(AMItems.SPELL);
         itemIdTranslation(AMItems.SPELL_BOOK);
         itemIdTranslation(AMItems.MANA_CAKE);
@@ -374,7 +375,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_INVALID_DESCRIPTION, "Something is wrong with this spell, please check the log for warnings or errors!");
         add(TranslationConstants.SPELL_MANA_COST, "Mana cost: %d");
         add(TranslationConstants.SPELL_REAGENTS, "Reagents:");
-        add(TranslationConstants.SPELL_RECIPE_TITLE, "Spell Recipe:");
+        add(TranslationConstants.SPELL_RECIPE_INVALID, "[Invalid Spell Recipe]");
+        add(TranslationConstants.SPELL_RECIPE_INVALID_DESCRIPTION, "Something is wrong with this spell recipe, please check the log for warnings or errors!");
+        add(TranslationConstants.SPELL_RECIPE_TITLE, "Spell Recipe");
+        add(TranslationConstants.SPELL_RECIPE_UNKNOWN, "Unknown Item");
+        add(TranslationConstants.SPELL_RECIPE_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");

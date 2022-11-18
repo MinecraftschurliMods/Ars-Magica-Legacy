@@ -97,6 +97,7 @@ class AMItemModelProvider extends ItemModelProvider {
         affinityItem(AFFINITY_ESSENCE, true);
         affinityItem(AFFINITY_TOME, true);
         itemGenerated(SPELL_PARCHMENT);
+        withExistingParent(SPELL_RECIPE, mcLoc("item/written_book"));
         affinityItem(SPELL, false);
         spellBookItem(SPELL_BOOK);
         itemGenerated(MANA_CAKE);

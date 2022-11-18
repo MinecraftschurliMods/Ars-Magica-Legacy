@@ -197,6 +197,15 @@ public interface ArsMagicaAPI {
     void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
 
     /**
+     * Opens the spell recipe gui for the given player.
+     *
+     * @param level  The level to open the gui in.
+     * @param player The player to open the gui for.
+     * @param stack  The spell recipe item stack to open the gui for.
+     */
+    void openSpellRecipeGui(Level level, Player player, ItemStack stack);
+
+    /**
      * Make an instance of ISpell.
      *
      * @param shapeGroups    The shape groups to use.

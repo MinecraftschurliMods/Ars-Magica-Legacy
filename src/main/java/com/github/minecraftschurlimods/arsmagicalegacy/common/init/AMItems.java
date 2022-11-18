@@ -10,6 +10,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MagitechGogglesItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ManaMartiniItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellRecipeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
@@ -109,6 +110,7 @@ public interface AMItems {
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE             = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
+    RegistryObject<SpellRecipeItem>              SPELL_RECIPE                 = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     RegistryObject<SpellItem>                    SPELL                        = ITEMS.register("spell", SpellItem::new);
     RegistryObject<SpellBookItem>                SPELL_BOOK                   = ITEMS.register("spell_book", SpellBookItem::new);
     RegistryObject<Item>                         MANA_CAKE                    = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));

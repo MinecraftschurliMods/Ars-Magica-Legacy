@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellCustomizationScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellRecipeScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -40,6 +41,13 @@ public final class ClientHelper {
      */
     public static void openSpellCustomizationGui(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellCustomizationScreen(stack));
+    }
+
+    /**
+     * Opens a spell customization GUI on the client.
+     */
+    public static void openSpellRecipeGui(ItemStack stack) {
+        Minecraft.getInstance().setScreen(new SpellRecipeScreen(stack));
     }
 
     /**
