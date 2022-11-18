@@ -47,7 +47,7 @@ public final class ClientHelper {
      * Opens a spell customization GUI on the client.
      */
     public static void openSpellRecipeGui(ItemStack stack) {
-        Minecraft.getInstance().setScreen(new SpellRecipeScreen(stack));
+        Minecraft.getInstance().setScreen(new SpellRecipeScreen(stack, true, 0, null));
     }
 
     /**

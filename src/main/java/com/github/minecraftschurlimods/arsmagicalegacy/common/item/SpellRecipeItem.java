@@ -62,16 +62,17 @@ public class SpellRecipeItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         var api = ArsMagicaAPI.get();
-        ItemStack heldItem = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
         if (!api.getMagicHelper().knowsMagic(player)) {
             player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_RECIPE_UNKNOWN_DESCRIPTION), true);
-            return InteractionResultHolder.fail(heldItem);
+            return InteractionResultHolder.fail(stack);
         }
-        if (!heldItem.hasTag()) {
+        ISpell spell = api.getSpellHelper().getSpell(stack);
+        if (spell == null || !spell.isValid() || spell.isEmpty()) {
             player.displayClientMessage(new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INVALID_DESCRIPTION), true);
-            return InteractionResultHolder.fail(heldItem);
+            return InteractionResultHolder.fail(stack);
         }
-        api.openSpellRecipeGui(level, player, heldItem);
+        api.openSpellRecipeGui(level, player, stack);
         return super.use(level, player, hand);
     }
 }
