@@ -15,7 +15,7 @@ import net.minecraft.world.level.material.Material;
 
 public class WakebloomBlock extends FlowerBlock {
     public WakebloomBlock() {
-        super(AMMobEffects.BURNOUT_REDUCTION.get(), 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
+        super(MobEffects.REGENERATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
     }
 
     @Override
@@ -26,5 +26,10 @@ public class WakebloomBlock extends FlowerBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).getBlock() == Blocks.WATER;
+    }
+
+    @Override
+    public MobEffect getSuspiciousStewEffect() {
+        return AMMobEffects.BURNOUT_REDUCTION.get();
     }
 }
