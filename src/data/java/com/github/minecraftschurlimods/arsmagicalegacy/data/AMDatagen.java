@@ -42,12 +42,12 @@ public class AMDatagen {
             generator.addProvider(new AMSpellTransformationProvider(generator));
             generator.addProvider(new AMRitualProvider(generator));
         }
+        generator.addProvider(new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         if (evt.includeClient()) {
             generator.addProvider(new AMBlockStateProvider(generator, existingFileHelper));
             generator.addProvider(new AMItemModelProvider(generator, existingFileHelper));
             generator.addProvider(lang);
             generator.addProvider(new AMSoundDefinitionsProvider(generator, existingFileHelper));
         }
-        generator.addProvider(new AMPatchouliBookProvider(generator, ArsMagicaAPI.MOD_ID, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
     }
 }

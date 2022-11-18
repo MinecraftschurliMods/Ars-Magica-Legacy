@@ -30,8 +30,8 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
     private final AMAbilityProvider abilities;
     private final LanguageProvider lang;
 
-    AMPatchouliBookProvider(DataGenerator generator, String modid, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
-        super(generator, modid, includeClient, includeServer);
+    AMPatchouliBookProvider(DataGenerator generator, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
+        super(generator, ArsMagicaAPI.MOD_ID, includeClient, includeServer);
         this.abilities = abilities;
         this.lang = lang;
     }
