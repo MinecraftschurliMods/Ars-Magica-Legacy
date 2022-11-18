@@ -4,11 +4,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -19,8 +18,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -45,24 +42,15 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     /**
      * @param name   The spell name.
-     * @param author The spell author.
      * @param spell  The spell.
      * @return A written book with the spell written onto it.
      */
-    public static ItemStack makeRecipe(Component name, String author, ISpell spell) {
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        SpellItem.saveSpell(book, spell);
-        CompoundTag tag = book.getOrCreateTag();
-        tag.putString(WrittenBookItem.TAG_TITLE, name.getString());
-        tag.putString(WrittenBookItem.TAG_AUTHOR, author);
-        ListTag pages = new ListTag();
-        makeSpellRecipePages(pages, spell);
-        tag.put(WrittenBookItem.TAG_PAGES, pages);
-        return book;
-    }
-
-    private static void makeSpellRecipePages(ListTag pages, ISpell spell) {
-        // TODO
+    public static ItemStack makeRecipe(Component name, ISpell spell) {
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        ItemStack stack = new ItemStack(AMItems.SPELL_RECIPE.get());
+        helper.setSpell(stack, spell);
+        helper.setSpellName(stack, name);
+        return stack;
     }
 
     @Override
@@ -100,16 +88,11 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     /**
-     * @param player The player creating the spell.
      * @param stack  The written book item stack.
      * @return The given item stack with the spell written onto it, or just the given item stack if there is no spell laid out yet.
      */
-    public Optional<ItemStack> saveRecipe(Player player, ItemStack stack) {
-        return Optional.ofNullable(getSpellRecipe())
-                .map(spell -> {
-                    if (spell.isEmpty()) return stack;
-                    return makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE)), player.getDisplayName().getString(), spell);
-                });
+    public Optional<ItemStack> saveRecipe(ItemStack stack) {
+        return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE)), spell));
     }
 
     @Override

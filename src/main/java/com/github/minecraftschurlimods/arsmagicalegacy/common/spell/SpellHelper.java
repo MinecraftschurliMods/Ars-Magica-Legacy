@@ -1,5 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
@@ -9,9 +11,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.DataResult;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +43,9 @@ import java.util.Optional;
 
 public final class SpellHelper implements ISpellHelper {
     private static final Lazy<SpellHelper> INSTANCE = Lazy.concurrentOf(SpellHelper::new);
+    private static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
+    private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
+    private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
 
     private SpellHelper() {
     }
@@ -45,6 +55,48 @@ public final class SpellHelper implements ISpellHelper {
      */
     public static SpellHelper instance() {
         return INSTANCE.get();
+    }
+
+    @Override
+    public ISpell getSpell(ItemStack stack) {
+        if (stack.isEmpty()) return ISpell.EMPTY;
+        return ISpell.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTagElement(SPELL_KEY)).map(Pair::getFirst).get().mapRight(DataResult.PartialResult::message).ifRight(ArsMagicaLegacy.LOGGER::warn).left().orElse(ISpell.EMPTY);
+    }
+
+    @Override
+    public void setSpell(ItemStack stack, ISpell spell) {
+        stack.getOrCreateTag().put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(ArsMagicaLegacy.LOGGER::warn).left().orElse(new CompoundTag()));
+    }
+
+    @Override
+    public Optional<Component> getSpellName(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_NAME_KEY)).filter(s -> !s.isEmpty()).map(s -> {
+            try {
+                return Component.Serializer.fromJson(s);
+            } catch (Exception e) {
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public void setSpellName(ItemStack stack, String name) {
+        setSpellName(stack, new TextComponent(name));
+    }
+
+    @Override
+    public void setSpellName(ItemStack stack, Component name) {
+        stack.getOrCreateTag().putString(SPELL_NAME_KEY, Component.Serializer.toJson(name));
+    }
+
+    @Override
+    public Optional<ResourceLocation> getSpellIcon(ItemStack stack) {
+        return Optional.of(stack.getOrCreateTag().getString(SPELL_ICON_KEY)).filter(s -> !s.isEmpty()).map(ResourceLocation::tryParse);
+    }
+
+    @Override
+    public void setSpellIcon(ItemStack stack, ResourceLocation icon) {
+        stack.getOrCreateTag().putString(SPELL_ICON_KEY, icon.toString());
     }
 
     @Override
@@ -177,8 +229,9 @@ public final class SpellHelper implements ISpellHelper {
 
     @Override
     public void nextShapeGroup(ItemStack stack) {
-        ISpell spell = SpellItem.getSpell(stack);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        ISpell spell = helper.getSpell(stack);
         spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
-        SpellItem.saveSpell(stack, spell);
+        helper.setSpell(stack, spell);
     }
 }

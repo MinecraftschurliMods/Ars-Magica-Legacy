@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -28,9 +27,10 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-            icon = SpellItem.getSpellIcon(stack);
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            icon = helper.getSpellIcon(stack);
             if (!stack.isEmpty()) {
-                affinity = SpellItem.getSpell(stack).primaryAffinity();
+                affinity = helper.getSpell(stack).primaryAffinity();
             }
             return SpellItemModel.this;
         }

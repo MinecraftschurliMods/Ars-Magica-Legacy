@@ -47,14 +47,16 @@ public class SpellRecipeItem extends Item {
 
     @Override
     public Component getName(ItemStack pStack) {
+        var api = ArsMagicaAPI.get();
         if (EffectiveSide.get().isClient()) {
             Player player = ClientHelper.getLocalPlayer();
-            if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player))
+            if (player == null || !api.getMagicHelper().knowsMagic(player))
                 return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_UNKNOWN);
         }
-        ISpell spell = getSpell(pStack);
+        var helper = api.getSpellHelper();
+        ISpell spell = helper.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INVALID);
-        return SpellItem.getSpellName(pStack).orElse(super.getName(pStack));
+        return helper.getSpellName(pStack).orElse(super.getName(pStack));
     }
 
     @Override

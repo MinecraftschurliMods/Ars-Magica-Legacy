@@ -13,7 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntiti
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
@@ -24,11 +24,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -341,9 +341,10 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     }
 
     private ItemStack makeSpell() {
+        var helper = ArsMagicaAPI.get().getSpellHelper();
         ItemStack stack = new ItemStack(AMItems.SPELL.get());
-        SpellItem.saveSpell(stack, SpellItem.getSpell(getBook()));
-        SpellItem.setSpellName(stack, getBook().getOrCreateTag().getString(WrittenBookItem.TAG_TITLE));
+        helper.setSpell(stack, helper.getSpell(getBook()));
+        helper.setSpellName(stack, helper.getSpellName(getBook()).orElse(new TextComponent(TranslationConstants.SPELL_UNNAMED)));
         return stack;
     }
 
@@ -426,7 +427,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (recipe == null || recipe.isEmpty()) {
-            Optional.of(SpellItem.getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            Optional.of(ArsMagicaAPI.get().getSpellHelper().getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
                 requiredPower = this.recipe.size();
             }, () -> {
