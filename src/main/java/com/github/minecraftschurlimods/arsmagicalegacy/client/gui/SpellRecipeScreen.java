@@ -6,8 +6,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Either;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
@@ -16,12 +21,12 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -37,7 +42,6 @@ public class SpellRecipeScreen extends Screen {
     private final BlockPos lecternPos;
     private int currentPage = -1;
     private int cachedPage = -1;
-    private Component pageMsg = Component.nullToEmpty("");
     private PageButton forwardButton;
     private PageButton backButton;
 
@@ -47,13 +51,19 @@ public class SpellRecipeScreen extends Screen {
         this.startPage = startPage;
         this.lecternPos = lecternPos;
         ISpell spell = ArsMagicaAPI.get().getSpellHelper().getSpell(stack);
-        for (ShapeGroup shapeGroup : Objects.requireNonNull(spell).shapeGroups()) {
+        List<ShapeGroup> shapeGroups = Objects.requireNonNull(spell).shapeGroups();
+        for (int i = 0; i < shapeGroups.size(); i++) {
+            ShapeGroup shapeGroup = shapeGroups.get(i);
             if (!shapeGroup.isEmpty()) {
-                pages.add(new ShapeGroupPage(shapeGroup));
+                pages.add(new ShapeGroupPage(shapeGroup.parts(), i + 1));
             }
         }
-        pages.add(new SpellGrammarPage(spell.parts()));
+        pages.add(new SpellGrammarPage(spell.spellStack().parts()));
         pages.add(new IngredientsPage(spell.recipe()));
+        List<Either<Ingredient, ItemStack>> reagents = spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer()));
+        if (!reagents.isEmpty()) {
+            pages.add(new ReagentsPage(reagents));
+        }
         pages.add(new AffinityPage(spell.affinityShifts()));
     }
 
@@ -64,12 +74,13 @@ public class SpellRecipeScreen extends Screen {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         RenderSystem.setShaderTexture(0, BookViewScreen.BOOK_LOCATION);
         blit(pPoseStack, (width - 192) / 2, 2, 0, 0, 192, 192);
-        pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 32);
+        Font font = Minecraft.getInstance().font;
+        String title = pages.get(currentPage).getTitle();
+        font.draw(pPoseStack, title, (width - 192) / 2f + 93 - font.width(title) / 2f, 18, 0);
+        pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 18);
         if (cachedPage != currentPage) {
-            pageMsg = new TranslatableComponent("book.pageIndicator", currentPage + 1, Math.max(pages.size(), 1));
             cachedPage = currentPage;
         }
-        font.draw(pPoseStack, pageMsg, (float) ((width - 192) / 2 - font.width(pageMsg) + 192 - 44), 18, 0);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
 
@@ -135,19 +146,31 @@ public class SpellRecipeScreen extends Screen {
         return true;
     }
 
-    private static abstract sealed class SpellRecipePage permits ShapeGroupPage, SpellGrammarPage, IngredientsPage, AffinityPage {
+    private static abstract class SpellRecipePage {
+        protected abstract String getTitle();
+
         protected abstract void render(PoseStack poseStack, int x, int y);
     }
 
     private static final class ShapeGroupPage extends SpellRecipePage {
-        private final ShapeGroup shapeGroup;
+        private final List<ISpellPart> spellParts;
+        private final int index;
 
-        private ShapeGroupPage(ShapeGroup shapeGroup) {
-            this.shapeGroup = shapeGroup;
+        private ShapeGroupPage(List<ISpellPart> spellParts, int index) {
+            this.spellParts = spellParts;
+            this.index = index;
+        }
+
+        @Override
+        protected String getTitle() {
+            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SHAPE_GROUP, index).getString();
         }
 
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
+            for (int i = 0; i < spellParts.size(); i++) {
+                RenderUtil.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+            }
         }
     }
 
@@ -159,7 +182,15 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
+        protected String getTitle() {
+            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR).getString();
+        }
+
+        @Override
         protected void render(PoseStack poseStack, int x, int y) {
+            for (int i = 0; i < spellParts.size(); i++) {
+                RenderUtil.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+            }
         }
     }
 
@@ -168,6 +199,28 @@ public class SpellRecipeScreen extends Screen {
 
         private IngredientsPage(List<ISpellIngredient> ingredients) {
             this.ingredients = ingredients;
+        }
+
+        @Override
+        protected String getTitle() {
+            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INGREDIENTS).getString();
+        }
+
+        @Override
+        protected void render(PoseStack poseStack, int x, int y) {
+        }
+    }
+
+    private static final class ReagentsPage extends SpellRecipePage {
+        private final List<Either<Ingredient, ItemStack>> reagents;
+
+        private ReagentsPage(List<Either<Ingredient, ItemStack>> reagents) {
+            this.reagents = reagents;
+        }
+
+        @Override
+        protected String getTitle() {
+            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_REAGENTS).getString();
         }
 
         @Override
@@ -180,6 +233,11 @@ public class SpellRecipeScreen extends Screen {
 
         private AffinityPage(Map<IAffinity, Double> affinities) {
             this.affinities = affinities;
+        }
+
+        @Override
+        protected String getTitle() {
+            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_AFFINITIES).getString();
         }
 
         @Override
