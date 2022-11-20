@@ -1,5 +1,5 @@
 # Dependencies
-The new version now uses GeckoLib 3.0.37 (or newer) as a dependency for entity rendering!
+The new version now uses GeckoLib 3.1.37 (or newer) as a dependency for entity rendering!
 
 # Additions
 - All bosses now have proper attacks and animations! The compendium entries have been updated accordingly, and issues with the textures have been fixed.
