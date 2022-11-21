@@ -1,14 +1,8 @@
 {
   "icon": "arsmagicalegacy:lightning_eerie_3",
   "name": {
-<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_lightning_bolt.json
     "translate": "prefab_spell.arsmagicalegacy.strong_lightning_bolt.name"
   },
-========
-    "translate": "prefab_spell.arsmagicalegacy.lightning_bolt.name"
-  },
-  "icon": "arsmagicalegacy:beam_eerie_3",
->>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/lightning_bolt.json
   "spell": {
     "data": {},
     "shape_groups": [
@@ -17,14 +11,8 @@
       ]
     ],
     "spell_stack": [
-<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_lightning_bolt.json
       "arsmagicalegacy:lightning_damage",
       "arsmagicalegacy:blindness"
     ]
-========
-      "arsmagicalegacy:lightning_damage"
-    ],
-    "data": {}
->>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/lightning_bolt.json
   }
 }

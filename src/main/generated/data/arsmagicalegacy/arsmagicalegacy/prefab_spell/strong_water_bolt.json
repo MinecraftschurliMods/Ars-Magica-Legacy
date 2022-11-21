@@ -1,14 +1,8 @@
 {
   "icon": "arsmagicalegacy:lightning_blue_3",
   "name": {
-<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_water_bolt.json
     "translate": "prefab_spell.arsmagicalegacy.strong_water_bolt.name"
   },
-========
-    "translate": "prefab_spell.arsmagicalegacy.water_bolt.name"
-  },
-  "icon": "arsmagicalegacy:beam_blue_3",
->>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/water_bolt.json
   "spell": {
     "data": {},
     "shape_groups": [
@@ -17,14 +11,8 @@
       ]
     ],
     "spell_stack": [
-<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_water_bolt.json
       "arsmagicalegacy:drowning_damage",
       "arsmagicalegacy:watery_grave"
     ]
-========
-      "arsmagicalegacy:drowning_damage"
-    ],
-    "data": {}
->>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/water_bolt.json
   }
 }
