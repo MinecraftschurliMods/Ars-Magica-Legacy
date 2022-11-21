@@ -208,7 +208,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20, attempts = 2)
     public static void testArcaneGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();

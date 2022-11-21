@@ -19,8 +19,8 @@
     },
     {
       "types": [
-        "LIGHT",
         "NEUTRAL",
+        "LIGHT",
         "DARK"
       ],
       "amount": 2500,
