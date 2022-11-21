@@ -1,8 +1,14 @@
 {
   "icon": "arsmagicalegacy:lightning_orange_3",
   "name": {
+<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_fire_bolt.json
     "translate": "prefab_spell.arsmagicalegacy.strong_fire_bolt.name"
   },
+========
+    "translate": "prefab_spell.arsmagicalegacy.fire_bolt.name"
+  },
+  "icon": "arsmagicalegacy:beam_orange_3",
+>>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/fire_bolt.json
   "spell": {
     "data": {},
     "shape_groups": [
@@ -11,8 +17,14 @@
       ]
     ],
     "spell_stack": [
+<<<<<<<< HEAD:src/main/generated/data/arsmagicalegacy/arsmagicalegacy/prefab_spell/strong_fire_bolt.json
       "arsmagicalegacy:fire_damage",
       "arsmagicalegacy:ignition"
     ]
+========
+      "arsmagicalegacy:fire_damage"
+    ],
+    "data": {}
+>>>>>>>> origin/version/1.18.x:src/main/generated/data/arsmagicalegacy/prefab_spells/fire_bolt.json
   }
 }

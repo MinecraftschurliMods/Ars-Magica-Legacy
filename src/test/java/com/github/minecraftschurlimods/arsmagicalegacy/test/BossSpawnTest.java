@@ -29,10 +29,10 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @PrefixGameTestTemplate(false)
 @GameTestHolder(ArsMagicaAPI.MOD_ID)
 public class BossSpawnTest {
-
     private static HashMap<UUID, Long> lastDryadKills;
     private static HashMap<UUID, Integer> dryadKills;
 

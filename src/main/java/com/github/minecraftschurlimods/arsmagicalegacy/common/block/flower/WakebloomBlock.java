@@ -14,6 +14,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 
 public class WakebloomBlock extends FlowerBlock {
+    //Uses regeneration and manually returns the actual effect below to circumvent problems with suppliers and laziness
+    //TODO change when MinecraftForge/MinecraftForge#9140 is merged
     public WakebloomBlock() {
         super(MobEffects.REGENERATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
     }
