@@ -26,6 +26,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -40,6 +41,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class SpellRecipeScreen extends Screen {
+    private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_recipe.png");
     private final List<SpellRecipePage> pages = new ArrayList<>();
     private final boolean playTurnSound;
     private final int startPage;
@@ -79,13 +81,13 @@ public class SpellRecipeScreen extends Screen {
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pPoseStack);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        RenderSystem.setShaderTexture(0, BookViewScreen.BOOK_LOCATION);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         blit(pPoseStack, (width - 192) / 2, 2, 0, 0, 192, 192);
         Font font = Minecraft.getInstance().font;
         String title = pages.get(currentPage).getTitle();
         font.draw(pPoseStack, title, (width - 192) / 2f + 93 - font.width(title) / 2f, 18, 0);
-        pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 18);
+        pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 32);
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
         }
