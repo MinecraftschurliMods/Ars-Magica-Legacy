@@ -38,6 +38,11 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     }
 
     @Override
+    public int getCount() {
+        return amount;
+    }
+
+    @Override
     public List<Component> getTooltip() {
         if (types.size() == 1)
             return List.of(types.iterator().next().getDisplayName(), new TextComponent("x " + amount()));

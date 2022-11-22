@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ItemLike;
@@ -17,6 +18,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -88,6 +91,25 @@ public final class AMUtil {
     }
 
     /**
+     * @param i1 The first ingredient to match.
+     * @param i2 The second ingredient to match.
+     * @return Whether the two ingredients' item stack lists match, ignoring item counts.
+     */
+    public static boolean ingredientMatchesIgnoreCount(Ingredient i1, Ingredient i2) {
+        ItemStack[] a1 = i1.getItems();
+        ItemStack[] a2 = i2.getItems();
+        if (a1.length != a2.length) return false;
+        for (int i = 0; i < a1.length; i++) {
+            ItemStack s1 = a1[i].copy();
+            s1.setCount(1);
+            ItemStack s2 = a2[i].copy();
+            s2.setCount(1);
+            if (!ItemStack.matches(s1, s2)) return false;
+        }
+        return true;
+    }
+
+    /**
      * @param delimiter The delimiter to use.
      * @return A collector that joins multiple components together, using the given delimiter.
      */
@@ -108,5 +130,24 @@ public final class AMUtil {
             result = Shapes.join(result, shape, BooleanOp.OR);
         }
         return result;
+    }
+
+    /**
+     * Merges two ingredients into one.
+     * NOTE: This method does NOT check if the ingredients can actually be merged, use {@link AMUtil#ingredientMatchesIgnoreCount(Ingredient, Ingredient)} for that.
+     * If two non-mergeable ingredients are passed into this method, behavior is undefined and may result in buggy behavior or crashes.
+     *
+     * @param i1 The first ingredient to merge.
+     * @param i2 The second ingredient to merge.
+     * @return The two given ingredients, merged into one.
+     */
+    public static Ingredient mergeIngredients(Ingredient i1, Ingredient i2) {
+        List<ItemStack> result = new ArrayList<>();
+        ItemStack[] a1 = i1.getItems();
+        ItemStack[] a2 = i2.getItems();
+        for (int i = 0; i < a1.length; i++) {
+            result.add(new ItemStack(a1[i].getItem(), a1[i].getCount() + a2[i].getCount()));
+        }
+        return Ingredient.of(result.stream());
     }
 }

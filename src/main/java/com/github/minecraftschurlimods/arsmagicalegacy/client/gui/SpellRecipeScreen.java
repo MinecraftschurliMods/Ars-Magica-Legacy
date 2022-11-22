@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredien
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SpellRecipeScreen extends Screen {
     private final List<SpellRecipePage> pages = new ArrayList<>();
@@ -51,6 +54,15 @@ public class SpellRecipeScreen extends Screen {
         this.startPage = startPage;
         this.lecternPos = lecternPos;
         ISpell spell = ArsMagicaAPI.get().getSpellHelper().getSpell(stack);
+        pages.add(new IngredientsPage(spell.recipe()));
+        List<Ingredient> reagents = spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer()))
+                .stream()
+                .map(e -> e.mapRight(Ingredient::of))
+                .map(Either::orThrow)
+                .toList();
+        if (!reagents.isEmpty()) {
+            pages.add(new ReagentsPage(reagents));
+        }
         List<ShapeGroup> shapeGroups = Objects.requireNonNull(spell).shapeGroups();
         for (int i = 0; i < shapeGroups.size(); i++) {
             ShapeGroup shapeGroup = shapeGroups.get(i);
@@ -59,11 +71,6 @@ public class SpellRecipeScreen extends Screen {
             }
         }
         pages.add(new SpellGrammarPage(spell.spellStack().parts()));
-        pages.add(new IngredientsPage(spell.recipe()));
-        List<Either<Ingredient, ItemStack>> reagents = spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer()));
-        if (!reagents.isEmpty()) {
-            pages.add(new ReagentsPage(reagents));
-        }
         pages.add(new AffinityPage(spell.affinityShifts()));
     }
 
@@ -130,7 +137,7 @@ public class SpellRecipeScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
-        return lecternPos == null;
+        return false;
     }
 
     private boolean setPage(int pPageNum) {
@@ -198,7 +205,7 @@ public class SpellRecipeScreen extends Screen {
         private final List<ISpellIngredient> ingredients;
 
         private IngredientsPage(List<ISpellIngredient> ingredients) {
-            this.ingredients = ingredients;
+            this.ingredients = combineIngredients(ingredients);
         }
 
         @Override
@@ -208,14 +215,35 @@ public class SpellRecipeScreen extends Screen {
 
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
+            var manager = ArsMagicaAPI.get().getSpellDataManager();
+            for (int i = 0; i < ingredients.size(); i++) {
+                ISpellIngredient ingredient = ingredients.get(i);
+                manager.getSpellIngredientRenderer(ingredient.getType()).renderInGui(ingredient, poseStack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22, 0, 0);
+            }
+        }
+
+        private static List<ISpellIngredient> combineIngredients(List<ISpellIngredient> list) {
+            List<ISpellIngredient> result = new ArrayList<>();
+            for (ISpellIngredient ingredient : list) {
+                Optional<ISpellIngredient> optional = result.stream().filter(e -> e.canCombine(ingredient)).findAny();
+                if (optional.isPresent()) {
+                    ISpellIngredient previous = optional.get();
+                    int index = result.indexOf(previous);
+                    result.remove(previous);
+                    result.add(index, ingredient.combine(previous));
+                } else {
+                    result.add(ingredient);
+                }
+            }
+            return result;
         }
     }
 
     private static final class ReagentsPage extends SpellRecipePage {
-        private final List<Either<Ingredient, ItemStack>> reagents;
+        private final List<Ingredient> reagents;
 
-        private ReagentsPage(List<Either<Ingredient, ItemStack>> reagents) {
-            this.reagents = reagents;
+        private ReagentsPage(List<Ingredient> reagents) {
+            this.reagents = combineIngredients(reagents);
         }
 
         @Override
@@ -225,6 +253,36 @@ public class SpellRecipeScreen extends Screen {
 
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
+            for (int i = 0; i < reagents.size(); i++) {
+                Ingredient reagent = reagents.get(i);
+                Minecraft minecraft = Minecraft.getInstance();
+                ItemStack stack = AMUtil.getByTick(reagent.getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
+                ItemRenderer itemRenderer = minecraft.getItemRenderer();
+                PoseStack mvs = RenderSystem.getModelViewStack();
+                mvs.pushPose();
+                mvs.mulPoseMatrix(poseStack.last().pose());
+                RenderSystem.applyModelViewMatrix();
+                itemRenderer.renderGuiItem(stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
+                itemRenderer.renderGuiItemDecorations(minecraft.font, stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
+                mvs.popPose();
+                RenderSystem.applyModelViewMatrix();
+            }
+        }
+
+        private static List<Ingredient> combineIngredients(List<Ingredient> list) {
+            List<Ingredient> result = new ArrayList<>();
+            for (Ingredient ingredient : list) {
+                Optional<Ingredient> optional = result.stream().filter(e -> AMUtil.ingredientMatchesIgnoreCount(e, ingredient)).findAny();
+                if (optional.isPresent()) {
+                    Ingredient previous = optional.get();
+                    int index = result.indexOf(previous);
+                    result.remove(previous);
+                    result.add(index, AMUtil.mergeIngredients(previous, ingredient));
+                } else {
+                    result.add(ingredient);
+                }
+            }
+            return result;
         }
     }
 

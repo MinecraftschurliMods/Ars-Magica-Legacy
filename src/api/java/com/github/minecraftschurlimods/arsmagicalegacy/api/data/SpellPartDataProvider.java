@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -155,7 +154,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
         private final float manaCost;
         private final Float burnout;
         private final List<ISpellIngredient> recipe = new ArrayList<>();
-        private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        private final List<Ingredient> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
         /**
@@ -190,7 +189,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(Ingredient ingredient) {
-            reagents.add(Either.left(ingredient));
+            reagents.add(ingredient);
             return this;
         }
 
@@ -201,7 +200,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(ItemStack stack) {
-            reagents.add(Either.right(stack));
+            reagents.add(Ingredient.of(stack));
             return this;
         }
 
@@ -262,7 +261,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
                 json.addProperty("burnout", this.burnout);
             }
             JsonArray reagentsJson = new JsonArray();
-            reagents.forEach(either -> reagentsJson.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
+            reagents.forEach(e -> reagentsJson.add(e.toJson()));
             json.add("reagents", reagentsJson);
             JsonObject affinitiesJson = new JsonObject();
             affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));
