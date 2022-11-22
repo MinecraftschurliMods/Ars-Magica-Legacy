@@ -278,10 +278,15 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static final class AffinityPage extends SpellRecipePage {
-        private final Map<IAffinity, Double> affinities;
+        private final List<Pair<IAffinity, Double>> affinities;
 
         private AffinityPage(Map<IAffinity, Double> affinities) {
-            this.affinities = affinities;
+            this.affinities = affinities.keySet()
+                    .stream()
+                    .map(e -> new Pair<>(e, affinities.get(e)))
+                    .sorted(Comparator.comparing(Pair::getFirst))
+                    .sorted(Comparator.comparing(Pair::getSecond))
+                    .toList();
         }
 
         @Override
@@ -291,6 +296,13 @@ public class SpellRecipeScreen extends Screen {
 
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
+            var helper = ArsMagicaAPI.get().getAffinityHelper();
+            for (int i = 0; i < affinities.size(); i++) {
+                Pair<IAffinity, Double> pair = affinities.get(i);
+                IAffinity affinity = pair.getFirst();
+                ClientHelper.drawItemStack(poseStack, helper.getEssenceForAffinity(affinity), x + 5, y + 13 + i / 5 * 22);
+                Minecraft.getInstance().font.draw(poseStack, "%.3f".formatted(pair.getSecond()), x + 27, y + 17 + i / 5 * 22, affinity.getColor());
+            }
         }
     }
 }
