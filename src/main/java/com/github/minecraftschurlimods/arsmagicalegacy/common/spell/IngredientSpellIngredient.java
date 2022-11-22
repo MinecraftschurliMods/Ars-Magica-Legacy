@@ -104,18 +104,9 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
 
         @Override
         public void renderInGui(IngredientSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
-            Minecraft minecraft = Minecraft.getInstance();
             ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
-            stack.setCount(ingredient.getCount()); //needed for correct display of the required amount
-            ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            PoseStack mvs = RenderSystem.getModelViewStack();
-            mvs.pushPose();
-            mvs.mulPoseMatrix(poseStack.last().pose());
-            RenderSystem.applyModelViewMatrix();
-            itemRenderer.renderGuiItem(stack, x, y);
-            itemRenderer.renderGuiItemDecorations(minecraft.font, stack, x, y);
-            mvs.popPose();
-            RenderSystem.applyModelViewMatrix();
+            stack.setCount(ingredient.getCount());
+            ClientHelper.drawItemStack(poseStack, stack, x, y);
         }
     }
 }

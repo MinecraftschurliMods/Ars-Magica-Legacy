@@ -1,7 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -11,9 +9,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
@@ -21,24 +17,6 @@ import java.util.Random;
 
 public final class RenderUtil {
     private RenderUtil() {
-    }
-
-    /**
-     * Draws the given spell part's icon at the specified position with the specified dimensions.
-     *
-     * @param stack The pose stack to use.
-     * @param part The spell part to draw the icon of.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
-     * @param width The width to draw the part with.
-     * @param height The height to draw the part with.
-     */
-    public static void drawSpellPart(PoseStack stack, ISpellPart part, int x, int y, int width, int height) {
-        TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(part.getRegistryName());
-        stack.pushPose();
-        RenderSystem.setShaderTexture(0, sprite.atlas().location());
-        GuiComponent.blit(stack, x, y, 0, width, height, sprite);
-        stack.popPose();
     }
 
     /**

@@ -12,6 +12,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationCo
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
@@ -19,7 +20,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -176,7 +177,7 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                RenderUtil.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
             }
         }
     }
@@ -196,7 +197,7 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                RenderUtil.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
             }
         }
     }
@@ -254,18 +255,8 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < reagents.size(); i++) {
-                Ingredient reagent = reagents.get(i);
-                Minecraft minecraft = Minecraft.getInstance();
-                ItemStack stack = AMUtil.getByTick(reagent.getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
-                ItemRenderer itemRenderer = minecraft.getItemRenderer();
-                PoseStack mvs = RenderSystem.getModelViewStack();
-                mvs.pushPose();
-                mvs.mulPoseMatrix(poseStack.last().pose());
-                RenderSystem.applyModelViewMatrix();
-                itemRenderer.renderGuiItem(stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
-                itemRenderer.renderGuiItemDecorations(minecraft.font, stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
-                mvs.popPose();
-                RenderSystem.applyModelViewMatrix();
+                ItemStack stack = AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
+                ClientHelper.drawItemStack(poseStack, stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
             }
         }
 
