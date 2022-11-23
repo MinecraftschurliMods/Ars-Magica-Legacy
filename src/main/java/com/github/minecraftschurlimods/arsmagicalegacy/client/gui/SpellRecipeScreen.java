@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -57,6 +58,7 @@ public class SpellRecipeScreen extends Screen {
         this.startPage = startPage;
         this.lecternPos = lecternPos;
         ISpell spell = ArsMagicaAPI.get().getSpellHelper().getSpell(stack);
+        Objects.requireNonNull(spell);
         pages.add(new IngredientsPage(spell.recipe()));
         List<Ingredient> reagents = spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer()))
                 .stream()
@@ -66,7 +68,7 @@ public class SpellRecipeScreen extends Screen {
         if (!reagents.isEmpty()) {
             pages.add(new ReagentsPage(reagents));
         }
-        List<ShapeGroup> shapeGroups = Objects.requireNonNull(spell).shapeGroups();
+        List<ShapeGroup> shapeGroups = spell.shapeGroups();
         for (int i = 0; i < shapeGroups.size(); i++) {
             ShapeGroup shapeGroup = shapeGroups.get(i);
             if (!shapeGroup.isEmpty()) {
@@ -85,7 +87,7 @@ public class SpellRecipeScreen extends Screen {
         RenderSystem.setShaderTexture(0, BACKGROUND);
         blit(pPoseStack, (width - 192) / 2, 2, 0, 0, 192, 192);
         Font font = Minecraft.getInstance().font;
-        String title = pages.get(currentPage).getTitle();
+        String title = pages.get(currentPage).getTitle().getString();
         font.draw(pPoseStack, title, (width - 192) / 2f + 93 - font.width(title) / 2f, 18, 0);
         pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 32);
         if (cachedPage != currentPage) {
@@ -157,23 +159,23 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static abstract class SpellRecipePage {
-        protected abstract String getTitle();
+        protected abstract Component getTitle();
 
         protected abstract void render(PoseStack poseStack, int x, int y);
     }
 
     private static final class ShapeGroupPage extends SpellRecipePage {
         private final List<ISpellPart> spellParts;
-        private final int index;
+        private final Component title;
 
         private ShapeGroupPage(List<ISpellPart> spellParts, int index) {
             this.spellParts = spellParts;
-            this.index = index;
+            this.title = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SHAPE_GROUP, index);
         }
 
         @Override
-        protected String getTitle() {
-            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SHAPE_GROUP, index).getString();
+        protected Component getTitle() {
+            return title;
         }
 
         @Override
@@ -185,6 +187,7 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static final class SpellGrammarPage extends SpellRecipePage {
+        private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR);
         private final List<ISpellPart> spellParts;
 
         private SpellGrammarPage(List<ISpellPart> spellParts) {
@@ -192,8 +195,8 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected String getTitle() {
-            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR).getString();
+        protected Component getTitle() {
+            return TITLE;
         }
 
         @Override
@@ -205,6 +208,7 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static final class IngredientsPage extends SpellRecipePage {
+        private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INGREDIENTS);
         private final List<ISpellIngredient> ingredients;
 
         private IngredientsPage(List<ISpellIngredient> ingredients) {
@@ -212,8 +216,8 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected String getTitle() {
-            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INGREDIENTS).getString();
+        protected Component getTitle() {
+            return TITLE;
         }
 
         @Override
@@ -243,6 +247,7 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static final class ReagentsPage extends SpellRecipePage {
+        private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_REAGENTS);
         private final List<Ingredient> reagents;
 
         private ReagentsPage(List<Ingredient> reagents) {
@@ -250,8 +255,8 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected String getTitle() {
-            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_REAGENTS).getString();
+        protected Component getTitle() {
+            return TITLE;
         }
 
         @Override
@@ -280,6 +285,7 @@ public class SpellRecipeScreen extends Screen {
     }
 
     private static final class AffinityPage extends SpellRecipePage {
+        private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_AFFINITIES);
         private final List<Pair<IAffinity, Double>> affinities;
 
         private AffinityPage(Map<IAffinity, Double> affinities) {
@@ -292,8 +298,8 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected String getTitle() {
-            return new TranslatableComponent(TranslationConstants.SPELL_RECIPE_AFFINITIES).getString();
+        protected Component getTitle() {
+            return TITLE;
         }
 
         @Override
