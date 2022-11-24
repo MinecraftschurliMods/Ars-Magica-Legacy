@@ -44,8 +44,9 @@ public interface AMItems {
             return ArsMagicaAPI.get().getBookStack();
         }
     };
-    Item.Properties ITEM_1  = new Item.Properties().stacksTo(1).tab(TAB);
-    Item.Properties ITEM_64 = new Item.Properties().stacksTo(64).tab(TAB);
+    Item.Properties HIDDEN_ITEM_1 = new Item.Properties().stacksTo(1);
+    Item.Properties ITEM_1        = new Item.Properties().stacksTo(1).tab(TAB);
+    Item.Properties ITEM_64       = new Item.Properties().stacksTo(64).tab(TAB);
 
     RegistryObject<InfinityOrbItem>              INFINITY_ORB                 = ITEMS.register("infinity_orb", InfinityOrbItem::new);
     RegistryObject<BlockItem>                    OCCULUS                      = registerBlockItem64(AMBlocks.OCCULUS);
@@ -55,7 +56,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    OBELISK                      = registerBlockItem64(AMBlocks.OBELISK);
     RegistryObject<BlockItem>                    CELESTIAL_PRISM              = registerBlockItem64(AMBlocks.CELESTIAL_PRISM);
     RegistryObject<BlockItem>                    BLACK_AUREM                  = registerBlockItem64(AMBlocks.BLACK_AUREM);
-    RegistryObject<WizardsChalkItem>             WIZARDS_CHALK                = ITEMS.register("wizards_chalk", () -> new WizardsChalkItem(new Item.Properties().stacksTo(64).tab(TAB).durability(100)));
+    RegistryObject<WizardsChalkItem>             WIZARDS_CHALK                = ITEMS.register("wizards_chalk", WizardsChalkItem::new);
     RegistryObject<MagitechGogglesItem>          MAGITECH_GOGGLES             = ITEMS.register("magitech_goggles", MagitechGogglesItem::new);
     RegistryObject<CrystalWrenchItem>            CRYSTAL_WRENCH               = ITEMS.register("crystal_wrench", CrystalWrenchItem::new);
     RegistryObject<BlockItem>                    CHIMERITE_ORE                = registerBlockItem64(AMBlocks.CHIMERITE_ORE);
@@ -109,6 +110,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    GOLD_INLAY                   = registerBlockItem64(AMBlocks.GOLD_INLAY);
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE             = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
+    RegistryObject<Item>                         ETHERIUM_PLACEHOLDER         = ITEMS.register("etherium_placeholder", () -> new Item(HIDDEN_ITEM_1));
     RegistryObject<Item>                         SPELL_PARCHMENT              = registerItem64("spell_parchment");
     RegistryObject<SpellRecipeItem>              SPELL_RECIPE                 = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     RegistryObject<SpellItem>                    SPELL                        = ITEMS.register("spell", SpellItem::new);

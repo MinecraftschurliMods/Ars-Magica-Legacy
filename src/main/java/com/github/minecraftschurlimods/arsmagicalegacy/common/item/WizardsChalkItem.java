@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -20,8 +22,8 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 public class WizardsChalkItem extends BlockItem {
-    public WizardsChalkItem(Properties pProperties) {
-        super(AMBlocks.WIZARDS_CHALK.get(), pProperties);
+    public WizardsChalkItem() {
+        super(AMBlocks.WIZARDS_CHALK.get(), new Item.Properties().stacksTo(64).tab(AMItems.TAB).durability(100));
     }
 
     private static <T extends Comparable<T>> BlockState updateState(BlockState pState, Property<T> pProperty, String pValueIdentifier) {

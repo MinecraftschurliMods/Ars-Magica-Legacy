@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
@@ -23,7 +24,7 @@ public class SpellRecipeItem extends Item {
     private static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
 
     public SpellRecipeItem() {
-        super(new Properties().stacksTo(1));
+        super(AMItems.HIDDEN_ITEM_1);
     }
 
     /**

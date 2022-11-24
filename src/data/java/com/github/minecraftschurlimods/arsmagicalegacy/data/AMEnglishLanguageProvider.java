@@ -114,6 +114,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
+        itemIdTranslation(AMItems.ETHERIUM_PLACEHOLDER);
         itemIdTranslation(AMItems.SPELL_PARCHMENT);
         itemIdTranslation(AMItems.SPELL_RECIPE);
         itemIdTranslation(AMItems.SPELL);

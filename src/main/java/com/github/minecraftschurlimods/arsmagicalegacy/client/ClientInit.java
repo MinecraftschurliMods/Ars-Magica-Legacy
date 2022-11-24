@@ -4,9 +4,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
@@ -267,6 +269,10 @@ public final class ClientInit {
 
     private static void itemColors(ColorHandlerEvent.Item event) {
         event.getItemColors().register((stack, tintIndex) -> tintIndex == 0 && stack.getItem() instanceof DyeableLeatherItem dyeable ? dyeable.getColor(stack) : -1, AMItems.SPELL_BOOK.get());
+        event.getItemColors().register((stack, tintIndex) -> {
+            EtheriumType type = ArsMagicaAPI.get().getEtheriumHelper().getEtheriumType(stack);
+            return ColorUtil.argbToRgb(tintIndex == 0 && type != null ? type.getColor() : EtheriumType.NEUTRAL.getColor());
+        }, AMItems.ETHERIUM_PLACEHOLDER.get());
     }
 
     private static void mouseScroll(InputEvent.MouseScrollEvent event) {

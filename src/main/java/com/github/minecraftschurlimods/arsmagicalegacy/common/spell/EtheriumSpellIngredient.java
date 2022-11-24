@@ -6,16 +6,24 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -85,12 +93,22 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
     public static class EtheriumSpellIngredientRenderer implements ISpellIngredientRenderer<EtheriumSpellIngredient> {
         @Override
         public void renderInWorld(EtheriumSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-            // TODO render
+            Minecraft minecraft = Minecraft.getInstance();
+            EtheriumType type = AMUtil.getByTick(ingredient.types().toArray(new EtheriumType[0]), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20);
+            ItemStack stack = new ItemStack(AMItems.ETHERIUM_PLACEHOLDER.get());
+            ArsMagicaAPI.get().getEtheriumHelper().setEtheriumType(stack, type);
+            ItemRenderer itemRenderer = minecraft.getItemRenderer();
+            BakedModel model = itemRenderer.getModel(stack, null, null, 0);
+            itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay, model);
         }
 
         @Override
         public void renderInGui(EtheriumSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
-            // TODO render
+            EtheriumType type = AMUtil.getByTick(ingredient.types().toArray(new EtheriumType[0]), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20);
+            ItemStack stack = new ItemStack(AMItems.ETHERIUM_PLACEHOLDER.get());
+            ArsMagicaAPI.get().getEtheriumHelper().setEtheriumType(stack, type);
+            stack.setCount(ingredient.getCount());
+            ClientHelper.drawItemStack(poseStack, stack, x, y);
         }
     }
 }

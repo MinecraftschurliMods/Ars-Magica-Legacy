@@ -96,6 +96,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(GOLD_INLAY, "block/gold_inlay");
         affinityItem(AFFINITY_ESSENCE, true);
         affinityItem(AFFINITY_TOME, true);
+        itemGenerated(ETHERIUM_PLACEHOLDER);
         itemGenerated(SPELL_PARCHMENT);
         withExistingParent(SPELL_RECIPE, mcLoc("item/written_book"));
         affinityItem(SPELL, false);
