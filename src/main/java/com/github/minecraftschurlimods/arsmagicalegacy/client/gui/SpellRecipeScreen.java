@@ -31,6 +31,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -44,12 +45,15 @@ import java.util.Optional;
 
 public class SpellRecipeScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_recipe.png");
+    private static final int WIDTH = 192;
+    private static final int HEIGHT = 192;
     private final List<SpellRecipePage> pages = new ArrayList<>();
     private final boolean playTurnSound;
     private final int startPage;
     private final BlockPos lecternPos;
     private int currentPage = -1;
     private int cachedPage = -1;
+    private int xPos;
     private PageButton forwardButton;
     private PageButton backButton;
 
@@ -82,17 +86,17 @@ public class SpellRecipeScreen extends Screen {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        blit(pPoseStack, (width - 192) / 2, 2, 0, 0, 192, 192);
+        blit(pPoseStack, xPos, 2, 0, 0, WIDTH, HEIGHT);
         Font font = Minecraft.getInstance().font;
         SpellRecipePage page = pages.get(currentPage);
         String title = page.getTitle().getString();
-        font.draw(pPoseStack, title, (width - 192) / 2f + 93 - font.width(title) / 2f, 18, 0);
-        page.render(pPoseStack, (width - 192) / 2 + 36, 32);
+        font.draw(pPoseStack, title, xPos + 93 - font.width(title) / 2f, 18, 0);
+        page.render(pPoseStack, xPos + 36, 32);
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
         }
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        List<Component> tooltip = page.getTooltip(pPoseStack, pMouseX - (width - 192) / 2 - 36, pMouseY - 32);
+        List<Component> tooltip = page.getTooltip(pMouseX - xPos - 36, pMouseY - 32);
         if (!tooltip.isEmpty()) {
             this.renderTooltip(pPoseStack, tooltip, Optional.empty(), pMouseX, pMouseY);
         }
@@ -129,6 +133,7 @@ public class SpellRecipeScreen extends Screen {
 
     @Override
     protected void init() {
+        xPos = (width - WIDTH) / 2;
         Objects.requireNonNull(minecraft);
         addRenderableWidget(new Button(width / 2 - 100, 196, lecternPos == null ? 200 : 98, 20, CommonComponents.GUI_DONE, e -> minecraft.setScreen(null)));
         if (lecternPos != null) {
@@ -137,8 +142,8 @@ public class SpellRecipeScreen extends Screen {
                 minecraft.setScreen(null);
             }));
         }
-        forwardButton = addRenderableWidget(new PageButton((width - 192) / 2 + 116, 159, true, p -> setPage(currentPage + 1), playTurnSound));
-        backButton = addRenderableWidget(new PageButton((width - 192) / 2 + 43, 159, false, p -> setPage(currentPage - 1), playTurnSound));
+        forwardButton = addRenderableWidget(new PageButton(xPos + 116, 159, true, p -> setPage(currentPage + 1), playTurnSound));
+        backButton = addRenderableWidget(new PageButton(xPos + 43, 159, false, p -> setPage(currentPage - 1), playTurnSound));
         setPage(startPage);
     }
 
@@ -165,12 +170,41 @@ public class SpellRecipeScreen extends Screen {
 
         protected abstract void render(PoseStack poseStack, int x, int y);
 
-        protected abstract List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY);
+        protected abstract List<Component> getTooltip(int mouseX, int mouseY);
+
+        /**
+         * @param x          The x value to compare against.
+         * @param y          The y value to compare against.
+         * @param size       The size of an element.
+         * @param spacing    The spacing between elements.
+         * @param maxPerLine The max elements per line.
+         * @param maxTotal   The total max amounts of elements.
+         * @return The tooltip index of the position (as given by x and y), or -1 if it exceeds the maxTotal value.
+         */
+        protected int getTooltipIndex(int x, int y, int size, int spacing, int maxPerLine, int maxTotal) {
+            int resX = -1, resY = -1;
+            for (int i = 0; i < maxPerLine; i++) {
+                int min = i * size + i * spacing;
+                int max = size + i * size + i * spacing;
+                if (x >= min && x < max) {
+                    resX = i;
+                }
+                if (y >= min && y < max) {
+                    resY = i;
+                }
+            }
+            if (resX == -1 || resY == -1) return -1;
+            int result = resX + resY * maxPerLine;
+            return result >= maxTotal ? -1 : result;
+        }
     }
 
     private static final class ShapeGroupPage extends SpellRecipePage {
         private static final int X_OFFSET = 3;
         private static final int Y_OFFSET = 11;
+        private static final int SIZE = 32;
+        private static final int SPACING = 4;
+        private static final int MAX_PER_LINE = 3;
         private final List<ISpellPart> spellParts;
         private final Component title;
 
@@ -187,18 +221,24 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % 3 * 36, y + Y_OFFSET + i / 3 * 36, 32, 32);
+                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
             }
         }
 
         @Override
-        protected List<Component> getTooltip(PoseStack poseStack, int x, int y) {
-            return List.of();
+        protected List<Component> getTooltip(int mouseX, int mouseY) {
+            int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, spellParts.size());
+            return i == -1 ? List.of() : List.of(ArsMagicaAPI.get().getSkillManager().get(Objects.requireNonNull(spellParts.get(i).getRegistryName())).getDisplayName());
         }
     }
 
     private static final class SpellGrammarPage extends SpellRecipePage {
         private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR);
+        private static final int X_OFFSET = 3;
+        private static final int Y_OFFSET = 11;
+        private static final int SIZE = 32;
+        private static final int SPACING = 4;
+        private static final int MAX_PER_LINE = 3;
         private final List<ISpellPart> spellParts;
 
         private SpellGrammarPage(List<ISpellPart> spellParts) {
@@ -213,18 +253,24 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
             }
         }
 
         @Override
-        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-            return List.of();
+        protected List<Component> getTooltip(int mouseX, int mouseY) {
+            int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, spellParts.size());
+            return i == -1 ? List.of() : List.of(ArsMagicaAPI.get().getSkillManager().get(Objects.requireNonNull(spellParts.get(i).getRegistryName())).getDisplayName());
         }
     }
 
     private static final class IngredientsPage extends SpellRecipePage {
         private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_INGREDIENTS);
+        private static final int X_OFFSET = 5;
+        private static final int Y_OFFSET = 13;
+        private static final int SIZE = 16;
+        private static final int SPACING = 6;
+        private static final int MAX_PER_LINE = 5;
         private final List<ISpellIngredient> ingredients;
 
         private IngredientsPage(List<ISpellIngredient> ingredients) {
@@ -241,18 +287,24 @@ public class SpellRecipeScreen extends Screen {
             var manager = ArsMagicaAPI.get().getSpellDataManager();
             for (int i = 0; i < ingredients.size(); i++) {
                 ISpellIngredient ingredient = ingredients.get(i);
-                manager.getSpellIngredientRenderer(ingredient.getType()).renderInGui(ingredient, poseStack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22, 0, 0);
+                manager.getSpellIngredientRenderer(ingredient.getType()).renderInGui(ingredient, poseStack, x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), 0, 0);
             }
         }
 
         @Override
-        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-            return List.of();
+        protected List<Component> getTooltip(int mouseX, int mouseY) {
+            int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, ingredients.size());
+            return i == -1 ? List.of() : ingredients.get(i).getTooltip();
         }
     }
 
     private static final class ReagentsPage extends SpellRecipePage {
         private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_REAGENTS);
+        private static final int X_OFFSET = 5;
+        private static final int Y_OFFSET = 13;
+        private static final int SIZE = 16;
+        private static final int SPACING = 6;
+        private static final int MAX_PER_LINE = 5;
         private final List<Ingredient> reagents;
 
         private ReagentsPage(List<Ingredient> reagents) {
@@ -267,19 +319,24 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < reagents.size(); i++) {
-                ItemStack stack = AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
-                ClientHelper.drawItemStack(poseStack, stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
+                ClientHelper.drawItemStack(poseStack, AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy(), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING));
             }
         }
 
         @Override
-        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-            return List.of();
+        protected List<Component> getTooltip(int mouseX, int mouseY) {
+            int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, reagents.size());
+            return i == -1 ? List.of() : AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy().getTooltipLines(ClientHelper.getLocalPlayer(), TooltipFlag.Default.NORMAL);
         }
     }
 
     private static final class AffinityPage extends SpellRecipePage {
         private static final Component TITLE = new TranslatableComponent(TranslationConstants.SPELL_RECIPE_AFFINITIES);
+        private static final int X_OFFSET = 5;
+        private static final int Y_OFFSET = 13;
+        private static final int SIZE = 16;
+        private static final int SPACING = 6;
+        private static final int MAX_PER_LINE = 1;
         private final List<Pair<IAffinity, Double>> affinities;
 
         private AffinityPage(Map<IAffinity, Double> affinities) {
@@ -302,14 +359,15 @@ public class SpellRecipeScreen extends Screen {
             for (int i = 0; i < affinities.size(); i++) {
                 Pair<IAffinity, Double> pair = affinities.get(i);
                 IAffinity affinity = pair.getFirst();
-                ClientHelper.drawItemStack(poseStack, helper.getEssenceForAffinity(affinity), x + 5, y + 13 + i / 5 * 22);
-                Minecraft.getInstance().font.draw(poseStack, "%.3f".formatted(pair.getSecond()), x + 27, y + 17 + i / 5 * 22, affinity.getColor());
+                ClientHelper.drawItemStack(poseStack, helper.getEssenceForAffinity(affinity), x + X_OFFSET, y + Y_OFFSET + i * (SIZE + SPACING));
+                Minecraft.getInstance().font.draw(poseStack, "%.3f".formatted(pair.getSecond()), x + X_OFFSET + SIZE + SPACING, y + Y_OFFSET + 4 + i * (SIZE + SPACING), affinity.getColor());
             }
         }
 
         @Override
-        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-            return List.of();
+        protected List<Component> getTooltip(int mouseX, int mouseY) {
+            int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, affinities.size());
+            return i == -1 ? List.of() : List.of(affinities.get(i).getFirst().getDisplayName());
         }
     }
 }
