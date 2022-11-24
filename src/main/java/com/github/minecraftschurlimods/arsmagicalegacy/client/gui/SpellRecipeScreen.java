@@ -14,7 +14,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.SetLecternPagePac
 import com.github.minecraftschurlimods.arsmagicalegacy.network.TakeSpellRecipeFromLecternPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -41,6 +40,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SpellRecipeScreen extends Screen {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/spell_recipe.png");
@@ -84,13 +84,18 @@ public class SpellRecipeScreen extends Screen {
         RenderSystem.setShaderTexture(0, BACKGROUND);
         blit(pPoseStack, (width - 192) / 2, 2, 0, 0, 192, 192);
         Font font = Minecraft.getInstance().font;
-        String title = pages.get(currentPage).getTitle().getString();
+        SpellRecipePage page = pages.get(currentPage);
+        String title = page.getTitle().getString();
         font.draw(pPoseStack, title, (width - 192) / 2f + 93 - font.width(title) / 2f, 18, 0);
-        pages.get(currentPage).render(pPoseStack, (width - 192) / 2 + 36, 32);
+        page.render(pPoseStack, (width - 192) / 2 + 36, 32);
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
         }
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        List<Component> tooltip = page.getTooltip(pPoseStack, pMouseX - (width - 192) / 2 - 36, pMouseY - 32);
+        if (!tooltip.isEmpty()) {
+            this.renderTooltip(pPoseStack, tooltip, Optional.empty(), pMouseX, pMouseY);
+        }
     }
 
     @Override
@@ -159,9 +164,13 @@ public class SpellRecipeScreen extends Screen {
         protected abstract Component getTitle();
 
         protected abstract void render(PoseStack poseStack, int x, int y);
+
+        protected abstract List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY);
     }
 
     private static final class ShapeGroupPage extends SpellRecipePage {
+        private static final int X_OFFSET = 3;
+        private static final int Y_OFFSET = 11;
         private final List<ISpellPart> spellParts;
         private final Component title;
 
@@ -178,8 +187,13 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
+                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % 3 * 36, y + Y_OFFSET + i / 3 * 36, 32, 32);
             }
+        }
+
+        @Override
+        protected List<Component> getTooltip(PoseStack poseStack, int x, int y) {
+            return List.of();
         }
     }
 
@@ -201,6 +215,11 @@ public class SpellRecipeScreen extends Screen {
             for (int i = 0; i < spellParts.size(); i++) {
                 ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + 3 + i % 3 * 36, y + 11 + i / 3 * 36, 32, 32);
             }
+        }
+
+        @Override
+        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+            return List.of();
         }
     }
 
@@ -225,6 +244,11 @@ public class SpellRecipeScreen extends Screen {
                 manager.getSpellIngredientRenderer(ingredient.getType()).renderInGui(ingredient, poseStack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22, 0, 0);
             }
         }
+
+        @Override
+        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+            return List.of();
+        }
     }
 
     private static final class ReagentsPage extends SpellRecipePage {
@@ -246,6 +270,11 @@ public class SpellRecipeScreen extends Screen {
                 ItemStack stack = AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
                 ClientHelper.drawItemStack(poseStack, stack, x + 5 + i % 5 * 22, y + 13 + i / 5 * 22);
             }
+        }
+
+        @Override
+        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+            return List.of();
         }
     }
 
@@ -276,6 +305,11 @@ public class SpellRecipeScreen extends Screen {
                 ClientHelper.drawItemStack(poseStack, helper.getEssenceForAffinity(affinity), x + 5, y + 13 + i / 5 * 22);
                 Minecraft.getInstance().font.draw(poseStack, "%.3f".formatted(pair.getSecond()), x + 27, y + 17 + i / 5 * 22, affinity.getColor());
             }
+        }
+
+        @Override
+        protected List<Component> getTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+            return List.of();
         }
     }
 }
