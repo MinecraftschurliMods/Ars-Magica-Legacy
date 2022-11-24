@@ -1244,6 +1244,7 @@ dd7d4347898c44d35c1269cce4f5bcb493ecf1c6 data/minecraft/tags/blocks/wooden_doors
 037cfe08ce22cd4cea304be83a9d95c38c8aa5ab data/minecraft/tags/blocks/wooden_stairs.json
 8ecae732698508600a5ca39ef15dbf43bd681ae3 data/minecraft/tags/blocks/wooden_trapdoors.json
 d1a663f91921873f49ef08928f0c5e88c5f3083d data/minecraft/tags/items/leaves.json
+29cba6d10fe8b1100566c3f5be3db2a472bca93b data/minecraft/tags/items/lectern_books.json
 73173760cddbb6c2dac36d4d35ba3afd43b52e11 data/minecraft/tags/items/logs.json
 d6b7f6c725fbf3f0e93be94d2229093274390bab data/minecraft/tags/items/planks.json
 40c18da833f238afd99ddc1846f279f8002c1e0b data/minecraft/tags/items/rails.json

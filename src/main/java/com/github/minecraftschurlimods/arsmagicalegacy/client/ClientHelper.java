@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -91,8 +92,8 @@ public final class ClientHelper {
     /**
      * Opens a spell customization GUI on the client.
      */
-    public static void openSpellRecipeGui(ItemStack stack) {
-        Minecraft.getInstance().setScreen(new SpellRecipeScreen(stack, true, 0, null));
+    public static void openSpellRecipeGui(ItemStack stack, boolean playTurnSound, int startPage, @Nullable BlockPos lecternPos) {
+        Minecraft.getInstance().setScreen(new SpellRecipeScreen(stack, playTurnSound, startPage, lecternPos));
     }
 
     /**

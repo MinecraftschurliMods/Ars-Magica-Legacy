@@ -192,7 +192,7 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public void openSpellRecipeGui(Level level, Player player, ItemStack stack) {
         if (level.isClientSide()) {
-            ClientHelper.openSpellRecipeGui(stack);
+            ClientHelper.openSpellRecipeGui(stack, true, 0, null);
         }
     }
 

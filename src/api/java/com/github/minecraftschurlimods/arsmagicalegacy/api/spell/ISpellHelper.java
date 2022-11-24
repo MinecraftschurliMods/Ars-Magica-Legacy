@@ -20,7 +20,6 @@ public interface ISpellHelper {
      * @param stack The stack to get the spell for.
      * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
      */
-    @Nullable
     ISpell getSpell(ItemStack stack);
 
     /**

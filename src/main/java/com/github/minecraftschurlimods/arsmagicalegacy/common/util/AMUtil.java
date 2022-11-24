@@ -2,6 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
@@ -20,6 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -34,6 +39,50 @@ public final class AMUtil {
         Vec3 d = b.subtract(a).normalize();
         double p = d.dot(c);
         return p <= 0 ? a : p >= a.distanceTo(b) ? b : a.add(d.scale(p));
+    }
+
+    /**
+     * Combines any duplicates in the list into single elements.
+     *
+     * @param list The list to perform the combining on.
+     * @return A list, containing all elements of the old list, with the elements combined where possible.
+     */
+    public static List<Ingredient> combineIngredients(List<Ingredient> list) {
+        List<Ingredient> result = new ArrayList<>();
+        for (Ingredient ingredient : list) {
+            Optional<Ingredient> optional = result.stream().filter(e -> AMUtil.ingredientMatchesIgnoreCount(e, ingredient)).findAny();
+            if (optional.isPresent()) {
+                Ingredient previous = optional.get();
+                int index = result.indexOf(previous);
+                result.remove(previous);
+                result.add(index, AMUtil.mergeIngredients(previous, ingredient));
+            } else {
+                result.add(ingredient);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Combines any duplicates in the list into single elements.
+     *
+     * @param list The list to perform the combining on.
+     * @return A list, containing all elements of the old list, with the elements combined where possible.
+     */
+    public static List<ISpellIngredient> combineSpellIngredients(List<ISpellIngredient> list) {
+        List<ISpellIngredient> result = new ArrayList<>();
+        for (ISpellIngredient ingredient : list) {
+            Optional<ISpellIngredient> optional = result.stream().filter(e -> e.canCombine(ingredient)).findAny();
+            if (optional.isPresent()) {
+                ISpellIngredient previous = optional.get();
+                int index = result.indexOf(previous);
+                result.remove(previous);
+                result.add(index, ingredient.combine(previous));
+            } else {
+                result.add(ingredient);
+            }
+        }
+        return result;
     }
 
     /**
@@ -149,5 +198,17 @@ public final class AMUtil {
             result.add(new ItemStack(a1[i].getItem(), a1[i].getCount() + a2[i].getCount()));
         }
         return Ingredient.of(result.stream());
+    }
+
+    /**
+     * @param list The list of reagents to convert into a list of crafting ingredients.
+     * @return A list of crafting ingredients, derived from the reagent list.
+     */
+    public static List<Ingredient> reagentsToIngredients(List<Either<Ingredient, ItemStack>> list) {
+        return list
+                .stream()
+                .map(e -> e.mapRight(Ingredient::of))
+                .map(Either::orThrow)
+                .toList();
     }
 }
