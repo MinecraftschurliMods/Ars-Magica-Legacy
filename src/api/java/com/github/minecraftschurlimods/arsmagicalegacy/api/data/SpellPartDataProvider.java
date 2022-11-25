@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
@@ -140,7 +141,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
         private final float manaCost;
         private final Float burnout;
         private final List<ISpellIngredient> recipe = new ArrayList<>();
-        private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        private final List<ItemFilter> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
         /**
@@ -175,8 +176,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(Ingredient ingredient) {
-            reagents.add(Either.left(ingredient));
-            return this;
+            return withReagent(1, ingredient);
+        }
+
+        /**
+         * Adds a spell reagent.
+         *
+         * @param ingredient The spell reagent to add.
+         * @return This builder, for chaining.
+         */
+        public SpellPartDataBuilder withReagent(int amt, Ingredient ingredient) {
+            return withReagent(ItemFilter.exactly(amt).is(ingredient));
         }
 
         /**
@@ -186,7 +196,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(ItemStack stack) {
-            reagents.add(Either.right(stack));
+            return withReagent(ItemFilter.exactly(stack));
+        }
+
+        /**
+         * Adds a spell reagent.
+         *
+         * @param filter The spell reagent to add.
+         * @return This builder, for chaining.
+         */
+        public SpellPartDataBuilder withReagent(ItemFilter filter) {
+            reagents.add(filter);
             return this;
         }
 
@@ -247,7 +267,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
                 json.addProperty("burnout", this.burnout);
             }
             JsonArray reagentsJson = new JsonArray();
-            reagents.forEach(either -> reagentsJson.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
+            reagents.forEach(either -> reagentsJson.add(ItemFilter.CODEC.encodeStart(JsonOps.INSTANCE, either).getOrThrow(false, LOGGER::error)));
             json.add("reagents", reagentsJson);
             JsonObject affinitiesJson = new JsonObject();
             affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));

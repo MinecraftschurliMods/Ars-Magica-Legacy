@@ -2,14 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
-import com.mojang.datafixers.util.Either;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -116,7 +114,7 @@ public interface ISpell {
     /**
      * @return The reagents of this spell.
      */
-    List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster);
+    List<ItemFilter> reagents(LivingEntity caster);
 
     /**
      * @return The list of spell parts in this spell.

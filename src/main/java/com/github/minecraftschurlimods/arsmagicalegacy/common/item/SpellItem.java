@@ -6,14 +6,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
-import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -30,7 +30,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -76,11 +75,11 @@ public class SpellItem extends Item implements ISpellItem {
         pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
         pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
-            List<Either<Ingredient, ItemStack>> reagents = spell.reagents(player);
+            List<ItemFilter> reagents = spell.reagents(player);
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_REAGENTS));
-            for (Either<Ingredient, ItemStack> e : reagents) {
-                pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
+            for (ItemFilter e : reagents) {
+                pTooltipComponents.add(Arrays.stream(e.getMatchedStacks())
                         .map(stack1 -> stack1.getHoverName().copy())
                         .collect(AMUtil.joiningComponents(" | ")));
             }

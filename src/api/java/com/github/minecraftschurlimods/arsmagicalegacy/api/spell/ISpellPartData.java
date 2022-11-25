@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -31,7 +32,7 @@ public interface ISpellPartData {
     /**
      * @return The reagents for this spell part.
      */
-    List<Either<Ingredient, ItemStack>> reagents();
+    List<ItemFilter> reagents();
 
     /**
      * @return The mana cost for this spell part.

@@ -10,14 +10,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
-import com.mojang.datafixers.util.Either;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -26,11 +26,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,47 +48,24 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public boolean hasReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagentsIn) {
+    public boolean hasReagents(LivingEntity caster, Collection<ItemFilter> reagents) {
         if (!(caster instanceof Player player)) return true;
-        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>(reagentsIn);
-        for (ItemStack item : player.getInventory().items) {
-            if (item.isEmpty()) continue;
-            for (Iterator<Either<Ingredient, ItemStack>> iterator = reagents.iterator(); iterator.hasNext(); ) {
-                iterator.next().ifLeft(ingredient1 -> {
-                    if (ingredient1.test(item)) {
-                        iterator.remove();
-                    }
-                }).ifRight(itemStack -> {
-                    if (ItemStack.isSame(itemStack, item) && itemStack.getCount() <= item.getCount()) {
-                        iterator.remove();
-                    }
-                });
-            }
-            if (reagents.isEmpty()) break;
-        }
-        return reagents.isEmpty();
+        var query = query(player);
+        return reagents.stream().allMatch(query::canExtract);
     }
 
     @Override
-    public void consumeReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagents) {
+    public void consumeReagents(LivingEntity caster, Collection<ItemFilter> reagents) {
         if (!(caster instanceof Player player)) return;
-        for (ItemStack item : player.getInventory().items) {
-            if (item.isEmpty()) continue;
-            for (Iterator<Either<Ingredient, ItemStack>> iterator = reagents.iterator(); iterator.hasNext(); ) {
-                iterator.next().ifLeft(ingredient1 -> {
-                    if (ingredient1.test(item)) {
-                        item.shrink(1);
-                        iterator.remove();
-                    }
-                }).ifRight(itemStack -> {
-                    if (ItemStack.isSame(itemStack, item) && itemStack.getCount() <= item.getCount()) {
-                        item.shrink(itemStack.getCount());
-                        iterator.remove();
-                    }
-                });
-            }
-            if (reagents.isEmpty()) break;
+        var query = query(player);
+        if (reagents.stream().allMatch(filter -> query.extract(filter).tryCommit())) {
+            query.commit();
         }
+    }
+
+    @NotNull
+    private static ItemHandlerExtractionQuery query(Player player) {
+        return new ItemHandlerExtractionQuery(new PlayerMainInvWrapper(player.getInventory()));
     }
 
     @Override
