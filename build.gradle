@@ -2,16 +2,6 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
-        classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
-    }
-}
-
 plugins {
     id 'idea'
     id 'eclipse'
@@ -70,7 +60,7 @@ java {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -356,6 +346,14 @@ javadoc {
 }
 
 jar {
+    archiveClassifier.set('slim')
+    from sourceSets.main.output
+    from sourceSets.api.output
+    finalizedBy('reobfJar')
+}
+
+tasks.register('flatJar', Jar) {
+    archiveClassifier.set('flat')
     from sourceSets.main.output
     from sourceSets.api.output
     from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
@@ -371,17 +369,20 @@ sourcesJar {
 }
 
 tasks.jarJar.configure {
+    archiveClassifier.set('')
     from sourceSets.api.output
 }
 
-task apiJar(type: Jar, dependsOn: apiClasses) {
+tasks.register('apiJar', Jar) {
+    dependsOn(apiClasses)
     archiveClassifier.set('api')
     from sourceSets.api.allSource
     from sourceSets.api.output
     finalizedBy('reobfJar')
 }
 
-task deobfJar(type: Jar, dependsOn: classes) {
+tasks.register('deobfJar', Jar) {
+    dependsOn(classes)
     archiveClassifier.set('deobf')
     from sourceSets.main.output
     from sourceSets.api.output
@@ -429,12 +430,12 @@ reobf {
     jar { classpath.from(sourceSets.main.compileClasspath) }
 }
 
-task reobf {
+tasks.register('reobf') {
     dependsOn reobfJar
     dependsOn reobfApiJar
 }
 
-task setupGithubActions() {
+tasks.register('setupGithubActions') {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
         println "##[set-output name=version;]${project.version}"
@@ -459,7 +460,7 @@ idea {
     }
 }
 
-tasks.withType(GenerateModuleMetadata) {
+tasks.withType(GenerateModuleMetadata).configureEach {
     enabled = false
 }
 
