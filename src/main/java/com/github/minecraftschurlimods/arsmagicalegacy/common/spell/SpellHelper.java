@@ -11,6 +11,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
@@ -33,6 +35,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -100,46 +103,16 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public boolean hasReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagentsIn) {
-        if (!(caster instanceof Player player)) return true;
-        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>(reagentsIn);
-        for (ItemStack item : player.getInventory().items) {
-            if (item.isEmpty()) continue;
-            for (Iterator<Either<Ingredient, ItemStack>> iterator = reagents.iterator(); iterator.hasNext(); ) {
-                iterator.next().ifLeft(ingredient1 -> {
-                    if (ingredient1.test(item)) {
-                        iterator.remove();
-                    }
-                }).ifRight(itemStack -> {
-                    if (ItemStack.isSame(itemStack, item) && itemStack.getCount() <= item.getCount()) {
-                        iterator.remove();
-                    }
-                });
-            }
-            if (reagents.isEmpty()) break;
-        }
-        return reagents.isEmpty();
+    public boolean hasReagents(LivingEntity caster, Collection<ItemFilter> reagents) {
+        return !(caster instanceof Player player) || reagents.stream().allMatch(new ItemHandlerExtractionQuery(new PlayerMainInvWrapper(player.getInventory()))::canExtract);
     }
 
     @Override
-    public void consumeReagents(LivingEntity caster, Collection<Either<Ingredient, ItemStack>> reagents) {
+    public void consumeReagents(LivingEntity caster, Collection<ItemFilter> reagents) {
         if (!(caster instanceof Player player)) return;
-        for (ItemStack item : player.getInventory().items) {
-            if (item.isEmpty()) continue;
-            for (Iterator<Either<Ingredient, ItemStack>> iterator = reagents.iterator(); iterator.hasNext(); ) {
-                iterator.next().ifLeft(ingredient1 -> {
-                    if (ingredient1.test(item)) {
-                        item.shrink(1);
-                        iterator.remove();
-                    }
-                }).ifRight(itemStack -> {
-                    if (ItemStack.isSame(itemStack, item) && itemStack.getCount() <= item.getCount()) {
-                        item.shrink(itemStack.getCount());
-                        iterator.remove();
-                    }
-                });
-            }
-            if (reagents.isEmpty()) break;
+        ItemHandlerExtractionQuery query = new ItemHandlerExtractionQuery(new PlayerMainInvWrapper(player.getInventory()));
+        if (reagents.stream().allMatch(f -> query.extract(f).tryCommit())) {
+            query.commit();
         }
     }
 

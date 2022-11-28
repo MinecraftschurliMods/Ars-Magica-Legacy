@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +72,7 @@ public interface ISpellHelper {
      * @param reagents The reagents to search for.
      * @return Whether the given entity has the required reagents in their inventory or not.
      */
-    boolean hasReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
+    boolean hasReagents(LivingEntity entity, Collection<ItemFilter> reagents);
 
     /**
      * Consumes the reagents.
@@ -79,7 +80,7 @@ public interface ISpellHelper {
      * @param entity   The entity to consume the ingredients from.
      * @param reagents The reagents to consume.
      */
-    void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
+    void consumeReagents(LivingEntity entity, Collection<ItemFilter> reagents);
 
     /**
      * Performs a ray trace and returns the entity the given entity is currently looking at.

@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -69,12 +70,12 @@ public class SpellItem extends Item implements ISpellItem {
         pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_MANA_COST, spell.mana(player)));
         pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_BURNOUT, spell.burnout(player)));
         if (EffectiveSide.get().isClient() && ClientHelper.showAdvancedTooltips()) {
-            List<Either<Ingredient, ItemStack>> reagents = spell.reagents(player);
+            List<ItemFilter> reagents = spell.reagents(player);
             if (reagents.isEmpty()) return;
             pTooltipComponents.add(new TranslatableComponent(TranslationConstants.SPELL_REAGENTS));
-            for (Either<Ingredient, ItemStack> e : reagents) {
-                pTooltipComponents.add(Arrays.stream(e.map(Ingredient::getItems, stack -> new ItemStack[]{stack}))
-                        .map(stack1 -> stack1.getHoverName().copy())
+            for (ItemFilter filter : reagents) {
+                pTooltipComponents.add(Arrays.stream(filter.getMatchedStacks())
+                        .map(e -> e.getHoverName().copy())
                         .collect(AMUtil.joiningComponents(" | ")));
             }
         } else {

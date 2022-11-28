@@ -65,7 +65,7 @@ public class SpellRecipeScreen extends Screen {
         ISpell spell = ArsMagicaAPI.get().getSpellHelper().getSpell(stack);
         Objects.requireNonNull(spell);
         pages.add(new IngredientsPage(spell.recipe()));
-        List<Ingredient> reagents = AMUtil.reagentsToIngredients(spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer())));
+        List<ItemStack[]> reagents = AMUtil.reagentsToIngredients(spell.reagents(Objects.requireNonNull(ClientHelper.getLocalPlayer())));
         if (!reagents.isEmpty()) {
             pages.add(new ReagentsPage(reagents));
         }
@@ -305,10 +305,10 @@ public class SpellRecipeScreen extends Screen {
         private static final int SIZE = 16;
         private static final int SPACING = 6;
         private static final int MAX_PER_LINE = 5;
-        private final List<Ingredient> reagents;
+        private final List<ItemStack[]> reagents;
 
-        private ReagentsPage(List<Ingredient> reagents) {
-            this.reagents = AMUtil.combineIngredients(reagents);
+        private ReagentsPage(List<ItemStack[]> reagents) {
+            this.reagents = reagents;
         }
 
         @Override
@@ -319,14 +319,14 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
             for (int i = 0; i < reagents.size(); i++) {
-                ClientHelper.drawItemStack(poseStack, AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy(), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING));
+                ClientHelper.drawItemStack(poseStack, AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy(), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING));
             }
         }
 
         @Override
         protected List<Component> getTooltip(int mouseX, int mouseY) {
             int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, reagents.size());
-            return i == -1 ? List.of() : AMUtil.getByTick(reagents.get(i).getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy().getTooltipLines(ClientHelper.getLocalPlayer(), TooltipFlag.Default.NORMAL);
+            return i == -1 ? List.of() : AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy().getTooltipLines(ClientHelper.getLocalPlayer(), TooltipFlag.Default.NORMAL);
         }
     }
 
