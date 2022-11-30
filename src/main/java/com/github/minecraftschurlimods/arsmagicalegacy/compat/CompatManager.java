@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat;
 
+import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
@@ -7,8 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.forgespi.language.ModFileScanData;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 import org.objectweb.asm.Type;
 
 import java.lang.annotation.Retention;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class CompatManager {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<String, Lazy<ICompatHandler>> compatHandlers = new HashMap<>();
 
     /**

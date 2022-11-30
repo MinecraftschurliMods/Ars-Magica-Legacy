@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,8 +15,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.util.Lazy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public final class TierMapping extends SimplePreparableReloadListener<JsonArray> {
     private static final ResourceLocation TIER_MAPPING = new ResourceLocation(ArsMagicaAPI.MOD_ID, "tier_mapping.json");
     private static final Lazy<TierMapping> INSTANCE = Lazy.concurrentOf(TierMapping::new);
-    private final Logger LOGGER = LogManager.getLogger();
+    private final Logger LOGGER = LogUtils.getLogger();
     private final Gson gson = new GsonBuilder().create();
     private final List<ResourceLocation> tiers = new ArrayList<>();
 

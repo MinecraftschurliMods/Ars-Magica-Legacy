@@ -11,8 +11,6 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.IOException;
@@ -26,7 +24,6 @@ import java.util.function.Consumer;
  * Base class for skill data generators.
  */
 public abstract class SkillProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
     private final String namespace;
     private final JsonCodecProvider<Skill> provider;
     private final Map<ResourceLocation, Skill> data = new HashMap<>();

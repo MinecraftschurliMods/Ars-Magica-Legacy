@@ -121,7 +121,7 @@ public class WaterGuardian extends AbstractBoss {
         return super.hurt(pSource, pAmount);
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

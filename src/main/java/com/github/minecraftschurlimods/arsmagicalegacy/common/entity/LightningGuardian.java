@@ -47,7 +47,7 @@ public class LightningGuardian extends AbstractBoss {
         return AMSounds.LIGHTNING_GUARDIAN_ATTACK.get();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

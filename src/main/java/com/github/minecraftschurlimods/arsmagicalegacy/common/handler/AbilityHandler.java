@@ -162,7 +162,7 @@ final class AbilityHandler {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     private static void affinityChangingPost(AffinityChangingEvent.Post event) {
         var api = ArsMagicaAPI.get();
         var abilityRegistry = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);

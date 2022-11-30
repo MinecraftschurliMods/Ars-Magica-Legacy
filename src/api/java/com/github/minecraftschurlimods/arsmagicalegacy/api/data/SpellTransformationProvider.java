@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
@@ -14,8 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +22,6 @@ import java.util.Map;
  * Base class for spell part data generators.
  */
 public abstract class SpellTransformationProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
     private final Map<ResourceLocation, SpellTransformation> data = new HashMap<>();
     private final String namespace;
     private final JsonCodecProvider<SpellTransformation> provider;
