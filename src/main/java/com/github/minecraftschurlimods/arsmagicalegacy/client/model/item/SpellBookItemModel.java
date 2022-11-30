@@ -48,9 +48,10 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+        var api = ArsMagicaAPI.get();
         Player player = ClientHelper.getLocalPlayer();
-        if (player != null && ArsMagicaAPI.get().getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
-            ResourceLocation affinity = ISpellItem.getSpell(stack).primaryAffinity().getId();
+        if (player != null && api.getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {
+            ResourceLocation affinity = api.getSpellHelper().getSpell(stack).primaryAffinity().getId();
             return new SpellItemHandModel(SpellItemModel.getModel(new ResourceLocation(affinity.getNamespace(), "item/" + AMItems.SPELL.getId().getPath() + "_" + affinity.getPath())));
         }
         return SpellItemModel.getModel(new ResourceLocation(AMItems.SPELL_BOOK.getId().getNamespace(), "item/" + AMItems.SPELL_BOOK.getId().getPath() + "_handheld")).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);

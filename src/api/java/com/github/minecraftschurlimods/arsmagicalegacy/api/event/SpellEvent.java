@@ -1,10 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.event;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.mojang.datafixers.util.Either;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
@@ -207,9 +205,9 @@ public abstract class SpellEvent extends LivingEvent {
      * Event to modify the reagents required by the spell.
      */
     public static final class ReagentCost extends SpellEvent {
-        public final List<Either<Ingredient, ItemStack>> reagents;
+        public final List<ItemFilter> reagents;
 
-        public ReagentCost(LivingEntity entity, ISpell spell, List<Either<Ingredient, ItemStack>> reagents) {
+        public ReagentCost(LivingEntity entity, ISpell spell, List<ItemFilter> reagents) {
             super(entity, spell);
             this.reagents = new ArrayList<>(reagents);
         }

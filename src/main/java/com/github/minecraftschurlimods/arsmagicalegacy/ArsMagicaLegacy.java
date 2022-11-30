@@ -18,8 +18,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableS
 import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SetLecternPagePacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.TakeSpellRecipeFromLecternPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
@@ -79,10 +82,13 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(InscriptionTableSyncPacket.ID, InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(LearnSkillPacket.ID, LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(NextShapeGroupPacket.ID, NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(SetLecternPagePacket.ID, SetLecternPagePacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(SpellBookNextSpellPacket.ID, SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(SpellIconSelectPacket.ID, SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.ID, TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.ID, BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.ID, OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.ID, OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SkillHelper.SkillSyncPacket.ID, SkillHelper.SkillSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(AffinityHelper.AffinitySyncPacket.ID, AffinityHelper.AffinitySyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);

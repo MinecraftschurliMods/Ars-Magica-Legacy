@@ -28,9 +28,10 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     private final ItemOverrides overrides = new ItemOverrides() {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-            icon = ISpellItem.getSpellIcon(stack);
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            icon = helper.getSpellIcon(stack);
             if (!stack.isEmpty()) {
-                affinity = ISpellItem.getSpell(stack).primaryAffinity();
+                affinity = helper.getSpell(stack).primaryAffinity();
             }
             return SpellItemModel.this;
         }
