@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import org.jetbrains.annotations.Nullable;
 
 public class CrystalWrenchItem extends Item {
     private static final String SAVED_POS_KEY = ArsMagicaAPI.MOD_ID + ":saved_pos";
@@ -32,14 +33,18 @@ public class CrystalWrenchItem extends Item {
                 return InteractionResult.SUCCESS;
             }
         } else if (helper.hasEtheriumConsumer(context.getLevel(), context.getClickedPos())) {
-            if (Math.sqrt(context.getClickedPos().distSqr(getSavedPos(context.getItemInHand()))) > 32) {
+            BlockPos savedPos = getSavedPos(context.getItemInHand());
+            if (savedPos == null) {
+                return InteractionResult.PASS;
+            }
+            if (Math.sqrt(context.getClickedPos().distSqr(savedPos)) > 32) {
                 Player player = context.getPlayer();
                 if (player != null) {
                     player.displayClientMessage(Component.translatable(TranslationConstants.CRYSTAL_WRENCH_TOO_FAR).withStyle(ChatFormatting.RED), true);
                 }
                 return InteractionResult.FAIL;
             }
-            helper.getEtheriumConsumer(context.getLevel(), context.getClickedPos()).ifPresent(consumer -> consumer.bindProvider(getSavedPos(context.getItemInHand())));
+            helper.getEtheriumConsumer(context.getLevel(), context.getClickedPos()).ifPresent(consumer -> consumer.bindProvider(savedPos));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
@@ -49,7 +54,9 @@ public class CrystalWrenchItem extends Item {
         stack.getOrCreateTag().put(SAVED_POS_KEY, BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
     }
 
+    @Nullable
     private BlockPos getSavedPos(ItemStack stack) {
+        if (!stack.getOrCreateTag().contains(SAVED_POS_KEY)) return null;
         return BlockPos.CODEC.decode(NbtOps.INSTANCE, stack.getOrCreateTag().get(SAVED_POS_KEY)).map(Pair::getFirst).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn);
     }
 }

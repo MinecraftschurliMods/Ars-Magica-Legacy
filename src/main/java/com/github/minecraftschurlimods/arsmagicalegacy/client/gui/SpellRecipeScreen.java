@@ -23,6 +23,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -226,7 +227,8 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected List<Component> getTooltip(int mouseX, int mouseY) {
             int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, spellParts.size());
-            return i == -1 ? List.of() : List.of(ClientHelper.getRegistry(Skill.REGISTRY_KEY).get(Objects.requireNonNull(spellParts.get(i).getId())).getDisplayName());
+            RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
+            return i == -1 ? List.of() : List.of(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).get(Objects.requireNonNull(spellParts.get(i).getId())).getDisplayName(registryAccess));
         }
     }
 

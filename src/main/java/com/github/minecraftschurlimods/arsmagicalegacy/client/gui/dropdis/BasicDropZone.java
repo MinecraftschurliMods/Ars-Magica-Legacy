@@ -108,7 +108,7 @@ public class BasicDropZone implements DropArea {
         int j = 0;
         int rows = (height - elementPadding) / (elementHeight + elementPadding);
         int cols = (width - elementPadding) / (elementWidth + elementPadding);
-        while (i > cols) {
+        while (i >= cols) {
             i -= cols;
             j++;
         }
