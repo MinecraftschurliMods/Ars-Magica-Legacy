@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
@@ -85,10 +84,11 @@ public final class PrefabSpellManager extends CodecDataManager<IPrefabSpell> imp
 
         @Override
         public ItemStack makeSpell() {
+            var helper = ArsMagicaAPI.get().getSpellHelper();
             ItemStack stack = new ItemStack(AMItems.SPELL.get());
-            SpellItem.saveSpell(stack, spell());
-            SpellItem.setSpellName(stack, name());
-            SpellItem.setSpellIcon(stack, icon());
+            helper.setSpell(stack, spell());
+            helper.setSpellName(stack, name());
+            helper.setSpellIcon(stack, icon());
             return stack;
         }
 

@@ -140,6 +140,7 @@ class AMTagsProvider {
             tag(ItemTags.WOODEN_PRESSURE_PLATES).add(AMItems.WITCHWOOD_PRESSURE_PLATE.get());
             tag(ItemTags.SMALL_FLOWERS).add(AMItems.AUM.get()).add(AMItems.CERUBLOSSOM.get()).add(AMItems.DESERT_NOVA.get()).add(AMItems.TARMA_ROOT.get()).add(AMItems.WAKEBLOOM.get());
             tag(ItemTags.RAILS).add(AMItems.IRON_INLAY.get(), AMItems.REDSTONE_INLAY.get(), AMItems.GOLD_INLAY.get());
+            tag(ItemTags.LECTERN_BOOKS).add(AMItems.SPELL_RECIPE.get());
         }
     }
 

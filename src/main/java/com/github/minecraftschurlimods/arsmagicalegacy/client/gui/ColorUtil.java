@@ -11,6 +11,14 @@ public final class ColorUtil {
     }
 
     /**
+     * @param color An ARGB value.
+     * @return The corresponding RGB value.
+     */
+    public static int argbToRgb(int color) {
+        return (int) (getRed(color) * 255) << 16 | (int) (getGreen(color) * 255) << 8 | (int) (getBlue(color) * 255);
+    }
+
+    /**
      * @param color The color to get the blue value for.
      * @return The blue value of the given color.
      */

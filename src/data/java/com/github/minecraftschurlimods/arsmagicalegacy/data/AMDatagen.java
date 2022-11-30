@@ -26,8 +26,8 @@ public class AMDatagen {
         DataGenerator generator = evt.getGenerator();
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
         AMAbilityProvider abilityProvider = new AMAbilityProvider(generator);
+        AMSkillProvider skillProvider = new AMSkillProvider(generator);
         if (evt.includeServer()) {
-            AMSkillProvider skillProvider = new AMSkillProvider(generator);
             generator.addProvider(abilityProvider);
             generator.addProvider(skillProvider);
             generator.addProvider(new AMAdvancementProvider(generator, existingFileHelper, skillProvider));

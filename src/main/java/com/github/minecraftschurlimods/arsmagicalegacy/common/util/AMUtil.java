@@ -1,13 +1,23 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ItemLike;
@@ -17,6 +27,10 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -31,6 +45,28 @@ public final class AMUtil {
         Vec3 d = b.subtract(a).normalize();
         double p = d.dot(c);
         return p <= 0 ? a : p >= a.distanceTo(b) ? b : a.add(d.scale(p));
+    }
+
+    /**
+     * Combines any duplicates in the list into single elements.
+     *
+     * @param list The list to perform the combining on.
+     * @return A list, containing all elements of the old list, with the elements combined where possible.
+     */
+    public static List<ISpellIngredient> combineSpellIngredients(List<ISpellIngredient> list) {
+        List<ISpellIngredient> result = new ArrayList<>();
+        for (ISpellIngredient ingredient : list) {
+            Optional<ISpellIngredient> optional = result.stream().filter(e -> e.canCombine(ingredient)).findAny();
+            if (optional.isPresent()) {
+                ISpellIngredient previous = optional.get();
+                int index = result.indexOf(previous);
+                result.remove(previous);
+                result.add(index, ingredient.combine(previous));
+            } else {
+                result.add(ingredient);
+            }
+        }
+        return result;
     }
 
     /**
@@ -81,9 +117,29 @@ public final class AMUtil {
      */
     public static ItemStack getSpellStack(LivingEntity entity) {
         ItemStack stack = entity.getMainHandItem();
-        if (SpellItem.getSpell(stack) != ISpell.EMPTY) return stack;
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        if (helper.getSpell(stack) != ISpell.EMPTY) return stack;
         stack = entity.getOffhandItem();
-        return SpellItem.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
+        return helper.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
+    }
+
+    /**
+     * @param i1 The first ingredient to match.
+     * @param i2 The second ingredient to match.
+     * @return Whether the two ingredients' item stack lists match, ignoring item counts.
+     */
+    public static boolean ingredientMatchesIgnoreCount(Ingredient i1, Ingredient i2) {
+        ItemStack[] a1 = i1.getItems();
+        ItemStack[] a2 = i2.getItems();
+        if (a1.length != a2.length) return false;
+        for (int i = 0; i < a1.length; i++) {
+            ItemStack s1 = a1[i].copy();
+            s1.setCount(1);
+            ItemStack s2 = a2[i].copy();
+            s2.setCount(1);
+            if (!ItemStack.matches(s1, s2)) return false;
+        }
+        return true;
     }
 
     /**
@@ -107,5 +163,13 @@ public final class AMUtil {
             result = Shapes.join(result, shape, BooleanOp.OR);
         }
         return result;
+    }
+
+    /**
+     * @param list The list of reagents to convert into a list of crafting ingredients.
+     * @return A list of crafting ingredients, derived from the reagent list.
+     */
+    public static List<ItemStack[]> reagentsToIngredients(List<ItemFilter> list) {
+        return list.stream().map(ItemFilter::getMatchedStacks).filter(e -> e.length > 0).toList();
     }
 }

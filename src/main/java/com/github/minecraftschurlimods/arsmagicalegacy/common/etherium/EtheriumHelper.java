@@ -1,9 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.etherium;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumConsumer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
@@ -16,6 +20,7 @@ public final class EtheriumHelper implements IEtheriumHelper {
     private static final Lazy<EtheriumHelper> INSTANCE = Lazy.concurrentOf(EtheriumHelper::new);
     private static final Capability<IEtheriumProvider> ETHERIUM_PROVIDER = CapabilityManager.get(new CapabilityToken<>() {});
     private static final Capability<IEtheriumConsumer> ETHERIUM_CONSUMER = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final String KEY = "etherium_type";
 
     private EtheriumHelper() {
     }
@@ -74,14 +79,28 @@ public final class EtheriumHelper implements IEtheriumHelper {
     @Override
     public LazyOptional<IEtheriumProvider> getEtheriumProvider(Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity == null) return LazyOptional.empty();
-        return getEtheriumProvider(blockEntity);
+        return blockEntity == null ? LazyOptional.empty() : getEtheriumProvider(blockEntity);
     }
 
     @Override
     public LazyOptional<IEtheriumConsumer> getEtheriumConsumer(Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity == null) return LazyOptional.empty();
-        return getEtheriumConsumer(blockEntity);
+        return blockEntity == null ? LazyOptional.empty() : getEtheriumConsumer(blockEntity);
+    }
+
+    @Override
+    public EtheriumType getEtheriumType(ItemStack stack) {
+        try {
+            return EtheriumType.valueOf(stack.getOrCreateTag().getCompound(ArsMagicaAPI.MOD_ID).getString(KEY).toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void setEtheriumType(ItemStack stack, EtheriumType type) {
+        CompoundTag tag = stack.getOrCreateTag().getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putString(KEY, type.name().toLowerCase());
+        stack.getOrCreateTag().put(ArsMagicaAPI.MOD_ID, tag);
     }
 }

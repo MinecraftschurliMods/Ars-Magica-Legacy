@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
     public static final ResourceLocation INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
@@ -49,6 +51,11 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
     }
 
     @Override
+    public int getCount() {
+        return count;
+    }
+
+    @Override
     public List<Component> getTooltip() {
         ItemStack[] items = ingredient().getItems();
         if (items.length == 1) return List.of(items[0].getDisplayName(), new TextComponent("x " + count()));
@@ -59,7 +66,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
 
     @Override
     public boolean canCombine(ISpellIngredient other) {
-        return other instanceof IngredientSpellIngredient i && Arrays.equals(i.ingredient().getItems(), ingredient().getItems());
+        return other instanceof IngredientSpellIngredient isi && AMUtil.ingredientMatchesIgnoreCount(ingredient(), isi.ingredient());
     }
 
     @Nullable
@@ -89,7 +96,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
         @Override
         public void renderInWorld(IngredientSpellIngredient ingredient, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
             Minecraft minecraft = Minecraft.getInstance();
-            ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
+            ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
             BakedModel model = itemRenderer.getModel(stack, null, null, 0);
             itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay, model);
@@ -97,16 +104,9 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
 
         @Override
         public void renderInGui(IngredientSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
-            Minecraft minecraft = Minecraft.getInstance();
-            ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), minecraft.player.tickCount / 20);
-            ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            PoseStack mvs = RenderSystem.getModelViewStack();
-            mvs.pushPose();
-            mvs.mulPoseMatrix(poseStack.last().pose());
-            RenderSystem.applyModelViewMatrix();
-            itemRenderer.renderGuiItem(stack, x, y);
-            mvs.popPose();
-            RenderSystem.applyModelViewMatrix();
+            ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
+            stack.setCount(ingredient.getCount());
+            ClientHelper.drawItemStack(poseStack, stack, x, y);
         }
     }
 }
