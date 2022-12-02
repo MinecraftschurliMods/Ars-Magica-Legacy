@@ -45,7 +45,7 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LogManager.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 2);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 3);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
@@ -88,15 +88,15 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SetLecternPagePacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(SetLecternPagePacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
+        NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }
