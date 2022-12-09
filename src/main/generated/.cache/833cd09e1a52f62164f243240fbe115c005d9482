@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-21T18:18:54.2902241	Item Models: arsmagicalegacy
+// 1.19.2	2022-11-30T20:14:26.2289668	Item Models: arsmagicalegacy
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/affinity_essence.json
 6e0b262bb6740bdbe7b3564e182497239ff375ac assets/arsmagicalegacy/models/item/affinity_essence_air.json
 84174d0bc6eb1016c4946a0937eb7ec35e19f1d8 assets/arsmagicalegacy/models/item/affinity_essence_arcane.json
@@ -52,6 +52,7 @@ ceb5816f7bffe087aa2d7d3ab4507a55e32a6728 assets/arsmagicalegacy/models/item/deep
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/arsmagicalegacy/models/item/dryad_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/arsmagicalegacy/models/item/earth_guardian_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/arsmagicalegacy/models/item/ender_guardian_spawn_egg.json
+3c357128f66121146e6c67dff38e370592823f14 assets/arsmagicalegacy/models/item/etherium_placeholder.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/arsmagicalegacy/models/item/fire_guardian_spawn_egg.json
 18d4246fda3363738c85b64260317fe6cb19374a assets/arsmagicalegacy/models/item/gold_inlay.json
 1ee0b234c539257428ef980254c2dea028ed3a94 assets/arsmagicalegacy/models/item/gray_rune.json
@@ -106,6 +107,7 @@ c13c5097dc958397074c98b4ce23cc6bca7bb6ff assets/arsmagicalegacy/models/item/spel
 cc4b5736e37e75dd4ff5ab1f699f27495871c7c8 assets/arsmagicalegacy/models/item/spell_nature.json
 dd40c3132cc43eef1237b4efe5009bfa3be412ff assets/arsmagicalegacy/models/item/spell_none.json
 9dfdee46a41f56a75b2658592d91d5c901bef09b assets/arsmagicalegacy/models/item/spell_parchment.json
+923cdaff5f13580f4d97e75ef18190eb75ecccde assets/arsmagicalegacy/models/item/spell_recipe.json
 77407e9c1a75c383d9ee18ef1bc971f97c9f2f86 assets/arsmagicalegacy/models/item/spell_water.json
 c5c08fd13cf74672fc67e26c749aeae7346a4ef7 assets/arsmagicalegacy/models/item/stripped_witchwood.json
 9253fce70168a98d5bf234ddb1a5ff0f3258ed73 assets/arsmagicalegacy/models/item/stripped_witchwood_log.json

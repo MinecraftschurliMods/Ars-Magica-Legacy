@@ -52,7 +52,7 @@ public class FireGuardian extends AbstractBoss {
         return AMSounds.FIRE_GUARDIAN_ATTACK.get();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

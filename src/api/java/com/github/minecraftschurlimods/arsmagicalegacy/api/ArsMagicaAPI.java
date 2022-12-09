@@ -31,10 +31,10 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,10 +50,14 @@ public interface ArsMagicaAPI {
         private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
             Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
             if (!FMLEnvironment.production) {
-                return impl.orElseThrow(() -> LogManager.getLogger(MOD_ID).throwing(new IllegalStateException("Unable to find implementation for IArsMagicaAPI!")));
+                return impl.orElseThrow(() -> {
+                    IllegalStateException exception = new IllegalStateException("Unable to find implementation for IArsMagicaAPI!");
+                    LoggerFactory.getLogger(MOD_ID).error(exception.getMessage(), exception);
+                    return exception;
+                });
             }
             return impl.orElseGet(() -> {
-                LogManager.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
+                LoggerFactory.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
                 return null;
             });
         });
@@ -184,6 +188,15 @@ public interface ArsMagicaAPI {
      * @param stack  The spell item stack to open the gui for.
      */
     void openSpellCustomizationGui(Level level, Player player, ItemStack stack);
+
+    /**
+     * Opens the spell recipe gui for the given player.
+     *
+     * @param level  The level to open the gui in.
+     * @param player The player to open the gui for.
+     * @param stack  The spell recipe item stack to open the gui for.
+     */
+    void openSpellRecipeGui(Level level, Player player, ItemStack stack);
 
     /**
      * Make an instance of ISpell.

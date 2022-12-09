@@ -1,6 +1,7 @@
 [![Ars Magica: Legacy](src/main/resources/logo.png)](https://mc-mods.cf/ars-magica-legacy)
 ==================
 
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
 [![Build Status](https://img.shields.io/github/workflow/status/MinecraftschurliMods/Ars-Magica-Legacy/Build%20Commit/version%2F1.18.x?logo=github)](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/actions/workflows/build.yml) 

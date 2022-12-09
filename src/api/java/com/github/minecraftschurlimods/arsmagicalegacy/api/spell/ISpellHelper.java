@@ -1,6 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.mojang.datafixers.util.Either;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -11,14 +14,65 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface ISpellHelper {
+    /**
+     * @param stack The stack to get the spell for.
+     * @return An optional containing the spell, or an empty optional if the given stack does not have a spell.
+     */
+    ISpell getSpell(ItemStack stack);
+
+    /**
+     * Sets the given spell to the given stack.
+     *
+     * @param stack The stack to set the spell on.
+     * @param spell The spell to set.
+     */
+    void setSpell(ItemStack stack, ISpell spell);
+
+    /**
+     * @param stack The stack to get the spell name for.
+     * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
+     */
+    Optional<Component> getSpellName(ItemStack stack);
+
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name to set.
+     */
+    void setSpellName(ItemStack stack, String name);
+
+    /**
+     * Sets the given name to the given stack.
+     *
+     * @param stack The stack to set the name on.
+     * @param name  The name to set.
+     */
+    void setSpellName(ItemStack stack, Component name);
+
+    /**
+     * @param stack The stack to get the spell icon for.
+     * @return An optional containing the spell icon id, or an empty optional if the given stack does not have a spell icon.
+     */
+    Optional<ResourceLocation> getSpellIcon(ItemStack stack);
+
+    /**
+     * Sets the given icon to the given stack.
+     *
+     * @param stack The stack to set the icon on.
+     * @param icon  The icon to set.
+     */
+    void setSpellIcon(ItemStack stack, ResourceLocation icon);
+
     /**
      * @param entity   The entity to check on.
      * @param reagents The reagents to search for.
      * @return Whether the given entity has the required reagents in their inventory or not.
      */
-    boolean hasReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
+    boolean hasReagents(LivingEntity entity, Collection<ItemFilter> reagents);
 
     /**
      * Consumes the reagents.
@@ -26,7 +80,7 @@ public interface ISpellHelper {
      * @param entity   The entity to consume the ingredients from.
      * @param reagents The reagents to consume.
      */
-    void consumeReagents(LivingEntity entity, Collection<Either<Ingredient, ItemStack>> reagents);
+    void consumeReagents(LivingEntity entity, Collection<ItemFilter> reagents);
 
     /**
      * Performs a ray trace and returns the entity the given entity is currently looking at.

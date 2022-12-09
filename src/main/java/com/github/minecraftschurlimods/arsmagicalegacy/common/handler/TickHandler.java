@@ -52,18 +52,18 @@ final class TickHandler {
 
     private static void playerTick(TickEvent.PlayerTickEvent event) {
         switch (event.side) {
-            case CLIENT:
+            case CLIENT -> {
                 switch (event.phase) {
                     case START -> playerTickClientStart(event.player);
                     case END -> playerTickClientEnd(event.player);
                 }
-                break;
-            case SERVER:
+            }
+            case SERVER -> {
                 switch (event.phase) {
                     case START -> playerTickServerStart(event.player);
                     case END -> playerTickServerEnd(event.player);
                 }
-                break;
+            }
         }
     }
 

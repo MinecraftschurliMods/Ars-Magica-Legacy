@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-21T18:18:54.3002182	Tags for minecraft:item
+// 1.19.2	2022-11-30T20:14:26.216092	Tags for minecraft:item
 ac08e7755658188bc121b8cce95fa5a057098996 data/arsmagicalegacy/tags/items/runes.json
 bf2ff7f1168fe233c660f374f8cb43a29c227e84 data/arsmagicalegacy/tags/items/runes/black.json
 6d8e32f4cdc0fe371bb34e661ca342e42cb8ff9b data/arsmagicalegacy/tags/items/runes/blue.json
@@ -44,6 +44,7 @@ a5efaf624ecc4e7aa79239bfda857f660c06c552 data/forge/tags/items/storage_blocks/ch
 76df3f25234406bbe4c797c04449e8b9683eefcd data/forge/tags/items/storage_blocks/topaz.json
 1b98676a20688653887cd8966162861777356e7e data/forge/tags/items/storage_blocks/vinteum.json
 cd4ee8afe25cbc17263f3bcd49ba4402450d4b66 data/minecraft/tags/items/leaves.json
+dd339a82f6a267df22cce143dbc4859a4ea30176 data/minecraft/tags/items/lectern_books.json
 cc20d8d43b66ef761c1f2d6f55740085c58a35f3 data/minecraft/tags/items/logs.json
 638b279febd41d749f4abb6380caa1aeb19c0d00 data/minecraft/tags/items/planks.json
 3a056c5644cf343a86bec06721ab75a71e7d4d20 data/minecraft/tags/items/rails.json

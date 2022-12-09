@@ -59,7 +59,7 @@ public class LifeGuardian extends AbstractBoss {
         return AMSounds.LIFE_GUARDIAN_ATTACK.get();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

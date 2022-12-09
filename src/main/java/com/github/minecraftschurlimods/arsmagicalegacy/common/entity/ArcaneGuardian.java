@@ -49,7 +49,7 @@ public class ArcaneGuardian extends AbstractBoss {
         return AMSounds.ARCANE_GUARDIAN_ATTACK.get();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

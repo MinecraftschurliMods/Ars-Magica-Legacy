@@ -15,18 +15,17 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.AMPermissions;
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -128,7 +127,7 @@ public final class Spell implements ISpell {
         if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
         float mana = mana(caster);
         float burnout = burnout(caster);
-        Collection<Either<Ingredient, ItemStack>> reagents = reagents(caster);
+        Collection<ItemFilter> reagents = reagents(caster);
         var api = ArsMagicaAPI.get();
         var manaHelper = api.getManaHelper();
         var burnoutHelper = api.getBurnoutHelper();
@@ -233,9 +232,9 @@ public final class Spell implements ISpell {
     }
 
     @Override
-    public List<Either<Ingredient, ItemStack>> reagents(LivingEntity caster) {
+    public List<ItemFilter> reagents(LivingEntity caster) {
         ISpellDataManager spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
-        List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        List<ItemFilter> reagents = new ArrayList<>();
         for (ISpellPart part : parts()) {
             if (part.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
             ISpellPartData dataForPart = spellDataManager.getDataForPart(part);

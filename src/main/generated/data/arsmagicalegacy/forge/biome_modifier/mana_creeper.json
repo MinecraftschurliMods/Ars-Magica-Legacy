@@ -7,7 +7,7 @@
       {
         "type": "forge:not",
         "value": {
-          "type": "forge:and",
+          "type": "forge:or",
           "values": [
             "minecraft:deep_dark",
             "#forge:is_mushroom"
@@ -19,7 +19,7 @@
   "spawners": {
     "type": "arsmagicalegacy:mana_creeper",
     "maxCount": 4,
-    "minCount": 4,
+    "minCount": 1,
     "weight": 10
   }
 }

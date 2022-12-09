@@ -3,9 +3,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Either;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -14,8 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  * Base class for spell part data generators.
  */
 public abstract class SpellPartDataProvider implements DataProvider {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final String namespace;
     private final DataGenerator generator;
@@ -140,7 +140,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
         private final float manaCost;
         private final Float burnout;
         private final List<ISpellIngredient> recipe = new ArrayList<>();
-        private final List<Either<Ingredient, ItemStack>> reagents = new ArrayList<>();
+        private final List<ItemFilter> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
         /**
@@ -175,8 +175,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(Ingredient ingredient) {
-            reagents.add(Either.left(ingredient));
-            return this;
+            return withReagent(1, ingredient);
+        }
+
+        /**
+         * Adds a spell reagent.
+         *
+         * @param ingredient The spell reagent to add.
+         * @return This builder, for chaining.
+         */
+        public SpellPartDataBuilder withReagent(int amount, Ingredient ingredient) {
+            return withReagent(ItemFilter.exactly(amount).is(ingredient));
         }
 
         /**
@@ -186,7 +195,17 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @return This builder, for chaining.
          */
         public SpellPartDataBuilder withReagent(ItemStack stack) {
-            reagents.add(Either.right(stack));
+            return withReagent(ItemFilter.exactly(stack));
+        }
+
+        /**
+         * Adds a spell reagent.
+         *
+         * @param filter The spell reagent to add.
+         * @return This builder, for chaining.
+         */
+        public SpellPartDataBuilder withReagent(ItemFilter filter) {
+            reagents.add(filter);
             return this;
         }
 
@@ -247,7 +266,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
                 json.addProperty("burnout", this.burnout);
             }
             JsonArray reagentsJson = new JsonArray();
-            reagents.forEach(either -> reagentsJson.add(either.map(Ingredient::toJson, stack -> ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, s -> {}))));
+            reagents.forEach(filter -> reagentsJson.add(ItemFilter.CODEC.encodeStart(JsonOps.INSTANCE, filter).getOrThrow(false, LOGGER::error)));
             json.add("reagents", reagentsJson);
             JsonObject affinitiesJson = new JsonObject();
             affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));

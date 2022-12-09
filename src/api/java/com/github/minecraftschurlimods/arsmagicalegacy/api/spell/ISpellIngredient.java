@@ -24,6 +24,11 @@ public interface ISpellIngredient {
     ResourceLocation getType();
 
     /**
+     * @return The count of this type.
+     */
+    int getCount();
+
+    /**
      * @return The tooltip of this type.
      */
     List<Component> getTooltip();

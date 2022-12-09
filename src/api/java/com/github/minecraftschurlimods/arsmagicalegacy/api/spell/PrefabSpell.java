@@ -36,9 +36,11 @@ public record PrefabSpell(Component name, ISpell spell, ResourceLocation icon) i
     @Override
     public ItemStack makeSpell() {
         ItemStack stack = new ItemStack(SPELL.get());
-        ISpellItem.saveSpell(stack, spell());
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        helper.setSpell(stack, spell());
+        helper.setSpellName(stack, name());
         stack.setHoverName(name());
-        ISpellItem.setSpellIcon(stack, icon());
+        helper.setSpellIcon(stack, icon());
         return stack;
     }
 }

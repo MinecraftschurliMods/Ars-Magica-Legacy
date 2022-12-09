@@ -157,7 +157,7 @@ public abstract class WorldgenProvider implements DataProvider {
 
     @SafeVarargs
     protected final HolderSet<Biome> not(HolderSet<Biome>... holders) {
-        return new NotHolderSet<>(registryOrThrow(Registry.BIOME_REGISTRY), and(holders));
+        return new NotHolderSet<>(registryOrThrow(Registry.BIOME_REGISTRY), or(holders));
     }
 
     @NotNull

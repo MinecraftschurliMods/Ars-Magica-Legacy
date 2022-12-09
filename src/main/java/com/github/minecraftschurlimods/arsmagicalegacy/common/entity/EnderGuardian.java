@@ -51,7 +51,7 @@ public class EnderGuardian extends AbstractBoss {
         return AMSounds.ENDER_GUARDIAN_ATTACK.get();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("DataFlowIssue")
     @Override
     protected void registerGoals() {
         super.registerGoals();

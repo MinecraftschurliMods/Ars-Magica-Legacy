@@ -38,8 +38,9 @@ public class SpellCustomizationScreen extends Screen {
         super(Component.empty());
         editBox = new EditBox(font, 0, 0, 0, 0, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE));
         spellIconSelector = new SpellIconSelector(0, 0, 0, 0, null);
-        ISpellItem.getSpellName(stack).ifPresent(pText -> editBox.setValue(pText.getString()));
-        ISpellItem.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        helper.getSpellName(stack).ifPresent(pText -> editBox.setValue(pText.getString()));
+        helper.getSpellIcon(stack).ifPresent(spellIconSelector::setSelected);
     }
 
     @Override

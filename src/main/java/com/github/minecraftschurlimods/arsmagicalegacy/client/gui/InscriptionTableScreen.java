@@ -53,7 +53,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     private static final Component NAME_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_NAME);
     private static final Component DEFAULT_NAME = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
     private static final int SHAPE_GROUP_WIDTH = 36;
-    private static final int SHAPE_GROUP_HEIGHT = 34;
+    private static final int SHAPE_GROUP_HEIGHT = 36;
     private static final int SHAPE_GROUP_PADDING = 3;
     private static final int SHAPE_GROUP_Y = 108;
     private static final int SHAPE_GROUP_X = 13;
@@ -305,9 +305,9 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             BasicDropZone zone;
             if (shapeGroupDropZones.size() > i) {
                 BasicDropZone prev = shapeGroupDropZones.get(i);
-                zone = new BasicDropZone(prev.getX(), prev.getY(), SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 8, prev);
+                zone = new BasicDropZone(prev.getX(), prev.getY(), SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 1, 8, prev);
             } else {
-                zone = new BasicDropZone(0, 0, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 8, null);
+                zone = new BasicDropZone(0, 0, SHAPE_GROUP_WIDTH, SHAPE_GROUP_HEIGHT, ICON_SIZE, ICON_SIZE, 1, 8, null);
             }
             zone.clear();
             for (ISpellPart spellPart : shapeGroup.parts()) {
