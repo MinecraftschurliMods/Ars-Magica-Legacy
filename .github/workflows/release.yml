@@ -50,7 +50,6 @@ jobs:
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-javadoc.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-deobf.jar
             build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-slim.jar
-            build/libs/${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}-flat.jar
           body: >
              ${{ steps.changelog.outputs.content }}
       - name: CF upload
