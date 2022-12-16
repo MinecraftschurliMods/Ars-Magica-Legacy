@@ -2,13 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.SkillProvider;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.google.gson.JsonElement;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.BLUE;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.GREEN;
@@ -21,448 +15,448 @@ class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation UTILITY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility");
     private static final ResourceLocation TALENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent");
 
-    AMSkillProvider(DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
-        super(ArsMagicaAPI.MOD_ID, generator, existingFileHelper, registryOps);
+    AMSkillProvider() {
+        super(ArsMagicaAPI.MOD_ID);
     }
 
     @Override
-    protected void generate() {
-        offense(AOE, 210, 165)
+    public void generate() {
+        add(AOE.getId(), offense(210, 165)
                 .addCost(GREEN.get())
                 .addParent(FIRE_DAMAGE.getId())
                 .addParent(FROST_DAMAGE.getId())
                 .addParent(LIGHTNING_DAMAGE.getId())
                 .addParent(MAGIC_DAMAGE.getId())
-                .build();
-        offense(BEAM, 210, 210)
+                .build());
+        add(BEAM.getId(), offense(210, 210)
                 .addCost(RED.get())
                 .addParent(AOE.getId())
-                .build();
-        offense(CHAIN, 210, 255)
+                .build());
+        add(CHAIN.getId(), offense(210, 255)
                 .addCost(RED.get())
                 .addParent(BEAM.getId())
-                .build();
-        utility(CHANNEL, 165, 255)
+                .build());
+        add(CHANNEL.getId(), utility(165, 255)
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId())
-                .build();
-        defense(CONTINGENCY_DAMAGE, 255, 345)
+                .build());
+        add(CONTINGENCY_DAMAGE.getId(), defense(255, 345)
                 .addCost(RED.get())
                 .addParent(REFLECT.getId())
-                .build();
-        utility(CONTINGENCY_DEATH, 165, 345)
+                .build());
+        add(CONTINGENCY_DEATH.getId(), utility(165, 345)
                 .addCost(RED.get())
                 .addParent(ENDER_INTERVENTION.getId())
-                .build();
-        defense(CONTINGENCY_FALL, 75, 120)
+                .build());
+        add(CONTINGENCY_FALL.getId(), defense(75, 120)
                 .addCost(RED.get())
                 .addParent(SLOW_FALLING.getId())
-                .build();
-        offense(CONTINGENCY_FIRE, 75, 165)
+                .build());
+        add(CONTINGENCY_FIRE.getId(), offense(75, 165)
                 .addCost(RED.get())
                 .addParent(FORGE.getId())
-                .build();
-        defense(CONTINGENCY_HEALTH, 300, 255)
+                .build());
+        add(CONTINGENCY_HEALTH.getId(), defense(300, 255)
                 .addCost(RED.get())
                 .addParent(SHIELD.getId())
-                .build();
-        offense(PROJECTILE, 210, 30)
+                .build());
+        add(PROJECTILE.getId(), offense(210, 30)
                 .addCost(BLUE.get())
-                .build();
-        defense(RUNE, 120, 300)
+                .build());
+        add(RUNE.getId(), defense(120, 300)
                 .addCost(GREEN.get())
                 .addParent(AGILITY.getId())
                 .addParent(ENTANGLE.getId())
-                .build();
-        defense(SELF, 165, 30)
+                .build());
+        add(SELF.getId(), defense(165, 30)
                 .addCost(BLUE.get())
-                .build();
-        utility(TOUCH, 120, 30)
+                .build());
+        add(TOUCH.getId(), utility(120, 30)
                 .addCost(BLUE.get())
-                .build();
-        defense(WALL, 30, 210)
+                .build());
+        add(WALL.getId(), defense(30, 210)
                 .addCost(GREEN.get())
                 .addParent(REPEL.getId())
-                .build();
-        offense(WAVE, 255, 300)
+                .build());
+        add(WAVE.getId(), offense(255, 300)
                 .addCost(RED.get())
                 .addParent(DAMAGE.getId())
                 .addParent(VELOCITY.getId())
-                .build();
-        defense(ZONE, 255, 210)
+                .build());
+        add(ZONE.getId(), defense(255, 210)
                 .addCost(RED.get())
                 .addParent(DISPEL.getId())
-                .build();
-        offense(DROWNING_DAMAGE, 300, 165)
+                .build());
+        add(DROWNING_DAMAGE.getId(), offense(300, 165)
                 .addCost(BLUE.get())
                 .addParent(MAGIC_DAMAGE.getId())
-                .build();
-        offense(FIRE_DAMAGE, 165, 120)
+                .build());
+        add(FIRE_DAMAGE.getId(), offense(165, 120)
                 .addCost(BLUE.get())
                 .addParent(PHYSICAL_DAMAGE.getId())
-                .build();
-        offense(FROST_DAMAGE, 255, 120)
+                .build());
+        add(FROST_DAMAGE.getId(), offense(255, 120)
                 .addCost(BLUE.get())
                 .addParent(PHYSICAL_DAMAGE.getId())
-                .build();
-        offense(LIGHTNING_DAMAGE, 165, 165)
+                .build());
+        add(LIGHTNING_DAMAGE.getId(), offense(165, 165)
                 .addCost(BLUE.get())
                 .addParent(PHYSICAL_DAMAGE.getId())
-                .build();
-        offense(MAGIC_DAMAGE, 255, 165)
+                .build());
+        add(MAGIC_DAMAGE.getId(), offense(255, 165)
                 .addCost(BLUE.get())
                 .addParent(PHYSICAL_DAMAGE.getId())
-                .build();
-        offense(PHYSICAL_DAMAGE, 210, 75)
+                .build());
+        add(PHYSICAL_DAMAGE.getId(), offense(210, 75)
                 .addCost(BLUE.get())
                 .addParent(PROJECTILE.getId())
-                .build();
-        defense(ABSORPTION, 210, 255)
+                .build());
+        add(ABSORPTION.getId(), defense(210, 255)
                 .addCost(RED.get())
                 .addParent(SHIELD.getId())
-                .build();
-        offense(BLINDNESS, 165, 210)
+                .build());
+        add(BLINDNESS.getId(), offense(165, 210)
                 .addCost(GREEN.get())
                 .addParent(FIRE_DAMAGE.getId())
                 .addParent(LIGHTNING_DAMAGE.getId())
-                .build();
-        defense(HASTE, 165, 165)
+                .build());
+        add(HASTE.getId(), defense(165, 165)
                 .addCost(BLUE.get())
                 .addParent(SLOW_FALLING.getId())
-                .build();
-        defense(HEALTH_BOOST, 30, 30)
+                .build());
+        add(HEALTH_BOOST.getId(), defense(30, 30)
                 .setHidden()
-                .build();
-        utility(INVISIBILITY, 30, 210)
+                .build());
+        add(INVISIBILITY.getId(), utility(30, 210)
                 .addCost(GREEN.get())
                 .addParent(TRUE_SIGHT.getId())
-                .build();
-        defense(JUMP_BOOST, 120, 75)
+                .build());
+        add(JUMP_BOOST.getId(), defense(120, 75)
                 .addCost(BLUE.get())
                 .addParent(SELF.getId())
-                .build();
-        defense(LEVITATION, 120, 210)
+                .build());
+        add(LEVITATION.getId(), defense(120, 210)
                 .addCost(GREEN.get())
                 .addParent(GRAVITY_WELL.getId())
-                .build();
-        utility(NIGHT_VISION, 75, 165)
+                .build());
+        add(NIGHT_VISION.getId(), utility(75, 165)
                 .addCost(BLUE.get())
                 .addParent(LIGHT.getId())
-                .build();
-        defense(REGENERATION, 255, 75)
+                .build());
+        add(REGENERATION.getId(), defense(255, 75)
                 .addCost(BLUE.get())
                 .addParent(SELF.getId())
-                .build();
-        defense(SLOWNESS, 75, 165)
+                .build());
+        add(SLOWNESS.getId(), defense(75, 165)
                 .addCost(BLUE.get())
                 .addParent(SLOW_FALLING.getId())
-                .build();
-        defense(SLOW_FALLING, 120, 120)
+                .build());
+        add(SLOW_FALLING.getId(), defense(120, 120)
                 .addCost(BLUE.get())
                 .addParent(JUMP_BOOST.getId())
-                .build();
-        utility(WATER_BREATHING, 255, 255)
+                .build());
+        add(WATER_BREATHING.getId(), utility(255, 255)
                 .addCost(GREEN.get())
                 .addParent(CREATE_WATER.getId())
-                .build();
-        defense(AGILITY, 165, 255)
+                .build());
+        add(AGILITY.getId(), defense(165, 255)
                 .addCost(GREEN.get())
                 .addParent(SWIFT_SWIM.getId())
-                .build();
-        offense(ASTRAL_DISTORTION, 255, 210)
+                .build());
+        add(ASTRAL_DISTORTION.getId(), offense(255, 210)
                 .addCost(GREEN.get())
                 .addParent(MAGIC_DAMAGE.getId())
-                .build();
-        defense(ENTANGLE, 75, 255)
+                .build());
+        add(ENTANGLE.getId(), defense(75, 255)
                 .addCost(GREEN.get())
                 .addParent(REPEL.getId())
-                .build();
-        defense(FLIGHT, 120, 255)
+                .build());
+        add(FLIGHT.getId(), defense(120, 255)
                 .addCost(RED.get())
                 .addParent(LEVITATION.getId())
-                .build();
-        offense(FURY, 165, 300)
+                .build());
+        add(FURY.getId(), offense(165, 300)
                 .addCost(RED.get())
                 .addParent(DAMAGE.getId())
-                .build();
-        defense(GRAVITY_WELL, 120, 165)
+                .build());
+        add(GRAVITY_WELL.getId(), defense(120, 165)
                 .addCost(GREEN.get())
                 .addParent(SLOW_FALLING.getId())
-                .build();
-        defense(SHIELD, 255, 255)
+                .build());
+        add(SHIELD.getId(), defense(255, 255)
                 .addCost(RED.get())
                 .addParent(ZONE.getId())
-                .build();
-        defense(SHRINK, 300, 75)
+                .build());
+        add(SHRINK.getId(), defense(300, 75)
                 .addCost(BLUE.get())
                 .addParent(REGENERATION.getId())
-                .build();
-        offense(SILENCE, 255, 255)
+                .build());
+        add(SILENCE.getId(), offense(255, 255)
                 .addCost(RED.get())
                 .addParent(ASTRAL_DISTORTION.getId())
-                .build();
-        defense(SWIFT_SWIM, 165, 210)
+                .build());
+        add(SWIFT_SWIM.getId(), defense(165, 210)
                 .addCost(GREEN.get())
                 .addParent(HASTE.getId())
-                .build();
-        defense(TEMPORAL_ANCHOR, 210, 300)
+                .build());
+        add(TEMPORAL_ANCHOR.getId(), defense(210, 300)
                 .addCost(RED.get())
                 .addParent(REFLECT.getId())
-                .build();
-        utility(TRUE_SIGHT, 75, 210)
+                .build());
+        add(TRUE_SIGHT.getId(), utility(75, 210)
                 .addCost(BLUE.get())
                 .addParent(NIGHT_VISION.getId())
-                .build();
-        offense(WATERY_GRAVE, 345, 165)
+                .build());
+        add(WATERY_GRAVE.getId(), offense(345, 165)
                 .addCost(GREEN.get())
                 .addParent(DROWNING_DAMAGE.getId())
-                .build();
-        utility(ATTRACT, 120, 300)
+                .build());
+        add(ATTRACT.getId(), utility(120, 300)
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId())
-                .build();
-        utility(BANISH_RAIN, 255, 300)
+                .build());
+        add(BANISH_RAIN.getId(), utility(255, 300)
                 .addCost(GREEN.get())
                 .addParent(DROUGHT.getId())
-                .build();
-        utility(BLINK, 30, 300)
+                .build());
+        add(BLINK.getId(), utility(30, 300)
                 .addCost(GREEN.get())
                 .addParent(RANDOM_TELEPORT.getId())
-                .build();
-        offense(BLIZZARD, 30, 30)
+                .build());
+        add(BLIZZARD.getId(), offense(30, 30)
                 .setHidden()
-                .build();
-        utility(CHARM, 165, 165)
+                .build());
+        add(CHARM.getId(), utility(165, 165)
                 .addCost(BLUE.get())
                 .addParent(LIGHT.getId())
-                .build();
-        utility(CREATE_WATER, 210, 255)
+                .build());
+        add(CREATE_WATER.getId(), utility(210, 255)
                 .addCost(GREEN.get())
                 .addParent(PLANT.getId())
-                .build();
-        utility(DAYLIGHT, 30, 30)
+                .build());
+        add(DAYLIGHT.getId(), utility(30, 30)
                 .setHidden()
-                .build();
-        utility(DIG, 120, 75)
+                .build());
+        add(DIG.getId(), utility(120, 75)
                 .addCost(BLUE.get())
                 .addParent(TOUCH.getId())
-                .build();
-        defense(DISARM, 300, 165)
+                .build());
+        add(DISARM.getId(), defense(300, 165)
                 .addCost(BLUE.get())
                 .addParent(DISPEL.getId())
-                .build();
-        defense(DISPEL, 255, 165)
+                .build());
+        add(DISPEL.getId(), defense(255, 165)
                 .addCost(BLUE.get())
                 .addParent(HEAL.getId())
-                .build();
-        utility(DIVINE_INTERVENTION, 30, 345)
+                .build());
+        add(DIVINE_INTERVENTION.getId(), utility(30, 345)
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
-                .build();
-        utility(DROUGHT, 210, 300)
+                .build());
+        add(DROUGHT.getId(), utility(210, 300)
                 .addCost(GREEN.get())
                 .addParent(CREATE_WATER.getId())
-                .build();
-        utility(ENDER_INTERVENTION, 120, 345)
+                .build());
+        add(ENDER_INTERVENTION.getId(), utility(120, 345)
                 .addCost(RED.get())
                 .addParent(RECALL.getId())
-                .build();
-        offense(EXPLOSION, 120, 300)
+                .build());
+        add(EXPLOSION.getId(), offense(120, 300)
                 .addCost(RED.get())
                 .addParent(FURY.getId())
-                .build();
-        offense(FALLING_STAR, 30, 75)
+                .build());
+        add(FALLING_STAR.getId(), offense(30, 75)
                 .setHidden()
-                .build();
-        offense(FIRE_RAIN, 30, 120)
+                .build());
+        add(FIRE_RAIN.getId(), offense(30, 120)
                 .setHidden()
-                .build();
-        offense(FLING, 300, 255)
+                .build());
+        add(FLING.getId(), offense(300, 255)
                 .addCost(GREEN.get())
                 .addParent(KNOCKBACK.getId())
-                .build();
-        offense(FORGE, 75, 120)
+                .build());
+        add(FORGE.getId(), offense(75, 120)
                 .addCost(GREEN.get())
                 .addParent(IGNITION.getId())
-                .build();
-        offense(FROST, 300, 120)
+                .build());
+        add(FROST.getId(), offense(300, 120)
                 .addCost(GREEN.get())
                 .addParent(FROST_DAMAGE.getId())
-                .build();
-        utility(GROW, 255, 210)
+                .build());
+        add(GROW.getId(), utility(255, 210)
                 .addCost(GREEN.get())
                 .addParent(PLANT.getId())
-                .build();
-        utility(HARVEST, 210, 120)
+                .build());
+        add(HARVEST.getId(), utility(210, 120)
                 .addCost(GREEN.get())
                 .addParent(PLOW.getId())
-                .build();
-        defense(HEAL, 255, 120)
+                .build());
+        add(HEAL.getId(), defense(255, 120)
                 .addCost(BLUE.get())
                 .addParent(REGENERATION.getId())
-                .build();
-        offense(IGNITION, 120, 120)
+                .build());
+        add(IGNITION.getId(), offense(120, 120)
                 .addCost(GREEN.get())
                 .addParent(FIRE_DAMAGE.getId())
-                .build();
-        offense(KNOCKBACK, 300, 210)
+                .build());
+        add(KNOCKBACK.getId(), offense(300, 210)
                 .addCost(GREEN.get())
                 .addParent(MAGIC_DAMAGE.getId())
-                .build();
-        defense(LIFE_DRAIN, 210, 165)
+                .build());
+        add(LIFE_DRAIN.getId(), defense(210, 165)
                 .addCost(GREEN.get())
                 .addParent(LIFE_TAP.getId())
-                .build();
-        defense(LIFE_TAP, 210, 120)
+                .build());
+        add(LIFE_TAP.getId(), defense(210, 120)
                 .addCost(GREEN.get())
                 .addParent(HEAL.getId())
-                .build();
-        utility(LIGHT, 120, 165)
+                .build());
+        add(LIGHT.getId(), utility(120, 165)
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
-                .build();
-        offense(MANA_BLAST, 30, 165)
+                .build());
+        add(MANA_BLAST.getId(), offense(30, 165)
                 .setHidden()
-                .build();
-        defense(MANA_DRAIN, 210, 210)
+                .build());
+        add(MANA_DRAIN.getId(), defense(210, 210)
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId())
-                .build();
-        utility(MOONRISE, 30, 75)
+                .build());
+        add(MOONRISE.getId(), utility(30, 75)
                 .setHidden()
-                .build();
-        utility(PLACE_BLOCK, 165, 75)
+                .build());
+        add(PLACE_BLOCK.getId(), utility(165, 75)
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
-                .build();
-        utility(PLANT, 210, 210)
+                .build());
+        add(PLANT.getId(), utility(210, 210)
                 .addCost(BLUE.get())
                 .addParent(LIGHT.getId())
-                .build();
-        utility(PLOW, 210, 165)
+                .build());
+        add(PLOW.getId(), utility(210, 165)
                 .addCost(BLUE.get())
                 .addParent(PLANT.getId())
-                .build();
-        utility(RANDOM_TELEPORT, 30, 255)
+                .build());
+        add(RANDOM_TELEPORT.getId(), utility(30, 255)
                 .addCost(GREEN.get())
                 .addParent(INVISIBILITY.getId())
-                .build();
-        utility(RECALL, 75, 345)
+                .build());
+        add(RECALL.getId(), utility(75, 345)
                 .addCost(GREEN.get())
                 .addParent(TRANSPLACE.getId())
-                .build();
-        defense(REFLECT, 255, 300)
+                .build());
+        add(REFLECT.getId(), defense(255, 300)
                 .addCost(RED.get())
                 .addParent(SHIELD.getId())
-                .build();
-        defense(REPEL, 75, 210)
+                .build());
+        add(REPEL.getId(), defense(75, 210)
                 .addCost(GREEN.get())
                 .addParent(SLOWNESS.getId())
-                .build();
-        utility(RIFT, 120, 255)
+                .build());
+        add(RIFT.getId(), utility(120, 255)
                 .addCost(GREEN.get())
                 .addParent(LIGHT.getId())
-                .build();
-        offense(STORM, 120, 165)
+                .build());
+        add(STORM.getId(), offense(120, 165)
                 .addCost(RED.get())
                 .addParent(LIGHTNING_DAMAGE.getId())
-                .build();
-        defense(SUMMON, 165, 120)
+                .build());
+        add(SUMMON.getId(), defense(165, 120)
                 .addCost(GREEN.get())
                 .addParent(LIFE_TAP.getId())
-                .build();
-        utility(TELEKINESIS, 165, 300)
+                .build());
+        add(TELEKINESIS.getId(), utility(165, 300)
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
-                .build();
-        utility(TRANSPLACE, 75, 300)
+                .build());
+        add(TRANSPLACE.getId(), utility(75, 300)
                 .addCost(GREEN.get())
                 .addParent(BLINK.getId())
-                .build();
-        utility(WIZARDS_AUTUMN, 165, 120)
+                .build());
+        add(WIZARDS_AUTUMN.getId(), utility(165, 120)
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
-                .build();
-        offense(BOUNCE, 255, 75)
+                .build());
+        add(BOUNCE.getId(), offense(255, 75)
                 .addCost(BLUE.get())
                 .addParent(PROJECTILE.getId())
-                .build();
-        offense(DAMAGE, 210, 300)
+                .build());
+        add(DAMAGE.getId(), offense(210, 300)
                 .addCost(RED.get())
                 .addParent(CHAIN.getId())
-                .build();
-        offense(DISMEMBERING, 30, 210)
+                .build());
+        add(DISMEMBERING.getId(), offense(30, 210)
                 .setHidden()
-                .build();
-        defense(DURATION, 210, 345)
+                .build());
+        add(DURATION.getId(), defense(210, 345)
                 .addCost(RED.get())
                 .addParent(TEMPORAL_ANCHOR.getId())
-                .build();
-        defense(EFFECT_POWER, 30, 75)
+                .build());
+        add(EFFECT_POWER.getId(), defense(30, 75)
                 .setHidden()
-                .build();
-        offense(GRAVITY, 165, 75)
+                .build());
+        add(GRAVITY.getId(), offense(165, 75)
                 .addCost(BLUE.get())
                 .addParent(PROJECTILE.getId())
-                .build();
-        defense(HEALING, 300, 120)
+                .build());
+        add(HEALING.getId(), defense(300, 120)
                 .addCost(RED.get())
                 .addParent(HEAL.getId())
-                .build();
-        utility(LUNAR, 30, 165)
+                .build());
+        add(LUNAR.getId(), utility(30, 165)
                 .addCost(RED.get())
                 .addParent(NIGHT_VISION.getId())
-                .build();
-        utility(MINING_POWER, 75, 120)
+                .build());
+        add(MINING_POWER.getId(), utility(75, 120)
                 .addCost(GREEN.get())
                 .addParent(SILK_TOUCH.getId())
-                .build();
-        offense(PIERCING, 345, 120)
+                .build());
+        add(PIERCING.getId(), offense(345, 120)
                 .addCost(RED.get())
                 .addParent(FROST.getId())
-                .build();
-        utility(PROSPERITY, 30, 120)
+                .build());
+        add(PROSPERITY.getId(), utility(30, 120)
                 .setHidden()
-                .build();
-        utility(RANGE, 75, 255)
+                .build());
+        add(RANGE.getId(), utility(75, 255)
                 .addCost(RED.get())
                 .addParent(RANDOM_TELEPORT.getId())
-                .build();
-        defense(RUNE_PROCS, 120, 345)
+                .build());
+        add(RUNE_PROCS.getId(), defense(120, 345)
                 .addCost(GREEN.get())
                 .addParent(RUNE.getId())
-                .build();
-        utility(SILK_TOUCH, 75, 75)
+                .build());
+        add(SILK_TOUCH.getId(), utility(75, 75)
                 .addCost(BLUE.get())
                 .addParent(DIG.getId())
-                .build();
-        offense(SOLAR, 120, 210)
+                .build());
+        add(SOLAR.getId(), offense(120, 210)
                 .addCost(RED.get())
                 .addParent(BLINDNESS.getId())
-                .build();
-        utility(TARGET_NON_SOLID, 75, 30)
+                .build());
+        add(TARGET_NON_SOLID.getId(), utility(75, 30)
                 .addCost(BLUE.get())
                 .addParent(TOUCH.getId())
-                .build();
-        offense(VELOCITY, 300, 300)
+                .build());
+        add(VELOCITY.getId(), offense(300, 300)
                 .addCost(RED.get())
                 .addParent(FLING.getId())
-                .build();
+                .build());
     }
 
-    private Builder offense(RegistryObject<? extends ISpellPart> part, int x, int y) {
-        return builder(part.getId().getPath(), OFFENSE, x, y);
+    private Builder offense(int x, int y) {
+        return builder(OFFENSE, x, y);
     }
 
-    private Builder defense(RegistryObject<? extends ISpellPart> part, int x, int y) {
-        return builder(part.getId().getPath(), DEFENSE, x, y);
+    private Builder defense(int x, int y) {
+        return builder(DEFENSE, x, y);
     }
 
-    private Builder utility(RegistryObject<? extends ISpellPart> part, int x, int y) {
-        return builder(part.getId().getPath(), UTILITY, x, y);
+    private Builder utility(int x, int y) {
+        return builder(UTILITY, x, y);
     }
 
-    private Builder talent(RegistryObject<? extends ISpellPart> part, int x, int y) {
-        return builder(part.getId().getPath(), TALENT, x, y);
+    private Builder talent(int x, int y) {
+        return builder(TALENT, x, y);
     }
 }

@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -25,8 +25,8 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItem
 
 @SuppressWarnings({"SameParameterValue", "unused"})
 class AMItemModelProvider extends ItemModelProvider {
-    AMItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
+    AMItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -86,6 +86,7 @@ class AMItemModelProvider extends ItemModelProvider {
         withExistingParent(WITCHWOOD_BUTTON, modLoc("block/witchwood_button_inventory"));
         blockItem(WITCHWOOD_PRESSURE_PLATE);
         itemGenerated(WITCHWOOD_SIGN);
+        itemGenerated(WITCHWOOD_HANGING_SIGN);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemGenerated(COLORED_RUNE.registryObject(color));
@@ -231,7 +232,7 @@ class AMItemModelProvider extends ItemModelProvider {
     }
 
     /**
-     * Adds an item model for this item, and a handheld version to be used by a {@link SpellBookItemModel}.
+     * Adds an item model for this item, and a handheld version to be used by a {@link com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel SpellBookItemModel}.
      *
      * @param item The item to generate the model for.
      */

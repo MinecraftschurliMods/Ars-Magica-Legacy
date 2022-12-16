@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class NatureGuardian extends AbstractBoss {
     private boolean hasScythe = true;
@@ -70,12 +70,14 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("nature_guardian"));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "spin", Action.SPIN));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "strike", Action.STRIKE));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "throw", Action.THROW));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("nature_guardian"),
+                createActionAnimationController("nature_guardian", "idle", Action.IDLE),
+                createActionAnimationController("nature_guardian", "spin", Action.SPIN),
+                createActionAnimationController("nature_guardian", "strike", Action.STRIKE),
+                createActionAnimationController("nature_guardian", "throw", Action.THROW)
+        );
     }
 
     @Override

@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.feather_falling.description",
-      "title": "ability.arsmagicalegacy.feather_falling.name"
+      "text": "ability.arsmagicalegacy.gravity.description",
+      "title": "ability.arsmagicalegacy.gravity.name"
     },
     {
       "type": "patchouli:text",

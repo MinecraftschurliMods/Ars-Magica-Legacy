@@ -1,18 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
-import java.util.HashSet;
 import java.util.Map;
 
 public final class SkillManager {
 
     private static void validateSkills(Map<ResourceLocation, Skill> data, Logger logger) {
-        data.values().removeIf(skill -> {
+        /*data.values().removeIf(skill -> {
             boolean err = false;
             if (!data.keySet().containsAll(skill.parents())) {
                 logger.warn("Skill {} is missing parents {}. It will be removed!", skill.getId(), new HashSet<>(skill.parents()).removeAll(data.keySet()));
@@ -28,6 +25,6 @@ public final class SkillManager {
                 err = true;
             }
             return err;
-        });
+        });*/
     }
 }

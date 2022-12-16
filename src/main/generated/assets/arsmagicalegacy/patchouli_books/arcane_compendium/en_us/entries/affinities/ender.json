@@ -28,6 +28,11 @@
     },
     {
       "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.poison_resistance.description",
+      "title": "ability.arsmagicalegacy.poison_resistance.name"
+    },
+    {
+      "type": "patchouli:text",
       "text": "ability.arsmagicalegacy.water_health_reduction.description",
       "title": "ability.arsmagicalegacy.water_health_reduction.name"
     },

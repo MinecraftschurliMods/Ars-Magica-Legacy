@@ -18,6 +18,11 @@
     },
     {
       "type": "patchouli:text",
+      "text": "ability.arsmagicalegacy.resistance.description",
+      "title": "ability.arsmagicalegacy.resistance.name"
+    },
+    {
+      "type": "patchouli:text",
       "text": "ability.arsmagicalegacy.fall_damage.description",
       "title": "ability.arsmagicalegacy.fall_damage.name"
     },

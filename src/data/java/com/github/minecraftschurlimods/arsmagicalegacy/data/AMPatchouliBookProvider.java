@@ -17,35 +17,41 @@ import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedCa
 import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedEntryBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.Util;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 class AMPatchouliBookProvider extends PatchouliBookProvider {
-    private final AMAbilityProvider abilities;
-    private final LanguageProvider lang;
+    private final BiConsumer<String, String> translationConsumer;
 
-    AMPatchouliBookProvider(DataGenerator generator, AMAbilityProvider abilities, LanguageProvider lang, boolean includeClient, boolean includeServer) {
-        super(generator, ArsMagicaAPI.MOD_ID, includeClient, includeServer);
-        this.abilities = abilities;
-        this.lang = lang;
+    AMPatchouliBookProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, BiConsumer<String, String> translationConsumer, boolean includeClient, boolean includeServer) {
+        super(output, lookupProvider, ArsMagicaAPI.MOD_ID, includeClient, includeServer);
+        this.translationConsumer = translationConsumer;
     }
 
     @Override
-    protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
+    protected void addBooks(HolderLookup.Provider provider, Consumer<BookBuilder<?, ?, ?>> consumer) {
         var api = ArsMagicaAPI.get();
         var affinityHelper = api.getAffinityHelper();
-        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang::add)
+        TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", translationConsumer)
                 .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
-                .setCreativeTab(api.getCreativeModeTab().getRecipeFolderName())
+                .setCreativeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
                 .setUseResourcepack()
                 .setVersion("1");
@@ -327,6 +333,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
                 .setSortnum(7);
 */
+
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
             if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
                 TranslatedCategoryBuilder b = switch (spellPart.getType()) {
@@ -357,14 +364,19 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("If you fully shift into an affinity, your affinities become locked. This means that your current affinity shifts are permanent and cannot be changed.$(br2)The only way to unlock them again is by using an $(l:items/affinity_tome)Affinity Tome$().")
                 .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Affinity essences must be obtained from bosses, but can be duplicated through crafting later.")
                 .build();
-        for (final Affinity affinity : api.getAffinityRegistry()) {
+        Map<Affinity, List<Holder.Reference<Ability>>> abilitiesByAffinity = provider.lookupOrThrow(Ability.REGISTRY_KEY)
+                                                                                     .listElements()
+                                                                                     .sorted(Comparator.comparing(o -> o.key().location(), ResourceLocation::compareNamespaced))
+                                                                                     .sorted(Comparator.comparing(o -> o.get().bounds().getMin(), ObjectUtils::compare))
+                                                                                     .collect(Collectors.groupingBy(abilityReference -> abilityReference.get().affinity()));
+        for (Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE)) continue;
             TranslatedEntryBuilder entry = affinities.addEntry(id.getPath(), affinity.getTranslationKey(), affinityHelper.getEssenceForAffinity(affinity));
             entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
             entry.addSimpleRecipePage("crafting", new ResourceLocation(id.getNamespace(), "affinity_essence_" + id.getPath()));
-            for (ResourceLocation abilityId : abilities.getAbilitiesForAffinity(id)) {
-                String translationKey = Util.makeDescriptionId(Ability.ABILITY, abilityId);
+            for (Holder.Reference<Ability> ability : abilitiesByAffinity.get(affinity)) {
+                String translationKey = Util.makeDescriptionId(Ability.ABILITY, ability.key().location());
                 entry.addSimpleTextPage(translationKey + ".description", translationKey + ".name");
             }
             entry.build();
@@ -373,7 +385,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         builder.build(consumer);
     }
 
-    private ResourceLocation key(final Item item) {
+    private ResourceLocation key(Item item) {
         return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
     }
 

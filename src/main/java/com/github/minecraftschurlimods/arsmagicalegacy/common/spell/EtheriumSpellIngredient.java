@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +39,10 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
+
+    public EtheriumSpellIngredient(EtheriumType type, int amount) {
+        this(EnumSet.of(type), amount);
+    }
 
     @Override
     public SpellIngredientType<EtheriumSpellIngredient> getType() {

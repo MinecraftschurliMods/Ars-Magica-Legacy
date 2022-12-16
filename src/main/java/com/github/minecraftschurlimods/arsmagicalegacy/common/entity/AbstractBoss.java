@@ -25,18 +25,18 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractBoss extends Monster implements ISpellCasterEntity, IAnimatable {
-    private final AnimationFactory factory;
+public abstract class AbstractBoss extends Monster implements ISpellCasterEntity, GeoEntity {
+    private final AnimatableInstanceCache cache;
     private final ServerBossEvent bossEvent;
     private int ticksInAction = 0;
     private int ticksSinceLastPlayerScan = 0;
@@ -49,7 +49,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public AbstractBoss(EntityType<? extends AbstractBoss> type, Level level, BossEvent.BossBarColor color) {
         super(type, level);
         noCulling = true;
-        factory = GeckoLibUtil.createFactory(this);
+        cache = GeckoLibUtil.createInstanceCache(this);
         bossEvent = new ServerBossEvent(getType().getDescription(), color, BossEvent.BossBarOverlay.PROGRESS);
         if (!level.isClientSide()) {
             for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192.0D)))) {
@@ -65,10 +65,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return A new animation controller that plays this boss's base animation.
      */
     public AnimationController<? extends AbstractBoss> createBaseAnimationController(String registryName) {
-        return new AnimationController<>(this, "base_controller", 2, e -> {
-            e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + ".base"));
-            return PlayState.CONTINUE;
-        });
+        return new AnimationController<>(this, "base_controller", 2, state -> state.setAndContinue(RawAnimation.begin().thenPlay("animation." + registryName + ".base")));
     }
 
     /**
@@ -80,12 +77,11 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
      * @return A new animation controller that plays the given animation if the given action is currently active.
      */
     public AnimationController<? extends AbstractBoss> createActionAnimationController(String registryName, String name, Action action) {
-        return new AnimationController<>(this, action.name() + "_controller", 2, e -> {
+        return new AnimationController<>(this, action.name() + "_controller", 2, state -> {
             if (getAction() == action) {
-                e.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + registryName + "." + name));
-                return PlayState.CONTINUE;
+                return state.setAndContinue(RawAnimation.begin().thenPlay("animation." + registryName + "." + name));
             } else {
-                e.getController().clearAnimationCache();
+                state.getController().forceAnimationReset();
                 return PlayState.STOP;
             }
         });
@@ -138,6 +134,11 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     public float getStepHeight() {
         return 1.02f;
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     @Override
@@ -228,11 +229,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         } else if (action == Action.CAST) {
             setAction(Action.IDLE);
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     /**

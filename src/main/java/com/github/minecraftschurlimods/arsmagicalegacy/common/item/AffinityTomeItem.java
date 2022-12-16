@@ -7,13 +7,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,16 +20,6 @@ import net.minecraftforge.common.MinecraftForge;
 public class AffinityTomeItem extends Item implements IAffinityItem {
     public AffinityTomeItem(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
-        if (allowedIn(pCategory)) {
-            var api = ArsMagicaAPI.get();
-            for (Affinity affinity : api.getAffinityRegistry()) {
-                pItems.add(api.getAffinityHelper().getStackForAffinity(this, affinity.getId()));
-            }
-        }
     }
 
     @Override

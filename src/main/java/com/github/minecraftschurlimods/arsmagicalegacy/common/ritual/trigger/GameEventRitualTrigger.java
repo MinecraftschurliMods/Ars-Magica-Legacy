@@ -7,10 +7,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -26,24 +26,24 @@ import java.util.Map;
 
 public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements RitualTrigger {
     public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryCodecs.homogeneousList(Registry.GAME_EVENT_REGISTRY).fieldOf("event").forGetter(GameEventRitualTrigger::event)
+            RegistryCodecs.homogeneousList(Registries.GAME_EVENT).fieldOf("event").forGetter(GameEventRitualTrigger::event)
     ).apply(instance, GameEventRitualTrigger::new));
 
-    public GameEventRitualTrigger(GameEvent gameEvent) {
-        this(gameEvent.builtInRegistryHolder());
+    public static GameEventRitualTrigger simple(GameEvent gameEvent) {
+        return any(gameEvent.builtInRegistryHolder());
     }
 
-    public GameEventRitualTrigger(TagKey<GameEvent> gameEventTag) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.GAME_EVENT_REGISTRY).getOrCreateTag(gameEventTag));
+    public static GameEventRitualTrigger simple(HolderGetter<GameEvent> holderGetter, ResourceKey<GameEvent> gameEvent) {
+        return GameEventRitualTrigger.any(holderGetter.getOrThrow(gameEvent));
     }
 
-    public GameEventRitualTrigger(ResourceKey<GameEvent> gameEvent) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.GAME_EVENT_REGISTRY).getOrCreateHolder(gameEvent).getOrThrow(false, s -> {}));
+    public static GameEventRitualTrigger tag(HolderGetter<GameEvent> holderGetter, TagKey<GameEvent> gameEventTag) {
+        return new GameEventRitualTrigger(holderGetter.getOrThrow(gameEventTag));
     }
 
     @SafeVarargs
-    public GameEventRitualTrigger(Holder<GameEvent>... holders) {
-        this(HolderSet.direct(holders));
+    public static GameEventRitualTrigger any(Holder<GameEvent>... holders) {
+        return new GameEventRitualTrigger(HolderSet.direct(holders));
     }
 
     @Override

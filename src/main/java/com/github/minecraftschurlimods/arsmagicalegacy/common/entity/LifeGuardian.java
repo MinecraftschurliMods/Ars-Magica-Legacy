@@ -21,7 +21,7 @@ import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.HashSet;
 import java.util.List;
@@ -108,7 +108,7 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("life_guardian"));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(createBaseAnimationController("life_guardian"));
     }
 }

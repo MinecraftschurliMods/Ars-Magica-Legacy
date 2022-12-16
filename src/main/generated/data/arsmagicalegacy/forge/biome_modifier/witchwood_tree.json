@@ -7,6 +7,6 @@
       "#forge:is_spooky"
     ]
   },
-  "features": "arsmagicalegacy:trees_witchwood",
+  "features": "arsmagicalegacy:witchwood_tree",
   "step": "vegetal_decoration"
 }

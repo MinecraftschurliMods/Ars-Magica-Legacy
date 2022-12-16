@@ -45,4 +45,6 @@ public interface TranslationConstants {
     String SPELL_CAST                       = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String TIER                             = "message." + ArsMagicaAPI.MOD_ID + ".tier";
     String ALTAR_POWER                      = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
+    String MAIN_CREATIVE_TAB                = "itemGroup." + ArsMagicaAPI.MOD_ID + ".main";
+    String PREFAB_SPELL_CREATIVE_TAB        = "itemGroup." + ArsMagicaAPI.MOD_ID + ".prefab_spells";
 }

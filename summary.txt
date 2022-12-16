@@ -1,1 +1,1 @@
-Implements most of the WIP spellparts, and includes various minor changes and fixes.
+Updated to 1.19.3

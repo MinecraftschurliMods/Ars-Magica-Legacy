@@ -10,7 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class AirGuardian extends AbstractBoss {
     public AirGuardian(EntityType<? extends AirGuardian> type, Level level) {
@@ -59,8 +59,10 @@ public class AirGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("air_guardian"));
-        data.addAnimationController(createActionAnimationController("air_guardian", "cast", Action.LONG_CAST));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("air_guardian"),
+                createActionAnimationController("air_guardian", "cast", Action.LONG_CAST)
+        );
     }
 }

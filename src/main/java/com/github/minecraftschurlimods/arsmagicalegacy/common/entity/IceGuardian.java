@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class IceGuardian extends AbstractBoss {
     private int arms = 2;
@@ -75,12 +75,14 @@ public class IceGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("ice_guardian"));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "smash", Action.SMASH));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "strike", Action.STRIKE));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "throw", Action.THROW));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("ice_guardian"),
+                createActionAnimationController("ice_guardian", "idle", Action.IDLE),
+                createActionAnimationController("ice_guardian", "smash", Action.SMASH),
+                createActionAnimationController("ice_guardian", "strike", Action.STRIKE),
+                createActionAnimationController("ice_guardian", "throw", Action.THROW)
+        );
     }
 
     @Override

@@ -4,7 +4,7 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/MinecraftschurliMods/Ars-Magica-Legacy/build.yml?branch=version%2F1.19.x&logo=github)](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/actions/workflows/build.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/MinecraftschurliMods/Ars-Magica-Legacy/build.yml?branch=version%2F1.19.3&logo=github)](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/actions/workflows/build.yml)
 [![GitHub release](https://img.shields.io/github/v/release/MinecraftschurliMods/Ars-Magica-Legacy?display_name=tag&sort=semver)](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/releases/latest)
 [![Maven](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fminecraftschurli.ddns.net%2Frepository%2Fmaven-public%2Fcom%2Fgithub%2Fminecraftschurlimods%2Farsmagicalegacy%2Fmaven-metadata.xml&versionPrefix=1.19)](https://minecraftschurli.ddns.net/repository/#/maven-public/com/github/minecraftschurli/arsmagicalegacy)
 [![GitHub issues](https://img.shields.io/github/issues-raw/MinecraftschurliMods/Ars-Magica-Legacy/bug?label=open%20bugs)](https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
@@ -21,6 +21,7 @@ You can download the latest version of the mod from [CurseForge](https://mc-mods
 |      1.18.1       |       0.1.5        |        39.0.66        |     ❌     |                                        [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/3656337)                                        |
 |      1.18.2       |       1.3.0        |        40.1.35        |     ❌     | [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/4657864) / [Modrinth](https://modrinth.com/mod/ars-magica-legacy/version/1.18.2-1.3.0) |
 |      1.19.2       |       1.3.1        |        43.1.13        |     ✅     |    [CurseForge](https://mc-mods.cf/ars-magica-legacy/files) / [Modrinth](https://modrinth.com/mod/ars-magica-legacy/versions#all-versions)     |
+|      1.19.3       |       1.3.1        |        44.1.7         |     ✅     |         [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/all) / [Modrinth](https://modrinth.com/mod/ars-magica-legacy/version )         |
 
 ### Dependencies
 

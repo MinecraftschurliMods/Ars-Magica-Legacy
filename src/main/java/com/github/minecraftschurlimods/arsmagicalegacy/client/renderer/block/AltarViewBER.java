@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarC
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarViewBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -62,7 +62,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         }
         poseStack.popPose();
         poseStack.pushPose();
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(view.itemRotation));
+        poseStack.mulPose(Axis.YP.rotationDegrees(view.itemRotation));
         if (altar.hasEnoughPower()) {
             ISpellIngredient currentIngredient = altar.getCurrentIngredient();
             if (currentIngredient != null) {

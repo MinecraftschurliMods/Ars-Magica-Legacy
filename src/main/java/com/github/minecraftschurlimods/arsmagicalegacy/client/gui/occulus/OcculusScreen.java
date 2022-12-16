@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -46,13 +46,13 @@ public class OcculusScreen extends Screen {
         int tabSize = 22;
         for (OcculusTab tab : registry) {
             int tabIndex = tab.index();
-            OcculusTabButton button = new OcculusTabButton(tabIndex, 7 + tabIndex % 8 * (tabSize + 2), -tabSize, posX, posY, tab, e -> setActiveTab(tabIndex), (b, p, x, y) -> renderTooltip(p, tab.getDisplayName(minecraft.level.registryAccess()), x, y));
+            OcculusTabButton button = new OcculusTabButton(tabIndex, 7 + tabIndex % 8 * (tabSize + 2), -tabSize, posX, posY, tab, e -> setActiveTab(tabIndex)); // (b, p, x, y) -> renderTooltip(p, tab.getDisplayName(minecraft.level.registryAccess()), x, y)
             addRenderableWidget(button);
             buttons.add(button);
         }
         maxPage = (int) Math.floor((float) (registry.size() - 1) / 16F);
-        nextPage = addRenderableWidget(new Button(GUI_WIDTH + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
-        prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, Component.literal("<"), this::prevPage));
+        nextPage = addRenderableWidget(Button.builder(Component.literal(">"), this::nextPage).pos(GUI_WIDTH + 2, -21).size(20, 20).build());
+        prevPage = addRenderableWidget(Button.builder(Component.literal("<"), this::prevPage).pos(-15, -21).size(20, 20).build());
         nextPage.active = page < maxPage;
         prevPage.active = false;
         addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), GUI_WIDTH, GUI_HEIGHT);
@@ -74,7 +74,7 @@ public class OcculusScreen extends Screen {
         super.render(stack, pMouseX, pMouseY, pPartialTicks);
         for (OcculusTabButton button : buttons) {
             if (button.isHovered()) {
-                button.renderToolTip(stack, pMouseX - posX, pMouseY - posY);
+                renderTooltip(stack, button.getDisplayName(minecraft.level.registryAccess()), pMouseX - posX, pMouseY - posY);
             }
         }
         stack.popPose();
@@ -103,7 +103,7 @@ public class OcculusScreen extends Screen {
     }
 
     private void onPageChanged() {
-        for (Widget button : renderables) {
+        for (Renderable button : renderables) {
             if (button instanceof OcculusTabButton b) {
                 b.visible = (int) Math.floor((float) b.getIndex() / 16F) == page;
             }

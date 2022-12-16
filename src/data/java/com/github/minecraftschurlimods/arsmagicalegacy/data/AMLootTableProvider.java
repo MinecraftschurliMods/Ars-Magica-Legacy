@@ -9,18 +9,17 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.BlockLoot;
-import net.minecraft.data.loot.ChestLoot;
-import net.minecraft.data.loot.EntityLoot;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -30,48 +29,44 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
-import net.minecraft.world.level.storage.loot.providers.nbt.NbtProviders;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 class AMLootTableProvider extends LootTableProvider {
-    AMLootTableProvider(DataGenerator pGenerator) {
-        super(pGenerator);
+    AMLootTableProvider(PackOutput output) {
+        super(output, Set.of(), List.of(new SubProviderEntry(Block::new, LootContextParamSets.BLOCK), new SubProviderEntry(Entity::new, LootContextParamSets.ENTITY), new SubProviderEntry(Chest::new, LootContextParamSets.CHEST)));
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK), Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY), Pair.of(ChestLootTableProvider::new, LootContextParamSets.CHEST));
-    }
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {}
 
-    @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-    }
+    private static class Block extends BlockLootSubProvider {
 
-    private static class BlockLootTableProvider extends BlockLoot {
-        private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
+        protected Block() {
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+        }
 
         @Override
-        protected void addTables() {
+        protected Iterable<net.minecraft.world.level.block.Block> getKnownBlocks() {
+            return AMRegistries.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
+        }
+
+        @Override
+        protected void generate() {
             dropSelf(AMBlocks.OCCULUS.get());
             add(AMBlocks.INSCRIPTION_TABLE.get(), p -> {
                 LootPoolSingletonContainer.Builder<?> builder = LootItem.lootTableItem(p);
@@ -85,8 +80,8 @@ class AMLootTableProvider extends LootTableProvider {
             });
             dropSelf(AMBlocks.ALTAR_CORE.get());
             dropSelf(AMBlocks.MAGIC_WALL.get());
-            add(AMBlocks.OBELISK.get(), p -> BlockLoot.createSinglePropConditionTable(p, ObeliskBlock.PART, ObeliskBlock.Part.LOWER));
-            add(AMBlocks.CELESTIAL_PRISM.get(), p -> BlockLoot.createSinglePropConditionTable(p, CelestialPrismBlock.HALF, DoubleBlockHalf.LOWER));
+            add(AMBlocks.OBELISK.get(), p -> createSinglePropConditionTable(p, ObeliskBlock.PART, ObeliskBlock.Part.LOWER));
+            add(AMBlocks.CELESTIAL_PRISM.get(), p -> createSinglePropConditionTable(p, CelestialPrismBlock.HALF, DoubleBlockHalf.LOWER));
             dropSelf(AMBlocks.BLACK_AUREM.get());
             add(AMBlocks.CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
             add(AMBlocks.DEEPSLATE_CHIMERITE_ORE.get(), p -> createOreDrop(p, AMItems.CHIMERITE.get()));
@@ -113,52 +108,47 @@ class AMLootTableProvider extends LootTableProvider {
             dropSelf(AMBlocks.WITCHWOOD_STAIRS.get());
             dropSelf(AMBlocks.WITCHWOOD_FENCE.get());
             dropSelf(AMBlocks.WITCHWOOD_FENCE_GATE.get());
-            add(AMBlocks.WITCHWOOD_DOOR.get(), BlockLoot::createDoorTable);
+            add(AMBlocks.WITCHWOOD_DOOR.get(), this::createDoorTable);
             dropSelf(AMBlocks.WITCHWOOD_TRAPDOOR.get());
             dropSelf(AMBlocks.WITCHWOOD_BUTTON.get());
             dropSelf(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
             dropSelf(AMBlocks.WITCHWOOD_SIGN.get());
+            add(AMBlocks.WITCHWOOD_HANGING_SIGN.get(), noDrop());
             dropSelf(AMBlocks.AUM.get());
             dropSelf(AMBlocks.CERUBLOSSOM.get());
             dropSelf(AMBlocks.DESERT_NOVA.get());
             dropSelf(AMBlocks.TARMA_ROOT.get());
             dropSelf(AMBlocks.WAKEBLOOM.get());
-            add(AMBlocks.POTTED_AUM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.AUM.get()));
-            add(AMBlocks.POTTED_CERUBLOSSOM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.CERUBLOSSOM.get()));
-            add(AMBlocks.POTTED_DESERT_NOVA.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.DESERT_NOVA.get()));
-            add(AMBlocks.POTTED_TARMA_ROOT.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.TARMA_ROOT.get()));
-            add(AMBlocks.POTTED_WAKEBLOOM.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.WAKEBLOOM.get()));
-            add(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.WITCHWOOD_SAPLING.get()));
+            add(AMBlocks.POTTED_AUM.get(), p -> createPotFlowerItemTable(AMBlocks.AUM.get()));
+            add(AMBlocks.POTTED_CERUBLOSSOM.get(), p -> createPotFlowerItemTable(AMBlocks.CERUBLOSSOM.get()));
+            add(AMBlocks.POTTED_DESERT_NOVA.get(), p -> createPotFlowerItemTable(AMBlocks.DESERT_NOVA.get()));
+            add(AMBlocks.POTTED_TARMA_ROOT.get(), p -> createPotFlowerItemTable(AMBlocks.TARMA_ROOT.get()));
+            add(AMBlocks.POTTED_WAKEBLOOM.get(), p -> createPotFlowerItemTable(AMBlocks.WAKEBLOOM.get()));
+            add(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), p -> createPotFlowerItemTable(AMBlocks.WITCHWOOD_SAPLING.get()));
             dropSelf(AMBlocks.VINTEUM_TORCH.get());
             dropSelf(AMBlocks.VINTEUM_WALL_TORCH.get());
-        }
-
-        @Override
-        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-            addTables();
-            Set<ResourceLocation> set = new HashSet<>();
-            for (Block block : getKnownBlocks()) {
-                ResourceLocation resourcelocation = block.getLootTable();
-                if (resourcelocation != LootTable.EMPTY.getLootTableId() && set.add(resourcelocation)) {
-                    LootTable.Builder builder = lootTables.remove(resourcelocation);
-                    if (builder == null) continue;
-                    consumer.accept(resourcelocation, builder);
-                }
-            }
-        }
-
-        @Override
-        protected void add(Block pBlock, LootTable.Builder pLootTableBuilder) {
-            lootTables.put(pBlock.getLootTable(), pLootTableBuilder);
+            add(AMBlocks.WIZARDS_CHALK.get(), noDrop());
+            add(AMBlocks.SPELL_RUNE.get(), noDrop());
+            dropSelf(AMBlocks.IRON_INLAY.get());
+            dropSelf(AMBlocks.GOLD_INLAY.get());
+            dropSelf(AMBlocks.REDSTONE_INLAY.get());
         }
     }
 
-    private static class EntityLootTableProvider extends EntityLoot {
-        private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
+    private static class Entity extends EntityLootSubProvider {
+
+        protected Entity() {
+            super(FeatureFlags.REGISTRY.allFlags());
+        }
+
+        @Override
+        protected Stream<EntityType<?>> getKnownEntityTypes() {
+            return AMRegistries.ENTITY_TYPES.getEntries().stream().map(RegistryObject::get);
+        }
 
         @SuppressWarnings("deprecation")
         @Override
-        protected void addTables() {
+        public void generate() {
             var helper = ArsMagicaAPI.get().getAffinityHelper();
             add(AMEntities.WATER_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.WATER.get()).getOrCreateTag())))));
             add(AMEntities.FIRE_GUARDIAN.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.AFFINITY_ESSENCE.get()).apply(SetNbtFunction.setTag(helper.getEssenceForAffinity(AMAffinities.FIRE.get()).getOrCreateTag())))));
@@ -174,35 +164,12 @@ class AMLootTableProvider extends LootTableProvider {
             add(AMEntities.MAGE.get(), LootTable.lootTable());
             add(AMEntities.MANA_CREEPER.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F)).add(LootItem.lootTableItem(AMItems.VINTEUM_DUST.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0F, 2F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F))))));
         }
-
-        @Override
-        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-            addTables();
-            Set<ResourceLocation> set = new HashSet<>();
-            for (EntityType<?> entitytype : getKnownEntities()) {
-                ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
-                if (isNonLiving(entitytype)) {
-                    if (resourcelocation != BuiltInLootTables.EMPTY && lootTables.remove(resourcelocation) != null)
-                        throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, ForgeRegistries.ENTITY_TYPES.getKey(entitytype)));
-                } else if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
-                    LootTable.Builder loottable$builder = lootTables.remove(resourcelocation);
-                    if (loottable$builder == null) continue;
-                    consumer.accept(resourcelocation, loottable$builder);
-                }
-            }
-            lootTables.forEach(consumer);
-        }
-
-        @Override
-        protected void add(EntityType<?> pEntityType, LootTable.Builder pLootTableBuilder) {
-            lootTables.put(pEntityType.getDefaultLootTable(), pLootTableBuilder);
-        }
     }
 
-    private static class ChestLootTableProvider extends ChestLoot {
+    private static class Chest implements LootTableSubProvider {
         private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
 
-        protected void addTables() {
+        protected void generate() {
             addTomeLoot(BuiltInLootTables.ANCIENT_CITY, Affinity.NONE, 0.1f);
             addTomeLoot(BuiltInLootTables.ANCIENT_CITY_ICE_BOX, Affinity.NONE, 0.1f);
             addTomeLoot(BuiltInLootTables.SHIPWRECK_TREASURE, Affinity.WATER, 0.1f);
@@ -228,13 +195,13 @@ class AMLootTableProvider extends LootTableProvider {
         }
 
         @Override
-        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-            addTables();
+        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+            this.generate();
             lootTables.forEach(consumer);
         }
 
-        protected void add(String name, LootTable.Builder pLootTableBuilder) {
-            lootTables.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, name), pLootTableBuilder);
+        protected void add(ResourceLocation resourceLocation, LootTable.Builder builder) {
+            this.lootTables.put(resourceLocation, builder);
         }
 
         @SuppressWarnings("deprecation")
@@ -242,7 +209,7 @@ class AMLootTableProvider extends LootTableProvider {
             var helper = ArsMagicaAPI.get().getAffinityHelper();
             ItemStack tome = helper.getTomeForAffinity(affinity);
             ItemStack lifeTome = helper.getTomeForAffinity(Affinity.LIFE);
-            add(lootTable.getPath().replace("chests/", "chests/modify/"), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+            add(new ResourceLocation(affinity.getNamespace(), lootTable.getPath().replace("chests/", "chests/modify/")), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                     .add(LootItem.lootTableItem(tome.getItem()).apply(SetNbtFunction.setTag(tome.getOrCreateTag())).setWeight(19))
                     .add(LootItem.lootTableItem(lifeTome.getItem()).apply(SetNbtFunction.setTag(lifeTome.getOrCreateTag())).setWeight(1))
                     .add(EmptyLootItem.emptyItem().setWeight((int) (20 / chance) - 20))));

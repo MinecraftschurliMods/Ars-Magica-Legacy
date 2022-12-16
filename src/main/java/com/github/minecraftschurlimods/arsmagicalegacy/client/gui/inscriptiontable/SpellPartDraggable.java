@@ -36,8 +36,8 @@ public class SpellPartDraggable extends Draggable<ISpellPart> {
     @Override
     public void render(PoseStack poseStack, int x, int y, float partialTicks) {
         poseStack.pushPose();
-        if (RenderSystem.getShaderTexture(0) != Minecraft.getInstance().getTextureManager().getTexture(sprite.atlas().location()).getId()) {
-            RenderSystem.setShaderTexture(0, sprite.atlas().location());
+        if (RenderSystem.getShaderTexture(0) != Minecraft.getInstance().getTextureManager().getTexture(sprite.atlasLocation()).getId()) {
+            RenderSystem.setShaderTexture(0, sprite.atlasLocation());
         }
         GuiComponent.blit(poseStack, x, y, 10, width, height, sprite);
         poseStack.popPose();

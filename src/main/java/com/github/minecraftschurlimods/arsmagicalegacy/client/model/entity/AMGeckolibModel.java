@@ -2,10 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AMGeckolibModel<T extends IAnimatable> extends AnimatedGeoModel<T> {
+public class AMGeckolibModel<T extends GeoAnimatable> extends GeoModel<T> {
     private final ResourceLocation MODEL_LOCATION;
     private final ResourceLocation TEXTURE_LOCATION;
     private final ResourceLocation ANIMATION_LOCATION;

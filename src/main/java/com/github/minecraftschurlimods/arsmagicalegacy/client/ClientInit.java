@@ -68,7 +68,7 @@ import com.github.minecraftschurlimods.betterhudlib.HUDManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
@@ -76,6 +76,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -96,7 +97,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -197,7 +197,7 @@ public final class ClientInit {
         }
     }
 
-    private static void modelBake(BakingCompleted event) {
+    private static void modelBake(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
@@ -252,6 +252,7 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.WITCHWOOD_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(AMBlockEntities.WITCHWOOD_HANGING_SIGN.get(), HangingSignRenderer::new);
     }
 
     private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
@@ -305,13 +306,13 @@ public final class ClientInit {
         stack.pushPose();
         RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
         stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2))) - 0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
-        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * 45));
-        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * Mth.sin((float) (swing * swing * Math.PI)) * -20));
+        stack.mulPose(Axis.YP.rotationDegrees(armMultiplier * 45));
+        stack.mulPose(Axis.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));
+        stack.mulPose(Axis.ZP.rotationDegrees(armMultiplier * Mth.sin((float) (swing * swing * Math.PI)) * -20));
         stack.translate(-armMultiplier, 3.6, 3.5);
-        stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * 120));
-        stack.mulPose(Vector3f.XP.rotationDegrees(200));
-        stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * -135));
+        stack.mulPose(Axis.ZP.rotationDegrees(armMultiplier * 120));
+        stack.mulPose(Axis.XP.rotationDegrees(200));
+        stack.mulPose(Axis.YP.rotationDegrees(armMultiplier * -135));
         stack.translate(armMultiplier * 5.6, 0, 0);
         if (isRightHand) {
             ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderRightHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);

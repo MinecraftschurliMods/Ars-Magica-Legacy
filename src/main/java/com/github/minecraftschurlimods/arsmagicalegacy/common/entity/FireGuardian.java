@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class FireGuardian extends AbstractBoss {
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
@@ -102,10 +102,12 @@ public class FireGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createActionAnimationController("fire_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("fire_guardian", "cast", Action.CAST));
-        data.addAnimationController(createActionAnimationController("fire_guardian", "cast", Action.LONG_CAST));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createActionAnimationController("fire_guardian", "idle", Action.IDLE),
+                createActionAnimationController("fire_guardian", "cast", Action.CAST),
+                createActionAnimationController("fire_guardian", "cast", Action.LONG_CAST)
+        );
     }
 
     @Override

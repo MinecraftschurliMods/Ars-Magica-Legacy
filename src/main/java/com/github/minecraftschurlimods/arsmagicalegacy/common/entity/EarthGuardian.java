@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class EarthGuardian extends AbstractBoss {
     public boolean shouldRenderRock;
@@ -64,12 +64,14 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("earth_guardian"));
-        data.addAnimationController(createActionAnimationController("earth_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("earth_guardian", "smash", Action.SMASH));
-        data.addAnimationController(createActionAnimationController("earth_guardian", "strike", Action.STRIKE));
-        data.addAnimationController(createActionAnimationController("earth_guardian", "throw", Action.THROW));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("earth_guardian"),
+                createActionAnimationController("earth_guardian", "idle", Action.IDLE),
+                createActionAnimationController("earth_guardian", "smash", Action.SMASH),
+                createActionAnimationController("earth_guardian", "strike", Action.STRIKE),
+                createActionAnimationController("earth_guardian", "throw", Action.THROW)
+        );
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -21,7 +21,7 @@ import java.util.List;
  * Base class for all occulus tab renderers.
  * To register a tab renderer, call {@code ArsMagicaAPI.get().registerOcculusTabRenderer(<registered occulus tab>, (occulusTab, player) -> <create your tab renderer>);}
  */
-public abstract class OcculusTabRenderer extends AbstractContainerEventHandler implements Widget, NarratableEntry {
+public abstract class OcculusTabRenderer extends AbstractContainerEventHandler implements Renderable, NarratableEntry {
     protected final int textureHeight;
     protected final int textureWidth;
     protected final OcculusTab occulusTab;
