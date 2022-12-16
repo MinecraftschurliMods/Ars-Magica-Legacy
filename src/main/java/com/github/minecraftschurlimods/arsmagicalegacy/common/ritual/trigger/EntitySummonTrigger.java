@@ -25,12 +25,12 @@ import java.util.Map;
 public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
     public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
 
-    public EntitySummonTrigger(EntityType<?> entityType) {
-        this(EntityPredicate.Builder.entity().of(entityType).build());
+    public static EntitySummonTrigger simple(EntityType<?> entityType) {
+        return new EntitySummonTrigger(EntityPredicate.Builder.entity().of(entityType).build());
     }
 
-    public EntitySummonTrigger(TagKey<EntityType<?>> entityTypeTag) {
-        this(EntityPredicate.Builder.entity().of(entityTypeTag).build());
+    public static EntitySummonTrigger tag(TagKey<EntityType<?>> entityTypeTag) {
+        return new EntitySummonTrigger(EntityPredicate.Builder.entity().of(entityTypeTag).build());
     }
 
     @Override

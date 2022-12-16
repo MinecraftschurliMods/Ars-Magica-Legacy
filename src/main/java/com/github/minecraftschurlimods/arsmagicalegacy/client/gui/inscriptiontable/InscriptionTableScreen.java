@@ -64,14 +64,14 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         super.init();
         dragAreas.clear();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
-            addRenderableWidget(new Button(leftPos + 72, topPos + 72, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+            addRenderableWidget(Button.builder(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
                 menu.getSpellRecipe().ifPresent(e -> {
                     if (ArsMagicaAPI.get().getSpellHelper().isValidSpell(e)) {
                         menu.createSpell();
                     }
                 });
-            }));
+            }).bounds(leftPos + 72, topPos + 72, 100, 20).build());
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
         spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> onPartDropped(part));

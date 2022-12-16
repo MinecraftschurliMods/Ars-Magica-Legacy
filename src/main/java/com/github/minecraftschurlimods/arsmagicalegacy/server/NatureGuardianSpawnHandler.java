@@ -34,7 +34,7 @@ public final class NatureGuardianSpawnHandler {
             }
             kills++;
             if (kills >= count) {
-                var spawned = AMEntities.NATURE_GUARDIAN.get().spawn(serverLevel, null, null, player, pos, MobSpawnType.TRIGGERED, false, false);
+                var spawned = AMEntities.NATURE_GUARDIAN.get().spawn(serverLevel, null, player, pos, MobSpawnType.TRIGGERED, false, false);
                 if (spawned != null) {
                     spawned.setTarget(player);
                     return 0;

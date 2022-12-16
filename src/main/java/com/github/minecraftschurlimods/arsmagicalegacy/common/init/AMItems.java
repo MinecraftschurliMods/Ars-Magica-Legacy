@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityEssenceItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
@@ -17,16 +16,17 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.WizardsChalkI
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ColoredRegistryObject;
+import net.minecraft.Util;
+import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.SignItem;
@@ -37,21 +37,16 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ITEMS;
 
 @NonExtendable
 public interface AMItems {
-    CreativeModeTab TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID) {
-        @Override
-        public ItemStack makeIcon() {
-            return ArsMagicaAPI.get().getBookStack();
-        }
-    };
-    Item.Properties HIDDEN_ITEM_1 = new Item.Properties().stacksTo(1);
-    Item.Properties ITEM_1        = new Item.Properties().stacksTo(1).tab(TAB);
-    Item.Properties ITEM_64       = new Item.Properties().stacksTo(64).tab(TAB);
+    Item.Properties ITEM_1        = new Item.Properties().stacksTo(1);
+    Item.Properties ITEM_64       = new Item.Properties().stacksTo(64);
 
     RegistryObject<InfinityOrbItem>              INFINITY_ORB                     = ITEMS.register("infinity_orb", InfinityOrbItem::new);
     RegistryObject<BlockItem>                    OCCULUS                          = registerBlockItem64(AMBlocks.OCCULUS);
@@ -102,6 +97,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    WITCHWOOD_BUTTON                 = registerBlockItem64(AMBlocks.WITCHWOOD_BUTTON);
     RegistryObject<BlockItem>                    WITCHWOOD_PRESSURE_PLATE         = registerBlockItem64(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
     RegistryObject<SignItem>                     WITCHWOOD_SIGN                   = ITEMS.register("witchwood_sign", () -> new SignItem(ITEM_64, AMBlocks.WITCHWOOD_SIGN.get(), AMBlocks.WITCHWOOD_WALL_SIGN.get()));
+    RegistryObject<HangingSignItem>              WITCHWOOD_HANGING_SIGN       = ITEMS.register("witchwood_hanging_sign", () -> new HangingSignItem(AMBlocks.WITCHWOOD_HANGING_SIGN.get(), AMBlocks.WITCHWOOD_WALL_HANGING_SIGN.get(), ITEM_64));
     RegistryObject<Item>                         BLANK_RUNE                       = registerItem64("blank_rune");
     ColoredRegistryObject<Item, ColoredRuneItem> COLORED_RUNE                     = registerColoredItem("rune", color -> new ColoredRuneItem(ITEM_64, color));
     RegistryObject<RuneBagItem>                  RUNE_BAG                         = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_1));
@@ -113,18 +109,18 @@ public interface AMItems {
     RegistryObject<Item>                         ARCANE_COMPOUND                  = registerItem64("arcane_compound");
     RegistryObject<Item>                         ARCANE_ASH                       = registerItem64("arcane_ash");
     RegistryObject<Item>                         PURIFIED_VINTEUM_DUST            = registerItem64("purified_vinteum_dust");
-    RegistryObject<StandingAndWallBlockItem>     VINTEUM_TORCH                    = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64));
+    RegistryObject<StandingAndWallBlockItem>     VINTEUM_TORCH                    = ITEMS.register("vinteum_torch", () -> new StandingAndWallBlockItem(AMBlocks.VINTEUM_TORCH.get(), AMBlocks.VINTEUM_WALL_TORCH.get(), ITEM_64, Direction.DOWN));
     RegistryObject<BlockItem>                    IRON_INLAY                       = registerBlockItem64(AMBlocks.IRON_INLAY);
     RegistryObject<BlockItem>                    REDSTONE_INLAY                   = registerBlockItem64(AMBlocks.REDSTONE_INLAY);
     RegistryObject<BlockItem>                    GOLD_INLAY                       = registerBlockItem64(AMBlocks.GOLD_INLAY);
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE                 = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                    = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
-    RegistryObject<EtheriumPlaceholderItem>      ETHERIUM_PLACEHOLDER             = ITEMS.register("etherium_placeholder", () -> new EtheriumPlaceholderItem(HIDDEN_ITEM_1));
+    RegistryObject<EtheriumPlaceholderItem>      ETHERIUM_PLACEHOLDER             = ITEMS.register("etherium_placeholder", () -> new EtheriumPlaceholderItem(ITEM_1));
     RegistryObject<Item>                         SPELL_PARCHMENT                  = registerItem64("spell_parchment");
     RegistryObject<SpellRecipeItem>              SPELL_RECIPE                     = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     RegistryObject<SpellItem>                    SPELL                            = ITEMS.register("spell", SpellItem::new);
     RegistryObject<SpellBookItem>                SPELL_BOOK                       = ITEMS.register("spell_book", SpellBookItem::new);
-    RegistryObject<Item>                         MANA_CAKE                        = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).tab(TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
+    RegistryObject<Item>                         MANA_CAKE                        = ITEMS.register("mana_cake", () -> new Item(new Item.Properties().stacksTo(64).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).alwaysEat().effect(AMMobEffects.MANA_REGEN.lazyMap(e -> new MobEffectInstance(e, 600)), 1f).build())));
     RegistryObject<ManaMartiniItem>              MANA_MARTINI                     = ITEMS.register("mana_martini", () -> new ManaMartiniItem(ITEM_64));
     RegistryObject<MageArmorItem>                MAGE_HELMET                      = ITEMS.register("mage_helmet", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.HEAD, 5));
     RegistryObject<MageArmorItem>                MAGE_CHESTPLATE                  = ITEMS.register("mage_chestplate", () -> new MageArmorItem(MageArmorItem.MAGE_ARMOR_MATERIAL, EquipmentSlot.CHEST, 5));
@@ -147,10 +143,16 @@ public interface AMItems {
     RegistryObject<ForgeSpawnEggItem>            DRYAD_SPAWN_EGG                  = ITEMS.register("dryad_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.DRYAD, 0x166822, 0x683d16, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MAGE_SPAWN_EGG                   = ITEMS.register("mage_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MAGE, 0x777777, 0x7b1a7c, ITEM_64));
     RegistryObject<ForgeSpawnEggItem>            MANA_CREEPER_SPAWN_EGG           = ITEMS.register("mana_creeper_spawn_egg", () -> new ForgeSpawnEggItem(AMEntities.MANA_CREEPER, 0x1abfb5, 0x368580, ITEM_64));
-    RegistryObject<BucketItem>                   LIQUID_ESSENCE_BUCKET            = ITEMS.register("liquid_essence_bucket", () -> new BucketItem(AMFluids.LIQUID_ESSENCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(TAB)));
+    RegistryObject<BucketItem>                   LIQUID_ESSENCE_BUCKET            = ITEMS.register("liquid_essence_bucket", () -> new BucketItem(AMFluids.LIQUID_ESSENCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     //TODO
 //    RegistryObject<NatureScytheItem>             NATURE_SCYTHE                = ITEMS.register("nature_scythe", NatureScytheItem::new);
 //    RegistryObject<WintersGraspItem>             WINTERS_GRASP                = ITEMS.register("winters_grasp", WintersGraspItem::new);
+
+    Set<RegistryObject<? extends Item>> HIDDEN_ITEMS = Util.make(new HashSet<>(), suppliers -> {
+        suppliers.add(AMItems.ETHERIUM_PLACEHOLDER);
+        suppliers.add(AMItems.SPELL_RECIPE);
+        suppliers.add(AMItems.SPELL);
+    });
 
     private static <T extends Item> ColoredRegistryObject<Item, T> registerColoredItem(String suffix, Function<DyeColor, ? extends T> creator) {
         return new ColoredRegistryObject<>(ITEMS, suffix, creator);

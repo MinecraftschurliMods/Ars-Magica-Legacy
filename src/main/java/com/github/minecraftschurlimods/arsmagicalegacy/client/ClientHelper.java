@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -56,7 +55,7 @@ public final class ClientHelper {
     public static void drawSpellPart(PoseStack poseStack, ISpellPart spellPart, int x, int y, int width, int height) {
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(spellPart.getId());
         poseStack.pushPose();
-        RenderSystem.setShaderTexture(0, sprite.atlas().location());
+        RenderSystem.setShaderTexture(0, sprite.atlasLocation());
         GuiComponent.blit(poseStack, x, y, 0, width, height, sprite);
         poseStack.popPose();
     }
@@ -113,9 +112,9 @@ public final class ClientHelper {
      * @return the local registry access.
      */
     public static RegistryAccess getRegistryAccess() {
-        if (EffectiveSide.get().isServer()) return ServerLifecycleHooks.getCurrentServer().registryAccess();
-        ClientPacketListener connection = Minecraft.getInstance().getConnection();
-        if (connection == null) return RegistryAccess.BUILTIN.get();
-        return connection.registryAccess();
+        if (EffectiveSide.get().isServer()) {
+            return ServerLifecycleHooks.getCurrentServer().registryAccess();
+        }
+        return Minecraft.getInstance().getConnection().registryAccess();
     }
 }

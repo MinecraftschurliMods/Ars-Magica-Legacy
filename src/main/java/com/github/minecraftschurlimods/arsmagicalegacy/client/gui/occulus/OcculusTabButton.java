@@ -2,11 +2,13 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class OcculusTabButton extends Button {
@@ -16,8 +18,8 @@ public class OcculusTabButton extends Button {
     private final int yOffset;
     private final OcculusTab tab;
 
-    public OcculusTabButton(int index, int x, int y, int xOffset, int yOffset, OcculusTab tab, OnPress pOnPress, OnTooltip pOnTooltip) {
-        super(x, y, SIZE, SIZE, tab.getDisplayName(), pOnPress, pOnTooltip);
+    public OcculusTabButton(int index, int x, int y, int xOffset, int yOffset, OcculusTab tab, OnPress pOnPress) {
+        super(x, y, SIZE, SIZE, tab.getDisplayName(ClientHelper.getRegistryAccess()), pOnPress, DEFAULT_NARRATION);
         this.index = index;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
@@ -29,12 +31,12 @@ public class OcculusTabButton extends Button {
         if (!visible) return;
         float f = 1f / 0x100;
         RenderSystem.setShaderTexture(0, new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png"));
-        RenderUtil.drawBox(pPoseStack, x, y, SIZE, SIZE, getBlitOffset(), 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
-        RenderSystem.setShaderTexture(0, tab.icon(Minecraft.getInstance().getConnection().registryAccess()));
-        RenderUtil.drawBox(pPoseStack, x + 2f, y + 2f, 18, 18, getBlitOffset(), 0, 0, 1, 1);
+        RenderUtil.drawBox(pPoseStack, getX(), getY(), SIZE, SIZE, getBlitOffset(), 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
+        RenderSystem.setShaderTexture(0, tab.icon(ClientHelper.getRegistryAccess()));
+        RenderUtil.drawBox(pPoseStack, getX() + 2f, getY() + 2f, 18, 18, getBlitOffset(), 0, 0, 1, 1);
         pMouseX -= xOffset;
         pMouseY -= yOffset;
-        isHovered = pMouseX >= x && pMouseY >= y && pMouseX < x + width && pMouseY < y + height;
+        isHovered = pMouseX >= getX() && pMouseY >= getY() && pMouseX < getX() + width && pMouseY < getY() + height;
     }
 
     public int getIndex() {
@@ -43,5 +45,9 @@ public class OcculusTabButton extends Button {
 
     public boolean isHovered() {
         return isHovered;
+    }
+
+    public Component getDisplayName(RegistryAccess registryAccess) {
+        return tab.getDisplayName(registryAccess);
     }
 }

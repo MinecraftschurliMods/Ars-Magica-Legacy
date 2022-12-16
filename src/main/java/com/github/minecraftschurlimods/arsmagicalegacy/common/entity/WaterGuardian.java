@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class WaterGuardian extends AbstractBoss {
     private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(WaterGuardian.class, EntityDataSerializers.BOOLEAN);
@@ -134,12 +134,14 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("water_guardian"));
-        data.addAnimationController(createActionAnimationController("water_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("water_guardian", "cast", Action.CAST));
-        data.addAnimationController(createActionAnimationController("water_guardian", "cast", Action.LONG_CAST));
-        data.addAnimationController(createActionAnimationController("water_guardian", "spin", Action.SPIN));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("water_guardian"),
+                createActionAnimationController("water_guardian", "idle", Action.IDLE),
+                createActionAnimationController("water_guardian", "cast", Action.CAST),
+                createActionAnimationController("water_guardian", "cast", Action.LONG_CAST),
+                createActionAnimationController("water_guardian", "spin", Action.SPIN)
+        );
     }
 
     @Override

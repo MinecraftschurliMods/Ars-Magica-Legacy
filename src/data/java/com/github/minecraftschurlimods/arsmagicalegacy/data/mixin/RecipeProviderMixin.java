@@ -33,4 +33,9 @@ class RecipeProviderMixin {
     private static String oreCooking(String pName) {
         return ArsMagicaAPI.MOD_ID + ":" + pName;
     }
+
+    @ModifyArg(method = "oneToOneConversionRecipe(Ljava/util/function/Consumer;Lnet/minecraft/world/level/ItemLike;Lnet/minecraft/world/level/ItemLike;Ljava/lang/String;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/data/recipes/ShapelessRecipeBuilder;save(Ljava/util/function/Consumer;Ljava/lang/String;)V"))
+    private static String oneToOneConversionRecipe(String pName) {
+        return ArsMagicaAPI.MOD_ID + ":" + pName;
+    }
 }

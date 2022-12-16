@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:magenta_dye_from_wakebloom"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wakebloom": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:wakebloom"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_wakebloom",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:magenta_dye_from_wakebloom"
+    ]
+  }
+}

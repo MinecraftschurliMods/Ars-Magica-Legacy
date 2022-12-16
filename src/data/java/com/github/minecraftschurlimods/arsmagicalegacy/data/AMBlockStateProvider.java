@@ -9,12 +9,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiont
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -46,8 +48,8 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBloc
 
 @SuppressWarnings({"SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
-    AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
+    AMBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -92,6 +94,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
         signBlock(WITCHWOOD_SIGN, WITCHWOOD_WALL_SIGN, WITCHWOOD_PLANKS);
+        hangingSignBlock(WITCHWOOD_HANGING_SIGN, WITCHWOOD_WALL_HANGING_SIGN, STRIPPED_WITCHWOOD_LOG);
         crossBlock(AUM);
         crossBlock(CERUBLOSSOM);
         crossBlock(DESERT_NOVA);
@@ -261,6 +264,12 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     private void signBlock(Supplier<? extends StandingSignBlock> sign, Supplier<? extends WallSignBlock> wallSign, Supplier<? extends Block> block) {
         signBlock(sign.get(), wallSign.get(), blockTexture(block.get()));
+    }
+
+    private void hangingSignBlock(RegistryObject<? extends CeilingHangingSignBlock> sign, Supplier<? extends WallHangingSignBlock> wallSign, Supplier<? extends Block> block) {
+        ModelFile signModel = models().sign(sign.getId().getPath(), blockTexture(block.get()));
+        simpleBlock(sign.get(), signModel);
+        simpleBlock(wallSign.get(), signModel);
     }
 
     /**

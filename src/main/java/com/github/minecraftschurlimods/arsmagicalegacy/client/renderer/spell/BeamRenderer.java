@@ -8,10 +8,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -25,6 +22,10 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 /**
  * Taken and adapted from <a href="https://github.com/Direwolf20-MC/MiningGadgets/blob/mc/1.18/src/main/java/com/direwolf20/mininggadgets/client/renderer/RenderMiningLaser.java">Direwolf20's Mining Gadgets mod</a>.
@@ -93,21 +94,21 @@ public class BeamRenderer extends RenderType {
             // This calculation is responsible for correctly positioning the beam in-hand, based on the player's fov.
             // The constants are taken from an online function estimator, based on input values found by testing.
             z = -1.045f * fov * fov * fov + 2.3825f * fov * fov - 2.0785f * fov + 0.9175f;
-            stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
-            stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
+            stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
+            stack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
         } else {
             x = -height / 2f;
             y = 0;
             z = 0;
             if (entity instanceof Player) {
-                stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
-                stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
+                stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
+                stack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
             } else {
                 Vec2 vec2 = AMUtil.getRotations(origin, target);
-                stack.mulPose(Vector3f.YP.rotationDegrees(-vec2.y));
-                stack.mulPose(Vector3f.XP.rotationDegrees(vec2.x));
+                stack.mulPose(Axis.YP.rotationDegrees(-vec2.y));
+                stack.mulPose(Axis.XP.rotationDegrees(vec2.x));
             }
-            stack.mulPose(Vector3f.ZP.rotationDegrees(90));
+            stack.mulPose(Axis.ZP.rotationDegrees(90));
             stack.translate(height / 2f, 0, 0);
         }
         PoseStack.Pose pose = stack.last();
@@ -122,15 +123,15 @@ public class BeamRenderer extends RenderType {
 
     private static void drawPart(VertexConsumer vc, Matrix4f matrix, Matrix3f normal, float width, float distance, float v1, float v2, float x, float y, float z, InteractionHand hand, float r, float g, float b, float a) {
         Vector3f vec = new Vector3f(0, 1, 0);
-        vec.transform(normal);
+        vec.mul(normal);
         Vector4f vec1 = new Vector4f(x, -width + y, z, 1);
-        vec1.transform(matrix);
+        vec1.mul(matrix);
         Vector4f vec2 = new Vector4f(0, -width, distance, 1);
-        vec2.transform(matrix);
+        vec2.mul(matrix);
         Vector4f vec3 = new Vector4f(0, width, distance, 1);
-        vec3.transform(matrix);
+        vec3.mul(matrix);
         Vector4f vec4 = new Vector4f(x, width + y, z, 1);
-        vec4.transform(matrix);
+        vec4.mul(matrix);
         if (hand == InteractionHand.MAIN_HAND) {
             vertex(vc, vec4, r, g, b, a, 0, v1, vec);
             vertex(vc, vec3, r, g, b, a, 0, v2, vec);

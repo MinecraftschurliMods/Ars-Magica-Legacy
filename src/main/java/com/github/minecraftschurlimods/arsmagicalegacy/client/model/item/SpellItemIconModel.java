@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
@@ -20,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +44,7 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
             try {
                 return cache.get(icon, () -> {
                     TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(icon);
-                    return List.of(new FaceBakery().bakeQuad(new Vector3f(0, 0, 8.504f), new Vector3f(16, 16, 8.504f), new BlockElementFace(null, 2, sprite.getName().toString(), new BlockFaceUV(new float[]{0, 0, 16, 16}, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true, sprite.getName()));
+                    return List.of(new FaceBakery().bakeQuad(new Vector3f(0, 0, 8.504f), new Vector3f(16, 16, 8.504f), new BlockElementFace(null, 2, sprite.contents().name().toString(), new BlockFaceUV(new float[]{0, 0, 16, 16}, 0)), sprite, Direction.SOUTH, BlockModelRotation.X0_Y0, null, true, sprite.contents().name()));
                 });
             } catch (ExecutionException ignored) {
             }

@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
@@ -15,7 +14,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.Spe
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -25,7 +23,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -43,15 +40,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SpellItem extends Item implements ISpellItem {
-    public static final CreativeModeTab PREFAB_SPELLS_TAB = new CreativeModeTab(ArsMagicaAPI.MOD_ID + ".prefab_spells") {
-        @Override
-        public ItemStack makeIcon() {
-            return AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY);
-        }
-    };
 
     public SpellItem() {
-        super(AMItems.HIDDEN_ITEM_1);
+        super(AMItems.ITEM_1);
     }
 
     @Override
@@ -189,17 +180,6 @@ public class SpellItem extends Item implements ISpellItem {
             api.openSpellCustomizationGui(context.getLevel(), player, item);
         }
         return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-        if (category == PREFAB_SPELLS_TAB) {
-            AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY)
-                  .stream()
-                  .sorted(Comparator.comparing(e -> e.name().toString()))
-                  .map(PrefabSpell::makeSpell)
-                  .forEach(items::add);
-        }
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {

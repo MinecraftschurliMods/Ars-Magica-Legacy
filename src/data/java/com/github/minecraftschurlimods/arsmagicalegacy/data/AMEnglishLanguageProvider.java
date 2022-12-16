@@ -25,13 +25,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations;
 import net.minecraft.Util;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
@@ -40,18 +39,23 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"SameParameterValue", "unused"})
 class AMEnglishLanguageProvider extends AMLanguageProvider {
-    AMEnglishLanguageProvider(DataGenerator generator) {
-        super(generator, "en_us");
+    private final Map<String, String> additionalTranslations;
+
+    AMEnglishLanguageProvider(PackOutput output, Map<String, String> additionalTranslations) {
+        super(output, "en_us");
+        this.additionalTranslations = additionalTranslations;
     }
 
     @Override
     protected void addTranslations() {
-        itemGroupTranslation(AMItems.TAB, ArsMagicaLegacy.getModName());
-        itemGroupTranslation(SpellItem.PREFAB_SPELLS_TAB, ArsMagicaLegacy.getModName() + " - Prefab Spells");
+        additionalTranslations.forEach(this::add);
+        add(TranslationConstants.MAIN_CREATIVE_TAB, ArsMagicaLegacy.getModName());
+        add(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB, ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
         itemIdTranslation(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1);
@@ -100,6 +104,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
         blockIdTranslation(AMBlocks.WITCHWOOD_SIGN);
+        blockIdTranslation(AMBlocks.WITCHWOOD_HANGING_SIGN);
         itemIdTranslation(AMItems.BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));
@@ -703,15 +708,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void configTranslation(String name, String translation) {
         add(TranslationConstants.CONFIG + name, translation);
-    }
-
-    /**
-     * Adds an item group translation that matches the item group id.
-     *
-     * @param translation The creative tab to generate the translation for.
-     */
-    private void itemGroupTranslation(CreativeModeTab tab, String translation) {
-        add("itemGroup." + tab.getRecipeFolderName(), translation);
     }
 
     /**

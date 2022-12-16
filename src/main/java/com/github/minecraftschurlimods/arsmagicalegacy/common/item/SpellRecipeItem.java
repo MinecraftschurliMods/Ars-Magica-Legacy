@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class SpellRecipeItem extends Item {
     public SpellRecipeItem() {
-        super(AMItems.HIDDEN_ITEM_1);
+        super(AMItems.ITEM_1);
     }
 
     public static boolean placeInLectern(ItemStack stack, Player player, Level level, BlockPos pos) {

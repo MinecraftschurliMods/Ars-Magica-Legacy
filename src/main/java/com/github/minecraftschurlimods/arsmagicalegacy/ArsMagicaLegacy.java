@@ -37,7 +37,7 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.bernie.geckolib3.GeckoLib;
+import software.bernie.geckolib.GeckoLib;
 
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {

@@ -135,12 +135,12 @@ public class SpellRecipeScreen extends Screen {
     protected void init() {
         xPos = (width - WIDTH) / 2;
         Objects.requireNonNull(minecraft);
-        addRenderableWidget(new Button(width / 2 - 100, 196, lecternPos == null ? 200 : 98, 20, CommonComponents.GUI_DONE, e -> minecraft.setScreen(null)));
+        addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, e -> minecraft.setScreen(null)).pos(width / 2 - 100, 196).size(lecternPos == null ? 200 : 98, 20).build());
         if (lecternPos != null) {
-            addRenderableWidget(new Button(this.width / 2 + 2, 196, 98, 20, Component.translatable("lectern.take_book"), e -> {
+            addRenderableWidget(Button.builder(Component.translatable("lectern.take_book"), e -> {
                 ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new TakeSpellRecipeFromLecternPacket(lecternPos));
                 minecraft.setScreen(null);
-            }));
+            }).pos(this.width / 2 + 2, 196).size(98, 20).build());
         }
         forwardButton = addRenderableWidget(new PageButton(xPos + 116, 159, true, p -> setPage(currentPage + 1), playTurnSound));
         backButton = addRenderableWidget(new PageButton(xPos + 43, 159, false, p -> setPage(currentPage - 1), playTurnSound));
