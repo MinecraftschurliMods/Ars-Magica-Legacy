@@ -204,7 +204,7 @@ public final class SpellHelper implements ISpellHelper {
     public void nextShapeGroup(ItemStack stack) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
-        spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
+        spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().stream().filter(e -> !e.isEmpty()).count()));
         helper.setSpell(stack, spell);
     }
 }
