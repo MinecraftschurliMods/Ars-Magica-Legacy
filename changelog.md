@@ -1,3 +1,3 @@
-# Additions
+# Fixes
 
-- Spell recipe UIs now properly work! They show ingredients, reagents, the parts they're made out of, and an affinity breakdown.
+- Fixed a critical crash occuring when trying to change the spell group on a spell with only one spell group
