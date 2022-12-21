@@ -78,6 +78,7 @@ public final class Config {
         public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
         public final ForgeConfigSpec.LongValue DRYAD_KILL_COOLDOWN;
         public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
+        public final ForgeConfigSpec.DoubleValue SUNSTONE_CHANCE_FROM_OBSIDIAN;
 
         private Server(ForgeConfigSpec.Builder builder) {
             BURNOUT_RATIO = builder
@@ -96,6 +97,10 @@ public final class Config {
                     .comment("The maximum number of shape groups allowed for new spells.")
                     .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
+            SUNSTONE_CHANCE_FROM_OBSIDIAN = builder
+                    .comment("The chance that a sunstone ore will appear when water and lava form obsidian. Set to 0 to disable.")
+                    .translation(TranslationConstants.CONFIG + "sunstone_chance_from_obsidian")
+                    .defineInRange("sunstone_chance_from_obsidian", 0.005, 0, 1);
             builder.push("mana");
             MANA_BASE = builder
                     .comment("The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).")

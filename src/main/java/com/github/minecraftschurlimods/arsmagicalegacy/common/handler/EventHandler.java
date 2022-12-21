@@ -30,6 +30,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -59,6 +60,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -72,10 +74,12 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -88,6 +92,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
@@ -123,6 +128,7 @@ public final class EventHandler {
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
+        forgeBus.addListener(EventHandler::fluidPlaceBlock);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
@@ -247,6 +253,19 @@ public final class EventHandler {
         MagicHelper.instance().syncMagic(player);
         ManaHelper.instance().syncMana(player);
         BurnoutHelper.instance().syncBurnout(player);
+    }
+
+    private static void fluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event) {
+        if (!event.getNewState().is(Tags.Blocks.OBSIDIAN)) return;
+        LevelAccessor level = event.getWorld();
+        if (level.dayTime() % 24000 >= 12000) return;
+        if (level.getLevelData().isRaining() || level.getLevelData().isThundering()) return;
+        BlockPos pos = event.getLiquidPos().above();
+        if (!level.getFluidState(pos).is(FluidTags.WATER)) return;
+        if (!level.canSeeSky(pos)) return;
+        if (level.getRandom().nextDouble() < Config.SERVER.SUNSTONE_CHANCE_FROM_OBSIDIAN.get()) {
+            event.setNewState(AMBlocks.SUNSTONE_ORE.get().defaultBlockState());
+        }
     }
 
     private static void playerClone(PlayerEvent.Clone event) {
