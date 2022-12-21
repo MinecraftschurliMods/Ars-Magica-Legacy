@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.SunstoneOreFeature;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.meteorite.MeteoriteConfiguration;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.meteorite.MeteoriteFeature;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.level.SunstoneOreFeature;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
@@ -57,32 +57,31 @@ public interface AMFeatures {
     RegistryObject<MeteoriteFeature>   METEORITE            = AMRegistries.FEATURES.register("meteorite", MeteoriteFeature::new);
     RegistryObject<SunstoneOreFeature> SUNSTONE_ORE_FEATURE = AMRegistries.FEATURES.register("sunstone_ore", SunstoneOreFeature::new);
 
-    RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE       = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 5, 0.1f);
-    RegistryObject<ConfiguredFeature<?, ?>> CHIMERITE_ORE             = ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
-    RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE               = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
-    RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE                 = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
-    RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA           = ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
-    RegistryObject<ConfiguredFeature<?, ?>> SUNSTONE_ORE              = sunstoneOre("sunstone_ore", AMBlocks.SUNSTONE_ORE, 2);
+    RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 5, 0.1f);
+    RegistryObject<ConfiguredFeature<?, ?>> CHIMERITE_ORE       = ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
+    RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE         = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
+    RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE           = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
+    RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA     = ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
+    RegistryObject<ConfiguredFeature<?, ?>> AUM                 = flower("aum", 64, AMBlocks.AUM);
+    RegistryObject<ConfiguredFeature<?, ?>> SUNSTONE_ORE        = sunstoneOre("sunstone_ore", AMBlocks.SUNSTONE_ORE, 4);
+    RegistryObject<ConfiguredFeature<?, ?>> CERUBLOSSOM         = flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
+    RegistryObject<ConfiguredFeature<?, ?>> DESERT_NOVA         = flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
+    RegistryObject<ConfiguredFeature<?, ?>> TARMA_ROOT          = flower("tarma_root", 64, AMBlocks.TARMA_ROOT);
+    RegistryObject<ConfiguredFeature<?, ?>> WAKEBLOOM           = flower("wakebloom", 64, AMBlocks.WAKEBLOOM);
+    RegistryObject<ConfiguredFeature<?, ?>> WITCHWOOD_TREE      = tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
 
-    RegistryObject<ConfiguredFeature<?, ?>> AUM                       = flower("aum", 64, AMBlocks.AUM);
-    RegistryObject<ConfiguredFeature<?, ?>> CERUBLOSSOM               = flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
-    RegistryObject<ConfiguredFeature<?, ?>> DESERT_NOVA               = flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
-    RegistryObject<ConfiguredFeature<?, ?>> TARMA_ROOT                = flower("tarma_root", 64, AMBlocks.TARMA_ROOT);
-    RegistryObject<ConfiguredFeature<?, ?>> WAKEBLOOM                 = flower("wakebloom", 64, AMBlocks.WAKEBLOOM);
-    RegistryObject<ConfiguredFeature<?, ?>> WITCHWOOD_TREE            = tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
-
-    RegistryObject<PlacedFeature> MOONSTONE_METEORITE_PLACEMENT       = meteoritePlacement("moonstone_meteorite", MOONSTONE_METEORITE, 12, 56, 72);
-    RegistryObject<PlacedFeature> CHIMERITE_ORE_PLACEMENT             = orePlacement("chimerite_ore", AMFeatures.CHIMERITE_ORE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
-    RegistryObject<PlacedFeature> VINTEUM_ORE_PLACEMENT               = orePlacement("vinteum_ore", AMFeatures.VINTEUM_ORE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
-    RegistryObject<PlacedFeature> TOPAZ_ORE_PLACEMENT                 = orePlacement("topaz_ore", AMFeatures.TOPAZ_ORE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
-    RegistryObject<PlacedFeature> TOPAZ_EXTRA_ORE_PLACEMENT           = orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_ORE_EXTRA, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
-    RegistryObject<PlacedFeature> SUNSTONE_ORE_PLACEMENT              = orePlacement("sunstone_ore", AMFeatures.SUNSTONE_ORE, 1, PlacementUtils.RANGE_8_8);
-    RegistryObject<PlacedFeature> AUM_PLACEMENT                       = flowerPlacement("aum", AMFeatures.AUM, 32);
-    RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT               = flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM, 32);
-    RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT               = flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA, 32);
-    RegistryObject<PlacedFeature> TARMA_ROOT_PLACEMENT                = flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT, 32);
-    RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT                 = flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM, 32);
-    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT            = treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
+    RegistryObject<PlacedFeature> MOONSTONE_METEORITE_PLACEMENT = meteoritePlacement("moonstone_meteorite", MOONSTONE_METEORITE, 64, 56, 72);
+    RegistryObject<PlacedFeature> CHIMERITE_ORE_PLACEMENT       = orePlacement("chimerite_ore", AMFeatures.CHIMERITE_ORE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
+    RegistryObject<PlacedFeature> VINTEUM_ORE_PLACEMENT         = orePlacement("vinteum_ore", AMFeatures.VINTEUM_ORE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
+    RegistryObject<PlacedFeature> TOPAZ_ORE_PLACEMENT           = orePlacement("topaz_ore", AMFeatures.TOPAZ_ORE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
+    RegistryObject<PlacedFeature> TOPAZ_EXTRA_ORE_PLACEMENT     = orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_ORE_EXTRA, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
+    RegistryObject<PlacedFeature> SUNSTONE_ORE_PLACEMENT        = orePlacement("sunstone_ore", AMFeatures.SUNSTONE_ORE, 32, PlacementUtils.RANGE_8_8);
+    RegistryObject<PlacedFeature> AUM_PLACEMENT                 = flowerPlacement("aum", AMFeatures.AUM, 32);
+    RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT         = flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM, 32);
+    RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT         = flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA, 32);
+    RegistryObject<PlacedFeature> TARMA_ROOT_PLACEMENT          = flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT, 32);
+    RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT           = flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM, 32);
+    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT      = treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
 
     /**
      * Empty method that is required for classloading
@@ -95,8 +94,8 @@ public interface AMFeatures {
         return feature(name, Feature.ORE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())), veinSize, airExposureDiscardChance));
     }
 
-    static RegistryObject<ConfiguredFeature<?,?>> sunstoneOre(String name, RegistryObject<Block> ore, int veinSize) {
-        return feature(name, SUNSTONE_ORE_FEATURE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ore.get().defaultBlockState())), veinSize, 1F));
+    private static RegistryObject<ConfiguredFeature<?,?>> sunstoneOre(String name, RegistryObject<Block> ore, int veinSize) {
+        return feature(name, SUNSTONE_ORE_FEATURE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ore.get().defaultBlockState())), veinSize, 0F));
     }
 
     private static RegistryObject<PlacedFeature> orePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int veinCount, PlacementModifier heightRangePlacement) {
