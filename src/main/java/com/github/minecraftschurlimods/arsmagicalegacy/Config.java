@@ -167,7 +167,7 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_chance")
                     .defineInRange("bonemeal_chance", 0.01, 0, 1);
             DRYAD_BONEMEAL_RADIUS = builder
-                    .comment("The radius of bonemeal application.")
+                    .comment("The craterRadius of bonemeal application.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
                     .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
             DRYAD_KILL_COOLDOWN = builder
