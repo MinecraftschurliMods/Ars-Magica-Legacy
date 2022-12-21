@@ -56,7 +56,7 @@ public interface AMFeatures {
     RegistryObject<MeteoriteFeature> METEORITE = AMRegistries.FEATURES.register("meteorite", MeteoriteFeature::new);
 
     RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE       = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 5, 5, 20, 4, 0.1f, true, 0.8f);
-    RegistryObject<ConfiguredFeature<?, ?>> OCEAN_MOONSTONE_METEORITE = meteorite("ocean_moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 8, 8, 0, 0, 0.1f, false, 0f);
+    RegistryObject<ConfiguredFeature<?, ?>> OCEAN_MOONSTONE_METEORITE = meteorite("ocean_moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 7, 1, 1, 0.1f, false, 0f);
     RegistryObject<ConfiguredFeature<?, ?>> CHIMERITE_ORE             = ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE               = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE                 = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
@@ -79,7 +79,7 @@ public interface AMFeatures {
     RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT               = flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA, 32);
     RegistryObject<PlacedFeature> TARMA_ROOT_PLACEMENT                = flowerPlacement("tarma_root", AMFeatures.TARMA_ROOT, 32);
     RegistryObject<PlacedFeature> WAKEBLOOM_PLACEMENT                 = flowerPlacement("wakebloom", AMFeatures.WAKEBLOOM, 32);
-    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT            = treeVegetation("witchwood_tree", AMFeatures.WITCHWOOD_TREE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
+    RegistryObject<PlacedFeature> WITCHWOOD_TREE_PLACEMENT            = treePlacement("witchwood_tree", AMFeatures.WITCHWOOD_TREE, PlacementUtils.countExtra(1, 0.1F, 0), 8, AMBlocks.WITCHWOOD_SAPLING);
 
     /**
      * Empty method that is required for classloading
@@ -89,7 +89,7 @@ public interface AMFeatures {
     }
 
     private static RegistryObject<ConfiguredFeature<?, ?>> ore(String name, Supplier<? extends Block> ore, Supplier<? extends Block> deepslateOre, int veinSize, float airExposureDiscardChance) {
-        return feature(name, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())), veinSize, airExposureDiscardChance));
+        return feature(name, Feature.ORE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())), veinSize, airExposureDiscardChance));
     }
 
     private static RegistryObject<PlacedFeature> orePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
@@ -97,7 +97,7 @@ public interface AMFeatures {
     }
 
     private static RegistryObject<ConfiguredFeature<?, ?>> flower(String name, int tries, Supplier<? extends Block> flower) {
-        return feature(name, Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(tries, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(flower.get())))));
+        return feature(name, Feature.RANDOM_PATCH, () -> FeatureUtils.simpleRandomPatchConfiguration(tries, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(flower.get())))));
     }
 
     private static RegistryObject<PlacedFeature> flowerPlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int rarity) {
@@ -105,38 +105,41 @@ public interface AMFeatures {
     }
 
     private static RegistryObject<ConfiguredFeature<?, ?>> tree(String name, Supplier<? extends Block> log, TrunkPlacer trunk, Supplier<? extends Block> leaves, FoliagePlacer foliage, FeatureSize size) {
-        return feature(name, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(log.get()), trunk, BlockStateProvider.simple(leaves.get()), foliage, size).ignoreVines().build());
+        return feature(name, Feature.TREE, () -> new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(log.get()), trunk, BlockStateProvider.simple(leaves.get()), foliage, size).ignoreVines().build());
     }
 
-    private static RegistryObject<PlacedFeature> treePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, Supplier<? extends Block> sapling) {
-        return placement(name, feature, List.of(PlacementUtils.filteredByBlockSurvival(sapling.get())));
-    }
-
-    private static RegistryObject<PlacedFeature> treeVegetation(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, PlacementModifier modifier, int rarity, Supplier<? extends Block> sapling) {
-        List<PlacementModifier> list = new ArrayList<>(VegetationPlacements.treePlacement(modifier, sapling.get()));
-        list.add(RarityFilter.onAverageOnceEvery(rarity));
-        return placement(name, feature, list);
+    private static RegistryObject<PlacedFeature> treePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, PlacementModifier modifier, int rarity, Supplier<? extends Block> sapling) {
+        return placement(name, feature, () -> {
+            List<PlacementModifier> list = new ArrayList<>(VegetationPlacements.treePlacement(modifier, sapling.get()));
+            list.add(RarityFilter.onAverageOnceEvery(rarity));
+            return list;
+        });
     }
 
     private static RegistryObject<ConfiguredFeature<?, ?>> meteorite(String name, Block baseState, Supplier<Block> rareState, Block fluidState, int meteoriteRadius, int meteoriteHeight, int craterRadius, int craterHeight, float rareChance, boolean placeCrater, float placeLake) {
-        return feature(name, METEORITE, new MeteoriteConfiguration(baseState.defaultBlockState(), rareState.get().defaultBlockState(), fluidState.defaultBlockState(), meteoriteRadius, meteoriteHeight, craterRadius, craterHeight, rareChance, placeCrater, placeLake));
+        return feature(name, METEORITE, () -> new MeteoriteConfiguration(baseState.defaultBlockState(), rareState.get().defaultBlockState(), fluidState.defaultBlockState(), meteoriteRadius, meteoriteHeight, craterRadius, craterHeight, rareChance, placeCrater, placeLake));
     }
 
     private static RegistryObject<PlacedFeature> meteoritePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int rarity, int minHeight, int maxHeight) {
         return placement(name, feature, List.of(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)), BiomeFilter.biome()));
     }
 
-    private static <T extends FeatureConfiguration> RegistryObject<ConfiguredFeature<?, ?>> feature(String name, Feature<T> feature, T configuration) {
-        return AMRegistries.CONFIGURED_FEATURES.register(name, () -> new ConfiguredFeature<>(feature, configuration));
+    private static <T extends FeatureConfiguration> RegistryObject<ConfiguredFeature<?, ?>> feature(String name, Feature<T> feature, Supplier<T> configuration) {
+        return AMRegistries.CONFIGURED_FEATURES.register(name, () -> new ConfiguredFeature<>(feature, configuration.get()));
     }
 
-    private static <T extends FeatureConfiguration> RegistryObject<ConfiguredFeature<?, ?>> feature(String name, RegistryObject<? extends Feature<T>> feature, T configuration) {
-        return AMRegistries.CONFIGURED_FEATURES.register(name, () -> new ConfiguredFeature<>(feature.get(), configuration));
+    private static <T extends FeatureConfiguration> RegistryObject<ConfiguredFeature<?, ?>> feature(String name, RegistryObject<? extends Feature<T>> feature, Supplier<T> configuration) {
+        return AMRegistries.CONFIGURED_FEATURES.register(name, () -> new ConfiguredFeature<>(feature.get(), configuration.get()));
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private static RegistryObject<PlacedFeature> placement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, List<PlacementModifier> modifiers) {
         return AMRegistries.PLACED_FEATURES.register(name, () -> new PlacedFeature(feature.getHolder().get(), modifiers));
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private static RegistryObject<PlacedFeature> placement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, Supplier<List<PlacementModifier>> modifiers) {
+        return AMRegistries.PLACED_FEATURES.register(name, () -> new PlacedFeature(feature.getHolder().get(), modifiers.get()));
     }
 
     /**
