@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.meteorite.MeteoriteConfiguration;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.meteorite.MeteoriteFeature;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.level.SunstoneOreFeature;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
@@ -53,13 +54,16 @@ import java.util.function.Supplier;
 @SuppressWarnings("SameParameterValue")
 @NonExtendable
 public interface AMFeatures {
-    RegistryObject<MeteoriteFeature> METEORITE = AMRegistries.FEATURES.register("meteorite", MeteoriteFeature::new);
+    RegistryObject<MeteoriteFeature>   METEORITE            = AMRegistries.FEATURES.register("meteorite", MeteoriteFeature::new);
+    RegistryObject<SunstoneOreFeature> SUNSTONE_ORE_FEATURE = AMRegistries.FEATURES.register("sunstone_ore", SunstoneOreFeature::new);
 
     RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE       = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 5, 0.1f);
     RegistryObject<ConfiguredFeature<?, ?>> CHIMERITE_ORE             = ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE               = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE                 = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA           = ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
+    RegistryObject<ConfiguredFeature<?, ?>> SUNSTONE_ORE              = sunstoneOre("sunstone_ore", AMBlocks.SUNSTONE_ORE, 2);
+
     RegistryObject<ConfiguredFeature<?, ?>> AUM                       = flower("aum", 64, AMBlocks.AUM);
     RegistryObject<ConfiguredFeature<?, ?>> CERUBLOSSOM               = flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
     RegistryObject<ConfiguredFeature<?, ?>> DESERT_NOVA               = flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
@@ -72,6 +76,7 @@ public interface AMFeatures {
     RegistryObject<PlacedFeature> VINTEUM_ORE_PLACEMENT               = orePlacement("vinteum_ore", AMFeatures.VINTEUM_ORE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
     RegistryObject<PlacedFeature> TOPAZ_ORE_PLACEMENT                 = orePlacement("topaz_ore", AMFeatures.TOPAZ_ORE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
     RegistryObject<PlacedFeature> TOPAZ_EXTRA_ORE_PLACEMENT           = orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_ORE_EXTRA, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
+    RegistryObject<PlacedFeature> SUNSTONE_ORE_PLACEMENT              = orePlacement("sunstone_ore", AMFeatures.SUNSTONE_ORE, 1, PlacementUtils.RANGE_8_8);
     RegistryObject<PlacedFeature> AUM_PLACEMENT                       = flowerPlacement("aum", AMFeatures.AUM, 32);
     RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT               = flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM, 32);
     RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT               = flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA, 32);
@@ -90,7 +95,11 @@ public interface AMFeatures {
         return feature(name, Feature.ORE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ore.get().defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, deepslateOre.get().defaultBlockState())), veinSize, airExposureDiscardChance));
     }
 
-    private static RegistryObject<PlacedFeature> orePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int veinCount, HeightRangePlacement heightRangePlacement) {
+    static RegistryObject<ConfiguredFeature<?,?>> sunstoneOre(String name, RegistryObject<Block> ore, int veinSize) {
+        return feature(name, SUNSTONE_ORE_FEATURE, () -> new OreConfiguration(List.of(OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ore.get().defaultBlockState())), veinSize, 1F));
+    }
+
+    private static RegistryObject<PlacedFeature> orePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int veinCount, PlacementModifier heightRangePlacement) {
         return placement(name, feature, List.of(CountPlacement.of(veinCount), InSquarePlacement.spread(), heightRangePlacement, BiomeFilter.biome()));
     }
 
@@ -184,6 +193,9 @@ public interface AMFeatures {
             if (category == Biome.BiomeCategory.FOREST || category == Biome.BiomeCategory.JUNGLE || category == Biome.BiomeCategory.PLAINS || category == Biome.BiomeCategory.TAIGA) {
                 spawn.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(AMEntities.DRYAD.get(), 2, 15, 25));
             }
+        }
+        if (category == Biome.BiomeCategory.NETHER) {
+            builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, SUNSTONE_ORE_PLACEMENT.getHolder().get());
         }
     }
 }
