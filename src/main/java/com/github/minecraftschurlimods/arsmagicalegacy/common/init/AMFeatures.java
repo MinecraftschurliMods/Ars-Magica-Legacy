@@ -55,8 +55,7 @@ import java.util.function.Supplier;
 public interface AMFeatures {
     RegistryObject<MeteoriteFeature> METEORITE = AMRegistries.FEATURES.register("meteorite", MeteoriteFeature::new);
 
-    RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE       = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 5, 5, 20, 4, 0.1f, true, 0.8f);
-    RegistryObject<ConfiguredFeature<?, ?>> OCEAN_MOONSTONE_METEORITE = meteorite("ocean_moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 7, 1, 1, 0.1f, false, 0f);
+    RegistryObject<ConfiguredFeature<?, ?>> MOONSTONE_METEORITE       = meteorite("moonstone_meteorite", Blocks.STONE, AMBlocks.MOONSTONE_ORE, Blocks.WATER, 7, 5, 0.1f);
     RegistryObject<ConfiguredFeature<?, ?>> CHIMERITE_ORE             = ore("chimerite_ore", AMBlocks.CHIMERITE_ORE, AMBlocks.DEEPSLATE_CHIMERITE_ORE, 7, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE               = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE                 = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
@@ -69,7 +68,6 @@ public interface AMFeatures {
     RegistryObject<ConfiguredFeature<?, ?>> WITCHWOOD_TREE            = tree("witchwood_tree", AMBlocks.WITCHWOOD_LOG, new DarkOakTrunkPlacer(9, 3, 1), AMBlocks.WITCHWOOD_LEAVES, new DarkOakFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1)), new ThreeLayersFeatureSize(1, 2, 1, 1, 2, OptionalInt.empty()));
 
     RegistryObject<PlacedFeature> MOONSTONE_METEORITE_PLACEMENT       = meteoritePlacement("moonstone_meteorite", MOONSTONE_METEORITE, 12, 56, 72);
-    RegistryObject<PlacedFeature> OCEAN_MOONSTONE_METEORITE_PLACEMENT = meteoritePlacement("ocean_moonstone_meteorite", OCEAN_MOONSTONE_METEORITE, 12, 40, 72);
     RegistryObject<PlacedFeature> CHIMERITE_ORE_PLACEMENT             = orePlacement("chimerite_ore", AMFeatures.CHIMERITE_ORE, 6, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(16)));
     RegistryObject<PlacedFeature> VINTEUM_ORE_PLACEMENT               = orePlacement("vinteum_ore", AMFeatures.VINTEUM_ORE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
     RegistryObject<PlacedFeature> TOPAZ_ORE_PLACEMENT                 = orePlacement("topaz_ore", AMFeatures.TOPAZ_ORE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
@@ -116,12 +114,12 @@ public interface AMFeatures {
         });
     }
 
-    private static RegistryObject<ConfiguredFeature<?, ?>> meteorite(String name, Block baseState, Supplier<Block> rareState, Block fluidState, int meteoriteRadius, int meteoriteHeight, int craterRadius, int craterHeight, float rareChance, boolean placeCrater, float placeLake) {
-        return feature(name, METEORITE, () -> new MeteoriteConfiguration(baseState.defaultBlockState(), rareState.get().defaultBlockState(), fluidState.defaultBlockState(), meteoriteRadius, meteoriteHeight, craterRadius, craterHeight, rareChance, placeCrater, placeLake));
+    private static RegistryObject<ConfiguredFeature<?, ?>> meteorite(String name, Block baseState, Supplier<Block> rareState, Block fluidState, int meteoriteRadius, int meteoriteHeight, float rareChance) {
+        return feature(name, METEORITE, () -> new MeteoriteConfiguration(baseState.defaultBlockState(), rareState.get().defaultBlockState(), fluidState.defaultBlockState(), meteoriteRadius, meteoriteHeight, rareChance));
     }
 
     private static RegistryObject<PlacedFeature> meteoritePlacement(String name, RegistryObject<ConfiguredFeature<?, ?>> feature, int rarity, int minHeight, int maxHeight) {
-        return placement(name, feature, List.of(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)), BiomeFilter.biome()));
+        return placement(name, feature, List.of(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, HeightRangePlacement.uniform(VerticalAnchor.absolute(minHeight), VerticalAnchor.absolute(maxHeight)), BiomeFilter.biome()));
     }
 
     private static <T extends FeatureConfiguration> RegistryObject<ConfiguredFeature<?, ?>> feature(String name, Feature<T> feature, Supplier<T> configuration) {
@@ -155,6 +153,9 @@ public interface AMFeatures {
         ResourceLocation biome = event.getName();
         Biome.BiomeCategory category = event.getCategory();
         if (category != Biome.BiomeCategory.NETHER && category != Biome.BiomeCategory.THEEND) {
+            if (category != Biome.BiomeCategory.OCEAN) {
+                builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, MOONSTONE_METEORITE_PLACEMENT.getHolder().get());
+            }
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CHIMERITE_ORE_PLACEMENT.getHolder().get());
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, VINTEUM_ORE_PLACEMENT.getHolder().get());
             builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TOPAZ_ORE_PLACEMENT.getHolder().get());
@@ -173,11 +174,6 @@ public interface AMFeatures {
             }
             if (category == Biome.BiomeCategory.MOUNTAIN || category == Biome.BiomeCategory.EXTREME_HILLS || category == Biome.BiomeCategory.UNDERGROUND) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TARMA_ROOT_PLACEMENT.getHolder().get());
-            }
-            if (category == Biome.BiomeCategory.OCEAN) {
-                builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, OCEAN_MOONSTONE_METEORITE_PLACEMENT.getHolder().get());
-            } else {
-                builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MOONSTONE_METEORITE_PLACEMENT.getHolder().get());
             }
             if (biome != null && BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, biome)).contains(BiomeDictionary.Type.SPOOKY)) {
                 builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WITCHWOOD_TREE_PLACEMENT.getHolder().get());
