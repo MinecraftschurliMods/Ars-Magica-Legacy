@@ -1,3 +1,3 @@
 # Fixes
 
-- Fixed a critical crash occuring when trying to change the spell group on a spell with only one spell group
+- Fixed a bug where the touch shape targeted the wrong block
