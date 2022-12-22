@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -133,9 +134,9 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher capStateMatcher = new CapStateMatcher();
         IStateMatcher air = api.airMatcher();
         IStateMatcher chalk = api.looseBlockMatcher(AMBlocks.WIZARDS_CHALK.get());
-        IStateMatcher obeliskLower = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState());
-        IStateMatcher obeliskMiddle = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE));
-        IStateMatcher obeliskUpper = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.UPPER));
+        IStateMatcher obeliskLower = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState(), ObeliskBlock.PART);
+        IStateMatcher obeliskMiddle = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE), ObeliskBlock.PART);
+        IStateMatcher obeliskUpper = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.UPPER), ObeliskBlock.PART);
         IStateMatcher celestialPrismLower = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState());
         IStateMatcher celestialPrismUpper = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState().setValue(CelestialPrismBlock.HALF, DoubleBlockHalf.UPPER));
         IStateMatcher blackAurem = api.strictBlockMatcher(AMBlocks.BLACK_AUREM.get());
@@ -155,7 +156,7 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher ironInlayNorthWest = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_WEST));
         IStateMatcher ironInlaySouthEast = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_EAST));
         IStateMatcher ironInlaySouthWest = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_WEST));
-        IStateMatcher candle = api.strictBlockMatcher(Blocks.CANDLE);
+        IStateMatcher candle = api.stateMatcher(Blocks.CANDLE.defaultBlockState().setValue(BlockStateProperties.CANDLES, 4).setValue(BlockStateProperties.LIT, true));
         api.registerMultiblock(CRAFTING_ALTAR, api.makeMultiblock(
                 CRAFTING_ALTAR_STRUCTURE,
                 'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH),

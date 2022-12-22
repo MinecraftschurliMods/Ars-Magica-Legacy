@@ -3,13 +3,16 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
@@ -20,6 +23,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.Ent
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.EntitySummonTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.GameEventRitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.ItemDropRitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.SpellComponentCastRitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -141,6 +145,16 @@ public class AMRitualProvider implements DataProvider {
                 .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
                 .with(new EnderDragonDimensionRequirement())
                 .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification"))
+                .with(new RitualStructureRequirement(PatchouliCompat.PURIFICATION_RITUAL))
+                .with(new SpellComponentCastRitualTrigger(AMSpellParts.LIGHT.get()))
+                .with(new PlaceBlockRitualEffect(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption"))
+                .with(new RitualStructureRequirement(PatchouliCompat.CORRUPTION_RITUAL))
+                .with(new SpellComponentCastRitualTrigger(AMSpellParts.FIRE_DAMAGE.get()))
+                .with(new PlaceBlockRitualEffect(AMBlocks.BLACK_AUREM.get().defaultBlockState(), BlockPos.ZERO.above()))
                 .build(consumer);
     }
 

@@ -79,6 +79,37 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        switch (pState.getValue(PART)) {
+            case LOWER -> {
+                if (pLevel.getBlockState(pPos.above()).getBlock() == this) {
+                    pLevel.removeBlock(pPos.above(), false);
+                }
+                if (pLevel.getBlockState(pPos.above(2)).getBlock() == this) {
+                    pLevel.removeBlock(pPos.above(2), false);
+                }
+            }
+            case MIDDLE -> {
+                if (pLevel.getBlockState(pPos.below()).getBlock() == this) {
+                    pLevel.removeBlock(pPos.below(), false);
+                }
+                if (pLevel.getBlockState(pPos.above()).getBlock() == this) {
+                    pLevel.removeBlock(pPos.above(), false);
+                }
+            }
+            case UPPER -> {
+                if (pLevel.getBlockState(pPos.below()).getBlock() == this) {
+                    pLevel.removeBlock(pPos.below(), false);
+                }
+                if (pLevel.getBlockState(pPos.below(2)).getBlock() == this) {
+                    pLevel.removeBlock(pPos.below(2), false);
+                }
+            }
+        }
+    }
+
+    @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (state.getBlock() == this) {
             Part part = state.getValue(PART);

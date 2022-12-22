@@ -1,0 +1,21 @@
+{
+  "trigger": {
+    "component": "arsmagicalegacy:light",
+    "type": "arsmagicalegacy:spell_component_cast"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:purification_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
+  "effect": {
+    "state": {
+      "Properties": {
+        "half": "lower"
+      },
+      "Name": "arsmagicalegacy:celestial_prism"
+    },
+    "type": "arsmagicalegacy:place_block"
+  }
+}

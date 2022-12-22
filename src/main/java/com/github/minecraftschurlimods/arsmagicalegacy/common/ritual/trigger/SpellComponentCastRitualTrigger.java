@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -20,7 +21,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.Map;
 import java.util.function.Function;
 
 public record SpellComponentCastRitualTrigger(ISpellComponent component) implements RitualTrigger {
@@ -41,13 +41,13 @@ public record SpellComponentCastRitualTrigger(ISpellComponent component) impleme
                 };
                 if (pos == null) return;
                 Entity entity = target.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) target).getEntity() : null;
-                Map<String, Object> context = Map.of(
-                        "spell", evt.getSpell(),
-                        "component", evt.getComponent(),
-                        "modifiers", evt.getModifiers(),
-                        "caster", player,
-                        "entity", entity);
-                if (ritual.perform(player, level, pos, new Context.MapContext(context))) {
+                ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+                builder.put("spell", evt.getSpell());
+                builder.put("component", evt.getComponent());
+                builder.put("modifiers", evt.getModifiers());
+                builder.put("caster", player);
+                if (entity != null) builder.put("entity", entity);
+                if (ritual.perform(player, level, pos, new Context.MapContext(builder.build()))) {
                     evt.setCanceled(true);
                 }
             }
@@ -56,7 +56,7 @@ public record SpellComponentCastRitualTrigger(ISpellComponent component) impleme
 
     @Override
     public boolean trigger(Player player, ServerLevel level, BlockPos pos, Context ctx) {
-        return false;
+        return true;
     }
 
     @Override

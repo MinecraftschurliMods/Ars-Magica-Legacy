@@ -1,0 +1,23 @@
+{
+  "trigger": {
+    "component": "arsmagicalegacy:fire_damage",
+    "type": "arsmagicalegacy:spell_component_cast"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:corruption_ritual",
+      "type": "arsmagicalegacy:structure"
+    }
+  ],
+  "effect": {
+    "state": {
+      "Name": "arsmagicalegacy:black_aurem"
+    },
+    "offset": [
+      0,
+      1,
+      0
+    ],
+    "type": "arsmagicalegacy:place_block"
+  }
+}

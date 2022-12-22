@@ -12,8 +12,13 @@ import net.minecraft.world.level.block.state.BlockState;
 public record PlaceBlockRitualEffect(BlockState state, BlockPos offset) implements RitualEffect {
     public static final Codec<PlaceBlockRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             BlockState.CODEC.fieldOf("state").forGetter(PlaceBlockRitualEffect::state),
-            BlockPos.CODEC.fieldOf("offset").forGetter(PlaceBlockRitualEffect::offset)
+            BlockPos.CODEC.optionalFieldOf("offset", BlockPos.ZERO).forGetter(PlaceBlockRitualEffect::offset)
     ).apply(inst, PlaceBlockRitualEffect::new));
+
+    public PlaceBlockRitualEffect(BlockState state) {
+        this(state, BlockPos.ZERO);
+    }
+
     @Override
     public boolean performEffect(Player player, ServerLevel level, BlockPos pos) {
         return level.setBlock(pos.offset(offset), state, Block.UPDATE_ALL);
