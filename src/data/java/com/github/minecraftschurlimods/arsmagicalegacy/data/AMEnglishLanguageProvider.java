@@ -49,8 +49,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
         blockIdTranslation(AMBlocks.OBELISK);
-        wipBlockIdTranslation(AMBlocks.CELESTIAL_PRISM);
-        wipBlockIdTranslation(AMBlocks.BLACK_AUREM);
+        blockIdTranslation(AMBlocks.CELESTIAL_PRISM);
+        blockIdTranslation(AMBlocks.BLACK_AUREM);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
         itemIdTranslation(AMItems.MAGITECH_GOGGLES);
         itemIdTranslation(AMItems.CRYSTAL_WRENCH);
@@ -66,13 +66,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.DEEPSLATE_VINTEUM_ORE);
         itemIdTranslation(AMItems.VINTEUM_DUST);
         addBlock(AMBlocks.VINTEUM_BLOCK, "Block of Vinteum");
-        wipBlockIdTranslation(AMBlocks.MOONSTONE_ORE);
-        wipBlockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
-        wipItemIdTranslation(AMItems.MOONSTONE);
-        addBlock(AMBlocks.MOONSTONE_BLOCK, "[WIP] Block of Moonstone");
-        wipBlockIdTranslation(AMBlocks.SUNSTONE_ORE);
-        wipItemIdTranslation(AMItems.SUNSTONE);
-        addBlock(AMBlocks.SUNSTONE_BLOCK, "[WIP] Block of Sunstone");
+        blockIdTranslation(AMBlocks.MOONSTONE_ORE);
+        blockIdTranslation(AMBlocks.DEEPSLATE_MOONSTONE_ORE);
+        itemIdTranslation(AMItems.MOONSTONE);
+        addBlock(AMBlocks.MOONSTONE_BLOCK, "Block of Moonstone");
+        blockIdTranslation(AMBlocks.SUNSTONE_ORE);
+        itemIdTranslation(AMItems.SUNSTONE);
+        addBlock(AMBlocks.SUNSTONE_BLOCK, "Block of Sunstone");
         blockIdTranslation(AMBlocks.WITCHWOOD_LOG);
         blockIdTranslation(AMBlocks.WITCHWOOD);
         blockIdTranslation(AMBlocks.STRIPPED_WITCHWOOD_LOG);
@@ -464,24 +464,6 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add("potion.potency.7", "VII");
         add("potion.potency.8", "IX");
         add("potion.potency.9", "X");
-    }
-
-    /**
-     * Adds a block translation that matches [WIP] + the block id.
-     *
-     * @param block The block to generate the translation for.
-     */
-    private void wipBlockIdTranslation(RegistryObject<? extends Block> block) {
-        addBlock(block, "[WIP] " + idToTranslation(block.getId().getPath()));
-    }
-
-    /**
-     * Adds an item translation that matches [WIP] + the item id.
-     *
-     * @param item The item to generate the translation for.
-     */
-    private void wipItemIdTranslation(RegistryObject<? extends Item> item) {
-        addItem(item, "[WIP] " + idToTranslation(item.getId().getPath()));
     }
 
     /**
