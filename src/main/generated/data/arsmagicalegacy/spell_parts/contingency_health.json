@@ -33,13 +33,6 @@
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"
-    },
-    {
-      "types": [
-        "LIGHT"
-      ],
-      "amount": 5000,
-      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

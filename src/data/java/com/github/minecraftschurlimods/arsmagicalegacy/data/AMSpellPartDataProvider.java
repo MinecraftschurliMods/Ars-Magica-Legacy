@@ -38,7 +38,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         createSpellPartData(AMSpellParts.BEAM, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
-                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT), 2500))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT), 2500))
                 .build();
         createSpellPartData(AMSpellParts.CHAIN, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
@@ -62,7 +62,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
-                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 5000))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 5000))
                 .build();
         createSpellPartData(AMSpellParts.CONTINGENCY_FALL, 10f)
                 .withIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
@@ -83,7 +83,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
-                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT), 5000))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.LIGHT), 5000))
                 .build();
         createSpellPartData(AMSpellParts.PROJECTILE, 1f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
@@ -536,7 +536,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_PURIFIED_VINTEUM), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
-                .withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 2500))
+                //.withIngredient(new EtheriumSpellIngredient(Set.of(EtheriumType.DARK), 2500))
                 .build();
         createSpellPartData(AMSpellParts.TELEKINESIS, 5f)
                 .withAffinity(AMAffinities.ARCANE, 0.001f)
