@@ -26,6 +26,18 @@
       "text": "Found relatively common in most layers of the world, Vinteum Dust quickly proved itself a viable magical resource."
     },
     {
+      "type": "patchouli:spotlight",
+      "anchor": "moonstone",
+      "item": "arsmagicalegacy:moonstone_ore",
+      "text": "Rarely found in meteorites that crashed upon the world a long time ago, Moonstone is a celestial material with extraordinary magical powers."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sunstone",
+      "item": "arsmagicalegacy:sunstone_ore",
+      "text": "Sunstone gems were formed over thousands of years inside patches of obsidian touching the nether's lava oceans. Despite this, they are not fire-resistant, and great care must be taken to obtain them."
+    },
+    {
       "type": "patchouli:crafting",
       "recipe": "arsmagicalegacy:chimerite_block",
       "recipe2": "arsmagicalegacy:chimerite"

@@ -15,6 +15,13 @@
     },
     {
       "ingredient": {
+        "tag": "forge:gems/sunstone"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "item": "minecraft:clock"
       },
       "count": 1,
@@ -29,9 +36,9 @@
     },
     {
       "types": [
-        "DARK",
         "LIGHT",
-        "NEUTRAL"
+        "NEUTRAL",
+        "DARK"
       ],
       "amount": 5000,
       "type": "arsmagicalegacy:etherium"

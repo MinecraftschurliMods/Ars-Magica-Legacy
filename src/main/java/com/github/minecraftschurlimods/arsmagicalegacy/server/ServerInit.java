@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.level.AMFeatures;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 
