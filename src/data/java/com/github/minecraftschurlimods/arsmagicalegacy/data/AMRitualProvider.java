@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
@@ -12,9 +13,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequi
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.ItemRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MoonPhaseRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.RitualStructureRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.UltrawarmDimensionRequirement;
@@ -144,6 +147,18 @@ public class AMRitualProvider implements DataProvider {
                 .with(new EnderDragonDimensionRequirement())
                 .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
                 .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification"))
+                .with(new RitualStructureRequirement(PatchouliCompat.PURIFICATION_RITUAL))
+                .with(new SpellComponentCastRitualTrigger(AMSpellParts.LIGHT.get()))
+                .with(new ItemRequirement(List.of(Ingredient.of(AMItems.MOONSTONE.get())), 3))
+                .with(new PlaceBlockRitualEffect(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState()))
+                .build(consumer);
+        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption"))
+                .with(new RitualStructureRequirement(PatchouliCompat.CORRUPTION_RITUAL))
+                .with(new SpellComponentCastRitualTrigger(AMSpellParts.FIRE_DAMAGE.get()))
+                .with(new ItemRequirement(List.of(Ingredient.of(AMItems.SUNSTONE.get())), 3))
+                .with(new PlaceBlockRitualEffect(AMBlocks.BLACK_AUREM.get().defaultBlockState(), BlockPos.ZERO.above()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_blizzard"))
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get()), List.of(AMSpellParts.DAMAGE.get())))

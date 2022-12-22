@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -56,6 +57,8 @@ public class PatchouliCompat implements ICompatHandler {
     public static final ResourceLocation LIFE_GUARDIAN_SPAWN_RITUAL      = new ResourceLocation(ArsMagicaAPI.MOD_ID, "life_guardian_spawn_ritual");
     public static final ResourceLocation ARCANE_GUARDIAN_SPAWN_RITUAL    = new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_guardian_spawn_ritual");
     public static final ResourceLocation ENDER_GUARDIAN_SPAWN_RITUAL     = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_guardian_spawn_ritual");
+    public static final ResourceLocation PURIFICATION_RITUAL             = new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification_ritual");
+    public static final ResourceLocation CORRUPTION_RITUAL               = new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption_ritual");
     private static final String[][] CRAFTING_ALTAR_STRUCTURE = new String[][]{
             {" C2C ", " 3B1 ", " 3O1 ", " 3B1 ", " C4C "},
             {" BMB ", " 6 6 ", "     ", " 5 5 ", " BMB "},
@@ -97,6 +100,16 @@ public class PatchouliCompat implements ICompatHandler {
     private static final String[][] ENDER_GUARDIAN_SPAWN_STRUCTURE = new String[][]{
             {"  F  ", " 1N2 ", "FE0EF", " 3N4 ", "  F  "},
             {"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}};
+    private static final String[][] PURIFICATION_STRUCTURE = new String[][]{
+            {"       ", "       ", "       ", "   T   ", "       ", "       ", "       "},
+            {"       ", "       ", "       ", "   O   ", "       ", "       ", "       "},
+            {"  HHH  ", " CH HC ", "HHH HHH", "H  0  H", "HHH HHH", " CH HC ", "  HHH  "}
+    };
+    private static final String[][] CORRUPTION_STRUCTURE = new String[][]{
+            {"     ", "     ", "     ", "  T  ", "     ", "     ", "     "},
+            {"     ", "     ", "     ", "  O  ", "     ", "     ", "     "},
+            {" H H ", "HCHCH", "H   H", " H0H ", "H   H", "HCHCH", " H H "}
+    };
     private static final String SPELL_PART_TEMPLATE = "{\"components\": [{\"type\": \"patchouli:custom\",\"class\": \"com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.SpellPartPage\",\"part\": \"#part\"}]}";
 
     public static BiPredicate<Level, BlockPos> getMultiblockMatcher(ResourceLocation location) {
@@ -121,9 +134,9 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher capStateMatcher = new CapStateMatcher();
         IStateMatcher air = api.airMatcher();
         IStateMatcher chalk = api.looseBlockMatcher(AMBlocks.WIZARDS_CHALK.get());
-        IStateMatcher obeliskLower = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState());
-        IStateMatcher obeliskMiddle = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE));
-        IStateMatcher obeliskUpper = api.stateMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.UPPER));
+        IStateMatcher obeliskLower = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState(), ObeliskBlock.PART);
+        IStateMatcher obeliskMiddle = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.MIDDLE), ObeliskBlock.PART);
+        IStateMatcher obeliskUpper = api.propertyMatcher(AMBlocks.OBELISK.get().defaultBlockState().setValue(ObeliskBlock.PART, ObeliskBlock.Part.UPPER), ObeliskBlock.PART);
         IStateMatcher celestialPrismLower = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState());
         IStateMatcher celestialPrismUpper = api.stateMatcher(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState().setValue(CelestialPrismBlock.HALF, DoubleBlockHalf.UPPER));
         IStateMatcher blackAurem = api.strictBlockMatcher(AMBlocks.BLACK_AUREM.get());
@@ -143,6 +156,7 @@ public class PatchouliCompat implements ICompatHandler {
         IStateMatcher ironInlayNorthWest = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.NORTH_WEST));
         IStateMatcher ironInlaySouthEast = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_EAST));
         IStateMatcher ironInlaySouthWest = api.stateMatcher(AMBlocks.IRON_INLAY.get().defaultBlockState().setValue(InlayBlock.SHAPE, RailShape.SOUTH_WEST));
+        IStateMatcher candle = api.stateMatcher(Blocks.CANDLE.defaultBlockState().setValue(BlockStateProperties.CANDLES, 4).setValue(BlockStateProperties.LIT, true));
         api.registerMultiblock(CRAFTING_ALTAR, api.makeMultiblock(
                 CRAFTING_ALTAR_STRUCTURE,
                 'L', api.predicateMatcher(Blocks.LECTERN.defaultBlockState().setValue(LecternBlock.FACING, Direction.SOUTH), state -> state.is(Blocks.LECTERN) && state.getValue(LecternBlock.FACING) == Direction.SOUTH),
@@ -276,6 +290,22 @@ public class PatchouliCompat implements ICompatHandler {
                 'F', api.strictBlockMatcher(Blocks.FIRE),
                 '0', blackAurem
         ).setSymmetrical(true));
+        api.registerMultiblock(PURIFICATION_RITUAL, api.makeMultiblock(
+                PURIFICATION_STRUCTURE,
+                '0', obeliskLower,
+                'O', obeliskMiddle,
+                'T', obeliskUpper,
+                'C', candle,
+                'H', chalk
+        ).setSymmetrical(true));
+        api.registerMultiblock(CORRUPTION_RITUAL, api.makeMultiblock(
+                CORRUPTION_STRUCTURE,
+                '0', obeliskLower,
+                'O', obeliskMiddle,
+                'T', obeliskUpper,
+                'C', candle,
+                'H', chalk
+        ));
     }
 
     @Override
