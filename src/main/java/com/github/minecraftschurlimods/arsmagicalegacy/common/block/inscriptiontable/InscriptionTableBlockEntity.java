@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -93,6 +94,12 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      */
     public Optional<ItemStack> saveRecipe(ItemStack stack) {
         return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(Objects.requireNonNullElseGet(spellName, () -> new TranslatableComponent(TranslationConstants.SPELL_RECIPE_TITLE)), spell));
+    }
+
+    public void createSpell(ServerPlayer player) {
+        ItemStack spell = new ItemStack(AMItems.SPELL.get());
+        ArsMagicaAPI.get().getSpellHelper().setSpell(spell, Objects.requireNonNull(getSpellRecipe()));
+        player.addItem(spell);
     }
 
     @Override
