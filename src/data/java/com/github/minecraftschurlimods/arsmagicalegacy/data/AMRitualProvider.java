@@ -150,13 +150,13 @@ public class AMRitualProvider implements DataProvider {
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification"))
                 .with(new RitualStructureRequirement(PatchouliCompat.PURIFICATION_RITUAL))
-                .with(new SpellComponentCastRitualTrigger(AMSpellParts.LIGHT.get()))
+                .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.LIGHT.get())))
                 .with(new ItemRequirement(List.of(Ingredient.of(AMItems.MOONSTONE.get())), 3))
                 .with(new PlaceBlockRitualEffect(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState()))
                 .build(consumer);
         builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption"))
                 .with(new RitualStructureRequirement(PatchouliCompat.CORRUPTION_RITUAL))
-                .with(new SpellComponentCastRitualTrigger(AMSpellParts.FIRE_DAMAGE.get()))
+                .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FIRE_DAMAGE.get())))
                 .with(new ItemRequirement(List.of(Ingredient.of(AMItems.SUNSTONE.get())), 3))
                 .with(new PlaceBlockRitualEffect(AMBlocks.BLACK_AUREM.get().defaultBlockState(), BlockPos.ZERO.above()))
                 .build(consumer);
