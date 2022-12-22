@@ -1,6 +1,9 @@
 {
   "trigger": {
-    "component": "arsmagicalegacy:fire_damage",
+    "components": [
+      "arsmagicalegacy:fire_damage"
+    ],
+    "modifiers": [],
     "type": "arsmagicalegacy:spell_component_cast"
   },
   "requirements": [

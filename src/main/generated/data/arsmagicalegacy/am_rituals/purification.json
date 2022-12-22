@@ -1,6 +1,9 @@
 {
   "trigger": {
-    "component": "arsmagicalegacy:light",
+    "components": [
+      "arsmagicalegacy:light"
+    ],
+    "modifiers": [],
     "type": "arsmagicalegacy:spell_component_cast"
   },
   "requirements": [

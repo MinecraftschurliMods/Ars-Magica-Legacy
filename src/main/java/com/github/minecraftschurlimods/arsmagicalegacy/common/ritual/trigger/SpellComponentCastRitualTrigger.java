@@ -10,6 +10,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 
 public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements RitualTrigger {
@@ -52,8 +54,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
                 Entity entity = target.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) target).getEntity() : null;
                 ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
                 builder.put("spell", evt.getSpell());
-                builder.put("components", evt.getComponent());
-                builder.put("modifiers", evt.getModifiers());
+                builder.put("parts", evt.getSpell().spellStack().parts());
                 builder.put("caster", player);
                 if (entity != null) builder.put("entity", entity);
                 if (ritual.perform(player, level, pos, new Context.MapContext(builder.build()))) {
@@ -66,7 +67,8 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean trigger(Player player, ServerLevel level, BlockPos pos, Context ctx) {
-        return new HashSet<>(Objects.requireNonNull(ctx.get("components", List.class))).containsAll(components) && new HashSet<>(Objects.requireNonNull(ctx.get("modifiers", List.class))).containsAll(modifiers);
+        Set<Object> parts = new HashSet<>(Objects.requireNonNull(ctx.get("parts", List.class)));
+        return parts.containsAll(components) && parts.containsAll(modifiers);
     }
 
     @Override

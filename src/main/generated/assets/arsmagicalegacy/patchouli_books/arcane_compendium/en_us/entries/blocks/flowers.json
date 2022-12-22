@@ -11,7 +11,7 @@
       "type": "patchouli:spotlight",
       "anchor": "aum",
       "item": "arsmagicalegacy:aum",
-      "text": "A flower with healing properties, Aum is a component in many spells. It can be found in forests."
+      "text": "A flower with healing properties, Aum is a components in many spells. It can be found in forests."
     },
     {
       "type": "patchouli:spotlight",
@@ -35,7 +35,7 @@
       "type": "patchouli:spotlight",
       "anchor": "wakebloom",
       "item": "arsmagicalegacy:wakebloom",
-      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water affinity essences."
+      "text": "Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a components in water affinity essences."
     },
     {
       "type": "patchouli:crafting",

@@ -1,0 +1,16 @@
+{
+  "trigger": {
+    "components": [
+      "arsmagicalegacy:fire_damage",
+      "arsmagicalegacy:ignition",
+      "arsmagicalegacy:storm"
+    ],
+    "modifiers": [],
+    "type": "arsmagicalegacy:spell_component_cast"
+  },
+  "requirements": [],
+  "effect": {
+    "spell_part": "arsmagicalegacy:fire_rain",
+    "type": "arsmagicalegacy:learn_skill"
+  }
+}
