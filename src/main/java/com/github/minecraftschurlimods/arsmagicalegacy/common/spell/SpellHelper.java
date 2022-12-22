@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -177,6 +179,7 @@ public final class SpellHelper implements ISpellHelper {
             case COMPONENT -> {
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 ISpellComponent component = (ISpellComponent) part.getFirst();
+                if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, part.getSecond(), target))) return SpellCastResult.CANCELLED;
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
                 }
