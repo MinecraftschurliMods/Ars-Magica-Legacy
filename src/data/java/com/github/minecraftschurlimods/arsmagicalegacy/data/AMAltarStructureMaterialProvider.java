@@ -82,7 +82,7 @@ class AMAltarStructureMaterialProvider extends AltarStructureMaterialProvider {
         addCapMaterial("diamond", Blocks.DIAMOND_BLOCK, 11);
         addCapMaterial("emerald", Blocks.EMERALD_BLOCK, 12);
         addCapMaterial("netherite", Blocks.NETHERITE_BLOCK, 13);
-//        addCapMaterial("moonstone", AMBlocks.MOONSTONE_BLOCK.get(), 14);
-//        addCapMaterial("sunstone", AMBlocks.SUNSTONE_BLOCK.get(), 15);
+        addCapMaterial("moonstone", AMBlocks.MOONSTONE_BLOCK.get(), 14);
+        addCapMaterial("sunstone", AMBlocks.SUNSTONE_BLOCK.get(), 15);
     }
 }
