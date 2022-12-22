@@ -7,6 +7,15 @@
     {
       "structure": "arsmagicalegacy:purification_ritual",
       "type": "arsmagicalegacy:structure"
+    },
+    {
+      "ingredients": [
+        {
+          "item": "arsmagicalegacy:moonstone"
+        }
+      ],
+      "radius": 3,
+      "type": "arsmagicalegacy:item"
     }
   ],
   "effect": {

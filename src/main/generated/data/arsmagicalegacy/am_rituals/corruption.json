@@ -7,6 +7,15 @@
     {
       "structure": "arsmagicalegacy:corruption_ritual",
       "type": "arsmagicalegacy:structure"
+    },
+    {
+      "ingredients": [
+        {
+          "item": "arsmagicalegacy:sunstone"
+        }
+      ],
+      "radius": 3,
+      "type": "arsmagicalegacy:item"
     }
   ],
   "effect": {

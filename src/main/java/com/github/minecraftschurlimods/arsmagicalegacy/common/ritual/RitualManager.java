@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionTypeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.ItemRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MagicLevelRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MoonPhaseRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.RitualStructureRequirement;
@@ -94,5 +95,6 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "moon_phase"), MoonPhaseRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "structure"), RitualStructureRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ultrawarm_dimension"), UltrawarmDimensionRequirement.CODEC);
+        registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item"), ItemRequirement.CODEC);
     }
 }
