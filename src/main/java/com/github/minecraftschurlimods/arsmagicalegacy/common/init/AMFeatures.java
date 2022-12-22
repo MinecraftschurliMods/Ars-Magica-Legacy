@@ -62,8 +62,8 @@ public interface AMFeatures {
     RegistryObject<ConfiguredFeature<?, ?>> VINTEUM_ORE         = ore("vinteum_ore", AMBlocks.VINTEUM_ORE, AMBlocks.DEEPSLATE_VINTEUM_ORE, 10, 0F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE           = ore("topaz_ore", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0.5F);
     RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_EXTRA     = ore("topaz_ore_extra", AMBlocks.TOPAZ_ORE, AMBlocks.DEEPSLATE_TOPAZ_ORE, 4, 0F);
-    RegistryObject<ConfiguredFeature<?, ?>> AUM                 = flower("aum", 64, AMBlocks.AUM);
     RegistryObject<ConfiguredFeature<?, ?>> SUNSTONE_ORE        = sunstoneOre("sunstone_ore", AMBlocks.SUNSTONE_ORE, 4);
+    RegistryObject<ConfiguredFeature<?, ?>> AUM                 = flower("aum", 64, AMBlocks.AUM);
     RegistryObject<ConfiguredFeature<?, ?>> CERUBLOSSOM         = flower("cerublossom", 64, AMBlocks.CERUBLOSSOM);
     RegistryObject<ConfiguredFeature<?, ?>> DESERT_NOVA         = flower("desert_nova", 64, AMBlocks.DESERT_NOVA);
     RegistryObject<ConfiguredFeature<?, ?>> TARMA_ROOT          = flower("tarma_root", 64, AMBlocks.TARMA_ROOT);
@@ -75,7 +75,7 @@ public interface AMFeatures {
     RegistryObject<PlacedFeature> VINTEUM_ORE_PLACEMENT         = orePlacement("vinteum_ore", AMFeatures.VINTEUM_ORE, 8, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(80)));
     RegistryObject<PlacedFeature> TOPAZ_ORE_PLACEMENT           = orePlacement("topaz_ore", AMFeatures.TOPAZ_ORE, 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)));
     RegistryObject<PlacedFeature> TOPAZ_EXTRA_ORE_PLACEMENT     = orePlacement("topaz_ore_extra", AMFeatures.TOPAZ_ORE_EXTRA, 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480)));
-    RegistryObject<PlacedFeature> SUNSTONE_ORE_PLACEMENT        = orePlacement("sunstone_ore", AMFeatures.SUNSTONE_ORE, 32, PlacementUtils.RANGE_8_8);
+    RegistryObject<PlacedFeature> SUNSTONE_ORE_PLACEMENT        = orePlacement("sunstone_ore", AMFeatures.SUNSTONE_ORE, 32, HeightRangePlacement.uniform(VerticalAnchor.absolute(31), VerticalAnchor.absolute(33)));
     RegistryObject<PlacedFeature> AUM_PLACEMENT                 = flowerPlacement("aum", AMFeatures.AUM, 32);
     RegistryObject<PlacedFeature> CERUBLOSSOM_PLACEMENT         = flowerPlacement("cerublossom", AMFeatures.CERUBLOSSOM, 32);
     RegistryObject<PlacedFeature> DESERT_NOVA_PLACEMENT         = flowerPlacement("desert_nova", AMFeatures.DESERT_NOVA, 32);

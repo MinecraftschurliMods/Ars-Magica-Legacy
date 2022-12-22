@@ -16,47 +16,41 @@ public class SunstoneOreFeature extends Feature<OreConfiguration> {
     public SunstoneOreFeature() {
         super(OreConfiguration.CODEC);
     }
+
+    public static boolean canPlaceOre(BlockState pState, Function<BlockPos, BlockState> pAdjacentStateAccessor, Random pRandom, OreConfiguration.TargetBlockState pTargetState, BlockPos.MutableBlockPos pPos) {
+        if (!pTargetState.target.test(pState, pRandom)) return false;
+        return checkNeighbors(pAdjacentStateAccessor, pPos, state -> {
+            FluidState fluidState = state.getFluidState();
+            return fluidState.is(FluidTags.LAVA) && fluidState.isSource();
+        });
+    }
+
+    private static void offsetTargetPos(BlockPos.MutableBlockPos pMutablePos, Random pRandom, BlockPos pPos, int pMagnitude) {
+        pMutablePos.setWithOffset(pPos, getRandomRelativePlacement(pRandom, pMagnitude), getRandomRelativePlacement(pRandom, pMagnitude), getRandomRelativePlacement(pRandom, pMagnitude));
+    }
+
+    private static int getRandomRelativePlacement(Random pRandom, int pMagnitude) {
+        return Math.round((pRandom.nextFloat() - pRandom.nextFloat()) * (float) pMagnitude);
+    }
+
+    @Override
     public boolean place(FeaturePlaceContext<OreConfiguration> pContext) {
-        WorldGenLevel worldgenlevel = pContext.level();
+        WorldGenLevel level = pContext.level();
         Random random = pContext.random();
-        OreConfiguration oreconfiguration = pContext.config();
-        BlockPos blockpos = pContext.origin();
-        int i = random.nextInt(oreconfiguration.size + 1);
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for(int j = 0; j < i; ++j) {
-            this.offsetTargetPos(blockpos$mutableblockpos, random, blockpos, Math.min(j, 7));
-            BlockState blockstate = worldgenlevel.getBlockState(blockpos$mutableblockpos);
-
-            for(OreConfiguration.TargetBlockState oreconfiguration$targetblockstate : oreconfiguration.targetStates) {
-                if (canPlaceOre(blockstate, worldgenlevel::getBlockState, random, oreconfiguration$targetblockstate, blockpos$mutableblockpos)) {
-                    worldgenlevel.setBlock(blockpos$mutableblockpos, oreconfiguration$targetblockstate.state, 2);
+        OreConfiguration config = pContext.config();
+        BlockPos origin = pContext.origin();
+        int i = random.nextInt(config.size + 1);
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int j = 0; j < i; j++) {
+            offsetTargetPos(pos, random, origin, Math.min(j, 7));
+            BlockState state = level.getBlockState(pos);
+            for (OreConfiguration.TargetBlockState target : config.targetStates) {
+                if (canPlaceOre(state, level::getBlockState, random, target, pos)) {
+                    level.setBlock(pos, target.state, 2);
                     break;
                 }
             }
         }
-
         return true;
-    }
-
-    private void offsetTargetPos(BlockPos.MutableBlockPos pMutablePos, Random pRandom, BlockPos pPos, int pMagnitude) {
-        int i = this.getRandomPlacementInOneAxisRelativeToOrigin(pRandom, pMagnitude);
-        int j = this.getRandomPlacementInOneAxisRelativeToOrigin(pRandom, pMagnitude);
-        int k = this.getRandomPlacementInOneAxisRelativeToOrigin(pRandom, pMagnitude);
-        pMutablePos.setWithOffset(pPos, i, j, k);
-    }
-
-    private int getRandomPlacementInOneAxisRelativeToOrigin(Random pRandom, int pMagnitude) {
-        return Math.round((pRandom.nextFloat() - pRandom.nextFloat()) * (float)pMagnitude);
-    }
-    public static boolean canPlaceOre(BlockState pState, Function<BlockPos, BlockState> pAdjacentStateAccessor, Random pRandom, OreConfiguration.TargetBlockState pTargetState, BlockPos.MutableBlockPos pMatablePos) {
-        if (!pTargetState.target.test(pState, pRandom)) {
-            return false;
-        } else {
-            return checkNeighbors(pAdjacentStateAccessor, pMatablePos, blockState -> {
-                FluidState fluidState = blockState.getFluidState();
-                return fluidState.is(FluidTags.LAVA) && fluidState.isSource();
-            });
-        }
     }
 }

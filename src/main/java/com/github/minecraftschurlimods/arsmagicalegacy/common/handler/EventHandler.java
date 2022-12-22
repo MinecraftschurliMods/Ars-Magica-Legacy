@@ -128,7 +128,6 @@ public final class EventHandler {
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
-        forgeBus.addListener(EventHandler::fluidPlaceBlock);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
@@ -253,19 +252,6 @@ public final class EventHandler {
         MagicHelper.instance().syncMagic(player);
         ManaHelper.instance().syncMana(player);
         BurnoutHelper.instance().syncBurnout(player);
-    }
-
-    private static void fluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event) {
-        if (!event.getNewState().is(Tags.Blocks.OBSIDIAN)) return;
-        LevelAccessor level = event.getWorld();
-        if (level.dayTime() % 24000 >= 12000) return;
-        if (level.getLevelData().isRaining() || level.getLevelData().isThundering()) return;
-        BlockPos pos = event.getLiquidPos().above();
-        if (!level.getFluidState(pos).is(FluidTags.WATER)) return;
-        if (!level.canSeeSky(pos)) return;
-        if (level.getRandom().nextDouble() < Config.SERVER.SUNSTONE_CHANCE_FROM_OBSIDIAN.get()) {
-            event.setNewState(AMBlocks.SUNSTONE_ORE.get().defaultBlockState());
-        }
     }
 
     private static void playerClone(PlayerEvent.Clone event) {
