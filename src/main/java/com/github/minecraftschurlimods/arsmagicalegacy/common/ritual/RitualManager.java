@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionRequirement;
@@ -86,6 +87,7 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_component_cast"), SpellComponentCastRitualTrigger.CODEC);
         registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_entity"), EntitySpawnRitualEffect.CODEC);
         registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "place_block"), PlaceBlockRitualEffect.CODEC);
+        registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "learn_skill"), LearnSkillRitualEffect.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "biome"), BiomeRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension"), DimensionRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension_type"), DimensionTypeRequirement.CODEC);
