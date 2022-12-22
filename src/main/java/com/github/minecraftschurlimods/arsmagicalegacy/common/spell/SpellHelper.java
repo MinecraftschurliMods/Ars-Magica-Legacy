@@ -153,12 +153,7 @@ public final class SpellHelper implements ISpellHelper {
                 entityHit = new EntityHitResult(pointed);
             }
         }
-        float interpPitch = entity.xRotO + (entity.getXRot() - entity.xRotO);
-        float interpYaw = entity.yRotO + (entity.getYRot() - entity.yRotO);
-        float degToRad = 0.017453292F;
-        float offsetPitchCos = -Mth.cos(-interpPitch * degToRad);
-        float offsetPitchSin = Mth.sin(-interpPitch * degToRad);
-        HitResult blockHit = level.clip(new ClipContext(entity.position(), entity.position().add(Mth.sin((float) (-interpYaw * degToRad - Math.PI)) * offsetPitchCos * range, offsetPitchSin * range, Mth.cos((float) (-interpYaw * degToRad - Math.PI)) * offsetPitchCos * range), ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, entity));
+        HitResult blockHit = level.clip(new ClipContext(entity.getEyePosition(), entity.getEyePosition().add(entity.getLookAngle().scale(range)), ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, entity));
         return entityHit == null || blockHit.getLocation().distanceTo(entity.position()) < entityHit.getLocation().distanceTo(entity.position()) ? blockHit : entityHit;
     }
 
@@ -204,7 +199,7 @@ public final class SpellHelper implements ISpellHelper {
     public void nextShapeGroup(ItemStack stack) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
-        spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().size()));
+        spell.currentShapeGroupIndex((byte) ((spell.currentShapeGroupIndex() + 1) % spell.shapeGroups().stream().filter(e -> !e.isEmpty()).count()));
         helper.setSpell(stack, spell);
     }
 }

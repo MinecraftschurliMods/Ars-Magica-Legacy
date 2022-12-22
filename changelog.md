@@ -1,3 +1,4 @@
-# Additions
+# Fixes
 
-- Spell recipe UIs now properly work! They show ingredients, reagents, the parts they're made out of, and an affinity breakdown.
+- Fixed a bug where the touch shape targeted the wrong block
+- Fixed mana creepers spawning everywhere
