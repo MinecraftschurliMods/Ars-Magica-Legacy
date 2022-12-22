@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -126,6 +127,10 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      */
     public Optional<ISpell> getSpellRecipe() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);
+    }
+
+    public void createSpell() {
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
     }
 
     private static class InscriptionTableSlot extends Slot {

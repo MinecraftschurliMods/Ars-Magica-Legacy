@@ -393,6 +393,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
+        add(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL, "Create Spell");
         add(TranslationConstants.OBELISK_TITLE, "Obelisk");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.RIFT_TITLE, "Rift Storage");
