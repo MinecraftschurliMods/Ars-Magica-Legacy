@@ -8,28 +8,39 @@
       "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page0.text"
     },
     {
-      "type": "patchouli:multiblock",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.title",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_chalk"
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:celestial_prism",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.text"
     },
     {
       "type": "patchouli:multiblock",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.title",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar1"
+      "multiblock_id": "arsmagicalegacy:purification_ritual",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.text"
     },
     {
       "type": "patchouli:multiblock",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page3.title",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar2"
+      "multiblock_id": "arsmagicalegacy:celestial_prism_chalk"
     },
     {
       "type": "patchouli:multiblock",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page4.title",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar3"
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar1"
     },
     {
       "type": "patchouli:multiblock",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page5.title",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar2"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page6.title",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar3"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page7.title",
       "multiblock_id": "arsmagicalegacy:celestial_prism_pillar4"
     }
   ]
