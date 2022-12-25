@@ -21,7 +21,7 @@ public class Heal extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {
-            float healing = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.HEALING, modifiers, spell, caster, target);
+            float healing = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.HEALING, modifiers, spell, caster, target, index);
             if (living.isInvertedHealAndHarm()) {
                 living.hurt(DamageSource.indirectMagic(caster, caster), healing);
             } else {

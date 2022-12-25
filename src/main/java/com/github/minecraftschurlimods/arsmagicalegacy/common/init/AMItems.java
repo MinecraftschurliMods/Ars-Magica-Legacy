@@ -121,6 +121,7 @@ public interface AMItems {
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                    = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
     RegistryObject<EtheriumPlaceholderItem>      ETHERIUM_PLACEHOLDER             = ITEMS.register("etherium_placeholder", () -> new EtheriumPlaceholderItem(HIDDEN_ITEM_1));
     RegistryObject<Item>                         SPELL_PARCHMENT                  = registerItem64("spell_parchment");
+    RegistryObject<Item>                         SPELL_DYE                        = registerItem64("spell_dye");
     RegistryObject<SpellRecipeItem>              SPELL_RECIPE                     = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     RegistryObject<SpellItem>                    SPELL                            = ITEMS.register("spell", SpellItem::new);
     RegistryObject<SpellBookItem>                SPELL_BOOK                       = ITEMS.register("spell_book", SpellBookItem::new);

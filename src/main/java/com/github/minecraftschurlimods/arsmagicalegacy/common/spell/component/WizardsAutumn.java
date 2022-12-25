@@ -21,8 +21,8 @@ public class WizardsAutumn extends AbstractComponent {
         super(SpellPartStats.RANGE);
     }
 
-    private static SpellCastResult performWizardsAutumn(BlockPos origin, ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
-        int range = (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target);
+    private static SpellCastResult performWizardsAutumn(BlockPos origin, ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target, int index) {
+        int range = (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index);
         for (int i = -range; i <= range; i++) {
             for (int j = -range; j <= range; j++) {
                 for (int k = -range; k <= range; k++) {
@@ -39,11 +39,11 @@ public class WizardsAutumn extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performWizardsAutumn(target.getEntity().blockPosition(), spell, caster, level, modifiers, target);
+        return performWizardsAutumn(target.getEntity().blockPosition(), spell, caster, level, modifiers, target, index);
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performWizardsAutumn(target.getBlockPos(), spell, caster, level, modifiers, target);
+        return performWizardsAutumn(target.getBlockPos(), spell, caster, level, modifiers, target, index);
     }
 }

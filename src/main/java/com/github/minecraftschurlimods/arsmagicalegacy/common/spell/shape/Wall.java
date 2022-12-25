@@ -24,12 +24,12 @@ public class Wall extends AbstractShape {
         if (!level.isClientSide()) {
             var wall = Objects.requireNonNull(AMEntities.WALL.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            wall.setPos(helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0).getLocation());
+            wall.setPos(helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit, index), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0).getLocation());
             wall.setYRot(caster.getYHeadRot());
-            wall.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit));
+            wall.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
             wall.setIndex(index);
             wall.setOwner(caster);
-            wall.setRadius(helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit));
+            wall.setRadius(helper.getModifiedStat(1f, SpellPartStats.SIZE, modifiers, spell, caster, hit, index));
             wall.setSpell(spell);
             level.addFreshEntity(wall);
         }

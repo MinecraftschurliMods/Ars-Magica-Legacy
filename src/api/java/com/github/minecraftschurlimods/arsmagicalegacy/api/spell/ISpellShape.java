@@ -18,7 +18,7 @@ public interface ISpellShape extends ISpellPart {
      * @param modifiers A list of modifiers that affect this spell cast.
      * @param hit       The target of the spell.
      * @param ticksUsed The amount of ticks this spell has been cast already.
-     * @param index     The index of the current shape group.
+     * @param index     The index of the next component.
      * @param awardXp   Whether to grant the player magic xp or not.
      * @return A SpellCastResult that represents the spell casting outcome.
      */

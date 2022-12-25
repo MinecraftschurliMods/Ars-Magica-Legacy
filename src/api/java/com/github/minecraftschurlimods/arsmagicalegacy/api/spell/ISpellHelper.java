@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -113,14 +114,15 @@ public interface ISpellHelper {
     /**
      * Get the stat value modified by the modifiers.
      *
-     * @param baseValue The base value for the stat.
-     * @param stat      The stat that is modified.
-     * @param spell     The spell that the part belongs to.
-     * @param caster    The entity casting the spell.
-     * @param target    The target of the spell cast.
+     * @param baseValue      The base value for the stat.
+     * @param stat           The stat that is modified.
+     * @param spell          The spell that the part belongs to.
+     * @param caster         The entity casting the spell.
+     * @param target         The target of the spell cast.
+     * @param componentIndex The 1 based index of the current component.
      * @return The modified value of the stat.
      */
-    float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target);
+    float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target, int componentIndex);
 
     /**
      * Casts the spell.
@@ -149,4 +151,6 @@ public interface ISpellHelper {
      * @param stack The spell item stack to select the next shape group of.
      */
     void prevShapeGroup(ItemStack stack);
+
+    int getColor(List<ISpellModifier> modifiers, ISpell spell, Player player, int index, int defaultColor);
 }

@@ -3,21 +3,24 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
     private final List<ShapeGroupArea> shapeGroups;
     private final InscriptionTableScreen screen;
 
-    public ShapeGroupListArea(int x, int y, InscriptionTableScreen screen) {
+    public ShapeGroupListArea(int x, int y, InscriptionTableScreen screen, TriConsumer<SpellPartDraggable, Integer, Integer> onDrop) {
         super(x, y, ShapeGroupArea.WIDTH * 5, ShapeGroupArea.HEIGHT, 20);
         this.screen = screen;
         shapeGroups = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            shapeGroups.add(new ShapeGroupArea(x + i * ShapeGroupArea.WIDTH, y));
+            int finalI = i;
+            shapeGroups.add(new ShapeGroupArea(x + i * ShapeGroupArea.WIDTH, y, (part, index) -> onDrop.accept(part, finalI, index)));
         }
         setLocks();
     }

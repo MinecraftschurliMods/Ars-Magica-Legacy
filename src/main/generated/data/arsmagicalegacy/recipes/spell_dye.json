@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:dyes/blue"
+    },
+    "C": {
+      "tag": "forge:dyes/cyan"
+    },
+    "G": {
+      "tag": "forge:dyes/green"
+    },
+    "H": {
+      "tag": "forge:gems/chimerite"
+    },
+    "K": {
+      "tag": "forge:dyes/black"
+    },
+    "M": {
+      "tag": "forge:dyes/magenta"
+    },
+    "R": {
+      "tag": "forge:dyes/red"
+    },
+    "W": {
+      "tag": "forge:dyes/white"
+    },
+    "Y": {
+      "tag": "forge:dyes/yellow"
+    }
+  },
+  "pattern": [
+    "RGB",
+    "WHK",
+    "CYM"
+  ],
+  "result": {
+    "item": "arsmagicalegacy:spell_dye"
+  }
+}

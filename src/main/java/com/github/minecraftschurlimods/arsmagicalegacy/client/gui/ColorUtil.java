@@ -1,6 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
+import java.util.regex.Pattern;
+
 public final class ColorUtil {
+    public static final Pattern PARTIAL_HEX_COLOR_PATTERN = Pattern.compile("^#?([A-Fa-f0-9]{0,6})$");
     public static final int UNKNOWN_SKILL_LINE_COLOR_MASK = 0x999999;
     public static final int KNOWS_COLOR = 0x00ff00;
     public static final int BLACK = 0x000000;
@@ -145,5 +148,46 @@ public final class ColorUtil {
             brightness += hsb[2];
         }
         return hsbToRgb(hue / colors.length, saturation / colors.length, brightness / colors.length);
+    }
+
+    public static String hexString(int color) {
+        return String.format("%06X", (0xFFFFFF & color));
+    }
+
+    public static int fromHex(String hexColor) {
+        if (hexColor.startsWith("#")) {
+            hexColor = hexColor.substring(1);
+        }
+        if (hexColor.length() == 3) {
+            hexColor = String.valueOf(hexColor.charAt(0)) + hexColor.charAt(0) + hexColor.charAt(1) + hexColor.charAt(1) + hexColor.charAt(2) + hexColor.charAt(2);
+        }
+        if (hexColor.length() != 6) {
+            throw new IllegalArgumentException("Invalid hex color: " + hexColor);
+        }
+        return Integer.parseInt(hexColor, 16) | 0xFF000000;
+    }
+
+    public static boolean isPartialHexColor(String s) {
+        return PARTIAL_HEX_COLOR_PATTERN.matcher(s.trim()).matches();
+    }
+
+    public static int hsbToRgb(Float[] hsb) {
+        return hsbToRgb(hsb[0], hsb[1], hsb[2]);
+    }
+
+    public static Float[] rgbToHsbBoxed(int color) {
+        float[] hsb = rgbToHsb(color);
+        return new Float[]{hsb[0], hsb[1], hsb[2]};
+    }
+
+    public static int chooseBW(int color) {
+        var b = (0xFF & color);
+        var g = (0xFF & (color >> 8));
+        var r = (0xFF & (color >> 16));
+        if (r * 0.299 + g * 0.587 + b * 0.114 > 186) {
+            return BLACK;
+        } else {
+            return WHITE;
+        }
     }
 }

@@ -487,6 +487,9 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(MANA_REGEN_BOOST_2)
                 .build();
+        talent(COLOR.getId(), 100, 75)
+                .addCost(BLUE.get())
+                .build();
     }
 
     private Builder offense(RegistryObject<? extends ISpellPart> part, int x, int y) {

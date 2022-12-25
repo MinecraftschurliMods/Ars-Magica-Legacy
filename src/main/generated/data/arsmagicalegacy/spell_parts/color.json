@@ -1,0 +1,14 @@
+{
+  "affinities": {},
+  "manaCost": 1.0,
+  "reagents": [],
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
+        "item": "arsmagicalegacy:spell_dye"
+      }
+    }
+  ]
+}

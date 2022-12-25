@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
-import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
@@ -14,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.Nullable;
@@ -111,13 +110,14 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     /**
      * Sends the menu data to the server.
      *
-     * @param spellStack  The spell stack.
-     * @param shapeGroups The shape groups.
+     * @param spellStack     The spell stack.
+     * @param shapeGroups    The shape groups.
+     * @param additionalData
      */
-    public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
+    public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups, CompoundTag additionalData) {
         var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
-        ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
+        ISpell spell = api.makeSpell(shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toList(), SpellStack.of(spellStack.stream().map(registryAccess).toList()), additionalData);
         table.onSync(name, spell);
         ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }

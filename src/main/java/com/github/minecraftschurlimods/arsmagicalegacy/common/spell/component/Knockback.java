@@ -22,7 +22,7 @@ public class Knockback extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         Entity entity = target.getEntity();
-        float velocity = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target);
+        float velocity = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.SPEED, modifiers, spell, caster, target, index);
         Vec3 delta = entity.getDeltaMovement();
         entity.setDeltaMovement(delta.x() + velocity * Math.cos(Math.atan2(entity.getZ() - caster.getZ(), entity.getX() - caster.getX())), delta.y() + velocity * 0.325f, delta.z() + velocity * Math.sin(Math.atan2(entity.getZ() - caster.getZ(), entity.getX() - caster.getX())));
         return SpellCastResult.SUCCESS;
