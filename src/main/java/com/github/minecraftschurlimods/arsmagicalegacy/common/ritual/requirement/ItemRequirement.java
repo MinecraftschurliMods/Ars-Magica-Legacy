@@ -27,6 +27,7 @@ public record ItemRequirement(List<Ingredient> ingredients, int radius) implemen
     public boolean test(Player player, ServerLevel serverLevel, BlockPos pos) {
         List<ItemEntity> items = serverLevel.getEntitiesOfClass(ItemEntity.class, AABB.ofSize(Vec3.atCenterOf(pos), radius * 2, radius * 2, radius * 2));
         List<Ingredient> ingredients = new ArrayList<>(this.ingredients);
+        List<ItemEntity> toRemove = new ArrayList<>();
         for (Iterator<ItemEntity> iterator = items.iterator(); iterator.hasNext(); ) {
             ItemEntity item = iterator.next();
             for (Iterator<Ingredient> iter = ingredients.iterator(); iter.hasNext(); ) {
@@ -34,11 +35,14 @@ public record ItemRequirement(List<Ingredient> ingredients, int radius) implemen
                 if (ingredient.test(item.getItem())) {
                     iter.remove();
                     iterator.remove();
+                    toRemove.add(item);
                     break;
                 }
             }
         }
-        return false;
+        if (!ingredients.isEmpty()) return false;
+        toRemove.forEach(ItemEntity::discard);
+        return true;
     }
 
     @Override
