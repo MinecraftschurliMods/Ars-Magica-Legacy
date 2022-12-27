@@ -1,12 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.event;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,6 +56,36 @@ public abstract class SpellEvent extends LivingEvent {
         public static final class Post extends Cast {
             public Post(LivingEntity entity, ISpell spell) {
                 super(entity, spell);
+            }
+        }
+
+        /**
+         * Event that fires for each spell component before it gets invoked.
+         */
+        @Cancelable
+        public static final class Component extends Cast {
+            private final ISpellComponent component;
+            private final List<ISpellModifier> modifiers;
+            private final @Nullable HitResult target;
+
+            public Component(LivingEntity entity, ISpell spell, ISpellComponent component, List<ISpellModifier> modifiers, @Nullable HitResult target) {
+                super(entity, spell);
+                this.component = component;
+                this.modifiers = Collections.unmodifiableList(modifiers);
+                this.target = target;
+            }
+
+            public ISpellComponent getComponent() {
+                return component;
+            }
+
+            @Nullable
+            public HitResult getTarget() {
+                return target;
+            }
+
+            public List<ISpellModifier> getModifiers() {
+                return modifiers;
             }
         }
     }

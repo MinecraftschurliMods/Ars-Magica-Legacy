@@ -80,6 +80,23 @@ public class CelestialPrismBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        switch (pState.getValue(HALF)) {
+            case UPPER -> {
+                if (pNewState.getBlock() != this) {
+                    pLevel.removeBlock(pPos.below(), false);
+                }
+            }
+            case LOWER -> {
+                if (pNewState.getBlock() != this) {
+                    pLevel.removeBlock(pPos.above(), false);
+                }
+            }
+        }
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         if (context.getLevel().isOutsideBuildHeight(context.getClickedPos())) return null;
         if (context.getLevel().isOutsideBuildHeight(context.getClickedPos().above())) return null;

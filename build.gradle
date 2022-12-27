@@ -2,16 +2,6 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.8', ext: 'pom'
-        classpath group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.8.1'
-    }
-}
-
 plugins {
     id 'idea'
     id 'eclipse'
@@ -70,7 +60,7 @@ java {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -317,6 +307,9 @@ minecraft {
     runs.configureEach {
         workingDirectory project.file("run/${it.name}") as File
         property 'forge.logging.console.level', 'debug'
+        if (!System.getenv('GITHUB_ACTIONS')) {
+            jvmArg '-XX:+AllowEnhancedClassRedefinition'
+        }
     }
 }
 

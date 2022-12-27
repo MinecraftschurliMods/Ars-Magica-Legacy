@@ -2,11 +2,14 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.BiomeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.DimensionTypeRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.EnderDragonDimensionRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.HeightRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.ItemRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MagicLevelRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.MoonPhaseRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement.RitualStructureRequirement;
@@ -15,6 +18,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.Ent
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.EntitySummonTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.GameEventRitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.ItemDropRitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger.SpellComponentCastRitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -80,7 +84,10 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_summon"), EntitySummonTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item_drop"), ItemDropRitualTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "game_event"), GameEventRitualTrigger.CODEC);
+        registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spell_component_cast"), SpellComponentCastRitualTrigger.CODEC);
         registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "spawn_entity"), EntitySpawnRitualEffect.CODEC);
+        registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "place_block"), PlaceBlockRitualEffect.CODEC);
+        registerRitualEffect(new ResourceLocation(ArsMagicaAPI.MOD_ID, "learn_skill"), LearnSkillRitualEffect.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "biome"), BiomeRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension"), DimensionRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dimension_type"), DimensionTypeRequirement.CODEC);
@@ -90,5 +97,6 @@ public final class RitualManager extends CodecDataManager<Ritual> {
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "moon_phase"), MoonPhaseRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "structure"), RitualStructureRequirement.CODEC);
         registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ultrawarm_dimension"), UltrawarmDimensionRequirement.CODEC);
+        registerRitualRequirement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item"), ItemRequirement.CODEC);
     }
 }
