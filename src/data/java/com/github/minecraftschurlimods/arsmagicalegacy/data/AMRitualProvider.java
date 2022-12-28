@@ -4,14 +4,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.RitualProvider;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
@@ -43,6 +40,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class AMRitualProvider extends RitualProvider {
@@ -105,55 +103,55 @@ public class AMRitualProvider extends RitualProvider {
                 .with(ItemDropRitualTrigger.item(Items.ENDER_EYE))
                 .with(new EntitySpawnRitualEffect(AMEntities.ENDER_GUARDIAN.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "purification"))
+        builder("purification")
                 .with(new RitualStructureRequirement(PatchouliCompat.PURIFICATION_RITUAL))
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.LIGHT.get())))
                 .with(new ItemRequirement(List.of(Ingredient.of(AMItems.MOONSTONE.get())), 3))
                 .with(new PlaceBlockRitualEffect(AMBlocks.CELESTIAL_PRISM.get().defaultBlockState()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "corruption"))
+        builder("corruption")
                 .with(new RitualStructureRequirement(PatchouliCompat.CORRUPTION_RITUAL))
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FIRE_DAMAGE.get())))
                 .with(new ItemRequirement(List.of(Ingredient.of(AMItems.SUNSTONE.get())), 3))
                 .with(new PlaceBlockRitualEffect(AMBlocks.BLACK_AUREM.get().defaultBlockState(), BlockPos.ZERO.above()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_blizzard"))
+        builder("unlock_blizzard")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FROST_DAMAGE.get(), AMSpellParts.FROST.get(), AMSpellParts.STORM.get()), List.of(AMSpellParts.DAMAGE.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.BLIZZARD.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_daylight"))
+        builder("unlock_daylight")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.DIVINE_INTERVENTION.get(), AMSpellParts.TRUE_SIGHT.get()), List.of(AMSpellParts.SOLAR.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.DAYLIGHT.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_dismembering"))
+        builder("unlock_dismembering")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.PHYSICAL_DAMAGE.get()), List.of(AMSpellParts.DAMAGE.get(), AMSpellParts.PIERCING.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.DISMEMBERING.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_effect_power"))
+        builder("unlock_effect_power")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.AGILITY.get(), AMSpellParts.FLIGHT.get(), AMSpellParts.REFLECT.get(), AMSpellParts.SHRINK.get(), AMSpellParts.SWIFT_SWIM.get(), AMSpellParts.TEMPORAL_ANCHOR.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.EFFECT_POWER.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_falling_star"))
+        builder("unlock_falling_star")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.ASTRAL_DISTORTION.get(), AMSpellParts.MAGIC_DAMAGE.get()), List.of(AMSpellParts.SOLAR.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.FALLING_STAR.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_fire_rain"))
+        builder("unlock_fire_rain")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FIRE_DAMAGE.get(), AMSpellParts.IGNITION.get(), AMSpellParts.STORM.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.FIRE_RAIN.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_mana_blast"))
+        builder("unlock_mana_blast")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.EXPLOSION.get(), AMSpellParts.MANA_DRAIN.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.MANA_BLAST.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_mana_shield"))
+        builder("unlock_mana_shield")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.SHIELD.get(), AMSpellParts.LIFE_TAP.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.MANA_SHIELD.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_moonrise"))
+        builder("unlock_moonrise")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.ENDER_INTERVENTION.get(), AMSpellParts.NIGHT_VISION.get()), List.of(AMSpellParts.LUNAR.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.MOONRISE.get()))
                 .build(consumer);
-        builder(new ResourceLocation(ArsMagicaAPI.MOD_ID, "unlock_prosperity"))
+        builder("unlock_prosperity")
                 .with(new SpellComponentCastRitualTrigger(List.of(AMSpellParts.DIG.get(), AMSpellParts.PHYSICAL_DAMAGE.get()), List.of(AMSpellParts.MINING_POWER.get(), AMSpellParts.SILK_TOUCH.get())))
                 .with(new LearnSkillRitualEffect(AMSpellParts.PROSPERITY.get()))
                 .build(consumer);

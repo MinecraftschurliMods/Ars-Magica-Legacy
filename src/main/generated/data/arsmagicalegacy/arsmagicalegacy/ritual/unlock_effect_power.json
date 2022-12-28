@@ -1,5 +1,11 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:effect_power"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:agility",
       "arsmagicalegacy:flight",
@@ -8,12 +14,6 @@
       "arsmagicalegacy:swift_swim",
       "arsmagicalegacy:temporal_anchor"
     ],
-    "modifiers": [],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:effect_power",
-    "type": "arsmagicalegacy:learn_skill"
+    "modifiers": []
   }
 }

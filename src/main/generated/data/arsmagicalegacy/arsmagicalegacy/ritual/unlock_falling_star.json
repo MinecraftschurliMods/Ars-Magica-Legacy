@@ -1,17 +1,17 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:falling_star"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:astral_distortion",
       "arsmagicalegacy:magic_damage"
     ],
     "modifiers": [
       "arsmagicalegacy:solar"
-    ],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:falling_star",
-    "type": "arsmagicalegacy:learn_skill"
+    ]
   }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_features",
+  "biomes": {
+    "type": "forge:and",
+    "values": [
+      "#minecraft:is_overworld",
+      "#minecraft:is_ocean"
+    ]
+  },
+  "features": "arsmagicalegacy:moonstone_meteoreite",
+  "step": "local_modifications"
+}

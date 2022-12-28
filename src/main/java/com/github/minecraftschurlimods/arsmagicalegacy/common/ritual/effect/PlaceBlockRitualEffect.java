@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;

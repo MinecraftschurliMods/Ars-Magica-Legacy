@@ -1,15 +1,15 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:mana_blast"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:explosion",
       "arsmagicalegacy:mana_drain"
     ],
-    "modifiers": [],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:mana_blast",
-    "type": "arsmagicalegacy:learn_skill"
+    "modifiers": []
   }
 }

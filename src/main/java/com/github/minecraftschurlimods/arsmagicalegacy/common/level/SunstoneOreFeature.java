@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.level;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.material.FluidState;
 
-import java.util.Random;
 import java.util.function.Function;
 
 public class SunstoneOreFeature extends Feature<OreConfiguration> {
@@ -17,7 +17,7 @@ public class SunstoneOreFeature extends Feature<OreConfiguration> {
         super(OreConfiguration.CODEC);
     }
 
-    public static boolean canPlaceOre(BlockState pState, Function<BlockPos, BlockState> pAdjacentStateAccessor, Random pRandom, OreConfiguration.TargetBlockState pTargetState, BlockPos.MutableBlockPos pPos) {
+    public static boolean canPlaceOre(BlockState pState, Function<BlockPos, BlockState> pAdjacentStateAccessor, RandomSource pRandom, OreConfiguration.TargetBlockState pTargetState, BlockPos.MutableBlockPos pPos) {
         if (!pTargetState.target.test(pState, pRandom)) return false;
         return checkNeighbors(pAdjacentStateAccessor, pPos, state -> {
             FluidState fluidState = state.getFluidState();
@@ -25,18 +25,18 @@ public class SunstoneOreFeature extends Feature<OreConfiguration> {
         });
     }
 
-    private static void offsetTargetPos(BlockPos.MutableBlockPos pMutablePos, Random pRandom, BlockPos pPos, int pMagnitude) {
+    private static void offsetTargetPos(BlockPos.MutableBlockPos pMutablePos, RandomSource pRandom, BlockPos pPos, int pMagnitude) {
         pMutablePos.setWithOffset(pPos, getRandomRelativePlacement(pRandom, pMagnitude), getRandomRelativePlacement(pRandom, pMagnitude), getRandomRelativePlacement(pRandom, pMagnitude));
     }
 
-    private static int getRandomRelativePlacement(Random pRandom, int pMagnitude) {
+    private static int getRandomRelativePlacement(RandomSource pRandom, int pMagnitude) {
         return Math.round((pRandom.nextFloat() - pRandom.nextFloat()) * (float) pMagnitude);
     }
 
     @Override
     public boolean place(FeaturePlaceContext<OreConfiguration> pContext) {
         WorldGenLevel level = pContext.level();
-        Random random = pContext.random();
+        RandomSource random = pContext.random();
         OreConfiguration config = pContext.config();
         BlockPos origin = pContext.origin();
         int i = random.nextInt(config.size + 1);

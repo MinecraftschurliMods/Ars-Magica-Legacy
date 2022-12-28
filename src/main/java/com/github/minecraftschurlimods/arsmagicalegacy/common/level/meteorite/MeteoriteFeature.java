@@ -1,13 +1,13 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.level.meteorite;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-
-import java.util.Random;
 
 public class MeteoriteFeature extends Feature<MeteoriteConfiguration> {
     public MeteoriteFeature() {
@@ -18,7 +18,7 @@ public class MeteoriteFeature extends Feature<MeteoriteConfiguration> {
     public boolean place(FeaturePlaceContext<MeteoriteConfiguration> pContext) {
         WorldGenLevel level = pContext.level();
         BlockPos origin = pContext.origin();
-        Random random = pContext.random();
+        RandomSource random = pContext.random();
         MeteoriteConfiguration config = pContext.config();
         while (origin.getY() > level.getMinBuildHeight() + config.height()) {
             if (!level.isEmptyBlock(origin.below())) {
@@ -34,7 +34,7 @@ public class MeteoriteFeature extends Feature<MeteoriteConfiguration> {
             int z = random.nextInt(config.width());
             float f = (float) (x + y + z) * 0.333F + 0.5F;
             for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-x, -y, -z), origin.offset(x, y, z))) {
-                if (pos.distSqr(origin) <= f * (0.95 + random.nextDouble(0.1))) {
+                if (pos.distSqr(origin) <= f * (0.95 + AMUtil.nextDouble(random, 0.1))) {
                     level.setBlock(pos, config.fluidState(), Block.UPDATE_CLIENTS);
                 } else if (pos.distSqr(origin) <= f * f) {
                     level.setBlock(pos, random.nextDouble() < config.rareChance() ? config.rareState() : config.baseState(), Block.UPDATE_CLIENTS);

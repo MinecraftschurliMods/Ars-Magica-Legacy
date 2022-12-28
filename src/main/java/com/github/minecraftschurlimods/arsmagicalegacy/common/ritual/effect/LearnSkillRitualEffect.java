@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualEffect;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,7 +18,7 @@ public record LearnSkillRitualEffect(ISpellPart part) implements RitualEffect {
 
     @Override
     public boolean performEffect(Player player, ServerLevel level, BlockPos pos) {
-        ArsMagicaAPI.get().getSkillHelper().learn(player, part().getRegistryName());
+        ArsMagicaAPI.get().getSkillHelper().learn(player, part().getId());
         return true;
     }
 

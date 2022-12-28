@@ -80,6 +80,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -115,6 +116,7 @@ public final class EventHandler {
         modBus.addListener(EventHandler::entityAttributeCreation);
         modBus.addListener(EventHandler::entityAttributeModification);
         modBus.addListener(EventHandler::enqueueIMC);
+        modBus.addListener(EventHandler::registerSpawnPlacements);
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
@@ -133,14 +135,13 @@ public final class EventHandler {
             registerBrewingRecipes();
             registerSpellIngredientTypes();
             AMCriteriaTriggers.register();
-            registerSpawnPlacements();
         });
         CompatManager.init(event);
     }
 
-    private static void registerSpawnPlacements() {
-        SpawnPlacements.register(AMEntities.DRYAD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules);
-        SpawnPlacements.register(AMEntities.MANA_CREEPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+    private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
+        evt.register(AMEntities.DRYAD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
     }
 
     private static void registerBrewingRecipes() {
@@ -294,27 +295,6 @@ public final class EventHandler {
         if (event.getSide() == LogicalSide.CLIENT) return;
         Player player = event.getEntity();
         Level level = event.getLevel();
-        BlockPos pos = event.getHitVec().getBlockPos();
-        BlockState state = level.getBlockState(pos);
-        if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {
-            ItemStack stack = lectern.getBook();
-            if (stack.getItem() instanceof SpellRecipeItem) {
-                if (player.isSecondaryUseActive()) {
-                    SpellRecipeItem.takeFromLectern(player, level, pos, state);
-                } else {
-                    lectern.pageCount = SpellRecipeItem.getPageCount(stack);
-                    ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
-                    player.awardStat(Stats.INTERACT_WITH_LECTERN);
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    private static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getSide() == LogicalSide.CLIENT) return;
-        Player player = event.getPlayer();
-        Level level = event.getWorld();
         BlockPos pos = event.getHitVec().getBlockPos();
         BlockState state = level.getBlockState(pos);
         if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {

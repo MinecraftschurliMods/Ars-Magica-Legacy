@@ -355,7 +355,7 @@ jar {
     finalizedBy('reobfJar')
 }
 
-tasks.register('flatJar', Jar) {
+task flatJar(type: Jar) {
     archiveClassifier.set('flat')
     from sourceSets.main.output
     from sourceSets.api.output

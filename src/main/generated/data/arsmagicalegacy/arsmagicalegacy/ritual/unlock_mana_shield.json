@@ -1,15 +1,15 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:mana_shield"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:shield",
       "arsmagicalegacy:life_tap"
     ],
-    "modifiers": [],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:mana_shield",
-    "type": "arsmagicalegacy:learn_skill"
+    "modifiers": []
   }
 }

@@ -159,7 +159,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         addRenderableWidget(dragPane);
         sourceBox.update();
         if (getMinecraft().player.isCreative()) {
-            addRenderableWidget(new Button(leftPos + imageWidth + 5, topPos + 5, 100, 20, new TranslatableComponent(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+            addRenderableWidget(new Button(leftPos + imageWidth + 5, topPos + 5, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
                 menu.createSpell();
             }));

@@ -33,9 +33,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
@@ -67,8 +65,6 @@ public interface AMRegistries {
     DeferredRegister<StatType<?>>             STAT_TYPES          = DeferredRegister.create(ForgeRegistries.STAT_TYPES,           ArsMagicaAPI.MOD_ID);
     DeferredRegister<ResourceLocation>        CUSTOM_STATS        = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY,        ArsMagicaAPI.MOD_ID);
     DeferredRegister<Feature<?>>              FEATURES            = DeferredRegister.create(ForgeRegistries.FEATURES,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<PlacedFeature>           PLACED_FEATURES     = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY,     ArsMagicaAPI.MOD_ID);
 
 
     // Deferred Registers for forge registries
@@ -142,8 +138,6 @@ public interface AMRegistries {
         SPELL_PARTS.register(bus);
         CONTINGENCY_TYPE.register(bus);
         FEATURES.register(bus);
-        CONFIGURED_FEATURES.register(bus);
-        PLACED_FEATURES.register(bus);
         RITUAL_TRIGGER_TYPES.register(bus);
         RITUAL_REQUIREMENT_TYPES.register(bus);
         RITUAL_EFFECT_TYPES.register(bus);

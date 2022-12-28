@@ -1,17 +1,17 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:moonrise"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:ender_intervention",
       "arsmagicalegacy:night_vision"
     ],
     "modifiers": [
       "arsmagicalegacy:lunar"
-    ],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:moonrise",
-    "type": "arsmagicalegacy:learn_skill"
+    ]
   }
 }

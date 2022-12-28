@@ -95,9 +95,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.ID, MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.ID, ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(SetLecternPagePacket.ID, SetLecternPagePacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.ID, TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.ID, OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(InscriptionTableCreateSpellPacket.ID, InscriptionTableCreateSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
     }
 }

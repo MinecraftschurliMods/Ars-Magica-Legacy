@@ -1,5 +1,11 @@
 {
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:blizzard"
+  },
+  "requirements": [],
   "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
     "components": [
       "arsmagicalegacy:frost_damage",
       "arsmagicalegacy:frost",
@@ -7,12 +13,6 @@
     ],
     "modifiers": [
       "arsmagicalegacy:damage"
-    ],
-    "type": "arsmagicalegacy:spell_component_cast"
-  },
-  "requirements": [],
-  "effect": {
-    "spell_part": "arsmagicalegacy:blizzard",
-    "type": "arsmagicalegacy:learn_skill"
+    ]
   }
 }
