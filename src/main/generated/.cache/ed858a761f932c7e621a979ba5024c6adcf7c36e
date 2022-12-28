@@ -1,11 +1,11 @@
-// 1.19.2	2022-12-28T13:25:11.7520202	WorldgenProvider[arsmagicalegacy]
+// 1.19.2	2022-12-28T15:58:03.8893532	WorldgenProvider[arsmagicalegacy]
 913744cde0aa1c690d5cece87da384c402d5b817 data/arsmagicalegacy/forge/biome_modifier/aum.json
 6fc828ccd7f13b3a4bdf2d22384198ae06c5c662 data/arsmagicalegacy/forge/biome_modifier/cerublossom.json
 3ffe42b15ecc36319041ae824546031b1772a2f2 data/arsmagicalegacy/forge/biome_modifier/chimerite_ore.json
 c4207ae09ffef2900da3d6dca3de1e4c236bcad9 data/arsmagicalegacy/forge/biome_modifier/desert_nova.json
 88048a614874feefb27e052c171662d9282892d9 data/arsmagicalegacy/forge/biome_modifier/dryad.json
 41b990b1b0e37f4960ce6c5ecb9b788bc306098b data/arsmagicalegacy/forge/biome_modifier/mana_creeper.json
-5e325ad9354de90a7dd1d57c55493608a014d009 data/arsmagicalegacy/forge/biome_modifier/moonstone_meteoreite.json
+29e52cebe67397d4ce2343f4a2847e022472c883 data/arsmagicalegacy/forge/biome_modifier/moonstone_meteorite.json
 66d4d069228788e93f34ad1776cf10db19199666 data/arsmagicalegacy/forge/biome_modifier/sunstone_ore.json
 53473283d03e7c154f2574862f1f76d1d4596239 data/arsmagicalegacy/forge/biome_modifier/tarma_root.json
 c1941f8ca88a42d234d6df4809adef201572d3d1 data/arsmagicalegacy/forge/biome_modifier/topaz_extra_ore.json

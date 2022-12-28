@@ -15,8 +15,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.util.Lazy;
-import org.slf4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;

@@ -66,7 +66,6 @@ public interface AMRegistries {
     DeferredRegister<ResourceLocation>        CUSTOM_STATS        = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY,        ArsMagicaAPI.MOD_ID);
     DeferredRegister<Feature<?>>              FEATURES            = DeferredRegister.create(ForgeRegistries.FEATURES,             ArsMagicaAPI.MOD_ID);
 
-
     // Deferred Registers for forge registries
     DeferredRegister<FluidType>               FLUID_TYPES             = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,             ArsMagicaAPI.MOD_ID);
     DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, ArsMagicaAPI.MOD_ID);
