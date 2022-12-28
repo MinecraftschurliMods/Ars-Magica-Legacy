@@ -1,10 +1,14 @@
 # Additions
 
 - Creative mode players now have a "Create Spell" button in the inscription table GUI.
-- Moonstone ore now spawns in rare meteorites on the surface! These meteorites also have water in them.
+- Moonstone ore now spawns in rare meteorites on the surface! These meteorites also have liquid essence in them.
 - Sunstone ore now spawns in the nether, directly adjacent to lava.
 - Celestial Prisms and Black Aurems are now obtainable in survival (and, as a result, so are light and dark Etherium).
 - All hidden spell parts are now available via secret spell combinations. Good luck finding all of them!
+
+# Removals
+
+- Removed liquid essence lakes in favor of moonstone meteorites.
 
 # Changes
 
