@@ -4,7 +4,10 @@
     "type": "forge:and",
     "values": [
       "#minecraft:is_overworld",
-      "#minecraft:is_ocean"
+      {
+        "type": "forge:not",
+        "value": "#minecraft:is_ocean"
+      }
     ]
   },
   "features": "arsmagicalegacy:moonstone_meteoreite",
