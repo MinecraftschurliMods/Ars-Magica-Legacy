@@ -55,9 +55,11 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -68,6 +70,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -126,10 +129,18 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
-        registerBrewingRecipes();
-        registerSpellIngredientTypes();
-        AMCriteriaTriggers.register();
+        event.enqueueWork(() -> {
+            registerBrewingRecipes();
+            registerSpellIngredientTypes();
+            AMCriteriaTriggers.register();
+            registerSpawnPlacements();
+        });
         CompatManager.init(event);
+    }
+
+    private static void registerSpawnPlacements() {
+        SpawnPlacements.register(AMEntities.DRYAD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules);
+        SpawnPlacements.register(AMEntities.MANA_CREEPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
     }
 
     private static void registerBrewingRecipes() {
@@ -283,6 +294,27 @@ public final class EventHandler {
         if (event.getSide() == LogicalSide.CLIENT) return;
         Player player = event.getEntity();
         Level level = event.getLevel();
+        BlockPos pos = event.getHitVec().getBlockPos();
+        BlockState state = level.getBlockState(pos);
+        if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {
+            ItemStack stack = lectern.getBook();
+            if (stack.getItem() instanceof SpellRecipeItem) {
+                if (player.isSecondaryUseActive()) {
+                    SpellRecipeItem.takeFromLectern(player, level, pos, state);
+                } else {
+                    lectern.pageCount = SpellRecipeItem.getPageCount(stack);
+                    ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
+                    player.awardStat(Stats.INTERACT_WITH_LECTERN);
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
+    private static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getSide() == LogicalSide.CLIENT) return;
+        Player player = event.getPlayer();
+        Level level = event.getWorld();
         BlockPos pos = event.getHitVec().getBlockPos();
         BlockState state = level.getBlockState(pos);
         if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {

@@ -37,7 +37,7 @@ public class BossSpawnTest {
     private static HashMap<UUID, Integer> dryadKills;
 
     @SuppressWarnings("unchecked")
-    @BeforeBatch(batch = "defaultBatch")
+    @BeforeBatch(batch = "boss_spawn")
     public static void beforeBatch(ServerLevel level) {
         try {
             Field lastDryadKillsField = NatureGuardianSpawnHandler.class.getDeclaredField("lastDryadKills");
@@ -55,7 +55,7 @@ public class BossSpawnTest {
         }
     }
 
-    @GameTest(template = "nature_guardian_spawn_test")
+    @GameTest(template = "nature_guardian_spawn_test", batch = "boss_spawn")
     public static void testNatureGuardianSpawns(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -86,7 +86,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "water_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO water biome
+    @GameTest(template = "water_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, required = false)//TODO water biome
     public static void testWaterGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -102,7 +102,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "fire_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO nether
+    @GameTest(template = "fire_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, required = false)//TODO nether
     public static void testFireGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -117,7 +117,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "earth_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "earth_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20)
     public static void testEarthGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -134,7 +134,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "air_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO y > 127
+    @GameTest(template = "air_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, required = false)//TODO y > 127
     public static void testAirGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -149,7 +149,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "ice_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO cold biome
+    @GameTest(template = "ice_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, required = false)//TODO cold biome
     public static void testIceGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -166,7 +166,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "lightning_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "lightning_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20)
     public static void testLightningGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -184,7 +184,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "life_guardian_spawn_test", timeoutTicks = 20)
+    @GameTest(template = "life_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20)
     public static void testLifeGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -204,7 +204,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "arcane_guardian_spawn_test", timeoutTicks = 20, attempts = 2)
+    @GameTest(template = "arcane_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, attempts = 2)
     public static void testArcaneGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();
@@ -217,7 +217,7 @@ public class BossSpawnTest {
         });
     }
 
-    @GameTest(template = "ender_guardian_spawn_test", timeoutTicks = 20, required = false)//TODO end
+    @GameTest(template = "ender_guardian_spawn_test", batch = "boss_spawn", timeoutTicks = 20, required = false)//TODO end
     public static void testEnderGuardianSpawnRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         Player player = helper.makeMockPlayer();

@@ -104,7 +104,7 @@ public final class Spell implements ISpell {
 
     @Override
     public ShapeGroup currentShapeGroup() {
-        return shapeGroups().get(currentShapeGroupIndex());
+        return shapeGroup(currentShapeGroupIndex()).orElse(ShapeGroup.EMPTY);
     }
 
     @Override
@@ -179,14 +179,14 @@ public final class Spell implements ISpell {
         Optional<ShapeGroup> shapeGroup = shapeGroup(currentShapeGroupIndex());
         ArrayList<Pair<ISpellPart, List<ISpellModifier>>> pwm = new ArrayList<>(spellStack().partsWithModifiers());
         LinkedList<Pair<? extends ISpellPart, List<ISpellModifier>>> shapesWithModifiers = new LinkedList<>();
-        shapeGroup.ifPresent(group -> {
+        shapeGroup.ifPresentOrElse(group -> {
             shapesWithModifiers.addAll(group.shapesWithModifiers());
             Pair<? extends ISpellPart, List<ISpellModifier>> last = shapesWithModifiers.getLast();
             ArrayList<ISpellModifier> tmp = new ArrayList<>();
             shapesWithModifiers.set(shapesWithModifiers.size() - 1, Pair.of(last.getFirst(), Collections.unmodifiableList(tmp)));
             tmp.addAll(last.getSecond());
             tmp.addAll(pwm.remove(0).getSecond());
-        });
+        }, () -> pwm.remove(0));
         shapesWithModifiers.addAll(pwm);
         return Collections.unmodifiableList(shapesWithModifiers);
     }

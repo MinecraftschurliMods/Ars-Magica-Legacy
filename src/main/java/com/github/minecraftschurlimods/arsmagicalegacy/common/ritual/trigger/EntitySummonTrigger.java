@@ -32,11 +32,12 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public void register(final Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent event) -> {// TODO: find a better event to do this
+    public void register(Ritual ritual) {
+        MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent.SpecialSpawn event) -> {// TODO: find a better event to do this
             if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
             LivingEntity entity = event.getEntity();
-            for (final Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(entity.position(), 5, 5, 5))) {
+            if (!predicate.matches(serverLevel, Vec3.atCenterOf(entity.blockPosition()), entity)) return;
+            for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(entity.position(), 5, 5, 5))) {
                 if (ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", entity)))) {
                     return;
                 }
@@ -45,9 +46,9 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, Context ctx) {
+    public boolean trigger(Player player, ServerLevel level, BlockPos pos, Context ctx) {
         LivingEntity entity = ctx.get("entity", LivingEntity.class);
-        if (entity == null || !predicate.matches(level, Vec3.atCenterOf(pos), entity)) return false;
+        if (entity == null) return false;
         entity.kill();
         return true;
     }

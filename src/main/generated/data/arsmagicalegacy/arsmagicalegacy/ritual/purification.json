@@ -1,0 +1,33 @@
+{
+  "trigger": {
+    "components": [
+      "arsmagicalegacy:light"
+    ],
+    "modifiers": [],
+    "type": "arsmagicalegacy:spell_component_cast"
+  },
+  "requirements": [
+    {
+      "structure": "arsmagicalegacy:purification_ritual",
+      "type": "arsmagicalegacy:structure"
+    },
+    {
+      "ingredients": [
+        {
+          "item": "arsmagicalegacy:moonstone"
+        }
+      ],
+      "radius": 3,
+      "type": "arsmagicalegacy:item"
+    }
+  ],
+  "effect": {
+    "state": {
+      "Properties": {
+        "half": "lower"
+      },
+      "Name": "arsmagicalegacy:celestial_prism"
+    },
+    "type": "arsmagicalegacy:place_block"
+  }
+}

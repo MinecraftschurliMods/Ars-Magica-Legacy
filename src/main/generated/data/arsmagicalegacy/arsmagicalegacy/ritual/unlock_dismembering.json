@@ -1,0 +1,17 @@
+{
+  "trigger": {
+    "components": [
+      "arsmagicalegacy:physical_damage"
+    ],
+    "modifiers": [
+      "arsmagicalegacy:damage",
+      "arsmagicalegacy:piercing"
+    ],
+    "type": "arsmagicalegacy:spell_component_cast"
+  },
+  "requirements": [],
+  "effect": {
+    "spell_part": "arsmagicalegacy:dismembering",
+    "type": "arsmagicalegacy:learn_skill"
+  }
+}

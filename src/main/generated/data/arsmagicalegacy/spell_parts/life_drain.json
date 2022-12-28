@@ -16,6 +16,13 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
+        "tag": "forge:gems/sunstone"
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
+      "ingredient": {
         "item": "arsmagicalegacy:aum"
       }
     }

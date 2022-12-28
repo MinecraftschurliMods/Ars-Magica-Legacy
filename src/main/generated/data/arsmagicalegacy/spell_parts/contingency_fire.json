@@ -1,40 +1,47 @@
 {
-  "affinities": {},
   "manaCost": 10.0,
   "reagents": [],
+  "affinities": {},
   "recipe": [
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "type": "forge:nbt",
-        "count": 1,
         "item": "arsmagicalegacy:affinity_essence",
+        "count": 1,
         "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
+      "ingredient": {
+        "tag": "forge:gems/sunstone"
+      },
       "count": 1,
+      "type": "arsmagicalegacy:ingredient"
+    },
+    {
       "ingredient": {
         "item": "minecraft:clock"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
       "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
-      }
+      },
+      "count": 1,
+      "type": "arsmagicalegacy:ingredient"
     },
     {
-      "type": "arsmagicalegacy:etherium",
-      "amount": 5000,
       "types": [
         "LIGHT",
-        "DARK",
-        "NEUTRAL"
-      ]
+        "NEUTRAL",
+        "DARK"
+      ],
+      "amount": 5000,
+      "type": "arsmagicalegacy:etherium"
     }
   ]
 }

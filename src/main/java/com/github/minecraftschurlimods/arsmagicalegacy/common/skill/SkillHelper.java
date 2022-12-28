@@ -83,14 +83,18 @@ public final class SkillHelper implements ISkillHelper {
     @Override
     public void learn(Player player, ResourceLocation skill) {
         getKnowledgeHolder(player).learn(skill);
-        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill);
+        if (player instanceof ServerPlayer serverPlayer) {
+            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill);
+        }
         syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, Skill skill, RegistryAccess registryAccess) {
         getKnowledgeHolder(player).learn(skill, registryAccess);
-        AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger((ServerPlayer) player, skill.getId(registryAccess));
+        if (player instanceof ServerPlayer serverPlayer) {
+            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill.getId(registryAccess));
+        }
         syncToPlayer(player);
     }
 
@@ -233,6 +237,9 @@ public final class SkillHelper implements ISkillHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
+        if (player.getGameProfile().getName().equals("test-mock-player")) {
+            return;
+        }
         ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(getKnowledgeHolder(player)), player);
     }
 
