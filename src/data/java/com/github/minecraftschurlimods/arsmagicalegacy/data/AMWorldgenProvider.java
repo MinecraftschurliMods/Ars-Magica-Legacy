@@ -65,7 +65,7 @@ class AMWorldgenProvider extends WorldgenProvider {
         pf("topaz_ore", orePlacement(cf("topaz_ore"), 7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))));
         pf("topaz_ore_extra", orePlacement(cf("topaz_ore_extra"), 100, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480))));
         pf("sunstone_ore", orePlacement(cf("sunstone_ore"), 32, HeightRangePlacement.uniform(VerticalAnchor.absolute(31), VerticalAnchor.absolute(33))));
-        pf("moonstone_meteorite", meteoritePlacement(cf("moonstone_meteorite"), 1, 56, 72));
+        pf("moonstone_meteorite", meteoritePlacement(cf("moonstone_meteorite"), 128, 56, 180));
         pf("aum", flowerPlacement(cf("aum"), 32));
         pf("cerublossom", flowerPlacement(cf("cerublossom"), 32));
         pf("desert_nova", flowerPlacement(cf("desert_nova"), 32));
