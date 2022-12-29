@@ -182,9 +182,9 @@ public final class ClientInit {
             ResourceLocation itemId = item.getRegistryName();
             if (itemId == null) continue;
             var api = ArsMagicaAPI.get();
-            if (item instanceof IAffinityItem || item instanceof ISpellItem) {
+            if (item instanceof IAffinityItem) {
                 for (IAffinity affinity : api.getAffinityRegistry()) {
-                    if (!IAffinity.NONE.equals(affinity.getRegistryName()) || item instanceof ISpellItem) {
+                    if (!IAffinity.NONE.equals(affinity.getRegistryName())) {
                         ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                     }
                 }
@@ -192,6 +192,11 @@ public final class ClientInit {
             if (item instanceof ISkillPointItem) {
                 for (ISkillPoint skillPoint : api.getSkillPointRegistry()) {
                     ForgeModelBakery.addSpecialModel(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
+                }
+            }
+            if (item instanceof ISpellItem) {
+                for (IAffinity affinity : api.getAffinityRegistry()) {
+                    ForgeModelBakery.addSpecialModel(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                 }
             }
             if (item instanceof SpellBookItem) {
