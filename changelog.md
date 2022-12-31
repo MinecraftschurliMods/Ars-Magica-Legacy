@@ -14,6 +14,7 @@
 
 # Fixes
 
+- Fixed a render crash with empty/invalid spells.
 - Fixed a bug where the touch shape targeted the wrong block.
 - Fixed mana creepers spawning everywhere.
 - Fixed a performance leak with boss spawning.
