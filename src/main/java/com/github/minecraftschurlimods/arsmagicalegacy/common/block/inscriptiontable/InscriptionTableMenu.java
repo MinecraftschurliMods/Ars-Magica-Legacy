@@ -129,7 +129,10 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     public void createSpell() {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
+        Optional<ISpell> recipe = getSpellRecipe();
+        if (recipe.isPresent() && !recipe.get().isEmpty()) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
+        }
     }
 
     private static class InscriptionTableSlot extends Slot {
