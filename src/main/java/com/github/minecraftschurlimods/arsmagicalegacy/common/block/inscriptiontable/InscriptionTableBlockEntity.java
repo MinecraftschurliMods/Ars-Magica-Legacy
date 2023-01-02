@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -12,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -93,6 +93,12 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      */
     public Optional<ItemStack> saveRecipe(ItemStack stack) {
         return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(Objects.requireNonNullElseGet(spellName, () -> Component.translatable(TranslationConstants.SPELL_RECIPE_TITLE)), spell));
+    }
+
+    public void createSpell(ServerPlayer player) {
+        ItemStack spell = new ItemStack(AMItems.SPELL.get());
+        ArsMagicaAPI.get().getSpellHelper().setSpell(spell, Objects.requireNonNull(getSpellRecipe()));
+        player.addItem(spell);
     }
 
     @Override

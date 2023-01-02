@@ -17,6 +17,20 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
+        "tag": "forge:gems/moonstone"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
+        "tag": "forge:gems/sunstone"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
       }
     }

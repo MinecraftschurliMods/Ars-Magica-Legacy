@@ -8,29 +8,40 @@
       "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page0.text"
     },
     {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:celestial_prism",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.text"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:purification_ritual",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.title",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.text"
+    },
+    {
       "type": "patchouli:multiblock",
       "multiblock_id": "arsmagicalegacy:celestial_prism_chalk",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page1.title"
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar1",
-      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page2.title"
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar2",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page3.title"
     },
     {
       "type": "patchouli:multiblock",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar3",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar1",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page4.title"
     },
     {
       "type": "patchouli:multiblock",
-      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar4",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar2",
       "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page5.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar3",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page6.title"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "arsmagicalegacy:celestial_prism_pillar4",
+      "name": "item.arsmagicalegacy.arcane_compendium.blocks.celestial_prism.page7.title"
     }
   ]
 }

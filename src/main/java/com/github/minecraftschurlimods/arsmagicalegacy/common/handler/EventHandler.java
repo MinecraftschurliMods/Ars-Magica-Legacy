@@ -55,9 +55,11 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -68,6 +70,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -77,6 +80,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -112,6 +116,7 @@ public final class EventHandler {
         modBus.addListener(EventHandler::entityAttributeCreation);
         modBus.addListener(EventHandler::entityAttributeModification);
         modBus.addListener(EventHandler::enqueueIMC);
+        modBus.addListener(EventHandler::registerSpawnPlacements);
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
@@ -126,10 +131,17 @@ public final class EventHandler {
     }
 
     private static void setup(FMLCommonSetupEvent event) {
-        registerBrewingRecipes();
-        registerSpellIngredientTypes();
-        AMCriteriaTriggers.register();
+        event.enqueueWork(() -> {
+            registerBrewingRecipes();
+            registerSpellIngredientTypes();
+            AMCriteriaTriggers.register();
+        });
         CompatManager.init(event);
+    }
+
+    private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
+        evt.register(AMEntities.DRYAD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Dryad::checkDryadSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        evt.register(AMEntities.MANA_CREEPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
     }
 
     private static void registerBrewingRecipes() {

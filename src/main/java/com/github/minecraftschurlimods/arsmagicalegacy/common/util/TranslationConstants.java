@@ -30,6 +30,7 @@ public interface TranslationConstants {
     String INSCRIPTION_TABLE_NAME           = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.name";
     String INSCRIPTION_TABLE_SEARCH         = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.search";
     String INSCRIPTION_TABLE_TITLE          = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.title";
+    String INSCRIPTION_TABLE_CREATE_SPELL   = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.create_spell";
     String OBELISK_TITLE                    = "screen."  + ArsMagicaAPI.MOD_ID + ".obelisk.title";
     String OCCULUS_MISSING_REQUIREMENTS     = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.missing_requirements";
     String RANGE_LOWER                      = "screen."  + ArsMagicaAPI.MOD_ID + ".occulus.affinity.ability.range.min";

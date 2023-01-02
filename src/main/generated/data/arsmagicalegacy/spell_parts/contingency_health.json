@@ -33,6 +33,13 @@
       "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
       }
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "amount": 5000,
+      "types": [
+        "LIGHT"
+      ]
     }
   ]
 }

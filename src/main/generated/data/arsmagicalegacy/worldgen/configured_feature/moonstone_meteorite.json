@@ -1,0 +1,20 @@
+{
+  "type": "arsmagicalegacy:meteorite",
+  "config": {
+    "base_state": {
+      "Name": "minecraft:stone"
+    },
+    "fluid_state": {
+      "Name": "arsmagicalegacy:liquid_essence",
+      "Properties": {
+        "level": "0"
+      }
+    },
+    "height": 5,
+    "rare_chance": 0.1,
+    "rare_state": {
+      "Name": "arsmagicalegacy:moonstone_ore"
+    },
+    "width": 7
+  }
+}

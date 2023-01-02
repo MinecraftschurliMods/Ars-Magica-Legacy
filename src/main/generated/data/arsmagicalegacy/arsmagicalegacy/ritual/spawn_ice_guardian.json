@@ -10,7 +10,7 @@
     },
     {
       "type": "arsmagicalegacy:biome",
-      "biome": "#forge:is_snowy"
+      "biome": "#forge:is_cold"
     }
   ],
   "trigger": {

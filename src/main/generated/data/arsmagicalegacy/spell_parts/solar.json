@@ -17,6 +17,13 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
+        "tag": "forge:gems/sunstone"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
         "item": "minecraft:clock"
       }
     }

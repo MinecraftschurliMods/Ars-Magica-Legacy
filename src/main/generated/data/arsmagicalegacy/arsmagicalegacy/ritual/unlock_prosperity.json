@@ -1,0 +1,18 @@
+{
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:prosperity"
+  },
+  "requirements": [],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
+    "components": [
+      "arsmagicalegacy:dig",
+      "arsmagicalegacy:physical_damage"
+    ],
+    "modifiers": [
+      "arsmagicalegacy:mining_power",
+      "arsmagicalegacy:silk_touch"
+    ]
+  }
+}

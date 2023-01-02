@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 

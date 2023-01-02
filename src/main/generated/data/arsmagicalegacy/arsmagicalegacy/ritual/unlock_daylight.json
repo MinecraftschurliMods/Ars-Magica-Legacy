@@ -1,0 +1,17 @@
+{
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "spell_part": "arsmagicalegacy:daylight"
+  },
+  "requirements": [],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
+    "components": [
+      "arsmagicalegacy:divine_intervention",
+      "arsmagicalegacy:true_sight"
+    ],
+    "modifiers": [
+      "arsmagicalegacy:solar"
+    ]
+  }
+}

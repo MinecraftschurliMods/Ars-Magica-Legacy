@@ -2,8 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.model.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -30,9 +30,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             var helper = ArsMagicaAPI.get().getSpellHelper();
             icon = helper.getSpellIcon(stack);
-            if (!stack.isEmpty()) {
-                affinity = helper.getSpell(stack).primaryAffinity();
-            }
+            affinity = stack.isEmpty() ? AMAffinities.NONE.get() : helper.getSpell(stack).primaryAffinity();
             return SpellItemModel.this;
         }
     };

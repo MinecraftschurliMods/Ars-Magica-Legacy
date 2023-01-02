@@ -39,8 +39,8 @@
       "amount": 5000,
       "types": [
         "LIGHT",
-        "DARK",
-        "NEUTRAL"
+        "NEUTRAL",
+        "DARK"
       ]
     }
   ]

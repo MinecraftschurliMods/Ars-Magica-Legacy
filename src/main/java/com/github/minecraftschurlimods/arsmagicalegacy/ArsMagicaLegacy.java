@@ -14,6 +14,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPacket;
@@ -40,7 +41,7 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 2);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 4);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
@@ -94,5 +95,6 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.ID, MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.ID, ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(InscriptionTableCreateSpellPacket.ID, InscriptionTableCreateSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
     }
 }

@@ -1,0 +1,35 @@
+{
+  "effect": {
+    "type": "arsmagicalegacy:place_block",
+    "offset": [
+      0,
+      1,
+      0
+    ],
+    "state": {
+      "Name": "arsmagicalegacy:black_aurem"
+    }
+  },
+  "requirements": [
+    {
+      "type": "arsmagicalegacy:structure",
+      "structure": "arsmagicalegacy:corruption_ritual"
+    },
+    {
+      "type": "arsmagicalegacy:item",
+      "ingredients": [
+        {
+          "item": "arsmagicalegacy:sunstone"
+        }
+      ],
+      "radius": 3
+    }
+  ],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
+    "components": [
+      "arsmagicalegacy:fire_damage"
+    ],
+    "modifiers": []
+  }
+}

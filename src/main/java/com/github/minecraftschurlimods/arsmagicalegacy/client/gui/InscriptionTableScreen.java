@@ -26,6 +26,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -80,7 +81,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void onSlotChangedInt() {
-        menu.sendDataToServer(Component.literal(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        sync();
         if (menu.getSlot(0).getItem().getItem() instanceof ISpellItem) {
             menu.getSpellRecipe().ifPresent(this::setFromRecipe);
         }
@@ -157,6 +158,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         spellStackDropZone.setOnDragListener(p -> sourceBox.update());
         addRenderableWidget(dragPane);
         sourceBox.update();
+        if (getMinecraft().player.isCreative()) {
+            addRenderableWidget(new Button(leftPos + imageWidth + 5, topPos + 5, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+                sync();
+                menu.createSpell();
+            }));
+        }
     }
 
     private boolean isValidInSpellStack(List<ISpellPart> items, ISpellPart item) {
@@ -257,8 +264,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public void onClose() {
-        menu.sendDataToServer(Component.literal(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
+        sync();
         super.onClose();
+    }
+
+    private void sync() {
+        menu.sendDataToServer(Component.literal(nameBar.getValue()), DraggableWithData.dataList(spellStackDropZone.items()), shapeGroupDropZones.stream().map(DropArea::items).<List<ResourceLocation>>map(DraggableWithData::dataList).toList());
     }
 
     @Override

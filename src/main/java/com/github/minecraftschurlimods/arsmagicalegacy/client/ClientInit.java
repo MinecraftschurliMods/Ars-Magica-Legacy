@@ -150,12 +150,12 @@ public final class ClientInit {
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {
+        var api = ArsMagicaAPI.get();
+        IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
-            var api = ArsMagicaAPI.get();
-            if (item instanceof IAffinityItem || item instanceof ISpellItem) {
-                IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
+            if (item instanceof IAffinityItem) {
                 for (Affinity affinity : affinities) {
                     if (!Affinity.NONE.equals(affinities.getKey(affinity))) {
                         event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
@@ -165,6 +165,11 @@ public final class ClientInit {
             if (item instanceof ISkillPointItem) {
                 for (SkillPoint skillPoint : api.getSkillPointRegistry()) {
                     event.register(new ResourceLocation(skillPoint.getId().getNamespace(), "item/" + itemId.getPath() + "_" + skillPoint.getId().getPath()));
+                }
+            }
+            if (item instanceof ISpellItem) {
+                for (Affinity affinity : affinities) {
+                    event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                 }
             }
             if (item instanceof SpellBookItem) {

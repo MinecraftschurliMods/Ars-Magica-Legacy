@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumCon
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;

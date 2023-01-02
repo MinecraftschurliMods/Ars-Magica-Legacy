@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.effect;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +17,8 @@ public class InstantManaEffect extends InstantenousMobEffect {
     @Override
     public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
         IManaHelper manaHelper = ArsMagicaAPI.get().getManaHelper();
-        manaHelper.increaseMana(pLivingEntity, manaHelper.getMaxMana(pLivingEntity) / 5 * pAmplifier);
+        if (pLivingEntity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.get())) {
+            manaHelper.increaseMana(pLivingEntity, manaHelper.getMaxMana(pLivingEntity) / 5 * pAmplifier);
+        }
     }
 }

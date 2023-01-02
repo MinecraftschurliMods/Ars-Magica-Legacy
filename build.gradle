@@ -310,6 +310,9 @@ minecraft {
     runs.configureEach {
         workingDirectory project.file("run/${it.name}") as File
         property 'forge.logging.console.level', 'debug'
+        if (!System.getenv('GITHUB_ACTIONS')) {
+            jvmArg '-XX:+AllowEnhancedClassRedefinition'
+        }
     }
 }
 
@@ -352,7 +355,7 @@ jar {
     finalizedBy('reobfJar')
 }
 
-tasks.register('flatJar', Jar) {
+task flatJar(type: Jar) {
     archiveClassifier.set('flat')
     from sourceSets.main.output
     from sourceSets.api.output
