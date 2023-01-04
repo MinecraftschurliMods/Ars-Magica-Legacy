@@ -5,6 +5,7 @@
 - Sunstone ore now spawns in the nether, directly adjacent to lava.
 - Celestial Prisms and Black Aurems are now obtainable in survival (and, as a result, so are light and dark Etherium).
 - All hidden spell parts are now available via secret spell combinations. Good luck finding all of them!
+- Added Witchwood signs.
 
 # Changes
 
