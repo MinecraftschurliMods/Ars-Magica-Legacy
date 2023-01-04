@@ -12,7 +12,6 @@ public class CustomSignBlockEntity extends SignBlockEntity {
         super(pPos, pState);
     }
 
-    @NotNull
     @Override
     public BlockEntityType<?> getType() {
         return AMBlockEntities.WITCHWOOD_SIGN.get();
