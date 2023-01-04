@@ -18,12 +18,13 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -83,6 +84,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         trapdoorBlock(WITCHWOOD_TRAPDOOR);
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
+        signBlock(WITCHWOOD_SIGN, WITCHWOOD_WALL_SIGN, WITCHWOOD_PLANKS);
         crossBlock(AUM);
         crossBlock(CERUBLOSSOM);
         crossBlock(DESERT_NOVA);
@@ -226,34 +228,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      */
     private void buttonBlock(Supplier<? extends ButtonBlock> button, Supplier<? extends Block> block) {
         ResourceLocation texture = blockTexture(block.get());
-        ModelFile normal = models().withExistingParent(button.get().getRegistryName().getPath(), "block/button").texture("texture", texture);
-        ModelFile pressed = models().withExistingParent(button.get().getRegistryName().getPath() + "_pressed", "block/button_pressed").texture("texture", texture);
-        getVariantBuilder(button.get()).forAllStates(state -> {
-            ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? pressed : normal);
-            return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-                case NORTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                    case FLOOR -> builder.build();
-                    case CEILING -> builder.rotationX(180).rotationY(180).build();
-                    case WALL -> builder.rotationX(90).uvLock(true).build();
-                };
-                case EAST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                    case FLOOR -> builder.rotationY(90).build();
-                    case CEILING -> builder.rotationX(180).rotationY(270).build();
-                    case WALL -> builder.rotationX(90).rotationY(90).uvLock(true).build();
-                };
-                case SOUTH -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                    case FLOOR -> builder.rotationY(180).build();
-                    case CEILING -> builder.rotationX(180).build();
-                    case WALL -> builder.rotationX(90).rotationY(180).uvLock(true).build();
-                };
-                case WEST -> switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                    case FLOOR -> builder.rotationY(270).build();
-                    case CEILING -> builder.rotationX(180).rotationY(90).build();
-                    case WALL -> builder.rotationX(90).rotationY(270).uvLock(true).build();
-                };
-                default -> new ConfiguredModel[0];
-            };
-        });
+        buttonBlock(button.get(), texture);
         models().withExistingParent(button.get().getRegistryName().getPath() + "_inventory", "block/button_inventory").texture("texture", texture);
     }
 
@@ -264,10 +239,11 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block         The block to take the texture from.
      */
     private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> pressurePlate, Supplier<? extends Block> block) {
-        ResourceLocation texture = blockTexture(block.get());
-        ModelFile up = models().withExistingParent(pressurePlate.get().getRegistryName().getPath(), "block/pressure_plate_up").texture("texture", texture);
-        ModelFile down = models().withExistingParent(pressurePlate.get().getRegistryName().getPath() + "_down", "block/pressure_plate_down").texture("texture", texture);
-        getVariantBuilder(pressurePlate.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(BlockStateProperties.POWERED) ? down : up).build());
+        pressurePlateBlock(pressurePlate.get(), blockTexture(block.get()));
+    }
+
+    private void signBlock(Supplier<? extends StandingSignBlock> sign, Supplier<? extends WallSignBlock> wallSign, Supplier<? extends Block> block) {
+        signBlock(sign.get(), wallSign.get(), blockTexture(block.get()));
     }
 
     /**

@@ -51,6 +51,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
@@ -62,7 +63,9 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -124,6 +127,7 @@ public final class ClientInit {
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> Sheets.addWoodType(AMWoodTypes.WITCHWOOD));
         registerMenuScreens();
         registerRenderTypes();
         registerHUDs();
@@ -258,6 +262,7 @@ public final class ClientInit {
         event.registerBlockEntityRenderer(AMBlockEntities.ALTAR_VIEW.get(), AltarViewBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.BLACK_AUREM.get(), BlackAuremBER::new);
         event.registerBlockEntityRenderer(AMBlockEntities.SPELL_RUNE.get(), SpellRuneBER::new);
+        event.registerBlockEntityRenderer(AMBlockEntities.WITCHWOOD_SIGN.get(), SignRenderer::new);
     }
 
     private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
