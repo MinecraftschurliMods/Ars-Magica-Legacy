@@ -95,6 +95,7 @@ class AMLootTableProvider extends LootTableProvider {
             dropSelf(AMBlocks.WITCHWOOD_TRAPDOOR.get());
             dropSelf(AMBlocks.WITCHWOOD_BUTTON.get());
             dropSelf(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
+            dropSelf(AMBlocks.WITCHWOOD_SIGN.get());
             dropSelf(AMBlocks.AUM.get());
             dropSelf(AMBlocks.CERUBLOSSOM.get());
             dropSelf(AMBlocks.DESERT_NOVA.get());

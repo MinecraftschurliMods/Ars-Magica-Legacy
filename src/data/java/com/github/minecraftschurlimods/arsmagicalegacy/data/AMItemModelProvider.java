@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -32,13 +33,13 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()
-            .transform(ModelBuilder.Perspective.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-            .transform(ModelBuilder.Perspective.GROUND).translation(0, 3, 0).scale(0.25f).end()
-            .transform(ModelBuilder.Perspective.FIXED).scale(0.5f).end()
-            .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-            .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).scale(0.4f).end()
-            .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).scale(0.4f).end().end();
-        blockItem(CELESTIAL_PRISM).transforms().transform(ModelBuilder.Perspective.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+            .transform(ItemTransforms.TransformType.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+            .transform(ItemTransforms.TransformType.GROUND).translation(0, 3, 0).scale(0.25f).end()
+            .transform(ItemTransforms.TransformType.FIXED).scale(0.5f).end()
+            .transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+            .transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end().end();
+        blockItem(CELESTIAL_PRISM).transforms().transform(ItemTransforms.TransformType.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
         itemGenerated(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);
@@ -77,6 +78,7 @@ class AMItemModelProvider extends ItemModelProvider {
         withExistingParent(WITCHWOOD_TRAPDOOR, modLoc("block/witchwood_trapdoor_bottom"));
         withExistingParent(WITCHWOOD_BUTTON, modLoc("block/witchwood_button_inventory"));
         blockItem(WITCHWOOD_PRESSURE_PLATE);
+        itemGenerated(WITCHWOOD_SIGN);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemGenerated(COLORED_RUNE.registryObject(color));
