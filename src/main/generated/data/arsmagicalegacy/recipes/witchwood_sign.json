@@ -1,20 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "wooden_fence",
+  "group": "wooden_sign",
   "pattern": [
-    "W#W",
-    "W#W"
+    "###",
+    "###",
+    " X "
   ],
   "key": {
-    "W": {
+    "#": {
       "item": "arsmagicalegacy:witchwood_planks"
     },
-    "#": {
+    "X": {
       "tag": "forge:rods/wooden"
     }
   },
   "result": {
-    "item": "arsmagicalegacy:witchwood_fence",
+    "item": "arsmagicalegacy:witchwood_sign",
     "count": 3
   }
 }
