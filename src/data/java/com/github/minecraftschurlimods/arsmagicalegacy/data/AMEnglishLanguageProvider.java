@@ -90,6 +90,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.WITCHWOOD_TRAPDOOR);
         blockIdTranslation(AMBlocks.WITCHWOOD_BUTTON);
         blockIdTranslation(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
+        blockIdTranslation(AMBlocks.WITCHWOOD_SIGN);
         itemIdTranslation(AMItems.BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemIdTranslation(AMItems.COLORED_RUNE.registryObject(color));

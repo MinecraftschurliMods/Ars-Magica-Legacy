@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-21T18:18:54.316219	LootTables
+// 1.19.2	2023-01-04T23:38:42.2352762	LootTables
 b6aa0b154e90cc2ff8bf3eded925ba7f62b77f6a data/arsmagicalegacy/loot_tables/blocks/altar_core.json
 c0afba4d4db1a3b0daf1ce050875fdcd68f7c299 data/arsmagicalegacy/loot_tables/blocks/aum.json
 d41c1158db3f312dd310b6cc779680a10c69aab6 data/arsmagicalegacy/loot_tables/blocks/black_aurem.json
@@ -45,6 +45,7 @@ a0e190fdb42b6a0857cb13f1de886d5d5a305759 data/arsmagicalegacy/loot_tables/blocks
 438b5792fd2ed875a219eda6ec2c38bad3457a6d data/arsmagicalegacy/loot_tables/blocks/witchwood_planks.json
 111e5c518bc535bbc97b3f9fe5e4406174b75b5e data/arsmagicalegacy/loot_tables/blocks/witchwood_pressure_plate.json
 383cae9690726adb1a66badbaac73fcca3cd2952 data/arsmagicalegacy/loot_tables/blocks/witchwood_sapling.json
+d8afbaa8b0fcffc0e54a2d08029bd9536ea068c0 data/arsmagicalegacy/loot_tables/blocks/witchwood_sign.json
 d7d0d18b684477e0924beec6598b0bafbc483da7 data/arsmagicalegacy/loot_tables/blocks/witchwood_slab.json
 58253084776eee56401f428f74cebcedb0a4e83a data/arsmagicalegacy/loot_tables/blocks/witchwood_stairs.json
 efdee200e197e833a21f7b9d0f499e28b4b6514e data/arsmagicalegacy/loot_tables/blocks/witchwood_trapdoor.json

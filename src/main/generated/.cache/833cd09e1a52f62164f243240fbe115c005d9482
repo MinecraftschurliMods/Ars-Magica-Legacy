@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-30T20:14:26.2289668	Item Models: arsmagicalegacy
+// 1.19.2	2023-01-04T23:38:42.2151514	Item Models: arsmagicalegacy
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/affinity_essence.json
 6e0b262bb6740bdbe7b3564e182497239ff375ac assets/arsmagicalegacy/models/item/affinity_essence_air.json
 84174d0bc6eb1016c4946a0937eb7ec35e19f1d8 assets/arsmagicalegacy/models/item/affinity_essence_arcane.json
@@ -135,6 +135,7 @@ d9c5bf5dd60792bf8982874ea995b808bdf31160 assets/arsmagicalegacy/models/item/witc
 aac29ceaba013d7325359720ff4fab0f1868762c assets/arsmagicalegacy/models/item/witchwood_planks.json
 3f147e373baeaf3df3256569fc08d0d7f907eb95 assets/arsmagicalegacy/models/item/witchwood_pressure_plate.json
 5a1c12577ed4117e8255cac15f4f2c4743036a3e assets/arsmagicalegacy/models/item/witchwood_sapling.json
+146d96ff586e516525d4ebd71c4acf63546f23cd assets/arsmagicalegacy/models/item/witchwood_sign.json
 4e8f02397fe605cf3737775174f8541d5ef11be8 assets/arsmagicalegacy/models/item/witchwood_slab.json
 10650bd7485c723d38a09aed82ef8862d78d9192 assets/arsmagicalegacy/models/item/witchwood_stairs.json
 ae15cfa128b13830635c630db2e676aa69726838 assets/arsmagicalegacy/models/item/witchwood_trapdoor.json

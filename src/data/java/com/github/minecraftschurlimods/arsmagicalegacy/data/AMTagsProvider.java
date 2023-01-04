@@ -20,7 +20,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-class AMTagsProvider {
+final class AMTagsProvider {
     static void add(boolean enable, DataGenerator generator, ExistingFileHelper existingFileHelper) {
         AMTagsProvider.Blocks blocks = new Blocks(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
         generator.addProvider(enable, blocks);
@@ -63,6 +63,8 @@ class AMTagsProvider {
             tag(BlockTags.WOODEN_TRAPDOORS).add(AMBlocks.WITCHWOOD_TRAPDOOR.get());
             tag(BlockTags.WOODEN_BUTTONS).add(AMBlocks.WITCHWOOD_BUTTON.get());
             tag(BlockTags.WOODEN_PRESSURE_PLATES).add(AMBlocks.WITCHWOOD_PRESSURE_PLATE.get());
+            tag(BlockTags.STANDING_SIGNS).add(AMBlocks.WITCHWOOD_SIGN.get());
+            tag(BlockTags.WALL_SIGNS).add(AMBlocks.WITCHWOOD_WALL_SIGN.get());
             tag(BlockTags.SMALL_FLOWERS).add(AMBlocks.AUM.get(), AMBlocks.CERUBLOSSOM.get(), AMBlocks.DESERT_NOVA.get(), AMBlocks.TARMA_ROOT.get(), AMBlocks.WAKEBLOOM.get());
             tag(BlockTags.FLOWER_POTS).add(AMBlocks.POTTED_AUM.get(), AMBlocks.POTTED_CERUBLOSSOM.get(), AMBlocks.POTTED_DESERT_NOVA.get(), AMBlocks.POTTED_TARMA_ROOT.get(), AMBlocks.POTTED_WAKEBLOOM.get());
             tag(BlockTags.RAILS).add(AMBlocks.IRON_INLAY.get(), AMBlocks.REDSTONE_INLAY.get(), AMBlocks.GOLD_INLAY.get());
