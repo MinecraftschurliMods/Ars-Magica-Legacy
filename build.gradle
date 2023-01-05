@@ -70,7 +70,7 @@ sourceSets {
         srcDirs += 'src/main/generated'
         exclude '.cache'
     }
-    data.resources.srcDirs = []
+    data {}
 }
 
 configurations {
@@ -282,7 +282,7 @@ minecraft {
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
             singleInstance true
-            args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/')
+            args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/'), '--mixin.config', "${project.mod_id}_data.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
                 source sourceSets.main as SourceSet

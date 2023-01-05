@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "arsmagicalegacy:witchwood_button"
+      "arsmagicalegacy:witchwood_sign"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "arsmagicalegacy:witchwood_button"
+        "recipe": "arsmagicalegacy:witchwood_sign"
       }
     }
   },

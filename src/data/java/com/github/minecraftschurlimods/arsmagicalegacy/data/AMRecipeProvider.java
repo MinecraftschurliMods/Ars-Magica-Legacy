@@ -53,6 +53,7 @@ class AMRecipeProvider extends RecipeProvider {
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
+        generateRecipes(consumer, AMBlockFamilies.WITCHWOOD_PLANKS.get());
         ShapelessRecipeBuilder.shapeless(Items.PINK_DYE)
                 .requires(AMItems.AUM.get())
                 .unlockedBy("item", has(AMItems.AUM.get()))
@@ -221,62 +222,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .group("planks")
                 .requires(AMTags.Items.WITCHWOOD_LOGS)
                 .unlockedBy("has_witchwood_logs", has(AMTags.Items.WITCHWOOD_LOGS))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_SLAB.get(), 6)
-                .group("wooden_slab")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_STAIRS.get(), 4)
-                .group("wooden_stairs")
-                .pattern("#  ")
-                .pattern("## ")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_FENCE.get(), 3)
-                .group("wooden_fence")
-                .pattern("#-#")
-                .pattern("#-#")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .define('-', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_FENCE_GATE.get())
-                .group("wooden_fence_gate")
-                .pattern("-#-")
-                .pattern("-#-")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .define('-', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_DOOR.get(), 3)
-                .group("wooden_door")
-                .pattern("##")
-                .pattern("##")
-                .pattern("##")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_TRAPDOOR.get(), 2)
-                .group("wooden_trapdoor")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.WITCHWOOD_BUTTON.get())
-                .group("wooden_button")
-                .requires(AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.WITCHWOOD_PRESSURE_PLATE.get())
-                .group("wooden_pressure_plate")
-                .pattern("##")
-                .define('#', AMItems.WITCHWOOD_PLANKS.get())
-                .unlockedBy("has_witchwood_planks", has(AMItems.WITCHWOOD_PLANKS.get()))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.BLANK_RUNE.get(), 2)
                 .pattern(" # ")
