@@ -27,6 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -95,6 +96,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    WITCHWOOD_TRAPDOOR           = registerBlockItem64(AMBlocks.WITCHWOOD_TRAPDOOR);
     RegistryObject<BlockItem>                    WITCHWOOD_BUTTON             = registerBlockItem64(AMBlocks.WITCHWOOD_BUTTON);
     RegistryObject<BlockItem>                    WITCHWOOD_PRESSURE_PLATE     = registerBlockItem64(AMBlocks.WITCHWOOD_PRESSURE_PLATE);
+    RegistryObject<SignItem>                     WITCHWOOD_SIGN               = ITEMS.register("witchwood_sign", () -> new SignItem(ITEM_64, AMBlocks.WITCHWOOD_SIGN.get(), AMBlocks.WITCHWOOD_WALL_SIGN.get()));
     RegistryObject<Item>                         BLANK_RUNE                   = registerItem64("blank_rune");
     ColoredRegistryObject<Item, ColoredRuneItem> COLORED_RUNE                 = registerColoredItem("rune", color -> new ColoredRuneItem(ITEM_64, color));
     RegistryObject<RuneBagItem>                  RUNE_BAG                     = ITEMS.register("rune_bag", () -> new RuneBagItem(ITEM_1));

@@ -13,6 +13,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.Tarma
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.WakebloomBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.sign.CustomStandingSignBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.sign.CustomWallSignBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.level.WitchwoodTreeGrower;
 import net.minecraft.core.BlockPos;
@@ -38,8 +40,10 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -96,6 +100,8 @@ public interface AMBlocks {
     RegistryObject<TrapDoorBlock>         WITCHWOOD_TRAPDOOR       = BLOCKS.register("witchwood_trapdoor",       () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noOcclusion().isValidSpawn(AMBlocks::never)));
     RegistryObject<WoodButtonBlock>       WITCHWOOD_BUTTON         = BLOCKS.register("witchwood_button",         () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<PressurePlateBlock>    WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
+    RegistryObject<StandingSignBlock>     WITCHWOOD_SIGN           = BLOCKS.register("witchwood_sign",           () -> new CustomStandingSignBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noCollission().strength(1.0F), AMWoodTypes.WITCHWOOD));
+    RegistryObject<WallSignBlock>         WITCHWOOD_WALL_SIGN      = BLOCKS.register("witchwood_wall_sign",      () -> new CustomWallSignBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noCollission().strength(1.0F).lootFrom(WITCHWOOD_SIGN), AMWoodTypes.WITCHWOOD));
     RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      AumBlock::new);
     RegistryObject<FlowerBlock>           CERUBLOSSOM              = BLOCKS.register("cerublossom",              () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);

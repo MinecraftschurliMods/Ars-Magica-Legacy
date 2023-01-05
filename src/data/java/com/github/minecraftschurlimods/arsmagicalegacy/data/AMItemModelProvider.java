@@ -81,6 +81,7 @@ class AMItemModelProvider extends ItemModelProvider {
         withExistingParent(WITCHWOOD_TRAPDOOR, modLoc("block/witchwood_trapdoor_bottom"));
         withExistingParent(WITCHWOOD_BUTTON, modLoc("block/witchwood_button_inventory"));
         blockItem(WITCHWOOD_PRESSURE_PLATE);
+        itemGenerated(WITCHWOOD_SIGN);
         itemGenerated(BLANK_RUNE);
         for (DyeColor color : DyeColor.values()) {
             itemGenerated(COLORED_RUNE.registryObject(color));

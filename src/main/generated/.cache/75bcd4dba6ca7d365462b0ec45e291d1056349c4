@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-28T10:04:33.5896335	Tags for minecraft:block
+// 1.19.2	2023-01-04T23:38:42.2332769	Tags for minecraft:block
 09a8495f82a08691d533f5301ffce0cc0afe0bcf data/arsmagicalegacy/tags/blocks/witchwood_logs.json
 75597f58eaad48b98e64ba095c0e13b1573e0f4e data/forge/tags/blocks/fences/wooden.json
 4509a6dbe8b8c6353fbe06cefd812efe1dca2727 data/forge/tags/blocks/fence_gates/wooden.json
@@ -27,6 +27,8 @@ e60ce640b03c19e40fc4fd591174c0bb5f6849d1 data/minecraft/tags/blocks/needs_iron_t
 a5cc6f3a50fcd1f61d2ba94c42b27f82e25e2c8e data/minecraft/tags/blocks/saplings.json
 4646c92ac03ea27d3a443cb64e53ee5b9a6de33c data/minecraft/tags/blocks/small_flowers.json
 bec95c5a9654ef121c0a192294230b225cbec632 data/minecraft/tags/blocks/snow_layer_cannot_survive_on.json
+c03fe02c08be18b1f15dcfbd3e923baed847268a data/minecraft/tags/blocks/standing_signs.json
+d0df540ca957aa8f45eab82096a849542c152d5f data/minecraft/tags/blocks/wall_signs.json
 277695cc2f20524f716a39aaee2b5a0f411d8af9 data/minecraft/tags/blocks/wooden_buttons.json
 86b8cf4f20c521d1ddc7dbf8cf710466ebb12bdd data/minecraft/tags/blocks/wooden_doors.json
 75597f58eaad48b98e64ba095c0e13b1573e0f4e data/minecraft/tags/blocks/wooden_fences.json
