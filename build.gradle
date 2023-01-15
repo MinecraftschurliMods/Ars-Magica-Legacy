@@ -1,4 +1,5 @@
 //file:noinspection GroovyAssignabilityCheck
+//file:noinspection ConfigurationAvoidance
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -65,7 +66,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 sourceSets {
-    api.resources.srcDirs = []
+    api {}
     main.resources {
         srcDirs += 'src/main/generated'
         exclude '.cache'
@@ -110,19 +111,6 @@ configurations {
         transitive = false
     }
     dataImplementation.extendsFrom(datagenLibrary)
-}
-
-def github(RepositoryHandler rep, String ownerRepo) {
-    if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
-        rep.maven {
-            name = "${ownerRepo}"
-            url = "https://maven.pkg.github.com/${ownerRepo}"
-            credentials {
-                username = "${project.github_packages_user}"
-                password = "${project.github_packages_token}"
-            }
-        }
-    }
 }
 
 repositories {
@@ -178,21 +166,6 @@ repositories {
             includeGroup 'software.bernie.geckolib'
         }
     }
-    /*maven {
-        name = 'CurseMaven'
-        url = "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }*/
-    /*maven {
-        name = 'saps Maven'
-        url = 'https://maven.saps.dev/minecraft/'
-    }*/
-    /*maven {
-        name = 'CurseForge'
-        url = 'https://minecraft.curseforge.com/api/maven/'
-    }*/
     maven {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
@@ -319,6 +292,7 @@ minecraft {
 project.ext.issue_tracker_url = "https://github.com/${project.github}/issues"
 
 processResources {
+    //noinspection GroovyAccessibility
     Map<String, ?> buildProps = project.properties.clone()
     buildProps.values().removeIf { !it.getClass().isPrimitive() && !(it instanceof CharSequence) }
     inputs.properties buildProps
@@ -352,17 +326,6 @@ jar {
     archiveClassifier.set('slim')
     from sourceSets.main.output
     from sourceSets.api.output
-    finalizedBy('reobfJar')
-}
-
-task flatJar(type: Jar) {
-    archiveClassifier.set('flat')
-    from sourceSets.main.output
-    from sourceSets.api.output
-    from configurations.include.collect { it.isDirectory() ? it : zipTree(it) }, {
-        exclude 'LICENSE'
-        exclude '**/META_INF/**'
-    }
     finalizedBy('reobfJar')
 }
 
@@ -442,16 +405,6 @@ tasks.register('setupGithubActions') {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
         println "##[set-output name=version;]${project.version}"
-        if (project.hasProperty('curse_project_id')) {
-            println "##[set-output name=project_id;]${project.curse_project_id}"
-            println "##[set-output name=curse_versions;]${project.curse_versions}"
-            if (project.hasProperty('curse_title')) {
-                println "##[set-output name=curse_title;]${project.curse_title}"
-            }
-            if (project.hasProperty('curse_relations')) {
-                println "##[set-output name=curse_relations;]${project.curse_relations}"
-            }
-        }
     }
 }
 

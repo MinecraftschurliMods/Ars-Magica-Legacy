@@ -1,59 +1,85 @@
 modLoader = "javafml"
-loaderVersion = "${loader_version_range}"
+loaderVersion = "${ loader_version_range }"
 license = "\"Don't Be a Jerk\" License"
-# services = [ "ArsMagicaAPI.IArsMagicaAPI" ]
-issueTrackerURL = "${issue_tracker_url}"
+issueTrackerURL = "${ issue_tracker_url }"
 
 [[mods]]
-    modId = "${mod_id}"
-    version = "${version}"
-    displayName = "${mod_name}"
-    displayURL = "${mod_url}"
+    modId = "${ mod_id }"
+    version = "${ version }"
+    displayName = "${ mod_name }"
+    displayURL = "${ mod_url }"
     logoFile = "logo.png"
-    credits = "${mod_credits}"
-    authors = "${mod_author}"
+    credits = "${ mod_credits }"
+    authors = "${ mod_author }"
     description = '''
 Continuation of Ars Magica 2 by Mithion
 '''
+    [custom.mc-publish]
+        modrinth = "${ modrinth_project_id }"
+        curseforge = ${ curse_project_id }
+
+[[dependencies.${ mod_id }]]
+    modId = "jei"
+    mandatory = false
+    versionRange = "${ jei_version_range }"
+
+[[dependencies.${ mod_id }]]
+    modId = "theoneprobe"
+    mandatory = false
+    [dependencies.${ mod_id }.custom.mc-publish]
+        curseforge = "the-one-probe"
 
 [[dependencies.${ mod_id }]]
     modId = "patchouli"
     mandatory = true
-    versionRange = "${patchouli_version_range}"
+    versionRange = "${ patchouli_version_range }"
     ordering = "BEFORE"
     side = "BOTH"
 
 [[dependencies.${ mod_id }]]
     modId = "geckolib3"
     mandatory = true
-    versionRange = "${geckolib_version_range}"
+    versionRange = "${ geckolib_version_range }"
     ordering = "BEFORE"
     side = "BOTH"
+    [dependencies.${ mod_id }.custom.mc-publish]
+        modrinth = "geckolib"
+        curseforge = "geckolib"
 
 [[dependencies.${ mod_id }]]
     modId = "curios"
     mandatory = false
-    versionRange = "${curios_version_range}"
+    versionRange = "${ curios_version_range }"
     side = "BOTH"
 
 [[dependencies.${ mod_id }]]
-    modId = "jei"
+    modId = "potionbundles"
     mandatory = false
-    versionRange = "${jei_version_range}"
+    [dependencies.${ mod_id }.custom.mc-publish]
+        modrinth = "potion-bundles"
+        curseforge = "potion-bundles"
+
+[[dependencies.${ mod_id }]]
+    modId = "configured"
+    mandatory = false
+
+[[dependencies.${ mod_id }]]
+    modId = "catalogue"
+    mandatory = false
 
 [[dependencies.${ mod_id }]]
     modId = "forge"
     mandatory = true
-    versionRange = "${forge_version_range}"
+    versionRange = "${ forge_version_range }"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.${ mod_id }]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "${mc_version_range}"
+    versionRange = "${ mc_version_range }"
     ordering = "NONE"
     side = "BOTH"
 
 [modproperties.${ mod_id }]
-    catalogueItemIcon = "${mod_id}:occulus"
+    catalogueItemIcon = "${ mod_id }:occulus"
