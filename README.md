@@ -18,7 +18,7 @@ You can download the latest version of the mod from [CurseForge](https://mc-mods
 | Minecraft Version | Latest Mod Version | Minimum Forge Version | Supported |                             Download                             |
 |:-----------------:|:------------------:|:---------------------:|:---------:|:----------------------------------------------------------------:|
 |      1.18.1       |       0.1.5        |        39.0.66        |     ❌     | [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/3656337) |
-|      1.18.2       |       1.2.2        |        40.1.35        |     ✅     | [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/4212998) |
+|      1.18.2       |       1.2.3        |        40.1.35        |     ✅     | [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/4212998) |
 |      1.19.2       |       1.2.2        |        43.1.13        |     ✅     | [CurseForge](https://mc-mods.cf/ars-magica-legacy/files/4212997) |
 
 
