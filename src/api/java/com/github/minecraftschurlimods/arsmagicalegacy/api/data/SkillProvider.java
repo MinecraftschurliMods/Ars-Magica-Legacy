@@ -1,54 +1,25 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTab;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.ApiStatus.Internal;
+import org.apache.commons.lang3.SerializationException;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
-/**
- * Base class for skill data generators.
- */
-public abstract class SkillProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
-    private final String namespace;
-    private Set<ResourceLocation> data;
+public abstract class SkillProvider extends AbstractDataProvider<SkillProvider.Builder> {
+    private final Set<ResourceLocation> data = new HashSet<>();
 
     protected SkillProvider(String namespace, DataGenerator generator) {
-        this.namespace = namespace;
-        this.generator = generator;
-    }
-
-    protected abstract void createSkills(Consumer<SkillBuilder> consumer);
-
-    @Internal
-    @Override
-    public void run(HashCache pCache) {
-        data = new HashSet<>();
-        createSkills(skill -> {
-            if (!data.add(skill.getId())) throw new IllegalStateException("Duplicate skill " + skill.getId());
-            else {
-                saveSkill(pCache, skill.serialize(), generator.getOutputFolder().resolve("data/" + skill.getId().getNamespace() + "/am_skills/" + skill.getId().getPath() + ".json"));
-            }
-        });
+        super("am_skills", namespace, generator);
     }
 
     @Override
@@ -56,41 +27,188 @@ public abstract class SkillProvider implements DataProvider {
         return "Skills[" + namespace + "]";
     }
 
+    @Override
+    protected void onSave(Builder object) {
+        data.add(object.id);
+    }
+
+    /**
+     * @return The skills generated.
+     */
     public Set<ResourceLocation> getSkills() {
         return Collections.unmodifiableSet(data);
     }
 
     /**
-     * @param name       The skill name.
-     * @param occulusTab The occulus tab to display the skill in.
+     * @param name The skill name.
      * @return A new skill.
      */
-    protected SkillBuilder createSkill(String name, ResourceLocation occulusTab) {
-        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab);
+    protected Builder builder(String name) {
+        return new Builder(new ResourceLocation(namespace, name));
     }
 
-    /**
-     * @param name       The skill name.
-     * @param occulusTab The occulus tab to display the skill in.
-     * @return A new skill.
-     */
-    protected SkillBuilder createSkill(String name, IOcculusTab occulusTab) {
-        return SkillBuilder.create(new ResourceLocation(namespace, name), occulusTab);
-    }
+    public class Builder extends AbstractDataBuilder {
+        private final Set<ResourceLocation> parents = new HashSet<>();
+        private final Map<ResourceLocation, Integer> cost = new HashMap<>();
+        private ResourceLocation occulusTab;
+        private Integer x;
+        private Integer y;
+        private Boolean hidden;
 
-    private static void saveSkill(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
+        public Builder(ResourceLocation id) {
+            super(id);
+        }
+
+        /**
+         * Sets the occulus tab this skill belongs to.
+         *
+         * @param occulusTab The id of the occulus tab to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setOcculusTab(ResourceLocation occulusTab) {
+            this.occulusTab = occulusTab;
+            return this;
+        }
+
+        /**
+         * Sets the occulus tab this skill belongs to.
+         *
+         * @param occulusTab The occulus tab to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setOcculusTab(IOcculusTab occulusTab) {
+            return setOcculusTab(occulusTab.getId());
+        }
+
+        /**
+         * Sets if this skill should be hidden or not. Default behavior is false.
+         *
+         * @param hidden The hidden state to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setHidden(boolean hidden) {
+            this.hidden = hidden;
+            return this;
+        }
+
+        /**
+         * Sets the position this skill should be displayed at in the defined occulus tab.
+         *
+         * @param x The X coordinate.
+         * @param y The Y coordinate.
+         * @return This builder, for chaining.
+         */
+        public Builder setPosition(int x, int y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        /**
+         * Sets that this skill should be hidden.
+         *
+         * @return This builder, for chaining.
+         */
+        public Builder setHidden() {
+            return setHidden(true);
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
+         * @param point  The id of the skill point the skill should cost.
+         * @param amount The amount of skill points the skill should cost.
+         * @return This builder, for chaining.
+         */
+        public Builder addCost(ResourceLocation point, int amount) {
+            cost.compute(point, (key, i) -> i != null ? i + amount : amount);
+            return this;
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
+         * @param point  The skill point the skill should cost.
+         * @param amount The amount of skill points the skill should cost.
+         * @return This builder, for chaining.
+         */
+        public Builder addCost(ISkillPoint point, int amount) {
+            return addCost(point.getId(), amount);
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
+         * @param point The skill point the skill should cost.
+         * @return This builder, for chaining.
+         */
+        public Builder addCost(ResourceLocation point) {
+            return addCost(point, 1);
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
+         * @param point The skill point the skill should cost.
+         * @return This builder, for chaining.
+         */
+        public Builder addCost(ISkillPoint point) {
+            return addCost(point, 1);
+        }
+
+        /**
+         * Adds a parent skill that must be learned first.
+         *
+         * @param parent The id of the parent skill to add.
+         * @return This builder, for chaining.
+         */
+        public Builder addParent(ResourceLocation parent) {
+            parents.add(parent);
+            return this;
+        }
+
+        /**
+         * Adds a parent skill that must be learned first.
+         *
+         * @param parent The parent skill to add.
+         * @return This builder, for chaining.
+         */
+        public Builder addParent(ISkill parent) {
+            return addParent(parent.getId());
+        }
+
+        /**
+         * Adds a parent skill that must be learned first.
+         *
+         * @param parent A builder for the parent skill to add.
+         * @return This builder, for chaining.
+         */
+        public Builder addParent(Builder parent) {
+            return addParent(parent.id);
+        }
+
+        @Override
+        protected JsonObject toJson() {
+            JsonObject json = new JsonObject();
+            if (occulusTab == null) throw new SerializationException("A skill needs an occulus tab!");
+            json.addProperty("occulus_tab", occulusTab.toString());
+            if (x == null || y == null) throw new SerializationException("A skill needs a position!");
+            json.addProperty("x", x);
+            json.addProperty("y", y);
+            if (hidden != null) {
+                json.addProperty("hidden", hidden);
             }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save skill {}", pPath, ioexception);
+            if (!parents.isEmpty()) {
+                JsonArray parents = new JsonArray();
+                this.parents.forEach(id -> parents.add(id.toString()));
+                json.add("parents", parents);
+            }
+            if (!cost.isEmpty()) {
+                JsonObject cost = new JsonObject();
+                this.cost.forEach((id, amount) -> cost.addProperty(id.toString(), amount));
+                json.add("cost", cost);
+            }
+            return json;
         }
     }
 }

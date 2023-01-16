@@ -34,13 +34,14 @@ public class AMDatagen {
             generator.addProvider(new AMLootTableProvider(generator));
             generator.addProvider(new AMRecipeProvider(generator));
             AMTagsProvider.add(generator, existingFileHelper);
+            generator.addProvider(new AMAltarCapMaterialProvider(generator));
             generator.addProvider(new AMAltarStructureMaterialProvider(generator));
             generator.addProvider(new AMObeliskFuelProvider(generator));
             generator.addProvider(new AMOcculusTabProvider(generator));
             generator.addProvider(new AMPrefabSpellProvider(generator, lang));
+            generator.addProvider(new AMRitualProvider(generator));
             generator.addProvider(new AMSpellPartDataProvider(generator));
             generator.addProvider(new AMSpellTransformationProvider(generator));
-            generator.addProvider(new AMRitualProvider(generator));
         }
         generator.addProvider(new AMPatchouliBookProvider(generator, abilityProvider, lang, evt.includeClient(), evt.includeServer()));
         if (evt.includeClient()) {

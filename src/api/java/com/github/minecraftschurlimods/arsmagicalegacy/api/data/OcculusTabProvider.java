@@ -1,52 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.ApiStatus.Internal;
+import org.apache.commons.lang3.SerializationException;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
-
-/**
- * Base class for occulus tab data generators.
- */
-public abstract class OcculusTabProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
-    private final String namespace;
-
+public abstract class OcculusTabProvider extends AbstractDataProvider<OcculusTabProvider.Builder> {
     protected OcculusTabProvider(String namespace, DataGenerator generator) {
-        this.namespace = namespace;
-        this.generator = generator;
-    }
-
-    protected abstract void createOcculusTabs(Consumer<OcculusTabBuilder> consumer);
-
-    @Internal
-    @Override
-    public void run(HashCache pCache) {
-        Set<ResourceLocation> ids = new HashSet<>();
-        createOcculusTabs(consumer -> {
-            if (!ids.add(consumer.getId()))
-                throw new IllegalStateException("Duplicate occulus tab " + consumer.getId());
-            else {
-                save(pCache, consumer.serialize(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/occulus_tabs/" + consumer.getId().getPath() + ".json"));
-            }
-        });
+        super("occulus_tabs", namespace, generator);
     }
 
     @Override
@@ -59,23 +21,83 @@ public abstract class OcculusTabProvider implements DataProvider {
      * @param index The index of the occulus tab.
      * @return A new occulus tab.
      */
-    protected OcculusTabBuilder createOcculusTab(String name, int index) {
-        return OcculusTabBuilder.create(new ResourceLocation(namespace, name)).setIndex(index);
+    protected Builder builder(String name, int index) {
+        return new Builder(new ResourceLocation(namespace, name)).setIndex(index);
     }
 
-    private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save occulus tab {}", pPath, ioexception);
+    public static class Builder extends AbstractDataBuilder {
+        private Integer index;
+        private Integer startX;
+        private Integer startY;
+        private String renderer;
+
+        public Builder(ResourceLocation id) {
+            super(id);
+        }
+
+        /**
+         * Sets the index of the occulus tab.
+         *
+         * @param index The index to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setIndex(int index) {
+            this.index = index;
+            return this;
+        }
+
+        /**
+         * Sets the initial X coordinate of the occulus tab.
+         *
+         * @param startX The initial X coordinate to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setStartX(int startX) {
+            this.startX = startX;
+            return this;
+        }
+
+        /**
+         * Sets the initial Y coordinate of the occulus tab.
+         *
+         * @param startY The initial Y coordinate to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setStartY(int startY) {
+            this.startY = startY;
+            return this;
+        }
+
+        /**
+         * Sets the renderer class of the occulus tab.
+         *
+         * @param renderer The renderer class to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setRenderer(Class<? extends OcculusTabRenderer> renderer) {
+            return setRenderer(renderer.getName());
+        }
+
+        /**
+         * Sets the renderer class of the occulus tab.
+         *
+         * @param renderer The renderer class to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setRenderer(String renderer) {
+            this.renderer = renderer;
+            return this;
+        }
+
+        @Override
+        protected JsonObject toJson() {
+            JsonObject json = new JsonObject();
+            if (index == null) throw new SerializationException("An occulus tab needs an index!");
+            json.addProperty("index", this.index);
+            json.addProperty("renderer", this.renderer);
+            json.addProperty("start_x", this.startX);
+            json.addProperty("start_y", this.startY);
+            return json;
         }
     }
 }

@@ -14,8 +14,6 @@ import net.minecraft.data.HashCache;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,7 +23,6 @@ import java.util.function.Consumer;
 
 class AMAdvancementProvider extends AdvancementProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
     private final DataGenerator generator;
     private final ImmutableList<Consumer<Consumer<Advancement>>> tabs;
 
@@ -39,19 +36,15 @@ class AMAdvancementProvider extends AdvancementProvider {
     public void run(HashCache pCache) {
         Path path = generator.getOutputFolder();
         Set<ResourceLocation> set = new HashSet<>();
-        Consumer<Advancement> consumer = a -> {
-            if (!set.add(a.getId())) throw new IllegalStateException("Duplicate advancement " + a.getId());
-            else {
-                Path path1 = path.resolve("data/" + a.getId().getNamespace() + "/advancements/" + a.getId().getPath() + ".json");
-                try {
-                    DataProvider.save(GSON, pCache, a.deconstruct().serializeToJson(), path1);
-                } catch (IOException e) {
-                    LOGGER.error("Couldn't save advancement {}", path1, e);
-                }
-            }
-        };
         for (Consumer<Consumer<Advancement>> c : tabs) {
-            c.accept(consumer);
+            c.accept(consumer -> {
+                if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate advancement " + consumer.getId());
+                try {
+                    DataProvider.save(GSON, pCache, consumer.deconstruct().serializeToJson(), path.resolve("data/" + consumer.getId().getNamespace() + "/advancements/" + consumer.getId().getPath() + ".json"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 
