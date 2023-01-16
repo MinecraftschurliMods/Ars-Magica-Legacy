@@ -26,6 +26,7 @@ Continuation of Ars Magica 2 by Mithion
 [[dependencies.${ mod_id }]]
     modId = "theoneprobe"
     mandatory = false
+    versionRange = "*"
     [dependencies.${ mod_id }.custom.mc-publish]
         curseforge = "the-one-probe"
 
@@ -55,6 +56,7 @@ Continuation of Ars Magica 2 by Mithion
 [[dependencies.${ mod_id }]]
     modId = "potionbundles"
     mandatory = false
+    versionRange = "*"
     [dependencies.${ mod_id }.custom.mc-publish]
         modrinth = "potion-bundles"
         curseforge = "potion-bundles"
@@ -62,10 +64,12 @@ Continuation of Ars Magica 2 by Mithion
 [[dependencies.${ mod_id }]]
     modId = "configured"
     mandatory = false
+    versionRange = "*"
 
 [[dependencies.${ mod_id }]]
     modId = "catalogue"
     mandatory = false
+    versionRange = "*"
 
 [[dependencies.${ mod_id }]]
     modId = "forge"

@@ -162,12 +162,15 @@ repositories {
         }
     }
     maven {
-        name = 'ModMaven'
-        url = 'https://modmaven.k-4u.nl'
-    }
-    maven {
         name = 'GeckoLib Maven'
         url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
+        }
+    }
+    maven {
+        name = 'ModMaven'
+        url = 'https://modmaven.k-4u.nl'
     }
 }
 
@@ -196,15 +199,13 @@ dependencies {
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
-/*
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
             println 'Using github packages'
         }
         runtimeMod fg.deobf("com.github.ichhabehunger54:potionbundles:${project.potionbundles_version}")
-        runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
+        //runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-${project.mc_version}:${project.controlling_version}")
     }
-*/
 
     // add internal libraries
     include fg.deobf('com.github.minecraftschurli:simplenetlib:1.18.2-1.0-SNAPSHOT') {
@@ -338,14 +339,16 @@ tasks.jarJar.configure {
     from sourceSets.api.output
 }
 
-task apiJar(type: Jar, dependsOn: apiClasses) {
+tasks.register('apiJar', Jar) {
+    dependsOn(apiClasses)
     archiveClassifier.set('api')
     from sourceSets.api.allSource
     from sourceSets.api.output
     finalizedBy('reobfJar')
 }
 
-task deobfJar(type: Jar, dependsOn: classes) {
+tasks.register('deobfJar', Jar) {
+    dependsOn(classes)
     archiveClassifier.set('deobf')
     from sourceSets.main.output
     from sourceSets.api.output
@@ -393,12 +396,12 @@ reobf {
     jar { classpath.from(sourceSets.main.compileClasspath) }
 }
 
-task reobf {
+tasks.register('reobf') {
     dependsOn reobfJar
     dependsOn reobfApiJar
 }
 
-task setupGithubActions() {
+tasks.register('setupGithubActions') {
     doLast {
         println "##[set-output name=modid;]${project.mod_id}"
         println "##[set-output name=version;]${project.version}"
@@ -413,7 +416,7 @@ idea {
     }
 }
 
-tasks.withType(GenerateModuleMetadata) {
+tasks.withType(GenerateModuleMetadata).configureEach {
     enabled = false
 }
 
