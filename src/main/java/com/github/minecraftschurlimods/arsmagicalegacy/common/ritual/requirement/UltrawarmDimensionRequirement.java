@@ -1,12 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-public record UltrawarmDimensionRequirement() implements RitualRequirement {
+public record UltrawarmDimensionRequirement() implements IRitualRequirement {
     public static final Codec<UltrawarmDimensionRequirement> CODEC = Codec.unit(UltrawarmDimensionRequirement::new);
 
     @Override
@@ -15,7 +15,7 @@ public record UltrawarmDimensionRequirement() implements RitualRequirement {
     }
 
     @Override
-    public Codec<? extends RitualRequirement> codec() {
+    public Codec<? extends IRitualRequirement> codec() {
         return CODEC;
     }
 }

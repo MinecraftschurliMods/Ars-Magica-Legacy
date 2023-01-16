@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualEffect;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
 
-public record EntitySpawnRitualEffect(EntityType<?> entityType, Optional<CompoundTag> spawnData, Optional<Component> customName, boolean usePlayer) implements RitualEffect {
+public record EntitySpawnRitualEffect(EntityType<?> entityType, Optional<CompoundTag> spawnData, Optional<Component> customName, boolean usePlayer) implements IRitualEffect {
     public static final Codec<EntitySpawnRitualEffect> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             ForgeRegistries.ENTITIES.getCodec().fieldOf("entity_type").forGetter(EntitySpawnRitualEffect::entityType),
             CompoundTag.CODEC.optionalFieldOf("spawn_data").forGetter(EntitySpawnRitualEffect::spawnData),
@@ -49,7 +49,7 @@ public record EntitySpawnRitualEffect(EntityType<?> entityType, Optional<Compoun
     }
 
     @Override
-    public Codec<? extends RitualEffect> codec() {
+    public Codec<? extends IRitualEffect> codec() {
         return CODEC;
     }
 }

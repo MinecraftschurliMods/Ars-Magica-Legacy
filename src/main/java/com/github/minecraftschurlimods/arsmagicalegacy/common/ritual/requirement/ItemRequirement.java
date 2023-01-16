@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public record ItemRequirement(List<Ingredient> ingredients, int radius) implements RitualRequirement {
+public record ItemRequirement(List<Ingredient> ingredients, int radius) implements IRitualRequirement {
     public static final Codec<ItemRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.INGREDIENT.listOf().fieldOf("ingredients").forGetter(ItemRequirement::ingredients),
             ExtraCodecs.NON_NEGATIVE_INT.fieldOf("radius").forGetter(ItemRequirement::radius)
@@ -46,7 +46,7 @@ public record ItemRequirement(List<Ingredient> ingredients, int radius) implemen
     }
 
     @Override
-    public Codec<? extends RitualRequirement> codec() {
+    public Codec<? extends IRitualRequirement> codec() {
         return CODEC;
     }
 }

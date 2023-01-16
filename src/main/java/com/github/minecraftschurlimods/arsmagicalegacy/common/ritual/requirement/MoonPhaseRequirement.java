@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualRequirement {
+public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements IRitualRequirement {
     public static final Codec<MoonPhaseRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("phase").forGetter(MoonPhaseRequirement::phase)).apply(inst, MoonPhaseRequirement::new));
 
     public MoonPhaseRequirement(int phase) {
@@ -17,7 +17,7 @@ public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualReq
     }
 
     @Override
-    public Codec<? extends RitualRequirement> codec() {
+    public Codec<? extends IRitualRequirement> codec() {
         return CODEC;
     }
 

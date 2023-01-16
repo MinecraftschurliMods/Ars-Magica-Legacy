@@ -1,14 +1,12 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual;
+package com.github.minecraftschurlimods.arsmagicalegacy.api.ritual;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public interface Context {
-    Context EMPTY = new Context() {
+public interface IContext {
+    IContext EMPTY = new IContext() {
         @Nullable
-        @Contract("_, _ -> null")
         @Override
         public <T> T get(final String name, final Class<T> clazz) {
             return null;
@@ -17,7 +15,7 @@ public interface Context {
 
     @Nullable <T> T get(String name, Class<T> clazz);
 
-    record MapContext(Map<String, Object> data) implements Context {
+    record MapContext(Map<String, Object> data) implements IContext {
         @Override
         public <T> T get(String name, Class<T> clazz) {
             if (data.containsKey(name)) {

@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IContext;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -20,7 +20,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 import java.util.Map;
 
-public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
+public record EntitySummonTrigger(EntityPredicate predicate) implements IRitualTrigger {
     public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
 
     public EntitySummonTrigger(EntityType<?> entityType) {
@@ -32,13 +32,13 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public void register(Ritual ritual) {
+    public void register(final Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent.SpecialSpawn event) -> {// TODO: find a better event to do this
             if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
             LivingEntity entity = event.getEntityLiving();
             if (!predicate.matches(serverLevel, Vec3.atCenterOf(entity.blockPosition()), entity)) return;
             for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(entity.position(), 5, 5, 5))) {
-                if (ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", entity)))) {
+                if (ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new IContext.MapContext(Map.of("entity", entity)))) {
                     return;
                 }
             }
@@ -46,7 +46,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public boolean trigger(Player player, ServerLevel level, BlockPos pos, Context ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final IContext ctx) {
         LivingEntity entity = ctx.get("entity", LivingEntity.class);
         if (entity == null) return false;
         entity.kill();
@@ -54,7 +54,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
     }
 
     @Override
-    public Codec<? extends RitualTrigger> codec() {
+    public Codec<? extends IRitualTrigger> codec() {
         return CODEC;
     }
 }
