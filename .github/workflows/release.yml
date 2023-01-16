@@ -34,6 +34,8 @@ jobs:
         uses: Minecraftschurli/mc-publish@master
         with:
           java: ${{ matrix.version }}
+          files: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
+          github-files: build/libs/*.jar
           files-primary: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
           files-secondary: build/libs/*-@(all|api|deobf|slim|sources|javadoc).jar
           changelog-file: changelog.md
