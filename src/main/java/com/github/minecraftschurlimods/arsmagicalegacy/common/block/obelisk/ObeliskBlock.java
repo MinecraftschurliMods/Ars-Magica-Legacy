@@ -81,29 +81,35 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        Block block = pState.getBlock();
+        if (block == pNewState.getBlock() && pState.getValue(PART) == pNewState.getValue(PART)) return;
+        BlockPos above1 = pPos.above();
+        BlockPos above2 = pPos.above(2);
+        BlockPos below1 = pPos.below();
+        BlockPos below2 = pPos.below(2);
         switch (pState.getValue(PART)) {
             case LOWER -> {
-                if (pLevel.getBlockState(pPos.above()).getBlock() == this) {
-                    pLevel.removeBlock(pPos.above(), false);
+                if (pLevel.getBlockState(above1).getBlock() == block) {
+                    pLevel.removeBlock(above1, false);
                 }
-                if (pLevel.getBlockState(pPos.above(2)).getBlock() == this) {
-                    pLevel.removeBlock(pPos.above(2), false);
+                if (pLevel.getBlockState(above2).getBlock() == block) {
+                    pLevel.removeBlock(above2, false);
                 }
             }
             case MIDDLE -> {
-                if (pLevel.getBlockState(pPos.below()).getBlock() == this) {
-                    pLevel.removeBlock(pPos.below(), false);
+                if (pLevel.getBlockState(below1).getBlock() == block) {
+                    pLevel.removeBlock(below1, false);
                 }
-                if (pLevel.getBlockState(pPos.above()).getBlock() == this) {
-                    pLevel.removeBlock(pPos.above(), false);
+                if (pLevel.getBlockState(above1).getBlock() == block) {
+                    pLevel.removeBlock(above1, false);
                 }
             }
             case UPPER -> {
-                if (pLevel.getBlockState(pPos.below()).getBlock() == this) {
-                    pLevel.removeBlock(pPos.below(), false);
+                if (pLevel.getBlockState(below1).getBlock() == block) {
+                    pLevel.removeBlock(below1, false);
                 }
-                if (pLevel.getBlockState(pPos.below(2)).getBlock() == this) {
-                    pLevel.removeBlock(pPos.below(2), false);
+                if (pLevel.getBlockState(below2).getBlock() == block) {
+                    pLevel.removeBlock(below2, false);
                 }
             }
         }
@@ -139,12 +145,11 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
     }
 
     /**
-     * @param state The state of the core block.
      * @param world The world this block is in.
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
-    public int getTier(BlockState state, Level world, BlockPos pos) {
+    public int getTier(Level world, BlockPos pos) {
         int tier = 0;
         if (OBELISK_CHALK.test(world, pos)) {
             tier = 1;
