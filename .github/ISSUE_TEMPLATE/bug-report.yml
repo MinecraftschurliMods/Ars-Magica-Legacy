@@ -59,6 +59,7 @@ body:
         - 1.18.2-1.2.1
         - 1.18.2-1.2.2
         - 1.18.2-1.2.3
+        - 1.18.2-1.2.4
     validations:
       required: true
   - type: input
