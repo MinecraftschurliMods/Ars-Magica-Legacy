@@ -32,7 +32,7 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
         if (blockState.getBlock() instanceof ObeliskBlock obeliskBlock) {
             pos = pos.below(blockState.getValue(ObeliskBlock.PART).ordinal());
             blockState = level.getBlockState(pos);
-            tier = obeliskBlock.getTier(blockState, level, pos);
+            tier = obeliskBlock.getTier(level, pos);
         } else if (blockState.getBlock() instanceof CelestialPrismBlock celestialPrismBlock) {
             if (blockState.getValue(CelestialPrismBlock.HALF) != DoubleBlockHalf.LOWER) {
                 pos = pos.below();
