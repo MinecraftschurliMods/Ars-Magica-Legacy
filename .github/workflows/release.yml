@@ -31,6 +31,7 @@ jobs:
         with:
           arguments: setupGithubActions build publish
       - name: Upload
+        id: upload
         uses: Minecraftschurli/mc-publish@master
         with:
           java: ${{ matrix.version }}
@@ -42,3 +43,24 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
+      - name: Read summary
+        id: summary
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: summary.txt
+      - name: Post Release
+        uses: Minecraftschurli/mc-post-release@master
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          webhook-name: "Ars Magica: Legacy"
+          webhook-avatar: "https://raw.githubusercontent.com/MinecraftschurliMods/Ars-Magica-Legacy/version/1.19.x/src/main/resources/logo_small.png"
+          webhook-title: "Version {version} of Ars Magica: Legacy released!"
+          webhook-message: "${{ steps.summary.outputs.content }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          readme-template: ".github/README_TEMPLATE.md"
+          version: ${{ steps.build.outputs.version }}
+          exclude-links-webhook: "GitHub"
+          published-to: ${{ steps.upload.outputs.published-to }}
+          github-link: ${{ steps.upload.outputs.github-link }}
+          modrinth-link: ${{ steps.upload.outputs.modrinth-link }}
+          curseforge-link: ${{ steps.upload.outputs.curseforge-link }}
