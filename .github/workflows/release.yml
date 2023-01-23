@@ -34,6 +34,7 @@ jobs:
         id: upload
         uses: Minecraftschurli/mc-publish@master
         with:
+          version-resolver: exact
           java: ${{ matrix.version }}
           files: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
           github-files-primary: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
