@@ -27,7 +27,7 @@ jobs:
         id: build
         env:
           MAVEN_URL: ${{ secrets.MAVEN_URL }}
-          MAVEN_USER: ${{ secrets.MAVEN_USER }}
+          MAVEN_USER: ${{ env.MAVEN_USER }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           RELEASE_TYPE: snapshot
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
