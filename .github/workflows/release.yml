@@ -49,7 +49,7 @@ jobs:
         with:
           path: summary.txt
       - name: Post Release
-        uses: Minecraftschurli/mc-post-release@master
+        uses: Minecraftschurli/post-release-action@master
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           webhook-name: "Ars Magica: Legacy"
