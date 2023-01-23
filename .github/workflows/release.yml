@@ -43,6 +43,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
+    outputs:
+      version: ${{ steps.build.outputs.version }}
+      published-to: ${{ steps.upload.outputs.published-to }}
+      github-link: ${{ steps.upload.outputs.github-link }}
+      modrinth-link: ${{ steps.upload.outputs.modrinth-link }}
+      curseforge-link: ${{ steps.upload.outputs.curseforge-link }}
+  post-release:
+    needs: [ release ]
+    runs-on: ubuntu-latest
+    steps:
       - name: Read summary
         id: summary
         uses: juliangruber/read-file-action@v1
@@ -58,9 +68,9 @@ jobs:
           webhook-message: "${{ steps.summary.outputs.content }}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           readme-template: ".github/README_TEMPLATE.md"
-          version: ${{ steps.build.outputs.version }}
+          version: ${{ needs.release.outputs.version }}
           exclude-links-webhook: "GitHub"
-          published-to: ${{ steps.upload.outputs.published-to }}
-          github-link: ${{ steps.upload.outputs.github-link }}
-          modrinth-link: ${{ steps.upload.outputs.modrinth-link }}
-          curseforge-link: ${{ steps.upload.outputs.curseforge-link }}
+          published-to: ${{ needs.release.outputs.published-to }}
+          github-link: ${{ needs.release.outputs.github-link }}
+          modrinth-link: ${{ needs.release.outputs.modrinth-link }}
+          curseforge-link: ${{ needs.release.outputs.curseforge-link }}
