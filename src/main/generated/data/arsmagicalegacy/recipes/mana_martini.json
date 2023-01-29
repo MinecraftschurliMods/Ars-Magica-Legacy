@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "forge:rods/wooden"
+      "tag": "forge:dusts/vinteum"
     },
     {
-      "tag": "forge:crops/potato"
+      "item": "minecraft:bamboo"
     },
     {
       "item": "minecraft:ice"
-    },
-    {
-      "item": "minecraft:sugar"
     },
     {
       "type": "forge:nbt",

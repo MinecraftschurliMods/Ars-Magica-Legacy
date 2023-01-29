@@ -6,12 +6,14 @@
     ]
   },
   "criteria": {
-    "has_leather": {
+    "has_rabbit_hide": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:leather"
+            "items": [
+              "minecraft:rabbit_hide"
+            ]
           }
         ]
       }
@@ -25,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_leather",
+      "has_rabbit_hide",
       "has_the_recipe"
     ]
   ]

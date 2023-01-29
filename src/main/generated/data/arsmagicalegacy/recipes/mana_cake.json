@@ -1,21 +1,28 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "tag": "forge:crops/wheat"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AC",
+    "SE",
+    "MM"
+  ],
+  "key": {
+    "A": {
       "item": "arsmagicalegacy:aum"
     },
-    {
+    "C": {
       "item": "arsmagicalegacy:cerublossom"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    },
+    "E": {
+      "tag": "forge:eggs"
+    },
+    "M": {
+      "item": "minecraft:milk_bucket"
     }
-  ],
+  },
   "result": {
-    "item": "arsmagicalegacy:mana_cake",
-    "count": 3
+    "item": "arsmagicalegacy:mana_cake"
   }
 }
