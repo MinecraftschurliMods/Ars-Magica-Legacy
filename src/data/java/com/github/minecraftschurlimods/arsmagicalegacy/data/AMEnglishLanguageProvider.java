@@ -183,6 +183,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         entityIdTranslation(AMEntities.WAVE);
         entityIdTranslation(AMEntities.WALL);
         entityIdTranslation(AMEntities.ZONE);
+        entityIdTranslation(AMEntities.BLIZZARD);
+        entityIdTranslation(AMEntities.FIRE_RAIN);
+        entityIdTranslation(AMEntities.FALLING_STAR);
         entityIdTranslation(AMEntities.WATER_GUARDIAN);
         entityIdTranslation(AMEntities.FIRE_GUARDIAN);
         entityIdTranslation(AMEntities.EARTH_GUARDIAN);
@@ -267,7 +270,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.ENDER_INTERVENTION.getId(), "Ender Intervention", "Well, I didn't know what hell looked like...", "components", "You have mastered teleportation magic, to the level at which you can transcend interdimensional barriers, and can enter the end from anywhere, except the nether.");
         skillTranslation(AMSpellParts.ENTANGLE.getId(), "Entangle", "Stop right there.", "components", "At your command, vines can burst from the ground and ensnare your target, holding them completely immobile.");
         skillTranslation(AMSpellParts.EXPLOSION.getId(), "Explosion", "Creeper? Aww Man!", "components", "You can cause an explosion, destroying and dropping blocks around its center.");
-        skillTranslation(AMSpellParts.FALLING_STAR.getId(), "[WIP] Falling Star", "Shiny! Wait, is it falling towards me?", "components", "You can call down a star from the skies and cause it to strike all entities within the blast radius. It will harm friendly targets but not the caster.$(br2)There is a short delay between casting the spell and the impact. This spell will not work underground (the star will fall onto the surface).");
+        skillTranslation(AMSpellParts.FALLING_STAR.getId(), "Falling Star", "Shiny! Wait, is it falling towards me?", "components", "You can call down a star from the skies and cause it to strike all entities within the blast radius. It will harm friendly targets but not the caster, and pierce through walls.$(br2)There is a short delay between casting the spell and the impact. This spell will not work underground (the star will fall onto the surface).");
         skillTranslation(AMSpellParts.FIRE_DAMAGE.getId(), "Fire Damage", "You shall burn!", "components", "With a word, you can release your will, and fire will erupt from out in front of you, searing everything in its path. Fire damage is hard hitting, but many nether mobs are immune to its effects.");
         skillTranslation(AMSpellParts.FIRE_RAIN.getId(), "Fire Rain", "Well, at least I'm not going to catch a cold...", "components", "You have learned to summon a terrible firestorm, which will do large amounts of damage to all entities in its radius. Firestorm has a built-in $(l:shapes/aoe)AoE$() to it.$(br2)Firestorm does not ignite the ground and will never harm its caster.");
         skillTranslation(AMSpellParts.FLIGHT.getId(), "Flight", "I'd rather use a plane.", "components", "With a word, you can rise into the air.");
@@ -355,6 +358,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         configTranslation("duration", "Duration of effect-based components, in ticks.");
+        damageSourceTranslation("falling_star", "%1$s was obliterated by a falling star");
         damageSourceTranslation("nature_scythe", "%1$s was ripped apart by %2$s's scythe");
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
         damageSourceTranslation("thrown_rock", "%1$s was crushed under a rock by %2$s");

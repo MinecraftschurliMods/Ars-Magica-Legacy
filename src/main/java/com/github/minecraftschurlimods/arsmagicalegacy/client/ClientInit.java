@@ -240,6 +240,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.BLIZZARD.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_RAIN.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.FALLING_STAR.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("water_guardian")));
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("fire_guardian")));
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new EarthGuardianModel()));
