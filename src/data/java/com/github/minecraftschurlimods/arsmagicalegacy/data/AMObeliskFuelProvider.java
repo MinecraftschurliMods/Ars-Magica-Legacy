@@ -5,14 +5,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.ObeliskFuelProvider;
 import net.minecraft.data.DataGenerator;
 
+import java.util.function.Consumer;
+
 class AMObeliskFuelProvider extends ObeliskFuelProvider {
     AMObeliskFuelProvider(DataGenerator generator) {
         super(ArsMagicaAPI.MOD_ID, generator);
     }
 
-    protected void createFuels() {
-        forTag("vinteum_dust", AMTags.Items.DUSTS_VINTEUM, 200, 1);
-        forTag("vinteum_block", AMTags.Items.STORAGE_BLOCKS_VINTEUM, 900, 2);
+    protected void generate(Consumer<Builder> consumer) {
+        builder("vinteum_dust", AMTags.Items.DUSTS_VINTEUM, 200, 1).build(consumer);
+        builder("vinteum_block", AMTags.Items.STORAGE_BLOCKS_VINTEUM, 900, 2).build(consumer);
         // TODO essence bucket
     }
 }

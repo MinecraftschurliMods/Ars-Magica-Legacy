@@ -16,7 +16,7 @@ import java.util.Set;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds.ARCANE_GUARDIAN_ATTACK;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD;
 
-public class AMSoundDefinitionsProvider extends SoundDefinitionsProvider {
+class AMSoundDefinitionsProvider extends SoundDefinitionsProvider {
     private final Set<ResourceLocation> sounds = new HashSet<>();
 
     AMSoundDefinitionsProvider(DataGenerator generator, ExistingFileHelper helper) {
@@ -27,28 +27,28 @@ public class AMSoundDefinitionsProvider extends SoundDefinitionsProvider {
     public void registerSounds() {
         sound(ARCANE_GUARDIAN_ATTACK, 5);
         sound(LIGHTNING_GUARDIAN_LIGHTNING_ROD, 3);
-        AMRegistries.SOUND_EVENTS.getEntries().forEach(this::singleSound);
+        AMRegistries.SOUND_EVENTS.getEntries().forEach(this::sound);
     }
 
-    private void sound(RegistryObject<SoundEvent> supplier, int sounds) {
-        if (sounds <= 0) return;
-        ResourceLocation location = supplier.getId();
-        if (this.sounds.contains(location)) return;
-        this.sounds.add(location);
+    private void sound(RegistryObject<SoundEvent> sound, int count) {
+        if (count <= 0) return;
+        ResourceLocation location = sound.getId();
+        if (sounds.contains(location)) return;
+        sounds.add(location);
         String subtitle = "subtitle." + location.getNamespace() + "." + location.getPath();
-        String sound = location.toString().replace('.', '/');
-        if (sounds == 1) {
-            add(supplier, definition().with(sound(sound)).subtitle(subtitle));
+        String path = location.toString().replace('.', '/');
+        if (count == 1) {
+            add(sound, definition().with(sound(path)).subtitle(subtitle));
         } else {
             SoundDefinition def = definition();
-            for (int value = 1; value <= sounds; value++) {
-                def.with(sound(sound + "_" + value));
+            for (int value = 1; value <= count; value++) {
+                def.with(sound(path + "_" + value));
             }
-            add(supplier, def.subtitle(subtitle));
+            add(sound, def.subtitle(subtitle));
         }
     }
 
-    private void singleSound(RegistryObject<SoundEvent> supplier) {
-        sound(supplier, 1);
+    private void sound(RegistryObject<SoundEvent> sound) {
+        sound(sound, 1);
     }
 }

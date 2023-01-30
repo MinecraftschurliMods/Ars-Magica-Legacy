@@ -1,64 +1,25 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ability.IAbility;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.ApiStatus.Internal;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.apache.commons.lang3.SerializationException;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Consumer;
 
-public abstract class AbilityProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
-    private final String namespace;
+public abstract class AbilityProvider extends AbstractDataProvider<AbilityProvider.Builder> {
     private final Multimap<ResourceLocation, ResourceLocation> abilitiesByAffinity = HashMultimap.create();
 
     protected AbilityProvider(String namespace, DataGenerator generator) {
-        this.namespace = namespace;
-        this.generator = generator;
-    }
-
-    /**
-     * Get the abilities associated with the given affinity.
-     *
-     * @param affinity The affinity for which to get the abilities.
-     * @return The abilities for the given affinity.
-     */
-    public Collection<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
-        return Collections.unmodifiableCollection(abilitiesByAffinity.get(affinity));
-    }
-
-    protected abstract void createAbilities(Consumer<AbilityBuilder> consumer);
-
-    @Internal
-    @Override
-    public void run(HashCache pCache) {
-        Set<ResourceLocation> ids = new HashSet<>();
-        createAbilities(consumer -> {
-            if (!ids.add(consumer.getId())) throw new IllegalStateException("Duplicate ability " + consumer.getId());
-            abilitiesByAffinity.put(consumer.getAffinity(), consumer.getId());
-            save(pCache, consumer.serialize(), generator.getOutputFolder().resolve("data/" + consumer.getId().getNamespace() + "/affinity_abilities/" + consumer.getId().getPath() + ".json"));
-        });
+        super("affinity_abilities", namespace, generator);
     }
 
     @Override
@@ -66,14 +27,19 @@ public abstract class AbilityProvider implements DataProvider {
         return "Abilities[" + namespace + "]";
     }
 
+    @Override
+    protected void onSave(Builder object) {
+        abilitiesByAffinity.put(object.getAffinity(), object.id);
+    }
+
     /**
-     * @param ability  The id of the ability.
-     * @param affinity The id of the ability's affinity.
-     * @param bounds   The ability's bounds.
-     * @return A new ability.
+     * Get the abilities generated associated with the given affinity.
+     *
+     * @param affinity The affinity for which to get the abilities.
+     * @return The abilities generated for the given affinity.
      */
-    protected AbilityBuilder createAbility(ResourceLocation ability, ResourceLocation affinity, MinMaxBounds.Doubles bounds) {
-        return AbilityBuilder.create(ability).setAffinity(affinity).setBounds(bounds);
+    public Collection<ResourceLocation> getAbilitiesForAffinity(ResourceLocation affinity) {
+        return Collections.unmodifiableCollection(abilitiesByAffinity.get(affinity));
     }
 
     /**
@@ -82,23 +48,72 @@ public abstract class AbilityProvider implements DataProvider {
      * @param bounds   The ability's bounds.
      * @return A new ability.
      */
-    protected AbilityBuilder createAbility(ResourceLocation ability, IAffinity affinity, MinMaxBounds.Doubles bounds) {
-        return AbilityBuilder.create(ability).setAffinity(affinity.getId()).setBounds(bounds);
+    protected Builder builder(IAbility ability, IAffinity affinity, MinMaxBounds.Doubles bounds) {
+        return new Builder(ability.getId()).setAffinity(affinity.getId()).setBounds(bounds);
     }
 
-    private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save ability {}", pPath, ioexception);
+    protected static class Builder extends AbstractDataBuilder<Builder> {
+        private ResourceLocation affinity;
+        private MinMaxBounds.Doubles bounds;
+
+        public Builder(ResourceLocation id) {
+            super(id);
+        }
+
+        /**
+         * @return The affinity for this ability.
+         */
+        public ResourceLocation getAffinity() {
+            if (affinity == null) throw new SerializationException("An ability needs an affinity!");
+            return affinity;
+        }
+
+        /**
+         * Sets the affinity for this ability.
+         *
+         * @param affinity The id of the affinity to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setAffinity(ResourceLocation affinity) {
+            this.affinity = affinity;
+            return this;
+        }
+
+        /**
+         * Sets the affinity for this ability.
+         *
+         * @param affinity The affinity to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setAffinity(ForgeRegistryEntry<IAbility> affinity) {
+            return setAffinity(affinity.getRegistryName());
+        }
+
+        /**
+         * @return The bounds for this ability.
+         */
+        public MinMaxBounds.Doubles getBounds() {
+            if (bounds == null) throw new SerializationException("An ability needs bounds!");
+            return bounds;
+        }
+
+        /**
+         * Sets the bounds for this ability.
+         *
+         * @param bounds The bounds to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setBounds(MinMaxBounds.Doubles bounds) {
+            this.bounds = bounds;
+            return this;
+        }
+
+        @Override
+        protected JsonObject toJson() {
+            JsonObject json = new JsonObject();
+            json.addProperty("affinity", getAffinity().toString());
+            json.add("bounds", getBounds().serializeToJson());
+            return json;
         }
     }
 }

@@ -689,6 +689,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPointItem The skill point item to add the translation for.
      * @param skillPoint     The skill point to generate the translation from.
      */
+    @SuppressWarnings("SameParameterValue")
     private void skillPointItemIdTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends ISkillPoint> skillPoint) {
         skillPointItemIdTranslation(skillPointItem.getId(), skillPoint.getId());
     }
