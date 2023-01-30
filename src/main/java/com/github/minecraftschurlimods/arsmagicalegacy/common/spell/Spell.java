@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
@@ -266,12 +267,12 @@ public final class Spell implements ISpell {
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .toList();
         List<ISpellIngredient> ingredients = new ArrayList<>();
-        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.BLANK_RUNE.get()), 1)); // TODO make datadriven
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.SPELLCRAFTING_START), 1));
         for (ISpellPartData data : iSpellPartData) {
             if (data == null) return List.of();
             ingredients.addAll(data.recipe());
         }
-        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_PARCHMENT.get()), 1)); // TODO make datadriven
+        ingredients.add(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.SPELLCRAFTING_END), 1));
         return ingredients;
     }
 
