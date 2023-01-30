@@ -25,7 +25,7 @@ public abstract class OcculusTabProvider extends AbstractDataProvider<OcculusTab
         return new Builder(new ResourceLocation(namespace, name)).setIndex(index);
     }
 
-    public static class Builder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private Integer index;
         private Integer startX;
         private Integer startY;

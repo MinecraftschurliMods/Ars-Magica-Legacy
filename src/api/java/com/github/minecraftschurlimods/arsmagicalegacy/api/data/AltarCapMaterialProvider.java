@@ -29,7 +29,7 @@ public abstract class AltarCapMaterialProvider extends AbstractDataProvider<Alta
         return new Builder(new ResourceLocation(namespace, name)).setBlock(block).setPower(power);
     }
 
-    protected static class Builder extends AbstractDataBuilder {
+    protected static class Builder extends AbstractDataBuilder<Builder> {
         private Block block;
         private int power;
 

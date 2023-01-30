@@ -47,7 +47,7 @@ public abstract class SkillProvider extends AbstractDataProvider<SkillProvider.B
         return new Builder(new ResourceLocation(namespace, name));
     }
 
-    public class Builder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private final Set<ResourceLocation> parents = new HashSet<>();
         private final Map<ResourceLocation, Integer> cost = new HashMap<>();
         private ResourceLocation occulusTab;

@@ -56,7 +56,7 @@ public abstract class PrefabSpellProvider extends AbstractDataProvider<PrefabSpe
         return new TranslatableComponent(key);
     }
 
-    public static class Builder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private Component name;
         private ResourceLocation icon;
         private ISpell spell;

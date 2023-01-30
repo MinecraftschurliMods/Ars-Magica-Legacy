@@ -68,16 +68,6 @@ public abstract class AbstractDataProvider<T extends AbstractDataBuilder> implem
     public abstract String getName();
 
     /**
-     * Adds a new builder to the provider.
-     *
-     * @param consumer The consumer provided by {@link AbstractDataProvider#generate}.
-     * @param builder  The builder to add.
-     */
-    public void add(Consumer<T> consumer, T builder) {
-        consumer.accept(builder);
-    }
-
-    /**
      * Override this method if you want additional custom behavior when a datagenned object is saved to disk.
      *
      * @param object The object that will be saved to disk.

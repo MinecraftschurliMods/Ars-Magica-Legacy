@@ -47,7 +47,7 @@ public abstract class ObeliskFuelProvider extends AbstractDataProvider<ObeliskFu
         return new Builder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurnTime(burnTime).setEtheriumPerTick(etheriumPerTick);
     }
 
-    public static class Builder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private Ingredient ingredient;
         private int burnTime;
         private int etheriumPerTick;

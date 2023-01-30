@@ -14,9 +14,9 @@ class AMOcculusTabProvider extends OcculusTabProvider {
 
     @Override
     protected void generate(Consumer<Builder> consumer) {
-        add(consumer, builder("offense", 0).setStartX(226).setStartY(46));
-        add(consumer, builder("defense", 1).setStartX(181).setStartY(46));
-        add(consumer, builder("utility", 2).setStartX(136).setStartY(46));
-        add(consumer, builder("affinity", 3).setRenderer(OcculusAffinityTabRenderer.class));
+        builder("offense", 0).setStartX(226).setStartY(46).build(consumer);
+        builder("defense", 1).setStartX(181).setStartY(46).build(consumer);
+        builder("utility", 2).setStartX(136).setStartY(46).build(consumer);
+        builder("affinity", 3).setRenderer(OcculusAffinityTabRenderer.class).build(consumer);
     }
 }

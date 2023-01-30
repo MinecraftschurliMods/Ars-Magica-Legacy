@@ -31,7 +31,7 @@ public abstract class AltarStructureMaterialProvider extends AbstractDataProvide
         return new Builder(new ResourceLocation(namespace, name)).setBlock(block).setStairBlock(stairBlock).setPower(power);
     }
 
-    protected static class Builder extends AbstractDataBuilder {
+    protected static class Builder extends AbstractDataBuilder<Builder> {
         private Block block;
         private StairBlock stairBlock;
         private int power;

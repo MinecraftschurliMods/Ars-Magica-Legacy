@@ -13,8 +13,8 @@ class AMObeliskFuelProvider extends ObeliskFuelProvider {
     }
 
     protected void generate(Consumer<Builder> consumer) {
-        add(consumer, builder("vinteum_dust", AMTags.Items.DUSTS_VINTEUM, 200, 1));
-        add(consumer, builder("vinteum_block", AMTags.Items.STORAGE_BLOCKS_VINTEUM, 900, 2));
+        builder("vinteum_dust", AMTags.Items.DUSTS_VINTEUM, 200, 1).build(consumer);
+        builder("vinteum_block", AMTags.Items.STORAGE_BLOCKS_VINTEUM, 900, 2).build(consumer);
         // TODO essence bucket
     }
 }

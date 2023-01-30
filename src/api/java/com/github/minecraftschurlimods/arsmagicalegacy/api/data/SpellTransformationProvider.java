@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.registries.RegistryObject;
 
-public abstract class SpellTransformationProvider extends AbstractDataProvider<SpellTransformationProvider.SpellTransformationBuilder> {
+public abstract class SpellTransformationProvider extends AbstractDataProvider<SpellTransformationProvider.Builder> {
     protected SpellTransformationProvider(String namespace, DataGenerator generator) {
         super("spell_transformations", namespace, generator);
     }
@@ -27,8 +27,8 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
      * @param to   The block state to transform to.
      * @param part The spell part this transformation is for.
      */
-    public SpellTransformationBuilder builder(ResourceLocation id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return new SpellTransformationBuilder(id).setFrom(from).setTo(to).setPart(part);
+    public Builder builder(ResourceLocation id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
+        return new Builder(id).setFrom(from).setTo(to).setPart(part);
     }
 
     /**
@@ -39,16 +39,16 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
      * @param to   The block state to transform to.
      * @param part The spell part this transformation is for.
      */
-    public SpellTransformationBuilder builder(String name, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return new SpellTransformationBuilder(new ResourceLocation(namespace, name)).setFrom(from).setTo(to).setPart(part);
+    public Builder builder(String name, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
+        return new Builder(new ResourceLocation(namespace, name)).setFrom(from).setTo(to).setPart(part);
     }
 
-    public static class SpellTransformationBuilder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private RuleTest from;
         private BlockState to;
         private ResourceLocation part;
 
-        public SpellTransformationBuilder(ResourceLocation id) {
+        public Builder(ResourceLocation id) {
             super(id);
         }
 
@@ -58,7 +58,7 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
          * @param from The base test to use.
          * @return This builder, for chaining.
          */
-        public SpellTransformationBuilder setFrom(RuleTest from) {
+        public Builder setFrom(RuleTest from) {
             this.from = from;
             return this;
         }
@@ -69,7 +69,7 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
          * @param to The result state to use.
          * @return This builder, for chaining.
          */
-        public SpellTransformationBuilder setTo(BlockState to) {
+        public Builder setTo(BlockState to) {
             this.to = to;
             return this;
         }
@@ -80,7 +80,7 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
          * @param part The spell part to use.
          * @return This builder, for chaining.
          */
-        public SpellTransformationBuilder setPart(ResourceLocation part) {
+        public Builder setPart(ResourceLocation part) {
             this.part = part;
             return this;
         }
@@ -91,7 +91,7 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
          * @param part The spell part to use.
          * @return This builder, for chaining.
          */
-        public SpellTransformationBuilder setPart(RegistryObject<? extends ISpellPart> part) {
+        public Builder setPart(RegistryObject<? extends ISpellPart> part) {
             return setPart(part.getId());
         }
 

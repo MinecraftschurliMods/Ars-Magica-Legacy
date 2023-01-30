@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPartDataProvider.SpellPartDataBuilder> {
+public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPartDataProvider.Builder> {
     protected SpellPartDataProvider(String namespace, DataGenerator generator) {
         super("spell_parts", namespace, generator);
     }
@@ -35,8 +35,8 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param manaCost  The mana cost for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder builder(ResourceLocation spellPart, float manaCost) {
-        return new SpellPartDataBuilder(spellPart).setManaCost(manaCost);
+    public Builder builder(ResourceLocation spellPart, float manaCost) {
+        return new Builder(spellPart).setManaCost(manaCost);
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param manaCost  The mana cost for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
+    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
         return builder(spellPart.getId(), manaCost);
     }
 
@@ -54,7 +54,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param burnout   The burnout for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder builder(ResourceLocation spellPart, float manaCost, float burnout) {
+    public Builder builder(ResourceLocation spellPart, float manaCost, float burnout) {
         return builder(spellPart, manaCost).setBurnout(burnout);
     }
 
@@ -64,18 +64,18 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param burnout   The burnout for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
         return builder(spellPart.getId(), manaCost, burnout);
     }
 
-    public static class SpellPartDataBuilder extends AbstractDataBuilder {
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private Float manaCost;
         private Float burnout;
         private final List<ISpellIngredient> recipe = new ArrayList<>();
         private final List<ItemFilter> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
-        public SpellPartDataBuilder(ResourceLocation id) {
+        public Builder(ResourceLocation id) {
             super(id);
         }
 
@@ -85,7 +85,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param manaCost The mana cost to set.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder setManaCost(float manaCost) {
+        public Builder setManaCost(float manaCost) {
             this.manaCost = manaCost;
             return this;
         }
@@ -96,7 +96,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param burnout The burnout cost to set.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder setBurnout(float burnout) {
+        public Builder setBurnout(float burnout) {
             this.burnout = burnout;
             return this;
         }
@@ -107,7 +107,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param ingredient The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addReagent(Ingredient ingredient) {
+        public Builder addReagent(Ingredient ingredient) {
             return addReagent(1, ingredient);
         }
 
@@ -117,7 +117,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param ingredient The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addReagent(int amount, Ingredient ingredient) {
+        public Builder addReagent(int amount, Ingredient ingredient) {
             return addReagent(ItemFilter.exactly(amount).is(ingredient));
         }
 
@@ -127,7 +127,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param stack The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addReagent(ItemStack stack) {
+        public Builder addReagent(ItemStack stack) {
             return addReagent(ItemFilter.exactly(stack));
         }
 
@@ -137,7 +137,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param filter The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addReagent(ItemFilter filter) {
+        public Builder addReagent(ItemFilter filter) {
             reagents.add(filter);
             return this;
         }
@@ -148,7 +148,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param ingredient The spell ingredient to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addIngredient(ISpellIngredient ingredient) {
+        public Builder addIngredient(ISpellIngredient ingredient) {
             recipe.add(ingredient);
             return this;
         }
@@ -159,7 +159,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addAffinity(Supplier<IAffinity> affinity, float shift) {
+        public Builder addAffinity(Supplier<IAffinity> affinity, float shift) {
             return addAffinity(affinity.get(), shift);
         }
 
@@ -169,7 +169,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addAffinity(IAffinity affinity, float shift) {
+        public Builder addAffinity(IAffinity affinity, float shift) {
             affinities.put(affinity.getId(), shift);
             return this;
         }
@@ -180,7 +180,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder addAffinity(ResourceLocation affinity, float shift) {
+        public Builder addAffinity(ResourceLocation affinity, float shift) {
             affinities.put(affinity, shift);
             return this;
         }

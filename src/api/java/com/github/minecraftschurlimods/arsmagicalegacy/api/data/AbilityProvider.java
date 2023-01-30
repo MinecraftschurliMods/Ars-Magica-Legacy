@@ -13,6 +13,7 @@ import org.apache.commons.lang3.SerializationException;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 
 public abstract class AbilityProvider extends AbstractDataProvider<AbilityProvider.Builder> {
     private final Multimap<ResourceLocation, ResourceLocation> abilitiesByAffinity = HashMultimap.create();
@@ -51,7 +52,7 @@ public abstract class AbilityProvider extends AbstractDataProvider<AbilityProvid
         return new Builder(ability.getId()).setAffinity(affinity.getId()).setBounds(bounds);
     }
 
-    protected static class Builder extends AbstractDataBuilder {
+    protected static class Builder extends AbstractDataBuilder<Builder> {
         private ResourceLocation affinity;
         private MinMaxBounds.Doubles bounds;
 
