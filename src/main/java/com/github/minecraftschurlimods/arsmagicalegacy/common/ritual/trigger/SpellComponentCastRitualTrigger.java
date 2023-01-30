@@ -1,15 +1,16 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IContext;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,7 +29,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
-public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements IRitualTrigger {
+public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements RitualTrigger {
     public static final Codec<SpellComponentCastRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error("Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
             CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error("Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
@@ -39,7 +40,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
     }
 
     @Override
-    public void register(final Ritual ritual) {
+    public void register(Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((SpellEvent.Cast.Component evt) -> {
             if (evt.getEntity() instanceof Player player && player.getLevel() instanceof ServerLevel level && components.contains(evt.getComponent())) {
                 HitResult target = evt.getTarget();
@@ -56,7 +57,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
                 builder.put("parts", evt.getSpell().spellStack().parts());
                 builder.put("caster", player);
                 if (entity != null) builder.put("entity", entity);
-                if (ritual.perform(player, level, pos, new IContext.MapContext(builder.build()))) {
+                if (ritual.perform(player, level, pos, new Context.MapContext(builder.build()))) {
                     evt.setCanceled(true);
                 }
             }
@@ -65,13 +66,13 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final IContext ctx) {
+    public boolean trigger(Player player, ServerLevel level, BlockPos pos, Context ctx) {
         Set<Object> parts = new HashSet<>(Objects.requireNonNull(ctx.get("parts", List.class)));
         return parts.containsAll(components) && parts.containsAll(modifiers);
     }
 
     @Override
-    public Codec<? extends IRitualTrigger> codec() {
+    public Codec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

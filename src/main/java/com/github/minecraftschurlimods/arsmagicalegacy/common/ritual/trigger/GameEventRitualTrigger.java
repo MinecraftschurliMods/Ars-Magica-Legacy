@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IContext;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ import net.minecraftforge.event.VanillaGameEvent;
 
 import java.util.Map;
 
-public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements IRitualTrigger {
+public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements RitualTrigger {
     public static final Codec<GameEventRitualTrigger> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryCodecs.homogeneousList(Registry.GAME_EVENT_REGISTRY).fieldOf("event").forGetter(GameEventRitualTrigger::event)
     ).apply(instance, GameEventRitualTrigger::new));
@@ -53,7 +53,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements IRit
             Level level = evt.getLevel();
             if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {
                 for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(Vec3.atCenterOf(pos), 5, 5, 5))) {
-                    if (ritual.perform(player, serverLevel, pos, new IContext.MapContext(Map.of("event", evt.getVanillaEvent())))) {
+                    if (ritual.perform(player, serverLevel, pos, new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
                         return;
                     }
                 }
@@ -62,14 +62,14 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements IRit
     }
 
     @Override
-    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final IContext ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final Context ctx) {
         GameEvent evt = ctx.get("event", GameEvent.class);
         assert evt != null;
         return event().contains(evt.builtInRegistryHolder());
     }
 
     @Override
-    public Codec<? extends IRitualTrigger> codec() {
+    public Codec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

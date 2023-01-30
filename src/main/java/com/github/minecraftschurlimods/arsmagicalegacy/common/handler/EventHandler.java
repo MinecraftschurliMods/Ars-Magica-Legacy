@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.event.RitualPerformEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
@@ -37,7 +36,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellRecipeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
@@ -138,7 +136,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::rightClickBlock);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
-        forgeBus.addListener(EventHandler::ritualPerformPost);
     }
 
     private static void setup(FMLCommonSetupEvent event) {
@@ -391,9 +388,5 @@ public final class EventHandler {
             burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get() );
         }
         event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
-    }
-
-    private static void ritualPerformPost(RitualPerformEvent.Post event) {
-        event.getPlayer().awardStat(AMStats.RITUALS_TRIGGERED);
     }
 }

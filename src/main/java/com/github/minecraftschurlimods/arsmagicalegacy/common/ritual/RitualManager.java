@@ -1,11 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualEffect;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
@@ -32,59 +27,59 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.LogManager;
 
-public final class RitualManager extends CodecDataManager<Ritual> implements IRitualManager {
+public final class RitualManager extends CodecDataManager<Ritual> {
     private static final Lazy<RitualManager> INSTANCE = Lazy.concurrentOf(RitualManager::new);
-    private final BiMap<ResourceLocation, Codec<? extends IRitualTrigger>> ritualTriggerCodecs = HashBiMap.create();
-    private final BiMap<ResourceLocation, Codec<? extends IRitualRequirement>> ritualRequirementCodecs = HashBiMap.create();
-    private final BiMap<ResourceLocation, Codec<? extends IRitualEffect>> ritualEffectCodecs = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualTrigger>> ritualTriggerCodecs = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualRequirement>> ritualRequirementCodecs = HashBiMap.create();
+    private static final BiMap<ResourceLocation, Codec<? extends RitualEffect>> ritualEffectCodecs = HashBiMap.create();
 
     private RitualManager() {
         super("am_rituals", Ritual.CODEC, LogManager.getLogger());
         useRegistryOps();
-        register();
+        init();
     }
 
     public static RitualManager instance() {
         return INSTANCE.get();
     }
 
-    public void registerRitualRequirement(ResourceLocation id, Codec<? extends IRitualRequirement> codec) {
+    public static void registerRitualRequirement(ResourceLocation id, Codec<? extends RitualRequirement> codec) {
         ritualRequirementCodecs.put(id, codec);
     }
 
-    public void registerRitualEffect(ResourceLocation id, Codec<? extends IRitualEffect> codec) {
+    public static void registerRitualEffect(ResourceLocation id, Codec<? extends RitualEffect> codec) {
         ritualEffectCodecs.put(id, codec);
     }
 
-    public void registerRitualTrigger(ResourceLocation id, Codec<? extends IRitualTrigger> codec) {
+    public static void registerRitualTrigger(ResourceLocation id, Codec<? extends RitualTrigger> codec) {
         ritualTriggerCodecs.put(id, codec);
     }
 
-    public ResourceLocation getRitualRequirementType(IRitualRequirement ritualRequirement) {
+    public static ResourceLocation getRitualRequirementType(RitualRequirement ritualRequirement) {
         return ritualRequirementCodecs.inverse().get(ritualRequirement.codec());
     }
 
-    public Codec<? extends IRitualRequirement> getRitualRequirementCodec(ResourceLocation resourceLocation) {
+    public static Codec<? extends RitualRequirement> getRitualRequirementCodec(ResourceLocation resourceLocation) {
         return ritualRequirementCodecs.get(resourceLocation);
     }
 
-    public ResourceLocation getRitualTriggerType(IRitualTrigger ritualTrigger) {
+    public static ResourceLocation getRitualTriggerType(RitualTrigger ritualTrigger) {
         return ritualTriggerCodecs.inverse().get(ritualTrigger.codec());
     }
 
-    public Codec<? extends IRitualTrigger> getRitualTriggerCodec(ResourceLocation resourceLocation) {
+    public static Codec<? extends RitualTrigger> getRitualTriggerCodec(ResourceLocation resourceLocation) {
         return ritualTriggerCodecs.get(resourceLocation);
     }
 
-    public ResourceLocation getRitualEffectType(IRitualEffect ritualEffect) {
+    public static ResourceLocation getRitualEffectType(RitualEffect ritualEffect) {
         return ritualEffectCodecs.inverse().get(ritualEffect.codec());
     }
 
-    public Codec<? extends IRitualEffect> getRitualEffectCodec(ResourceLocation resourceLocation) {
+    public static Codec<? extends RitualEffect> getRitualEffectCodec(ResourceLocation resourceLocation) {
         return ritualEffectCodecs.get(resourceLocation);
     }
 
-    private void register() {
+    private static void init() {
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_death"), EntityDeathTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "entity_summon"), EntitySummonTrigger.CODEC);
         registerRitualTrigger(new ResourceLocation(ArsMagicaAPI.MOD_ID, "item_drop"), ItemDropRitualTrigger.CODEC);

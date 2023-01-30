@@ -12,7 +12,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IRiftHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.occulus.IOcculusTabManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
@@ -32,6 +31,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -125,11 +125,6 @@ public interface ArsMagicaAPI {
      * @return The spell data manager instance.
      */
     ISpellTransformationManager getSpellTransformationManager();
-
-    /**
-     * @return The ritual manager instance.
-     */
-    IRitualManager getRitualManager();
 
     /**
      * @return The skill helper instance.

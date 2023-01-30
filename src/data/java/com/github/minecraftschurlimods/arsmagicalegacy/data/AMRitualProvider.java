@@ -7,10 +7,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualEffect;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualEffect;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
@@ -207,11 +207,11 @@ public class AMRitualProvider implements DataProvider {
     }
 
     protected static class RitualBuilder {
-        private final List<IRitualRequirement> requirements = new ArrayList<>();
+        private final List<RitualRequirement> requirements = new ArrayList<>();
         private final ResourceLocation id;
         private RitualStructureRequirement structure;
-        private IRitualEffect effect;
-        private IRitualTrigger trigger;
+        private RitualEffect effect;
+        private RitualTrigger trigger;
         private BlockPos offset = BlockPos.ZERO;
 
         private RitualBuilder(ResourceLocation id) {
@@ -223,26 +223,26 @@ public class AMRitualProvider implements DataProvider {
             return this;
         }
 
-        public RitualBuilder with(IRitualRequirement requirement) {
+        public RitualBuilder with(RitualRequirement requirement) {
             this.requirements.add(requirement);
             return this;
         }
 
-        public RitualBuilder with(IRitualRequirement... requirements) {
+        public RitualBuilder with(RitualRequirement... requirements) {
             return with(Arrays.asList(requirements));
         }
 
-        public RitualBuilder with(List<IRitualRequirement> requirements) {
+        public RitualBuilder with(List<RitualRequirement> requirements) {
             this.requirements.addAll(requirements);
             return this;
         }
 
-        public RitualBuilder with(IRitualEffect effect) {
+        public RitualBuilder with(RitualEffect effect) {
             this.effect = effect;
             return this;
         }
 
-        public RitualBuilder with(IRitualTrigger trigger) {
+        public RitualBuilder with(RitualTrigger trigger) {
             this.trigger = trigger;
             return this;
         }

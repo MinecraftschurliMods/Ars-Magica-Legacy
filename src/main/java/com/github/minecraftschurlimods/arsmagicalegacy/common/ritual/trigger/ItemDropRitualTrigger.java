@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IContext;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualTrigger;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Context;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.Ritual;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualTrigger;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements IRitualTrigger {
+public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements RitualTrigger {
     public static final Codec<ItemDropRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INGREDIENT.listOf().fieldOf("ingredients").forGetter(ItemDropRitualTrigger::ingredients)).apply(inst, ItemDropRitualTrigger::new));
 
     public static ItemDropRitualTrigger ingredients(Ingredient... ingredients) {
@@ -80,13 +80,13 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements IRi
                 return;
             if (!(t.player.level instanceof ServerLevel serverLevel)) return;
             for (final ItemEntity item : serverLevel.getEntitiesOfClass(ItemEntity.class, AABB.ofSize(t.player.position(), 5, 5, 5), itemEntity -> ingredients.stream().anyMatch(ingredient -> ingredient.test(itemEntity.getItem())))) {
-                if (ritual.perform(t.player, serverLevel, item.getOnPos(), IContext.EMPTY)) return;
+                if (ritual.perform(t.player, serverLevel, item.getOnPos(), Context.EMPTY)) return;
             }
         });
     }
 
     @Override
-    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, final IContext ctx) {
+    public boolean trigger(final Player player, final ServerLevel level, final BlockPos pos, Context ctx) {
         Set<ItemEntity> consumable = new HashSet<>();
         var ingredients = new ArrayList<>(this.ingredients);
         level.getEntities().get(EntityTypeTest.forClass(ItemEntity.class), AABB.ofSize(Vec3.atCenterOf(pos), 3, 3, 3), itemEntity -> {
@@ -108,7 +108,7 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements IRi
     }
 
     @Override
-    public Codec<? extends IRitualTrigger> codec() {
+    public Codec<? extends RitualTrigger> codec() {
         return CODEC;
     }
 }

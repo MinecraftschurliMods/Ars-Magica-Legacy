@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.requirement;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.IRitualRequirement;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.RitualRequirement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -15,7 +15,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 
-public record BiomeRequirement(HolderSet<Biome> biome) implements IRitualRequirement {
+public record BiomeRequirement(HolderSet<Biome> biome) implements RitualRequirement {
     public static final Codec<BiomeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).fieldOf("biome").forGetter(BiomeRequirement::biome)
     ).apply(inst, BiomeRequirement::new));
@@ -39,7 +39,7 @@ public record BiomeRequirement(HolderSet<Biome> biome) implements IRitualRequire
     }
 
     @Override
-    public Codec<? extends IRitualRequirement> codec() {
+    public Codec<? extends RitualRequirement> codec() {
         return CODEC;
     }
 }
