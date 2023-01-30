@@ -40,6 +40,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
     protected void addBooks(Consumer<BookBuilder<?, ?, ?>> consumer) {
         var api = ArsMagicaAPI.get();
         var affinityHelper = api.getAffinityHelper();
+        var abilityRegistry = api.getAbilityRegistry();
         TranslatedBookBuilder builder = createBookBuilder("arcane_compendium", "Arcane Compendium", "A renewed look into Minecraft with a splash of magic...", lang::add)
                 .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
                 .setCreativeTab(api.getCreativeModeTab().getRecipeFolderName())
@@ -315,7 +316,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("Shifting into an affinity bears individual side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
                 .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Affinity essences must be obtained from bosses, but can be duplicated through crafting later. Reports about lost affinity tomes have been spreading as well, though how to obtain or use them is currently subject to investigation.")
                 .build();
-        var abilityRegistry = api.getAbilityRegistry();
         for (final IAffinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(IAffinity.NONE)) continue;

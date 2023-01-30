@@ -1,45 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
-public abstract class ObeliskFuelProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger LOGGER = LogManager.getLogger();
-    protected final DataGenerator generator;
-    private final String namespace;
-    private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
-
-    public ObeliskFuelProvider(String namespace, DataGenerator generator) {
-        this.namespace = namespace;
-        this.generator = generator;
-    }
-
-    protected abstract void createFuels();
-
-    @Override
-    public void run(HashCache pCache) {
-        createFuels();
-        data.forEach((resourceLocation, jsonObject) -> save(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/obelisk_fuel/" + resourceLocation.getPath() + ".json")));
+public abstract class ObeliskFuelProvider extends AbstractDataProvider<ObeliskFuelProvider.Builder> {
+    protected ObeliskFuelProvider(String namespace, DataGenerator generator) {
+        super("obelisk_fuel", namespace, generator);
     }
 
     @Override
@@ -48,59 +18,42 @@ public abstract class ObeliskFuelProvider implements DataProvider {
     }
 
     /**
-     * @param name         The id of the obelisk fuel.
-     * @param item         The item to use.
-     * @param burntime     How many ticks the ingredient burns.
-     * @param valuepertick How much etherium is generated per burning tick.
+     * @param name            The id of the obelisk fuel.
+     * @param item            The item to use.
+     * @param burnTime        The burn time of the ingredient, in ticks.
+     * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected void forItem(String name, Item item, int burntime, int valuepertick) {
-        forIngredient(name, Ingredient.of(item), burntime, valuepertick);
+    protected Builder builder(String name, Item item, int burnTime, int etheriumPerTick) {
+        return builder(name, Ingredient.of(item), burnTime, etheriumPerTick);
     }
 
     /**
-     * @param name         The id of the obelisk fuel.
-     * @param tag          The tag to use.
-     * @param burntime     How many ticks the ingredient burns.
-     * @param valuepertick How much etherium is generated per burning tick.
+     * @param name            The id of the obelisk fuel.
+     * @param tag             The tag to use.
+     * @param burnTime        The burn time of the ingredient, in ticks.
+     * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected void forTag(String name, TagKey<Item> tag, int burntime, int valuepertick) {
-        forIngredient(name, Ingredient.of(tag), burntime, valuepertick);
+    protected Builder builder(String name, TagKey<Item> tag, int burnTime, int etheriumPerTick) {
+        return builder(name, Ingredient.of(tag), burnTime, etheriumPerTick);
     }
 
     /**
-     * @param name         The id of the obelisk fuel.
-     * @param ingredient   The ingredient to use.
-     * @param burntime     How many ticks the ingredient burns.
-     * @param valuepertick How much etherium is generated per burning tick.
+     * @param name            The id of the obelisk fuel.
+     * @param ingredient      The ingredient to use.
+     * @param burnTime        How many ticks the ingredient burns.
+     * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected void forIngredient(String name, Ingredient ingredient, int burntime, int valuepertick) {
-        new ObeliskFuelBuilder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurntime(burntime).setValuePerTick(valuepertick).build();
+    protected Builder builder(String name, Ingredient ingredient, int burnTime, int etheriumPerTick) {
+        return new Builder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurnTime(burnTime).setEtheriumPerTick(etheriumPerTick);
     }
 
-    private static void save(HashCache pCache, JsonObject pRecipeJson, Path pPath) {
-        try {
-            String s = GSON.toJson(pRecipeJson);
-            String s1 = SHA1.hashUnencodedChars(s).toString();
-            if (!Objects.equals(pCache.getHash(pPath), s1) || !Files.exists(pPath)) {
-                Files.createDirectories(pPath.getParent());
-                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(pPath)) {
-                    bufferedwriter.write(s);
-                }
-            }
-            pCache.putNew(pPath, s1);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save obelisk fuel {}", pPath, ioexception);
-        }
-    }
-
-    public class ObeliskFuelBuilder {
-        private final ResourceLocation id;
+    public static class Builder extends AbstractDataBuilder<Builder> {
         private Ingredient ingredient;
-        private int burntime;
-        private int valuepertick;
+        private int burnTime;
+        private int etheriumPerTick;
 
-        public ObeliskFuelBuilder(ResourceLocation id) {
-            this.id = id;
+        public Builder(ResourceLocation id) {
+            super(id);
         }
 
         /**
@@ -109,7 +62,7 @@ public abstract class ObeliskFuelProvider implements DataProvider {
          * @param ingredient The ingredient to set.
          * @return This builder, for chaining.
          */
-        public ObeliskFuelBuilder setIngredient(Ingredient ingredient) {
+        public Builder setIngredient(Ingredient ingredient) {
             this.ingredient = ingredient;
             return this;
         }
@@ -117,37 +70,31 @@ public abstract class ObeliskFuelProvider implements DataProvider {
         /**
          * Sets the burn time of this obelisk fuel entry.
          *
-         * @param burntime The burn time to set.
+         * @param burnTime The burn time to set.
          * @return This builder, for chaining.
          */
-        public ObeliskFuelBuilder setBurntime(int burntime) {
-            this.burntime = burntime;
+        public Builder setBurnTime(int burnTime) {
+            this.burnTime = burnTime;
             return this;
         }
 
         /**
          * Sets the etherium generation per tick of this obelisk fuel entry.
          *
-         * @param valuepertick The etherium generation per tick to set.
+         * @param etheriumPerTick The etherium generation per tick to set.
          * @return This builder, for chaining.
          */
-        public ObeliskFuelBuilder setValuePerTick(int valuepertick) {
-            this.valuepertick = valuepertick;
+        public Builder setEtheriumPerTick(int etheriumPerTick) {
+            this.etheriumPerTick = etheriumPerTick;
             return this;
         }
 
-        /**
-         * Builds this builder.
-         */
-        public void build() {
-            data.put(id, serialize());
-        }
-
-        JsonObject serialize() {
+        @Override
+        protected JsonObject toJson() {
             JsonObject json = new JsonObject();
             json.add("input", ingredient.toJson());
-            json.addProperty("burn_time", burntime);
-            json.addProperty("etherium_per_tick", valuepertick);
+            json.addProperty("burn_time", burnTime);
+            json.addProperty("etherium_per_tick", etheriumPerTick);
             return json;
         }
     }
