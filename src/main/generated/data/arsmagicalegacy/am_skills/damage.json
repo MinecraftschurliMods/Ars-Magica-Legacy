@@ -3,7 +3,7 @@
   "x": 210,
   "y": 300,
   "parents": [
-    "arsmagicalegacy:beam"
+    "arsmagicalegacy:chain"
   ],
   "cost": {
     "arsmagicalegacy:red": 1

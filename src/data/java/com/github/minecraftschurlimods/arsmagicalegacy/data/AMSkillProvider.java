@@ -36,14 +36,14 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
         createOffense(BEAM)
-                .setPosition(210, 255)
+                .setPosition(210, 210)
                 .addCost(RED.get())
                 .addParent(AOE.getId())
                 .build(consumer);
-        createUtility(CHAIN)
-                .setPosition(255, 165)
+        createOffense(CHAIN)
+                .setPosition(210, 255)
                 .addCost(RED.get())
-                .addParent(GROW.getId())
+                .addParent(BEAM.getId())
                 .build(consumer);
         createUtility(CHANNEL)
                 .setPosition(165, 255)
@@ -196,7 +196,7 @@ class AMSkillProvider extends SkillProvider {
                 .build(consumer);
         createUtility(WATER_BREATHING)
                 .setPosition(255, 255)
-                .addCost(BLUE.get())
+                .addCost(GREEN.get())
                 .addParent(CREATE_WATER.getId())
                 .build(consumer);
         createDefense(AGILITY)
@@ -481,7 +481,7 @@ class AMSkillProvider extends SkillProvider {
         createOffense(DAMAGE)
                 .setPosition(210, 300)
                 .addCost(RED.get())
-                .addParent(BEAM.getId())
+                .addParent(CHAIN.getId())
                 .build(consumer);
         createOffense(DISMEMBERING)
                 .setPosition(30, 210)
