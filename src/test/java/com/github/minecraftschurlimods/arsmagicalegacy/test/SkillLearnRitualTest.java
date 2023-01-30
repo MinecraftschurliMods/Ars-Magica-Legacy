@@ -70,7 +70,7 @@ public class SkillLearnRitualTest {
 
     @GameTest(template = "empty", batch = "unlock_skill")
     public static void testUnlockManaShield(GameTestHelper helper) {
-        test(helper, AMSpellParts.MANA_SHIELD.getId(), AMSpellParts.SELF.get(), AMSpellParts.SHIELD.get(), AMSpellParts.LIFE_TAP.get());
+        test(helper, AMSpellParts.HEALTH_BOOST.getId(), AMSpellParts.SELF.get(), AMSpellParts.SHIELD.get(), AMSpellParts.LIFE_TAP.get());
     }
 
     @GameTest(template = "empty", batch = "unlock_skill")

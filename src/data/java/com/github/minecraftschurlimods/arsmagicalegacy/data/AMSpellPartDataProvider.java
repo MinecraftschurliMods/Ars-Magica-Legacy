@@ -185,6 +185,11 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_GLOWSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1))
                 .build();
+        createSpellPartData(AMSpellParts.HEALTH_BOOST, 50f)
+                .withAffinity(AMAffinities.LIFE, 0.001f)
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE)), 1))
+                .withIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ENCHANTED_GOLDEN_APPLE), 1))
+                .build();
         createSpellPartData(AMSpellParts.INVISIBILITY, 40f)
                 .withAffinity(AMAffinities.ARCANE, 0.001f)
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
@@ -475,12 +480,6 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.CYAN)), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
-                .build();
-        createSpellPartData(AMSpellParts.MANA_SHIELD, 0f)
-                .withAffinity(AMAffinities.WATER, 0.001f)
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE)), 1))
-                .withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WAKEBLOOM.get()), 1))
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.MANA_FOCUS.get())))
                 .build();
         createSpellPartData(AMSpellParts.MELT_ARMOR, 200f)
                 .withAffinity(AMAffinities.FIRE, 0.0001f)

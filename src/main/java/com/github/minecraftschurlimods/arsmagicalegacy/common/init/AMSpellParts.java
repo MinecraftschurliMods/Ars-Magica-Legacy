@@ -61,6 +61,7 @@ public interface AMSpellParts {
     RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));
+    RegistryObject<Effect>             HEALTH_BOOST        = SPELL_PARTS.register("health_boost",        () -> new Effect(MobEffects.HEALTH_BOOST));
     RegistryObject<Effect>             INVISIBILITY        = SPELL_PARTS.register("invisibility",        () -> new Effect(MobEffects.INVISIBILITY));
     RegistryObject<Effect>             JUMP_BOOST          = SPELL_PARTS.register("jump_boost",          () -> new Effect(MobEffects.JUMP));
     RegistryObject<Effect>             LEVITATION          = SPELL_PARTS.register("levitation",          () -> new Effect(MobEffects.LEVITATION));
@@ -114,7 +115,6 @@ public interface AMSpellParts {
     RegistryObject<Light>              LIGHT               = SPELL_PARTS.register("light",               Light::new);
     RegistryObject<ManaBlast>          MANA_BLAST          = SPELL_PARTS.register("mana_blast",          ManaBlast::new);
     RegistryObject<ManaDrain>          MANA_DRAIN          = SPELL_PARTS.register("mana_drain",          ManaDrain::new);
-    RegistryObject<ManaShield>         MANA_SHIELD         = SPELL_PARTS.register("mana_shield",         ManaShield::new);
     RegistryObject<MeltArmor>          MELT_ARMOR          = SPELL_PARTS.register("melt_armor",          MeltArmor::new);
     RegistryObject<Moonrise>           MOONRISE            = SPELL_PARTS.register("moonrise",            Moonrise::new);
     RegistryObject<PlaceBlock>         PLACE_BLOCK         = SPELL_PARTS.register("place_block",         PlaceBlock::new);

@@ -155,6 +155,10 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(SLOW_FALLING.getId())
                 .build(consumer);
+        createDefense(HEALTH_BOOST)
+                .setPosition(30, 30)
+                .hidden()
+                .build(consumer);
         createUtility(INVISIBILITY)
                 .setPosition(30, 210)
                 .addCost(GREEN.get())
@@ -399,10 +403,6 @@ class AMSkillProvider extends SkillProvider {
                 .setPosition(210, 210)
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId())
-                .build(consumer);
-        createDefense(MANA_SHIELD)
-                .setPosition(30, 30)
-                .hidden()
                 .build(consumer);
         createUtility(MOONRISE)
                 .setPosition(30, 75)
