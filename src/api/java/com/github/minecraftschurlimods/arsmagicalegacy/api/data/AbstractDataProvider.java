@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  *
  * @param <T> The builder class associated with this provider.
  */
-public abstract class AbstractDataProvider<T extends AbstractDataBuilder> implements DataProvider {
+public abstract class AbstractDataProvider<T extends AbstractDataBuilder<?>> implements DataProvider {
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     protected static final Logger LOGGER = LogManager.getLogger();
     protected final String folder;
