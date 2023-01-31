@@ -142,6 +142,10 @@ public final class Spell implements ISpell {
             if (!spellHelper.hasReagents(caster, reagents)) return SpellCastResult.MISSING_REAGENTS;
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
+        if (level.isClientSide()) {
+            MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
+            return result;
+        }
         if (caster instanceof Player p && p.isCreative()) return result;
         if (consume && result.isConsume()) {
             manaHelper.decreaseMana(caster, mana, true);

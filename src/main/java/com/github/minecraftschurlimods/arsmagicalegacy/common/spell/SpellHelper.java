@@ -177,6 +177,7 @@ public final class SpellHelper implements ISpellHelper {
         Pair<? extends ISpellPart, List<ISpellModifier>> part = pwm.get(index);
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
+                if (level.isClientSide()) return SpellCastResult.SUCCESS;
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 ISpellComponent component = (ISpellComponent) part.getFirst();
                 if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, part.getSecond(), target))) return SpellCastResult.CANCELLED;
