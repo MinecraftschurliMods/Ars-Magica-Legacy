@@ -1,11 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellCustomizationScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellRecipeScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.OcculusScreen;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell.BeamRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -14,27 +12,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public final class ClientHelper {
-    /**
-     * Draws a beam from the caster to the given hit result's position.
-     *
-     * @param caster The caster, whose position represents the first point of the beam.
-     * @param result The hit result, whose position represents the second point of the beam.
-     * @param color  The color the beam should have.
-     */
-    public static void drawBeam(LivingEntity caster, InteractionHand hand, HitResult result, int color) {
-        float ticks = Minecraft.getInstance().getFrameTime();
-        BeamRenderer.drawBeams(caster, hand, caster.getEyePosition(ticks), result.getLocation(), ColorUtil.getRed(color), ColorUtil.getGreen(color), ColorUtil.getBlue(color), ticks);
-    }
-
     /**
      * Draws the given item stack at the specified position.
      *

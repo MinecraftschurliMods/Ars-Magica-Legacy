@@ -23,15 +23,7 @@ public class Beam extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        HitResult hitResult = helper.trace(caster, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0);
-        if (level.isClientSide()) {
-            if (caster.getMainHandItem().getItem() instanceof ISpellItem) {
-                ClientHelper.drawBeam(caster, InteractionHand.MAIN_HAND, hitResult, 0xff0000);
-            } else if (caster.getOffhandItem().getItem() instanceof ISpellItem) {
-                ClientHelper.drawBeam(caster, InteractionHand.OFF_HAND, hitResult, 0xff0000);
-            }
-        }
-        return helper.invoke(spell, caster, level, hitResult, ticksUsed, index, awardXp);
+        return helper.invoke(spell, caster, level, helper.trace(caster, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0), ticksUsed, index, awardXp);
     }
 
     @Override
