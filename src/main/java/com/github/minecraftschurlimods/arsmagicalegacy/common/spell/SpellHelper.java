@@ -17,6 +17,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerEx
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -25,7 +28,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
@@ -118,45 +123,27 @@ public final class SpellHelper implements ISpellHelper {
         }
     }
 
+    //Optimized and adapted from GameRenderer#pick
     @Override
     @Nullable
-    public Entity getPointedEntity(Entity entity, Level level, double range, boolean clipFluids) {
-        Entity result = null;
-        Vec3 vec = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
-        Vec3 lookVec = entity.getLookAngle();
-        double d = 0;
-        for (Entity e : level.getEntities(entity, entity.getBoundingBox().inflate(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(1, 1, 1))) {
-            HitResult hit = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), new Vec3(e.getX(), e.getY() + e.getEyeHeight(), e.getZ()), ClipContext.Block.COLLIDER, clipFluids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
-            if (e.canBeCollidedWith() && hit.getType() == HitResult.Type.MISS) {
-                float size = Math.max(0.8F, e.getBbWidth());
-                AABB aabb = e.getBoundingBox().inflate(size, size, size);
-                Optional<Vec3> optional = aabb.clip(vec, lookVec);
-                if (aabb.contains(vec)) {
-                    result = e;
-                    d = 0;
-                } else if (optional.isPresent()) {
-                    double distance = vec.distanceTo(optional.get());
-                    if ((distance < d) || (d == 0)) {
-                        result = e;
-                        d = distance;
-                    }
-                }
-            }
-        }
-        return result;
+    public Entity getPointedEntity(Entity entity, double range) {
+        Vec3 from = entity.getEyePosition(1);
+        Vec3 view = entity.getViewVector(1);
+        Vec3 to = from.add(view.x * range, view.y * range, view.z * range);
+        AABB aabb = entity.getBoundingBox().expandTowards(view.scale(range)).inflate(1, 1, 1);
+        EntityHitResult hit = ProjectileUtil.getEntityHitResult(entity, from, to, aabb, e -> !e.isSpectator() && e.isPickable(), range * range);
+        return hit != null && from.distanceTo(hit.getLocation()) < range ? hit.getEntity() : null;
     }
 
     @Override
     public HitResult trace(Entity entity, Level level, double range, boolean entities, boolean targetNonSolid) {
-        HitResult entityHit = null;
         if (entities) {
-            Entity pointed = getPointedEntity(entity, level, range, targetNonSolid);
+            Entity pointed = getPointedEntity(entity, range);
             if (pointed != null) {
-                entityHit = new EntityHitResult(pointed);
+                return new EntityHitResult(pointed);
             }
         }
-        HitResult blockHit = level.clip(new ClipContext(entity.getEyePosition(), entity.getEyePosition().add(entity.getLookAngle().scale(range)), ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, entity));
-        return entityHit == null || blockHit.getLocation().distanceTo(entity.position()) < entityHit.getLocation().distanceTo(entity.position()) ? blockHit : entityHit;
+        return level.clip(new ClipContext(entity.getEyePosition(), entity.getEyePosition().add(entity.getLookAngle().scale(range)), ClipContext.Block.OUTLINE, targetNonSolid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE, entity));
     }
 
     @Override

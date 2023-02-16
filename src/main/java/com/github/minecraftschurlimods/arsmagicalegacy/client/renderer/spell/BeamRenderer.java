@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -69,21 +70,21 @@ public class BeamRenderer extends RenderType {
         super(pName, pFormat, pMode, pBufferSize, pAffectsCrumbling, pSortOnUpload, pSetupState, pClearState);
     }
 
-    public static void drawBeams(PoseStack stack, LivingEntity living, InteractionHand hand, Vec3 from, Vec3 to, float r, float g, float b, float ticks) {
+    public static void drawBeams(PoseStack stack, Entity entity, InteractionHand hand, Vec3 from, Vec3 to, float r, float g, float b, float ticks) {
         float distance = (float) Math.max(1, from.subtract(to).length());
-        long time = living.getLevel().getGameTime();
+        long time = entity.getLevel().getGameTime();
         float v = -0.02f * time;
         Vec3 view = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         stack.pushPose();
         stack.translate(-view.x(), -view.y(), -view.z());
         stack.translate(from.x, from.y, from.z);
-        stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -living.getYRot(), -living.yRotO)));
-        stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, living.getXRot(), living.xRotO)));
+        stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
+        stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
         PoseStack.Pose pose = stack.last();
         Matrix3f normal = pose.normal();
         Matrix4f matrix = pose.pose();
-        boolean firstPerson = living == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson();
+        boolean firstPerson = entity == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson();
         VertexConsumer vc = buffer.getBuffer(GLOW);
         drawBeam(vc, matrix, normal, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), hand, distance, 0.5f, 1, ticks, r, g, b, 0.7f, firstPerson);
         vc = buffer.getBuffer(MAIN);

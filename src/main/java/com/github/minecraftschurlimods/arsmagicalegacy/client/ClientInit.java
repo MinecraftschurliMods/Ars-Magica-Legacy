@@ -59,6 +59,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -80,6 +81,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -349,6 +351,7 @@ public final class ClientInit {
         Level level = Objects.requireNonNull(Minecraft.getInstance().level);
         var helper = ArsMagicaAPI.get().getSpellHelper();
         float ticks = event.getPartialTick();
+        PoseStack poseStack = event.getPoseStack();
         int dist = Minecraft.getInstance().options.getEffectiveRenderDistance() * 8;
         for (Player p : level.players()) {
             if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
@@ -361,9 +364,16 @@ public final class ClientInit {
             }
             ISpell spell = helper.getSpell(stack);
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
-            if (!pair.getFirst().isContinuous()) continue;
             if (pair.getFirst() == AMSpellParts.BEAM.get()) {
-                BeamRenderer.drawBeams(event.getPoseStack(), p, hand, player.getEyePosition(ticks), helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0).getLocation(), 1, 0, 0, ticks);
+                BeamRenderer.drawBeams(poseStack, p, hand, p.getEyePosition(ticks), helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0).getLocation(), 1, 0, 0, ticks);
+            } else if (pair.getFirst() == AMSpellParts.CHAIN.get()) {
+                List<Entity> list = Chain.getEntities(p, 16);
+                if (!list.isEmpty()) {
+                    BeamRenderer.drawBeams(poseStack, p, hand, p.getEyePosition(ticks), list.get(0).getEyePosition(ticks), 1, 0, 0, ticks);
+                    for (int i = 0; i < list.size() - 1; i++) {
+                        BeamRenderer.drawBeams(poseStack, list.get(i), InteractionHand.MAIN_HAND, list.get(i).getEyePosition(ticks), list.get(i + 1).getEyePosition(ticks), 1, 0, 0, ticks);
+                    }
+                }
             }
         }
     }

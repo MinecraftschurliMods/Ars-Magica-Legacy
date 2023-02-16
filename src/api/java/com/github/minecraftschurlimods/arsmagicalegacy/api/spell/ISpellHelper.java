@@ -88,11 +88,10 @@ public interface ISpellHelper {
      * @param entity     The entity to start the ray trace from.
      * @param level      The level to perform the ray trace in.
      * @param range      The range of the ray trace.
-     * @param clipFluids False if fluids should block the ray trace, true if fluids should be ignored.
      * @return The entity the given entity is currently looking at, or null if no entity was found.
      */
     @Nullable
-    Entity getPointedEntity(Entity entity, Level level, double range, boolean clipFluids);
+    Entity getPointedEntity(Entity entity, double range);
 
     /**
      * Performs a ray trace.
