@@ -26,21 +26,19 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
     }
 
     @Override
-    public void addProbeInfo(final ProbeMode probeMode, final IProbeInfo iProbeInfo, final Player player, final Level level, BlockState blockState, final IProbeHitData iProbeHitData) {
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, BlockState blockState, IProbeHitData iProbeHitData) {
         BlockPos pos = iProbeHitData.getPos();
         int tier;
         if (blockState.getBlock() instanceof ObeliskBlock obeliskBlock) {
             pos = pos.below(blockState.getValue(ObeliskBlock.PART).ordinal());
-            blockState = level.getBlockState(pos);
             tier = obeliskBlock.getTier(level, pos);
         } else if (blockState.getBlock() instanceof CelestialPrismBlock celestialPrismBlock) {
             if (blockState.getValue(CelestialPrismBlock.HALF) != DoubleBlockHalf.LOWER) {
                 pos = pos.below();
-                blockState = level.getBlockState(pos);
             }
-            tier = celestialPrismBlock.getTier(blockState, level, pos);
+            tier = celestialPrismBlock.getTier(level, pos);
         } else if (blockState.getBlock() instanceof BlackAuremBlock blackAuremBlock) {
-            tier = blackAuremBlock.getTier(blockState, level, pos);
+            tier = blackAuremBlock.getTier(level, pos);
         } else {
             tier = -1;
         }

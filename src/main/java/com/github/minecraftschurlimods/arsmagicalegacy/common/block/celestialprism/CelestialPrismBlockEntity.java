@@ -31,7 +31,7 @@ public class CelestialPrismBlockEntity extends BlockEntity {
     }
 
     void tick(Level level, BlockPos pos, BlockState state) {
-        int tier = state.getBlock() instanceof CelestialPrismBlock block ? block.getTier(state, level, pos) : 0;
+        int tier = state.getBlock() instanceof CelestialPrismBlock block ? block.getTier(level, pos) : 0;
         if (level.canSeeSky(pos) && (level.isDay() || tier == 5)) {
             if (time > 0) {
                 time--;
