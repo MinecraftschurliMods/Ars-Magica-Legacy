@@ -235,7 +235,6 @@ public final class EventHandler {
     private static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(SpellDataManager.instance());
         event.addListener(TierMapping.instance());
-        event.addListener(ObeliskFuelManager.instance());
     }
 
     private static void entityJoinWorld(EntityJoinLevelEvent event) {

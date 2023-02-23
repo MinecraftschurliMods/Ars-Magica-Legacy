@@ -1,49 +1,23 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.SerializationException;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
-public abstract class AltarStructureMaterialProvider implements DataProvider {
-    protected final DataGenerator generator;
-    private final String namespace;
-    private final Map<ResourceLocation, AltarCapMaterial> capMaterials = new HashMap<>();
-    private final Map<ResourceLocation, AltarStructureMaterial> structureMaterials = new HashMap<>();
-    private final JsonCodecProvider<AltarCapMaterial> capProvider;
-    private final JsonCodecProvider<AltarStructureMaterial> structureProvider;
-
-    public AltarStructureMaterialProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        this.namespace = namespace;
-        this.generator = generator;
-        RegistryOps<JsonElement> registryOps = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get());
-        this.capProvider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, registryOps, AltarCapMaterial.REGISTRY_KEY, capMaterials);
-        this.structureProvider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, registryOps, AltarStructureMaterial.REGISTRY_KEY, structureMaterials);
-    }
-
-    protected abstract void createStructureMaterials();
-
-    @Override
-    public void run(CachedOutput pCache) throws IOException {
-        createStructureMaterials();
-        structureProvider.run(pCache);
-        capProvider.run(pCache);
+public abstract class AltarStructureMaterialProvider extends AbstractDataProvider<AltarStructureMaterial, AltarStructureMaterialProvider.Builder> {
+    protected AltarStructureMaterialProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
+        super(AltarStructureMaterial.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
     }
 
     @Override
@@ -52,94 +26,102 @@ public abstract class AltarStructureMaterialProvider implements DataProvider {
     }
 
     /**
-     * Adds a new cap material.
+     * Adds a new structure material.
      *
-     * @param name  The name of the new cap material.
-     * @param cap   The block for the new cap material.
-     * @param power The power of the new cap material.
+     * @param name       The name of the new structure material.
+     * @param block      The block for the new structure material.
+     * @param stairBlock The stair block for the new structure material.
+     * @param power      The power of the new structure material.
      */
-    protected void addCapMaterial(String name, Block cap, int power) {
-        addCapMaterial(new ResourceLocation(this.namespace, name), cap, power);
-    }
-
-    /**
-     * Adds a new cap material.
-     *
-     * @param cap   The block for the new cap material.
-     * @param power The power of the new cap material.
-     */
-    protected void addCapMaterial(Block cap, int power) {
-        addCapMaterial(new ResourceLocation(this.namespace, getNameFor(cap)), cap, power);
+    protected Builder builder(String name, Block block, StairBlock stairBlock, int power) {
+        return new Builder(new ResourceLocation(namespace, name)).setBlock(block).setStairBlock(stairBlock).setPower(power);
     }
 
     /**
      * Adds a new structure material.
      *
-     * @param name  The name of the new structure material.
-     * @param block The block for the new structure material.
-     * @param stair The stair block for the new structure material.
-     * @param power The power of the new structure material.
+     * @param block      The block for the new structure material.
+     * @param stairBlock The stair block for the new structure material.
+     * @param power      The power of the new structure material.
      */
-    protected void addStructureMaterial(String name, Block block, StairBlock stair, int power) {
-        addStructureMaterial(new ResourceLocation(this.namespace, name), block, stair, power);
-    }
-
-    /**
-     * Adds a new structure material.
-     *
-     * @param block The block for the new structure material.
-     * @param stair The stair block for the new structure material.
-     * @param power The power of the new structure material.
-     */
-    protected void addStructureMaterial(Block block, StairBlock stair, int power) {
-        addStructureMaterial(new ResourceLocation(this.namespace, getNameFor(block)), block, stair, power);
-    }
-
-    /**
-     * Adds a new structure material.
-     *
-     * @param name  The name of the new structure material.
-     * @param blockFamily The block family for the new structure material.
-     * @param power The power of the new structure material.
-     */
-    protected void addStructureMaterial(String name, BlockFamily blockFamily, int power) {
-        addStructureMaterial(new ResourceLocation(this.namespace, name), blockFamily.getBaseBlock(), (StairBlock) blockFamily.get(BlockFamily.Variant.STAIRS), power);
+    protected Builder builder(Block block, StairBlock stairBlock, int power) {
+        return builder(inferName(block), block, stairBlock, power);
     }
 
     /**
      * Adds a new structure material.
      *
      * @param blockFamily The block family for the new structure material.
-     * @param power The power of the new structure material.
+     * @param power       The power of the new structure material.
      */
-    protected void addStructureMaterial(BlockFamily blockFamily, int power) {
-        addStructureMaterial(new ResourceLocation(this.namespace, getNameFor(blockFamily.getBaseBlock())), blockFamily.getBaseBlock(), (StairBlock) blockFamily.get(BlockFamily.Variant.STAIRS), power);
-    }
-
-    private String getNameFor(Block baseBlock) {
-        return ForgeRegistries.BLOCKS.getKey(baseBlock).getPath();
-    }
-
-    /**
-     * Adds a new cap material.
-     *
-     * @param id    The id of the new cap material.
-     * @param cap   The block for the new cap material.
-     * @param power The power of the new cap material.
-     */
-    protected void addCapMaterial(ResourceLocation id, Block cap, int power) {
-        capMaterials.put(id, new AltarCapMaterial(cap, power));
+    protected Builder builder(BlockFamily blockFamily, int power) {
+        return builder(inferName(blockFamily.getBaseBlock()), blockFamily, power);
     }
 
     /**
      * Adds a new structure material.
      *
-     * @param id    The id of the new structure material.
-     * @param block The block for the new structure material.
-     * @param stair The stair block for the new structure material.
-     * @param power The power of the new structure material.
+     * @param name        The name of the new structure material.
+     * @param blockFamily The block family for the new structure material.
+     * @param power       The power of the new structure material.
      */
-    protected void addStructureMaterial(ResourceLocation id, Block block, StairBlock stair, int power) {
-        structureMaterials.put(id, new AltarStructureMaterial(block, stair, power));
+    protected Builder builder(String name, BlockFamily blockFamily, int power) {
+        return builder(name, blockFamily.getBaseBlock(), (StairBlock) blockFamily.get(BlockFamily.Variant.STAIRS), power);
+    }
+
+    @NotNull
+    private static String inferName(Block block) {
+        return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
+    }
+
+    protected static class Builder extends AbstractDataBuilder<AltarStructureMaterial, Builder> {
+        private Block block;
+        private StairBlock stairBlock;
+        private int power;
+
+        public Builder(ResourceLocation id) {
+            super(id);
+        }
+
+        /**
+         * Sets the block to use.
+         *
+         * @param block The block to use.
+         * @return This builder, for chaining.
+         */
+        public Builder setBlock(Block block) {
+            this.block = block;
+            return this;
+        }
+
+        /**
+         * Sets the stair block to use.
+         *
+         * @param stairBlock The stair block to use.
+         * @return This builder, for chaining.
+         */
+        public Builder setStairBlock(StairBlock stairBlock) {
+            this.stairBlock = stairBlock;
+            return this;
+        }
+
+        /**
+         * Sets the power to use.
+         *
+         * @param power The power to use.
+         * @return This builder, for chaining.
+         */
+        public Builder setPower(int power) {
+            this.power = power;
+            return this;
+        }
+
+        @Override
+        protected AltarStructureMaterial build() {
+            if (block == null) throw new SerializationException("A structure material needs a block!");
+            if (stairBlock == null) throw new SerializationException("A structure material needs a stair block!");
+            if (power <= 0) throw new SerializationException("A structure material needs a power greater than 0!");
+            return new AltarStructureMaterial(block, stairBlock, power);
+        }
     }
 }

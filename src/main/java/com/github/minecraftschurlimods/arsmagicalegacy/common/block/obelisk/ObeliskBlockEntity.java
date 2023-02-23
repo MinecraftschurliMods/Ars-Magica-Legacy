@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.ObeliskFuel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
@@ -129,7 +130,7 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
             setChanged();
         }
         if (burnTimeRemaining <= 0) {
-            Optional<ObeliskFuelManager.ObeliskFuel> fuel = ObeliskFuelManager.instance().getFuelFor(slot);
+            Optional<ObeliskFuel> fuel = ObeliskFuelManager.getFuelFor(level.registryAccess(), slot);
             fuel.ifPresent(obeliskFuel -> {
                 int burnTime = obeliskFuel.burnTime();
                 int perTick = obeliskFuel.etheriumPerTick();

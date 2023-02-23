@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
@@ -68,7 +67,6 @@ public final class ArsMagicaLegacy {
         registerNetworkPackets();
         EtheriumHelper.instance();
         SpellDataManager.instance();
-        ObeliskFuelManager.instance();
         CompatManager.preInit();
     }
 
