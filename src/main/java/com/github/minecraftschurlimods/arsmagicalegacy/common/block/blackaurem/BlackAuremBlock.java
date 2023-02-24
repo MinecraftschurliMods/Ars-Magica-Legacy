@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.function.BiPredicate;
 
-public class BlackAuremBlock extends BaseEntityBlock {
+public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlock {
     private static final VoxelShape BOX = Block.box(6, 6, 6, 10, 10, 10);
     private static final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_CHALK);
     private static final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR1);
@@ -48,12 +49,13 @@ public class BlackAuremBlock extends BaseEntityBlock {
     }
 
     /**
-     * @param state The state of the core block.
      * @param world The world this block is in.
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
-    public int getTier(BlockState state, Level world, BlockPos pos) {
+    @Override
+    public int getTier(Level world, BlockPos pos) {
+        pos = pos.below();
         int tier = 0;
         if (CHALK.test(world, pos)) {
             if (PILLAR1.test(world, pos)) {
