@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Ability;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.ObeliskFuel;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
@@ -150,6 +151,7 @@ public interface AMRegistries {
         DeferredRegister<AltarStructureMaterial> ALTAR_STRUCTURE_MATERIALS = DeferredRegister.create(AltarStructureMaterial.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
         DeferredRegister<AltarCapMaterial>       ALTAR_CAP_MATERIALS       = DeferredRegister.create(AltarCapMaterial.REGISTRY_KEY,       ArsMagicaAPI.MOD_ID);
         DeferredRegister<PrefabSpell>            PREFAB_SPELLS             = DeferredRegister.create(PrefabSpell.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
+        DeferredRegister<ObeliskFuel>            OBELISK_FUELS             = DeferredRegister.create(ObeliskFuel.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
         // endregion
 
         // region Custom datapack registries get via RegistryAccess
@@ -161,6 +163,7 @@ public interface AMRegistries {
         ALTAR_STRUCTURE_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarStructureMaterial>().dataPackRegistry(AltarStructureMaterial.CODEC, AltarStructureMaterial.CODEC));
         ALTAR_CAP_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarCapMaterial>().dataPackRegistry(AltarCapMaterial.CODEC, AltarCapMaterial.CODEC));
         PREFAB_SPELLS.makeRegistry(() -> new RegistryBuilder<PrefabSpell>().dataPackRegistry(PrefabSpell.DIRECT_CODEC, PrefabSpell.DIRECT_CODEC));
+        OBELISK_FUELS.makeRegistry(() -> new RegistryBuilder<ObeliskFuel>().dataPackRegistry(ObeliskFuel.DIRECT_CODEC, ObeliskFuel.NETWORK_CODEC));
         // endregion
 
         ABILITIES.register(bus);
@@ -171,5 +174,6 @@ public interface AMRegistries {
         ALTAR_STRUCTURE_MATERIALS.register(bus);
         ALTAR_CAP_MATERIALS.register(bus);
         PREFAB_SPELLS.register(bus);
+        OBELISK_FUELS.register(bus);
     }
 }
