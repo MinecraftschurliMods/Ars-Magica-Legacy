@@ -46,7 +46,7 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
             Codec.INT.optionalFieldOf("start_x", 0).forGetter(OcculusTab::startX),
             Codec.INT.optionalFieldOf("start_y", 0).forGetter(OcculusTab::startY),
             Codec.BYTE.fieldOf("index").xmap(Number::intValue, Number::byteValue).forGetter(OcculusTab::index)
-    ).apply(inst, (rendererClass, background, icon, width, height, startX, startY, index) -> new OcculusTab(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index, Lazy.concurrentOf(OcculusTabRendererFactory.of(rendererClass)))));
+    ).apply(inst, OcculusTab::create));
 
     /**
      * @return The location of the background texture for this skill tree.
@@ -82,6 +82,10 @@ public record OcculusTab(String rendererClass, @Nullable ResourceLocation backgr
     @Override
     public String rendererClass() {
         return rendererClass;
+    }
+
+    private static OcculusTab create(String rendererClass, Optional<ResourceLocation> background, Optional<ResourceLocation> icon, Integer width, Integer height, Integer startX, Integer startY, Integer index) {
+        return new OcculusTab(rendererClass, background.orElse(null), icon.orElse(null), width, height, startX, startY, index, Lazy.concurrentOf(OcculusTabRendererFactory.of(rendererClass)));
     }
 
     /**

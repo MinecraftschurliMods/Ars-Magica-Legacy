@@ -29,7 +29,7 @@ public class AMDatagen {
         ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         DataGenerator generator = evt.getGenerator();
         LanguageProvider lang = new AMEnglishLanguageProvider(generator);
-        RegistryOps<JsonElement> registryOps = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.builtinCopy());
+        RegistryOps<JsonElement> registryOps = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get());
         AMAbilityProvider abilityProvider = new AMAbilityProvider(generator, existingFileHelper, registryOps);
         AMSkillProvider skillProvider = new AMSkillProvider(generator, existingFileHelper, registryOps);
         generator.addProvider(evt.includeServer(), abilityProvider);

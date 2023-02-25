@@ -175,7 +175,7 @@ public abstract class SkillProvider extends AbstractDataProvider<Skill, SkillPro
         protected Skill build() {
             if (occulusTab == null) throw new SerializationException("A skill needs an occulus tab!");
             if (x == null || y == null) throw new SerializationException("A skill needs a position!");
-            return new Skill(parents, cost, occulusTab, x, y, hidden);
+            return new Skill(parents, cost, occulusTab, x, y, hidden != null && hidden);
         }
     }
 }

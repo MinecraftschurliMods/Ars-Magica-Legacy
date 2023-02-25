@@ -18,13 +18,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.regeneration.description",
-      "title": "ability.arsmagicalegacy.regeneration.name"
+      "text": "ability.arsmagicalegacy.nausea.description",
+      "title": "ability.arsmagicalegacy.nausea.name"
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.nausea.description",
-      "title": "ability.arsmagicalegacy.nausea.name"
+      "text": "ability.arsmagicalegacy.regeneration.description",
+      "title": "ability.arsmagicalegacy.regeneration.name"
     }
   ]
 }

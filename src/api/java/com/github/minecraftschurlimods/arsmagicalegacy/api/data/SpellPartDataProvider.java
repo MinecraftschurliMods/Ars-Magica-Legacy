@@ -31,11 +31,11 @@ import java.util.function.Supplier;
 public abstract class SpellPartDataProvider implements DataProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
     private final String namespace;
-    private final DataGenerator generator;
+    private final DataGenerator.PathProvider pathProvider;
 
     protected SpellPartDataProvider(String namespace, DataGenerator generator) {
         this.namespace = namespace;
-        this.generator = generator;
+        this.pathProvider = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "spell_parts");
     }
 
     protected abstract void generate(Consumer<Builder> consumer);
@@ -46,7 +46,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
         generate(consumer -> {
             if (!ids.add(consumer.id)) throw new IllegalStateException("Duplicate datagenned object " + consumer.id);
             try {
-                DataProvider.saveStable(cache, consumer.toJson(), generator.getOutputFolder().resolve("data/" + consumer.id.getNamespace() + "/spell_parts/" + consumer.id.getPath() + ".json"));
+                DataProvider.saveStable(cache, consumer.toJson(), pathProvider.json(consumer.id));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

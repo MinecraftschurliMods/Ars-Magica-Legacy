@@ -7,6 +7,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.apache.commons.lang3.SerializationException;
 
 public abstract class OcculusTabProvider extends AbstractDataProvider<OcculusTab, OcculusTabProvider.Builder> {
     protected OcculusTabProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
@@ -29,13 +30,13 @@ public abstract class OcculusTabProvider extends AbstractDataProvider<OcculusTab
 
     public static class Builder extends AbstractDataBuilder<OcculusTab, Builder> {
         private Integer index;
-        private Integer startX;
-        private Integer startY;
-        private String renderer;
-        private int width = OcculusTab.TEXTURE_WIDTH;
-        private int height = OcculusTab.TEXTURE_HEIGHT;
         private ResourceLocation background;
         private ResourceLocation icon;
+        private String renderer = OcculusTab.DEFAULT_RENDERER;
+        private int startX = 0;
+        private int startY = 0;
+        private int width = OcculusTab.TEXTURE_WIDTH;
+        private int height = OcculusTab.TEXTURE_HEIGHT;
 
         public Builder(ResourceLocation id) {
             super(id);
@@ -145,6 +146,7 @@ public abstract class OcculusTabProvider extends AbstractDataProvider<OcculusTab
          */
         @Override
         protected OcculusTab build() {
+            if (index == null) throw new SerializationException("Occulus tab index must be set.");
             return new OcculusTab(renderer, background, icon, width, height, startX, startY, index, null);
         }
     }

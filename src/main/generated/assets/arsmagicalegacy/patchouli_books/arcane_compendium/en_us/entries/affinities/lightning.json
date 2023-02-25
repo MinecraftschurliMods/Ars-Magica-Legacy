@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.speed.description",
-      "title": "ability.arsmagicalegacy.speed.name"
+      "text": "ability.arsmagicalegacy.water_damage_lightning.description",
+      "title": "ability.arsmagicalegacy.water_damage_lightning.name"
     },
     {
       "type": "patchouli:text",
@@ -23,8 +23,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.water_damage_lightning.description",
-      "title": "ability.arsmagicalegacy.water_damage_lightning.name"
+      "text": "ability.arsmagicalegacy.speed.description",
+      "title": "ability.arsmagicalegacy.speed.name"
     }
   ]
 }
