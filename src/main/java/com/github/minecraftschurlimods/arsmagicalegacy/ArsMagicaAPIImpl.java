@@ -19,9 +19,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
@@ -36,7 +37,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.Spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
@@ -46,12 +46,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Unmodifiable;
 import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
@@ -61,8 +63,9 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
 
     @Override
     public ItemStack getBookStack() {
-        if (ModList.get().isLoaded("patchouli"))
+        if (ModList.get().isLoaded("patchouli")) {
             return PatchouliAPI.get().getBookStack(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"));
+        }
         return ItemStack.EMPTY;
     }
 
@@ -102,13 +105,13 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public ISpellDataManager getSpellDataManager() {
-        return SpellDataManager.instance();
+    public IForgeRegistry<SpellIngredientType<?>> getSpellIngredientTypeRegistry() {
+        return AMRegistries.SPELL_INGREDIENT_TYPE_REGISTRY.get();
     }
 
     @Override
-    public ISpellTransformationManager getSpellTransformationManager() {
-        return SpellTransformationManager.instance();
+    public ISpellDataManager getSpellDataManager() {
+        return SpellDataManager.instance();
     }
 
     @Unmodifiable
@@ -176,16 +179,14 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
 
     @Override
     public void openSpellCustomizationGui(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide()) {
-            ClientHelper.openSpellCustomizationGui(stack);
-        }
+        if (!level.isClientSide()) return;
+        ClientHelper.openSpellCustomizationGui(stack);
     }
 
     @Override
     public void openSpellRecipeGui(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide()) {
-            ClientHelper.openSpellRecipeGui(stack, true, 0, null);
-        }
+        if (!level.isClientSide()) return;
+        ClientHelper.openSpellRecipeGui(stack, true, 0, null);
     }
 
     @Override
@@ -196,5 +197,11 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     @Override
     public ISpell makeSpell(SpellStack spellStack, ShapeGroup... shapeGroups) {
         return Spell.of(spellStack, shapeGroups);
+    }
+
+    @Override
+    public Optional<BlockState> getSpellTransformationFor(BlockState block, Level level, ResourceLocation spellPart) {
+        if (level.isClientSide()) return Optional.empty();
+        return level.registryAccess().registryOrThrow(SpellTransformation.REGISTRY_KEY).stream().filter(spellTransformation -> spellTransformation.spellPart().equals(spellPart) && spellTransformation.from().test(block, level.random)).findFirst().map(SpellTransformation::to);
     }
 }

@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
@@ -284,10 +285,9 @@ public class SpellRecipeScreen extends Screen {
 
         @Override
         protected void render(PoseStack poseStack, int x, int y) {
-            var manager = ArsMagicaAPI.get().getSpellDataManager();
             for (int i = 0; i < ingredients.size(); i++) {
                 ISpellIngredient ingredient = ingredients.get(i);
-                manager.getSpellIngredientRenderer(ingredient.getType()).renderInGui(ingredient, poseStack, x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), 0, 0);
+                ISpellIngredientRenderer.getFor(ingredient.getType()).renderInGui(ingredient, poseStack, x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), 0, 0);
             }
         }
 

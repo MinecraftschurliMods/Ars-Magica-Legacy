@@ -1,10 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellIngredientTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Objects;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
-    public static final ResourceLocation INGREDIENT = new ResourceLocation(ArsMagicaAPI.MOD_ID, "ingredient");
     public static final Codec<IngredientSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
             Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
@@ -44,8 +43,8 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
     ).apply(inst, IngredientSpellIngredient::new));
 
     @Override
-    public ResourceLocation getType() {
-        return INGREDIENT;
+    public SpellIngredientType<IngredientSpellIngredient> getType() {
+        return AMSpellIngredientTypes.INGREDIENT.get();
     }
 
     @Override

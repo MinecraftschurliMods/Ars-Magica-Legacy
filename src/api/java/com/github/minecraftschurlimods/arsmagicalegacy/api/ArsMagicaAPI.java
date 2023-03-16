@@ -18,22 +18,24 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellTransformationManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.ApiStatus.Experimental;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
-import org.jetbrains.annotations.Unmodifiable;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -44,8 +46,9 @@ import java.util.ServiceLoader;
 public interface ArsMagicaAPI {
     String MOD_ID = "arsmagicalegacy";
 
-    class Internal {
-        private Internal() {}
+    @Internal
+    final class InstanceHolder {
+        private InstanceHolder() {}
 
         private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
             Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
@@ -67,7 +70,7 @@ public interface ArsMagicaAPI {
      * @return The API instance.
      */
     static ArsMagicaAPI get() {
-        return Internal.LAZY_INSTANCE.get();
+        return InstanceHolder.LAZY_INSTANCE.get();
     }
 
     /**
@@ -109,68 +112,56 @@ public interface ArsMagicaAPI {
     @Experimental
     IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
 
+    IForgeRegistry<SpellIngredientType<?>> getSpellIngredientTypeRegistry();
+
     /**
      * @return The spell data manager instance.
      */
     ISpellDataManager getSpellDataManager();
 
     /**
-     * @return The spell data manager instance.
-     */
-    ISpellTransformationManager getSpellTransformationManager();
-
-    /**
      * @return The skill helper instance.
      */
-    @Unmodifiable
     ISkillHelper getSkillHelper();
 
     /**
      * @return The affinity helper instance.
      */
-    @Unmodifiable
     IAffinityHelper getAffinityHelper();
 
     /**
      * @return The magic helper instance.
      */
-    @Unmodifiable
     IMagicHelper getMagicHelper();
 
     /**
      * @return The mana helper instance.
      */
-    @Unmodifiable
     IManaHelper getManaHelper();
 
     /**
      * @return The burnout helper instance.
      */
-    @Unmodifiable
     IBurnoutHelper getBurnoutHelper();
 
     /**
      * @return The spell helper instance.
      */
-    @Unmodifiable
     ISpellHelper getSpellHelper();
 
     /**
      * @return The rift helper instance.
      */
-    @Unmodifiable
     IRiftHelper getRiftHelper();
 
     /**
      * @return The etherium helper instance.
      */
-    @Unmodifiable
     IEtheriumHelper getEtheriumHelper();
 
     /**
      * @return The contingency helper instance.
      */
-    @Unmodifiable
     IContingencyHelper getContingencyHelper();
 
     /**
@@ -216,4 +207,12 @@ public interface ArsMagicaAPI {
      * @return The spell instance.
      */
     ISpell makeSpell(SpellStack spellStack, ShapeGroup... shapeGroups);
+
+    /**
+     * @param block     The block to check the transition for.
+     * @param level     The level to check the transition for.
+     * @param spellPart The spell part to check the transition for.
+     * @return The transitioned block state for the given block and spell part or empty.
+     */
+    Optional<BlockState> getSpellTransformationFor(BlockState block, Level level, ResourceLocation spellPart);
 }

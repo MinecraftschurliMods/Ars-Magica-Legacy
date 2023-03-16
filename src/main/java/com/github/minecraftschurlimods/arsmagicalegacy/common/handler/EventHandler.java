@@ -42,8 +42,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpellIngredient;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
@@ -99,8 +97,7 @@ import java.util.Set;
  * Central event handler. Registers the other event handlers, as well as some general-purpose event handlers.
  */
 public final class EventHandler {
-    private EventHandler() {
-    }
+    private EventHandler() {}
 
     /**
      * Registers the common event handlers.
@@ -136,7 +133,6 @@ public final class EventHandler {
         event.enqueueWork(() -> {
             WoodType.register(AMWoodTypes.WITCHWOOD);
             registerBrewingRecipes();
-            registerSpellIngredientTypes();
             AMCriteriaTriggers.register();
         });
         CompatManager.init(event);
@@ -166,12 +162,6 @@ public final class EventHandler {
         BrewingRecipeRegistry.addRecipe(PartialNBTIngredient.of(Items.LINGERING_POTION, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD).getOrCreateTag()), Ingredient.of(AMItems.ARCANE_ASH.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.EPIC_MANA.get()));
         BrewingRecipeRegistry.addRecipe(PartialNBTIngredient.of(Items.LINGERING_POTION, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD).getOrCreateTag()), Ingredient.of(AMItems.PURIFIED_VINTEUM_DUST.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.LEGENDARY_MANA.get()));
         BrewingRecipeRegistry.addRecipe(PartialNBTIngredient.of(Items.LINGERING_POTION, PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), Potions.AWKWARD).getOrCreateTag()), Ingredient.of(AMItems.TARMA_ROOT.get()), PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), AMMobEffects.INFUSED_MANA.get()));
-    }
-
-    public static void registerSpellIngredientTypes() {
-        var spellDataManager = ArsMagicaAPI.get().getSpellDataManager();
-        spellDataManager.registerSpellIngredientType(IngredientSpellIngredient.INGREDIENT, IngredientSpellIngredient.CODEC, IngredientSpellIngredient.NETWORK_CODEC, IngredientSpellIngredient.IngredientSpellIngredientRenderer::new);
-        spellDataManager.registerSpellIngredientType(EtheriumSpellIngredient.ETHERIUM, EtheriumSpellIngredient.CODEC, EtheriumSpellIngredient.EtheriumSpellIngredientRenderer::new);
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -299,36 +289,33 @@ public final class EventHandler {
         Level level = event.getLevel();
         BlockPos pos = event.getHitVec().getBlockPos();
         BlockState state = level.getBlockState(pos);
-        if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {
-            ItemStack stack = lectern.getBook();
-            if (stack.getItem() instanceof SpellRecipeItem) {
-                if (player.isSecondaryUseActive()) {
-                    SpellRecipeItem.takeFromLectern(player, level, pos, state);
-                } else {
-                    lectern.pageCount = SpellRecipeItem.getPageCount(stack);
-                    ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
-                    player.awardStat(Stats.INTERACT_WITH_LECTERN);
-                    event.setCanceled(true);
-                }
-            }
+        if (!(level.getBlockEntity(pos) instanceof LecternBlockEntity lectern) || !state.getValue(LecternBlock.HAS_BOOK)) return;
+        ItemStack stack = lectern.getBook();
+        if (!(stack.getItem() instanceof SpellRecipeItem)) return;
+        if (player.isSecondaryUseActive()) {
+            SpellRecipeItem.takeFromLectern(player, level, pos, state);
+        } else {
+            lectern.pageCount = SpellRecipeItem.getPageCount(stack);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
+            player.awardStat(Stats.INTERACT_WITH_LECTERN);
+            event.setCanceled(true);
         }
     }
 
     private static void manaCostPre(SpellEvent.ManaCost.Pre event) {
         LivingEntity caster = event.getEntity();
+        if (!(caster instanceof Player player)) return;
         float cost = event.getBase();
-        if (caster instanceof Player player) {
-            var api = ArsMagicaAPI.get();
-            for (ISpellPart iSpellPart : event.getSpell().parts()) {
-                if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
-                ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
-                if (dataForPart == null) continue;
-                Set<Affinity> affinities = dataForPart.affinities();
-                for (Affinity aff : affinities) {
-                    double value = api.getAffinityHelper().getAffinityDepthOrElse(player, aff, 0);
-                    if (value > 0) {
-                        cost -= (float) (cost * (0.5f * value / 100f));
-                    }
+        var api = ArsMagicaAPI.get();
+        for (ISpellPart iSpellPart : event.getSpell().parts()) {
+            if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
+            ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
+            if (dataForPart == null) continue;
+            Set<Affinity> affinities = dataForPart.affinities();
+            for (Affinity aff : affinities) {
+                double value = api.getAffinityHelper().getAffinityDepthOrElse(player, aff, 0);
+                if (value > 0) {
+                    cost -= (float) (cost * (0.5f * value / 100f));
                 }
             }
         }
