@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public final class ContingencyType {
     public static final ResourceKey<Registry<ContingencyType>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, "contingency_type"));
+    public static final Codec<ContingencyType> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getContingencyTypeRegistry);
 
     public static final ResourceLocation NONE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "none");
     public static final ResourceLocation DEATH = new ResourceLocation(ArsMagicaAPI.MOD_ID, "death");
@@ -19,6 +20,4 @@ public final class ContingencyType {
     public static final ResourceLocation HEALTH = new ResourceLocation(ArsMagicaAPI.MOD_ID, "health");
     public static final ResourceLocation FALL = new ResourceLocation(ArsMagicaAPI.MOD_ID, "fall");
     public static final ResourceLocation DAMAGE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "damage");
-
-    public static final Codec<ContingencyType> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getContingencyTypeRegistry);
 }

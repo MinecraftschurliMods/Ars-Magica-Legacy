@@ -4,16 +4,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.mojang.serialization.JsonOps;
+import com.google.gson.JsonElement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.JsonCodecProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,20 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public abstract class RitualProvider implements DataProvider {
-    protected final Map<ResourceLocation, Ritual> data = new HashMap<>();
-    protected final JsonCodecProvider<Ritual> provider;
-    private final String namespace;
+public abstract class RitualProvider extends AbstractDataProvider<Ritual, RitualProvider.Builder> {
 
-    public RitualProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        this.namespace = namespace;
-        this.provider = JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, namespace, RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.BUILTIN.get()), Ritual.REGISTRY_KEY, data);
-    }
-
-    @Override
-    public void run(CachedOutput pCache) throws IOException {
-        addRituals(this::addRitual);
-        provider.run(pCache);
+    protected RitualProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
+        super(Ritual.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
     }
 
     @Override
@@ -44,57 +31,51 @@ public abstract class RitualProvider implements DataProvider {
         return "AMRituals[" + namespace + "]";
     }
 
-    public RitualBuilder builder(String id) {
-        return new RitualBuilder(new ResourceLocation(namespace, id));
+    public Builder builder(String id) {
+        return new Builder(new ResourceLocation(namespace, id));
     }
 
-    protected abstract void addRituals(BiConsumer<ResourceLocation, Ritual> consumer);
-
-    private void addRitual(ResourceLocation id, Ritual ritual) {
-        data.put(id, ritual);
-    }
-
-    protected static class RitualBuilder {
+    protected static class Builder extends AbstractDataBuilder<Ritual, Builder> {
         private final List<RitualRequirement> requirements = new ArrayList<>();
-        private final ResourceLocation id;
         private RitualEffect effect;
         private RitualTrigger trigger;
         private BlockPos offset = BlockPos.ZERO;
 
-        private RitualBuilder(ResourceLocation id) {
-            this.id = id;
+        private Builder(ResourceLocation id) {
+            super(id);
         }
 
-        public RitualBuilder with(RitualRequirement requirement) {
+        public Builder with(RitualRequirement requirement) {
             this.requirements.add(requirement);
             return this;
         }
 
-        public RitualBuilder with(RitualRequirement... requirements) {
+        public Builder with(RitualRequirement... requirements) {
             return with(Arrays.asList(requirements));
         }
 
-        public RitualBuilder with(List<RitualRequirement> requirements) {
+        public Builder with(List<RitualRequirement> requirements) {
             this.requirements.addAll(requirements);
             return this;
         }
 
-        public RitualBuilder with(RitualEffect effect) {
+        public Builder with(RitualEffect effect) {
             this.effect = effect;
             return this;
         }
 
-        public RitualBuilder with(RitualTrigger trigger) {
+        public Builder with(RitualTrigger trigger) {
             this.trigger = trigger;
             return this;
         }
 
-        public RitualBuilder with(BlockPos offset) {
+        public Builder with(BlockPos offset) {
             this.offset = offset;
             return this;
         }
 
-        private Ritual buildInternal() {
+        @Override
+        protected Ritual build() {
             if (trigger == null) {
                 throw new IllegalStateException("Trigger must be set");
             }
@@ -102,10 +83,6 @@ public abstract class RitualProvider implements DataProvider {
                 throw new IllegalStateException("Effect must be set");
             }
             return new Ritual(trigger, requirements, effect, offset);
-        }
-
-        public void build(BiConsumer<ResourceLocation, Ritual> consumer) {
-            consumer.accept(id, buildInternal());
         }
     }
 }

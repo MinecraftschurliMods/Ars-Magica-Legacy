@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.material.Material;
 import java.util.Locale;
 import java.util.function.BiPredicate;
 
-public class ObeliskBlock extends AbstractFurnaceBlock {
+public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     private final BiPredicate<Level, BlockPos> OBELISK_CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_CHALK);
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
@@ -149,6 +150,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock {
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
+    @Override
     public int getTier(Level world, BlockPos pos) {
         int tier = 0;
         if (OBELISK_CHALK.test(world, pos)) {

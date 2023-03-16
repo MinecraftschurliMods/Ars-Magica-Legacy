@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 
@@ -21,4 +22,9 @@ public interface ISpellIngredientRenderer<T extends ISpellIngredient> {
      * @param ingredient The ingredient to render.
      */
     void renderInGui(T ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY);
+
+    @SuppressWarnings("unchecked")
+    static ISpellIngredientRenderer<ISpellIngredient> getFor(SpellIngredientType<? extends ISpellIngredient> type) {
+        return (ISpellIngredientRenderer<ISpellIngredient>) type.renderFactory().get();
+    }
 }

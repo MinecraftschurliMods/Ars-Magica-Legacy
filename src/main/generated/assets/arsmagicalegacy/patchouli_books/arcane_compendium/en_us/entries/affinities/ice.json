@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.frost_walker.description",
-      "title": "ability.arsmagicalegacy.frost_walker.name"
+      "text": "ability.arsmagicalegacy.frost_punch.description",
+      "title": "ability.arsmagicalegacy.frost_punch.name"
     },
     {
       "type": "patchouli:text",
@@ -23,8 +23,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.frost_punch.description",
-      "title": "ability.arsmagicalegacy.frost_punch.name"
+      "text": "ability.arsmagicalegacy.frost_walker.description",
+      "title": "ability.arsmagicalegacy.frost_walker.name"
     }
   ]
 }

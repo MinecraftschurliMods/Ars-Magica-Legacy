@@ -13,13 +13,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.water_damage_fire.description",
-      "title": "ability.arsmagicalegacy.water_damage_fire.name"
+      "text": "ability.arsmagicalegacy.fire_punch.description",
+      "title": "ability.arsmagicalegacy.fire_punch.name"
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.fire_punch.description",
-      "title": "ability.arsmagicalegacy.fire_punch.name"
+      "text": "ability.arsmagicalegacy.water_damage_fire.description",
+      "title": "ability.arsmagicalegacy.water_damage_fire.name"
     },
     {
       "type": "patchouli:text",

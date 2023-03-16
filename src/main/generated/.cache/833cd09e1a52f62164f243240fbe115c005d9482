@@ -1,4 +1,4 @@
-// 1.19.2	2023-01-04T23:38:42.2151514	Item Models: arsmagicalegacy
+// 1.19.2	2023-02-25T10:35:28.1291338	Item Models: arsmagicalegacy
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/affinity_essence.json
 6e0b262bb6740bdbe7b3564e182497239ff375ac assets/arsmagicalegacy/models/item/affinity_essence_air.json
 84174d0bc6eb1016c4946a0937eb7ec35e19f1d8 assets/arsmagicalegacy/models/item/affinity_essence_arcane.json
@@ -42,7 +42,7 @@ d87cb1d957df2f45a524fc14d0d577b646a7dd5d assets/arsmagicalegacy/models/item/brow
 6c1eeae7f5e5a36cc5147228704ed8173be15c36 assets/arsmagicalegacy/models/item/chimerite.json
 379ee8d24d333ed5382839985eaef620a27d0f92 assets/arsmagicalegacy/models/item/chimerite_block.json
 a173017a013a2594a6c3c8c44dfdca0c60018f2b assets/arsmagicalegacy/models/item/chimerite_ore.json
-a96c468b1be5ab7f5ab5f5c2a3b2567a1a3a25c6 assets/arsmagicalegacy/models/item/crystal_wrench.json
+fc394511d334e110e503fba01ae8a516d9b31673 assets/arsmagicalegacy/models/item/crystal_wrench.json
 8ff967403269c80859578dd7da45ee16595cc764 assets/arsmagicalegacy/models/item/cyan_rune.json
 61b734af14cbc76804490be973ea35ecc8fa98a5 assets/arsmagicalegacy/models/item/deepslate_chimerite_ore.json
 ceb5816f7bffe087aa2d7d3ab4507a55e32a6728 assets/arsmagicalegacy/models/item/deepslate_moonstone_ore.json
@@ -139,5 +139,5 @@ aac29ceaba013d7325359720ff4fab0f1868762c assets/arsmagicalegacy/models/item/witc
 4e8f02397fe605cf3737775174f8541d5ef11be8 assets/arsmagicalegacy/models/item/witchwood_slab.json
 10650bd7485c723d38a09aed82ef8862d78d9192 assets/arsmagicalegacy/models/item/witchwood_stairs.json
 ae15cfa128b13830635c630db2e676aa69726838 assets/arsmagicalegacy/models/item/witchwood_trapdoor.json
-c180050b9743599d42df036ad2010f5c56dd46d1 assets/arsmagicalegacy/models/item/wizards_chalk.json
+2d46b5e6053fb10091d1d8b7e02bb0881e32530b assets/arsmagicalegacy/models/item/wizards_chalk.json
 b3c9db5fc6b386b264fc666d0399649910a5f68c assets/arsmagicalegacy/models/item/yellow_rune.json

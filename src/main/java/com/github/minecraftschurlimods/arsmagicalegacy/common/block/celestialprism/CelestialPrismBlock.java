@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.function.BiPredicate;
 
 @SuppressWarnings("deprecation")
-public class CelestialPrismBlock extends BaseEntityBlock {
+public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckingBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);
     public final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_CHALK);
@@ -118,12 +119,12 @@ public class CelestialPrismBlock extends BaseEntityBlock {
     }
 
     /**
-     * @param state The state of the core block.
      * @param world The world this block is in.
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
-    public int getTier(BlockState state, Level world, BlockPos pos) {
+    @Override
+    public int getTier(Level world, BlockPos pos) {
         int tier = 0;
         if (CHALK.test(world, pos)) {
             if (PILLAR1.test(world, pos)) {

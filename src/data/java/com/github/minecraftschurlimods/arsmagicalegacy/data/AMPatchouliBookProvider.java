@@ -17,6 +17,7 @@ import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedCa
 import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedEntryBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.Util;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;

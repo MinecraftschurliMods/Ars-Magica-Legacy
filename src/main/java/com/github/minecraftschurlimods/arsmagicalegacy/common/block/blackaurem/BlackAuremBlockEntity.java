@@ -41,7 +41,7 @@ public class BlackAuremBlockEntity extends BlockEntity {
 
     void tick(Level level, BlockPos pos, BlockState state) {
         if (timer <= 0) {
-            int tier = state.getBlock() instanceof BlackAuremBlock block ? block.getTier(state, level, pos) : 0;
+            int tier = state.getBlock() instanceof BlackAuremBlock block ? block.getTier(level, pos) : 0;
             List<LivingEntity> entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), AABB.ofSize(Vec3.atCenterOf(pos), 5, 5, 5), livingEntity -> !(livingEntity instanceof Player));
             entities.sort(Comparator.comparingDouble(value -> value.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())));
             int c = Math.max(1, tier / 2);

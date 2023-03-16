@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
@@ -181,7 +182,7 @@ public class SpellPartPage implements ICustomComponent {
     }
 
     private void renderCraftingComponent(PoseStack poseStack, IComponentRenderContext context, ISpellIngredient craftingComponent, int sx, int sy, int mousex, int mousey) {
-        ArsMagicaAPI.get().getSpellDataManager().getSpellIngredientRenderer(craftingComponent.getType()).renderInGui(craftingComponent, poseStack, sx, sy, mousex, mousey);
+        ISpellIngredientRenderer.getFor(craftingComponent.getType()).renderInGui(craftingComponent, poseStack, sx, sy, mousex, mousey);
         if (context.isAreaHovered(mousex, mousey, sx, sy, 16, 16)) {
             context.setHoverTooltipComponents(craftingComponent.getTooltip());
         }

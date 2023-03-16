@@ -15,43 +15,42 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.SerializationException;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * Base class for spell part data generators.
- */
 public abstract class SpellPartDataProvider implements DataProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private final Map<ResourceLocation, JsonObject> data = new HashMap<>();
     private final String namespace;
-    private final DataGenerator generator;
+    private final DataGenerator.PathProvider pathProvider;
 
-    public SpellPartDataProvider(String namespace, DataGenerator generator) {
+    protected SpellPartDataProvider(String namespace, DataGenerator generator) {
         this.namespace = namespace;
-        this.generator = generator;
+        this.pathProvider = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "spell_parts");
     }
 
-    protected abstract void createSpellPartData();
+    protected abstract void generate(Consumer<Builder> consumer);
 
     @Override
-    public void run(CachedOutput pCache) {
-        createSpellPartData();
-        for (Map.Entry<ResourceLocation, JsonObject> entry : data.entrySet()) {
-            ResourceLocation resourceLocation = entry.getKey();
-            JsonObject jsonObject = entry.getValue();
+    public void run(CachedOutput cache) {
+        Set<ResourceLocation> ids = new HashSet<>();
+        generate(consumer -> {
+            if (!ids.add(consumer.id)) throw new IllegalStateException("Duplicate datagenned object " + consumer.id);
             try {
-                DataProvider.saveStable(pCache, jsonObject, generator.getOutputFolder().resolve("data/" + resourceLocation.getNamespace() + "/spell_parts/" + resourceLocation.getPath() + ".json"));
+                DataProvider.saveStable(cache, consumer.toJson(), pathProvider.json(consumer.id));
             } catch (IOException e) {
-                LOGGER.error("Couldn't save spell part data {}", resourceLocation, e);
+                throw new RuntimeException(e);
             }
-        }
+        });
     }
 
     @Override
@@ -64,8 +63,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @param manaCost  The mana cost for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder createSpellPartData(ResourceLocation spellPart, float manaCost) {
-        return new SpellPartDataBuilder(spellPart, manaCost);
+    public Builder builder(ResourceLocation spellPart, float manaCost) {
+        return new Builder(spellPart).setManaCost(manaCost);
     }
 
     /**
@@ -73,26 +72,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @param manaCost  The mana cost for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost) {
-        return createSpellPartData(spellPart.getId(), manaCost);
-    }
-
-    /**
-     * @param spellPart The new spell part.
-     * @param manaCost  The mana cost for the new spell part.
-     * @return A new spell part data object.
-     */
-    public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost) {
-        return createSpellPartData(spellPart.get(), manaCost);
-    }
-
-    /**
-     * @param spellPart The new spell part.
-     * @param manaCost  The mana cost for the new spell part.
-     * @return A new spell part data object.
-     */
-    public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
-        return createSpellPartData(spellPart.getId(), manaCost);
+    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
+        return builder(spellPart.getId(), manaCost);
     }
 
     /**
@@ -101,8 +82,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @param burnout   The burnout for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder createSpellPartData(ResourceLocation spellPart, float manaCost, float burnout) {
-        return new SpellPartDataBuilder(spellPart, manaCost, burnout);
+    public Builder builder(ResourceLocation spellPart, float manaCost, float burnout) {
+        return builder(spellPart, manaCost).setBurnout(burnout);
     }
 
     /**
@@ -111,61 +92,42 @@ public abstract class SpellPartDataProvider implements DataProvider {
      * @param burnout   The burnout for the new spell part.
      * @return A new spell part data object.
      */
-    public SpellPartDataBuilder createSpellPartData(ISpellPart spellPart, float manaCost, float burnout) {
-        return createSpellPartData(spellPart.getId(), manaCost, burnout);
+    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+        return builder(spellPart.getId(), manaCost, burnout);
     }
 
-    /**
-     * @param spellPart The new spell part.
-     * @param manaCost  The mana cost for the new spell part.
-     * @param burnout   The burnout for the new spell part.
-     * @return A new spell part data object.
-     */
-    public SpellPartDataBuilder createSpellPartData(Supplier<? extends ISpellPart> spellPart, float manaCost, float burnout) {
-        return createSpellPartData(spellPart.get(), manaCost, burnout);
-    }
-
-    /**
-     * @param spellPart The new spell part.
-     * @param manaCost  The mana cost for the new spell part.
-     * @param burnout   The burnout for the new spell part.
-     * @return A new spell part data object.
-     */
-    public SpellPartDataBuilder createSpellPartData(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
-        return createSpellPartData(spellPart.getId(), manaCost, burnout);
-    }
-
-    public class SpellPartDataBuilder {
+    public static class Builder {
         private final ResourceLocation id;
-        private final float manaCost;
-        private final Float burnout;
+        private Float manaCost;
+        private Float burnout;
         private final List<ISpellIngredient> recipe = new ArrayList<>();
         private final List<ItemFilter> reagents = new ArrayList<>();
         private final Map<ResourceLocation, Float> affinities = new HashMap<>();
 
-        /**
-         * Creates a new spell part builder entry.
-         *
-         * @param id       The spell part id.
-         * @param manaCost The spell part mana cost.
-         * @param burnout  The spell part burnout.
-         */
-        public SpellPartDataBuilder(ResourceLocation id, float manaCost, float burnout) {
+        public Builder(ResourceLocation id) {
             this.id = id;
+        }
+
+        /**
+         * Sets the mana cost.
+         *
+         * @param manaCost The mana cost to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setManaCost(float manaCost) {
             this.manaCost = manaCost;
+            return this;
+        }
+
+        /**
+         * Sets the burnout cost.
+         *
+         * @param burnout The burnout cost to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setBurnout(float burnout) {
             this.burnout = burnout;
-        }
-
-        /**
-         * Creates a new spell part builder entry.
-         *
-         * @param id       The spell part id.
-         * @param manaCost The spell part mana cost.
-         */
-        public SpellPartDataBuilder(ResourceLocation id, float manaCost) {
-            this.id = id;
-            this.manaCost = manaCost;
-            this.burnout = null;
+            return this;
         }
 
         /**
@@ -174,8 +136,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param ingredient The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withReagent(Ingredient ingredient) {
-            return withReagent(1, ingredient);
+        public Builder addReagent(Ingredient ingredient) {
+            return addReagent(1, ingredient);
         }
 
         /**
@@ -184,8 +146,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param ingredient The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withReagent(int amount, Ingredient ingredient) {
-            return withReagent(ItemFilter.exactly(amount).is(ingredient));
+        public Builder addReagent(int amount, Ingredient ingredient) {
+            return addReagent(ItemFilter.exactly(amount).is(ingredient));
         }
 
         /**
@@ -194,8 +156,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param stack The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withReagent(ItemStack stack) {
-            return withReagent(ItemFilter.exactly(stack));
+        public Builder addReagent(ItemStack stack) {
+            return addReagent(ItemFilter.exactly(stack));
         }
 
         /**
@@ -204,7 +166,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param filter The spell reagent to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withReagent(ItemFilter filter) {
+        public Builder addReagent(ItemFilter filter) {
             reagents.add(filter);
             return this;
         }
@@ -215,7 +177,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param ingredient The spell ingredient to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withIngredient(ISpellIngredient ingredient) {
+        public Builder addIngredient(ISpellIngredient ingredient) {
             recipe.add(ingredient);
             return this;
         }
@@ -226,8 +188,8 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(Supplier<Affinity> affinity, float shift) {
-            return withAffinity(affinity.get(), shift);
+        public Builder addAffinity(Supplier<Affinity> affinity, float shift) {
+            return addAffinity(affinity.get(), shift);
         }
 
         /**
@@ -236,7 +198,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(Affinity affinity, float shift) {
+        public Builder addAffinity(Affinity affinity, float shift) {
             affinities.put(affinity.getId(), shift);
             return this;
         }
@@ -247,20 +209,18 @@ public abstract class SpellPartDataProvider implements DataProvider {
          * @param affinity The affinity to add.
          * @return This builder, for chaining.
          */
-        public SpellPartDataBuilder withAffinity(ResourceLocation affinity, float shift) {
+        public Builder addAffinity(ResourceLocation affinity, float shift) {
             affinities.put(affinity, shift);
             return this;
         }
 
-        /**
-         * Builds the spell part data object.
-         */
-        public void build() {
-            data.put(id, serialize());
+        public void build(Consumer<Builder> consumer) {
+            consumer.accept(this);
         }
 
-        JsonObject serialize() {
+        private JsonObject toJson() {
             JsonObject json = new JsonObject();
+            if (manaCost == null) throw new SerializationException("A spell part needs a mana cost!");
             json.addProperty("manaCost", this.manaCost);
             if (burnout != null) {
                 json.addProperty("burnout", this.burnout);
@@ -269,7 +229,7 @@ public abstract class SpellPartDataProvider implements DataProvider {
             reagents.forEach(filter -> reagentsJson.add(ItemFilter.CODEC.encodeStart(JsonOps.INSTANCE, filter).getOrThrow(false, LOGGER::error)));
             json.add("reagents", reagentsJson);
             JsonObject affinitiesJson = new JsonObject();
-            affinities.forEach((resourceLocation, shift) -> affinitiesJson.addProperty(resourceLocation.toString(), shift));
+            affinities.forEach((id, shift) -> affinitiesJson.addProperty(id.toString(), shift));
             json.add("affinities", affinitiesJson);
             JsonArray recipeJson = new JsonArray();
             recipe.forEach(ingredient -> recipeJson.add(ISpellIngredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).getOrThrow(false, s -> {})));

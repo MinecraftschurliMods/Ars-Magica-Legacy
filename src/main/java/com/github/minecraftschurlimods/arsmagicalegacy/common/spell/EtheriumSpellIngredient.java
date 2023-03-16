@@ -5,10 +5,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredie
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellIngredientTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,7 +23,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,15 +34,14 @@ import java.util.Objects;
 import java.util.Set;
 
 public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) implements ISpellIngredient {
-    public static final ResourceLocation ETHERIUM = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
     public static final Codec<EtheriumSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
 
     @Override
-    public ResourceLocation getType() {
-        return ETHERIUM;
+    public SpellIngredientType<EtheriumSpellIngredient> getType() {
+        return AMSpellIngredientTypes.ETHERIUM.get();
     }
 
     @Override

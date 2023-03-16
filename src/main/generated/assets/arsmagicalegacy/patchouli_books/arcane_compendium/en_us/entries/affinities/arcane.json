@@ -13,13 +13,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.mana_reduction.description",
-      "title": "ability.arsmagicalegacy.mana_reduction.name"
+      "text": "ability.arsmagicalegacy.clarity.description",
+      "title": "ability.arsmagicalegacy.clarity.name"
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.clarity.description",
-      "title": "ability.arsmagicalegacy.clarity.name"
+      "text": "ability.arsmagicalegacy.mana_reduction.description",
+      "title": "ability.arsmagicalegacy.mana_reduction.name"
     },
     {
       "type": "patchouli:text",

@@ -44,9 +44,9 @@ class AMItemModelProvider extends ItemModelProvider {
             .transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end().end();
         blockItem(CELESTIAL_PRISM).transforms().transform(ItemTransforms.TransformType.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
-        itemGenerated(WIZARDS_CHALK);
+        itemHandheld(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);
-        itemGenerated(CRYSTAL_WRENCH);
+        itemHandheld(CRYSTAL_WRENCH);
         blockItem(CHIMERITE_ORE);
         blockItem(DEEPSLATE_CHIMERITE_ORE);
         itemGenerated(CHIMERITE);
