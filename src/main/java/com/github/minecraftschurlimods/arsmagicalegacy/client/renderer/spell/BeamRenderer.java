@@ -66,17 +66,18 @@ public class BeamRenderer extends RenderType {
     }
 
     public static void drawBeam(PoseStack stack, Entity entity, Vec3 target, InteractionHand hand, int color, float ticks) {
-        if (Minecraft.getInstance().options.mainHand != HumanoidArm.RIGHT) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.options.mainHand != HumanoidArm.RIGHT) {
             hand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         }
-        boolean firstPerson = entity == ClientHelper.getLocalPlayer() && Minecraft.getInstance().options.getCameraType().isFirstPerson();
+        boolean firstPerson = entity == ClientHelper.getLocalPlayer() && mc.options.getCameraType().isFirstPerson();
+        MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
+        Vec3 view = mc.gameRenderer.getMainCamera().getPosition();
+        Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, entity.getBbHeight() / 2f, 0);
         long time = entity.getLevel().getGameTime();
         float v = -0.02f * time;
-        Vec3 view = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, entity.getBbHeight() / 2f, 0);
         float distance = (float) Math.max(1, origin.subtract(target).length());
         float r = ColorUtil.getRed(color), g = ColorUtil.getGreen(color), b = ColorUtil.getBlue(color);
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         stack.pushPose();
         stack.translate(-view.x(), -view.y(), -view.z());
         stack.translate(origin.x, origin.y, origin.z);
@@ -84,7 +85,7 @@ public class BeamRenderer extends RenderType {
         stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
         float x, y, z;
         if (firstPerson) {
-            float fov = ((float) Minecraft.getInstance().options.fov - 30) / 80f;
+            float fov = ((float) mc.options.fov - 30) / 80f;
             x = hand == InteractionHand.MAIN_HAND ? -0.25f : 0.25f;
             y = -0.175f;
             // This calculation is responsible for correctly positioning the beam in-hand, based on the player's fov.
