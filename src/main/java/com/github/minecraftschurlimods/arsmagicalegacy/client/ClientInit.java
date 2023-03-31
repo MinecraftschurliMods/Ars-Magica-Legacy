@@ -10,6 +10,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
@@ -88,6 +89,8 @@ import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -321,7 +324,8 @@ public final class ClientInit {
         Player p = ClientHelper.getLocalPlayer();
         if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
         ItemStack itemStack = event.getItemStack();
-        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty())) return;
+        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty()))
+            return;
         float swing = event.getSwingProgress();
         float swingSqrt = Mth.sqrt(swing);
         boolean isRightHand = (event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite()) != HumanoidArm.LEFT;
@@ -353,25 +357,31 @@ public final class ClientInit {
         float ticks = event.getPartialTick();
         PoseStack poseStack = event.getPoseStack();
         int dist = Minecraft.getInstance().options.getEffectiveRenderDistance() * 8;
+        int color = 0xff0000; //TODO change when Color modifier is added
         for (Player p : level.players()) {
             if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
-            ItemStack stack = player.getMainHandItem();
+            ItemStack stack = p.getMainHandItem();
             InteractionHand hand = InteractionHand.MAIN_HAND;
             if (!(stack.getItem() instanceof ISpellItem)) {
-                stack = player.getOffhandItem();
+                stack = p.getOffhandItem();
                 if (!(stack.getItem() instanceof ISpellItem)) continue;
                 hand = InteractionHand.OFF_HAND;
             }
             ISpell spell = helper.getSpell(stack);
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
-            if (pair.getFirst() == AMSpellParts.BEAM.get()) {
-                BeamRenderer.drawBeams(poseStack, p, hand, p.getEyePosition(ticks), helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0).getLocation(), 1, 0, 0, ticks);
-            } else if (pair.getFirst() == AMSpellParts.CHAIN.get()) {
-                List<Entity> list = Chain.getEntities(p, 16);
-                if (!list.isEmpty()) {
-                    BeamRenderer.drawBeams(poseStack, p, hand, p.getEyePosition(ticks), list.get(0).getEyePosition(ticks), 1, 0, 0, ticks);
+            ISpellPart part = pair.getFirst();
+            if (part == AMSpellParts.BEAM.get()) {
+                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+            } else if (part == AMSpellParts.CHAIN.get()) {
+                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+                if (hitResult instanceof EntityHitResult ehr) {
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, pair.getSecond(), spell, p, ehr));
                     for (int i = 0; i < list.size() - 1; i++) {
-                        BeamRenderer.drawBeams(poseStack, list.get(i), InteractionHand.MAIN_HAND, list.get(i).getEyePosition(ticks), list.get(i + 1).getEyePosition(ticks), 1, 0, 0, ticks);
+                        BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
                     }
                 }
             }

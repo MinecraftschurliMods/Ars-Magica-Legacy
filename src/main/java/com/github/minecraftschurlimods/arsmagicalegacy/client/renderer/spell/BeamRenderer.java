@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -11,7 +12,6 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -21,8 +21,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -30,8 +28,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public class BeamRenderer extends RenderType {
     private static final ResourceLocation CORE_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png");
-    public static final RenderType CORE = create("beam_core",
-            DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
+    private static final RenderType CORE = create("beam_core", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
             RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(CORE_TEXTURE, false, false))
                     .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
                     .setLayeringState(VIEW_OFFSET_Z_LAYERING)
@@ -42,8 +39,7 @@ public class BeamRenderer extends RenderType {
                     .setWriteMaskState(COLOR_WRITE)
                     .createCompositeState(false));
     private static final ResourceLocation MAIN_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png");
-    public static final RenderType MAIN = create("beam_main",
-            DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
+    private static final RenderType MAIN = create("beam_main", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
             RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(MAIN_TEXTURE, false, false))
                     .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
                     .setLayeringState(VIEW_OFFSET_Z_LAYERING)
@@ -54,8 +50,7 @@ public class BeamRenderer extends RenderType {
                     .setWriteMaskState(COLOR_WRITE)
                     .createCompositeState(false));
     private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png");
-    public static final RenderType GLOW = create("beam_glow",
-            DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
+    private static final RenderType GLOW = create("beam_glow", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, false, false,
             RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(GLOW_TEXTURE, false, false))
                     .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
                     .setLayeringState(VIEW_OFFSET_Z_LAYERING)
@@ -70,54 +65,51 @@ public class BeamRenderer extends RenderType {
         super(pName, pFormat, pMode, pBufferSize, pAffectsCrumbling, pSortOnUpload, pSetupState, pClearState);
     }
 
-    public static void drawBeams(PoseStack stack, Entity entity, InteractionHand hand, Vec3 from, Vec3 to, float r, float g, float b, float ticks) {
-        float distance = (float) Math.max(1, from.subtract(to).length());
+    public static void drawBeam(PoseStack stack, Entity entity, Vec3 target, InteractionHand hand, int color, float ticks) {
+        if (Minecraft.getInstance().options.mainHand != HumanoidArm.RIGHT) {
+            hand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        }
+        boolean firstPerson = entity == ClientHelper.getLocalPlayer() && Minecraft.getInstance().options.getCameraType().isFirstPerson();
         long time = entity.getLevel().getGameTime();
         float v = -0.02f * time;
         Vec3 view = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, entity.getBbHeight() / 2f, 0);
+        float distance = (float) Math.max(1, origin.subtract(target).length());
+        float r = ColorUtil.getRed(color), g = ColorUtil.getGreen(color), b = ColorUtil.getBlue(color);
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         stack.pushPose();
         stack.translate(-view.x(), -view.y(), -view.z());
-        stack.translate(from.x, from.y, from.z);
+        stack.translate(origin.x, origin.y, origin.z);
         stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
         stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
+        float x, y, z;
+        if (firstPerson) {
+            float fov = ((float) Minecraft.getInstance().options.fov - 30) / 80f;
+            x = hand == InteractionHand.MAIN_HAND ? -0.25f : 0.25f;
+            y = -0.175f;
+            // This calculation is responsible for correctly positioning the beam in-hand, based on the player's fov.
+            // The constants are taken from an online function estimator, based on input values found by testing.
+            z = -1.045f * fov * fov * fov + 2.3825f * fov * fov - 2.0785f * fov + 0.9175f;
+        } else {
+            x = -0.5f;
+            y = 0;
+            z = 0;
+            stack.mulPose(Vector3f.ZP.rotationDegrees(90));
+            stack.translate(0.5f, 0, 0);
+        }
         PoseStack.Pose pose = stack.last();
         Matrix3f normal = pose.normal();
         Matrix4f matrix = pose.pose();
-        boolean firstPerson = entity == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson();
-        VertexConsumer vc = buffer.getBuffer(GLOW);
-        drawBeam(vc, matrix, normal, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), hand, distance, 0.5f, 1, ticks, r, g, b, 0.7f, firstPerson);
-        vc = buffer.getBuffer(MAIN);
-        drawBeam(vc, matrix, normal, 0.02f, hand, distance, v, v + distance * 1.5f, ticks, r, g, b, 1, firstPerson);
-        vc = buffer.getBuffer(CORE);
-        drawBeam(vc, matrix, normal, 0.01f, hand, distance, v, v + distance * 1.5f, ticks, r, g, b, 1, firstPerson);
+        drawPart(buffer.getBuffer(GLOW), matrix, normal, 0.07f * (0.9f + 0.1f * Mth.sin(time * 0.99f) * Mth.sin(time * 0.3f) * Mth.sin(time * 0.1f)), distance, 0.5f, 1, x, y, z, hand, r, g, b, 0.7f);
+        drawPart(buffer.getBuffer(MAIN), matrix, normal, 0.02f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
+        drawPart(buffer.getBuffer(CORE), matrix, normal, 0.01f, distance, v, v + distance * 1.5f, x, y, z, hand, r, g, b, 1);
         stack.popPose();
         buffer.endBatch();
     }
 
-    private static void drawBeam(VertexConsumer vc, Matrix4f matrix, Matrix3f normal, float width, InteractionHand hand, float distance, float v1, float v2, float ticks, float r, float g, float b, float a, boolean firstPerson) {
-        Player player = ClientHelper.getLocalPlayer();
-        if (!(player instanceof LocalPlayer lp)) return;
+    private static void drawPart(VertexConsumer vc, Matrix4f matrix, Matrix3f normal, float width, float distance, float v1, float v2, float x, float y, float z, InteractionHand hand, float r, float g, float b, float a) {
         Vector3f vec = new Vector3f(0, 1, 0);
         vec.transform(normal);
-        if (Minecraft.getInstance().options.mainHand != HumanoidArm.RIGHT) {
-            hand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        }
-        float x, y, z;
-        // The various calculations in this section are responsible for correctly positioning the beam, based on the player's fov and rotations.
-        // Some constants are taken from an online function estimator, based on input values found by testing.
-        if (firstPerson) {
-            x = hand == InteractionHand.MAIN_HAND ? -0.25f : 0.25f;
-            y = -0.175f;
-            float fov = ((float) Minecraft.getInstance().options.fov - 30) / 80f;
-            z = -1.045f * fov * fov * fov + 2.3825f * fov * fov - 2.0785f * fov + 0.9175f;
-        } else {
-            x = (hand == InteractionHand.MAIN_HAND ? -1f : 1f) * (player.getXRot() / 900 + 0.3f);
-            y = 0.0001f * player.getXRot() * player.getXRot() + 0.0024f * player.getXRot() - 0.8155f;
-            z = 0.25f + (Mth.lerp(ticks, player.yRotO, player.getYRot()) - Mth.lerp(ticks, lp.yBobO, lp.yBob)) / 25;
-        }
-        x += (Mth.lerp(ticks, player.yRotO, player.getYRot()) - Mth.lerp(ticks, lp.yBobO, lp.yBob)) / 750;
-        y += (Mth.lerp(ticks, player.xRotO, player.getXRot()) - Mth.lerp(ticks, lp.xBobO, lp.xBob)) / 750;
         Vector4f vec1 = new Vector4f(x, -width + y, z, 1);
         vec1.transform(matrix);
         Vector4f vec2 = new Vector4f(0, -width, distance, 1);
@@ -148,7 +140,7 @@ public class BeamRenderer extends RenderType {
             vertex(vc, vec1, r, g, b, a, 1, v1, vec);
         }
     }
-    
+
     private static void vertex(VertexConsumer vc, Vector4f vec4, float r, float g, float b, float a, float u, float v, Vector3f vec3) {
         vc.vertex(vec4.x(), vec4.y(), vec4.z(), r, g, b, a, u, v, OverlayTexture.NO_OVERLAY, 0xf000f0, vec3.x(), vec3.y(), vec3.z());
     }

@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.Entity;
@@ -27,10 +26,10 @@ public class Chain extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         HitResult hitResult = helper.trace(caster, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0);
-        if (hitResult instanceof BlockHitResult blockHitResult) return helper.invoke(spell, caster, level, blockHitResult, ticksUsed, index, awardXp);
+        if (hitResult instanceof BlockHitResult bhr) return helper.invoke(spell, caster, level, bhr, ticksUsed, index, awardXp);
         SpellCastResult result = SpellCastResult.EFFECT_FAILED;
-        if (hitResult instanceof EntityHitResult entityHitResult) {
-            for (Entity e : getEntities(entityHitResult.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, caster, hit))) {
+        if (hitResult instanceof EntityHitResult ehr) {
+            for (Entity e : getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, caster, hit))) {
                 SpellCastResult currentResult = helper.invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp);
                 result = result == SpellCastResult.SUCCESS ? SpellCastResult.SUCCESS : currentResult;
             }
@@ -40,6 +39,11 @@ public class Chain extends AbstractShape {
 
     @Override
     public boolean isContinuous() {
+        return true;
+    }
+
+    @Override
+    public boolean needsToComeFirst() {
         return true;
     }
 
