@@ -114,7 +114,6 @@ public final class AMUtil {
      * @return A {@link Vec2} representing the x and y rotation of the look vector.
      */
     public static Vec2 getRotations(Vec3 from, Vec3 to) {
-        System.out.println("From: " + from.x + "/" + from.y + "/" + from.z + " To: " + to.x + "/" + to.y + "/" + to.z);
         double d0 = to.x - from.x;
         double d1 = to.y - from.y;
         double d2 = to.z - from.z;

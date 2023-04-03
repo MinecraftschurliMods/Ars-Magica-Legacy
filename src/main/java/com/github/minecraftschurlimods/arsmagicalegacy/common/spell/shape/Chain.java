@@ -15,6 +15,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Chain extends AbstractShape {
@@ -29,7 +30,8 @@ public class Chain extends AbstractShape {
         if (hitResult instanceof BlockHitResult bhr) return helper.invoke(spell, caster, level, bhr, ticksUsed, index, awardXp);
         SpellCastResult result = SpellCastResult.EFFECT_FAILED;
         if (hitResult instanceof EntityHitResult ehr) {
-            for (Entity e : getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, caster, hit))) {
+            result = helper.invoke(spell, caster, level, ehr, ticksUsed, index, awardXp);
+            for (Entity e : getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, caster, hit), caster)) {
                 SpellCastResult currentResult = helper.invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp);
                 result = result == SpellCastResult.SUCCESS ? SpellCastResult.SUCCESS : currentResult;
             }
@@ -47,13 +49,14 @@ public class Chain extends AbstractShape {
         return true;
     }
 
-    public static List<Entity> getEntities(Entity initial, double range) {
+    public static List<Entity> getEntities(Entity initial, double range, Entity... ignore) {
         List<Entity> list = new ArrayList<>();
         Entity castFrom = initial;
         Entity temp = null;
         for (int i = 0; i < 4; i++) {
             for (Entity e : initial.getLevel().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
-                if (list.contains(e)) continue;
+                if (list.contains(e) || Arrays.stream(ignore).anyMatch(p -> p == e)) continue;
+                if (e instanceof LivingEntity living && living.isDeadOrDying()) continue;
                 if (temp != null && temp.getType() != e.getType()) continue;
                 if (temp == null || temp.distanceTo(castFrom) > e.distanceTo(castFrom)) {
                     temp = e;
@@ -61,7 +64,8 @@ public class Chain extends AbstractShape {
             }
             if (temp == null) {
                 for (Entity e : initial.getLevel().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
-                    if (list.contains(e)) continue;
+                    if (list.contains(e) || Arrays.stream(ignore).anyMatch(p -> p == e)) continue;
+                    if (e instanceof LivingEntity living && living.isDeadOrDying()) continue;
                     if (temp == null || temp.distanceTo(castFrom) > e.distanceTo(castFrom)) {
                         temp = e;
                     }

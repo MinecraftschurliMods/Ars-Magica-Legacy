@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,6 +22,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -71,9 +74,10 @@ public class BeamRenderer extends RenderType {
             hand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         }
         boolean firstPerson = entity == ClientHelper.getLocalPlayer() && mc.options.getCameraType().isFirstPerson();
+        float height = entity.getBbHeight() / 2f;
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         Vec3 view = mc.gameRenderer.getMainCamera().getPosition();
-        Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, entity.getBbHeight() / 2f, 0);
+        Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, height, 0);
         long time = entity.getLevel().getGameTime();
         float v = -0.02f * time;
         float distance = (float) Math.max(1, origin.subtract(target).length());
@@ -81,8 +85,6 @@ public class BeamRenderer extends RenderType {
         stack.pushPose();
         stack.translate(-view.x(), -view.y(), -view.z());
         stack.translate(origin.x, origin.y, origin.z);
-        stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
-        stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
         float x, y, z;
         if (firstPerson) {
             float fov = ((float) mc.options.fov - 30) / 80f;
@@ -91,12 +93,22 @@ public class BeamRenderer extends RenderType {
             // This calculation is responsible for correctly positioning the beam in-hand, based on the player's fov.
             // The constants are taken from an online function estimator, based on input values found by testing.
             z = -1.045f * fov * fov * fov + 2.3825f * fov * fov - 2.0785f * fov + 0.9175f;
+            stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
+            stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
         } else {
-            x = -0.5f;
+            x = -height / 2f;
             y = 0;
             z = 0;
+            if (entity instanceof Player) {
+                stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(ticks, -entity.getYRot(), -entity.yRotO)));
+                stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(ticks, entity.getXRot(), entity.xRotO)));
+            } else {
+                Vec2 vec2 = AMUtil.getRotations(origin, target);
+                stack.mulPose(Vector3f.YP.rotationDegrees(-vec2.y));
+                stack.mulPose(Vector3f.XP.rotationDegrees(vec2.x));
+            }
             stack.mulPose(Vector3f.ZP.rotationDegrees(90));
-            stack.translate(0.5f, 0, 0);
+            stack.translate(height / 2f, 0, 0);
         }
         PoseStack.Pose pose = stack.last();
         Matrix3f normal = pose.normal();

@@ -379,7 +379,7 @@ public final class ClientInit {
                 if (hitResult.getType() == HitResult.Type.MISS) continue;
                 BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
                 if (hitResult instanceof EntityHitResult ehr) {
-                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, pair.getSecond(), spell, p, ehr));
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, pair.getSecond(), spell, p, ehr), p);
                     for (int i = 0; i < list.size() - 1; i++) {
                         BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
                     }
