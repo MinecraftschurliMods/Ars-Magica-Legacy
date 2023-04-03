@@ -86,7 +86,6 @@ public interface ISpellHelper {
      * Performs a ray trace and returns the entity the given entity is currently looking at.
      *
      * @param entity     The entity to start the ray trace from.
-     * @param level      The level to perform the ray trace in.
      * @param range      The range of the ray trace.
      * @return The entity the given entity is currently looking at, or null if no entity was found.
      */
