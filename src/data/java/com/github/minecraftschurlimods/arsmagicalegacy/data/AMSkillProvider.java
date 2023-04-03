@@ -456,11 +456,13 @@ class AMSkillProvider extends SkillProvider {
                 .setPosition(165, 120)
                 .addCost(GREEN.get())
                 .addParent(LIFE_TAP.getId())
+                .setHidden()
                 .build(consumer);
         utility(TELEKINESIS)
                 .setPosition(165, 300)
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
+                .setHidden()
                 .build(consumer);
         utility(TRANSPLACE)
                 .setPosition(75, 300)

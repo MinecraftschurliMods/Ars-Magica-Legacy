@@ -42,10 +42,12 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
                 .build(consumer);
         builder(AMSpellParts.CHAIN, 1f)
-                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.STRING), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.LEAD), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TRIPWIRE_HOOK), 1))
+                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
                 .build(consumer);
         builder(AMSpellParts.CHANNEL, 0.5f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
@@ -56,7 +58,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
-                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT, EtheriumType.NEUTRAL, EtheriumType.DARK), 5000))
+                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.DARK), 5000))
                 .build(consumer);
         builder(AMSpellParts.CONTINGENCY_DEATH, 10f)
                 .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
@@ -230,7 +232,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.PHANTOM_MEMBRANE), 1))
                 .build(consumer);
-        builder(AMSpellParts.WATER_BREATHING, 30f)
+        builder(AMSpellParts.WATER_BREATHING, 40f)
                 .addAffinity(AMAffinities.WATER, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WAKEBLOOM.get()), 1))

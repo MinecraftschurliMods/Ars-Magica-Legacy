@@ -298,7 +298,7 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
                         .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
                 entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
-                if (spellPart == AMSpellParts.SUMMON.get()) {
+                if (spellPart == AMSpellParts.CHAIN.get() || spellPart == AMSpellParts.SUMMON.get()) {
                     entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
                 }
                 entry.addPage(new SpellPartPageBuilder(registryName, entry)).build();
