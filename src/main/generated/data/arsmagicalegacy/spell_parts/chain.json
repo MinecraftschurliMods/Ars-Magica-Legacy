@@ -7,7 +7,14 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "tag": "forge:gems/chimerite"
+        "tag": "forge:gems/topaz"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
+        "item": "arsmagicalegacy:aum"
       }
     },
     {
@@ -30,6 +37,13 @@
       "ingredient": {
         "item": "minecraft:tripwire_hook"
       }
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "amount": 2500,
+      "types": [
+        "LIGHT"
+      ]
     }
   ]
 }

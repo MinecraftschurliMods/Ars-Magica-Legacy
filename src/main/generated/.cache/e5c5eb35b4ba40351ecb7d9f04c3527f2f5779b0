@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-21T18:18:54.2962179	Advancements
+// 1.19.2	2023-04-24T15:18:06.7190649	Advancements
 b20cf42741427f9147382d8635724b79c9754ef4 data/arsmagicalegacy/advancements/book/absorption.json
 d1bfbaf2842a1334b4cb6aa98c7c8d16c23bac1d data/arsmagicalegacy/advancements/book/agility.json
 71f9352866ebd22776137ac4351dfa4eb90ac2ba data/arsmagicalegacy/advancements/book/aoe.json
@@ -49,6 +49,7 @@ a0f2682804202e3f9188f28fa5b601554ee25960 data/arsmagicalegacy/advancements/book/
 771fb9efc373360a3d60152aa94b4514e3ed111f data/arsmagicalegacy/advancements/book/haste.json
 89a5ee55c8afbc234392a3193132bcee290d769d data/arsmagicalegacy/advancements/book/heal.json
 50a5d791f0e57e32e0860816df1b0711b3df09c2 data/arsmagicalegacy/advancements/book/healing.json
+496f4f69aa9259742eda2d5c62697653710c8a77 data/arsmagicalegacy/advancements/book/health_boost.json
 7d3d6509140f59925f5f4d2f6df970123694e8fe data/arsmagicalegacy/advancements/book/ignition.json
 3b080c32cfeb9f25c7ca3c1acdf222fc8a5792d1 data/arsmagicalegacy/advancements/book/invisibility.json
 7baa37eb752a97eeee4a1f8779fcb65c67324e2f data/arsmagicalegacy/advancements/book/jump_boost.json
@@ -62,7 +63,6 @@ d5bb27ba8517762af673059576c515cd6f60a4cd data/arsmagicalegacy/advancements/book/
 64e44ccd0dfd03b9d0dad3b93c7c5f5b9a422487 data/arsmagicalegacy/advancements/book/magic_damage.json
 fcd2f88d5fa950ea91456d65d834de2d61cac76e data/arsmagicalegacy/advancements/book/mana_blast.json
 b5da609d1b25967a94650f7d932a2f9568897fc2 data/arsmagicalegacy/advancements/book/mana_drain.json
-13f52584110046e92ffe98d29a9b4ab60a31a997 data/arsmagicalegacy/advancements/book/mana_shield.json
 9f995137e310da4d456a0e9c2a59bf3463220db8 data/arsmagicalegacy/advancements/book/mining_power.json
 f6e8ff4f7cc952aa59c44c969a9abee75af751bb data/arsmagicalegacy/advancements/book/moonrise.json
 1cf5e10b48d6a717b04747ae6144d030d1ed29c0 data/arsmagicalegacy/advancements/book/night_vision.json
