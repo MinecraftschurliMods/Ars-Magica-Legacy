@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Dryad;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FallingStar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.IceGuardian;
@@ -41,6 +42,7 @@ public interface AMEntities {
     RegistryObject<EntityType<Zone>>              ZONE               = ENTITY_TYPES.register("zone",               () -> EntityType.Builder.of(Zone::new,              MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("zone"));
     RegistryObject<EntityType<Blizzard>>          BLIZZARD           = ENTITY_TYPES.register("blizzard",           () -> EntityType.Builder.of(Blizzard::new,          MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("blizzard"));
     RegistryObject<EntityType<FireRain>>          FIRE_RAIN          = ENTITY_TYPES.register("fire_rain",          () -> EntityType.Builder.of(FireRain::new,          MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("fire_rain"));
+    RegistryObject<EntityType<FallingStar>>       FALLING_STAR       = ENTITY_TYPES.register("falling_star",       () -> EntityType.Builder.of(FallingStar::new,       MobCategory.MISC)   .clientTrackingRange(8).sized(0.25F, 0.25F).build("falling_star"));
     RegistryObject<EntityType<WaterGuardian>>     WATER_GUARDIAN     = ENTITY_TYPES.register("water_guardian",     () -> EntityType.Builder.of(WaterGuardian::new,     MobCategory.MONSTER).clientTrackingRange(8).sized(    1,  1.5F).build("water_guardian"));
     RegistryObject<EntityType<FireGuardian>>      FIRE_GUARDIAN      = ENTITY_TYPES.register("fire_guardian",      () -> EntityType.Builder.of(FireGuardian::new,      MobCategory.MONSTER).clientTrackingRange(8).sized(    1,     3).build("fire_guardian"));
     RegistryObject<EntityType<EarthGuardian>>     EARTH_GUARDIAN     = ENTITY_TYPES.register("earth_guardian",     () -> EntityType.Builder.of(EarthGuardian::new,     MobCategory.MONSTER).clientTrackingRange(8).sized( 1.5F,  2.5F).build("earth_guardian"));

@@ -4,9 +4,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -106,8 +109,25 @@ public final class AMUtil {
     }
 
     /**
+     * Variant of {@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)} that returns the results in a {@link Vec2}.
+     *
+     * @param from The start position.
+     * @param to   The end position.
+     * @return A {@link Vec2} representing the x and y rotation of the look vector.
+     */
+    public static Vec2 getRotations(Vec3 from, Vec3 to) {
+        double d0 = to.x - from.x;
+        double d1 = to.y - from.y;
+        double d2 = to.z - from.z;
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        float x = Mth.wrapDegrees((float) Math.toDegrees(-Mth.atan2(d1, d3)));
+        float y = Mth.wrapDegrees((float) Math.toDegrees(Mth.atan2(d2, d0)) - 90f);
+        return new Vec2(x, y);
+    }
+
+    /**
      * @param entity The entity to get this for.
-     * @return The item stack with the spell in the given entity's main hand or, if absent, in the given entity's off hand instead.
+     * @return The item stack with the spell in the given entity's main hand or, if absent, in the given entity's offhand instead.
      */
     public static ItemStack getSpellStack(LivingEntity entity) {
         ItemStack stack = entity.getMainHandItem();
