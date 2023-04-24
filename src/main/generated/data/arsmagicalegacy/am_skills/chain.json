@@ -1,9 +1,9 @@
 {
-  "occulus_tab": "arsmagicalegacy:utility",
-  "x": 255,
-  "y": 165,
+  "occulus_tab": "arsmagicalegacy:offense",
+  "x": 210,
+  "y": 255,
   "parents": [
-    "arsmagicalegacy:grow"
+    "arsmagicalegacy:beam"
   ],
   "cost": {
     "arsmagicalegacy:red": 1

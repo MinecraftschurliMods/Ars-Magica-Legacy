@@ -1,8 +1,8 @@
 {
-  "manaCost": 0.0,
+  "manaCost": 50.0,
   "reagents": [],
   "affinities": {
-    "arsmagicalegacy:water": 0.001
+    "arsmagicalegacy:life": 0.001
   },
   "recipe": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "ingredient": {
-        "item": "arsmagicalegacy:wakebloom"
+        "item": "minecraft:enchanted_golden_apple"
       },
       "count": 1,
       "type": "arsmagicalegacy:ingredient"

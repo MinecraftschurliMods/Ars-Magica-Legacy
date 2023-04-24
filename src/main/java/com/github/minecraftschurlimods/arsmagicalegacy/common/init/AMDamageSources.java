@@ -15,6 +15,10 @@ public interface AMDamageSources {
         return new EntityDamageSource("shockwave", source);
     }
 
+    static DamageSource fallingStar(Entity source) {
+        return new EntityDamageSource("falling_star", source);
+    }
+
     static DamageSource thrownRock(Entity directSource, @Nullable Entity indirectSource) {
         return new IndirectEntityDamageSource("thrown_rock", directSource, indirectSource).setProjectile();
     }

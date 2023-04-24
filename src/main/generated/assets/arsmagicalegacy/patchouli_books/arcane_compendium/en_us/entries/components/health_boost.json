@@ -1,0 +1,16 @@
+{
+  "name": "skill.arsmagicalegacy.health_boost.name",
+  "category": "arsmagicalegacy:components",
+  "icon": "arsmagicalegacy:textures/icon/skill/health_boost.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.components.health_boost.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:health_boost"
+    }
+  ],
+  "advancement": "arsmagicalegacy:book/health_boost"
+}

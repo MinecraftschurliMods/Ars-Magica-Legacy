@@ -35,14 +35,14 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(MAGIC_DAMAGE.getId())
                 .build(consumer);
         offense(BEAM)
-                .setPosition(210, 255)
+                .setPosition(210, 210)
                 .addCost(RED.get())
                 .addParent(AOE.getId())
                 .build(consumer);
-        utility(CHAIN)
-                .setPosition(255, 165)
+        offense(CHAIN)
+                .setPosition(210, 255)
                 .addCost(RED.get())
-                .addParent(GROW.getId())
+                .addParent(BEAM.getId())
                 .build(consumer);
         utility(CHANNEL)
                 .setPosition(165, 255)
@@ -154,6 +154,10 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(SLOW_FALLING.getId())
                 .build(consumer);
+        defense(HEALTH_BOOST)
+                .setPosition(30, 30)
+                .setHidden()
+                .build(consumer);
         utility(INVISIBILITY)
                 .setPosition(30, 210)
                 .addCost(GREEN.get())
@@ -191,7 +195,7 @@ class AMSkillProvider extends SkillProvider {
                 .build(consumer);
         utility(WATER_BREATHING)
                 .setPosition(255, 255)
-                .addCost(BLUE.get())
+                .addCost(GREEN.get())
                 .addParent(CREATE_WATER.getId())
                 .build(consumer);
         defense(AGILITY)
@@ -399,10 +403,6 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId())
                 .build(consumer);
-        defense(MANA_SHIELD)
-                .setPosition(30, 30)
-                .setHidden()
-                .build(consumer);
         utility(MOONRISE)
                 .setPosition(30, 75)
                 .setHidden()
@@ -456,11 +456,13 @@ class AMSkillProvider extends SkillProvider {
                 .setPosition(165, 120)
                 .addCost(GREEN.get())
                 .addParent(LIFE_TAP.getId())
+                .setHidden()
                 .build(consumer);
         utility(TELEKINESIS)
                 .setPosition(165, 300)
                 .addCost(GREEN.get())
                 .addParent(ATTRACT.getId())
+                .setHidden()
                 .build(consumer);
         utility(TRANSPLACE)
                 .setPosition(75, 300)
@@ -480,7 +482,7 @@ class AMSkillProvider extends SkillProvider {
         offense(DAMAGE)
                 .setPosition(210, 300)
                 .addCost(RED.get())
-                .addParent(BEAM.getId())
+                .addParent(CHAIN.getId())
                 .build(consumer);
         offense(DISMEMBERING)
                 .setPosition(30, 210)

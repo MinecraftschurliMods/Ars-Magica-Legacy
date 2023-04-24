@@ -3,12 +3,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -16,7 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Shockwave extends Entity {
-    private final Map<Player, Integer> cooldowns = new HashMap<>();
+    private static final ParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(1, 1, 1), 1);
+    private final Map<LivingEntity, Integer> cooldowns = new HashMap<>();
+    private final DamageSource damageSource = AMDamageSources.shockwave(this);
 
     public Shockwave(EntityType<? extends Shockwave> type, Level level) {
         super(type, level);
@@ -56,20 +61,21 @@ public class Shockwave extends Entity {
             kill();
         }
         cooldowns.replaceAll((k, v) -> Math.max(v - 1, 0));
-        for (float f = -1.5f; f <= 1.5f; f += 0.1f) {
-            level.addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1), position().x() + f * getDeltaMovement().x() + random.nextDouble(0.5), position().y(), position().z() + f * getDeltaMovement().z() + random.nextDouble(0.5), 0, 0, 0);
+        if (level.isClientSide()) {
+            for (float f = -1f; f <= 1f; f += 0.1f) {
+                level.addParticle(PARTICLE, position().x() + f * getDeltaMovement().x() + random.nextDouble(0.5), position().y(), position().z() + f * getDeltaMovement().z() + random.nextDouble(0.5), 0, 0, 0);
+            }
+        } else {
+            for (Entity e : level.getEntities(this, getBoundingBox(), EntitySelector.pushableBy(this))) {
+                if (!(e instanceof LivingEntity living) || living instanceof Player player && player.isCreative())
+                    continue;
+                Integer cooldown = cooldowns.get(living);
+                if (cooldown == null || cooldown <= 0) {
+                    living.hurt(damageSource, 2);
+                    cooldowns.put(living, 20);
+                }
+            }
         }
         setPos(position().add(getDeltaMovement()));
-    }
-
-    @Override
-    public void playerTouch(Player pPlayer) {
-        super.playerTouch(pPlayer);
-        if (level.isClientSide() || pPlayer.isCreative()) return;
-        Integer cd = cooldowns.get(pPlayer);
-        if (cd == null || cd <= 0) {
-            pPlayer.hurt(AMDamageSources.shockwave(this), 2);
-            cooldowns.put(pPlayer, 20);
-        }
     }
 }

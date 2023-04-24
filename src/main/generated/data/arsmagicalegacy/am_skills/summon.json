@@ -2,6 +2,7 @@
   "occulus_tab": "arsmagicalegacy:defense",
   "x": 165,
   "y": 120,
+  "hidden": true,
   "parents": [
     "arsmagicalegacy:life_tap"
   ],

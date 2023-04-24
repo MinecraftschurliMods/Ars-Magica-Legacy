@@ -7,7 +7,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityIte
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
@@ -44,6 +48,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.Na
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.ThrownRockRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WhirlwindRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity.WintersGraspRenderer;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell.BeamRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
@@ -51,12 +56,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -73,11 +82,15 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -85,6 +98,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -96,7 +110,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public final class ClientInit {
     public static IIngameOverlay XP_HUD;
@@ -124,6 +140,7 @@ public final class ClientInit {
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
         forgeBus.addListener(ClientInit::renderHand);
+        forgeBus.addListener(ClientInit::renderLevelLast);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -240,6 +257,7 @@ public final class ClientInit {
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.BLIZZARD.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.FIRE_RAIN.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(AMEntities.FALLING_STAR.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WATER_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibModel<>("water_guardian")));
         event.registerEntityRenderer(AMEntities.FIRE_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new AMGeckolibHeadModel<>("fire_guardian")));
         event.registerEntityRenderer(AMEntities.EARTH_GUARDIAN.get(), context -> new AMGeckolibRenderer<>(context, new EarthGuardianModel()));
@@ -306,7 +324,8 @@ public final class ClientInit {
         Player p = ClientHelper.getLocalPlayer();
         if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
         ItemStack itemStack = event.getItemStack();
-        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty())) return;
+        if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty()))
+            return;
         float swing = event.getSwingProgress();
         float swingSqrt = Mth.sqrt(swing);
         boolean isRightHand = (event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite()) != HumanoidArm.LEFT;
@@ -314,7 +333,7 @@ public final class ClientInit {
         PoseStack stack = event.getPoseStack();
         stack.pushPose();
         RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
-        stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2F))) + -0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
+        stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2))) - 0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
         stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * 45));
         stack.mulPose(Vector3f.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));
         stack.mulPose(Vector3f.ZP.rotationDegrees(armMultiplier * Mth.sin((float) (swing * swing * Math.PI)) * -20));
@@ -329,5 +348,43 @@ public final class ClientInit {
             ((PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)).renderLeftHand(stack, event.getMultiBufferSource(), event.getPackedLight(), player);
         }
         stack.popPose();
+    }
+
+    private static void renderLevelLast(RenderLevelLastEvent event) {
+        Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
+        Level level = Objects.requireNonNull(Minecraft.getInstance().level);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        float ticks = event.getPartialTick();
+        PoseStack poseStack = event.getPoseStack();
+        int dist = Minecraft.getInstance().options.getEffectiveRenderDistance() * 8;
+        int color = 0xff0000; //TODO change when Color modifier is added
+        for (Player p : level.players()) {
+            if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
+            ItemStack stack = p.getMainHandItem();
+            InteractionHand hand = InteractionHand.MAIN_HAND;
+            if (!(stack.getItem() instanceof ISpellItem)) {
+                stack = p.getOffhandItem();
+                if (!(stack.getItem() instanceof ISpellItem)) continue;
+                hand = InteractionHand.OFF_HAND;
+            }
+            ISpell spell = helper.getSpell(stack);
+            Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
+            ISpellPart part = pair.getFirst();
+            if (part == AMSpellParts.BEAM.get()) {
+                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+            } else if (part == AMSpellParts.CHAIN.get()) {
+                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+                if (hitResult instanceof EntityHitResult ehr) {
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, pair.getSecond(), spell, p, ehr), p);
+                    for (int i = 0; i < list.size() - 1; i++) {
+                        BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
+                    }
+                }
+            }
+        }
     }
 }
