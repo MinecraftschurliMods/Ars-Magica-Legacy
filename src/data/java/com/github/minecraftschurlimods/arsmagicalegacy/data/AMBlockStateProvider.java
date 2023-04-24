@@ -270,6 +270,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
+    @SuppressWarnings("deprecation")
     private void railBlock(Supplier<? extends BaseRailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
         ModelFile straight = models().withExistingParent(block.get().getRegistryName().getPath(), mcLoc("block/rail")).texture("rail", texture);

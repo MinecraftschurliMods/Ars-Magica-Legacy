@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.data.AbilityBuilder;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.AbilityProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAffinities;
@@ -16,38 +15,38 @@ class AMAbilityProvider extends AbilityProvider {
     }
 
     @Override
-    protected void createAbilities(Consumer<AbilityBuilder> consumer) {
-        createAbility(AMAbilities.FIRE_RESISTANCE.get().getId(),        AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
-        createAbility(AMAbilities.FIRE_PUNCH.get().getId(),             AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.WATER_DAMAGE_FIRE.get().getId(),      AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.SWIM_SPEED.get().getId(),             AMAffinities.WATER.get(),     MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.ENDERMAN_THORNS.get().getId(),        AMAffinities.WATER.get(),     MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.NETHER_DAMAGE_WATER.get().getId(),    AMAffinities.WATER.get(),     MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.RESISTANCE.get().getId(),             AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.HASTE.get().getId(),                  AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.FALL_DAMAGE.get().getId(),            AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.JUMP_BOOST.get().getId(),             AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.FEATHER_FALLING.get().getId(),        AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.GRAVITY.get().getId(),                AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.FROST_PUNCH.get().getId(),            AMAffinities.ICE.get(),       MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.FROST_WALKER.get().getId(),           AMAffinities.ICE.get(),       MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.SLOWNESS.get().getId(),               AMAffinities.ICE.get(),       MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.SPEED.get().getId(),                  AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.STEP_ASSIST.get().getId(),            AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.WATER_DAMAGE_LIGHTNING.get().getId(), AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.THORNS.get().getId(),                 AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.SATURATION.get().getId(),             AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.NETHER_DAMAGE_NATURE.get().getId(),   AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.SMITE.get().getId(),                  AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.REGENERATION.get().getId(),           AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.NAUSEA.get().getId(),                 AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.MANA_REDUCTION.get().getId(),         AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.between(0.01, 1))  .build(consumer);
-        createAbility(AMAbilities.CLARITY.get().getId(),                AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.MAGIC_DAMAGE.get().getId(),           AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.POISON_RESISTANCE.get().getId(),      AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.NIGHT_VISION.get().getId(),           AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 1))   .build(consumer);
-        createAbility(AMAbilities.ENDERMAN_PUMPKIN.get().getId(),       AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.atLeast(1))    .build(consumer);
-        createAbility(AMAbilities.LIGHT_HEALTH_REDUCTION.get().getId(), AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 0.99)).build(consumer);
-        createAbility(AMAbilities.WATER_HEALTH_REDUCTION.get().getId(), AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 0.99)).build(consumer);
+    protected void generate(Consumer<Builder> consumer) {
+        builder(AMAbilities.FIRE_RESISTANCE.get(),        AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.FIRE_PUNCH.get(),             AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.WATER_DAMAGE_FIRE.get(),      AMAffinities.FIRE.get(),      MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.SWIM_SPEED.get(),             AMAffinities.WATER.get(),     MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.ENDERMAN_THORNS.get(),        AMAffinities.WATER.get(),     MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.NETHER_DAMAGE_WATER.get(),    AMAffinities.WATER.get(),     MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.RESISTANCE.get(),             AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.HASTE.get(),                  AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.FALL_DAMAGE.get(),            AMAffinities.EARTH.get(),     MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.JUMP_BOOST.get(),             AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.FEATHER_FALLING.get(),        AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.GRAVITY.get(),                AMAffinities.AIR.get(),       MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.FROST_PUNCH.get(),            AMAffinities.ICE.get(),       MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.FROST_WALKER.get(),           AMAffinities.ICE.get(),       MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.SLOWNESS.get(),               AMAffinities.ICE.get(),       MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.SPEED.get(),                  AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.STEP_ASSIST.get(),            AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.WATER_DAMAGE_LIGHTNING.get(), AMAffinities.LIGHTNING.get(), MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.THORNS.get(),                 AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.SATURATION.get(),             AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.NETHER_DAMAGE_NATURE.get(),   AMAffinities.NATURE.get(),    MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.SMITE.get(),                  AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.REGENERATION.get(),           AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.NAUSEA.get(),                 AMAffinities.LIFE.get(),      MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.MANA_REDUCTION.get(),         AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.between(0.01, 1)).build(consumer);
+        builder(AMAbilities.CLARITY.get(),                AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.MAGIC_DAMAGE.get(),           AMAffinities.ARCANE.get(),    MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.POISON_RESISTANCE.get(),      AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.NIGHT_VISION.get(),           AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 1)).build(consumer);
+        builder(AMAbilities.ENDERMAN_PUMPKIN.get(),       AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.atLeast(1)).build(consumer);
+        builder(AMAbilities.LIGHT_HEALTH_REDUCTION.get(), AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 0.99)).build(consumer);
+        builder(AMAbilities.WATER_HEALTH_REDUCTION.get(), AMAffinities.ENDER.get(),     MinMaxBounds.Doubles.between(0.5, 0.99)).build(consumer);
     }
 }

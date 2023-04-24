@@ -24,17 +24,17 @@ import java.util.List;
 @PrefixGameTestTemplate(false)
 @GameTestHolder(ArsMagicaAPI.MOD_ID)
 public class ObeliskConversionRitualTest {
-
+    private static final String BATCH = "obelisk_conversion";
     private static ISpell PURIFICATION_SPELL;
     private static ISpell CORRUPTION_SPELL;
 
-    @BeforeBatch(batch = "obelisk_conversion")
+    @BeforeBatch(batch = BATCH)
     public static void setup(ServerLevel level) {
         PURIFICATION_SPELL = ArsMagicaAPI.get().makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.LIGHT.get()), new CompoundTag());
         CORRUPTION_SPELL = ArsMagicaAPI.get().makeSpell(List.of(), SpellStack.of(AMSpellParts.PROJECTILE.get(), AMSpellParts.FIRE_DAMAGE.get()), new CompoundTag());
     }
 
-    @GameTest(template = "corruption_ritual", batch = "obelisk_conversion")
+    @GameTest(template = "corruption_ritual", batch = BATCH)
     public static void testCorruptionRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         BlockPos center = new BlockPos(3, 2, 2);
@@ -59,7 +59,7 @@ public class ObeliskConversionRitualTest {
         });
     }
 
-    @GameTest(template = "purification_ritual", batch = "obelisk_conversion")
+    @GameTest(template = "purification_ritual", batch = BATCH)
     public static void testPurificationRitual(GameTestHelper helper) {
         ServerLevel serverlevel = helper.getLevel();
         BlockPos center = new BlockPos(3, 2, 3);

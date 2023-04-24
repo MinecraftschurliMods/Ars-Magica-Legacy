@@ -9,7 +9,7 @@
   },
   "requirements": [],
   "effect": {
-    "spell_part": "arsmagicalegacy:mana_shield",
+    "spell_part": "arsmagicalegacy:health_boost",
     "type": "arsmagicalegacy:learn_skill"
   }
 }
