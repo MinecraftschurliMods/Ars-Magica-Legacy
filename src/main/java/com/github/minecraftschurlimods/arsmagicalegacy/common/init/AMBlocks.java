@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.InlayBlock;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.MoonstoneBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.OcculusBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.WizardsChalkBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -79,9 +78,9 @@ public interface AMBlocks {
     RegistryObject<Block>                 VINTEUM_ORE              = BLOCKS.register("vinteum_ore",              () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block>                 DEEPSLATE_VINTEUM_ORE    = BLOCKS.register("deepslate_vinteum_ore",    () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3F).sound(SoundType.DEEPSLATE)));
     RegistryObject<Block>                 VINTEUM_BLOCK            = BLOCKS.register("vinteum_block",            () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.LAPIS).requiresCorrectToolForDrops().strength(3F, 3F)));
-    RegistryObject<Block>                 MOONSTONE_ORE            = BLOCKS.register("moonstone_ore",            () -> new MoonstoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
-    RegistryObject<Block>                 DEEPSLATE_MOONSTONE_ORE  = BLOCKS.register("deepslate_moonstone_ore",  () -> new MoonstoneBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3F)));
-    RegistryObject<Block>                 MOONSTONE_BLOCK          = BLOCKS.register("moonstone_block",          () -> new MoonstoneBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).requiresCorrectToolForDrops().strength(3F, 3F)));
+    RegistryObject<Block>                 MOONSTONE_ORE            = BLOCKS.register("moonstone_ore",            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3F, 3F)));
+    RegistryObject<Block>                 DEEPSLATE_MOONSTONE_ORE  = BLOCKS.register("deepslate_moonstone_ore",  () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3F)));
+    RegistryObject<Block>                 MOONSTONE_BLOCK          = BLOCKS.register("moonstone_block",          () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<Block>                 SUNSTONE_ORE             = BLOCKS.register("sunstone_ore",             () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).requiresCorrectToolForDrops().strength(50F, 1200F)));
     RegistryObject<Block>                 SUNSTONE_BLOCK           = BLOCKS.register("sunstone_block",           () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_ORANGE).requiresCorrectToolForDrops().strength(3F, 3F)));
     RegistryObject<RotatedPillarBlock>    WITCHWOOD_LOG            = BLOCKS.register("witchwood_log",            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MaterialColor.TERRACOTTA_LIGHT_BLUE : MaterialColor.TERRACOTTA_BLUE).strength(2F).sound(SoundType.WOOD)));
