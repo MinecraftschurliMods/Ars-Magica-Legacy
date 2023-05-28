@@ -1,19 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ITI",
-    " V ",
-    " I "
+    "GTG",
+    " G ",
+    " G "
   ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
+    "G": {
+      "tag": "forge:ingots/gold"
     },
     "T": {
       "tag": "forge:gems/topaz"
-    },
-    "V": {
-      "tag": "forge:dusts/vinteum"
     }
   },
   "result": {
