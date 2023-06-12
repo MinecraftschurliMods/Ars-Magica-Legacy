@@ -16,13 +16,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.PrefabSpellManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -31,6 +34,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
@@ -363,6 +367,80 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
         damageSourceTranslation("thrown_rock", "%1$s was crushed under a rock by %2$s");
         damageSourceTranslation("wind", "%1$s was torn apart by the wind");
+        subtitleTranslation(AMSounds.ARCANE_GUARDIAN_AMBIENT, "Arcane Guardian hisses");
+        subtitleTranslation(AMSounds.ARCANE_GUARDIAN_ATTACK, "Arcane Guardian attacks");
+        subtitleTranslation(AMSounds.ARCANE_GUARDIAN_DEATH, "Arcane Guardian dies");
+        subtitleTranslation(AMSounds.ARCANE_GUARDIAN_HURT, "Arcane Guardian hurts");
+        subtitleTranslation(AMSounds.EARTH_GUARDIAN_AMBIENT, "Earth Guardian rumbles");
+        subtitleTranslation(AMSounds.EARTH_GUARDIAN_ATTACK, "Earth Guardian attacks");
+        subtitleTranslation(AMSounds.EARTH_GUARDIAN_DEATH, "Earth Guardian dies");
+        subtitleTranslation(AMSounds.EARTH_GUARDIAN_HURT, "Earth Guardian hurts");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_AMBIENT, "Ender Guardian hisses");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_ATTACK, "Ender Guardian attacks");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_DEATH, "Ender Guardian dies");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_HURT, "Ender Guardian hurts");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_AMBIENT, "Fire Guardian cackles");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_ATTACK, "Fire Guardian attacks");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_DEATH, "Fire Guardian dies");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_HURT, "Fire Guardian hurts");
+        subtitleTranslation(AMSounds.ICE_GUARDIAN_AMBIENT, "Ice Guardian cracks");
+        subtitleTranslation(AMSounds.ICE_GUARDIAN_DEATH, "Ice Guardian dies");
+        subtitleTranslation(AMSounds.LIFE_GUARDIAN_AMBIENT, "Life Guardian hums");
+        subtitleTranslation(AMSounds.LIFE_GUARDIAN_ATTACK, "Life Guardian attacks");
+        subtitleTranslation(AMSounds.LIFE_GUARDIAN_DEATH, "Life Guardian dies");
+        subtitleTranslation(AMSounds.LIFE_GUARDIAN_HURT, "Life Guardian hurts");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_AMBIENT, "Lightning Guardian zaps");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_ATTACK, "Lightning Guardian attacks");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_DEATH, "Lightning Guardian dies");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_HURT, "Lightning Guardian hurts");
+        subtitleTranslation(AMSounds.NATURE_GUARDIAN_AMBIENT, "Nature Guardian hisses");
+        subtitleTranslation(AMSounds.NATURE_GUARDIAN_ATTACK, "Nature Guardian attacks");
+        subtitleTranslation(AMSounds.NATURE_GUARDIAN_DEATH, "Nature Guardian dies");
+        subtitleTranslation(AMSounds.NATURE_GUARDIAN_HURT, "Nature Guardian hurts");
+        subtitleTranslation(AMSounds.WATER_GUARDIAN_AMBIENT, "Water Guardian bubbles");
+        subtitleTranslation(AMSounds.WATER_GUARDIAN_DEATH, "Water Guardian dies");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_FLAP, "Ender Guardian flaps");
+        subtitleTranslation(AMSounds.ENDER_GUARDIAN_ROAR, "Ender Guardian roars");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_FLAMETHROWER, "Fire Guardian burns");
+        subtitleTranslation(AMSounds.FIRE_GUARDIAN_NOVA, "Fire Guardian shoots");
+        subtitleTranslation(AMSounds.ICE_GUARDIAN_LAUNCH_ARM, "Ice Guardian launches arm");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD, "Lightning Guardian summons lightning");
+        subtitleTranslation(AMSounds.LIGHTNING_GUARDIAN_STATIC, "Lightning Guardian thunders");
+        subtitleTranslation(AMSounds.CAST_AIR, "Air spell is cast");
+        subtitleTranslation(AMSounds.CAST_ARCANE, "Arcane spell is cast");
+        subtitleTranslation(AMSounds.CAST_EARTH, "Earth spell is cast");
+        subtitleTranslation(AMSounds.CAST_ENDER, "Ender spell is cast");
+        subtitleTranslation(AMSounds.CAST_FIRE, "Fire spell is cast");
+        subtitleTranslation(AMSounds.CAST_ICE, "Ice spell is cast");
+        subtitleTranslation(AMSounds.CAST_LIFE, "Life spell is cast");
+        subtitleTranslation(AMSounds.CAST_LIGHTNING, "Lightning spell is cast");
+        subtitleTranslation(AMSounds.CAST_NATURE, "Nature spell is cast");
+        subtitleTranslation(AMSounds.CAST_NONE, "Spell is cast");
+        subtitleTranslation(AMSounds.CAST_WATER, "Water spell is cast");
+        subtitleTranslation(AMSounds.LOOP_AIR, "Air spell is looped");
+        subtitleTranslation(AMSounds.LOOP_ARCANE, "Arcane spell is looped");
+        subtitleTranslation(AMSounds.LOOP_EARTH, "Earth spell is looped");
+        subtitleTranslation(AMSounds.LOOP_ENDER, "Ender spell is looped");
+        subtitleTranslation(AMSounds.LOOP_FIRE, "Fire spell is looped");
+        subtitleTranslation(AMSounds.LOOP_ICE, "Ice spell is looped");
+        subtitleTranslation(AMSounds.LOOP_LIFE, "Life spell is looped");
+        subtitleTranslation(AMSounds.LOOP_LIGHTNING, "Lightning spell is looped");
+        subtitleTranslation(AMSounds.LOOP_NATURE, "Nature spell is looped");
+        subtitleTranslation(AMSounds.LOOP_WATER, "Water spell is looped");
+        subtitleTranslation(AMSounds.CONTINGENCY, "Contingency sparkles");
+        subtitleTranslation(AMSounds.MANA_SHIELD, "Mana shield is raised");
+        subtitleTranslation(AMSounds.RUNE, "Rune activates");
+        subtitleTranslation(AMSounds.STARSTRIKE, "Star falls down");
+        subtitleTranslation(AMSounds.CRAFTING_ALTAR_ADD_INGREDIENT, "Crafting altar blings");
+        subtitleTranslation(AMSounds.CRAFTING_ALTAR_FINISH, "Crafting altar jingles");
+        subtitleTranslation(AMSounds.INSCRIPTION_TABLE_TAKE_BOOK, "Book is taken");
+        subtitleTranslation(AMSounds.GET_KNOWLEDGE_POINT, "Magic jingle");
+        subtitleTranslation(AMSounds.MAGIC_LEVEL_UP, "Magic jingle");
+        statTranslation(AMStats.INTERACT_WITH_INSCRIPTION_TABLE, "Interactions with Inscription Table");
+        statTranslation(AMStats.INTERACT_WITH_OBELISK, "Interactions with Obelisk");
+        statTranslation(AMStats.INTERACT_WITH_OCCULUS, "Interactions with Occulus");
+        statTranslation(AMStats.RITUALS_TRIGGERED, "Rituals triggered");
+        statTranslation(AMStats.SPELL_CAST, "Spells cast");
         arcaneCompendiumTranslation("affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
         arcaneCompendiumTranslation("affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
         arcaneCompendiumTranslation("affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
@@ -740,6 +818,36 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void damageSourceTranslation(String damageSource, String translation) {
         add("death.attack." + damageSource, translation);
+    }
+
+    /**
+     * Adds a subtitle translation.
+     *
+     * @param soundId     The sound to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void subtitleTranslation(Supplier<SoundEvent> soundId, String translation) {
+        add(Util.makeDescriptionId("subtitle", ForgeRegistries.SOUND_EVENTS.getKey(soundId.get())), translation);
+    }
+
+    /**
+     * Adds a subtitle translation.
+     *
+     * @param soundId     The sound to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void subtitleTranslation(ResourceLocation soundId, String translation) {
+        add(Util.makeDescriptionId("subtitle", soundId), translation);
+    }
+
+    /**
+     * Adds a stat translation.
+     *
+     * @param stat        The stat to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void statTranslation(ResourceLocation stat, String translation) {
+        add(Util.makeDescriptionId("stat", stat), translation);
     }
 
     /**
