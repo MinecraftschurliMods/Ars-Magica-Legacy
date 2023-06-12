@@ -360,7 +360,9 @@ public final class EventHandler {
         }
         for (ISkillPoint iSkillPoint : api.getSkillPointRegistry()) {
             int minEarnLevel = iSkillPoint.getMinEarnLevel();
-            if (level >= minEarnLevel && (level - minEarnLevel) % iSkillPoint.getLevelsForPoint() == 0) {
+            int levelsForPoint = iSkillPoint.getLevelsForPoint();
+            if (minEarnLevel < 0 || levelsForPoint < 0) continue;
+            if (level >= minEarnLevel && (level - minEarnLevel) % levelsForPoint == 0) {
                 api.getSkillHelper().addSkillPoint(player, iSkillPoint);
                 event.getPlayer().getLevel().playSound(null, event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }

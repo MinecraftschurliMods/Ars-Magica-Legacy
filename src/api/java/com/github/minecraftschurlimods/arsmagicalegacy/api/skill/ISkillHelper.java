@@ -204,7 +204,6 @@ public interface ISkillHelper {
      * @param stack The stack to get the skill point type from.
      * @return The skill point type stored in the stack, or null if the stack does not contain one.
      */
-    @Nullable
     ISkillPoint getSkillPointForStack(ItemStack stack);
 
     /**
