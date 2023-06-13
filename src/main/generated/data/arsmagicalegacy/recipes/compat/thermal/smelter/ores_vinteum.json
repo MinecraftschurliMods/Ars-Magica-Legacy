@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "thermal"
+        }
+      ],
+      "recipe": {
+        "type": "thermal:smelter",
+        "experience": 0.2,
+        "ingredient": {
+          "tag": "forge:ores/vinteum"
+        },
+        "output": [
+          {
+            "chance": 1.5,
+            "item": "arsmagicalegacy:vinteum_dust"
+          },
+          {
+            "chance": 0.15,
+            "item": "thermal:rich_slag"
+          }
+        ]
+      }
+    }
+  ]
+}

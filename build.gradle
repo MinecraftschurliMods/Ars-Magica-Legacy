@@ -217,6 +217,8 @@ dependencies {
     include fg.deobf('com.github.minecraftschurlimods:betterhudlib:1.19-1.0-SNAPSHOT') {
         jarJar.ranged(it, '[1.19-1.0-SNAPSHOT,)')
     }
+    modAPI fg.deobf('com.github.minecraftschurlimods:easydatagenlib:1.19.2-1.1.1-SNAPSHOT')
+    datagenLibrary fg.deobf('com.github.minecraftschurlimods:easydatagenlib:1.19.2-1.1.1-SNAPSHOT')
     datagenLibrary fg.deobf('com.github.minecraftschurlimods:patchouli_datagen-forge-1.19:1.0-SNAPSHOT')
 
     implementation sourceSets.api.output

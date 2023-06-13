@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botanypots"
+        }
+      ],
+      "recipe": {
+        "type": "botanypots:soil",
+        "categories": [
+          "wood",
+          "log",
+          "mushroom",
+          "witchwood",
+          "witchwood"
+        ],
+        "display": {
+          "block": "arsmagicalegacy:witchwood",
+          "properties": {
+            "axis": "y"
+          }
+        },
+        "growthModifier": 1.0,
+        "input": [
+          {
+            "item": "arsmagicalegacy:witchwood_log"
+          },
+          {
+            "item": "arsmagicalegacy:witchwood"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "immersiveengineering"
+        }
+      ],
+      "recipe": {
+        "type": "immersiveengineering:sawmill",
+        "energy": 1600,
+        "input": [
+          {
+            "item": "arsmagicalegacy:witchwood_log"
+          },
+          {
+            "item": "arsmagicalegacy:witchwood"
+          }
+        ],
+        "result": {
+          "count": 6,
+          "item": "arsmagicalegacy:witchwood_planks"
+        },
+        "secondaries": [
+          {
+            "output": {
+              "tag": "forge:dusts/wood"
+            },
+            "stripping": true
+          },
+          {
+            "output": {
+              "tag": "forge:dusts/wood"
+            },
+            "stripping": false
+          }
+        ],
+        "stripped": {
+          "item": "arsmagicalegacy:stripped_witchwood_log"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "thermal"
+        }
+      ],
+      "recipe": {
+        "type": "thermal:insolator",
+        "ingredient": {
+          "item": "arsmagicalegacy:aum"
+        },
+        "output": [
+          {
+            "chance": 2.0,
+            "item": "arsmagicalegacy:aum"
+          }
+        ]
+      }
+    }
+  ]
+}

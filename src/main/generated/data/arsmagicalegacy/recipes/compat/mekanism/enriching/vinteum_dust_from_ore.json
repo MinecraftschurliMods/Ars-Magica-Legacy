@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mekanism"
+        }
+      ],
+      "recipe": {
+        "type": "mekanism:enriching",
+        "input": {
+          "ingredient": {
+            "tag": "forge:ores/vinteum"
+          }
+        },
+        "output": {
+          "count": 2,
+          "item": "arsmagicalegacy:vinteum_dust"
+        }
+      }
+    }
+  ]
+}
