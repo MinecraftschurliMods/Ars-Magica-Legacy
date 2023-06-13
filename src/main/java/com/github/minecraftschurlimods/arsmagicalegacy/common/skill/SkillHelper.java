@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -25,7 +26,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.NetworkEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -206,13 +206,10 @@ public final class SkillHelper implements ISkillHelper {
         return getStackForSkillPoint(item, skillPoint.getId());
     }
 
-    @Nullable
     @Override
     public SkillPoint getSkillPointForStack(ItemStack stack) {
-        if (stack.getItem() instanceof ISkillPointItem item) {
-            return item.getSkillPoint(stack);
-        }
-        return null;
+        if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
+        return AMSkillPoints.NONE.get();
     }
 
     @Override

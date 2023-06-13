@@ -1,0 +1,23 @@
+{
+  "affinities": {
+    "arsmagicalegacy:life": 0.001
+  },
+  "manaCost": 50.0,
+  "reagents": [],
+  "recipe": [
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
+        "item": "arsmagicalegacy:light_blue_rune"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:enchanted_golden_apple"
+      }
+    }
+  ]
+}

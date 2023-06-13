@@ -57,7 +57,7 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get())));
+        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get()), new ItemStack(AMItems.INFINITY_ORB.get())));
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, ClientHelper.getRegistryAccess()
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
                 .stream()

@@ -33,12 +33,12 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(FROST_DAMAGE.getId())
                 .addParent(LIGHTNING_DAMAGE.getId())
                 .addParent(MAGIC_DAMAGE.getId()));
-        add(offense(BEAM, 210, 255)
+        add(offense(BEAM, 210, 210)
                 .addCost(RED.get())
                 .addParent(AOE.getId()));
-        add(utility(CHAIN, 255, 165)
+        add(utility(CHAIN, 210, 255)
                 .addCost(RED.get())
-                .addParent(GROW.getId()));
+                .addParent(BEAM.getId()));
         add(utility(CHANNEL, 165, 255)
                 .addCost(GREEN.get())
                 .addParent(RIFT.getId()));
@@ -105,6 +105,8 @@ class AMSkillProvider extends SkillProvider {
         add(defense(HASTE, 165, 165)
                 .addCost(BLUE.get())
                 .addParent(SLOW_FALLING.getId()));
+        add(defense(HEALTH_BOOST, 30, 30)
+                .setHidden());
         add(utility(INVISIBILITY, 30, 210)
                 .addCost(GREEN.get())
                 .addParent(TRUE_SIGHT.getId()));
@@ -127,7 +129,7 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(BLUE.get())
                 .addParent(JUMP_BOOST.getId()));
         add(utility(WATER_BREATHING, 255, 255)
-                .addCost(BLUE.get())
+                .addCost(GREEN.get())
                 .addParent(CREATE_WATER.getId()));
         add(defense(AGILITY, 165, 255)
                 .addCost(GREEN.get())
@@ -250,8 +252,6 @@ class AMSkillProvider extends SkillProvider {
         add(defense(MANA_DRAIN, 210, 210)
                 .addCost(GREEN.get())
                 .addParent(LIFE_DRAIN.getId()));
-        add(defense(MANA_SHIELD, 30, 30)
-                .setHidden());
         add(utility(MOONRISE, 30, 75)
                 .setHidden());
         add(utility(PLACE_BLOCK, 165, 75)
@@ -298,7 +298,7 @@ class AMSkillProvider extends SkillProvider {
                 .addParent(PROJECTILE.getId()));
         add(offense(DAMAGE, 210, 300)
                 .addCost(RED.get())
-                .addParent(BEAM.getId()));
+                .addParent(CHAIN.getId()));
         add(offense(DISMEMBERING, 30, 210)
                 .setHidden());
         add(defense(DURATION, 210, 345)

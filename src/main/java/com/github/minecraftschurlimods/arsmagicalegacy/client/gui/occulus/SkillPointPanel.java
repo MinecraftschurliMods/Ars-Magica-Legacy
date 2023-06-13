@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
@@ -28,7 +29,7 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         stack.pushPose();
         stack.translate(width, 0, -1);
         var api = ArsMagicaAPI.get();
-        List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().map(point -> Pair.of(point.getDisplayName().copy().append(Component.literal(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.color())).toList();
+        List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().filter(e -> e != AMSkillPoints.NONE.get()).map(point -> Pair.of(point.getDisplayName().copy().append(Component.literal(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.color())).toList();
         int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
         setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);

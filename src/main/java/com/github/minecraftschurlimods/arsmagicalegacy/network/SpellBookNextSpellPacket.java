@@ -32,7 +32,7 @@ public record SpellBookNextSpellPacket(boolean backwards) implements IPacket {
             ServerPlayer sender = context.getSender();
             assert sender != null;
             ItemStack item = sender.getMainHandItem();
-            if (item.isEmpty()) {
+            if (!(item.getItem() instanceof SpellBookItem)) {
                 item = sender.getOffhandItem();
             }
             if (!(item.getItem() instanceof SpellBookItem)) return;

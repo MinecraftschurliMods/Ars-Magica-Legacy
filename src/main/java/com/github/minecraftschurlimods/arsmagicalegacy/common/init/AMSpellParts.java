@@ -35,7 +35,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Li
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Light;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.ManaBlast;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.ManaDrain;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.ManaShield;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.MeltArmor;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Moonrise;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.PlaceBlock;
@@ -89,7 +88,6 @@ public interface AMSpellParts {
     RegistryObject<Wall>               WALL                = SPELL_PARTS.register("wall",                Wall::new);
     RegistryObject<Wave>               WAVE                = SPELL_PARTS.register("wave",                Wave::new);
     RegistryObject<Zone>               ZONE                = SPELL_PARTS.register("zone",                Zone::new);
-
     RegistryObject<Contingency>        CONTINGENCY_DEATH   = SPELL_PARTS.register("contingency_death",   () -> new Contingency(ContingencyType.DEATH));
     RegistryObject<Contingency>        CONTINGENCY_DAMAGE  = SPELL_PARTS.register("contingency_damage",  () -> new Contingency(ContingencyType.DAMAGE));
     RegistryObject<Contingency>        CONTINGENCY_HEALTH  = SPELL_PARTS.register("contingency_health",  () -> new Contingency(ContingencyType.HEALTH));
@@ -105,6 +103,7 @@ public interface AMSpellParts {
     RegistryObject<Effect>             ABSORPTION          = SPELL_PARTS.register("absorption",          () -> new Effect(MobEffects.ABSORPTION));
     RegistryObject<Effect>             BLINDNESS           = SPELL_PARTS.register("blindness",           () -> new Effect(MobEffects.BLINDNESS));
     RegistryObject<Effect>             HASTE               = SPELL_PARTS.register("haste",               () -> new Effect(MobEffects.DIG_SPEED));
+    RegistryObject<Effect>             HEALTH_BOOST        = SPELL_PARTS.register("health_boost",        () -> new Effect(MobEffects.HEALTH_BOOST));
     RegistryObject<Effect>             INVISIBILITY        = SPELL_PARTS.register("invisibility",        () -> new Effect(MobEffects.INVISIBILITY));
     RegistryObject<Effect>             JUMP_BOOST          = SPELL_PARTS.register("jump_boost",          () -> new Effect(MobEffects.JUMP));
     RegistryObject<Effect>             LEVITATION          = SPELL_PARTS.register("levitation",          () -> new Effect(MobEffects.LEVITATION));
@@ -158,7 +157,6 @@ public interface AMSpellParts {
     RegistryObject<Light>              LIGHT               = SPELL_PARTS.register("light",               Light::new);
     RegistryObject<ManaBlast>          MANA_BLAST          = SPELL_PARTS.register("mana_blast",          ManaBlast::new);
     RegistryObject<ManaDrain>          MANA_DRAIN          = SPELL_PARTS.register("mana_drain",          ManaDrain::new);
-    RegistryObject<ManaShield>         MANA_SHIELD         = SPELL_PARTS.register("mana_shield",         ManaShield::new);
     RegistryObject<MeltArmor>          MELT_ARMOR          = SPELL_PARTS.register("melt_armor",          MeltArmor::new);
     RegistryObject<Moonrise>           MOONRISE            = SPELL_PARTS.register("moonrise",            Moonrise::new);
     RegistryObject<PlaceBlock>         PLACE_BLOCK         = SPELL_PARTS.register("place_block",         PlaceBlock::new);

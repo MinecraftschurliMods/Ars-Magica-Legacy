@@ -117,7 +117,6 @@ public class SpellItem extends Item implements ISpellItem {
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
-        if (entity.level.isClientSide()) return;
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         if (!spell.isContinuous()) return;
@@ -199,7 +198,6 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     private void castSpell(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack) {
-        if (level.isClientSide()) return;
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         String name = ArsMagicaLegacy.LOGGER.isTraceEnabled() ? helper.getSpellName(stack).map(Component::getString).orElse("") : "";

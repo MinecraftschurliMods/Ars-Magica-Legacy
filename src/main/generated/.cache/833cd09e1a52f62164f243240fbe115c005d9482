@@ -1,4 +1,4 @@
-// 1.19.2	2023-02-25T10:35:28.1291338	Item Models: arsmagicalegacy
+// 1.19.2	2023-06-13T22:08:59.1863212	Item Models: arsmagicalegacy
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/affinity_essence.json
 6e0b262bb6740bdbe7b3564e182497239ff375ac assets/arsmagicalegacy/models/item/affinity_essence_air.json
 84174d0bc6eb1016c4946a0937eb7ec35e19f1d8 assets/arsmagicalegacy/models/item/affinity_essence_arcane.json
@@ -61,6 +61,7 @@ ceb5816f7bffe087aa2d7d3ab4507a55e32a6728 assets/arsmagicalegacy/models/item/deep
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/arsmagicalegacy/models/item/infinity_orb.json
 c21f706e116e5b2bf9c64682d65b99589f03a313 assets/arsmagicalegacy/models/item/infinity_orb_blue.json
 201371065f932814e5c3c997f9b6d6c63da0473f assets/arsmagicalegacy/models/item/infinity_orb_green.json
+9805099af512c579c92252573616148b527148e4 assets/arsmagicalegacy/models/item/infinity_orb_none.json
 b8d7707941aa5120979431bb89c54c0f18600ec0 assets/arsmagicalegacy/models/item/infinity_orb_red.json
 10524e7f6ce8b24b1aeeb89d8069e40f8e9da0cd assets/arsmagicalegacy/models/item/iron_inlay.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/arsmagicalegacy/models/item/life_guardian_spawn_egg.json

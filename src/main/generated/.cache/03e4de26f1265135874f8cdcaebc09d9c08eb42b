@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-30T20:14:26.216092	Tags for minecraft:item
+// 1.19.2	2023-04-24T15:18:06.7270684	Tags for minecraft:item
 ac08e7755658188bc121b8cce95fa5a057098996 data/arsmagicalegacy/tags/items/runes.json
 bf2ff7f1168fe233c660f374f8cb43a29c227e84 data/arsmagicalegacy/tags/items/runes/black.json
 6d8e32f4cdc0fe371bb34e661ca342e42cb8ff9b data/arsmagicalegacy/tags/items/runes/blue.json
@@ -17,6 +17,8 @@ d4c1fa5311b7dae72b0c8dcf1afd60253fd2afb9 data/arsmagicalegacy/tags/items/runes/l
 30fba6c2ba59841003877c5ef756e8fd8d76aa95 data/arsmagicalegacy/tags/items/runes/red.json
 917075cdb4df4f90fd4e78d5a4d77aa9fdc04c88 data/arsmagicalegacy/tags/items/runes/white.json
 b1774ad103cba4626fdc860193f93058ea93ce9a data/arsmagicalegacy/tags/items/runes/yellow.json
+3172b3316d9e9bc7f03efe84082a0da0bbe360d4 data/arsmagicalegacy/tags/items/spellcrafting_end.json
+1ab4f91f47360dfda84ec956fed7c78f564fd36d data/arsmagicalegacy/tags/items/spellcrafting_start.json
 09a8495f82a08691d533f5301ffce0cc0afe0bcf data/arsmagicalegacy/tags/items/witchwood_logs.json
 a0b375c98ae151eb3539b82b5d8156b2e68f85e2 data/curios/tags/items/head.json
 3779c7cc8657968e1c820faaa585855a17d7e663 data/forge/tags/items/dusts.json

@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -120,6 +121,8 @@ public final class MagicHelper implements IMagicHelper {
      * @param player   The respawning player.
      */
     public void syncOnDeath(Player original, Player player) {
+        player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
+        player.getAttribute(AMAttributes.MANA_REGEN.get()).setBaseValue(original.getAttribute(AMAttributes.MANA_REGEN.get()).getBaseValue());
         original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
         syncMagic(player);
     }

@@ -44,6 +44,5 @@ public class AMDatagen {
         generator.addProvider(includeClient || includeServer, new AMPatchouliBookProvider(generator, abilityProvider, lang, includeClient, includeServer));
         generator.addProvider(includeClient, new AMSoundDefinitionsProvider(generator, existingFileHelper));
         generator.addProvider(includeClient, lang);
-        new AMCompatDataProvider(evt);
     }
 }

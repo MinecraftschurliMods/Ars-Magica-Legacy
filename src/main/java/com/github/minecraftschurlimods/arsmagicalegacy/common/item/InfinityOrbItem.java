@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
@@ -29,7 +30,9 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         if (allowedIn(tab)) {
             for (SkillPoint point : ArsMagicaAPI.get().getSkillPointRegistry().getValues()) {
-                list.add(setSkillPoint(new ItemStack(this), point));
+                if (point != AMSkillPoints.NONE.get()) {
+                    list.add(setSkillPoint(new ItemStack(this), point));
+                }
             }
         }
     }
