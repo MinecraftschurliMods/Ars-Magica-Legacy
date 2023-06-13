@@ -36,7 +36,7 @@ class AMSkillProvider extends SkillProvider {
         add(offense(BEAM, 210, 210)
                 .addCost(RED.get())
                 .addParent(AOE.getId()));
-        add(utility(CHAIN, 210, 255)
+        add(offense(CHAIN, 210, 255)
                 .addCost(RED.get())
                 .addParent(BEAM.getId()));
         add(utility(CHANNEL, 165, 255)

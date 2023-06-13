@@ -37,17 +37,15 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         add(builder(AMSpellParts.BEAM, 1f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
-                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
-                .build(consumer);
-        builder(AMSpellParts.CHAIN, 1f)
+                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500)));
+        add(builder(AMSpellParts.CHAIN, 1f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.STRING), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.LEAD), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TRIPWIRE_HOOK), 1))
-                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
-                .build(consumer);
-        builder(AMSpellParts.CHANNEL, 0.5f)
+                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500)));
+        add(builder(AMSpellParts.CHANNEL, 0.5f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1)));
         add(builder(AMSpellParts.CONTINGENCY_DAMAGE, 10f)

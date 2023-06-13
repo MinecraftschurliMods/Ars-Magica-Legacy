@@ -105,7 +105,7 @@ public class AMRitualProvider extends RitualProvider {
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.FIRE_DAMAGE.get(), AMSpellParts.IGNITION.get(), AMSpellParts.STORM.get()))));
         add(builder("unlock_mana_blast", new LearnSkillRitualEffect(AMSpellParts.MANA_BLAST.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.EXPLOSION.get(), AMSpellParts.MANA_DRAIN.get()))));
-        add(builder("unlock_mana_shield", new LearnSkillRitualEffect(AMSpellParts.MANA_SHIELD.get()),
+        add(builder("unlock_health_boost", new LearnSkillRitualEffect(AMSpellParts.HEALTH_BOOST.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.SHIELD.get(), AMSpellParts.LIFE_TAP.get()))));
         add(builder("unlock_moonrise", new LearnSkillRitualEffect(AMSpellParts.MOONRISE.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.ENDER_INTERVENTION.get(), AMSpellParts.NIGHT_VISION.get()), List.of(AMSpellParts.LUNAR.get()))));
