@@ -3,10 +3,10 @@
     "arsmagicalegacy:red": 1
   },
   "hidden": false,
-  "occulus_tab": "arsmagicalegacy:utility",
+  "occulus_tab": "arsmagicalegacy:offense",
   "parents": [
-    "arsmagicalegacy:grow"
+    "arsmagicalegacy:beam"
   ],
-  "x": 255,
-  "y": 165
+  "x": 210,
+  "y": 255
 }

@@ -59,6 +59,8 @@ public final class AMTags {
         public static final TagKey<Item> RUNES_RED = tag("runes/red");
         public static final TagKey<Item> RUNES_WHITE = tag("runes/white");
         public static final TagKey<Item> RUNES_YELLOW = tag("runes/yellow");
+        public static final TagKey<Item> SPELLCRAFTING_START = tag("spellcrafting_start");
+        public static final TagKey<Item> SPELLCRAFTING_END = tag("spellcrafting_end");
 
         private static TagKey<Item> forgeTag(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(FORGE, name));

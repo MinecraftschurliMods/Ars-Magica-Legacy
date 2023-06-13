@@ -311,6 +311,7 @@ processResources {
 javadoc {
     source = sourceSets.api.allJava
     options.encoding = 'UTF-8'
+    options.addStringOption('Xdoclint:all,-missing', '-public')
     options.tags = [
             'side:a:Side:',
             'apiNote:a:API Note:',

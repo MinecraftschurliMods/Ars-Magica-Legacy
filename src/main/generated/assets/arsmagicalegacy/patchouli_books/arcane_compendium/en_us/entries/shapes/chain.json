@@ -9,6 +9,10 @@
       "text": "item.arsmagicalegacy.arcane_compendium.shapes.chain.page0.text"
     },
     {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.shapes.chain.page1.text"
+    },
+    {
       "type": "arsmagicalegacy:spell_part",
       "part": "arsmagicalegacy:chain"
     }
