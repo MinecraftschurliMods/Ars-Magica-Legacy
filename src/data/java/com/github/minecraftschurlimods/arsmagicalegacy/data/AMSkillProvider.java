@@ -10,8 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Consumer;
-
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.BLUE;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.GREEN;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.RED;
@@ -28,550 +26,336 @@ class AMSkillProvider extends SkillProvider {
     }
 
     @Override
-    protected void generate(Consumer<Builder> consumer) {
-        offense(AOE)
-                .setPosition(210, 165)
+    protected void generate() {
+        add(offense(AOE, 210, 165)
                 .addCost(GREEN.get())
                 .addParent(FIRE_DAMAGE.getId())
                 .addParent(FROST_DAMAGE.getId())
                 .addParent(LIGHTNING_DAMAGE.getId())
-                .addParent(MAGIC_DAMAGE.getId())
-                .build(consumer);
-        offense(BEAM)
-                .setPosition(210, 255)
+                .addParent(MAGIC_DAMAGE.getId()));
+        add(offense(BEAM, 210, 255)
                 .addCost(RED.get())
-                .addParent(AOE.getId())
-                .build(consumer);
-        utility(CHAIN)
-                .setPosition(255, 165)
+                .addParent(AOE.getId()));
+        add(utility(CHAIN, 255, 165)
                 .addCost(RED.get())
-                .addParent(GROW.getId())
-                .build(consumer);
-        utility(CHANNEL)
-                .setPosition(165, 255)
+                .addParent(GROW.getId()));
+        add(utility(CHANNEL, 165, 255)
                 .addCost(GREEN.get())
-                .addParent(RIFT.getId())
-                .build(consumer);
-        defense(CONTINGENCY_DAMAGE)
-                .setPosition(255, 345)
+                .addParent(RIFT.getId()));
+        add(defense(CONTINGENCY_DAMAGE, 255, 345)
                 .addCost(RED.get())
-                .addParent(REFLECT.getId())
-                .build(consumer);
-        utility(CONTINGENCY_DEATH)
-                .setPosition(165, 345)
+                .addParent(REFLECT.getId()));
+        add(utility(CONTINGENCY_DEATH, 165, 345)
                 .addCost(RED.get())
-                .addParent(ENDER_INTERVENTION.getId())
-                .build(consumer);
-        defense(CONTINGENCY_FALL)
-                .setPosition(75, 120)
+                .addParent(ENDER_INTERVENTION.getId()));
+        add(defense(CONTINGENCY_FALL, 75, 120)
                 .addCost(RED.get())
-                .addParent(SLOW_FALLING.getId())
-                .build(consumer);
-        offense(CONTINGENCY_FIRE)
-                .setPosition(75, 165)
+                .addParent(SLOW_FALLING.getId()));
+        add(offense(CONTINGENCY_FIRE, 75, 165)
                 .addCost(RED.get())
-                .addParent(FORGE.getId())
-                .build(consumer);
-        defense(CONTINGENCY_HEALTH)
-                .setPosition(300, 255)
+                .addParent(FORGE.getId()));
+        add(defense(CONTINGENCY_HEALTH, 300, 255)
                 .addCost(RED.get())
-                .addParent(SHIELD.getId())
-                .build(consumer);
-        offense(PROJECTILE)
-                .setPosition(210, 30)
-                .addCost(BLUE.get())
-                .build(consumer);
-        defense(RUNE)
-                .setPosition(120, 300)
+                .addParent(SHIELD.getId()));
+        add(offense(PROJECTILE, 210, 30)
+                .addCost(BLUE.get()));
+        add(defense(RUNE, 120, 300)
                 .addCost(GREEN.get())
                 .addParent(AGILITY.getId())
-                .addParent(ENTANGLE.getId())
-                .build(consumer);
-        defense(SELF)
-                .setPosition(165, 30)
-                .addCost(BLUE.get())
-                .build(consumer);
-        utility(TOUCH)
-                .setPosition(120, 30)
-                .addCost(BLUE.get())
-                .build(consumer);
-        defense(WALL)
-                .setPosition(30, 210)
+                .addParent(ENTANGLE.getId()));
+        add(defense(SELF, 165, 30)
+                .addCost(BLUE.get()));
+        add(utility(TOUCH, 120, 30)
+                .addCost(BLUE.get()));
+        add(defense(WALL, 30, 210)
                 .addCost(GREEN.get())
-                .addParent(REPEL.getId())
-                .build(consumer);
-        offense(WAVE)
-                .setPosition(255, 300)
+                .addParent(REPEL.getId()));
+        add(offense(WAVE, 255, 300)
                 .addCost(RED.get())
                 .addParent(DAMAGE.getId())
-                .addParent(VELOCITY.getId())
-                .build(consumer);
-        defense(ZONE)
-                .setPosition(255, 210)
+                .addParent(VELOCITY.getId()));
+        add(defense(ZONE, 255, 210)
                 .addCost(RED.get())
-                .addParent(DISPEL.getId())
-                .build(consumer);
-        offense(DROWNING_DAMAGE)
-                .setPosition(300, 165)
+                .addParent(DISPEL.getId()));
+        add(offense(DROWNING_DAMAGE, 300, 165)
                 .addCost(BLUE.get())
-                .addParent(MAGIC_DAMAGE.getId())
-                .build(consumer);
-        offense(FIRE_DAMAGE)
-                .setPosition(165, 120)
+                .addParent(MAGIC_DAMAGE.getId()));
+        add(offense(FIRE_DAMAGE, 165, 120)
                 .addCost(BLUE.get())
-                .addParent(PHYSICAL_DAMAGE.getId())
-                .build(consumer);
-        offense(FROST_DAMAGE)
-                .setPosition(255, 120)
+                .addParent(PHYSICAL_DAMAGE.getId()));
+        add(offense(FROST_DAMAGE, 255, 120)
                 .addCost(BLUE.get())
-                .addParent(PHYSICAL_DAMAGE.getId())
-                .build(consumer);
-        offense(LIGHTNING_DAMAGE)
-                .setPosition(165, 165)
+                .addParent(PHYSICAL_DAMAGE.getId()));
+        add(offense(LIGHTNING_DAMAGE, 165, 165)
                 .addCost(BLUE.get())
-                .addParent(PHYSICAL_DAMAGE.getId())
-                .build(consumer);
-        offense(MAGIC_DAMAGE)
-                .setPosition(255, 165)
+                .addParent(PHYSICAL_DAMAGE.getId()));
+        add(offense(MAGIC_DAMAGE, 255, 165)
                 .addCost(BLUE.get())
-                .addParent(PHYSICAL_DAMAGE.getId())
-                .build(consumer);
-        offense(PHYSICAL_DAMAGE)
-                .setPosition(210, 75)
+                .addParent(PHYSICAL_DAMAGE.getId()));
+        add(offense(PHYSICAL_DAMAGE, 210, 75)
                 .addCost(BLUE.get())
-                .addParent(PROJECTILE.getId())
-                .build(consumer);
-        defense(ABSORPTION)
-                .setPosition(210, 255)
+                .addParent(PROJECTILE.getId()));
+        add(defense(ABSORPTION, 210, 255)
                 .addCost(RED.get())
-                .addParent(SHIELD.getId())
-                .build(consumer);
-        offense(BLINDNESS)
-                .setPosition(165, 210)
+                .addParent(SHIELD.getId()));
+        add(offense(BLINDNESS, 165, 210)
                 .addCost(GREEN.get())
                 .addParent(FIRE_DAMAGE.getId())
-                .addParent(LIGHTNING_DAMAGE.getId())
-                .build(consumer);
-        defense(HASTE)
-                .setPosition(165, 165)
+                .addParent(LIGHTNING_DAMAGE.getId()));
+        add(defense(HASTE, 165, 165)
                 .addCost(BLUE.get())
-                .addParent(SLOW_FALLING.getId())
-                .build(consumer);
-        utility(INVISIBILITY)
-                .setPosition(30, 210)
+                .addParent(SLOW_FALLING.getId()));
+        add(utility(INVISIBILITY, 30, 210)
                 .addCost(GREEN.get())
-                .addParent(TRUE_SIGHT.getId())
-                .build(consumer);
-        defense(JUMP_BOOST)
-                .setPosition(120, 75)
+                .addParent(TRUE_SIGHT.getId()));
+        add(defense(JUMP_BOOST, 120, 75)
                 .addCost(BLUE.get())
-                .addParent(SELF.getId())
-                .build(consumer);
-        defense(LEVITATION)
-                .setPosition(120, 210)
+                .addParent(SELF.getId()));
+        add(defense(LEVITATION, 120, 210)
                 .addCost(GREEN.get())
-                .addParent(GRAVITY_WELL.getId())
-                .build(consumer);
-        utility(NIGHT_VISION)
-                .setPosition(75, 165)
+                .addParent(GRAVITY_WELL.getId()));
+        add(utility(NIGHT_VISION, 75, 165)
                 .addCost(BLUE.get())
-                .addParent(LIGHT.getId())
-                .build(consumer);
-        defense(REGENERATION)
-                .setPosition(255, 75)
+                .addParent(LIGHT.getId()));
+        add(defense(REGENERATION, 255, 75)
                 .addCost(BLUE.get())
-                .addParent(SELF.getId())
-                .build(consumer);
-        defense(SLOWNESS)
-                .setPosition(75, 165)
+                .addParent(SELF.getId()));
+        add(defense(SLOWNESS, 75, 165)
                 .addCost(BLUE.get())
-                .addParent(SLOW_FALLING.getId())
-                .build(consumer);
-        defense(SLOW_FALLING)
-                .setPosition(120, 120)
+                .addParent(SLOW_FALLING.getId()));
+        add(defense(SLOW_FALLING, 120, 120)
                 .addCost(BLUE.get())
-                .addParent(JUMP_BOOST.getId())
-                .build(consumer);
-        utility(WATER_BREATHING)
-                .setPosition(255, 255)
+                .addParent(JUMP_BOOST.getId()));
+        add(utility(WATER_BREATHING, 255, 255)
                 .addCost(BLUE.get())
-                .addParent(CREATE_WATER.getId())
-                .build(consumer);
-        defense(AGILITY)
-                .setPosition(165, 255)
+                .addParent(CREATE_WATER.getId()));
+        add(defense(AGILITY, 165, 255)
                 .addCost(GREEN.get())
-                .addParent(SWIFT_SWIM.getId())
-                .build(consumer);
-        offense(ASTRAL_DISTORTION)
-                .setPosition(255, 210)
+                .addParent(SWIFT_SWIM.getId()));
+        add(offense(ASTRAL_DISTORTION, 255, 210)
                 .addCost(GREEN.get())
-                .addParent(MAGIC_DAMAGE.getId())
-                .build(consumer);
-        defense(ENTANGLE)
-                .setPosition(75, 255)
+                .addParent(MAGIC_DAMAGE.getId()));
+        add(defense(ENTANGLE, 75, 255)
                 .addCost(GREEN.get())
-                .addParent(REPEL.getId())
-                .build(consumer);
-        defense(FLIGHT)
-                .setPosition(120, 255)
+                .addParent(REPEL.getId()));
+        add(defense(FLIGHT, 120, 255)
                 .addCost(RED.get())
-                .addParent(LEVITATION.getId())
-                .build(consumer);
-        offense(FURY)
-                .setPosition(165, 300)
+                .addParent(LEVITATION.getId()));
+        add(offense(FURY, 165, 300)
                 .addCost(RED.get())
-                .addParent(DAMAGE.getId())
-                .build(consumer);
-        defense(GRAVITY_WELL)
-                .setPosition(120, 165)
+                .addParent(DAMAGE.getId()));
+        add(defense(GRAVITY_WELL, 120, 165)
                 .addCost(GREEN.get())
-                .addParent(SLOW_FALLING.getId())
-                .build(consumer);
-        defense(SHIELD)
-                .setPosition(255, 255)
+                .addParent(SLOW_FALLING.getId()));
+        add(defense(SHIELD, 255, 255)
                 .addCost(RED.get())
-                .addParent(ZONE.getId())
-                .build(consumer);
-        defense(SHRINK)
-                .setPosition(300, 75)
+                .addParent(ZONE.getId()));
+        add(defense(SHRINK, 300, 75)
                 .addCost(BLUE.get())
-                .addParent(REGENERATION.getId())
-                .build(consumer);
-        offense(SILENCE)
-                .setPosition(255, 255)
+                .addParent(REGENERATION.getId()));
+        add(offense(SILENCE, 255, 255)
                 .addCost(RED.get())
-                .addParent(ASTRAL_DISTORTION.getId())
-                .build(consumer);
-        defense(SWIFT_SWIM)
-                .setPosition(165, 210)
+                .addParent(ASTRAL_DISTORTION.getId()));
+        add(defense(SWIFT_SWIM, 165, 210)
                 .addCost(GREEN.get())
-                .addParent(HASTE.getId())
-                .build(consumer);
-        defense(TEMPORAL_ANCHOR)
-                .setPosition(210, 300)
+                .addParent(HASTE.getId()));
+        add(defense(TEMPORAL_ANCHOR, 210, 300)
                 .addCost(RED.get())
-                .addParent(REFLECT.getId())
-                .build(consumer);
-        utility(TRUE_SIGHT)
-                .setPosition(75, 210)
+                .addParent(REFLECT.getId()));
+        add(utility(TRUE_SIGHT, 75, 210)
                 .addCost(BLUE.get())
-                .addParent(NIGHT_VISION.getId())
-                .build(consumer);
-        offense(WATERY_GRAVE)
-                .setPosition(345, 165)
+                .addParent(NIGHT_VISION.getId()));
+        add(offense(WATERY_GRAVE, 345, 165)
                 .addCost(GREEN.get())
-                .addParent(DROWNING_DAMAGE.getId())
-                .build(consumer);
-        utility(ATTRACT)
-                .setPosition(120, 300)
+                .addParent(DROWNING_DAMAGE.getId()));
+        add(utility(ATTRACT, 120, 300)
                 .addCost(GREEN.get())
-                .addParent(RIFT.getId())
-                .build(consumer);
-        utility(BANISH_RAIN)
-                .setPosition(255, 300)
+                .addParent(RIFT.getId()));
+        add(utility(BANISH_RAIN, 255, 300)
                 .addCost(GREEN.get())
-                .addParent(DROUGHT.getId())
-                .build(consumer);
-        utility(BLINK)
-                .setPosition(30, 300)
+                .addParent(DROUGHT.getId()));
+        add(utility(BLINK, 30, 300)
                 .addCost(GREEN.get())
-                .addParent(RANDOM_TELEPORT.getId())
-                .build(consumer);
-        offense(BLIZZARD)
-                .setPosition(30, 30)
-                .setHidden()
-                .build(consumer);
-        utility(CHARM)
-                .setPosition(165, 165)
+                .addParent(RANDOM_TELEPORT.getId()));
+        add(offense(BLIZZARD, 30, 30)
+                .setHidden());
+        add(utility(CHARM, 165, 165)
                 .addCost(BLUE.get())
-                .addParent(LIGHT.getId())
-                .build(consumer);
-        utility(CREATE_WATER)
-                .setPosition(210, 255)
+                .addParent(LIGHT.getId()));
+        add(utility(CREATE_WATER, 210, 255)
                 .addCost(GREEN.get())
-                .addParent(PLANT.getId())
-                .build(consumer);
-        utility(DAYLIGHT)
-                .setPosition(30, 30)
-                .setHidden()
-                .build(consumer);
-        utility(DIG)
-                .setPosition(120, 75)
+                .addParent(PLANT.getId()));
+        add(utility(DAYLIGHT, 30, 30)
+                .setHidden());
+        add(utility(DIG, 120, 75)
                 .addCost(BLUE.get())
-                .addParent(TOUCH.getId())
-                .build(consumer);
-        defense(DISARM)
-                .setPosition(300, 165)
+                .addParent(TOUCH.getId()));
+        add(defense(DISARM, 300, 165)
                 .addCost(BLUE.get())
-                .addParent(DISPEL.getId())
-                .build(consumer);
-        defense(DISPEL)
-                .setPosition(255, 165)
+                .addParent(DISPEL.getId()));
+        add(defense(DISPEL, 255, 165)
                 .addCost(BLUE.get())
-                .addParent(HEAL.getId())
-                .build(consumer);
-        utility(DIVINE_INTERVENTION)
-                .setPosition(30, 345)
+                .addParent(HEAL.getId()));
+        add(utility(DIVINE_INTERVENTION, 30, 345)
                 .addCost(RED.get())
-                .addParent(RECALL.getId())
-                .build(consumer);
-        utility(DROUGHT)
-                .setPosition(210, 300)
+                .addParent(RECALL.getId()));
+        add(utility(DROUGHT, 210, 300)
                 .addCost(GREEN.get())
-                .addParent(CREATE_WATER.getId())
-                .build(consumer);
-        utility(ENDER_INTERVENTION)
-                .setPosition(120, 345)
+                .addParent(CREATE_WATER.getId()));
+        add(utility(ENDER_INTERVENTION, 120, 345)
                 .addCost(RED.get())
-                .addParent(RECALL.getId())
-                .build(consumer);
-        offense(EXPLOSION)
-                .setPosition(120, 300)
+                .addParent(RECALL.getId()));
+        add(offense(EXPLOSION, 120, 300)
                 .addCost(RED.get())
-                .addParent(FURY.getId())
-                .build(consumer);
-        offense(FALLING_STAR)
-                .setPosition(30, 75)
-                .setHidden()
-                .build(consumer);
-        offense(FIRE_RAIN)
-                .setPosition(30, 120)
-                .setHidden()
-                .build(consumer);
-        offense(FLING)
-                .setPosition(300, 255)
+                .addParent(FURY.getId()));
+        add(offense(FALLING_STAR, 30, 75)
+                .setHidden());
+        add(offense(FIRE_RAIN, 30, 120)
+                .setHidden());
+        add(offense(FLING, 300, 255)
                 .addCost(GREEN.get())
-                .addParent(KNOCKBACK.getId())
-                .build(consumer);
-        offense(FORGE)
-                .setPosition(75, 120)
+                .addParent(KNOCKBACK.getId()));
+        add(offense(FORGE, 75, 120)
                 .addCost(GREEN.get())
-                .addParent(IGNITION.getId())
-                .build(consumer);
-        offense(FROST)
-                .setPosition(300, 120)
+                .addParent(IGNITION.getId()));
+        add(offense(FROST, 300, 120)
                 .addCost(GREEN.get())
-                .addParent(FROST_DAMAGE.getId())
-                .build(consumer);
-        utility(GROW)
-                .setPosition(255, 210)
+                .addParent(FROST_DAMAGE.getId()));
+        add(utility(GROW, 255, 210)
                 .addCost(GREEN.get())
-                .addParent(PLANT.getId())
-                .build(consumer);
-        utility(HARVEST)
-                .setPosition(210, 120)
+                .addParent(PLANT.getId()));
+        add(utility(HARVEST, 210, 120)
                 .addCost(GREEN.get())
-                .addParent(PLOW.getId())
-                .build(consumer);
-        defense(HEAL)
-                .setPosition(255, 120)
+                .addParent(PLOW.getId()));
+        add(defense(HEAL, 255, 120)
                 .addCost(BLUE.get())
-                .addParent(REGENERATION.getId())
-                .build(consumer);
-        offense(IGNITION)
-                .setPosition(120, 120)
+                .addParent(REGENERATION.getId()));
+        add(offense(IGNITION, 120, 120)
                 .addCost(GREEN.get())
-                .addParent(FIRE_DAMAGE.getId())
-                .build(consumer);
-        offense(KNOCKBACK)
-                .setPosition(300, 210)
+                .addParent(FIRE_DAMAGE.getId()));
+        add(offense(KNOCKBACK, 300, 210)
                 .addCost(GREEN.get())
-                .addParent(MAGIC_DAMAGE.getId())
-                .build(consumer);
-        defense(LIFE_DRAIN)
-                .setPosition(210, 165)
+                .addParent(MAGIC_DAMAGE.getId()));
+        add(defense(LIFE_DRAIN, 210, 165)
                 .addCost(GREEN.get())
-                .addParent(LIFE_TAP.getId())
-                .build(consumer);
-        defense(LIFE_TAP)
-                .setPosition(210, 120)
+                .addParent(LIFE_TAP.getId()));
+        add(defense(LIFE_TAP, 210, 120)
                 .addCost(GREEN.get())
-                .addParent(HEAL.getId())
-                .build(consumer);
-        utility(LIGHT)
-                .setPosition(120, 165)
+                .addParent(HEAL.getId()));
+        add(utility(LIGHT, 120, 165)
                 .addCost(BLUE.get())
-                .addParent(DIG.getId())
-                .build(consumer);
-        offense(MANA_BLAST)
-                .setPosition(30, 165)
-                .setHidden()
-                .build(consumer);
-        defense(MANA_DRAIN)
-                .setPosition(210, 210)
+                .addParent(DIG.getId()));
+        add(offense(MANA_BLAST, 30, 165)
+                .setHidden());
+        add(defense(MANA_DRAIN, 210, 210)
                 .addCost(GREEN.get())
-                .addParent(LIFE_DRAIN.getId())
-                .build(consumer);
-        defense(MANA_SHIELD)
-                .setPosition(30, 30)
-                .setHidden()
-                .build(consumer);
-        utility(MOONRISE)
-                .setPosition(30, 75)
-                .setHidden()
-                .build(consumer);
-        utility(PLACE_BLOCK)
-                .setPosition(165, 75)
+                .addParent(LIFE_DRAIN.getId()));
+        add(defense(MANA_SHIELD, 30, 30)
+                .setHidden());
+        add(utility(MOONRISE, 30, 75)
+                .setHidden());
+        add(utility(PLACE_BLOCK, 165, 75)
                 .addCost(BLUE.get())
-                .addParent(DIG.getId())
-                .build(consumer);
-        utility(PLANT)
-                .setPosition(210, 210)
+                .addParent(DIG.getId()));
+        add(utility(PLANT, 210, 210)
                 .addCost(BLUE.get())
-                .addParent(LIGHT.getId())
-                .build(consumer);
-        utility(PLOW)
-                .setPosition(210, 165)
+                .addParent(LIGHT.getId()));
+        add(utility(PLOW, 210, 165)
                 .addCost(BLUE.get())
-                .addParent(PLANT.getId())
-                .build(consumer);
-        utility(RANDOM_TELEPORT)
-                .setPosition(30, 255)
+                .addParent(PLANT.getId()));
+        add(utility(RANDOM_TELEPORT, 30, 255)
                 .addCost(GREEN.get())
-                .addParent(INVISIBILITY.getId())
-                .build(consumer);
-        utility(RECALL)
-                .setPosition(75, 345)
+                .addParent(INVISIBILITY.getId()));
+        add(utility(RECALL, 75, 345)
                 .addCost(GREEN.get())
-                .addParent(TRANSPLACE.getId())
-                .build(consumer);
-        defense(REFLECT)
-                .setPosition(255, 300)
+                .addParent(TRANSPLACE.getId()));
+        add(defense(REFLECT, 255, 300)
                 .addCost(RED.get())
-                .addParent(SHIELD.getId())
-                .build(consumer);
-        defense(REPEL)
-                .setPosition(75, 210)
+                .addParent(SHIELD.getId()));
+        add(defense(REPEL, 75, 210)
                 .addCost(GREEN.get())
-                .addParent(SLOWNESS.getId())
-                .build(consumer);
-        utility(RIFT)
-                .setPosition(120, 255)
+                .addParent(SLOWNESS.getId()));
+        add(utility(RIFT, 120, 255)
                 .addCost(GREEN.get())
-                .addParent(LIGHT.getId())
-                .build(consumer);
-        offense(STORM)
-                .setPosition(120, 165)
+                .addParent(LIGHT.getId()));
+        add(offense(STORM, 120, 165)
                 .addCost(RED.get())
-                .addParent(LIGHTNING_DAMAGE.getId())
-                .build(consumer);
-        defense(SUMMON)
-                .setPosition(165, 120)
+                .addParent(LIGHTNING_DAMAGE.getId()));
+        add(defense(SUMMON, 165, 120)
                 .addCost(GREEN.get())
-                .addParent(LIFE_TAP.getId())
-                .build(consumer);
-        utility(TELEKINESIS)
-                .setPosition(165, 300)
+                .addParent(LIFE_TAP.getId()));
+        add(utility(TELEKINESIS, 165, 300)
                 .addCost(GREEN.get())
-                .addParent(ATTRACT.getId())
-                .build(consumer);
-        utility(TRANSPLACE)
-                .setPosition(75, 300)
+                .addParent(ATTRACT.getId()));
+        add(utility(TRANSPLACE, 75, 300)
                 .addCost(GREEN.get())
-                .addParent(BLINK.getId())
-                .build(consumer);
-        utility(WIZARDS_AUTUMN)
-                .setPosition(165, 120)
+                .addParent(BLINK.getId()));
+        add(utility(WIZARDS_AUTUMN, 165, 120)
                 .addCost(BLUE.get())
-                .addParent(DIG.getId())
-                .build(consumer);
-        offense(BOUNCE)
-                .setPosition(255, 75)
+                .addParent(DIG.getId()));
+        add(offense(BOUNCE, 255, 75)
                 .addCost(BLUE.get())
-                .addParent(PROJECTILE.getId())
-                .build(consumer);
-        offense(DAMAGE)
-                .setPosition(210, 300)
+                .addParent(PROJECTILE.getId()));
+        add(offense(DAMAGE, 210, 300)
                 .addCost(RED.get())
-                .addParent(BEAM.getId())
-                .build(consumer);
-        offense(DISMEMBERING)
-                .setPosition(30, 210)
-                .setHidden()
-                .build(consumer);
-        defense(DURATION)
-                .setPosition(210, 345)
+                .addParent(BEAM.getId()));
+        add(offense(DISMEMBERING, 30, 210)
+                .setHidden());
+        add(defense(DURATION, 210, 345)
                 .addCost(RED.get())
-                .addParent(TEMPORAL_ANCHOR.getId())
-                .build(consumer);
-        defense(EFFECT_POWER)
-                .setPosition(30, 75)
-                .setHidden()
-                .build(consumer);
-        offense(GRAVITY)
-                .setPosition(165, 75)
+                .addParent(TEMPORAL_ANCHOR.getId()));
+        add(defense(EFFECT_POWER, 30, 75)
+                .setHidden());
+        add(offense(GRAVITY, 165, 75)
                 .addCost(BLUE.get())
-                .addParent(PROJECTILE.getId())
-                .build(consumer);
-        defense(HEALING)
-                .setPosition(300, 120)
+                .addParent(PROJECTILE.getId()));
+        add(defense(HEALING, 300, 120)
                 .addCost(RED.get())
-                .addParent(HEAL.getId())
-                .build(consumer);
-        utility(LUNAR)
-                .setPosition(30, 165)
+                .addParent(HEAL.getId()));
+        add(utility(LUNAR, 30, 165)
                 .addCost(RED.get())
-                .addParent(NIGHT_VISION.getId())
-                .build(consumer);
-        utility(MINING_POWER)
-                .setPosition(75, 120)
+                .addParent(NIGHT_VISION.getId()));
+        add(utility(MINING_POWER, 75, 120)
                 .addCost(GREEN.get())
-                .addParent(SILK_TOUCH.getId())
-                .build(consumer);
-        offense(PIERCING)
-                .setPosition(345, 120)
+                .addParent(SILK_TOUCH.getId()));
+        add(offense(PIERCING, 345, 120)
                 .addCost(RED.get())
-                .addParent(FROST.getId())
-                .build(consumer);
-        utility(PROSPERITY)
-                .setPosition(30, 120)
-                .setHidden()
-                .build(consumer);
-        utility(RANGE)
-                .setPosition(75, 255)
+                .addParent(FROST.getId()));
+        add(utility(PROSPERITY, 30, 120)
+                .setHidden());
+        add(utility(RANGE, 75, 255)
                 .addCost(RED.get())
-                .addParent(RANDOM_TELEPORT.getId())
-                .build(consumer);
-        defense(RUNE_PROCS)
-                .setPosition(120, 345)
+                .addParent(RANDOM_TELEPORT.getId()));
+        add(defense(RUNE_PROCS, 120, 345)
                 .addCost(GREEN.get())
-                .addParent(RUNE.getId())
-                .build(consumer);
-        utility(SILK_TOUCH)
-                .setPosition(75, 75)
+                .addParent(RUNE.getId()));
+        add(utility(SILK_TOUCH, 75, 75)
                 .addCost(BLUE.get())
-                .addParent(DIG.getId())
-                .build(consumer);
-        offense(SOLAR)
-                .setPosition(120, 210)
+                .addParent(DIG.getId()));
+        add(offense(SOLAR, 120, 210)
                 .addCost(RED.get())
-                .addParent(BLINDNESS.getId())
-                .build(consumer);
-        utility(TARGET_NON_SOLID)
-                .setPosition(75, 30)
+                .addParent(BLINDNESS.getId()));
+        add(utility(TARGET_NON_SOLID, 75, 30)
                 .addCost(BLUE.get())
-                .addParent(TOUCH.getId())
-                .build(consumer);
-        offense(VELOCITY)
-                .setPosition(300, 300)
+                .addParent(TOUCH.getId()));
+        add(offense(VELOCITY, 300, 300)
                 .addCost(RED.get())
-                .addParent(FLING.getId())
-                .build(consumer);
+                .addParent(FLING.getId()));
     }
 
-    private Builder offense(RegistryObject<? extends ISpellPart> part) {
-        return builder(part.getId().getPath()).setOcculusTab(OFFENSE);
+    private Builder offense(RegistryObject<? extends ISpellPart> part, int x, int y) {
+        return builder(part.getId().getPath(), OFFENSE, x, y);
     }
 
-    private Builder defense(RegistryObject<? extends ISpellPart> part) {
-        return builder(part.getId().getPath()).setOcculusTab(DEFENSE);
+    private Builder defense(RegistryObject<? extends ISpellPart> part, int x, int y) {
+        return builder(part.getId().getPath(), DEFENSE, x, y);
     }
 
-    private Builder utility(RegistryObject<? extends ISpellPart> part) {
-        return builder(part.getId().getPath()).setOcculusTab(UTILITY);
+    private Builder utility(RegistryObject<? extends ISpellPart> part, int x, int y) {
+        return builder(part.getId().getPath(), UTILITY, x, y);
     }
 
-    private Builder talent(RegistryObject<? extends ISpellPart> part) {
-        return builder(part.getId().getPath()).setOcculusTab(TALENT);
+    private Builder talent(RegistryObject<? extends ISpellPart> part, int x, int y) {
+        return builder(part.getId().getPath(), TALENT, x, y);
     }
 }

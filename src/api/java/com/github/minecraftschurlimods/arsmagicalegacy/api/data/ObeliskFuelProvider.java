@@ -9,9 +9,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.apache.commons.lang3.SerializationException;
 
-public abstract class ObeliskFuelProvider extends AbstractDataProvider<ObeliskFuel, ObeliskFuelProvider.Builder> {
+public abstract class ObeliskFuelProvider extends AbstractRegistryDataProvider<ObeliskFuel, ObeliskFuelProvider.Builder> {
     protected ObeliskFuelProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
         super(ObeliskFuel.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
     }
@@ -48,56 +47,23 @@ public abstract class ObeliskFuelProvider extends AbstractDataProvider<ObeliskFu
      * @param etheriumPerTick How much etherium is generated per burning tick.
      */
     protected Builder builder(String name, Ingredient ingredient, int burnTime, int etheriumPerTick) {
-        return new Builder(new ResourceLocation(namespace, name)).setIngredient(ingredient).setBurnTime(burnTime).setEtheriumPerTick(etheriumPerTick);
+        return new Builder(new ResourceLocation(namespace, name), ingredient, burnTime, etheriumPerTick);
     }
 
-    public static class Builder extends AbstractDataBuilder<ObeliskFuel, Builder> {
-        private Ingredient ingredient;
-        private int burnTime;
-        private int etheriumPerTick;
+    public static class Builder extends AbstractRegistryDataProvider.Builder<ObeliskFuel, Builder> {
+        private final Ingredient ingredient;
+        private final int burnTime;
+        private final int etheriumPerTick;
 
-        public Builder(ResourceLocation id) {
-            super(id);
-        }
-
-        /**
-         * Sets the ingredient of this obelisk fuel entry.
-         *
-         * @param ingredient The ingredient to set.
-         * @return This builder, for chaining.
-         */
-        public Builder setIngredient(Ingredient ingredient) {
+        public Builder(ResourceLocation id, Ingredient ingredient, int burnTime, int etheriumPerTick) {
+            super(id, ObeliskFuel.DIRECT_CODEC);
             this.ingredient = ingredient;
-            return this;
-        }
-
-        /**
-         * Sets the burn time of this obelisk fuel entry.
-         *
-         * @param burnTime The burn time to set.
-         * @return This builder, for chaining.
-         */
-        public Builder setBurnTime(int burnTime) {
             this.burnTime = burnTime;
-            return this;
-        }
-
-        /**
-         * Sets the etherium generation per tick of this obelisk fuel entry.
-         *
-         * @param etheriumPerTick The etherium generation per tick to set.
-         * @return This builder, for chaining.
-         */
-        public Builder setEtheriumPerTick(int etheriumPerTick) {
             this.etheriumPerTick = etheriumPerTick;
-            return this;
         }
 
         @Override
         protected ObeliskFuel build() {
-            if (ingredient == null) throw new SerializationException("Ingredient must be set.");
-            if (burnTime <= 0) throw new SerializationException("Burn time must be greater than 0.");
-            if (etheriumPerTick <= 0) throw new SerializationException("Etherium per tick must be greater than 0.");
             return new ObeliskFuel(ingredient, burnTime, etheriumPerTick);
         }
     }

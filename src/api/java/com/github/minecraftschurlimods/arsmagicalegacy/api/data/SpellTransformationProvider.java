@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
-public abstract class SpellTransformationProvider extends AbstractDataProvider<SpellTransformation, SpellTransformationProvider.Builder> {
+public abstract class SpellTransformationProvider extends AbstractRegistryDataProvider<SpellTransformation, SpellTransformationProvider.Builder> {
     protected SpellTransformationProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
         super(SpellTransformation.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
     }
@@ -22,79 +22,55 @@ public abstract class SpellTransformationProvider extends AbstractDataProvider<S
     }
 
     /**
-     * Adds a new spell transformation.
-     *
+     * @param id   The id of the transformation.
+     * @param from The block to apply the transformation to.
+     * @param to   The block state to transform to.
+     * @param part The spell part this transformation is for.
+     */
+    public Builder builder(ResourceLocation id, RuleTest from, BlockState to, ResourceLocation part) {
+        return new Builder(id, from, to, part);
+    }
+
+    /**
+     * @param id   The id of the transformation.
+     * @param from The block to apply the transformation to.
+     * @param to   The block state to transform to.
+     * @param part The spell part this transformation is for.
+     */
+    public Builder builder(String id, RuleTest from, BlockState to, ResourceLocation part) {
+        return builder(new ResourceLocation(namespace, id), from, to, part);
+    }
+
+    /**
      * @param id   The id of the transformation.
      * @param from The block to apply the transformation to.
      * @param to   The block state to transform to.
      * @param part The spell part this transformation is for.
      */
     public Builder builder(ResourceLocation id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return new Builder(id).setFrom(from).setTo(to).setPart(part);
+        return builder(id, from, to, part.getId());
     }
 
     /**
-     * Adds a new spell transformation.
-     *
-     * @param name The name of the transformation.
+     * @param id   The id of the transformation.
      * @param from The block to apply the transformation to.
      * @param to   The block state to transform to.
      * @param part The spell part this transformation is for.
      */
-    public Builder builder(String name, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return new Builder(new ResourceLocation(namespace, name)).setFrom(from).setTo(to).setPart(part);
+    public Builder builder(String id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
+        return builder(new ResourceLocation(namespace, id), from, to, part.getId());
     }
 
-    public static class Builder extends AbstractDataBuilder<SpellTransformation, Builder> {
-        private RuleTest from;
-        private BlockState to;
-        private ResourceLocation part;
+    public static class Builder extends AbstractRegistryDataProvider.Builder<SpellTransformation, Builder> {
+        private final RuleTest from;
+        private final BlockState to;
+        private final ResourceLocation part;
 
-        public Builder(ResourceLocation id) {
-            super(id);
-        }
-
-        /**
-         * Sets the base test to use.
-         *
-         * @param from The base test to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setFrom(RuleTest from) {
+        public Builder(ResourceLocation id, RuleTest from, BlockState to, ResourceLocation part) {
+            super(id, SpellTransformation.DIRECT_CODEC);
             this.from = from;
-            return this;
-        }
-
-        /**
-         * Sets the result state to use.
-         *
-         * @param to The result state to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setTo(BlockState to) {
             this.to = to;
-            return this;
-        }
-
-        /**
-         * Sets the spell part to use.
-         *
-         * @param part The spell part to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setPart(ResourceLocation part) {
             this.part = part;
-            return this;
-        }
-
-        /**
-         * Sets the spell part to use.
-         *
-         * @param part The spell part to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setPart(RegistryObject<? extends ISpellPart> part) {
-            return setPart(part.getId());
         }
 
         @Override
