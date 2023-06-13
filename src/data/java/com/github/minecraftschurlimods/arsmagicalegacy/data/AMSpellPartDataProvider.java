@@ -42,10 +42,12 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
                 .build(consumer);
         builder(AMSpellParts.CHAIN, 1f)
-                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.AUM.get()), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.STRING), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.LEAD), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.TRIPWIRE_HOOK), 1))
+                .addIngredient(new EtheriumSpellIngredient(EnumSet.of(EtheriumType.LIGHT), 2500))
                 .build(consumer);
         builder(AMSpellParts.CHANNEL, 0.5f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
@@ -186,6 +188,11 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_GLOWSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1))
                 .build(consumer);
+        builder(AMSpellParts.HEALTH_BOOST, 50f)
+                .addAffinity(AMAffinities.LIFE, 0.001f)
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE)), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ENCHANTED_GOLDEN_APPLE), 1))
+                .build(consumer);
         builder(AMSpellParts.INVISIBILITY, 40f)
                 .addAffinity(AMAffinities.ARCANE, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
@@ -225,7 +232,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.PHANTOM_MEMBRANE), 1))
                 .build(consumer);
-        builder(AMSpellParts.WATER_BREATHING, 30f)
+        builder(AMSpellParts.WATER_BREATHING, 40f)
                 .addAffinity(AMAffinities.WATER, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WAKEBLOOM.get()), 1))
@@ -470,19 +477,12 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .build(consumer);
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.MANA_FOCUS.get())))
         builder(AMSpellParts.MANA_DRAIN, 5f)
                 .addAffinity(AMAffinities.ARCANE, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.CYAN)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
                 .build(consumer);
-        builder(AMSpellParts.MANA_SHIELD, 0f)
-                .addAffinity(AMAffinities.WATER, 0.001f)
-                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE)), 1))
-                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WAKEBLOOM.get()), 1))
-                .build(consumer);
-                //.withIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.MANA_FOCUS.get())))
         builder(AMSpellParts.MELT_ARMOR, 200f)
                 .addAffinity(AMAffinities.FIRE, 0.0001f)
                 .build(consumer);

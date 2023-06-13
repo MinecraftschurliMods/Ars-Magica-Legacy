@@ -3,7 +3,7 @@
   "criteria": {
     "knows": {
       "conditions": {
-        "skill": "arsmagicalegacy:mana_shield"
+        "skill": "arsmagicalegacy:health_boost"
       },
       "trigger": "arsmagicalegacy:player_learned_skill"
     }

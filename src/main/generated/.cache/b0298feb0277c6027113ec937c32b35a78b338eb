@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-28T10:04:33.6016305	AMRituals[arsmagicalegacy]
+// 1.19.2	2023-04-24T15:18:06.7312223	AMRituals[arsmagicalegacy]
 7a1833c5cecba30a81eac9b96806f753b3ee458e data/arsmagicalegacy/arsmagicalegacy/ritual/corruption.json
 9f0fb3386980d2d13906ef3b066d7b76ccd33c2d data/arsmagicalegacy/arsmagicalegacy/ritual/purification.json
 26d79a0ed5f26e0fade4938c3afaea6a603bd2fb data/arsmagicalegacy/arsmagicalegacy/ritual/spawn_air_guardian.json
@@ -16,7 +16,7 @@ d62840247ba54a66227d50bfabbaecadf7b1401e data/arsmagicalegacy/arsmagicalegacy/ri
 19d00089ffc47265690af35b70282424a7ce5c3e data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_effect_power.json
 844b7f73ce5ab99cc6f1fcf7f4478d0ae4e2a04f data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_falling_star.json
 c026b0e6e2c6f1c7858893b9dd8873663b372c45 data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_fire_rain.json
+3b96c0f6b7f2f5f32ccc5ad6a9a51dc343364915 data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_health_boost.json
 d403df5f1bf3158ea5e533af7e4702cd476da5c9 data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_mana_blast.json
-74783e0066ea49e3090ac3cc363786a3d41fb719 data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_mana_shield.json
 ae7fb8a81b7f716d0a036180cedb057377b15d3a data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_moonrise.json
 a8229d1e3376b31a6aeda2163c44c8eba85bd99c data/arsmagicalegacy/arsmagicalegacy/ritual/unlock_prosperity.json

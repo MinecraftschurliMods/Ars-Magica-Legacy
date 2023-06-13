@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:mana_shield"
+    "spell_part": "arsmagicalegacy:health_boost"
   },
   "requirements": [],
   "trigger": {
