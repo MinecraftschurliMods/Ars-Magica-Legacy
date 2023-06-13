@@ -7,6 +7,7 @@
 - Implemented the Mana Blast component.
 - Added tags for spellcrafting starting and finishing. These contain a Blank Rune and a Spell Parchment, respectively.
   Gameplay behavior remains the same; this is intended primarily for modpack/datapack makers.
+- Added translations for subtitles and statistics.
 
 # Changes
 
@@ -14,6 +15,7 @@
 - Water Breathing is now a Green part and slightly more expensive.
 - Some spell recipes have been changed.
 - Updated compendium entries for various spell parts, including the ones that were newly implemented.
+- Changed some textures.
 
 # Removals
 
@@ -25,6 +27,7 @@
 
 - Fixed spell book scrolling in the offhand (#380)
 - Fixed mana and burnout attributes not reapplying correctly after death (#382)
+- Fixed a render crash related to infinity orbs with invalid NBT data (#390)
 - Fixed various smaller issues encountered during development
 
 # API Changes
