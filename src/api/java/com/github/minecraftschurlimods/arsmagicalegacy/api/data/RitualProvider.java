@@ -31,7 +31,7 @@ public abstract class RitualProvider extends AbstractRegistryDataProvider<Ritual
      * @param trigger The trigger of the trigger.
      */
     public Builder builder(String id, RitualEffect effect, RitualTrigger trigger) {
-        return new Builder(new ResourceLocation(namespace, id), effect, trigger);
+        return new Builder(new ResourceLocation(namespace, id), this, effect, trigger);
     }
 
     protected static class Builder extends AbstractRegistryDataProvider.Builder<Ritual, Builder> {
@@ -40,8 +40,8 @@ public abstract class RitualProvider extends AbstractRegistryDataProvider<Ritual
         private final RitualTrigger trigger;
         private BlockPos offset = BlockPos.ZERO;
 
-        private Builder(ResourceLocation id, RitualEffect effect, RitualTrigger trigger) {
-            super(id, Ritual.DIRECT_CODEC);
+        private Builder(ResourceLocation id, RitualProvider provider, RitualEffect effect, RitualTrigger trigger) {
+            super(id, provider, Ritual.DIRECT_CODEC);
             this.effect = effect;
             this.trigger = trigger;
         }
@@ -66,7 +66,7 @@ public abstract class RitualProvider extends AbstractRegistryDataProvider<Ritual
         }
 
         @Override
-        protected Ritual build() {
+        protected Ritual get() {
             return new Ritual(trigger, requirements, effect, offset);
         }
     }

@@ -22,12 +22,21 @@ public abstract class AltarCapMaterialProvider extends AbstractRegistryDataProvi
     }
 
     /**
-     * @param name  The name of the new cap material.
+     * @param id    The id of the new cap material.
      * @param block The block for the new cap material.
      * @param power The power of the new cap material.
      */
-    protected Builder builder(String name, Block block, int power) {
-        return new Builder(new ResourceLocation(namespace, name), block, power);
+    protected Builder builder(ResourceLocation id, Block block, int power) {
+        return new Builder(id, this, block, power);
+    }
+
+    /**
+     * @param id    The id of the new cap material.
+     * @param block The block for the new cap material.
+     * @param power The power of the new cap material.
+     */
+    protected Builder builder(String id, Block block, int power) {
+        return builder(new ResourceLocation(namespace, id), block, power);
     }
 
     /**
@@ -42,14 +51,14 @@ public abstract class AltarCapMaterialProvider extends AbstractRegistryDataProvi
         private final Block block;
         private final int power;
 
-        public Builder(ResourceLocation id, Block block, int power) {
-            super(id, AltarCapMaterial.CODEC);
+        public Builder(ResourceLocation id, AltarCapMaterialProvider provider, Block block, int power) {
+            super(id, provider, AltarCapMaterial.CODEC);
             this.block = block;
             this.power = power;
         }
 
         @Override
-        protected AltarCapMaterial build() {
+        protected AltarCapMaterial get() {
             return new AltarCapMaterial(block, power);
         }
     }

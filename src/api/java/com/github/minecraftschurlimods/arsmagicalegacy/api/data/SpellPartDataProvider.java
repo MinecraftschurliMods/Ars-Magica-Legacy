@@ -45,7 +45,7 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param manaCost  The mana cost for the new spell part.
      */
     public Builder builder(ResourceLocation spellPart, float manaCost) {
-        return new Builder(spellPart, manaCost);
+        return new Builder(spellPart, this, manaCost);
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
         private final float manaCost;
         private Float burnout;
 
-        public Builder(ResourceLocation id, float manaCost) {
-            super(id);
+        public Builder(ResourceLocation id, SpellPartDataProvider provider, float manaCost) {
+            super(id, provider);
             this.manaCost = manaCost;
         }
 

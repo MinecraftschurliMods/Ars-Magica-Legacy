@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "create:crushing",
+        "ingredients": [
+          {
+            "item": "arsmagicalegacy:vinteum_ore"
+          }
+        ],
+        "processingTime": 250,
+        "results": [
+          {
+            "item": "arsmagicalegacy:vinteum_dust"
+          },
+          {
+            "chance": 0.75,
+            "item": "arsmagicalegacy:vinteum_dust"
+          },
+          {
+            "chance": 0.75,
+            "item": "create:experience_nugget"
+          },
+          {
+            "chance": 0.125,
+            "item": "minecraft:cobblestone"
+          }
+        ]
+      }
+    }
+  ]
+}

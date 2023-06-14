@@ -39,7 +39,7 @@ public abstract class SkillProvider extends AbstractRegistryDataProvider<Skill, 
      * @param y          The y position to use.
      */
     protected Builder builder(String name, OcculusTab occulusTab, int x, int y) {
-        return new Builder(new ResourceLocation(namespace, name), occulusTab.getId(), x, y);
+        return builder(name, occulusTab.getId(), x, y);
     }
 
     /**
@@ -49,7 +49,7 @@ public abstract class SkillProvider extends AbstractRegistryDataProvider<Skill, 
      * @param y          The y position to use.
      */
     protected Builder builder(String name, ResourceLocation occulusTab, int x, int y) {
-        return new Builder(new ResourceLocation(namespace, name), occulusTab, x, y);
+        return new Builder(new ResourceLocation(namespace, name), this, occulusTab, x, y);
     }
 
     public static class Builder extends AbstractRegistryDataProvider.Builder<Skill, Builder> {
@@ -60,8 +60,8 @@ public abstract class SkillProvider extends AbstractRegistryDataProvider<Skill, 
         private final int y;
         private boolean hidden = false;
 
-        public Builder(ResourceLocation id, ResourceLocation occulusTab, int x, int y) {
-            super(id, Skill.DIRECT_CODEC);
+        public Builder(ResourceLocation id, SkillProvider provider, ResourceLocation occulusTab, int x, int y) {
+            super(id, provider, Skill.DIRECT_CODEC);
             this.occulusTab = occulusTab;
             this.x = x;
             this.y = y;
@@ -134,7 +134,7 @@ public abstract class SkillProvider extends AbstractRegistryDataProvider<Skill, 
         }
 
         @Override
-        protected Skill build() {
+        protected Skill get() {
             return new Skill(parents, cost, occulusTab, x, y, hidden);
         }
     }

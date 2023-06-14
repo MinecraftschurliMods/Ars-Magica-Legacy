@@ -21,33 +21,33 @@ public abstract class ObeliskFuelProvider extends AbstractRegistryDataProvider<O
     }
 
     /**
-     * @param name            The id of the obelisk fuel.
+     * @param id              The id of the obelisk fuel.
      * @param item            The item to use.
      * @param burnTime        The burn time of the ingredient, in ticks.
      * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected Builder builder(String name, Item item, int burnTime, int etheriumPerTick) {
-        return builder(name, Ingredient.of(item), burnTime, etheriumPerTick);
+    protected Builder builder(String id, Item item, int burnTime, int etheriumPerTick) {
+        return builder(id, Ingredient.of(item), burnTime, etheriumPerTick);
     }
 
     /**
-     * @param name            The id of the obelisk fuel.
+     * @param id              The id of the obelisk fuel.
      * @param tag             The tag to use.
      * @param burnTime        The burn time of the ingredient, in ticks.
      * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected Builder builder(String name, TagKey<Item> tag, int burnTime, int etheriumPerTick) {
-        return builder(name, Ingredient.of(tag), burnTime, etheriumPerTick);
+    protected Builder builder(String id, TagKey<Item> tag, int burnTime, int etheriumPerTick) {
+        return builder(id, Ingredient.of(tag), burnTime, etheriumPerTick);
     }
 
     /**
-     * @param name            The id of the obelisk fuel.
+     * @param id              The id of the obelisk fuel.
      * @param ingredient      The ingredient to use.
      * @param burnTime        How many ticks the ingredient burns.
      * @param etheriumPerTick How much etherium is generated per burning tick.
      */
-    protected Builder builder(String name, Ingredient ingredient, int burnTime, int etheriumPerTick) {
-        return new Builder(new ResourceLocation(namespace, name), ingredient, burnTime, etheriumPerTick);
+    protected Builder builder(String id, Ingredient ingredient, int burnTime, int etheriumPerTick) {
+        return new Builder(new ResourceLocation(namespace, id), this, ingredient, burnTime, etheriumPerTick);
     }
 
     public static class Builder extends AbstractRegistryDataProvider.Builder<ObeliskFuel, Builder> {
@@ -55,15 +55,15 @@ public abstract class ObeliskFuelProvider extends AbstractRegistryDataProvider<O
         private final int burnTime;
         private final int etheriumPerTick;
 
-        public Builder(ResourceLocation id, Ingredient ingredient, int burnTime, int etheriumPerTick) {
-            super(id, ObeliskFuel.DIRECT_CODEC);
+        public Builder(ResourceLocation id, ObeliskFuelProvider provider, Ingredient ingredient, int burnTime, int etheriumPerTick) {
+            super(id, provider, ObeliskFuel.DIRECT_CODEC);
             this.ingredient = ingredient;
             this.burnTime = burnTime;
             this.etheriumPerTick = etheriumPerTick;
         }
 
         @Override
-        protected ObeliskFuel build() {
+        protected ObeliskFuel get() {
             return new ObeliskFuel(ingredient, burnTime, etheriumPerTick);
         }
     }

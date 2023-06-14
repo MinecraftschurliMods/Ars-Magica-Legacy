@@ -24,7 +24,7 @@ public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<Oc
      * @return A new occulus tab.
      */
     protected Builder builder(String name, int index) {
-        return new Builder(new ResourceLocation(namespace, name), index);
+        return new Builder(new ResourceLocation(namespace, name), this, index);
     }
 
     public static class Builder extends AbstractRegistryDataProvider.Builder<OcculusTab, Builder> {
@@ -37,8 +37,8 @@ public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<Oc
         private int width = OcculusTab.TEXTURE_WIDTH;
         private int height = OcculusTab.TEXTURE_HEIGHT;
 
-        public Builder(ResourceLocation id, int index) {
-            super(id, OcculusTab.CODEC);
+        public Builder(ResourceLocation id, OcculusTabProvider provider, int index) {
+            super(id, provider, OcculusTab.CODEC);
             this.index = index;
         }
 
@@ -132,7 +132,7 @@ public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<Oc
         }
 
         @Override
-        protected OcculusTab build() {
+        protected OcculusTab get() {
             return new OcculusTab(renderer, background, icon, width, height, startX, startY, index, null);
         }
     }

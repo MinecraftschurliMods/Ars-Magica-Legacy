@@ -30,7 +30,7 @@ public abstract class AltarStructureMaterialProvider extends AbstractRegistryDat
      * @param power      The power of the new structure material.
      */
     protected Builder builder(String name, Block block, StairBlock stairBlock, int power) {
-        return new Builder(new ResourceLocation(namespace, name), block, stairBlock, power);
+        return new Builder(new ResourceLocation(namespace, name), this, block, stairBlock, power);
     }
 
     /**
@@ -68,15 +68,15 @@ public abstract class AltarStructureMaterialProvider extends AbstractRegistryDat
         private final StairBlock stairBlock;
         private final int power;
 
-        public Builder(ResourceLocation id, Block block, StairBlock stairBlock, int power) {
-            super(id, AltarStructureMaterial.CODEC);
+        public Builder(ResourceLocation id, AltarStructureMaterialProvider provider, Block block, StairBlock stairBlock, int power) {
+            super(id, provider, AltarStructureMaterial.CODEC);
             this.block = block;
             this.stairBlock = stairBlock;
             this.power = power;
         }
 
         @Override
-        protected AltarStructureMaterial build() {
+        protected AltarStructureMaterial get() {
             return new AltarStructureMaterial(block, stairBlock, power);
         }
     }

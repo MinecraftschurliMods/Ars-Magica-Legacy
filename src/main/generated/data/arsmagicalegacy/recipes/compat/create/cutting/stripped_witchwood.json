@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "create:cutting",
+        "ingredients": [
+          {
+            "item": "arsmagicalegacy:stripped_witchwood"
+          }
+        ],
+        "processingTime": 50,
+        "results": [
+          {
+            "count": 6,
+            "item": "arsmagicalegacy:witchwood_planks"
+          }
+        ]
+      }
+    }
+  ]
+}

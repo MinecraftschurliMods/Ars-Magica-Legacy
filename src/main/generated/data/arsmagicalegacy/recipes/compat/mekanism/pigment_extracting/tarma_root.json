@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mekanism"
+        }
+      ],
+      "recipe": {
+        "type": "mekanism:pigment_extracting",
+        "input": {
+          "ingredient": {
+            "item": "arsmagicalegacy:tarma_root"
+          }
+        },
+        "output": {
+          "amount": 768,
+          "pigment": "mekanism:brown"
+        }
+      }
+    }
+  ]
+}

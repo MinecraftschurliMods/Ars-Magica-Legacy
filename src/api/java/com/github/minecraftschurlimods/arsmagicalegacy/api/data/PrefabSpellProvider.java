@@ -32,7 +32,7 @@ public abstract class PrefabSpellProvider extends AbstractRegistryDataProvider<P
      * @param spell The spell of the prefab spell.
      */
     public Builder builder(String id, Component name, ResourceLocation icon, ISpell spell) {
-        return new Builder(new ResourceLocation(namespace, id), name, icon, spell);
+        return new Builder(new ResourceLocation(namespace, id), this, name, icon, spell);
     }
 
     /**
@@ -57,15 +57,15 @@ public abstract class PrefabSpellProvider extends AbstractRegistryDataProvider<P
         private final ResourceLocation icon;
         private final ISpell spell;
 
-        public Builder(ResourceLocation id, Component name, ResourceLocation icon, ISpell spell) {
-            super(id, PrefabSpell.DIRECT_CODEC);
+        public Builder(ResourceLocation id, PrefabSpellProvider provider, Component name, ResourceLocation icon, ISpell spell) {
+            super(id, provider, PrefabSpell.DIRECT_CODEC);
             this.name = name;
             this.icon = icon;
             this.spell = spell;
         }
 
         @Override
-        protected PrefabSpell build() {
+        protected PrefabSpell get() {
             return new PrefabSpell(name, spell, icon);
         }
     }

@@ -29,7 +29,7 @@ public abstract class AbilityProvider extends AbstractRegistryDataProvider<Abili
     }
 
     @Override
-    public void add(Builder builder) {
+    protected void add(Builder builder) {
         super.add(builder);
         abilitiesByAffinity.put(builder.affinity.getId(), builder.id);
     }
@@ -50,7 +50,7 @@ public abstract class AbilityProvider extends AbstractRegistryDataProvider<Abili
      * @param bounds   The ability's bounds.
      */
     protected Builder builder(ResourceLocation id, Affinity affinity, MinMaxBounds.Doubles bounds) {
-        return new Builder(id, affinity, bounds);
+        return new Builder(id, this, affinity, bounds);
     }
 
     /**
@@ -59,21 +59,21 @@ public abstract class AbilityProvider extends AbstractRegistryDataProvider<Abili
      * @param bounds   The ability's bounds.
      */
     protected Builder builder(String id, Affinity affinity, MinMaxBounds.Doubles bounds) {
-        return new Builder(new ResourceLocation(namespace, id), affinity, bounds);
+        return builder(new ResourceLocation(namespace, id), affinity, bounds);
     }
 
     protected static class Builder extends AbstractRegistryDataProvider.Builder<Ability, Builder> {
         private final Affinity affinity;
         private final MinMaxBounds.Doubles bounds;
 
-        public Builder(ResourceLocation id, Affinity affinity, MinMaxBounds.Doubles bounds) {
-            super(id, Ability.DIRECT_CODEC);
+        public Builder(ResourceLocation id, AbilityProvider provider, Affinity affinity, MinMaxBounds.Doubles bounds) {
+            super(id, provider, Ability.DIRECT_CODEC);
             this.affinity = affinity;
             this.bounds = bounds;
         }
 
         @Override
-        protected Ability build() {
+        protected Ability get() {
             return new Ability(affinity, bounds);
         }
     }

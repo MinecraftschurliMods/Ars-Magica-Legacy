@@ -16,27 +16,27 @@ class AMAltarCapMaterialProvider extends AltarCapMaterialProvider {
 
     @Override
     protected void generate() {
-        add(builder("glass", Blocks.GLASS, 1));
-        add(builder("coal", Blocks.COAL_BLOCK, 2));
-        add(builder("copper", Blocks.COPPER_BLOCK, 3));
-        add(builder("exposed_copper", Blocks.EXPOSED_COPPER, 3));
-        add(builder("weathered_copper", Blocks.WEATHERED_COPPER, 3));
-        add(builder("oxidized_copper", Blocks.OXIDIZED_COPPER, 3));
-        add(builder("waxed_copper", Blocks.WAXED_COPPER_BLOCK, 3));
-        add(builder("waxed_exposed_copper", Blocks.WAXED_EXPOSED_COPPER, 3));
-        add(builder("waxed_weathered_copper", Blocks.WAXED_WEATHERED_COPPER, 3));
-        add(builder("waxed_oxidized_copper", Blocks.WAXED_OXIDIZED_COPPER, 3));
-        add(builder("iron", Blocks.IRON_BLOCK, 4));
-        add(builder("redstone", Blocks.REDSTONE_BLOCK, 5));
-        add(builder("vinteum", AMBlocks.VINTEUM_BLOCK.get(), 6));
-        add(builder("chimerite", AMBlocks.CHIMERITE_BLOCK.get(), 7));
-        add(builder("lapis", Blocks.LAPIS_BLOCK, 8));
-        add(builder("gold", Blocks.GOLD_BLOCK, 9));
-        add(builder("topaz", AMBlocks.TOPAZ_BLOCK.get(), 10));
-        add(builder("diamond", Blocks.DIAMOND_BLOCK, 11));
-        add(builder("emerald", Blocks.EMERALD_BLOCK, 12));
-        add(builder("netherite", Blocks.NETHERITE_BLOCK, 13));
-        add(builder("moonstone", AMBlocks.MOONSTONE_BLOCK.get(), 14));
-        add(builder("sunstone", AMBlocks.SUNSTONE_BLOCK.get(), 15));
+        builder("glass", Blocks.GLASS, 1).build();
+        builder("coal", Blocks.COAL_BLOCK, 2).build();
+        builder("copper", Blocks.COPPER_BLOCK, 3).build();
+        builder("exposed_copper", Blocks.EXPOSED_COPPER, 3).build();
+        builder("weathered_copper", Blocks.WEATHERED_COPPER, 3).build();
+        builder("oxidized_copper", Blocks.OXIDIZED_COPPER, 3).build();
+        builder("waxed_copper", Blocks.WAXED_COPPER_BLOCK, 3).build();
+        builder("waxed_exposed_copper", Blocks.WAXED_EXPOSED_COPPER, 3).build();
+        builder("waxed_weathered_copper", Blocks.WAXED_WEATHERED_COPPER, 3).build();
+        builder("waxed_oxidized_copper", Blocks.WAXED_OXIDIZED_COPPER, 3).build();
+        builder("iron", Blocks.IRON_BLOCK, 4).build();
+        builder("redstone", Blocks.REDSTONE_BLOCK, 5).build();
+        builder("vinteum", AMBlocks.VINTEUM_BLOCK.get(), 6).build();
+        builder("chimerite", AMBlocks.CHIMERITE_BLOCK.get(), 7).build();
+        builder("lapis", Blocks.LAPIS_BLOCK, 8).build();
+        builder("gold", Blocks.GOLD_BLOCK, 9).build();
+        builder("topaz", AMBlocks.TOPAZ_BLOCK.get(), 10).build();
+        builder("diamond", Blocks.DIAMOND_BLOCK, 11).build();
+        builder("emerald", Blocks.EMERALD_BLOCK, 12).build();
+        builder("netherite", Blocks.NETHERITE_BLOCK, 13).build();
+        builder("moonstone", AMBlocks.MOONSTONE_BLOCK.get(), 14).build();
+        builder("sunstone", AMBlocks.SUNSTONE_BLOCK.get(), 15).build();
     }
 }

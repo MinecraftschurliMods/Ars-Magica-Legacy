@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDataProvider;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Registry;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -13,6 +14,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +58,11 @@ public abstract class AbstractRegistryDataProvider<T, B extends AbstractRegistry
     protected abstract void generate();
 
     @Override
+    protected void add(B builder) {
+        data.put(builder.id, builder.get());
+    }
+
+    @Override
     public void run(CachedOutput output) {
         try {
             provider.run(output);
@@ -63,25 +71,22 @@ public abstract class AbstractRegistryDataProvider<T, B extends AbstractRegistry
         }
     }
 
-    @Override
-    public void add(B builder) {
-        data.put(builder.id, builder.build());
-    }
-
-    public abstract static class Builder<T, B extends AbstractDataBuilder<B>> extends AbstractDataBuilder<B> {
+    public static abstract class Builder<T, B extends Builder<T, B>> extends AbstractDataBuilder<B> {
+        private static final Logger LOGGER = LogManager.getLogger();
         protected final Codec<T> codec;
 
-        public Builder(ResourceLocation id, Codec<T> codec) {
-            super(id);
+        public Builder(ResourceLocation id, AbstractRegistryDataProvider<T, B> provider, Codec<T> codec) {
+            super(id, provider);
             this.codec = codec;
         }
 
-        /**
-         * @return The object to build using the codec provided in the constructor.
-         */
-        protected abstract T build();
+        protected abstract T get();
 
         @Override
-        protected void toJson(JsonObject jsonObject) {}
+        protected void toJson(JsonObject jsonObject) {
+            for (Map.Entry<String, JsonElement> entry : codec.encodeStart(JsonOps.INSTANCE, get()).getOrThrow(false, LOGGER::error).getAsJsonObject().entrySet()) {
+                jsonObject.add(entry.getKey(), entry.getValue());
+            }
+        }
     }
 }

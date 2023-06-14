@@ -27,28 +27,8 @@ public abstract class SpellTransformationProvider extends AbstractRegistryDataPr
      * @param to   The block state to transform to.
      * @param part The spell part this transformation is for.
      */
-    public Builder builder(ResourceLocation id, RuleTest from, BlockState to, ResourceLocation part) {
-        return new Builder(id, from, to, part);
-    }
-
-    /**
-     * @param id   The id of the transformation.
-     * @param from The block to apply the transformation to.
-     * @param to   The block state to transform to.
-     * @param part The spell part this transformation is for.
-     */
     public Builder builder(String id, RuleTest from, BlockState to, ResourceLocation part) {
-        return builder(new ResourceLocation(namespace, id), from, to, part);
-    }
-
-    /**
-     * @param id   The id of the transformation.
-     * @param from The block to apply the transformation to.
-     * @param to   The block state to transform to.
-     * @param part The spell part this transformation is for.
-     */
-    public Builder builder(ResourceLocation id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return builder(id, from, to, part.getId());
+        return new Builder(new ResourceLocation(namespace, id), this, from, to, part);
     }
 
     /**
@@ -58,7 +38,7 @@ public abstract class SpellTransformationProvider extends AbstractRegistryDataPr
      * @param part The spell part this transformation is for.
      */
     public Builder builder(String id, RuleTest from, BlockState to, RegistryObject<? extends ISpellPart> part) {
-        return builder(new ResourceLocation(namespace, id), from, to, part.getId());
+        return builder(id, from, to, part.getId());
     }
 
     public static class Builder extends AbstractRegistryDataProvider.Builder<SpellTransformation, Builder> {
@@ -66,15 +46,15 @@ public abstract class SpellTransformationProvider extends AbstractRegistryDataPr
         private final BlockState to;
         private final ResourceLocation part;
 
-        public Builder(ResourceLocation id, RuleTest from, BlockState to, ResourceLocation part) {
-            super(id, SpellTransformation.DIRECT_CODEC);
+        public Builder(ResourceLocation id, SpellTransformationProvider provider, RuleTest from, BlockState to, ResourceLocation part) {
+            super(id, provider, SpellTransformation.DIRECT_CODEC);
             this.from = from;
             this.to = to;
             this.part = part;
         }
 
         @Override
-        protected SpellTransformation build() {
+        protected SpellTransformation get() {
             return new SpellTransformation(from, to, part);
         }
     }
