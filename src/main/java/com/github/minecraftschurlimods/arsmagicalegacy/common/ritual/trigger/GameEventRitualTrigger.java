@@ -53,7 +53,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
             Level level = evt.getLevel();
             if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {
                 for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(pos, 5, 5, 5))) {
-                    if (ritual.perform(player, serverLevel, new BlockPos(pos), new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
+                    if (ritual.perform(player, serverLevel, BlockPos.containing(pos), new Context.MapContext(Map.of("event", evt.getVanillaEvent())))) {
                         return;
                     }
                 }

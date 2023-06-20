@@ -5,12 +5,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -40,13 +40,13 @@ class AMItemModelProvider extends ItemModelProvider {
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()
-            .transform(ItemTransforms.TransformType.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
-            .transform(ItemTransforms.TransformType.GROUND).translation(0, 3, 0).scale(0.25f).end()
-            .transform(ItemTransforms.TransformType.FIXED).scale(0.5f).end()
-            .transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-            .transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
-            .transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end().end();
-        blockItem(CELESTIAL_PRISM).transforms().transform(ItemTransforms.TransformType.GUI).translation(0, -2, 0).scale(0.5f).end().end();
+            .transform(ItemDisplayContext.GUI).rotation(30, -45, 0).translation(0, -2, 0).scale(0.3f).end()
+            .transform(ItemDisplayContext.GROUND).translation(0, 3, 0).scale(0.25f).end()
+            .transform(ItemDisplayContext.FIXED).scale(0.5f).end()
+            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end().end();
+        blockItem(CELESTIAL_PRISM).transforms().transform(ItemDisplayContext.GUI).translation(0, -2, 0).scale(0.5f).end().end();
         itemGenerated(BLACK_AUREM, "block/" + BLACK_AUREM.getId().getPath());
         itemHandheld(WIZARDS_CHALK);
         itemGenerated(MAGITECH_GOGGLES);

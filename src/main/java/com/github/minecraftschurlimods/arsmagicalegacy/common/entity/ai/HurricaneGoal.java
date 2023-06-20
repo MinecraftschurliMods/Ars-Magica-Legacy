@@ -27,7 +27,7 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     int y = (int) (boss.getY() + 1);
-                    BlockPos pos = new BlockPos(boss.getX() + x, y, boss.getZ() + z);
+                    BlockPos pos = BlockPos.containing(boss.getX() + x, y, boss.getZ() + z);
                     while (!level.canSeeSky(pos) && level.getBlockState(pos).getDestroySpeed(level, pos) != -1) {
                         if (Math.abs(y - boss.getY()) > 10) break;
                         level.destroyBlock(new BlockPos(pos.getX(), y++, pos.getZ()), true);

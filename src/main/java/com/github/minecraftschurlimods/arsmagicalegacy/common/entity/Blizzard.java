@@ -94,7 +94,7 @@ public class Blizzard extends Entity implements ItemSupplier {
                     entity = ((PartEntity<?>) entity).getParent();
                 }
                 if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    living.hurt(DamageSource.FREEZE, getDamage());
+                    living.hurt(damageSources().freeze(), getDamage());
                     living.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
                 }
             }

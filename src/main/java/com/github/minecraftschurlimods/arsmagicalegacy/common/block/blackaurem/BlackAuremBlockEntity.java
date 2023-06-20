@@ -46,7 +46,7 @@ public class BlackAuremBlockEntity extends BlockEntity {
             entities.sort(Comparator.comparingDouble(value -> value.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())));
             int c = Math.max(1, tier / 2);
             for (LivingEntity entity : entities) {
-                if (entity.isAlive() && entity.attackable() && !entity.isInvertedHealAndHarm() && entity.hurt(DamageSource.MAGIC, 1)) {
+                if (entity.isAlive() && entity.attackable() && !entity.isInvertedHealAndHarm() && entity.hurt(level.damageSources().magic(), 1)) {
                     provider.add(c);
                     break;
                 }

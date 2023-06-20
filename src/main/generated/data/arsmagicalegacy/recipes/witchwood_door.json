@@ -15,5 +15,6 @@
   "result": {
     "count": 3,
     "item": "arsmagicalegacy:witchwood_door"
-  }
+  },
+  "show_notification": true
 }

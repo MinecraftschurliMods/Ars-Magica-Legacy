@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowRoc
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -55,9 +56,9 @@ public class EarthGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.FREEZE || pSource == DamageSource.DROWN) {
+        if (pSource.is(DamageTypeTags.IS_FREEZING) || pSource.is(DamageTypeTags.IS_DROWNING)) {
             pAmount *= 2f;
-        } else if (pSource.isFire() || pSource == DamageSource.LIGHTNING_BOLT) {
+        } else if (pSource.is(DamageTypeTags.IS_FIRE) || pSource.is(DamageTypeTags.IS_LIGHTNING)) {
             return false;
         }
         return super.hurt(pSource, pAmount);

@@ -13,9 +13,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -149,8 +151,10 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             return true;
         } else if (keyCode == InputConstants.KEY_TAB) {
             boolean flag = !hasShiftDown();
-            if (!changeFocus(flag)) {
-                changeFocus(flag);
+            FocusNavigationEvent event = new FocusNavigationEvent.TabNavigation(flag);
+            ComponentPath componentPath = nextFocusPath(event);
+            if (componentPath != null) {
+                changeFocus(componentPath);
             }
             return false;
         } else {
@@ -161,11 +165,11 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     public void setFocused(@Nullable GuiEventListener listener) {
         if (getFocused() instanceof EditBox editBox) {
-            editBox.setFocus(false);
+            editBox.setFocused(false);
         }
         super.setFocused(listener);
         if (listener instanceof EditBox editBox) {
-            editBox.setFocus(true);
+            editBox.setFocused(true);
         }
     }
 

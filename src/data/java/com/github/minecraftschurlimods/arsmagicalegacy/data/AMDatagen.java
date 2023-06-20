@@ -5,10 +5,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120B
 import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120LootTableProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120RecipeProvider;
 import com.github.minecraftschurlimods.easydatagenlib.api.DatapackRegistryGenerator;
-import com.mojang.bridge.game.GameVersion;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.datafixers.util.Function5;
 import net.minecraft.DetectedVersion;
+import net.minecraft.WorldVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -54,10 +54,11 @@ public class AMDatagen {
         server.addProvider(AMRecipeProvider::new);
         AMTagsProvider.Blocks blocks = server.addProvider(wrapWith(AMTagsProvider.Blocks::new, lookupProvider, existingFileHelper));
         server.addProvider(AMGlobalLootModifierProvider::new);
-        server.addProvider(wrapWith(AMTagsProvider.Items::new, lookupProvider, blocks, existingFileHelper));
+        server.addProvider(wrapWith(AMTagsProvider.Items::new, lookupProvider, blocks.contentsGetter(), existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.Fluids::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.EntityTypes::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.Biomes::new, lookupProvider, existingFileHelper));
+        server.addProvider(wrapWith(AMTagsProvider.DamageTypes::new, lookupProvider, existingFileHelper));
         server.addProvider(AMSpellPartDataProvider::new);
         client.addProvider(wrapWith(AMSpriteSourceProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMBlockStateProvider::new, existingFileHelper));
@@ -72,13 +73,12 @@ public class AMDatagen {
     }
 
     private static PackMetadataGenerator createMetaGenerator(PackOutput output, IModInfo modInfo) {
-        GameVersion version = DetectedVersion.BUILT_IN;
+        WorldVersion version = DetectedVersion.BUILT_IN;
         Map<PackType, Integer> versions = new EnumMap<>(PackType.class);
         int maxVersion = 0;
         for (PackType packType : PackType.values()) {
-            int v = packType.getVersion(version);
-            versions.put(packType, v);
-            maxVersion = Math.max(maxVersion, v);
+            versions.put(packType, version.getPackVersion(packType));
+            maxVersion = Math.max(maxVersion, version.getPackVersion(packType));
         }
         PackMetadataSection metadataSection = new PackMetadataSection(Component.literal(modInfo.getDisplayName()), maxVersion, versions);
         return new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, metadataSection);
@@ -97,7 +97,8 @@ public class AMDatagen {
                 new AMSpellTransformationProvider(),
                 new AMWorldgenProvider.CF(),
                 new AMWorldgenProvider.PF(),
-                new AMWorldgenProvider.BM()
+                new AMWorldgenProvider.BM(),
+                new AMDamageTypeProvider()
         ));
     }
 

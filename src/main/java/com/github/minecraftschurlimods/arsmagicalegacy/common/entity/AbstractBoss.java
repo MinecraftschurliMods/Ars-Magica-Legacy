@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -181,14 +182,14 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof AbstractBoss) return false;
-        if (pSource == DamageSource.IN_WALL) {
+        if (pSource.is(DamageTypes.IN_WALL)) {
             if (!level.isClientSide()) {
                 int width = Math.round(getBbWidth());
                 int height = Math.round(getBbHeight());
                 for (int x = -width; x < width; x++) {
                     for (int y = 0; y < height; y++) {
                         for (int z = -width; z < width; z++) {
-                            level.destroyBlock(new BlockPos(getX() + x, getY() + y, getZ() + z), true, this);
+                            level.destroyBlock(BlockPos.containing(getX() + x, getY() + y, getZ() + z), true, this);
                         }
                     }
                 }

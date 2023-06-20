@@ -88,8 +88,8 @@ public class WintersGrasp extends Entity {
                 entity = ((PartEntity<?>) entity).getParent();
             }
             if (entity instanceof LivingEntity living && entity != getOwner() && !hasPassenger(entity)) {
-                living.hurt(DamageSource.FREEZE, 4);
-                if (getPassengers().size() == 0 && canAddPassenger(entity)) {
+                living.hurt(damageSources().freeze(), 4);
+                if (getPassengers().isEmpty() && canAddPassenger(entity)) {
                     entity.startRiding(this, true);
                 }
                 setHasHit();

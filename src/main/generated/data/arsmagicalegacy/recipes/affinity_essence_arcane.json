@@ -20,5 +20,6 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
-  }
+  },
+  "show_notification": true
 }

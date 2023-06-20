@@ -8,13 +8,13 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.FaceBakery;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
@@ -29,10 +29,10 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
     private static final RenderType SPELL_ICON = RenderType.itemEntityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private static final RenderType SPELL_ICON_FAB = RenderType.entityTranslucentCull(SpellIconAtlas.SPELL_ICON_ATLAS);
     private final Cache<ResourceLocation, List<BakedQuad>> cache = CacheBuilder.newBuilder().maximumSize(5).build();
-    private final ItemTransforms.TransformType cameraTransformType;
+    private final ItemDisplayContext cameraTransformType;
     private final ResourceLocation icon;
 
-    public SpellItemIconModel(BakedModel originalModel, ItemTransforms.TransformType cameraTransformType, ResourceLocation icon) {
+    public SpellItemIconModel(BakedModel originalModel, ItemDisplayContext cameraTransformType, ResourceLocation icon) {
         super(originalModel);
         this.cameraTransformType = cameraTransformType;
         this.icon = icon;
@@ -40,7 +40,7 @@ public class SpellItemIconModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
-        if (cameraTransformType == ItemTransforms.TransformType.GUI) {
+        if (cameraTransformType == ItemDisplayContext.GUI) {
             try {
                 return cache.get(icon, () -> {
                     TextureAtlasSprite sprite = SpellIconAtlas.instance().getSprite(icon);

@@ -88,7 +88,7 @@ public class ManaVortex extends Entity {
             if (!level.isClientSide()) {
                 float damage = Math.min(100, entityData.get(MANA) / 100f);
                 for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
-                    e.hurt(DamageSource.MAGIC, damage);
+                    e.hurt(damageSources().magic(), damage);
                 }
             } else {
                 for (int i = 0; i < 72; i++) {

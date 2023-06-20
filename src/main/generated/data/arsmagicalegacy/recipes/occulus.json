@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:occulus"
-  }
+  },
+  "show_notification": true
 }

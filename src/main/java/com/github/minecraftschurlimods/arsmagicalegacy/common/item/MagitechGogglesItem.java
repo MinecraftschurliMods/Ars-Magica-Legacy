@@ -28,12 +28,12 @@ public class MagitechGogglesItem extends ArmorItem {
         public static final String NAME = ArsMagicaAPI.MOD_ID + ":magitech";
 
         @Override
-        public int getDurabilityForSlot(EquipmentSlot pSlot) {
+        public int getDurabilityForType(Type p_266807_) {
             return 0;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlot pSlot) {
+        public int getDefenseForType(Type p_267168_) {
             return 0;
         }
 
@@ -69,7 +69,7 @@ public class MagitechGogglesItem extends ArmorItem {
     };
 
     public MagitechGogglesItem() {
-        super(MATERIAL, EquipmentSlot.HEAD, AMItems.ITEM_1);
+        super(MATERIAL, Type.HELMET, AMItems.ITEM_1);
     }
 
     @Override

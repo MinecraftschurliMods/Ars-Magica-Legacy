@@ -67,10 +67,9 @@ public class OcculusScreen extends Screen {
         renderBackground(stack);
         stack.pushPose();
         stack.translate(posX, posY, 0);
-        setBlitOffset(-5);
         RenderSystem.setShaderTexture(0, OVERLAY);
-        blit(stack, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT);
-        blit(stack, 7 + activeTabIndex % 8 * 24, -15, 0, GUI_HEIGHT, 22, 22);
+        blit(stack, 0, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT, 256, 256);
+        blit(stack, 7 + activeTabIndex % 8 * 24, -15, 0, 0, GUI_HEIGHT, 22, 22, 256, 256);
         super.render(stack, pMouseX, pMouseY, pPartialTicks);
         for (OcculusTabButton button : buttons) {
             if (button.isHovered()) {

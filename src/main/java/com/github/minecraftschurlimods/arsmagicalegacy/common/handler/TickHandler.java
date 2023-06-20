@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -106,19 +105,19 @@ final class TickHandler {
         if (!player.isCreative()) {
             ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE);
             if (ability != null && ability.test(player) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+                player.hurt(player.damageSources().outOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING);
             if (ability != null && ability.test(player) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+                player.hurt(player.damageSources().outOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER);
             if (ability != null && ability.test(player) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+                player.hurt(player.damageSources().outOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE);
             if (ability != null && ability.test(player) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(DamageSource.OUT_OF_WORLD, 1);
+                player.hurt(player.damageSources().outOfWorld(), 1);
             }
         }
         ability = manager.get(AMAbilities.SATURATION);

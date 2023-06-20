@@ -93,7 +93,7 @@ public class FireRain extends Entity implements ItemSupplier {
                     entity = ((PartEntity<?>) entity).getParent();
                 }
                 if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    living.hurt(DamageSource.IN_FIRE, getDamage());
+                    living.hurt(damageSources().inFire(), getDamage());
                     living.setRemainingFireTicks(50);
                 }
             }
