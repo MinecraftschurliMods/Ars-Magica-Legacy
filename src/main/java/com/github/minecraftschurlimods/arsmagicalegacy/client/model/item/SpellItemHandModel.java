@@ -10,6 +10,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 
 import java.util.List;
 import java.util.Map;
@@ -48,11 +49,11 @@ public class SpellItemHandModel extends SimpleBakedModel {
     }
 
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+    public BakedModel applyTransform(ItemDisplayContext transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         if (transformType.firstPerson()) {
             poseStack.translate(applyLeftHandTransform ? 0.05f : -0.05f, 0.6f, 0);
         }
-        if (transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+        if (transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
             poseStack.translate(0f, 0.25f, 0.1f);
         }
         poseStack.scale(0.5f, 0.5f, 0);

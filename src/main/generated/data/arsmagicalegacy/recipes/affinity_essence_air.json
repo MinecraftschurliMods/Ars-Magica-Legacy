@@ -26,5 +26,6 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}"
-  }
+  },
+  "show_notification": true
 }

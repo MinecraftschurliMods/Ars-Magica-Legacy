@@ -17,7 +17,7 @@ public class SelfClearingEditBox extends EditBox {
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isFocused()) {
             if (getValue().equals(getMessage().getString())) {
                 setValue("");
@@ -27,6 +27,6 @@ public class SelfClearingEditBox extends EditBox {
             setValue(getMessage().getString());
             setTextColor(0x555555);
         }
-        super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
+        super.renderWidget(matrixStack, mouseX, mouseY, partialTicks);
     }
 }

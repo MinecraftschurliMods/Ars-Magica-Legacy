@@ -31,7 +31,7 @@ public class Forge extends AbstractComponent {
             if (!level.isClientSide()) {
                 level.addFreshEntity(new ItemEntity(level, villager.position().x(), villager.position().y(), villager.position().z(), new ItemStack(Items.EMERALD)));
             }
-            villager.hurt(caster instanceof Player player ? DamageSource.playerAttack(player) : DamageSource.mobAttack(caster), 5000);
+            villager.hurt(caster instanceof Player player ? level.damageSources().playerAttack(player) : level.damageSources().mobAttack(caster), 5000);
             return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
@@ -45,7 +45,7 @@ public class Forge extends AbstractComponent {
         if (level.getBlockState(pos).isAir()) return SpellCastResult.EFFECT_FAILED;
         Optional<SmeltingRecipe> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), level);
         if (recipe.isEmpty()) return SpellCastResult.EFFECT_FAILED;
-        ItemStack smelted = recipe.get().getResultItem();
+        ItemStack smelted = recipe.get().getResultItem(level.registryAccess());
         if (!level.isClientSide()) {
             if (smelted.getItem() instanceof BlockItem) {
                 level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);

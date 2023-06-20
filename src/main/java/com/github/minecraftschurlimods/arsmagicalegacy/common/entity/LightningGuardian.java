@@ -10,6 +10,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -71,9 +72,9 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.DROWN) {
+        if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             pAmount *= 2;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+        } else if (pSource.is(DamageTypeTags.IS_LIGHTNING)) {
             heal(pAmount);
             return false;
         }

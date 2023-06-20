@@ -83,7 +83,7 @@ public class ManaVortex extends Entity {
         if (duration - tickCount <= 5) {
             float damage = Math.min(100, entityData.get(MANA) / 100f);
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
-                e.hurt(DamageSource.MAGIC, damage);
+                e.hurt(damageSources().magic(), damage);
             }
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
             setRemoved(RemovalReason.KILLED);

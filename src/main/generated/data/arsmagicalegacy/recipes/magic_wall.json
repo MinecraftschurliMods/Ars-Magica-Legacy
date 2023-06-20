@@ -15,5 +15,6 @@
   "result": {
     "count": 16,
     "item": "arsmagicalegacy:magic_wall"
-  }
+  },
+  "show_notification": true
 }

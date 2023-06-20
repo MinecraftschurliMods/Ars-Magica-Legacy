@@ -174,8 +174,18 @@ public class DatapackRegistryProvider implements DataProvider {
          * @param value The value.
          */
         protected final void register(ResourceLocation id, T value) {
+            register(ResourceKey.create(registryKey, id), value);
+        }
+
+        /**
+         * Registers a value to the datapack registry.
+         *
+         * @param id    The id of the value.
+         * @param value The value.
+         */
+        protected final void register(ResourceKey<T> id, T value) {
             if (context == null) throw new IllegalStateException("Cannot register before gather");
-            context.register(ResourceKey.create(registryKey, id), value);
+            context.register(id, value);
         }
     }
 }

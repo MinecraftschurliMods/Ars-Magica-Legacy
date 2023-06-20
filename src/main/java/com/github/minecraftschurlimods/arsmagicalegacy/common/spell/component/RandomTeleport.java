@@ -34,7 +34,7 @@ public class RandomTeleport extends AbstractComponent {
         do {
             if (i == 100) return SpellCastResult.EFFECT_FAILED;
             vec = new Vec3(entity.getX() + level.getRandom().nextDouble() * range - range / 2f, entity.getY() + level.getRandom().nextDouble() * range - range / 2f, entity.getZ() + level.getRandom().nextDouble() * range - range / 2f);
-            BlockPos pos = new BlockPos(vec);
+            BlockPos pos = BlockPos.containing(vec);
             validPosition = level.getBlockState(pos).isAir() && level.getBlockState(pos.below()).canOcclude();
             i++;
         } while (!validPosition);

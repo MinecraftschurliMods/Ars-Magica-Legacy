@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -72,7 +73,7 @@ public class FireGuardian extends AbstractBoss {
                 // Particles
             } else {
                 for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
-                    e.hurt(DamageSource.ON_FIRE, 5);
+                    e.hurt(damageSources().onFire(), 5);
                 }
             }
         }
@@ -85,7 +86,7 @@ public class FireGuardian extends AbstractBoss {
         }
         for (Player p : level.players()) {
             if (distanceToSqr(p) < 9) {
-                p.hurt(DamageSource.ON_FIRE, 8);
+                p.hurt(damageSources().onFire(), 8);
             }
         }
         super.aiStep();
@@ -93,9 +94,9 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.DROWN) {
+        if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE) {
+        } else if (pSource.is(DamageTypeTags.IS_FREEZING)) {
             return false;
         }
         return super.hurt(pSource, pAmount);
@@ -123,7 +124,7 @@ public class FireGuardian extends AbstractBoss {
             }
         } else {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3), e -> !(e instanceof AbstractBoss))) {
-                e.hurt(DamageSource.ON_FIRE, 8);
+                e.hurt(damageSources().onFire(), 8);
             }
         }
     }

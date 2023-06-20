@@ -31,9 +31,9 @@ public class OcculusTabButton extends Button {
         if (!visible) return;
         float f = 1f / 0x100;
         RenderSystem.setShaderTexture(0, new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png"));
-        RenderUtil.drawBox(pPoseStack, getX(), getY(), SIZE, SIZE, getBlitOffset(), 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
+        RenderUtil.drawBox(pPoseStack, getX(), getY(), SIZE, SIZE, 0, 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
         RenderSystem.setShaderTexture(0, tab.icon(ClientHelper.getRegistryAccess()));
-        RenderUtil.drawBox(pPoseStack, getX() + 2f, getY() + 2f, 18, 18, getBlitOffset(), 0, 0, 1, 1);
+        RenderUtil.drawBox(pPoseStack, getX() + 2f, getY() + 2f, 18, 18, 0, 0, 0, 1, 1);
         pMouseX -= xOffset;
         pMouseY -= yOffset;
         isHovered = pMouseX >= getX() && pMouseY >= getY() && pMouseX < getX() + width && pMouseY < getY() + height;

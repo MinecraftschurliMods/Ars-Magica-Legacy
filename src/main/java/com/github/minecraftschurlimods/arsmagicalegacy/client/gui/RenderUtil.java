@@ -42,7 +42,7 @@ public final class RenderUtil {
         Matrix4f pose = stack.last().pose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableTexture();
+        //RenderSystem.disableTexture(); // fixme
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
@@ -55,7 +55,7 @@ public final class RenderUtil {
         RenderSystem.lineWidth(1);
         RenderSystem.enableCull();
         RenderSystem.depthMask(true);
-        RenderSystem.enableTexture();
+        //RenderSystem.enableTexture(); // fixme
         RenderSystem.disableBlend();
         stack.popPose();
     }

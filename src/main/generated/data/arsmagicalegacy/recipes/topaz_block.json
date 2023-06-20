@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:topaz_block"
-  }
+  },
+  "show_notification": true
 }

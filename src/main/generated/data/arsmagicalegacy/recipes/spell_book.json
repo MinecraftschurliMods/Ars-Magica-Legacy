@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:spell_book"
-  }
+  },
+  "show_notification": true
 }

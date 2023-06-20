@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -26,7 +27,7 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
     }
 
     @Override
-    public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void renderByItem(ItemStack pStack, ItemDisplayContext pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         if (pStack.is(AMItems.SPELL_BOOK.get())) {
             pStack = SpellBookItem.getSelectedSpell(pStack);
         }
@@ -35,7 +36,7 @@ public class SpellItemRenderProperties extends BlockEntityWithoutLevelRenderer i
         // Pops off the transformation applied by ItemRenderer before calling this, thanks to XFactHD#5288 from the Forge Discord for the fix!
         pPoseStack.popPose();
         pPoseStack.pushPose();
-        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).applyTransform(pTransformType, pPoseStack, pTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND);
+        BakedModel model = renderer.getModel(pStack, ClientHelper.getLocalLevel(), ClientHelper.getLocalPlayer(), 0).applyTransform(pTransformType, pPoseStack, pTransformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || pTransformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND);
         pPoseStack.translate(-0.5, -0.5, -0.5);
         if (model instanceof SpellItemHandModel spellItemHandModel) {
             model = spellItemHandModel.originalModel;

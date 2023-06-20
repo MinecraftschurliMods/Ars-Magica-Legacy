@@ -10,7 +10,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -18,6 +17,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
@@ -72,7 +72,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             ItemStack stack = new ItemStack(Blocks.BARRIER);
             BakedModel model = itemRenderer.getModel(stack, view.getLevel(), null, 0);
-            itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
+            itemRenderer.render(stack, ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
         }
         poseStack.popPose();
     }
@@ -90,7 +90,7 @@ public class AltarViewBER implements BlockEntityRenderer<AltarViewBlockEntity> {
         for (Component sibling : components) {
             float y = font.lineHeight * i++ - offset;
             float f2 = (float) (-font.width(sibling) / 2);
-            font.drawInBatch(sibling, f2, y, 0xbbffffff, false, poseStack.last().pose(), bufferSource, false, j, packedLight);
+            font.drawInBatch(sibling, f2, y, 0xbbffffff, false, poseStack.last().pose(), bufferSource, Font.DisplayMode.NORMAL, j, packedLight);
         }
         poseStack.popPose();
     }

@@ -165,7 +165,7 @@ public final class EventHandler {
     private static void buildMainCreativeTab(CreativeModeTab.Builder builder) {
         builder.icon(() -> ArsMagicaAPI.get().getBookStack())
                .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
-               .displayItems((featureFlagSet, output, hasPermissions) -> {
+               .displayItems((params, output) -> {
                    List<ItemStack> list = new ArrayList<>();
                    var api = ArsMagicaAPI.get();
                    for (RegistryObject<? extends Item> o : AMRegistries.ITEMS.getEntries()) {
@@ -198,7 +198,7 @@ public final class EventHandler {
         builder.icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
                .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
                .withSearchBar()
-               .displayItems((featureFlagSet, output, hasPermissions) -> ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
+               .displayItems((params, output) -> ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {

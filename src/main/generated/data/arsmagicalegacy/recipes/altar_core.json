@@ -15,5 +15,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:altar_core"
-  }
+  },
+  "show_notification": true
 }

@@ -3,32 +3,36 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
-import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
 final class AMTagsProvider {
 
-    static class Blocks extends BlockTagsProvider {
+    static class Blocks extends IntrinsicHolderTagsProvider<Block> {
         Blocks(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-            super(output, lookupProvider, ArsMagicaAPI.MOD_ID, existingFileHelper);
+            super(output, Registries.BLOCK, lookupProvider, block -> block.builtInRegistryHolder().key(), ArsMagicaAPI.MOD_ID, existingFileHelper);
         }
 
         @Override
@@ -78,8 +82,8 @@ final class AMTagsProvider {
     }
 
     static class Items extends ItemTagsProvider {
-        Items(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, Blocks blockTagsProvider, ExistingFileHelper existingFileHelper) {
-            super(output, lookupProvider, blockTagsProvider, ArsMagicaAPI.MOD_ID, existingFileHelper);
+        Items(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagLookup, ExistingFileHelper existingFileHelper) {
+            super(output, lookupProvider, blockTagLookup, ArsMagicaAPI.MOD_ID, existingFileHelper);
         }
 
         @Override
@@ -148,18 +152,18 @@ final class AMTagsProvider {
         }
     }
 
-    static class Fluids extends FluidTagsProvider {
+    static class Fluids extends IntrinsicHolderTagsProvider<Fluid> {
         Fluids(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-            super(output, lookupProvider, ArsMagicaAPI.MOD_ID, existingFileHelper);
+            super(output, Registries.FLUID, lookupProvider, fluid -> fluid.builtInRegistryHolder().key(), ArsMagicaAPI.MOD_ID, existingFileHelper);
         }
 
         @Override
         protected void addTags(HolderLookup.Provider lookup) {}
     }
 
-    static class EntityTypes extends EntityTypeTagsProvider {
+    static class EntityTypes extends IntrinsicHolderTagsProvider<EntityType<?>> {
         EntityTypes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-            super(output, lookupProvider, ArsMagicaAPI.MOD_ID, existingFileHelper);
+            super(output, Registries.ENTITY_TYPE, lookupProvider, entityType -> entityType.builtInRegistryHolder().key(), ArsMagicaAPI.MOD_ID, existingFileHelper);
         }
 
         @Override
@@ -174,6 +178,17 @@ final class AMTagsProvider {
         @Override
         protected void addTags(HolderLookup.Provider lookup) {
             tag(AMTags.Biomes.CAN_SPAWN_WATER_GUARDIAN).addTags(BiomeTags.IS_OCEAN, BiomeTags.IS_BEACH, BiomeTags.IS_RIVER).add(net.minecraft.world.level.biome.Biomes.SWAMP);
+        }
+    }
+
+    static class DamageTypes extends TagsProvider<DamageType> {
+        DamageTypes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+            super(output, Registries.DAMAGE_TYPE, lookupProvider, ArsMagicaAPI.MOD_ID, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider lookup) {
+            tag(DamageTypeTags.IS_PROJECTILE).add(AMDamageSources.NATURE_SCYTHE, AMDamageSources.THROWN_ROCK);
         }
     }
 }

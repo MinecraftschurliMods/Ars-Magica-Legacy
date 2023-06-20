@@ -30,8 +30,8 @@ import java.util.function.Function;
 
 public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements RitualTrigger {
     public static final Codec<SpellComponentCastRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error("Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
-            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error("Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
+            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error(() -> "Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
+            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error(() -> "Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
     ).apply(inst, SpellComponentCastRitualTrigger::new));
 
     public SpellComponentCastRitualTrigger(List<ISpellComponent> components) {

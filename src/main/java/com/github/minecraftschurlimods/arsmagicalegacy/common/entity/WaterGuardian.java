@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -113,9 +114,9 @@ public class WaterGuardian extends AbstractBoss {
         } else if (hasClones()) {
             clearClones();
             return false;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+        } else if (pSource.is(DamageTypeTags.IS_LIGHTNING)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.DROWN) {
+        } else if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             return false;
         }
         return super.hurt(pSource, pAmount);

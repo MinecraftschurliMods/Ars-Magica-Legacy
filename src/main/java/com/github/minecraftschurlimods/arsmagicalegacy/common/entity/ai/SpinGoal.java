@@ -17,7 +17,7 @@ public class SpinGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     @Override
     public void performTick() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(2, 2, 2), e -> !(e instanceof AbstractBoss))) {
-            e.hurt(DamageSource.mobAttack(boss), 4);
+            e.hurt(boss.damageSources().mobAttack(boss), 4);
         }
     }
 }

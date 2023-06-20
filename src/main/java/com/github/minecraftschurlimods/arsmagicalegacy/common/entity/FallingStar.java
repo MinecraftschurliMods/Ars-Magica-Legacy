@@ -74,7 +74,7 @@ public class FallingStar extends AbstractSpellEntity {
             if (result.getType() == HitResult.Type.MISS) return;
             Vec3 vec = result.getLocation();
             if (result.getType() == HitResult.Type.BLOCK) {
-                while (level.getBlockState(new BlockPos(vec)).getMaterial().isSolid()) {
+                while (level.getBlockState(BlockPos.containing(vec)).getMaterial().isSolid()) {
                     vec = vec.add(0, 1, 0);
                 }
                 moveTo(vec);

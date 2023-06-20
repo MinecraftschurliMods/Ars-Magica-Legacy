@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.Hurrican
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.WhirlwindGoal;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -50,9 +51,9 @@ public class AirGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.LIGHTNING_BOLT) {
+        if (pSource.is(DamageTypeTags.IS_LIGHTNING)) {
             pAmount *= 2f;
-        } else if (pSource.isProjectile() || pSource.isFall()) {
+        } else if (pSource.is(DamageTypeTags.IS_PROJECTILE) || pSource.is(DamageTypeTags.IS_FALL)) {
             return false;
         }
         return super.hurt(pSource, pAmount);

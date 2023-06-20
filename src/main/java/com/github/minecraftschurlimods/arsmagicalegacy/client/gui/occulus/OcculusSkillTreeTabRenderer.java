@@ -71,7 +71,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         float minV = Mth.clamp(scaledOffsetY, 0, textureHeight - scaledHeight) / textureHeight;
         float maxU = Mth.clamp(scaledOffsetX + scaledWidth, scaledWidth, textureWidth) / textureWidth;
         float maxV = Mth.clamp(scaledOffsetY + scaledHeight, scaledHeight, textureHeight) / textureHeight;
-        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), minU, minV, maxU, maxV);
+        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, 0, minU, minV, maxU, maxV);
         if (isDragging()) {
             offsetX = Mth.clamp(offsetX - (pMouseX - lastMouseX), 0, textureWidth - scaledWidth);
             offsetY = Mth.clamp(offsetY - (pMouseY - lastMouseY), 0, textureHeight - scaledHeight);
@@ -107,7 +107,6 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
             boolean knows = helper.knows(player, skill, registryAccess);
             float cX = skill.x() + SKILL_SIZE / 2 + 1;
             float cY = skill.y() + SKILL_SIZE / 2 + 1;
-            setBlitOffset(1);
             boolean hasPrereq = helper.canLearn(player, skill) || knows;
             for (ResourceLocation parentId : skill.parents()) {
                 Optional<Skill> parent = Optional.ofNullable(skillRegistry.get(parentId));
@@ -120,10 +119,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 // TODO polish line rendering
                 if (hasPrereq) {
                     color = (knows ? ColorUtil.KNOWS_COLOR : getColorForLine(parentSkill, skill) & ColorUtil.UNKNOWN_SKILL_LINE_COLOR_MASK) | 0xFF000000;
-                    offset = getBlitOffset();
+                    offset = 1;
                 } else {
                     color = ColorUtil.BLACK | 0xFF000000;
-                    offset = getBlitOffset() - 1;
+                    offset = 0;
                 }
                 if (cX != parentCX) {
                     RenderUtil.lineThick2d(stack, parentCX, cY, cX, cY, offset, color);
@@ -146,9 +145,8 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 float blue = Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier;
                 RenderSystem.setShaderColor(red, green, blue, 1);
             }
-            setBlitOffset(16);
             RenderSystem.enableBlend();
-            blit(stack, skill.x(), skill.y(), getBlitOffset(), (int) SKILL_SIZE, (int) SKILL_SIZE, SkillIconAtlas.instance().getSprite(skillRegistry.getKey(skill)));
+            blit(stack, skill.x(), skill.y(), 16, (int) SKILL_SIZE, (int) SKILL_SIZE, SkillIconAtlas.instance().getSprite(skillRegistry.getKey(skill)));
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }

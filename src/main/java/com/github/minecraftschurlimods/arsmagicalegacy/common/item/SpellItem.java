@@ -108,11 +108,11 @@ public class SpellItem extends Item implements ISpellItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         if (!spell.isContinuous()) return;
-        SpellCastResult result = spell.cast(entity, entity.level, count - 1, true, true);
+        SpellCastResult result = spell.cast(entity, entity.level, remainingUseDuration - 1, true, true);
         SoundEvent sound = spell.primaryAffinity().getLoopSound();
         if (sound != null) {
             entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);

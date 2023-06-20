@@ -9,11 +9,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public final class NatureGuardianSpawnHandler {
-    private static final HashMap<UUID, Long> lastDryadKills = new HashMap<>();
-    private static final HashMap<UUID, Integer> dryadKills = new HashMap<>();
+    private static final Map<UUID, Long> lastDryadKills = new HashMap<>();
+    private static final Map<UUID, Integer> dryadKills = new HashMap<>();
 
     static void dryadDeath(LivingDeathEvent event) {
         if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;

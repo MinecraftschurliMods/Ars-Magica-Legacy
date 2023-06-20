@@ -13,8 +13,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -80,11 +82,11 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof EnderMan) {
-            pSource.getEntity().hurt(DamageSource.OUT_OF_WORLD, 5000);
+            pSource.getEntity().hurt(damageSources().outOfWorld(), 5000);
             heal(10);
             return false;
         }
-        if (pSource.isMagic() || pSource == DamageSource.DROWN) {
+        if (pSource.is(DamageTypes.MAGIC) || pSource.is(DamageTypeTags.IS_DROWNING)) {
             pAmount *= 2f;
         }
         return super.hurt(pSource, pAmount);

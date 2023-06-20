@@ -36,8 +36,8 @@ public final class ClientHelper {
         mvs.pushPose();
         mvs.mulPoseMatrix(poseStack.last().pose());
         RenderSystem.applyModelViewMatrix();
-        itemRenderer.renderGuiItem(itemStack, x, y);
-        itemRenderer.renderGuiItemDecorations(minecraft.font, itemStack, x, y);
+        itemRenderer.renderGuiItem(poseStack, itemStack, x, y);
+        itemRenderer.renderGuiItemDecorations(poseStack, minecraft.font, itemStack, x, y);
         mvs.popPose();
         RenderSystem.applyModelViewMatrix();
     }

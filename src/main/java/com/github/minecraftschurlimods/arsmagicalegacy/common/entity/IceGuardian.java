@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowArm
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -58,7 +59,7 @@ public class IceGuardian extends AbstractBoss {
     public void aiStep() {
         if (this.tickCount % 100 == 0) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
-                e.hurt(DamageSource.FREEZE, 4);
+                e.hurt(damageSources().freeze(), 4);
             }
         }
         super.aiStep();
@@ -66,9 +67,9 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isFire()) {
+        if (pSource.is(DamageTypeTags.IS_FIRE)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE) {
+        } else if (pSource.is(DamageTypeTags.IS_FREEZING)) {
             return false;
         }
         return super.hurt(pSource, pAmount);

@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowScy
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -60,9 +61,9 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isFire() || pSource == DamageSource.FREEZE) {
+        if (pSource.is(DamageTypeTags.IS_FIRE) || pSource.is(DamageTypeTags.IS_FREEZING)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.DROWN) {
+        } else if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             heal(pAmount);
             return false;
         }

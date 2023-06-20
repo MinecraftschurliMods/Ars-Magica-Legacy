@@ -20,7 +20,7 @@ public class StaticGoal extends AbstractBossGoal<LightningGuardian> {
     @Override
     public void perform() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(8, 3, 8), e -> !(e instanceof AbstractBoss))) {
-            e.hurt(DamageSource.LIGHTNING_BOLT, 20);
+            e.hurt(boss.damageSources().lightningBolt(), 20);
         }
     }
 }
