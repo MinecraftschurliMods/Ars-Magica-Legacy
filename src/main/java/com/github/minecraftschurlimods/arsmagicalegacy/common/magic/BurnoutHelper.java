@@ -74,7 +74,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
         if (amount < 0) return false;
         runIfPresent(entity, holder -> {
             float current = holder.getBurnout();
-            holder.setBurnout(current - amount > 0 ? current - amount : 0);
+            holder.setBurnout(Math.max(current - amount, 0));
             if (entity instanceof Player player) {
                 syncBurnout(player);
             }
@@ -117,17 +117,17 @@ public final class BurnoutHelper implements IBurnoutHelper {
      *
      * @param player The player to sync to.
      */
-    public void syncBurnout(Player player) {
+    private void syncBurnout(Player player) {
         runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutSyncPacket(holder), player));
     }
 
-    private LazyOptional<BurnoutHolder> getBurnoutHolder(LivingEntity livingEntity) {
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.reviveCaps();
+    private LazyOptional<BurnoutHolder> getBurnoutHolder(LivingEntity entity) {
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.reviveCaps();
         }
-        LazyOptional<BurnoutHolder> burnoutHolder = livingEntity.getCapability(BURNOUT);
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.invalidateCaps();
+        LazyOptional<BurnoutHolder> burnoutHolder = entity.getCapability(BURNOUT);
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.invalidateCaps();
         }
         return burnoutHolder;
     }
