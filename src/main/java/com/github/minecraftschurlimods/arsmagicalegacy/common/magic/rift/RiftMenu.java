@@ -14,6 +14,8 @@ public class RiftMenu extends ChestMenu {
     }
 
     /**
+     * IMPORTANT: Wrap all calls to this inside a {@code ArsMagicaAPI.get().getRiftHelper().getRift(player).isPresent()} check, and handle failing that check accordingly.
+     *
      * @param windowId The window id to use.
      * @param inv      The inventory to use.
      * @param buf      The buffer to read the uuid and the rift size from.
@@ -24,6 +26,8 @@ public class RiftMenu extends ChestMenu {
     }
 
     /**
+     * IMPORTANT: Wrap all calls to this inside a {@code ArsMagicaAPI.get().getRiftHelper().getRift(player).isPresent()} check, and handle failing that check accordingly.
+     *
      * @param windowId The window id to use.
      * @param inv      The inventory to use.
      * @param player   The player this rift belongs to.
@@ -31,6 +35,6 @@ public class RiftMenu extends ChestMenu {
      * @return A rift menu.
      */
     public static RiftMenu rift(int windowId, Inventory inv, Player player, int size) {
-        return new RiftMenu(windowId, inv, new RiftContainer(ArsMagicaAPI.get().getRiftHelper().getRift(player)), size);
+        return new RiftMenu(windowId, inv, new RiftContainer(ArsMagicaAPI.get().getRiftHelper().getRift(player).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())))), size);
     }
 }

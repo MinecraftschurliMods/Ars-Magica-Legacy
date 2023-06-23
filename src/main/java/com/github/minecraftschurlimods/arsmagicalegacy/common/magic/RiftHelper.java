@@ -8,6 +8,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 
 public final class RiftHelper implements IRiftHelper {
@@ -32,8 +33,8 @@ public final class RiftHelper implements IRiftHelper {
     }
 
     @Override
-    public ItemStackHandler getRift(Player player) {
-        return player.getCapability(RIFT).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())));
+    public LazyOptional<? extends ItemStackHandler> getRift(Player player) {
+        return player.getCapability(RIFT);
     }
 
     /**

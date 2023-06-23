@@ -95,10 +95,6 @@ public final class BurnoutHelper implements IBurnoutHelper {
         return true;
     }
 
-    public void runIfPresent(LivingEntity entity, Consumer<BurnoutHolder> consumer) {
-        getBurnoutHolder(entity).ifPresent(consumer::accept);
-    }
-
     /**
      * Called on player death, syncs the capability.
      *
@@ -117,8 +113,12 @@ public final class BurnoutHelper implements IBurnoutHelper {
      *
      * @param player The player to sync to.
      */
-    private void syncBurnout(Player player) {
+    public void syncBurnout(Player player) {
         runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutSyncPacket(holder), player));
+    }
+
+    private void runIfPresent(LivingEntity entity, Consumer<BurnoutHolder> consumer) {
+        getBurnoutHolder(entity).ifPresent(consumer::accept);
     }
 
     private LazyOptional<BurnoutHolder> getBurnoutHolder(LivingEntity entity) {
