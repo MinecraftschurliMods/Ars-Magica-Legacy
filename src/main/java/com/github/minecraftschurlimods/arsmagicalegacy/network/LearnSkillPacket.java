@@ -35,7 +35,7 @@ public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
             ServerPlayer sender = ctx.getSender();
             assert sender != null;
             if (!sender.isCreative()) {
-                Skill skill = sender.getLevel().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(skill());
+                Skill skill = sender.level().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(skill());
                 assert skill != null;
                 Map<ResourceLocation, Integer> cost = skill.cost();
                 for (Map.Entry<ResourceLocation, Integer> entry : cost.entrySet()) {

@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:rune_bag"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

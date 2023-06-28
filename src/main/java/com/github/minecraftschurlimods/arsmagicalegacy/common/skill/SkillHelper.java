@@ -309,7 +309,10 @@ public final class SkillHelper implements ISkillHelper {
     public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints) {
         //@formatter:off
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                CodecHelper.setOf(ResourceLocation.CODEC).fieldOf("skills").forGetter(KnowledgeHolder::skills),
+                CodecHelper.setOf(ResourceLocation.CODEC)
+                           .xmap(HashSet::new, Function.identity())
+                           .fieldOf("skills")
+                           .forGetter(KnowledgeHolder::skills),
                 Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT)
                      .<Map<ResourceLocation,Integer>>xmap(HashMap::new, Function.identity())
                      .fieldOf("skill_points")

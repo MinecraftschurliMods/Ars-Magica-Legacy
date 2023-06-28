@@ -100,7 +100,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (!level.isClientSide() && isClone() && (master == null || tickCount > 400)) {
+        if (!level().isClientSide() && isClone() && (master == null || tickCount > 400)) {
             remove(RemovalReason.KILLED);
         }
         super.aiStep();
@@ -128,7 +128,7 @@ public class WaterGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new CloneGoal(this));
         goalSelector.addGoal(1, new SpinGoal<>(this));
-        Registry<PrefabSpell> prefabSpells = level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
+        Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "water_bolt")).spell(), 40));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_water_bolt")).spell(), 40));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chaos_water_bolt")).spell(), 40));

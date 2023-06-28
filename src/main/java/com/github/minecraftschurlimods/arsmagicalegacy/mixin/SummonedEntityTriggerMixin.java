@@ -21,14 +21,14 @@ public class SummonedEntityTriggerMixin {
     @Inject(method = "trigger", at = @At("HEAD"))
     private void trigger(ServerPlayer player, Entity entity, CallbackInfo ci) {
         if (PROCESSED_ENTITY_IDS.containsKey(entity.getId())) {
-            if (PROCESSED_ENTITY_IDS.get(entity.getId()) > entity.level.getGameTime()) return;
+            if (PROCESSED_ENTITY_IDS.get(entity.getId()) > entity.level().getGameTime()) return;
             PROCESSED_ENTITY_IDS.remove(entity.getId());
         }
-        for (Ritual ritual : player.level.registryAccess().registryOrThrow(Ritual.REGISTRY_KEY)) {
+        for (Ritual ritual : player.level().registryAccess().registryOrThrow(Ritual.REGISTRY_KEY)) {
             if (!(ritual.trigger() instanceof EntitySummonTrigger trigger)) continue;
             if (!trigger.predicate().matches(player, entity)) continue;
-            if (ritual.perform(player, player.getLevel(), entity.blockPosition(), new Context.MapContext(Map.of("entity", entity)))) {
-                PROCESSED_ENTITY_IDS.put(entity.getId(), entity.level.getGameTime() + 200);
+            if (ritual.perform(player, player.serverLevel(), entity.blockPosition(), new Context.MapContext(Map.of("entity", entity)))) {
+                PROCESSED_ENTITY_IDS.put(entity.getId(), entity.level().getGameTime() + 200);
                 return;
             }
         }

@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:blue_dye_from_cerublossom"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -21,8 +21,8 @@ public class ManaCreeper extends Creeper {
     @Override
     protected void explodeCreeper() {
         super.explodeCreeper();
-        ManaVortex entity = Objects.requireNonNull(AMEntities.MANA_VORTEX.get().create(level));
+        ManaVortex entity = Objects.requireNonNull(AMEntities.MANA_VORTEX.get().create(level()));
         entity.moveTo(position());
-        level.addFreshEntity(entity);
+        level().addFreshEntity(entity);
     }
 }

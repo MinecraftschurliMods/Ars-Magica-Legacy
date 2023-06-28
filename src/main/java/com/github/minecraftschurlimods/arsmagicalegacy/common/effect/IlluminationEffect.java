@@ -12,8 +12,8 @@ public class IlluminationEffect extends AMMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        if (pLivingEntity.getLevel().getBrightness(LightLayer.BLOCK, pLivingEntity.blockPosition()) == 0) {
-            pLivingEntity.getLevel().setBlock(pLivingEntity.blockPosition(), Blocks.LIGHT.defaultBlockState(), 3);
+        if (pLivingEntity.level().getBrightness(LightLayer.BLOCK, pLivingEntity.blockPosition()) == 0) {
+            pLivingEntity.level().setBlock(pLivingEntity.blockPosition(), Blocks.LIGHT.defaultBlockState(), 3);
         }
     }
 }

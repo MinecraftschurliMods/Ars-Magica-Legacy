@@ -51,7 +51,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     public InscriptionTableMenu(int id, Inventory inv, FriendlyByteBuf data) {
-        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level.getBlockEntity(data.readBlockPos()))));
+        this(id, inv, ((InscriptionTableBlockEntity) Objects.requireNonNull(inv.player.level().getBlockEntity(data.readBlockPos()))));
     }
 
     @Override
@@ -157,7 +157,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         @Override
         public Optional<ItemStack> tryRemove(int p_150642_, int p_150643_, Player player) {
             if (table.getSpellRecipe() != null && !ArsMagicaAPI.get().getSpellHelper().isValidSpell(table.getSpellRecipe())) return super.tryRemove(p_150642_, p_150643_, player);
-            player.getLevel().playSound(null, table.getBlockPos().getX(), table.getBlockPos().getY(), table.getBlockPos().getZ(), AMSounds.INSCRIPTION_TABLE_TAKE_BOOK.get(), SoundSource.BLOCKS, 1f, 1f);
+            player.level().playSound(null, table.getBlockPos().getX(), table.getBlockPos().getY(), table.getBlockPos().getZ(), AMSounds.INSCRIPTION_TABLE_TAKE_BOOK.get(), SoundSource.BLOCKS, 1f, 1f);
             return super.tryRemove(p_150642_, p_150643_, player).flatMap(stack -> stack.getItem() instanceof ISpellItem ? Optional.of(stack) : table.saveRecipe(stack));
         }
 

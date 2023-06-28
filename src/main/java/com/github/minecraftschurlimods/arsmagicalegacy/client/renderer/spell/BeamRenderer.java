@@ -79,7 +79,7 @@ public class BeamRenderer extends RenderType {
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         Vec3 view = mc.gameRenderer.getMainCamera().getPosition();
         Vec3 origin = firstPerson ? entity.getEyePosition(ticks) : entity.getPosition(ticks).add(0, height, 0);
-        long time = entity.getLevel().getGameTime();
+        long time = entity.level().getGameTime();
         float v = -0.02f * time;
         float distance = (float) Math.max(1, origin.subtract(target).length());
         float r = ColorUtil.getRed(color), g = ColorUtil.getGreen(color), b = ColorUtil.getBlue(color);

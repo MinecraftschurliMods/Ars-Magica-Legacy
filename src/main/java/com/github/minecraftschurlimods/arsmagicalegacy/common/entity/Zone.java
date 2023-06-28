@@ -82,7 +82,7 @@ public class Zone extends AbstractSpellEntity {
     public void tick() {
         super.tick();
         setPos(getX(), getY() - getGravity(), getZ());
-        if (level.isClientSide() || tickCount % 5 != 0) return;
+        if (level().isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
@@ -142,7 +142,7 @@ public class Zone extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

@@ -87,6 +87,7 @@ public class Projectile extends AbstractSpellEntity {
     public void tick() {
         super.tick();
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+        Level level = level();
         LivingEntity owner = getOwner();
         int index = getIndex();
         ISpell spell = getSpell();
@@ -189,7 +190,7 @@ public class Projectile extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

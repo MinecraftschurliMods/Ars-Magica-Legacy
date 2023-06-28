@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Shockwave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Objects;
@@ -20,16 +21,17 @@ public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
 
     @Override
     public void perform() {
-        for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(4, 2, 4), e -> !(e instanceof AbstractBoss))) {
+        Level level = boss.level();
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(4, 2, 4), e -> !(e instanceof AbstractBoss))) {
             e.hurt(boss.damageSources().mobAttack(boss), 4);
         }
-        if (!boss.getLevel().isClientSide()) {
+        if (!level.isClientSide()) {
             for (int i = -20; i <= 20; i++) {
-                Shockwave entity = Objects.requireNonNull(AMEntities.SHOCKWAVE.get().create(boss.getLevel()));
+                Shockwave entity = Objects.requireNonNull(AMEntities.SHOCKWAVE.get().create(level));
                 Vec3 movement = boss.getLookAngle().yRot((float) (Math.PI / 180 * i));
                 entity.setDeltaMovement(movement.x(), 0, movement.z());
                 entity.setPos(boss.getX() + movement.x(), boss.getY(), boss.getZ() + movement.z());
-                boss.getLevel().addFreshEntity(entity);
+                level.addFreshEntity(entity);
             }
         }
     }

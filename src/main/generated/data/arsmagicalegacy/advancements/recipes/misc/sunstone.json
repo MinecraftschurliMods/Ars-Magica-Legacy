@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:sunstone"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

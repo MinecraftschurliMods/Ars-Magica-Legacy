@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -27,13 +27,13 @@ public class OcculusTabButton extends Button {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
         if (!visible) return;
         float f = 1f / 0x100;
         RenderSystem.setShaderTexture(0, new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png"));
-        RenderUtil.drawBox(pPoseStack, getX(), getY(), SIZE, SIZE, 0, 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
+        RenderUtil.drawBox(graphics, getX(), getY(), SIZE, SIZE, 0, 0, 210 * f, SIZE * f, 210 * f + SIZE * f);
         RenderSystem.setShaderTexture(0, tab.icon(ClientHelper.getRegistryAccess()));
-        RenderUtil.drawBox(pPoseStack, getX() + 2f, getY() + 2f, 18, 18, 0, 0, 0, 1, 1);
+        RenderUtil.drawBox(graphics, getX() + 2f, getY() + 2f, 18, 18, 0, 0, 0, 1, 1);
         pMouseX -= xOffset;
         pMouseY -= yOffset;
         isHovered = pMouseX >= getX() && pMouseY >= getY() && pMouseX < getX() + width && pMouseY < getY() + height;

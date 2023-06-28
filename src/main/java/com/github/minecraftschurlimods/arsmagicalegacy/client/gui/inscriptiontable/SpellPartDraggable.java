@@ -1,12 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.Draggable;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -26,8 +25,8 @@ public class SpellPartDraggable extends Draggable<ISpellPart> {
     protected SpellPartDraggable(ISpellPart content) {
         super(SIZE, SIZE, content);
         ResourceLocation id = content.getId();
-        this.sprite = SkillIconAtlas.instance().getSprite(id);
-        this.translationKey = Component.translatable("skill." + id.getNamespace() + "." + id.getPath() + ".name");
+        sprite = SkillIconAtlas.instance().getSprite(id);
+        translationKey = Component.translatable(Util.makeDescriptionId(Skill.SKILL, id) + ".name");
     }
 
     public ISpellPart getPart() {
@@ -39,13 +38,10 @@ public class SpellPartDraggable extends Draggable<ISpellPart> {
     }
 
     @Override
-    public void render(PoseStack poseStack, int x, int y, float partialTicks) {
-        poseStack.pushPose();
-        if (RenderSystem.getShaderTexture(0) != Minecraft.getInstance().getTextureManager().getTexture(sprite.atlasLocation()).getId()) {
-            RenderSystem.setShaderTexture(0, sprite.atlasLocation());
-        }
-        GuiComponent.blit(poseStack, x, y, 10, width, height, sprite);
-        poseStack.popPose();
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        pGuiGraphics.pose().pushPose();
+        pGuiGraphics.blit(0, 0, 10, width, height, sprite);
+        pGuiGraphics.pose().popPose();
     }
 
     @Override

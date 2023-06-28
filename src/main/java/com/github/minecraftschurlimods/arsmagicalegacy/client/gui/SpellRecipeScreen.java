@@ -15,10 +15,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationCo
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SetLecternPagePacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.TakeSpellRecipeFromLecternPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
@@ -81,24 +81,23 @@ public class SpellRecipeScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(graphics);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
-        blit(pPoseStack, xPos, 2, 0, 0, WIDTH, HEIGHT);
+        graphics.setColor(1f, 1f, 1f, 1f);
+        graphics.blit(BACKGROUND, xPos, 2, 0, 0, WIDTH, HEIGHT);
         Font font = Minecraft.getInstance().font;
         SpellRecipePage page = pages.get(currentPage);
         String title = page.getTitle().getString();
-        font.draw(pPoseStack, title, xPos + 93 - font.width(title) / 2f, 18, 0);
-        page.render(pPoseStack, xPos + 36, 32);
+        graphics.drawString(font, title, xPos + 93 - font.width(title) / 2, 18, 0);
+        page.render(graphics, xPos + 36, 32);
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
         }
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(graphics, pMouseX, pMouseY, pPartialTick);
         List<Component> tooltip = page.getTooltip(pMouseX - xPos - 36, pMouseY - 32);
         if (!tooltip.isEmpty()) {
-            this.renderTooltip(pPoseStack, tooltip, Optional.empty(), pMouseX, pMouseY);
+            graphics.renderTooltip(font, tooltip, Optional.empty(), pMouseX, pMouseY);
         }
     }
 
@@ -168,7 +167,7 @@ public class SpellRecipeScreen extends Screen {
     private static abstract class SpellRecipePage {
         protected abstract Component getTitle();
 
-        protected abstract void render(PoseStack poseStack, int x, int y);
+        protected abstract void render(GuiGraphics graphics, int x, int y);
 
         protected abstract List<Component> getTooltip(int mouseX, int mouseY);
 
@@ -219,9 +218,9 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected void render(PoseStack poseStack, int x, int y) {
+        protected void render(GuiGraphics graphics, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
+                ClientHelper.drawSpellPart(graphics, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
             }
         }
 
@@ -252,9 +251,9 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected void render(PoseStack poseStack, int x, int y) {
+        protected void render(GuiGraphics graphics, int x, int y) {
             for (int i = 0; i < spellParts.size(); i++) {
-                ClientHelper.drawSpellPart(poseStack, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
+                ClientHelper.drawSpellPart(graphics, spellParts.get(i), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), SIZE, SIZE);
             }
         }
 
@@ -285,10 +284,10 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected void render(PoseStack poseStack, int x, int y) {
+        protected void render(GuiGraphics graphics, int x, int y) {
             for (int i = 0; i < ingredients.size(); i++) {
                 ISpellIngredient ingredient = ingredients.get(i);
-                ISpellIngredientRenderer.getFor(ingredient.getType()).renderInGui(ingredient, poseStack, x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), 0, 0);
+                ISpellIngredientRenderer.getFor(ingredient.getType()).renderInGui(ingredient, graphics, x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING), 0, 0);
             }
         }
 
@@ -318,9 +317,9 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected void render(PoseStack poseStack, int x, int y) {
+        protected void render(GuiGraphics graphics, int x, int y) {
             for (int i = 0; i < reagents.size(); i++) {
-                ClientHelper.drawItemStack(poseStack, AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy(), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING));
+                ClientHelper.drawItemStack(graphics, AMUtil.getByTick(reagents.get(i), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy(), x + X_OFFSET + i % MAX_PER_LINE * (SIZE + SPACING), y + Y_OFFSET + i / MAX_PER_LINE * (SIZE + SPACING));
             }
         }
 
@@ -355,13 +354,13 @@ public class SpellRecipeScreen extends Screen {
         }
 
         @Override
-        protected void render(PoseStack poseStack, int x, int y) {
+        protected void render(GuiGraphics graphics, int x, int y) {
             var helper = ArsMagicaAPI.get().getAffinityHelper();
             for (int i = 0; i < affinities.size(); i++) {
                 Pair<Affinity, Double> pair = affinities.get(i);
                 Affinity affinity = pair.getFirst();
-                ClientHelper.drawItemStack(poseStack, helper.getEssenceForAffinity(affinity), x + X_OFFSET, y + Y_OFFSET + i * (SIZE + SPACING));
-                Minecraft.getInstance().font.draw(poseStack, "%.3f".formatted(pair.getSecond()), x + X_OFFSET + SIZE + SPACING, y + Y_OFFSET + 4 + i * (SIZE + SPACING), affinity.color());
+                ClientHelper.drawItemStack(graphics, helper.getEssenceForAffinity(affinity), x + X_OFFSET, y + Y_OFFSET + i * (SIZE + SPACING));
+                graphics.drawString(Minecraft.getInstance().font, "%.3f".formatted(pair.getSecond()), x + X_OFFSET + SIZE + SPACING, y + Y_OFFSET + 4 + i * (SIZE + SPACING), affinity.color(), false);
             }
         }
 

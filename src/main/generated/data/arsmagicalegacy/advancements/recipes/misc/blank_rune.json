@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:blank_rune"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

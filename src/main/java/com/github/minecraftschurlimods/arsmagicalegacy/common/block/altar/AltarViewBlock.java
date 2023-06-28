@@ -6,11 +6,10 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 public class AltarViewBlock extends AirBlock implements EntityBlock {
     public AltarViewBlock() {
-        super(BlockBehaviour.Properties.of(Material.AIR).noCollission().noLootTable().air());
+        super(BlockBehaviour.Properties.of().noCollission().noLootTable().air());
     }
 
     @Override

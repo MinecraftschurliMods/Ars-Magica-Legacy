@@ -37,7 +37,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
 
     @Override
     public boolean canUse() {
-        return boss.getAction() == AbstractBoss.Action.IDLE && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget()) && boss.getLevel().getRandom().nextBoolean();
+        return boss.getAction() == AbstractBoss.Action.IDLE && boss.getTarget() != null && !boss.getTarget().isDeadOrDying() && boss.canAttack(boss.getTarget()) && boss.level().getRandom().nextBoolean();
     }
 
     @Override
@@ -72,7 +72,7 @@ public abstract class AbstractBossGoal<T extends AbstractBoss> extends Goal {
         if (ticks == duration) {
             SoundEvent sound = getAttackSound();
             if (sound != null) {
-                boss.getLevel().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.getLevel().getRandom().nextFloat());
+                boss.level().playSound(null, boss, sound, SoundSource.HOSTILE, 1f, 0.5f + boss.level().getRandom().nextFloat());
             }
             perform();
         }

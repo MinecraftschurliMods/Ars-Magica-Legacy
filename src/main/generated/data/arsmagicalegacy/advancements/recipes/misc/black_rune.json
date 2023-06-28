@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:black_rune"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
