@@ -15,11 +15,15 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Consumer;
 
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
     private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final ManaHolder EMPTY = new ManaHolder();
 
     private ManaHelper() {
     }
@@ -45,10 +49,11 @@ public final class ManaHelper implements IManaHelper {
     @Override
     public boolean decreaseMana(LivingEntity entity, float mana, boolean force) {
         if (!force) return decreaseMana(entity, mana);
-        ManaHolder magicHolder = getManaHolder(entity);
-        float newMana = magicHolder.getMana() - mana;
+        LazyOptional<ManaHolder> holder = getManaHolder(entity);
+        if (!holder.isPresent()) return false;
+        float newMana = holder.orElse(EMPTY).getMana() - mana;
         float clamped = Mth.clamp(newMana, 0, getMaxMana(entity));
-        magicHolder.setMana(clamped);
+        holder.orElse(EMPTY).setMana(clamped);
         if (entity instanceof Player player) {
             syncMana(player);
         }
@@ -56,50 +61,52 @@ public final class ManaHelper implements IManaHelper {
     }
 
     @Override
-    public float getMana(LivingEntity livingEntity) {
-        return getManaHolder(livingEntity).getMana();
+    public float getMana(LivingEntity entity) {
+        return getManaHolder(entity).orElse(EMPTY).getMana();
     }
 
     @Override
-    public float getMaxMana(LivingEntity livingEntity) {
-        return (float) livingEntity.getAttributeValue(AMAttributes.MAX_MANA.get());
+    public float getMaxMana(LivingEntity entity) {
+        return entity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.get()) ? (float) entity.getAttributeValue(AMAttributes.MAX_MANA.get()) : 0f;
     }
 
     @Override
-    public boolean increaseMana(LivingEntity livingEntity, float amount) {
+    public boolean increaseMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        float max = getMaxMana(livingEntity);
-        ManaHolder magicHolder = getManaHolder(livingEntity);
-        float current = magicHolder.getMana();
-        magicHolder.setMana(Math.min(current + amount, max));
-        if (livingEntity instanceof Player player) {
-            syncMana(player);
-        }
+        runIfPresent(entity, holder -> {
+            float max = getMaxMana(entity);
+            float current = holder.getMana();
+            holder.setMana(Math.min(current + amount, max));
+            if (entity instanceof Player player) {
+                syncMana(player);
+            }
+        });
         return true;
     }
 
     @Override
-    public boolean decreaseMana(LivingEntity livingEntity, float amount) {
+    public boolean decreaseMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        ManaHolder magicHolder = getManaHolder(livingEntity);
-        float current = magicHolder.getMana();
-        if (current - amount < 0) return false;
-        magicHolder.setMana(current - amount);
-        if (livingEntity instanceof Player player) {
-            syncMana(player);
-        }
+        runIfPresent(entity, holder -> {
+            float current = holder.getMana();
+            holder.setMana(Math.max(current - amount, 0));
+            if (entity instanceof Player player) {
+                syncMana(player);
+            }
+        });
         return true;
     }
 
     @Override
     public boolean setMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        float max = getMaxMana(entity);
-        ManaHolder magicHolder = getManaHolder(entity);
-        magicHolder.setMana(Math.min(amount, max));
-        if (entity instanceof Player player) {
-            syncMana(player);
-        }
+        runIfPresent(entity, holder -> {
+            float max = getMaxMana(entity);
+            holder.setMana(Math.min(amount, max));
+            if (entity instanceof Player player) {
+                syncMana(player);
+            }
+        });
         return true;
     }
 
@@ -122,16 +129,20 @@ public final class ManaHelper implements IManaHelper {
      * @param player The player to sync to.
      */
     public void syncMana(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(getManaHolder(player)), player);
+        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(holder), player));
     }
 
-    private ManaHolder getManaHolder(LivingEntity livingEntity) {
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.reviveCaps();
+    private void runIfPresent(LivingEntity entity, Consumer<ManaHolder> consumer) {
+        getManaHolder(entity).ifPresent(consumer::accept);
+    }
+
+    private LazyOptional<ManaHolder> getManaHolder(LivingEntity entity) {
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.reviveCaps();
         }
-        ManaHolder manaHolder = livingEntity.getCapability(MANA).orElseThrow(() -> new RuntimeException("Could not retrieve mana capability for LivingEntity %s{%s}".formatted(livingEntity.getDisplayName().getString(), livingEntity.getUUID())));
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.invalidateCaps();
+        LazyOptional<ManaHolder> manaHolder = entity.getCapability(MANA);
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.invalidateCaps();
         }
         return manaHolder;
     }
