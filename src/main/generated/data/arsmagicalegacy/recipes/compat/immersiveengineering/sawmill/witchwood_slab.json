@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "immersiveengineering"
+        }
+      ],
+      "recipe": {
+        "type": "immersiveengineering:sawmill",
+        "energy": 800,
+        "input": {
+          "item": "arsmagicalegacy:witchwood_planks"
+        },
+        "result": {
+          "count": 2,
+          "item": "arsmagicalegacy:witchwood_slab"
+        },
+        "secondaries": [
+          {
+            "output": {
+              "tag": "forge:dusts/wood"
+            },
+            "stripping": false
+          }
+        ]
+      }
+    }
+  ]
+}

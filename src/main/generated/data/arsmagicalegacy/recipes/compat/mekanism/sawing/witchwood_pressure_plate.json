@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "mekanism"
+        }
+      ],
+      "recipe": {
+        "type": "mekanism:sawing",
+        "input": {
+          "ingredient": {
+            "item": "arsmagicalegacy:witchwood_pressure_plate"
+          }
+        },
+        "mainOutput": {
+          "count": 2,
+          "item": "arsmagicalegacy:witchwood_planks"
+        }
+      }
+    }
+  ]
+}

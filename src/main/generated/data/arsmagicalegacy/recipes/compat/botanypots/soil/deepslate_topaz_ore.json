@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botanypots"
+        }
+      ],
+      "recipe": {
+        "type": "botanypots:soil",
+        "categories": [
+          "stone",
+          "mushroom",
+          "ore",
+          "topaz_ore",
+          "deepslate",
+          "deepslate_topaz_ore"
+        ],
+        "display": {
+          "block": "arsmagicalegacy:deepslate_topaz_ore"
+        },
+        "growthModifier": 1.0,
+        "input": {
+          "item": "arsmagicalegacy:deepslate_topaz_ore"
+        }
+      }
+    }
+  ]
+}

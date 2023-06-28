@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "create:milling",
+        "ingredients": [
+          {
+            "item": "arsmagicalegacy:tarma_root"
+          }
+        ],
+        "processingTime": 50,
+        "results": [
+          {
+            "count": 2,
+            "item": "minecraft:brown_dye"
+          },
+          {
+            "chance": 0.5,
+            "item": "minecraft:brown_dye"
+          }
+        ]
+      }
+    }
+  ]
+}

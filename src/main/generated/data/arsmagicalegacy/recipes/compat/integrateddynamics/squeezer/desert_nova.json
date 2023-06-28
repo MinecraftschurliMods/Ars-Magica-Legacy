@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "integrateddynamics"
+        }
+      ],
+      "recipe": {
+        "type": "integrateddynamics:squeezer",
+        "item": {
+          "item": "arsmagicalegacy:desert_nova"
+        },
+        "result": {
+          "items": [
+            {
+              "count": 4,
+              "item": "minecraft:red_dye"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

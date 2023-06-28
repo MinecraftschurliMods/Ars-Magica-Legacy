@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "integrateddynamics"
+        }
+      ],
+      "recipe": {
+        "type": "integrateddynamics:mechanical_squeezer",
+        "duration": 5,
+        "item": {
+          "item": "arsmagicalegacy:aum"
+        },
+        "result": {
+          "items": [
+            {
+              "count": 4,
+              "item": "minecraft:pink_dye"
+            },
+            {
+              "chance": 0.5,
+              "count": 2,
+              "item": "minecraft:pink_dye"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

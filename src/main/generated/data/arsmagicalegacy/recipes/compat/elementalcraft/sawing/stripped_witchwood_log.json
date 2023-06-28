@@ -1,0 +1,24 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "elementalcraft"
+        }
+      ],
+      "recipe": {
+        "type": "elementalcraft:sawing",
+        "element_amount": 1000,
+        "input": {
+          "item": "arsmagicalegacy:witchwood_log"
+        },
+        "luck_ratio": 0,
+        "output": {
+          "item": "arsmagicalegacy:stripped_witchwood_log"
+        }
+      }
+    }
+  ]
+}

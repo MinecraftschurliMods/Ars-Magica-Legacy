@@ -11,13 +11,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class PrefabSpellProvider extends AbstractDataProvider<PrefabSpell, PrefabSpellProvider.Builder> {
-    @Nullable
+public abstract class PrefabSpellProvider extends AbstractRegistryDataProvider<PrefabSpell, PrefabSpellProvider.Builder> {
     private final LanguageProvider languageProvider;
 
-    public PrefabSpellProvider(String namespace, @Nullable LanguageProvider languageProvider, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
-        super(PrefabSpell.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
+    public PrefabSpellProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps, @Nullable LanguageProvider languageProvider) {
+        super(PrefabSpell.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps, false);
         this.languageProvider = languageProvider;
+        generate();
     }
 
     @Override
@@ -26,20 +26,16 @@ public abstract class PrefabSpellProvider extends AbstractDataProvider<PrefabSpe
     }
 
     /**
-     * Adds a new prefab spell.
-     *
      * @param id    The id of the prefab spell.
-     * @param name  The name component of the prefab spell.
+     * @param name  The name of the prefab spell.
      * @param icon  The icon of the prefab spell.
      * @param spell The spell of the prefab spell.
      */
     public Builder builder(String id, Component name, ResourceLocation icon, ISpell spell) {
-        return new Builder(new ResourceLocation(this.namespace, id)).setIcon(icon).setName(name).setSpell(spell);
+        return new Builder(new ResourceLocation(namespace, id), this, name, icon, spell);
     }
 
     /**
-     * Adds a new prefab spell.
-     *
      * @param id    The id of the prefab spell.
      * @param name  The name of the prefab spell.
      * @param icon  The icon of the prefab spell.
@@ -56,60 +52,20 @@ public abstract class PrefabSpellProvider extends AbstractDataProvider<PrefabSpe
         return Component.translatable(key);
     }
 
-    public static class Builder extends AbstractDataBuilder<PrefabSpell, Builder> {
-        private Component name;
-        private ResourceLocation icon;
-        private ISpell spell;
+    public static class Builder extends AbstractRegistryDataProvider.Builder<PrefabSpell, Builder> {
+        private final Component name;
+        private final ResourceLocation icon;
+        private final ISpell spell;
 
-        public Builder(ResourceLocation id) {
-            super(id);
-        }
-
-        /**
-         * Sets the name to use.
-         *
-         * @param name The name to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setName(String name) {
-            return setName(Component.nullToEmpty(name));
-        }
-
-        /**
-         * Sets the name to use.
-         *
-         * @param name The name to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setName(Component name) {
+        public Builder(ResourceLocation id, PrefabSpellProvider provider, Component name, ResourceLocation icon, ISpell spell) {
+            super(id, provider, PrefabSpell.DIRECT_CODEC);
             this.name = name;
-            return this;
-        }
-
-        /**
-         * Sets the icon to use.
-         *
-         * @param icon The icon to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setIcon(ResourceLocation icon) {
             this.icon = icon;
-            return this;
-        }
-
-        /**
-         * Sets the spell to use.
-         *
-         * @param spell The spell to use.
-         * @return This builder, for chaining.
-         */
-        public Builder setSpell(ISpell spell) {
             this.spell = spell;
-            return this;
         }
 
         @Override
-        protected PrefabSpell build() {
+        protected PrefabSpell get() {
             return new PrefabSpell(name, spell, icon);
         }
     }
