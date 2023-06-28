@@ -3,9 +3,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragSourceArea;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +52,10 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         for (Pair<SpellPartDraggable, Pair<Integer, Integer>> pair : cachedContents) {
             Pair<Integer, Integer> xy = pair.getSecond();
-            pair.getFirst().render(poseStack, xy.getFirst(), xy.getSecond(), partialTicks);
+            pair.getFirst().render(graphics, xy.getFirst(), xy.getSecond(), partialTicks);
         }
     }
 

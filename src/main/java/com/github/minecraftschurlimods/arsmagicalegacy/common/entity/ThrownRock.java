@@ -75,7 +75,7 @@ public class ThrownRock extends Entity {
         if (hit.getType() != HitResult.Type.MISS) {
             newPos = hit.getLocation();
         }
-        if (hit.getType() == HitResult.Type.ENTITY && !level.isClientSide()) {
+        if (hit.getType() == HitResult.Type.ENTITY && !level().isClientSide()) {
             Entity entity = ((EntityHitResult) hit).getEntity();
             if (entity instanceof LivingEntity living && entity != getOwner()) {
                 if (!living.isBlocking()) {
@@ -84,7 +84,7 @@ public class ThrownRock extends Entity {
                     player.stopUsingItem();
                     if (random.nextFloat() < 0.25f) {
                         player.getCooldowns().addCooldown(Items.SHIELD, 100);
-                        level.broadcastEntityEvent(player, (byte) 30);
+                        level().broadcastEntityEvent(player, (byte) 30);
                     }
                 }
                 setRemoved(RemovalReason.KILLED);
@@ -95,7 +95,7 @@ public class ThrownRock extends Entity {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

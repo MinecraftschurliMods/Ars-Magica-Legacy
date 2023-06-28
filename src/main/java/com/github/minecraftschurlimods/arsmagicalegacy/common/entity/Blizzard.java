@@ -82,6 +82,7 @@ public class Blizzard extends Entity implements ItemSupplier {
             remove(RemovalReason.KILLED);
             return;
         }
+        Level level = level();
         for (int i = 0; i < 20 * getRadius(); ++i) {
             level.addParticle(ParticleTypes.SNOWFLAKE, getRandomX(getRadius() * 2), getY() + (2d * random.nextDouble() - 1d) * getRadius() / 2, getRandomZ(getRadius() * 2), 0, 0, 0);
         }
@@ -116,7 +117,7 @@ public class Blizzard extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

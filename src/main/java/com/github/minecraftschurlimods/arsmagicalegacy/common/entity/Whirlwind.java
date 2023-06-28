@@ -53,7 +53,7 @@ public class Whirlwind extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!level.isClientSide() && tickCount > 140) {
+        if (!level().isClientSide() && tickCount > 140) {
             kill();
         }
         cooldowns.replaceAll((k, v) -> Math.max(v - 1, 0));
@@ -63,21 +63,21 @@ public class Whirlwind extends Entity {
     @Override
     public void playerTouch(Player pPlayer) {
         super.playerTouch(pPlayer);
-        if (level.isClientSide() || pPlayer.isCreative()) return;
+        if (level().isClientSide() || pPlayer.isCreative()) return;
         Integer cd = cooldowns.get(pPlayer);
         if (cd == null || cd <= 0) {
-            if (!level.isClientSide && level.getRandom().nextInt(100) < 10) {
-                int slot = pPlayer.getInventory().items.size() + level.getRandom().nextInt(4);
+            if (!level().isClientSide && level().getRandom().nextInt(100) < 10) {
+                int slot = pPlayer.getInventory().items.size() + level().getRandom().nextInt(4);
                 ItemStack stack = pPlayer.getInventory().getItem(slot).copy();
                 pPlayer.getInventory().setItem(slot, ItemStack.EMPTY);
                 if (!pPlayer.getInventory().add(stack)) {
-                    ItemEntity item = new ItemEntity(level, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), stack);
-                    item.setDeltaMovement(level.getRandom().nextDouble() * 0.2 - 0.1, level.getRandom().nextDouble() * 0.2 - 0.1, level.getRandom().nextDouble() * 0.2 - 0.1);
-                    level.addFreshEntity(item);
+                    ItemEntity item = new ItemEntity(level(), pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), stack);
+                    item.setDeltaMovement(level().getRandom().nextDouble() * 0.2 - 0.1, level().getRandom().nextDouble() * 0.2 - 0.1, level().getRandom().nextDouble() * 0.2 - 0.1);
+                    level().addFreshEntity(item);
                 }
             }
             pPlayer.hurt(AMDamageSources.wind(this), 6);
-            pPlayer.setDeltaMovement(getDeltaMovement().x() + level.getRandom().nextFloat() * 0.2f, getDeltaMovement().y() + 0.8, getDeltaMovement().z() + level.getRandom().nextFloat() * 0.2f);
+            pPlayer.setDeltaMovement(getDeltaMovement().x() + level().getRandom().nextFloat() * 0.2f, getDeltaMovement().y() + 0.8, getDeltaMovement().z() + level().getRandom().nextFloat() * 0.2f);
             pPlayer.fallDistance = 0f;
             cooldowns.put(pPlayer, 20);
         }

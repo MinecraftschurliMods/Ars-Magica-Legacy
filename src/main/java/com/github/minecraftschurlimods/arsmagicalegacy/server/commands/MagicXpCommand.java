@@ -92,9 +92,9 @@ public class MagicXpCommand {
             type.add.accept(sp, amount);
         }
         if (players.size() == 1) {
-            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_SINGLE : MAGIC_XP_ADD_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
+            source.sendSuccess(() -> Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_SINGLE : MAGIC_XP_ADD_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
         } else {
-            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_MULTIPLE : MAGIC_XP_ADD_LEVELS_MULTIPLE, amount, players.size()), true);
+            source.sendSuccess(() -> Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_ADD_POINTS_MULTIPLE : MAGIC_XP_ADD_LEVELS_MULTIPLE, amount, players.size()), true);
         }
         return players.size();
     }
@@ -120,9 +120,9 @@ public class MagicXpCommand {
             type.set.accept(sp, amount);
         }
         if (players.size() == 1) {
-            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_SINGLE : MAGIC_XP_SET_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
+            source.sendSuccess(() -> Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_SINGLE : MAGIC_XP_SET_LEVELS_SINGLE, amount, players.iterator().next().getDisplayName()), true);
         } else {
-            source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_MULTIPLE : MAGIC_XP_SET_LEVELS_MULTIPLE, amount, players.size()), true);
+            source.sendSuccess(() -> Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_SET_POINTS_MULTIPLE : MAGIC_XP_SET_LEVELS_MULTIPLE, amount, players.size()), true);
         }
         return players.size();
     }
@@ -145,7 +145,7 @@ public class MagicXpCommand {
 
     private static int getMagicXp(CommandSourceStack source, ServerPlayer player, MagicXpCommandType type) {
         Number i = type.get.apply(player);
-        source.sendSuccess(Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_GET_POINTS : MAGIC_XP_GET_LEVELS, player.getDisplayName(), i), true);
+        source.sendSuccess(() -> Component.translatable(type == MagicXpCommandType.POINTS ? MAGIC_XP_GET_POINTS : MAGIC_XP_GET_LEVELS, player.getDisplayName(), i), true);
         return i.intValue();
     }
 

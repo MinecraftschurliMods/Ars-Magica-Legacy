@@ -108,9 +108,9 @@ public class SkillPointCommand {
             ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, skillPoint, amount);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_ADD_SINGLE, amount, skillPoint.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_ADD_SINGLE, amount, skillPoint.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_ADD_MULTIPLE, amount, skillPoint.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_ADD_MULTIPLE, amount, skillPoint.getDisplayName(), players.size()), true);
         }
         return players.size();
     }
@@ -137,9 +137,9 @@ public class SkillPointCommand {
             helper.consumeSkillPoint(player, skillPoint, Math.min(amount, helper.getSkillPoint(player, skillPoint)));
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_CONSUME_SINGLE, amount, skillPoint.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_CONSUME_SINGLE, amount, skillPoint.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_CONSUME_MULTIPLE, amount, skillPoint.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_CONSUME_MULTIPLE, amount, skillPoint.getDisplayName(), players.size()), true);
         }
         return players.size();
     }
@@ -163,9 +163,9 @@ public class SkillPointCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_SET_SINGLE, players.iterator().next().getDisplayName(), amount, skillPoint.getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_SET_SINGLE, players.iterator().next().getDisplayName(), amount, skillPoint.getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_SET_MULTIPLE, players.size(), amount, skillPoint.getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_SET_MULTIPLE, players.size(), amount, skillPoint.getDisplayName()), true);
         }
         return players.size();
     }
@@ -188,9 +188,9 @@ public class SkillPointCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_RESET_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_RESET_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -205,7 +205,7 @@ public class SkillPointCommand {
 
     private static int getSkillPoint(Collection<ServerPlayer> players, SkillPoint skillPoint, CommandContext<CommandSourceStack> context) {
         for (ServerPlayer player : players) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_POINT_GET, player.getDisplayName(), ArsMagicaAPI.get().getSkillHelper().getSkillPoint(player, skillPoint), skillPoint.getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_POINT_GET, player.getDisplayName(), ArsMagicaAPI.get().getSkillHelper().getSkillPoint(player, skillPoint), skillPoint.getDisplayName()), true);
         }
         return players.size();
     }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class HealGoal<T extends AbstractBoss> extends ExecuteBossSpellGoal<T> {
     public HealGoal(T caster) {
-        super(caster, caster.level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 20);
+        super(caster, caster.level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "heal_self")).spell(), 20);
     }
 
     @Override

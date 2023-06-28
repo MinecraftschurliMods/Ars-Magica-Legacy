@@ -97,6 +97,6 @@ public class NatureGuardian extends AbstractBoss {
 
     public void setHasScythe(boolean hasScythe) {
         this.hasScythe = hasScythe;
-        level.broadcastEntityEvent(this, (byte) (hasScythe ? -9 : -8));
+        level().broadcastEntityEvent(this, (byte) (hasScythe ? -9 : -8));
     }
 }

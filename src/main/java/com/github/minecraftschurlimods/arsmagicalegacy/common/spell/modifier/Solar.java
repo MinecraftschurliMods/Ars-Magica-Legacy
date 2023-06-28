@@ -6,12 +6,12 @@ public class Solar extends GenericSpellModifier {
     private static final float MULTIPLIER = 1.375f; //1 + 9000 / 24000
 
     public Solar() {
-        addStatModifier(DAMAGE, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level.getDayTime()) * 2.5f);
-        addStatModifier(DURATION, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level.getDayTime()) * 5);
-        addStatModifier(HEALING, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level.getDayTime()) * 2);
-        addStatModifier(RANGE, (base, modified, spell, caster, target) -> modified + 1.5f * (caster.level.getDayTime() % 24000 < 13500 || caster.level.getDayTime() % 24000 > 22500 ? 1 + getMoonPhaseMultiplier(caster.level.getMoonPhase()) : 1));
+        addStatModifier(DAMAGE, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level().getDayTime()) * 2.5f);
+        addStatModifier(DURATION, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level().getDayTime()) * 5);
+        addStatModifier(HEALING, (base, modified, spell, caster, target) -> modified * getTimeBasedMultiplier(caster.level().getDayTime()) * 2);
+        addStatModifier(RANGE, (base, modified, spell, caster, target) -> modified + 1.5f * (caster.level().getDayTime() % 24000 < 13500 || caster.level().getDayTime() % 24000 > 22500 ? 1 + getMoonPhaseMultiplier(caster.level().getMoonPhase()) : 1));
         addStatModifier(SIZE, modifiers.get(RANGE));
-        addStatModifier(SPEED, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level.getDayTime()) * 0.5f);
+        addStatModifier(SPEED, (base, modified, spell, caster, target) -> modified + getTimeBasedMultiplier(caster.level().getDayTime()) * 0.5f);
     }
 
     private static float getMoonPhaseMultiplier(long phase) {

@@ -7,7 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus.Occulu
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -31,17 +31,12 @@ public final class ClientHelper {
      * @param x         The x coordinate to draw the part at.
      * @param y         The y coordinate to draw the part at.
      */
-    public static void drawItemStack(PoseStack poseStack, ItemStack itemStack, int x, int y) {
+    public static void drawItemStack(GuiGraphics graphics, ItemStack itemStack, int x, int y) {
         Minecraft minecraft = Minecraft.getInstance();
-        ItemRenderer itemRenderer = minecraft.getItemRenderer();
-        PoseStack mvs = RenderSystem.getModelViewStack();
-        mvs.pushPose();
-        mvs.mulPoseMatrix(poseStack.last().pose());
-        RenderSystem.applyModelViewMatrix();
-        itemRenderer.renderGuiItem(poseStack, itemStack, x, y);
-        itemRenderer.renderGuiItemDecorations(poseStack, minecraft.font, itemStack, x, y);
-        mvs.popPose();
-        RenderSystem.applyModelViewMatrix();
+        graphics.pose().pushPose();
+        graphics.renderItem(itemStack, x, y);
+        graphics.renderItemDecorations(minecraft.font, itemStack, x, y);
+        graphics.pose().popPose();
     }
 
     /**
@@ -54,12 +49,11 @@ public final class ClientHelper {
      * @param width     The width to draw the part with.
      * @param height    The height to draw the part with.
      */
-    public static void drawSpellPart(PoseStack poseStack, ISpellPart spellPart, int x, int y, int width, int height) {
+    public static void drawSpellPart(GuiGraphics graphics, ISpellPart spellPart, int x, int y, int width, int height) {
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(spellPart.getId());
-        poseStack.pushPose();
-        RenderSystem.setShaderTexture(0, sprite.atlasLocation());
-        GuiComponent.blit(poseStack, x, y, 0, width, height, sprite);
-        poseStack.popPose();
+        graphics.pose().pushPose();
+        graphics.blit(x, y, 0, width, height, sprite);
+        graphics.pose().popPose();
     }
 
     /**
@@ -77,7 +71,7 @@ public final class ClientHelper {
     public static Level getLocalLevel() {
         Player localPlayer = getLocalPlayer();
         if (localPlayer == null) return null;
-        return localPlayer.level;
+        return localPlayer.level();
     }
 
     /**

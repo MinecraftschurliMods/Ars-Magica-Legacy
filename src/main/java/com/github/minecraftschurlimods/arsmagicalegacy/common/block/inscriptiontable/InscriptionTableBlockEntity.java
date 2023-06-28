@@ -192,7 +192,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public boolean stillValid(Player player) {
         BlockPos pos = getBlockPos();
-        return player.level.getBlockEntity(pos) == this && player.distanceToSqr(Vec3.atCenterOf(pos)) <= 64D;
+        return player.level().getBlockEntity(pos) == this && player.distanceToSqr(Vec3.atCenterOf(pos)) <= 64D;
     }
 
     @Override

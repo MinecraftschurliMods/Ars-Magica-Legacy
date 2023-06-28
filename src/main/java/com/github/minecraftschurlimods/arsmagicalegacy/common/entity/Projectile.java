@@ -104,6 +104,7 @@ public class Projectile extends Entity implements ItemSupplier {
             return;
         }
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+        Level level = level();
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
             if (getBounces() > 0) {
@@ -194,7 +195,7 @@ public class Projectile extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

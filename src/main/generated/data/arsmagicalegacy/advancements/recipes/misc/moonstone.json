@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:moonstone"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

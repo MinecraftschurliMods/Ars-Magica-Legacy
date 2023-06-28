@@ -24,7 +24,7 @@ public class Repel extends AbstractComponent {
 
     private static SpellCastResult performRepel(@Nullable Entity targetEntity, AABB aabb, LivingEntity caster, Vec3 targetPos, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
         boolean success = false;
-        for (Entity e : caster.level.getEntities(targetEntity, aabb)) {
+        for (Entity e : caster.level().getEntities(targetEntity, aabb)) {
             if (e == caster) continue;
             success = true;
             Vec3 vec = e.position();

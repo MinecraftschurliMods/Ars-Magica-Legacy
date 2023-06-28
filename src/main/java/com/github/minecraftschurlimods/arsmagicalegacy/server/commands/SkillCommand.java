@@ -83,7 +83,7 @@ public class SkillCommand {
     }
 
     private static int listAllSkills(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(createSkillListComponent(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream(), context.getSource().registryAccess()), true);
+        context.getSource().sendSuccess(() -> createSkillListComponent(context.getSource().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).stream(), context.getSource().registryAccess()), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -108,7 +108,7 @@ public class SkillCommand {
         var knowledgeHelper = api.getSkillHelper();
         var registryAccess = context.getSource().registryAccess();
         var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
-        context.getSource().sendSuccess(createSkillListComponent(skillRegistry.stream().filter(skill -> knowledgeHelper.knows(player, skill, registryAccess)), registryAccess), true);
+        context.getSource().sendSuccess(() -> createSkillListComponent(skillRegistry.stream().filter(skill -> knowledgeHelper.knows(player, skill, registryAccess)), registryAccess), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -117,7 +117,7 @@ public class SkillCommand {
         var registryAccess = context.getSource().registryAccess();
         var skillRegistry = registryAccess.registryOrThrow(Skill.REGISTRY_KEY);
         var knowledgeHelper = api.getSkillHelper();
-        context.getSource().sendSuccess(createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> Optional.ofNullable(skillRegistry.get(skill)).stream()), registryAccess), true);
+        context.getSource().sendSuccess(() -> createSkillListComponent(knowledgeHelper.getKnownSkills(player).stream().flatMap(skill -> Optional.ofNullable(skillRegistry.get(skill)).stream()), registryAccess), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -134,9 +134,9 @@ public class SkillCommand {
             ArsMagicaAPI.get().getSkillHelper().forgetAll(player);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_FORGET_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_ALL_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_FORGET_ALL_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -164,9 +164,9 @@ public class SkillCommand {
             helper.forget(player, skill, registryAccess);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_FORGET_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_FORGET_MULTIPLE, skill.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_FORGET_MULTIPLE, skill.getDisplayName(), players.size()), true);
         }
         return players.size();
     }
@@ -184,9 +184,9 @@ public class SkillCommand {
             ArsMagicaAPI.get().getSkillHelper().learnAll(player, context.getSource().registryAccess());
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_LEARN_ALL_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_ALL_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_LEARN_ALL_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -214,9 +214,9 @@ public class SkillCommand {
             helper.learn(player, skill, registryAccess);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(SKILL_LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
         }
         return players.size();
     }

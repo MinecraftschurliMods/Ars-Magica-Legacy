@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,9 +72,9 @@ public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         for (ShapeGroupArea area : shapeGroups) {
-            area.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            area.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         }
     }
 

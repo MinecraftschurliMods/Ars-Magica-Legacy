@@ -108,6 +108,7 @@ public class Wave extends Entity implements ItemSupplier {
             return;
         }
         setPos(getX() + getDeltaMovement().x() * getSpeed() / 10f, getY() + getDeltaMovement().y() * getSpeed() / 10f, getZ() + getDeltaMovement().z() * getSpeed() / 10f);
+        Level level = level();
         for (int i = 0; i < 8; ++i) {
             level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5), getY() + (2d * random.nextDouble() - 1d) * 0.5, getRandomZ(0.5), (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
         }
@@ -169,7 +170,7 @@ public class Wave extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

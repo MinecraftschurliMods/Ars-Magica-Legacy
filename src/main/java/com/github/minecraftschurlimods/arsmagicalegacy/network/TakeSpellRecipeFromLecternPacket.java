@@ -29,6 +29,6 @@ public record TakeSpellRecipeFromLecternPacket(BlockPos pos) implements IPacket 
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> SpellRecipeItem.takeFromLectern(Objects.requireNonNull(context.getSender()), context.getSender().getLevel(), pos, context.getSender().getLevel().getBlockState(pos)));
+        context.enqueueWork(() -> SpellRecipeItem.takeFromLectern(Objects.requireNonNull(context.getSender()), context.getSender().level(), pos, context.getSender().level().getBlockState(pos)));
     }
 }

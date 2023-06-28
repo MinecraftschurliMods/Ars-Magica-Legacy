@@ -158,7 +158,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         super.aiStep();
         if (bossEvent != null) {
             bossEvent.setProgress(getHealth() / getMaxHealth());
-            if (!level.isClientSide()) {
+            if (!level().isClientSide()) {
                 bossEvent.setVisible(isAlive());
                 if (ticksSinceLastPlayerScan++ >= 20) {
                     updatePlayers();
@@ -183,13 +183,13 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof AbstractBoss) return false;
         if (pSource.is(DamageTypes.IN_WALL)) {
-            if (!level.isClientSide()) {
+            if (!level().isClientSide()) {
                 int width = Math.round(getBbWidth());
                 int height = Math.round(getBbHeight());
                 for (int x = -width; x < width; x++) {
                     for (int y = 0; y < height; y++) {
                         for (int z = -width; z < width; z++) {
-                            level.destroyBlock(BlockPos.containing(getX() + x, getY() + y, getZ() + z), true, this);
+                            level().destroyBlock(BlockPos.containing(getX() + x, getY() + y, getZ() + z), true, this);
                         }
                     }
                 }
@@ -198,7 +198,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
         }
         SoundEvent sound = getHurtSound(pSource);
         if (sound != null) {
-            level.playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.5f + random.nextFloat() * 0.5f);
+            level().playSound(null, this, sound, SoundSource.HOSTILE, 1f, 0.5f + random.nextFloat() * 0.5f);
         }
         return super.hurt(pSource, pAmount);
     }
@@ -255,7 +255,7 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     public void setAction(Action action) {
         this.action = action;
         ticksInAction = 0;
-        level.broadcastEntityEvent(this, action.id);
+        level().broadcastEntityEvent(this, action.id);
     }
 
     /**
@@ -266,19 +266,18 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     private void updatePlayers() {
-        if (!level.isClientSide()) {
-            Set<ServerPlayer> newSet = new HashSet<>();
-            for (ServerPlayer player : ((ServerLevel) level).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192)))) {
-                bossEvent.addPlayer(player);
-                startSeenByPlayer(player);
-                newSet.add(player);
-            }
-            Set<ServerPlayer> oldSet = Sets.newHashSet(bossEvent.getPlayers());
-            oldSet.removeAll(newSet);
-            for (ServerPlayer player : oldSet) {
-                bossEvent.removePlayer(player);
-                stopSeenByPlayer(player);
-            }
+        if (level().isClientSide()) return;
+        Set<ServerPlayer> newSet = new HashSet<>();
+        for (ServerPlayer player : ((ServerLevel) level()).getPlayers(EntitySelector.ENTITY_STILL_ALIVE.and(EntitySelector.withinDistance(0, 128, 0, 192)))) {
+            bossEvent.addPlayer(player);
+            startSeenByPlayer(player);
+            newSet.add(player);
+        }
+        Set<ServerPlayer> oldSet = Sets.newHashSet(bossEvent.getPlayers());
+        oldSet.removeAll(newSet);
+        for (ServerPlayer player : oldSet) {
+            bossEvent.removePlayer(player);
+            stopSeenByPlayer(player);
         }
     }
 

@@ -17,6 +17,6 @@ public class ExecuteRandomSpellGoal<T extends AbstractBoss> extends ExecuteBossS
     @Override
     @Nullable
     protected ISpell getSpell(T caster) {
-        return spells.get(caster.getLevel().getRandom().nextInt(spells.size()));
+        return spells.get(caster.level().getRandom().nextInt(spells.size()));
     }
 }

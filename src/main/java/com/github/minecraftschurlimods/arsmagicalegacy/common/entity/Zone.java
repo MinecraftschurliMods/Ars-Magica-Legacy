@@ -105,6 +105,7 @@ public class Zone extends Entity implements ItemSupplier {
             return;
         }
         setPos(getX(), getY() - getGravity(), getZ());
+        Level level = level();
         for (int i = 0; i < 8; ++i) {
             level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), (random.nextDouble() - 0.5D) * 2D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2D);
         }
@@ -166,7 +167,7 @@ public class Zone extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

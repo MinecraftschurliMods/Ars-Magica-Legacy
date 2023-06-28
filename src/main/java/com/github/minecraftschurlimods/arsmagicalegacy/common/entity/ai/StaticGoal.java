@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public class StaticGoal extends AbstractBossGoal<LightningGuardian> {
@@ -19,7 +18,7 @@ public class StaticGoal extends AbstractBossGoal<LightningGuardian> {
 
     @Override
     public void perform() {
-        for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(8, 3, 8), e -> !(e instanceof AbstractBoss))) {
+        for (LivingEntity e : boss.level().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(8, 3, 8), e -> !(e instanceof AbstractBoss))) {
             e.hurt(boss.damageSources().lightningBolt(), 20);
         }
     }

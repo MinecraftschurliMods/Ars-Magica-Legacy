@@ -98,6 +98,7 @@ public class Wall extends Entity implements ItemSupplier {
         double maxX = getX() + getRadius();
         double maxY = getY() + 3;
         double maxZ = getZ() + getRadius();
+        Level level = level();
         if (level.isClientSide()) {
             for (double x = minX; x <= maxX; x += 0.2) {
                 for (double y = minY; y <= maxY; y += 0.2) {
@@ -151,7 +152,7 @@ public class Wall extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

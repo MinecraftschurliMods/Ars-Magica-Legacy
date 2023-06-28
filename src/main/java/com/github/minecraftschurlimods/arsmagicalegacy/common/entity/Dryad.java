@@ -48,16 +48,16 @@ public class Dryad extends PathfinderMob {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (!(level() instanceof ServerLevel serverLevel)) return;
         timer--;
         if (timer > 0) return;
         timer = Config.SERVER.DRYAD_BONEMEAL_TIMER.get();
-        if (level.random.nextDouble() < Config.SERVER.DRYAD_BONEMEAL_CHANCE.get()) return;
+        if (level().random.nextDouble() < Config.SERVER.DRYAD_BONEMEAL_CHANCE.get()) return;
         int radius = Config.SERVER.DRYAD_BONEMEAL_RADIUS.get();
         for (final BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-radius, -radius, -radius), blockPosition().offset(radius, radius, radius))) {
-            BlockState state = level.getBlockState(pos);
+            BlockState state = level().getBlockState(pos);
             if (!(state.getBlock() instanceof BonemealableBlock bonemealableBlock)) continue;
-            if (!bonemealableBlock.isValidBonemealTarget(level, pos, state, false)) continue;
+            if (!bonemealableBlock.isValidBonemealTarget(level(), pos, state, false)) continue;
             if (bonemealableBlock.isBonemealSuccess(serverLevel, serverLevel.random, pos, state)) {
                 bonemealableBlock.performBonemeal(serverLevel, serverLevel.random, pos, state);
             }

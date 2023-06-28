@@ -94,7 +94,7 @@ final class TickHandler {
     private static void handleAbilities(final Player player) {
         if (player.isDeadOrDying()) return;
         var api = ArsMagicaAPI.get();
-        var manager = player.getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
+        var manager = player.level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         var helper = api.getAffinityHelper();
         try {
             if (!(boolean) CAP_PROVIDER_VALID.get(player)) return;
@@ -103,21 +103,22 @@ final class TickHandler {
         }
         Ability ability;
         if (!player.isCreative()) {
+            // todo use custom damage types
             ability = manager.get(AMAbilities.WATER_DAMAGE_FIRE);
             if (ability != null && ability.test(player) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(player.damageSources().outOfWorld(), 1);
+                player.hurt(player.damageSources().fellOutOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.WATER_DAMAGE_LIGHTNING);
             if (ability != null && ability.test(player) && player.isInWater() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(player.damageSources().outOfWorld(), 1);
+                player.hurt(player.damageSources().fellOutOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_WATER);
-            if (ability != null && ability.test(player) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(player.damageSources().outOfWorld(), 1);
+            if (ability != null && ability.test(player) && player.level().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(player.damageSources().fellOutOfWorld(), 1);
             }
             ability = manager.get(AMAbilities.NETHER_DAMAGE_NATURE);
-            if (ability != null && ability.test(player) && player.getLevel().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
-                player.hurt(player.damageSources().outOfWorld(), 1);
+            if (ability != null && ability.test(player) && player.level().dimensionType().ultraWarm() && player.tickCount % 20 == 0 && (player.getHealth() - 1) / player.getMaxHealth() >= 0.75) {
+                player.hurt(player.damageSources().fellOutOfWorld(), 1);
             }
         }
         ability = manager.get(AMAbilities.SATURATION);
@@ -134,7 +135,7 @@ final class TickHandler {
         }
         ability = manager.get(AMAbilities.FROST_WALKER);
         if (ability != null && ability.test(player)) {
-            FrostWalkerEnchantment.onEntityMoved(player, player.getLevel(), player.blockPosition(), 1);
+            FrostWalkerEnchantment.onEntityMoved(player, player.level(), player.blockPosition(), 1);
         }
         AttributeMap attributes = player.getAttributes();
         AttributeInstance maxHealth = attributes.getInstance(Attributes.MAX_HEALTH);
@@ -143,7 +144,7 @@ final class TickHandler {
         Ability lightHealthReduction = manager.get(AMAbilities.LIGHT_HEALTH_REDUCTION);
         Ability waterHealthReduction = manager.get(AMAbilities.WATER_HEALTH_REDUCTION);
         if ((lightHealthReduction != null
-             && player.getLevel().getBrightness(LightLayer.SKY, player.blockPosition()) == 15
+             && player.level().getBrightness(LightLayer.SKY, player.blockPosition()) == 15
              && lightHealthReduction.test(player))
             || (waterHealthReduction != null
                 && player.isInWaterOrBubble()

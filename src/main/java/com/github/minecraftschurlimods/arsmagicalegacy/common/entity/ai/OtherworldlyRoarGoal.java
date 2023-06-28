@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public class OtherworldlyRoarGoal extends ExecuteBossSpellGoal<EnderGuardian> {
     public OtherworldlyRoarGoal(EnderGuardian caster) {
-        super(caster, caster.level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "otherworldly_roar")).spell(), 10);
+        super(caster, caster.level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "otherworldly_roar")).spell(), 10);
     }
 
     @Override

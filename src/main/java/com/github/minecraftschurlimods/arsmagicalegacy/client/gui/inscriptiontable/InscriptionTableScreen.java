@@ -11,9 +11,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiont
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -82,32 +82,32 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         for (DragArea<SpellPartDraggable> area : dragAreas) {
-            area.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            area.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         }
         if (dragged != null) {
-            dragged.render(pPoseStack, pMouseX - SpellPartDraggable.SIZE / 2, pMouseY - SpellPartDraggable.SIZE / 2, pPartialTick);
+            dragged.render(guiGraphics, pMouseX - SpellPartDraggable.SIZE / 2, pMouseY - SpellPartDraggable.SIZE / 2, pPartialTick);
         } else {
             SpellPartDraggable part = getHoveredElement(pMouseX, pMouseY);
             if (part != null) {
-                renderTooltip(pPoseStack, part.getTranslationKey(), pMouseX, pMouseY);
+                guiGraphics.renderTooltip(getMinecraft().font, part.getTranslationKey(), pMouseX, pMouseY);
             }
         }
-        renderTooltip(pPoseStack, pMouseX, pMouseY);
+        renderTooltip(guiGraphics, pMouseX, pMouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, GUI);
-        blit(pPoseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        blit(pPoseStack, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 73, 220, 0, 18, 18);
+        pGuiGraphics.blit(GUI, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        pGuiGraphics.blit(GUI, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 73, 220, 0, 18, 18);
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    protected void renderLabels(GuiGraphics pPoseStack, int pMouseX, int pMouseY) {
     }
 
     @Override

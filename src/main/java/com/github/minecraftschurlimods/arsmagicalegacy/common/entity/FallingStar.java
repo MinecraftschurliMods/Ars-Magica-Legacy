@@ -82,13 +82,13 @@ public class FallingStar extends Entity implements ItemSupplier {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
             for (int i = 0; i < 8; i++) {
-                level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10, position().y() + (i - 4) * Math.abs(getDeltaMovement().y()) / 8f, position().z() + random.nextDouble() / 10, 0, -0.1, 0);
+                level().addParticle(PARTICLE, position().x() + random.nextDouble() / 10, position().y() + (i - 4) * Math.abs(getDeltaMovement().y()) / 8f, position().z() + random.nextDouble() / 10, 0, -0.1, 0);
             }
-            HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level, 0.01, true, false);
+            HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level(), 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
             Vec3 vec = result.getLocation();
             if (result.getType() == HitResult.Type.BLOCK) {
-                while (level.getBlockState(BlockPos.containing(vec)).getMaterial().isSolid()) {
+                while (level().getBlockState(BlockPos.containing(vec)).isSolid()) {
                     vec = vec.add(0, 1, 0);
                 }
                 moveTo(vec);
@@ -99,9 +99,9 @@ public class FallingStar extends Entity implements ItemSupplier {
         double scaledTimeSinceImpact = timeSinceImpact / 10d;
         for (int i = 0; i < getDamage() * 24; i++) {
             Vec3 offset = Vec3.directionFromRotation(0, i / 24f / getDamage() * 360f).multiply(scaledTimeSinceImpact, scaledTimeSinceImpact, scaledTimeSinceImpact);
-            level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10 + offset.x(), position().y() + 1.5 - random.nextDouble() * 2, position().z() + random.nextDouble() / 10 + offset.z(), 0, 0, 0);
+            level().addParticle(PARTICLE, position().x() + random.nextDouble() / 10 + offset.x(), position().y() + 1.5 - random.nextDouble() * 2, position().z() + random.nextDouble() / 10 + offset.z(), 0, 0, 0);
         }
-        for (Entity e : level.getEntities(this, getBoundingBox().inflate(scaledTimeSinceImpact, 1, scaledTimeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
+        for (Entity e : level().getEntities(this, getBoundingBox().inflate(scaledTimeSinceImpact, 1, scaledTimeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;
             e.hurt(damageSource, getDamage());
             damaged.add((LivingEntity) e);
@@ -118,7 +118,7 @@ public class FallingStar extends Entity implements ItemSupplier {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

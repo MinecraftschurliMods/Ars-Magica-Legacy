@@ -28,7 +28,7 @@ public class ManaVortex extends Entity {
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(DURATION, 50 + level.getRandom().nextInt(250));
+        entityData.define(DURATION, 50 + level().getRandom().nextInt(250));
         entityData.define(MANA, 0f);
     }
 
@@ -65,6 +65,7 @@ public class ManaVortex extends Entity {
     public void tick() {
         super.tick();
         tickCount++;
+        Level level = level();
         if (entityData.get(DURATION) - this.tickCount > 30) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
                 if (e.getAttribute(AMAttributes.MAX_MANA.get()) == null) continue;

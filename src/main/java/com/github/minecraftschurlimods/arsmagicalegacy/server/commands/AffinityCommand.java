@@ -103,9 +103,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_ADD_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_ADD_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_ADD_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
         }
         return players.size();
     }
@@ -130,9 +130,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_SET_SINGLE, affinity.getDisplayName(), players.iterator().next().getDisplayName(), amount), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_SET_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_SET_MULTIPLE, affinity.getDisplayName(), players.size(), amount), true);
         }
         return players.size();
     }
@@ -155,9 +155,9 @@ public class AffinityCommand {
             }
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_RESET_SINGLE, players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(AFFINITY_RESET_MULTIPLE, players.size()), true);
+            context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_RESET_MULTIPLE, players.size()), true);
         }
         return players.size();
     }
@@ -171,7 +171,7 @@ public class AffinityCommand {
     }
 
     private static int getAffinity(ServerPlayer player, Affinity affinity, CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(Component.translatable(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepthOrElse(player, affinity, 0)), true);
+        context.getSource().sendSuccess(() -> Component.translatable(AFFINITY_GET, affinity.getDisplayName(), player.getDisplayName(), ArsMagicaAPI.get().getAffinityHelper().getAffinityDepthOrElse(player, affinity, 0)), true);
         return Command.SINGLE_SUCCESS;
     }
 

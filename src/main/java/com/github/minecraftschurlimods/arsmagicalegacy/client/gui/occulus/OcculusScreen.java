@@ -3,8 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
@@ -55,7 +54,7 @@ public class OcculusScreen extends Screen {
         prevPage = addRenderableWidget(Button.builder(Component.literal("<"), this::prevPage).pos(-15, -21).size(20, 20).build());
         nextPage.active = page < maxPage;
         prevPage.active = false;
-        addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), GUI_WIDTH, GUI_HEIGHT);
+        addRenderableWidget(new SkillPointPanel(getMinecraft().player, font, GUI_WIDTH, 0, 0, GUI_HEIGHT));
         if (activeTab == null) {
             setActiveTab(activeTabIndex);
         }
@@ -63,20 +62,19 @@ public class OcculusScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack stack, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(stack);
-        stack.pushPose();
-        stack.translate(posX, posY, 0);
-        RenderSystem.setShaderTexture(0, OVERLAY);
-        blit(stack, 0, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT, 256, 256);
-        blit(stack, 7 + activeTabIndex % 8 * 24, -15, 0, 0, GUI_HEIGHT, 22, 22, 256, 256);
-        super.render(stack, pMouseX, pMouseY, pPartialTicks);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(graphics);
+        graphics.pose().pushPose();
+        graphics.pose().translate(posX, posY, 0);
+        graphics.blit(OVERLAY, 0, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT, 256, 256);
+        graphics.blit(OVERLAY, 7 + activeTabIndex % 8 * 24, -15, 0, 0, GUI_HEIGHT, 22, 22, 256, 256);
+        super.render(graphics, pMouseX, pMouseY, pPartialTicks);
         for (OcculusTabButton button : buttons) {
             if (button.isHovered()) {
-                renderTooltip(stack, button.getDisplayName(minecraft.level.registryAccess()), pMouseX - posX, pMouseY - posY);
+                graphics.renderTooltip(getMinecraft().font, button.getDisplayName(minecraft.level.registryAccess()), pMouseX - posX, pMouseY - posY);
             }
         }
-        stack.popPose();
+        graphics.pose().popPose();
     }
 
     private void prevPage(Button button) {

@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
@@ -31,9 +31,9 @@ public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         for (int i = 0; i < contents.size(); i++) {
-            contents.get(i).render(pPoseStack, x + i * SpellPartDraggable.SIZE + X_PADDING, y, pPartialTick);
+            contents.get(i).render(guiGraphics, x + i * SpellPartDraggable.SIZE + X_PADDING, y, pPartialTick);
         }
     }
 }

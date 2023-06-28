@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 
 import java.util.Locale;
 import java.util.function.BiPredicate;
@@ -30,7 +29,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
+        super(BlockBehaviour.Properties.of().noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 

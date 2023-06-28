@@ -22,7 +22,7 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
 
     @Override
     public void tick() {
-        Level level = boss.getLevel();
+        Level level = boss.level();
         if (!level.isClientSide()) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
@@ -40,7 +40,7 @@ public class HurricaneGoal extends AbstractBossGoal<AirGuardian> {
 
     @Override
     public void perform() {
-        Level level = boss.getLevel();
+        Level level = boss.level();
         for (Entity e : level.getEntitiesOfClass(Entity.class, boss.getBoundingBox().inflate(6, 3, 6), e -> !(e instanceof AbstractBoss))) {
             if (!level.isClientSide() && e instanceof Whirlwind) {
                 e.remove(Entity.RemovalReason.KILLED);
