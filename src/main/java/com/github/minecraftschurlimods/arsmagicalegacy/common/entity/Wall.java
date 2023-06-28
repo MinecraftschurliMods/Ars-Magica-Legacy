@@ -83,7 +83,7 @@ public class Wall extends AbstractSpellEntity {
         double maxX = getX() + radius;
         double maxY = getY() + 3;
         double maxZ = getZ() + radius;
-        for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
+        for (Entity e : level().getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
             if (e == this) continue;
             if (e instanceof PartEntity<?> part) {
                 e = part.getParent();
@@ -128,7 +128,7 @@ public class Wall extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

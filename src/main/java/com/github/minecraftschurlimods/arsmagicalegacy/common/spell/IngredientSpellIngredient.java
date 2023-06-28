@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -100,10 +101,10 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
         }
 
         @Override
-        public void renderInGui(IngredientSpellIngredient ingredient, PoseStack poseStack, int x, int y, int mouseX, int mouseY) {
+        public void renderInGui(IngredientSpellIngredient ingredient, GuiGraphics graphics, int x, int y, int mouseX, int mouseY) {
             ItemStack stack = AMUtil.getByTick(ingredient.ingredient().getItems(), Objects.requireNonNull(ClientHelper.getLocalPlayer()).tickCount / 20).copy();
             stack.setCount(ingredient.getCount());
-            ClientHelper.drawItemStack(poseStack, stack, x, y);
+            ClientHelper.drawItemStack(graphics, stack, x, y);
         }
     }
 }

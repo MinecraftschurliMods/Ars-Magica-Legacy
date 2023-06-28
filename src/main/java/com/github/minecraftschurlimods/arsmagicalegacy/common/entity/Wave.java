@@ -85,7 +85,7 @@ public class Wave extends AbstractSpellEntity {
         super.tick();
         float speed = getSpeed();
         setPos(getX() + getDeltaMovement().x() * speed / 10f, getY() + getDeltaMovement().y() * speed / 10f, getZ() + getDeltaMovement().z() * speed / 10f);
-        if (level.isClientSide() || tickCount % 5 != 0) return;
+        if (level().isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
@@ -145,7 +145,7 @@ public class Wave extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 

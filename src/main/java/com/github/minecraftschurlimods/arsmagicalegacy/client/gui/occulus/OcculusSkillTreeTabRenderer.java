@@ -13,8 +13,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -61,7 +61,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     }
 
     @Override
-    protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderBg(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.background(ClientHelper.getRegistryAccess()));
         float scaledOffsetX = offsetX * SCALE;
         float scaledOffsetY = offsetY * SCALE;
@@ -71,7 +71,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         float minV = Mth.clamp(scaledOffsetY, 0, textureHeight - scaledHeight) / textureHeight;
         float maxU = Mth.clamp(scaledOffsetX + scaledWidth, scaledWidth, textureWidth) / textureWidth;
         float maxV = Mth.clamp(scaledOffsetY + scaledHeight, scaledHeight, textureHeight) / textureHeight;
-        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, 0, minU, minV, maxU, maxV);
+        RenderUtil.drawBox(graphics, 0, 0, width, height, 0, minU, minV, maxU, maxV);
         if (isDragging()) {
             offsetX = Mth.clamp(offsetX - (pMouseX - lastMouseX), 0, textureWidth - scaledWidth);
             offsetY = Mth.clamp(offsetY - (pMouseY - lastMouseY), 0, textureHeight - scaledHeight);
@@ -81,7 +81,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     }
 
     @Override
-    protected void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+    protected void renderFg(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null) return;
         var api = ArsMagicaAPI.get();
@@ -91,9 +91,9 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         var helper = api.getSkillHelper();
         Set<Skill> skills = skillRegistry.stream().filter(skill -> Objects.equals(occulusTabRegistry.getKey(occulusTab), skill.occulusTab())).collect(Collectors.toSet());
         skills.removeIf(skill -> skill.hidden() && !helper.knows(player, skill.getId(registryAccess)));
-        stack.pushPose();
-        stack.translate(-offsetX, -offsetY, 0);
-        stack.scale(SCALE, SCALE, 0);
+        graphics.pose().pushPose();
+        graphics.pose().translate(-offsetX, -offsetY, 0);
+        graphics.pose().scale(SCALE, SCALE, 0);
         mouseX += offsetX;
         mouseY += offsetY;
         mouseX *= SCALE;
@@ -125,33 +125,32 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                     offset = 0;
                 }
                 if (cX != parentCX) {
-                    RenderUtil.lineThick2d(stack, parentCX, cY, cX, cY, offset, color);
+                    RenderUtil.lineThick2d(graphics, parentCX, cY, cX, cY, offset, color);
                 }
                 if (cY != parentCY) {
-                    RenderUtil.lineThick2d(stack, parentCX, parentCY, parentCX, cY, offset, color);
+                    RenderUtil.lineThick2d(graphics, parentCX, parentCY, parentCX, cY, offset, color);
                 }
             }
         }
-        RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         for (Skill skill : skills) {
             boolean knows = helper.knows(player, skill, registryAccess);
             boolean hasPrereq = helper.canLearn(player, skill) || knows;
             if (!hasPrereq) {
-                RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1);
+                graphics.setColor(0.5F, 0.5F, 0.5F, 1);
             } else if (!knows) {
                 int c = getColorForSkill(skill);
                 float red = Math.max(ColorUtil.getRed(c), 0.6F) * multiplier;
                 float green = Math.max(ColorUtil.getGreen(c), 0.6F) * multiplier;
                 float blue = Math.max(ColorUtil.getBlue(c), 0.6F) * multiplier;
-                RenderSystem.setShaderColor(red, green, blue, 1);
+                graphics.setColor(red, green, blue, 1);
             }
             RenderSystem.enableBlend();
-            blit(stack, skill.x(), skill.y(), 16, (int) SKILL_SIZE, (int) SKILL_SIZE, SkillIconAtlas.instance().getSprite(skillRegistry.getKey(skill)));
+            graphics.blit(skill.x(), skill.y(), 16, (int) SKILL_SIZE, (int) SKILL_SIZE, SkillIconAtlas.instance().getSprite(skillRegistry.getKey(skill)));
             RenderSystem.disableBlend();
-            RenderSystem.setShaderColor(1, 1, 1, 1);
+            graphics.setColor(1, 1, 1, 1);
         }
         RenderSystem.disableScissor();
-        stack.popPose();
+        graphics.pose().popPose();
         if (!(mouseX > offsetX && mouseX < offsetX + width && mouseY > offsetY && mouseY < offsetY + height)) return;
         for (Skill skill : skills) {
             if (mouseX >= skill.x() && mouseX <= skill.x() + SKILL_SIZE && mouseY >= skill.y() && mouseY <= skill.y() + SKILL_SIZE) {
@@ -162,10 +161,10 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
                 } else {
                     list.add(MISSING_REQUIREMENTS);
                 }
-                stack.pushPose();
-                stack.translate(0, -1, 0);
-                parent.renderTooltip(stack, list, Optional.empty(), (int) (mouseX / SCALE - offsetX), (int) (mouseY / SCALE - offsetY), getFont());
-                stack.popPose();
+                graphics.pose().pushPose();
+                graphics.pose().translate(0, -1, 0);
+                graphics.renderTooltip(getFont(), list, Optional.empty(), (int) (mouseX / SCALE - offsetX), (int) (mouseY / SCALE - offsetY));
+                graphics.pose().popPose();
                 hoverItem = skill;
                 isHoveringSkill = true;
             }
@@ -177,19 +176,19 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (mouseButton == 0 && mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-            var helper = ArsMagicaAPI.get().getSkillHelper();
-            Player player = getMinecraft().player;
-            var registryAccess = getMinecraft().getConnection().registryAccess();
-            if (player != null && hoverItem != null && !helper.knows(player, hoverItem, registryAccess)) {
-                if (helper.canLearn(player, hoverItem) || player.isCreative()) {
-                    ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
-                }
-            } else {
-                setDragging(true);
-            }
-            return true;
+        if (mouseButton != 0 || !(mouseX > 0) || !(mouseX < width) || !(mouseY > 0) || !(mouseY < height)) {
+            return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        return super.mouseClicked(mouseX, mouseY, mouseButton);
+        var helper = ArsMagicaAPI.get().getSkillHelper();
+        Player player = getMinecraft().player;
+        var registryAccess = getMinecraft().getConnection().registryAccess();
+        if (player != null && hoverItem != null && !helper.knows(player, hoverItem, registryAccess)) {
+            if (helper.canLearn(player, hoverItem) || player.isCreative()) {
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
+            }
+        } else {
+            setDragging(true);
+        }
+        return true;
     }
 }

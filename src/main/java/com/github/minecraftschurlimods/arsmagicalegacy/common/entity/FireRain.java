@@ -56,7 +56,7 @@ public class FireRain extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide() || tickCount % 5 != 0) return;
+        if (level().isClientSide() || tickCount % 5 != 0) return;
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(damageSources().inFire(), getDamage());
             e.setRemainingFireTicks(50);
@@ -78,7 +78,7 @@ public class FireRain extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity living ? living : null;
     }
 

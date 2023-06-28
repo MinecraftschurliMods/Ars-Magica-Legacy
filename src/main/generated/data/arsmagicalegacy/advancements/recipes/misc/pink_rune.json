@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:pink_rune"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

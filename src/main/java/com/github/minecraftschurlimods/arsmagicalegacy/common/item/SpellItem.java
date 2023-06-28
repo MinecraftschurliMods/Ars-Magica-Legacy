@@ -111,10 +111,10 @@ public class SpellItem extends Item implements ISpellItem {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         if (!spell.isContinuous()) return;
-        SpellCastResult result = spell.cast(entity, entity.level, remainingUseDuration - 1, true, true);
+        SpellCastResult result = spell.cast(entity, entity.level(), remainingUseDuration - 1, true, true);
         SoundEvent sound = spell.primaryAffinity().getLoopSound();
         if (sound != null) {
-            entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
         }
         if (entity instanceof Player player) {
             if (result.isConsume()) {
@@ -194,7 +194,7 @@ public class SpellItem extends Item implements ISpellItem {
             ArsMagicaLegacy.LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
             SoundEvent sound = spell.primaryAffinity().getCastSound();
             if (sound != null) {
-                entity.getLevel().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
             }
             if (entity instanceof Player player) {
                 if (result.isConsume()) {

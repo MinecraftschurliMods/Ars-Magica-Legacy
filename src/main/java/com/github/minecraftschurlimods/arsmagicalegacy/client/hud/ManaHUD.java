@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
@@ -14,7 +15,7 @@ public final class ManaHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, PoseStack poseStack, float partialTick) {
+    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float partialTick) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;
@@ -26,7 +27,7 @@ public final class ManaHUD extends AbstractHUD {
             maxMana = manaHelper.getMaxMana(player);
         }
         if (maxMana > 0) {
-            renderBar(poseStack, 0, 0, getWidth(), getHeight(), mana, maxMana, 0x99FFFF);
+            renderBar(graphics, 0, 0, getWidth(), getHeight(), mana, maxMana, 0x99FFFF);
         }
     }
 }

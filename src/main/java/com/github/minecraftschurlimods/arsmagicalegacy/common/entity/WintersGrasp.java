@@ -100,7 +100,7 @@ public class WintersGrasp extends Entity {
 
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
@@ -130,8 +130,8 @@ public class WintersGrasp extends Entity {
         if (owner instanceof IceGuardian guardian) {
             guardian.returnArm();
         } else if (owner instanceof Player player && !player.addItem(getStack())) {
-            ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack());
-            level.addFreshEntity(item);
+            ItemEntity item = new ItemEntity(level(), player.getX(), player.getY(), player.getZ(), getStack());
+            level().addFreshEntity(item);
         }
         remove(RemovalReason.KILLED);
     }

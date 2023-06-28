@@ -14,14 +14,14 @@ public class FireRainGoal extends AbstractBossGoal<FireGuardian> {
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            FireRain fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(boss.getLevel()));
+        if (!boss.level().isClientSide()) {
+            FireRain fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(boss.level()));
             fireRain.setPos((boss.getTarget() != null ? boss.getTarget().position() : boss.position()).add(0, 1.5, 0));
             fireRain.setDuration(200);
             fireRain.setOwner(boss);
             fireRain.setDamage(2);
             fireRain.setRadius(2);
-            boss.getLevel().addFreshEntity(fireRain);
+            boss.level().addFreshEntity(fireRain);
         }
     }
 }

@@ -56,7 +56,7 @@ public class Chain extends AbstractShape {
         Entity castFrom = initial;
         Entity temp = null;
         for (int i = 0; i < 4; i++) {
-            for (Entity e : initial.getLevel().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
+            for (Entity e : initial.level().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
                 if (list.contains(e) || Arrays.stream(ignore).anyMatch(p -> p == e)) continue;
                 if (e instanceof LivingEntity living && living.isDeadOrDying()) continue;
                 if (temp != null && temp.getType() != e.getType()) continue;
@@ -65,7 +65,7 @@ public class Chain extends AbstractShape {
                 }
             }
             if (temp == null) {
-                for (Entity e : initial.getLevel().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
+                for (Entity e : initial.level().getEntities(castFrom, new AABB(castFrom.position().subtract(range, range, range), castFrom.position().add(range, range, range)))) {
                     if (list.contains(e) || Arrays.stream(ignore).anyMatch(p -> p == e)) continue;
                     if (e instanceof LivingEntity living && living.isDeadOrDying()) continue;
                     if (temp == null || temp.distanceTo(castFrom) > e.distanceTo(castFrom)) {

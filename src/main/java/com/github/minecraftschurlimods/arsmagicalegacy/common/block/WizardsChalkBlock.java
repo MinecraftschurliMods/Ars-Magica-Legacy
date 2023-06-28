@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -27,7 +26,7 @@ public class WizardsChalkBlock extends Block {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 0.1, 14);
 
     public WizardsChalkBlock() {
-        super(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().sound(SoundType.GRAVEL));
+        super(BlockBehaviour.Properties.of().noCollission().sound(SoundType.GRAVEL));
         registerDefaultState(getStateDefinition().any().setValue(VARIANT, 0).setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
     }
 

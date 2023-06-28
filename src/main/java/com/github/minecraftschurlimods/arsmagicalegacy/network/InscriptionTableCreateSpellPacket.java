@@ -27,6 +27,6 @@ public record InscriptionTableCreateSpellPacket(BlockPos pos) implements IPacket
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(pos)).createSpell(context.getSender()));
+        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().level().getBlockEntity(pos)).createSpell(context.getSender()));
     }
 }

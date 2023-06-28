@@ -22,7 +22,7 @@ public class RiftMenu extends ChestMenu {
      * @return A rift menu.
      */
     public static RiftMenu rift(int windowId, Inventory inv, FriendlyByteBuf buf) {
-        return rift(windowId, inv, inv.player.level.getPlayerByUUID(buf.readUUID()), buf.readInt());
+        return rift(windowId, inv, inv.player.level().getPlayerByUUID(buf.readUUID()), buf.readInt());
     }
 
     /**

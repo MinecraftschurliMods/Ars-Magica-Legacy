@@ -129,11 +129,11 @@ public final class AMUtil {
      * @return The hit result (ray trace result).
      */
     public static HitResult getHitResult(Vec3 from, Vec3 to, Entity entity, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
-        HitResult hitResult = entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
+        HitResult hitResult = entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
         if (hitResult.getType() != HitResult.Type.MISS) {
             to = hitResult.getLocation();
         }
-        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level, entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1), e -> true);
+        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level(), entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1), e -> true);
         if (entityHitResult != null) {
             hitResult = entityHitResult;
         }

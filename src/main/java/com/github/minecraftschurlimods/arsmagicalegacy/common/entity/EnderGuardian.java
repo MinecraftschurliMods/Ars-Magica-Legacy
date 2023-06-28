@@ -59,7 +59,7 @@ public class EnderGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new EnderRushGoal(this));
         goalSelector.addGoal(1, new ShadowstepGoal(this));
-        Registry<PrefabSpell> prefabSpells = level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
+        Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_wave")).spell(), 10));
         goalSelector.addGoal(1, new EnderTorrentGoal(this));
@@ -69,11 +69,11 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (tickCount % 10 == 0) {
-            level.playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
+            level().playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
         }
         if (getAction() == Action.LONG_CAST) {
             if (getTicksInAction() == 20) {
-                level.playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
+                level().playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
             }
         }
         super.aiStep();
@@ -82,7 +82,7 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof EnderMan) {
-            pSource.getEntity().hurt(damageSources().outOfWorld(), 5000);
+            pSource.getEntity().hurt(damageSources().fellOutOfWorld(), 5000);
             heal(10);
             return false;
         }
