@@ -9,9 +9,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -47,8 +49,12 @@ public class SpellCustomizationScreen extends Screen {
         super.init();
         xStart = (width - imageWidth) / 2;
         yStart = (height - imageHeight) / 2;
-        editBox = addRenderableWidget(new EditBox(font, xStart + 8, yStart + 8, 100, 16, editBox, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
+        editBox = addRenderableWidget(new EditBox(font, xStart + 7, yStart + 7, 100, 16, editBox, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
+        addRenderableWidget(new Button(xStart + 112, yStart + 5, 57, 20, CommonComponents.GUI_DONE, e -> {
+            close();
+            minecraft.setScreen(null);
+        }));
     }
 
     @Override
@@ -62,6 +68,10 @@ public class SpellCustomizationScreen extends Screen {
     @Override
     public void onClose() {
         super.onClose();
+        close();
+    }
+
+    private void close() {
         String name = editBox.getValue();
         ResourceLocation icon = spellIconSelector.getSelected();
         if (!name.isBlank() && icon != null) {
