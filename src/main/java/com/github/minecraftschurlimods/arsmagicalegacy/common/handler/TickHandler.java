@@ -86,7 +86,7 @@ final class TickHandler {
 
     private static void manaAndBurnoutRegen(final Player player) {
         var api = ArsMagicaAPI.get();
-        if (player.isDeadOrDying() || !player.getCapability(ManaHelper.getManaCapability()).isPresent()) return;
+        if (player.isDeadOrDying() || !api.getMagicHelper().knowsMagic(player)) return;
         if (!api.getMagicHelper().knowsMagic(player)) return;
         api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
         api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
