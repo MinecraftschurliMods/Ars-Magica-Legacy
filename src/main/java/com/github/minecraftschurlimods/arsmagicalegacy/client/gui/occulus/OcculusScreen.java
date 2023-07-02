@@ -17,10 +17,10 @@ import java.util.Comparator;
 public class OcculusScreen extends Screen {
     private static final ResourceLocation OVERLAY = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/overlay.png");
     private static final Component TITLE = Component.translatable("gui.%s.occulus".formatted(ArsMagicaAPI.MOD_ID));
-    private final int guiWidth;
-    private final int guiHeight;
-    private final int tabWidth;
-    private final int tabHeight;
+    private static final int GUI_WIDTH = 210;
+    private static final int GUI_HEIGHT = 210;
+    private static final int TAB_WIDTH = 196;
+    private static final int TAB_HEIGHT = 196;
     private int posX;
     private int posY;
     private int maxPage;
@@ -32,33 +32,29 @@ public class OcculusScreen extends Screen {
 
     public OcculusScreen() {
         super(TITLE);
-        tabWidth = 196;
-        tabHeight = 196;
-        guiWidth = 210;
-        guiHeight = 210;
         setActiveTab(0);
     }
 
     @Override
     protected void init() {
-        posX = width / 2 - guiWidth / 2;
-        posY = height / 2 - guiHeight / 2;
+        posX = width / 2 - GUI_WIDTH / 2;
+        posY = height / 2 - GUI_HEIGHT / 2;
         var registry = minecraft.level.registryAccess().registryOrThrow(OcculusTab.REGISTRY_KEY);
         int tabSize = 22;
         for (OcculusTab tab : registry) {
             int tabIndex = tab.index();
-            addRenderableWidget(new OcculusTabButton(tabIndex, 7 + ((tabIndex % 8) * (tabSize + 2)), -tabSize, tab, pButton -> setActiveTab(tabIndex)));
+            addRenderableWidget(new OcculusTabButton(tabIndex, 7 + tabIndex % 8 * (tabSize + 2), -tabSize, tab, pButton -> setActiveTab(tabIndex)));
         }
         maxPage = (int) Math.floor((float) (registry.size() - 1) / 16F);
-        nextPage = addRenderableWidget(new Button(guiWidth + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
+        nextPage = addRenderableWidget(new Button(GUI_WIDTH + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
         prevPage = addRenderableWidget(new Button(-15, -21, 20, 20, Component.literal("<"), this::prevPage));
         nextPage.active = page < maxPage;
         prevPage.active = false;
-        addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), guiWidth, guiHeight);
+        addRenderableWidget(new SkillPointPanel()).init(getMinecraft(), GUI_WIDTH, GUI_HEIGHT);
         if (activeTab == null) {
             setActiveTab(activeTabIndex);
         }
-        addRenderableWidget(activeTab).init(tabWidth, tabHeight, width, height, posX + 7, posY + 7);
+        addRenderableWidget(activeTab).init(TAB_WIDTH, TAB_HEIGHT, width, height, posX + 7, posY + 7);
     }
 
     @Override
@@ -68,7 +64,8 @@ public class OcculusScreen extends Screen {
         stack.translate(posX, posY, 0);
         setBlitOffset(-5);
         RenderSystem.setShaderTexture(0, OVERLAY);
-        blit(stack, 0, 0, 0, 0, guiWidth, guiHeight);
+        blit(stack, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT);
+        blit(stack, 7 + activeTabIndex % 8 * 24, -15, 0, GUI_HEIGHT, 22, 22);
         super.render(stack, pMouseX, pMouseY, pPartialTicks);
         stack.popPose();
     }
