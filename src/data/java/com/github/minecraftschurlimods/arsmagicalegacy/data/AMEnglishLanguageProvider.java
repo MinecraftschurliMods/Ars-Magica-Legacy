@@ -365,6 +365,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
         configTranslation("damage", "Damage of damage-based components, in half hearts.");
         configTranslation("duration", "Duration of effect-based components, in ticks.");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense"), "Offense");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "defense"), "Defense");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility"), "Utility");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), "Affinity");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent"), "Talents");
         damageSourceTranslation("falling_star", "%1$s was obliterated by a falling star");
         damageSourceTranslation("nature_scythe", "%1$s was ripped apart by %2$s's scythe");
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
@@ -826,6 +831,16 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    /**
+     * Adds an occulus tab translation.
+     *
+     * @param tab         The occulus tab to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void occulusTabTranslation(ResourceLocation tab, String translation) {
+        add("occulus_tab." + tab.getNamespace() + "." + tab.getPath(), translation);
     }
 
     /**
