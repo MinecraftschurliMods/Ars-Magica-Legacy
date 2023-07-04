@@ -43,7 +43,7 @@ public class OcculusScreen extends Screen {
         int tabSize = 22;
         for (OcculusTab tab : registry) {
             int tabIndex = tab.index();
-            addRenderableWidget(new OcculusTabButton(tabIndex, 7 + tabIndex % 8 * (tabSize + 2), -tabSize, posX, posY, tab, e -> setActiveTab(tabIndex), (b, p, x, y) -> renderTooltip(p, tab.getDisplayName(), x, y)));
+            addRenderableWidget(new OcculusTabButton(tabIndex, 7 + tabIndex % 8 * (tabSize + 2), -tabSize, posX, posY, tab, e -> setActiveTab(tabIndex), (b, p, x, y) -> renderTooltip(p, tab.getDisplayName(minecraft.level.registryAccess()), x, y)));
         }
         maxPage = (int) Math.floor((float) (registry.size() - 1) / 16F);
         nextPage = addRenderableWidget(new Button(GUI_WIDTH + 2, -21, 20, 20, Component.literal(">"), this::nextPage));
