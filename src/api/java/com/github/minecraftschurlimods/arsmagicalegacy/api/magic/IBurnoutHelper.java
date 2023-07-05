@@ -8,13 +8,13 @@ import net.minecraft.world.entity.LivingEntity;
 public interface IBurnoutHelper {
     /**
      * @param entity The entity to get the burnout value for.
-     * @return The burnout value of the given entity.
+     * @return The burnout value of the given entity, or 0 if the entity does not have a burnout capability.
      */
     float getBurnout(LivingEntity entity);
 
     /**
      * @param entity The entity to get the maximum burnout value for.
-     * @return The maximum burnout value of the given entity.
+     * @return The maximum burnout value of the given entity, or 0 if the entity does not have a max burnout value.
      */
     float getMaxBurnout(LivingEntity entity);
 

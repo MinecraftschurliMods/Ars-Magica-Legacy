@@ -8,13 +8,13 @@ import net.minecraft.world.entity.LivingEntity;
 public interface IManaHelper {
     /**
      * @param entity The entity to get the mana value for.
-     * @return The mana value of the entity.
+     * @return The mana value of the entity, or 0 if the entity does not have a mana capability.
      */
     float getMana(LivingEntity entity);
 
     /**
      * @param entity The entity to get the maximum mana value for.
-     * @return The maximum mana value of the entity.
+     * @return The maximum mana value of the entity, or 0 if the entity does not have a max mana value.
      */
     float getMaxMana(LivingEntity entity);
 

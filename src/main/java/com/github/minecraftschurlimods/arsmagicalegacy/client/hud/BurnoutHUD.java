@@ -24,6 +24,8 @@ public final class BurnoutHUD extends AbstractHUD {
             burnout = burnoutHelper.getBurnout(player);
             maxBurnout = burnoutHelper.getMaxBurnout(player);
         }
-        renderBar(poseStack, 0, 0, getWidth(), getHeight(), burnout, maxBurnout, 0x880000);
+        if (maxBurnout > 0) {
+            renderBar(poseStack, 0, 0, getWidth(), getHeight(), burnout, maxBurnout, 0x880000);
+        }
     }
 }
