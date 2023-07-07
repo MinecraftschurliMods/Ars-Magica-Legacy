@@ -137,6 +137,7 @@ moddev {
             organization.set("Minecraftschurli Mods")
             organizationUrl.set("https://github.com/MinecraftschurliMods")
             timezone.set("Europe/Vienna")
+            roles.addAll("OWNER", "DEVELOPER")
         }
         create("ichhabehunger54") {
             displayName.set("IchHabeHunger54")
@@ -144,6 +145,7 @@ moddev {
             organization.set("Minecraftschurli Mods")
             organizationUrl.set("https://github.com/MinecraftschurliMods")
             timezone.set("Europe/Vienna")
+            roles.addAll("DEVELOPER", "ARTIST")
         }
     }
 
