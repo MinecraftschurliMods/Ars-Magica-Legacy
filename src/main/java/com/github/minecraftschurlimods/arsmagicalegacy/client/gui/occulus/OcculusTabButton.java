@@ -43,16 +43,6 @@ public class OcculusTabButton extends Button {
         pPoseStack.popPose();
     }
 
-/*
-    @Override
-    public void renderToolTip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        pPoseStack.pushPose();
-        pPoseStack.translate(0, 0, 100);
-        super.renderToolTip(pPoseStack, pMouseX, pMouseY);
-        pPoseStack.popPose();
-    }
-*/
-
     public int getIndex() {
         return index;
     }

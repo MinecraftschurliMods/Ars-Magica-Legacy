@@ -101,7 +101,7 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -137,7 +137,7 @@ public final class ClientInit {
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
         forgeBus.addListener(ClientInit::renderHand);
-        forgeBus.addListener(ClientInit::renderLevelLast);
+        forgeBus.addListener(ClientInit::renderLevelStage);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -322,7 +322,8 @@ public final class ClientInit {
         stack.popPose();
     }
 
-    private static void renderLevelLast(RenderLevelLastEvent event) {
+    private static void renderLevelStage(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
         Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
         Level level = Objects.requireNonNull(Minecraft.getInstance().level);
         var helper = ArsMagicaAPI.get().getSpellHelper();
