@@ -8,7 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.NewInscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
@@ -38,7 +38,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         super(AMMenuTypes.INSCRIPTION_TABLE.get(), pContainerId);
         table.startOpen(inventory.player);
         this.table = table;
-        addSlot(new InscriptionTableSlot(table));
+        addSlot(new InscriptionTableSlot(table, inventory.player.isCreative() ? 48 : 102, 76));
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(inventory, i, 30 + i * 18, 228));
         }
@@ -138,8 +138,8 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     private static class InscriptionTableSlot extends Slot {
         private final InscriptionTableBlockEntity table;
 
-        public InscriptionTableSlot(InscriptionTableBlockEntity table) {
-            super(table, 0, 102, 74);
+        public InscriptionTableSlot(InscriptionTableBlockEntity table, int x, int y) {
+            super(table, 0, x, y);
             this.table = table;
         }
 
@@ -163,7 +163,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void setChanged() {
             super.setChanged();
             if (table.getLevel().isClientSide()) {
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InscriptionTableScreen::onSlotChanged);
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> NewInscriptionTableScreen::onSlotChanged);
             }
         }
 

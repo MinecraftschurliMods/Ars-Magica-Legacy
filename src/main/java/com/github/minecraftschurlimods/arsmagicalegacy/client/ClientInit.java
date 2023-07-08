@@ -13,11 +13,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellBookScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.NewInscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ShapeGroupHUD;
@@ -149,7 +149,7 @@ public final class ClientInit {
     }
 
     private static void registerMenuScreens() {
-        MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
+        MenuScreens.register(AMMenuTypes.INSCRIPTION_TABLE.get(), NewInscriptionTableScreen::new);
         MenuScreens.register(AMMenuTypes.RIFT.get(), RiftScreen::new);
         MenuScreens.register(AMMenuTypes.RUNE_BAG.get(), RuneBagScreen::new);
         MenuScreens.register(AMMenuTypes.OBELISK.get(), ObeliskScreen::new);
