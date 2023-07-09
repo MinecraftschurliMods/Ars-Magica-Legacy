@@ -53,11 +53,11 @@ public abstract class DragArea<T extends Draggable<?>> implements Widget {
     }
 
     public boolean canPick(T draggable) {
-        return isLocked();
+        return !isLocked();
     }
 
     public boolean canDrop(T draggable) {
-        return isLocked();
+        return !isLocked();
     }
 
     public void pick(T draggable) {

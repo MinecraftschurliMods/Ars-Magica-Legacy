@@ -10,6 +10,10 @@ public abstract class DragTargetArea<T extends Draggable<?>> extends DragArea<T>
 
     @Override
     public boolean canDrop(T draggable) {
-        return contents.size() < maxElements;
+        return canStore();
+    }
+
+    public boolean canStore() {
+        return maxElements > contents.size();
     }
 }

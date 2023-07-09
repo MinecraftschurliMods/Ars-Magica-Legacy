@@ -2,7 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragSourceArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.AbstractComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.AbstractModifier;
@@ -13,8 +15,10 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
@@ -24,16 +28,14 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     private String nameFilter;
     private boolean showShapes;
     private boolean showComponents;
-    private boolean showShapeModifiers;
-    private boolean showComponentModifiers;
+    private boolean showModifiers;
 
     public SpellPartSourceArea(int x, int y, int width, int height) {
         super(x, y, width, height, ROWS * COLUMNS);
         nameFilter = "";
-        showShapes = true;
+        showShapes = false;
         showComponents = true;
-        showShapeModifiers = false;
-        showComponentModifiers = false;
+        showModifiers = false;
         updateVisibility();
     }
 
@@ -42,11 +44,10 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
         updateVisibility();
     }
 
-    public void setTypeFilter(boolean shapes, boolean components, boolean shapeModifiers, boolean componentModifiers) {
+    public void setTypeFilter(boolean shapes, boolean components, boolean modifiers) {
         showShapes = shapes;
         showComponents = components;
-        showShapeModifiers = shapeModifiers;
-        showComponentModifiers = componentModifiers;
+        showModifiers = modifiers;
         updateVisibility();
     }
 
@@ -77,7 +78,9 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     @Override
     public List<SpellPartDraggable> getVisible() {
         updateVisibility();
-        return cachedContents.stream().map(Pair::getFirst).toList();
+        return cachedContents.stream()
+                .map(Pair::getFirst)
+                .toList();
     }
 
     private void updateVisibility() {
@@ -86,26 +89,14 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
                 .filter(part -> switch (part.getPart().getType()) {
                     case SHAPE -> showShapes;
                     case COMPONENT -> showComponents;
-                    case MODIFIER -> {
-                        if (showShapeModifiers && showComponentModifiers) yield true; //early yield if all modifier types should be shown
-                        AbstractModifier modifier = (AbstractModifier) part.getPart();
-                        boolean isShapeModifier = getParts().stream()
-                                .filter(e -> e.getType() == ISpellPart.SpellPartType.SHAPE)
-                                .map(e -> (AbstractShape) e)
-                                .anyMatch(e -> !Sets.intersection(Sets.newHashSet(e.getStatsUsed()), Sets.newHashSet(modifier.getStatsModified())).isEmpty());
-                        boolean isComponentModifier = getParts().stream()
-                                .filter(e -> e.getType() == ISpellPart.SpellPartType.COMPONENT)
-                                .map(e -> (AbstractComponent) e)
-                                .anyMatch(e -> !Sets.intersection(Sets.newHashSet(e.getStatsUsed()), Sets.newHashSet(modifier.getStatsModified())).isEmpty());
-                        yield showShapeModifiers && isShapeModifier || showComponentModifiers && isComponentModifier;
-                    }
+                    case MODIFIER -> (showShapes || showComponents) && showModifiers;
                 })
                 .filter(part -> part.getTranslationKey().getString().toLowerCase().contains(nameFilter))
                 .limit(maxDisplay)
                 .toList();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * 16 + 4, y + i * 16 + 1)));
+                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * 16 + 4, y + i * 16)));
             }
         }
     }

@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SelfClearingEditBox;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
@@ -31,6 +32,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     private SpellPartDraggable dragged;
     private EditBox searchBar;
     private SpellPartSourceArea sourceArea;
+    private SpellGrammarArea spellGrammarArea;
 
     public NewInscriptionTableScreen(InscriptionTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -56,10 +58,12 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
                 menu.createSpell();
             }));
         }
-        searchBar = addRenderableWidget(new SelfClearingEditBox(39 + leftPos, 59 + topPos, 141, 12, 64, searchBar, font, SEARCH_LABEL));
-        sourceArea = new SpellPartSourceArea(leftPos + 40, topPos + 5, 142, 48);
+        sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
+        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16);
+        searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 141, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
         dragAreas.add(sourceArea);
+        dragAreas.add(spellGrammarArea);
     }
 
     @Override
@@ -104,7 +108,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
         if (area != null && part != null && area.canPick(part)) {
             area.pick(part);
         }
-        dragged = part;
+        setDragged(part);
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
@@ -112,11 +116,11 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         if (dragged == null) return super.mouseReleased(pMouseX, pMouseY, pButton);
         DragArea<SpellPartDraggable> area = getHoveredArea((int) pMouseX, (int) pMouseY);
-        SpellPartDraggable part = getHoveredElement((int) pMouseX, (int) pMouseY);
+        SpellPartDraggable part = dragged;
         if (area != null && part != null && area.canDrop(part)) {
             area.drop(part);
         }
-        dragged = part;
+        setDragged(null);
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
@@ -145,6 +149,11 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
         if (listener instanceof EditBox editBox) {
             editBox.setFocus(true);
         }
+    }
+
+    private void setDragged(@Nullable SpellPartDraggable dragged) {
+        this.dragged = dragged;
+        sourceArea.setTypeFilter(false, spellGrammarArea.canStore(), !spellGrammarArea.getAll().isEmpty() && spellGrammarArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.COMPONENT);
     }
 
     @Nullable
