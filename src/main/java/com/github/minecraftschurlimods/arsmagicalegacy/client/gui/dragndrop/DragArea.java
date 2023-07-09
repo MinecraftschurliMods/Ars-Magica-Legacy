@@ -21,6 +21,13 @@ public abstract class DragArea<T extends Draggable<?>> implements Widget {
         this.height = height;
     }
 
+    @Nullable
+    public abstract T elementAt(int mouseX, int mouseY);
+
+    public boolean isAbove(int mouseX, int mouseY) {
+        return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
+    }
+
     public List<T> getAll() {
         return contents;
     }
