@@ -1,77 +1,80 @@
 name: "Build Release"
+
 on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+-[0-9]+.[0-9]+.[0-9]+"
       - "[0-9]+.[0-9]+-[0-9]+.[0-9]+.[0-9]+"
+
 jobs:
-  release:
+  build:
     if: startsWith(github.ref, 'refs/tags/')
+    uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
+    with:
+      upload-artifacts: true
+      artifact-retention: 1
+      publish-to-maven: true
+    secrets:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
+  publish:
+    needs:
+      - build
     strategy:
       matrix:
-        version: [ 17 ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK ${{ matrix.version }}
-        uses: actions/setup-java@v3
-        with:
-          java-version: ${{ matrix.version }}
-          distribution: 'adopt'
-      - name: Setup Build
-        run: chmod 777 gradlew
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        id: build
-        env:
-          MAVEN_URL: ${{ secrets.MAVEN_URL }}
-          MAVEN_USER: ${{ env.MAVEN_USER }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-          RELEASE_TYPE: release
-        with:
-          arguments: setupGithubActions build publish
-      - name: Upload
-        id: upload
-        uses: Minecraftschurli/mc-publish@master
-        with:
-          java: ${{ matrix.version }}
-          files: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
-          github-files-primary: build/libs/!(*-@(all|api|deobf|slim|sources|javadoc)).jar
-          github-files-secondary: build/libs/*-@(all|api|deobf|slim|sources|javadoc).jar
-          changelog-file: changelog.md
-          name: ${{ steps.build.outputs.modid }}-${{ steps.build.outputs.version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CF_API_TOKEN }}
-      - name: Read summary
-        id: summary
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: summary.txt
-    outputs:
-      version: ${{ steps.build.outputs.version }}
-      summary: ${{ steps.summary.outputs.content }}
-      published-to: ${{ steps.upload.outputs.published-to }}
-      github-link: ${{ steps.upload.outputs.github-link }}
-      modrinth-link: ${{ steps.upload.outputs.modrinth-link }}
-      curseforge-link: ${{ steps.upload.outputs.curseforge-link }}
+        platform:
+          - GitHub
+          - CurseForge
+          - Modrinth
+    uses: MinecraftschurliMods/.github/.github/workflows/publish.yml@main
+    with:
+      platform: ${{ matrix.platform }}
+      modid: ${{ needs.build.outputs.modid }}
+      version: ${{ needs.build.outputs.version }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+
   post-release:
-    needs: [ release ]
+    name: Post Release
     runs-on: ubuntu-latest
+    needs:
+      - build
+      - publish
+
     steps:
-      - name: Post Release
-        uses: Minecraftschurli/post-release-action@main
-        with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
-          webhook-name: "Ars Magica: Legacy"
-          webhook-avatar: "https://raw.githubusercontent.com/MinecraftschurliMods/Ars-Magica-Legacy/version/1.19.x/src/main/resources/logo_small.png"
-          webhook-title: "Version {version} of Ars Magica: Legacy released!"
-          webhook-message: ${{ needs.release.outputs.summary }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          readme-template: ".github/README_TEMPLATE.md"
-          version: ${{ needs.release.outputs.version }}
-          exclude-links-webhook: "GitHub"
-          published-to: ${{ needs.release.outputs.published-to }}
-          github-link: ${{ needs.release.outputs.github-link }}
-          modrinth-link: ${{ needs.release.outputs.modrinth-link }}
-          curseforge-link: ${{ needs.release.outputs.curseforge-link }}
+      - name: Test outputs
+        run: |
+          echo "modrinth-id: ${{ needs.publish.outputs.modrinth-id }}"
+          echo "modrinth-version: ${{ needs.publish.outputs.modrinth-version }}"
+          echo "modrinth-url: ${{ needs.publish.outputs.modrinth-url }}"
+          echo "modrinth-files: ${{ needs.publish.outputs.modrinth-files }}"
+          echo "curseforge-id: ${{ needs.publish.outputs.curseforge-id }}"
+          echo "curseforge-version: ${{ needs.publish.outputs.curseforge-version }}"
+          echo "curseforge-url: ${{ needs.publish.outputs.curseforge-url }}"
+          echo "curseforge-files: ${{ needs.publish.outputs.curseforge-files }}"
+          echo "github-repo: ${{ needs.publish.outputs.github-repo }}"
+          echo "github-tag: ${{ needs.publish.outputs.github-tag }}"
+          echo "github-url: ${{ needs.publish.outputs.github-url }}"
+          echo "github-files: ${{ needs.publish.outputs.github-files }}"
+          echo "modid: ${{ needs.build.outputs.modid }}"
+          echo "version: ${{ needs.build.outputs.version }}"
+          echo "summary: ${{ needs.build.outputs.summary }}"
+
+#      - name: Post Release
+#        uses: Minecraftschurli/post-release-action@main
+#        with:
+#          webhook-url: ${{ secrets.WEBHOOK_URL }}
+#          webhook-name: "Ars Magica: Legacy"
+#          webhook-avatar: "https://raw.githubusercontent.com/MinecraftschurliMods/Ars-Magica-Legacy/version/1.19.x/src/main/resources/logo_small.png"
+#          webhook-title: "Version {version} of Ars Magica: Legacy released!"
+#          webhook-message: ${{ needs.release.outputs.summary }}
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          readme-template: ".github/README_TEMPLATE.md"
+#          version: ${{ needs.release.outputs.version }}
+#          exclude-links-webhook: "GitHub"
+#          published-to: ${{ needs.release.outputs.published-to }}
+#          github-link: ${{ needs.release.outputs.github-link }}
+#          modrinth-link: ${{ needs.release.outputs.modrinth-link }}
+#          curseforge-link: ${{ needs.release.outputs.curseforge-link }}
