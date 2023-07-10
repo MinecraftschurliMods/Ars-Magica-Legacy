@@ -14,11 +14,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class SpellPartDraggable extends Draggable<ISpellPart> {
+    public static final int SIZE = 16;
     private final TextureAtlasSprite sprite;
     private final Component translationKey;
 
     protected SpellPartDraggable(ISpellPart content) {
-        super(16, 16, content);
+        super(SIZE, SIZE, content);
         ResourceLocation id = content.getId();
         sprite = SkillIconAtlas.instance().getSprite(id);
         translationKey = Component.translatable("skill." + id.getNamespace() + "." + id.getPath() + ".name");

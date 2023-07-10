@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
+    private static final int X_OFFSET = 4;
     private static final int ROWS = 3;
     private static final int COLUMNS = 8;
     private final List<Pair<SpellPartDraggable, Pair<Integer, Integer>>> cachedContents = new ArrayList<>();
@@ -54,7 +55,7 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     @Override
     public SpellPartDraggable elementAt(int mouseX, int mouseY) {
         return cachedContents.stream()
-                .filter(e -> mouseX >= e.getSecond().getFirst() && mouseX < e.getSecond().getFirst() + 16 && mouseY >= e.getSecond().getSecond() && mouseY < e.getSecond().getSecond() + 16)
+                .filter(e -> mouseX >= e.getSecond().getFirst() && mouseX < e.getSecond().getFirst() + SpellPartDraggable.SIZE && mouseY >= e.getSecond().getSecond() && mouseY < e.getSecond().getSecond() + SpellPartDraggable.SIZE)
                 .findAny()
                 .map(Pair::getFirst)
                 .orElse(null);
@@ -96,7 +97,7 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
                 .toList();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * 16 + 4, y + i * 16)));
+                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * SpellPartDraggable.SIZE + X_OFFSET, y + i * SpellPartDraggable.SIZE)));
             }
         }
     }

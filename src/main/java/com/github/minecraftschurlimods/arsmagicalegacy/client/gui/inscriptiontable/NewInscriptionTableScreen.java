@@ -74,7 +74,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
             area.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
         if (dragged != null) {
-            dragged.render(pPoseStack, pMouseX - 8, pMouseY - 8, pPartialTick);
+            dragged.render(pPoseStack, pMouseX - SpellPartDraggable.SIZE / 2, pMouseY - SpellPartDraggable.SIZE / 2, pPartialTick);
         } else {
             SpellPartDraggable part = getHoveredElement(pMouseX, pMouseY);
             if (part != null) {

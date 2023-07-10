@@ -2,11 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
+    private static final int X_OFFSET = 4;
+
     public SpellGrammarArea(int x, int y, int width, int height) {
         super(x, y, width, height, 8);
     }
@@ -14,8 +15,8 @@ public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
     @Override
     @Nullable
     public SpellPartDraggable elementAt(int mouseX, int mouseY) {
-        if (mouseX < x + 4 || mouseX >= x + maxElements * 16 + 4 || mouseY < y || mouseY >= y + 16) return null;
-        int index = (mouseX - x - 4) / 16;
+        if (mouseX < x + X_OFFSET || mouseX >= x + maxElements * SpellPartDraggable.SIZE + X_OFFSET || mouseY < y || mouseY >= y + SpellPartDraggable.SIZE) return null;
+        int index = (mouseX - x - X_OFFSET) / SpellPartDraggable.SIZE;
         return contents.size() > index ? contents.get(index) : null;
     }
 
@@ -26,19 +27,15 @@ public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
 
     @Override
     public boolean canPick(SpellPartDraggable draggable) {
-        return contents.size() < 2 || draggable.getPart().getType() == ISpellPart.SpellPartType.MODIFIER || contents.get(0).getPart() != draggable.getPart() || contents.stream().noneMatch(e -> e.getPart().getType() == ISpellPart.SpellPartType.MODIFIER);
+        return contents.size() < 2 || draggable.getPart().getType() == ISpellPart.SpellPartType.MODIFIER || contents.get(0).getPart() != draggable.getPart() || contents.get(1).getPart().getType() != ISpellPart.SpellPartType.MODIFIER;
     }
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         if (contents.isEmpty()) return;
-        if (contents.stream().anyMatch(e -> e.getPart().getType() == ISpellPart.SpellPartType.MODIFIER)) {
-            RenderSystem.setShaderFogColor(0.5f, 0.5f, 0.5f); //fixme
-        }
-        contents.get(0).render(pPoseStack, x + 4, y, pPartialTick);
-        RenderSystem.setShaderFogColor(1f, 1f, 1f);
+        contents.get(0).render(pPoseStack, x + X_OFFSET, y, pPartialTick);
         for (int i = 1; i < contents.size(); i++) {
-            contents.get(i).render(pPoseStack, x + i * 16 + 4, y, pPartialTick);
+            contents.get(i).render(pPoseStack, x + i * SpellPartDraggable.SIZE + X_OFFSET, y, pPartialTick);
         }
     }
 }
