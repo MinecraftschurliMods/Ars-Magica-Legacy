@@ -11,12 +11,12 @@ public abstract class DragSourceArea<T extends Draggable<?>> extends DragArea<T>
     }
 
     @Override
-    public boolean canPick(T draggable) {
+    public boolean canPick(T draggable, int mouseX, int mouseY) {
         return true;
     }
 
     @Override
-    public boolean canDrop(T draggable) {
+    public boolean canDrop(T draggable, int mouseX, int mouseY) {
         return false;
     }
 

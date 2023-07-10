@@ -9,7 +9,7 @@ public abstract class DragTargetArea<T extends Draggable<?>> extends DragArea<T>
     }
 
     @Override
-    public boolean canDrop(T draggable) {
+    public boolean canDrop(T draggable, int mouseX, int mouseY) {
         return canStore();
     }
 

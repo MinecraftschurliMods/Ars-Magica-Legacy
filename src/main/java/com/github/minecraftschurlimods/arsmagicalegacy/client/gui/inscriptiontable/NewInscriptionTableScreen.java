@@ -33,6 +33,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     private EditBox searchBar;
     private SpellPartSourceArea sourceArea;
     private SpellGrammarArea spellGrammarArea;
+    private ShapeGroupListArea shapeGroupArea;
 
     public NewInscriptionTableScreen(InscriptionTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -53,17 +54,19 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     protected void init() {
         super.init();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
-            addRenderableWidget(new Button(leftPos + 72, topPos + 74, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+            addRenderableWidget(new Button(leftPos + 72, topPos + 78, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
                 menu.createSpell();
             }));
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
         spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16);
-        searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 141, 12, 64, searchBar, font, SEARCH_LABEL));
+        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 102, this);
+        searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 62, 140, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
         dragAreas.add(sourceArea);
         dragAreas.add(spellGrammarArea);
+        dragAreas.add(shapeGroupArea);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, GUI);
         blit(pPoseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        blit(pPoseStack, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 75, 220, 0, 18, 18);
+        blit(pPoseStack, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 79, 220, 0, 18, 18);
     }
 
     @Override
@@ -103,10 +106,12 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if (dragged != null) return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
-        DragArea<SpellPartDraggable> area = getHoveredArea((int) pMouseX, (int) pMouseY);
-        SpellPartDraggable part = getHoveredElement((int) pMouseX, (int) pMouseY);
-        if (area != null && part != null && area.canPick(part)) {
-            area.pick(part);
+        int mouseX = (int) pMouseX;
+        int mouseY = (int) pMouseY;
+        DragArea<SpellPartDraggable> area = getHoveredArea(mouseX, mouseY);
+        SpellPartDraggable part = getHoveredElement(mouseX, mouseY);
+        if (area != null && part != null && area.canPick(part, mouseX, mouseY)) {
+            area.pick(part, mouseX, mouseY);
         }
         setDragged(part);
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
@@ -115,10 +120,12 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     @Override
     public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
         if (dragged == null) return super.mouseReleased(pMouseX, pMouseY, pButton);
-        DragArea<SpellPartDraggable> area = getHoveredArea((int) pMouseX, (int) pMouseY);
+        int mouseX = (int) pMouseX;
+        int mouseY = (int) pMouseY;
+        DragArea<SpellPartDraggable> area = getHoveredArea(mouseX, mouseY);
         SpellPartDraggable part = dragged;
-        if (area != null && part != null && area.canDrop(part)) {
-            area.drop(part);
+        if (area != null && part != null && area.canDrop(part, mouseX, mouseY)) {
+            area.drop(part, mouseX, mouseY);
         }
         setDragged(null);
         return super.mouseReleased(pMouseX, pMouseY, pButton);
@@ -151,9 +158,13 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
         }
     }
 
+    public int allowedShapeGroups() {
+        return 2; // TODO
+    }
+
     private void setDragged(@Nullable SpellPartDraggable dragged) {
         this.dragged = dragged;
-        sourceArea.setTypeFilter(false, spellGrammarArea.canStore(), !spellGrammarArea.getAll().isEmpty() && spellGrammarArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.COMPONENT);
+        sourceArea.setTypeFilter(shapeGroupArea.canStore(), spellGrammarArea.canStore(), !spellGrammarArea.getAll().isEmpty() && spellGrammarArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.COMPONENT || !shapeGroupArea.getAll().isEmpty() && shapeGroupArea.getAll().get(0).getPart().getType() == ISpellPart.SpellPartType.SHAPE);
     }
 
     @Nullable

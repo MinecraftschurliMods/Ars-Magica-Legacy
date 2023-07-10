@@ -12,7 +12,6 @@ public abstract class DragArea<T extends Draggable<?>> implements Widget {
     protected final int width;
     protected final int height;
     protected final List<T> contents = new ArrayList<>();
-    protected boolean locked;
 
     public DragArea(int x, int y, int width, int height) {
         this.x = x;
@@ -36,35 +35,19 @@ public abstract class DragArea<T extends Draggable<?>> implements Widget {
         return getAll();
     }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
+    public boolean canPick(T draggable, int mouseX, int mouseY) {
+        return true;
     }
 
-    public boolean isLocked() {
-        return locked;
+    public boolean canDrop(T draggable, int mouseX, int mouseY) {
+        return true;
     }
 
-    public void lock() {
-        setLocked(true);
-    }
-
-    public void unlock() {
-        setLocked(false);
-    }
-
-    public boolean canPick(T draggable) {
-        return !isLocked();
-    }
-
-    public boolean canDrop(T draggable) {
-        return !isLocked();
-    }
-
-    public void pick(T draggable) {
+    public void pick(T draggable, int mouseX, int mouseY) {
         contents.remove(draggable);
     }
 
-    public void drop(T draggable) {
+    public void drop(T draggable, int mouseX, int mouseY) {
         contents.add(draggable);
     }
 }

@@ -1,28 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragSourceArea;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.AbstractComponent;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.AbstractModifier;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.AbstractShape;
-import com.google.common.collect.Sets;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
 
 public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
-    private static final int X_OFFSET = 4;
+    private static final int X_PADDING = 4;
     private static final int ROWS = 3;
     private static final int COLUMNS = 8;
     private final List<Pair<SpellPartDraggable, Pair<Integer, Integer>>> cachedContents = new ArrayList<>();
@@ -34,7 +24,7 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     public SpellPartSourceArea(int x, int y, int width, int height) {
         super(x, y, width, height, ROWS * COLUMNS);
         nameFilter = "";
-        showShapes = false;
+        showShapes = true;
         showComponents = true;
         showModifiers = false;
         updateVisibility();
@@ -97,7 +87,7 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
                 .toList();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * SpellPartDraggable.SIZE + X_OFFSET, y + i * SpellPartDraggable.SIZE)));
+                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE)));
             }
         }
     }
