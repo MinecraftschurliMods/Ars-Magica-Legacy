@@ -2,15 +2,18 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
@@ -46,20 +49,26 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
 
     @Override
     public boolean canPick(SpellPartDraggable draggable, int mouseX, int mouseY) {
-        return !locked && (contents.size() < 2 || draggable.getPart().getType() == ISpellPart.SpellPartType.MODIFIER || contents.get(0).getPart() != draggable.getPart() || contents.get(1).getPart().getType() != ISpellPart.SpellPartType.MODIFIER);
+        if (locked || draggable.getPart().getType() == ISpellPart.SpellPartType.COMPONENT) return false;
+        List<SpellPartDraggable> list = new ArrayList<>(contents);
+        list.remove(draggable);
+        return isValid(list);
     }
 
     @Override
     public boolean canDrop(SpellPartDraggable draggable, int mouseX, int mouseY) {
-        return canStore() && !locked && (draggable.getPart().getType() == ISpellPart.SpellPartType.SHAPE || draggable.getPart().getType() == ISpellPart.SpellPartType.MODIFIER && !contents.isEmpty() && contents.get(0).getPart().getType() == ISpellPart.SpellPartType.SHAPE);
+        if (!canStore() || locked || draggable.getPart().getType() == ISpellPart.SpellPartType.COMPONENT) return false;
+        List<SpellPartDraggable> list = new ArrayList<>(contents);
+        list.add(draggable);
+        return isValid(list);
     }
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShaderTexture(0, GUI);
         if (locked) {
             RenderSystem.setShaderFogColor(0.5f, 0.5f, 0.5f); //fixme
         }
+        RenderSystem.setShaderTexture(0, GUI);
         GuiComponent.blit(pPoseStack, x, y, 5, 220, 18, WIDTH, HEIGHT, 256, 256);
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
@@ -68,5 +77,20 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
                 contents.get(index).render(pPoseStack, x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE + Y_PADDING, pPartialTick);
             }
         }
+    }
+
+    public static boolean isValid(List<SpellPartDraggable> list) {
+        if (list.isEmpty()) return true;
+        SpellPartDraggable first = list.get(0);
+        if (first.getPart().getType() != ISpellPart.SpellPartType.SHAPE) return false;
+        if (((ISpellShape) first.getPart()).needsPrecedingShape()) return false;
+        SpellPartDraggable last = Objects.requireNonNull(AMUtil.getLastMatching(list, e -> e.getPart().getType() == ISpellPart.SpellPartType.SHAPE));
+        for (int i = 1; i < list.size(); i++) {
+            SpellPartDraggable part = list.get(i);
+            if (part.getPart().getType() == ISpellPart.SpellPartType.MODIFIER) continue;
+            if (((ISpellShape) part.getPart()).needsToComeFirst()) return false;
+            if (part != last && ((ISpellShape) part.getPart()).isEndShape()) return false;
+        }
+        return true;
     }
 }

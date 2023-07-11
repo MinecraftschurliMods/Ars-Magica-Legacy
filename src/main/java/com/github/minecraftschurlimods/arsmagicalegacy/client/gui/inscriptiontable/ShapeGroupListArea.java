@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptionta
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -75,6 +76,22 @@ public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
         for (ShapeGroupArea area : shapeGroups) {
             area.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
+    }
+
+    public boolean isValid() {
+        return shapeGroups.stream().anyMatch(e -> ShapeGroupArea.isValid(e.getAll()));
+    }
+
+    public List<List<ResourceLocation>> getShapeGroupData() {
+        return shapeGroups.stream()
+                .map(e -> e.getAll().stream()
+                        .map(f -> f.getPart().getId())
+                        .toList())
+                .toList();
+    }
+
+    public ShapeGroupArea get(int index) {
+        return shapeGroups.get(index);
     }
 
     @Nullable

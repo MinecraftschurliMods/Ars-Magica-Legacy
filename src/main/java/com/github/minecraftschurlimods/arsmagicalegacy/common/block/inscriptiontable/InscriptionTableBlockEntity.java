@@ -32,8 +32,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
     private static final Component TITLE = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_TITLE);
     private ItemStack stack = ItemStack.EMPTY;
-    private @Nullable ISpell spellRecipe;
-    private @Nullable Component spellName;
+    private ISpell spellRecipe;
     private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -41,15 +40,13 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     /**
-     * @param name   The spell name.
      * @param spell  The spell.
      * @return A written book with the spell written onto it.
      */
-    public static ItemStack makeRecipe(Component name, ISpell spell) {
+    public static ItemStack makeRecipe(ISpell spell) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ItemStack stack = new ItemStack(AMItems.SPELL_RECIPE.get());
         helper.setSpell(stack, spell);
-        helper.setSpellName(stack, name);
         return stack;
     }
 
@@ -60,26 +57,16 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         if (pTag.contains(SPELL_RECIPE_KEY)) {
             spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
-        if (pTag.contains(SPELL_NAME_KEY)) {
-            spellName = Component.Serializer.fromJson(pTag.getString(SPELL_NAME_KEY));
-        }
     }
 
     /**
      * Synchronizes the block entity.
      *
-     * @param name  The spell name.
      * @param spell The spell.
      */
-    public void onSync(@Nullable Component name, @Nullable ISpell spell) {
-        spellName = name;
+    public void onSync(@Nullable ISpell spell) {
         spellRecipe = spell;
         setChanged();
-    }
-
-    @Nullable
-    public Component getSpellName() {
-        return spellName;
     }
 
     @Nullable
@@ -92,7 +79,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @return The given item stack with the spell written onto it, or just the given item stack if there is no spell laid out yet.
      */
     public Optional<ItemStack> saveRecipe(ItemStack stack) {
-        return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(Objects.requireNonNullElseGet(spellName, () -> Component.translatable(TranslationConstants.SPELL_RECIPE_TITLE)), spell));
+        return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(spell));
     }
 
     public void createSpell(ServerPlayer player) {
@@ -105,9 +92,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     protected void saveAdditional(CompoundTag pCompound) {
         super.saveAdditional(pCompound);
         pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
-        if (spellName != null) {
-            pCompound.putString(SPELL_NAME_KEY, Component.Serializer.toJson(spellName));
-        }
         if (spellRecipe != null) {
             pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
@@ -165,14 +149,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
 
     @Override
     public ItemStack removeItem(int pIndex, int pCount) {
-        if (pIndex == 0) {
-            ItemStack split = stack.split(pCount);
-            if (stack.isEmpty()) {
-                onRemove();
-            }
-            return split;
-        }
-        return ItemStack.EMPTY;
+        return pIndex == 0 ? stack.split(pCount) : ItemStack.EMPTY;
     }
 
     @Override
@@ -180,7 +157,6 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         if (pIndex == 0) {
             ItemStack itemstack = stack;
             stack = ItemStack.EMPTY;
-            onRemove();
             return itemstack;
         }
         return ItemStack.EMPTY;
@@ -205,15 +181,5 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     @Override
     public void clearContent() {
         stack = ItemStack.EMPTY;
-    }
-
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        // TODO
-    }
-
-    private void onRemove() {
-        // TODO
     }
 }

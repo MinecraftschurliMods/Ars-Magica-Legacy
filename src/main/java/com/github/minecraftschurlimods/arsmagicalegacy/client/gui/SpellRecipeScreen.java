@@ -261,7 +261,8 @@ public class SpellRecipeScreen extends Screen {
         @Override
         protected List<Component> getTooltip(int mouseX, int mouseY) {
             int i = getTooltipIndex(mouseX - X_OFFSET, mouseY - Y_OFFSET, SIZE, SPACING, MAX_PER_LINE, spellParts.size());
-            return i == -1 ? List.of() : List.of(ClientHelper.getRegistry(Skill.REGISTRY_KEY).get(Objects.requireNonNull(spellParts.get(i).getId())).getDisplayName());
+            RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
+            return i == -1 ? List.of() : List.of(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).get(Objects.requireNonNull(spellParts.get(i).getId())).getDisplayName(registryAccess));
         }
     }
 

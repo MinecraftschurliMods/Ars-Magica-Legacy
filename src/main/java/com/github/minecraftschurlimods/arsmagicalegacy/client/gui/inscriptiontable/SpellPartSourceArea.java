@@ -87,7 +87,9 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
                 .toList();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                cachedContents.add(Pair.of(list.get(i * COLUMNS + j), Pair.of(x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE)));
+                int index = i * COLUMNS + j;
+                if (index >= list.size()) return;
+                cachedContents.add(Pair.of(list.get(index), Pair.of(x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE)));
             }
         }
     }

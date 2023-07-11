@@ -93,13 +93,6 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     /**
-     * @return The spell name, or null if there is no name.
-     */
-    public Optional<Component> getSpellName() {
-        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
-    }
-
-    /**
      * @return The max allowed shape groups.
      */
     public int allowedShapeGroups() {
@@ -109,16 +102,15 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     /**
      * Sends the menu data to the server.
      *
-     * @param name        The name of the spell.
      * @param spellStack  The spell stack.
      * @param shapeGroups The shape groups.
      */
-    public void sendDataToServer(Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
+    public void sendDataToServer(List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
         ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
-        table.onSync(name, spell);
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
+        table.onSync(spell);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), spell));
     }
 
     /**
@@ -130,7 +122,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
     public void createSpell() {
         Optional<ISpell> recipe = getSpellRecipe();
-        if (recipe.isPresent() && !recipe.get().isEmpty()) {
+        if (recipe.isPresent() && !recipe.get().isEmpty() && recipe.get().isValid()) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
         }
     }
@@ -173,7 +165,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
             if (stack.getItem() instanceof ISpellItem) {
                 var helper = ArsMagicaAPI.get().getSpellHelper();
                 ISpell spell = helper.getSpell(stack);
-                table.onSync(helper.getSpellName(stack).orElse(Component.empty()), spell.isEmpty() ? null : spell);
+                table.onSync(spell.isEmpty() ? null : spell);
             }
         }
     }

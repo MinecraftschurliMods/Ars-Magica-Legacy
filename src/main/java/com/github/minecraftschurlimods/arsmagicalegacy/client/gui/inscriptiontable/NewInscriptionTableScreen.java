@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SelfClearingEditBox;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,9 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
             addRenderableWidget(new Button(leftPos + 72, topPos + 78, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
-                menu.createSpell();
+                if (shapeGroupArea.isValid() && !spellGrammarArea.getAll().isEmpty()) {
+                    menu.createSpell();
+                }
             }));
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
@@ -67,6 +71,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
         dragAreas.add(sourceArea);
         dragAreas.add(spellGrammarArea);
         dragAreas.add(shapeGroupArea);
+        menu.getSpellRecipe().ifPresent(this::existingRecipe);
     }
 
     @Override
@@ -84,6 +89,7 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
                 renderTooltip(pPoseStack, part.getTranslationKey(), pMouseX, pMouseY);
             }
         }
+        renderTooltip(pPoseStack, pMouseX, pMouseY);
     }
 
     @Override
@@ -182,8 +188,20 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     }
 
     private void existingRecipe(ISpell spell) {
+        for (ISpellPart part : spell.spellStack().parts()) {
+            spellGrammarArea.drop(new SpellPartDraggable(part), 0, 0);
+        }
+        List<ShapeGroup> shapeGroups = spell.shapeGroups();
+        for (int i = 0; i < shapeGroups.size(); i++) {
+            ShapeGroupArea area = shapeGroupArea.get(i);
+            ShapeGroup group = shapeGroups.get(i);
+            for (ISpellPart part : group.parts()) {
+                area.drop(new SpellPartDraggable(part), 0, 0);
+            }
+        }
     }
 
     private void sync() {
+        menu.sendDataToServer(spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData());
     }
 }

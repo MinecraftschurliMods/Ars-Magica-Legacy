@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class SpellRecipeItem extends Item {
-
     public SpellRecipeItem() {
         super(AMItems.HIDDEN_ITEM_1);
     }
@@ -67,7 +66,7 @@ public class SpellRecipeItem extends Item {
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID);
-        return helper.getSpellName(pStack).orElse(super.getName(pStack));
+        return super.getName(pStack);
     }
 
     @Override
