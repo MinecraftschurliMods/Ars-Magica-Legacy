@@ -35,15 +35,13 @@ public class OcculusTabButton extends Button {
         pMouseX -= xOffset;
         pMouseY -= yOffset;
         isHovered = pMouseX >= x && pMouseY >= y && pMouseX < x + width && pMouseY < y + height;
-        pPoseStack.pushPose();
-        pPoseStack.translate(0, 0, 100);
-        if (isHoveredOrFocused()) {
-            renderToolTip(pPoseStack, pMouseX, pMouseY);
-        }
-        pPoseStack.popPose();
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public boolean isHovered() {
+        return isHovered;
     }
 }
