@@ -8,13 +8,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.NewInscriptionTableScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -155,7 +154,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void setChanged() {
             super.setChanged();
             if (table.getLevel().isClientSide()) {
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> NewInscriptionTableScreen::onSlotChanged);
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InscriptionTableScreen::onSlotChanged);
             }
         }
 

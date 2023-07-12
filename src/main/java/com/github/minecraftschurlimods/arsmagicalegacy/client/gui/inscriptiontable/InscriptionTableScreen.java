@@ -21,13 +21,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class NewInscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
+public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
     private static final Component SEARCH_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
     private final List<DragArea<SpellPartDraggable>> dragAreas = new ArrayList<>();
@@ -37,14 +36,14 @@ public class NewInscriptionTableScreen extends AbstractContainerScreen<Inscripti
     private SpellGrammarArea spellGrammarArea;
     private ShapeGroupListArea shapeGroupArea;
 
-    public NewInscriptionTableScreen(InscriptionTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public InscriptionTableScreen(InscriptionTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         imageWidth = 220;
         imageHeight = 252;
     }
 
     public static void onSlotChanged() {
-        if (Minecraft.getInstance().screen instanceof NewInscriptionTableScreen screen) {
+        if (Minecraft.getInstance().screen instanceof InscriptionTableScreen screen) {
             screen.sync();
             if (screen.menu.getSlot(0).getItem().getItem() instanceof ISpellItem) {
                 screen.menu.getSpellRecipe().ifPresent(screen::existingRecipe);

@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
     private final List<ShapeGroupArea> shapeGroups;
-    private final NewInscriptionTableScreen screen;
+    private final InscriptionTableScreen screen;
 
-    public ShapeGroupListArea(int x, int y, NewInscriptionTableScreen screen) {
+    public ShapeGroupListArea(int x, int y, InscriptionTableScreen screen) {
         super(x, y, ShapeGroupArea.WIDTH * 5, ShapeGroupArea.HEIGHT, 20);
         this.screen = screen;
         shapeGroups = new ArrayList<>();
