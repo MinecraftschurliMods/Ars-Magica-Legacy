@@ -65,11 +65,14 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        if (locked) {
-            RenderSystem.setShaderFogColor(0.5f, 0.5f, 0.5f); //fixme
-        }
         RenderSystem.setShaderTexture(0, GUI);
         GuiComponent.blit(pPoseStack, x, y, 5, 220, 18, WIDTH, HEIGHT, 256, 256);
+        if (locked) {
+            pPoseStack.pushPose();
+            pPoseStack.translate(0, 0, 10);
+            GuiComponent.fill(pPoseStack, x, y, x + WIDTH, y + HEIGHT, 0x7f000000);
+            pPoseStack.popPose();
+        }
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 int index = i * COLUMNS + j;
