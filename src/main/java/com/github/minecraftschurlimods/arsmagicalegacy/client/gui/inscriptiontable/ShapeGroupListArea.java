@@ -102,18 +102,18 @@ public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
         return null;
     }
 
-    private void setLocks() {
-        shapeGroups.forEach(e -> e.setLocked(true));
+    public void setLocks() {
+        shapeGroups.forEach(e -> e.setLockState(ShapeGroupArea.LockState.ALL));
         for (int i = 0; i < screen.allowedShapeGroups(); i++) {
-            shapeGroups.get(i).setLocked(false);
+            shapeGroups.get(i).setLockState(ShapeGroupArea.LockState.NONE);
         }
         for (int i = 0; i < shapeGroups.size(); i++) {
             ShapeGroupArea area = shapeGroups.get(i);
             if (area.getAll().size() == 1 && shapeGroups.size() > i + 1 && !shapeGroups.get(i + 1).getAll().isEmpty()) {
-                area.setLocked(true);
+                area.setLockState(ShapeGroupArea.LockState.FIRST);
             }
             if (i > 0 && shapeGroups.get(i - 1).getAll().isEmpty()) {
-                area.setLocked(true);
+                area.setLockState(ShapeGroupArea.LockState.ALL);
             }
         }
     }

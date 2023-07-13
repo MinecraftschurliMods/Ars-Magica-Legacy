@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "tag": "forge:dyes/black"
+    },
+    {
+      "tag": "forge:feathers"
+    },
+    {
+      "tag": "forge:string"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:inscription_table_upgrade_tier_1"
+  }
+}

@@ -121,6 +121,58 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('W', ItemTags.PLANKS)
                 .unlockedBy("has_spell_parchment", has(AMItems.SPELL_PARCHMENT.get()))
                 .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1.get())
+                .requires(Items.BOOK)
+                .requires(Tags.Items.DYES_BLACK)
+                .requires(Tags.Items.FEATHERS)
+                .requires(Tags.Items.STRING)
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.get())
+                .requires(Items.BOOK)
+                .requires(Tags.Items.DYES_BLACK)
+                .requires(ItemTags.WOOL_CARPETS)
+                .requires(AMItems.WIZARDS_CHALK.get())
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3.get())
+                .requires(Items.BOOK)
+                .requires(ItemTags.CANDLES)
+                .requires(Items.HONEYCOMB)
+                .requires(Items.GLASS_BOTTLE)
+                .unlockedBy("has_book", has(Items.BOOK))
+                .save(consumer);
+        CompoundTag oldTag = new CompoundTag();
+        CompoundTag newTag = new CompoundTag();
+        CompoundTag oldBlockStateTag = new CompoundTag();
+        CompoundTag newBlockStateTag = new CompoundTag();
+        oldBlockStateTag.putString("tier", "0");
+        oldTag.put("BlockStateTag", oldBlockStateTag);
+        newBlockStateTag.putString("tier", "1");
+        newTag.put("BlockStateTag", newBlockStateTag);
+        ShapelessNBTRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE.get(), newTag)
+                .requires(AMItems.INSCRIPTION_TABLE.get())
+                .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1.get())
+                .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
+                .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_1"));
+        oldBlockStateTag.putString("tier", "1");
+        oldTag.put("BlockStateTag", oldBlockStateTag);
+        newBlockStateTag.putString("tier", "2");
+        newTag.put("BlockStateTag", newBlockStateTag);
+        ShapelessNBTRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE.get(), newTag)
+                .requires(PartialNBTIngredient.of(AMItems.INSCRIPTION_TABLE.get(), oldTag))
+                .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2.get())
+                .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
+                .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_2"));
+        oldBlockStateTag.putString("tier", "2");
+        oldTag.put("BlockStateTag", oldBlockStateTag);
+        newBlockStateTag.putString("tier", "3");
+        newTag.put("BlockStateTag", newBlockStateTag);
+        ShapelessNBTRecipeBuilder.shapeless(AMItems.INSCRIPTION_TABLE.get(), newTag)
+                .requires(PartialNBTIngredient.of(AMItems.INSCRIPTION_TABLE.get(), oldTag))
+                .requires(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3.get())
+                .unlockedBy("has_inscription_table", has(AMItems.INSCRIPTION_TABLE.get()))
+                .save(consumer, new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_tier_3"));
         ShapedRecipeBuilder.shaped(AMItems.ALTAR_CORE.get())
                 .pattern("V")
                 .pattern("S")

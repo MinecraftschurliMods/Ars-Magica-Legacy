@@ -164,7 +164,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     public int allowedShapeGroups() {
-        return 2; // TODO
+        return menu.allowedShapeGroups();
     }
 
     private void setDragged(@Nullable SpellPartDraggable dragged) {
@@ -198,6 +198,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 area.drop(new SpellPartDraggable(part), 0, 0);
             }
         }
+        shapeGroupArea.setLocks();
     }
 
     private void sync() {

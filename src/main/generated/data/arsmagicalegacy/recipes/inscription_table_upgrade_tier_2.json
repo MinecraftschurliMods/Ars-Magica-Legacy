@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "tag": "forge:dyes/black"
+    },
+    {
+      "tag": "minecraft:wool_carpets"
+    },
+    {
+      "item": "arsmagicalegacy:wizards_chalk"
+    }
+  ],
+  "result": {
+    "item": "arsmagicalegacy:inscription_table_upgrade_tier_2"
+  }
+}

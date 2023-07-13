@@ -23,14 +23,14 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     private static final int Y_PADDING = 1;
     static final int WIDTH = 36;
     static final int HEIGHT = 34;
-    private boolean locked = false;
+    private LockState lockState = LockState.NONE;
 
     public ShapeGroupArea(int x, int y) {
         super(x, y, WIDTH, HEIGHT, ROWS * COLUMNS);
     }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
+    public void setLockState(LockState lockState) {
+        this.lockState = lockState;
     }
 
     @Override
@@ -49,7 +49,8 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
 
     @Override
     public boolean canPick(SpellPartDraggable draggable, int mouseX, int mouseY) {
-        if (locked || draggable.getPart().getType() == ISpellPart.SpellPartType.COMPONENT) return false;
+        if (lockState == LockState.ALL) return false;
+        if (lockState == LockState.FIRST && !contents.isEmpty() && contents.get(0).getPart() == draggable.getPart()) return false;
         List<SpellPartDraggable> list = new ArrayList<>(contents);
         list.remove(draggable);
         return isValid(list);
@@ -57,7 +58,8 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
 
     @Override
     public boolean canDrop(SpellPartDraggable draggable, int mouseX, int mouseY) {
-        if (!canStore() || locked || draggable.getPart().getType() == ISpellPart.SpellPartType.COMPONENT) return false;
+        if (lockState == LockState.ALL) return false;
+        if (!canStore() || draggable.getPart().getType() == ISpellPart.SpellPartType.COMPONENT) return false;
         List<SpellPartDraggable> list = new ArrayList<>(contents);
         list.add(draggable);
         return isValid(list);
@@ -67,7 +69,7 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         RenderSystem.setShaderTexture(0, GUI);
         GuiComponent.blit(pPoseStack, x, y, 5, 220, 18, WIDTH, HEIGHT, 256, 256);
-        if (locked) {
+        if (lockState == LockState.ALL) {
             pPoseStack.pushPose();
             pPoseStack.translate(0, 0, 10);
             GuiComponent.fill(pPoseStack, x, y, x + WIDTH, y + HEIGHT, 0x7f000000);
@@ -95,5 +97,9 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
             if (part != last && ((ISpellShape) part.getPart()).isEndShape()) return false;
         }
         return true;
+    }
+
+    public enum LockState {
+        NONE, FIRST, ALL
     }
 }

@@ -95,7 +95,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @return The max allowed shape groups.
      */
     public int allowedShapeGroups() {
-        return Config.SERVER.MAX_SHAPE_GROUPS.get();
+        return table.getBlockState().getValue(InscriptionTableBlock.TIER) + 2;
     }
 
     /**
