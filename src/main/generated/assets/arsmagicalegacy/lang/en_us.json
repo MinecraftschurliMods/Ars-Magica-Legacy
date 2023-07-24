@@ -654,6 +654,7 @@
   "itemGroup.arsmagicalegacy.prefab_spells": "Ars Magica: Legacy - Prefab Spells",
   "key.arsmagicalegacy.configure_spell": "Configure Spell",
   "key.arsmagicalegacy.next_shape_group": "Next Shape Group",
+  "key.arsmagicalegacy.prev_shape_group": "Previous Shape Group",
   "key.category.arsmagicalegacy": "Ars Magica: Legacy",
   "message.arsmagicalegacy.altar_power": "Power: %s",
   "message.arsmagicalegacy.hold_shift_for_details": "Hold Shift for details",

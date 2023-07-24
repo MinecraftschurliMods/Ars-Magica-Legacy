@@ -559,6 +559,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
         add("key." + ArsMagicaAPI.MOD_ID + ".configure_spell", "Configure Spell");
         add("key." + ArsMagicaAPI.MOD_ID + ".next_shape_group", "Next Shape Group");
+        add("key." + ArsMagicaAPI.MOD_ID + ".prev_shape_group", "Previous Shape Group");
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
         add("potion.potency.7", "VIII");
