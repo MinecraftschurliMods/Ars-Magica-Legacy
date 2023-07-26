@@ -14,11 +14,15 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Consumer;
 
 public final class BurnoutHelper implements IBurnoutHelper {
     private static final Lazy<BurnoutHelper> INSTANCE = Lazy.concurrentOf(BurnoutHelper::new);
     private static final Capability<BurnoutHolder> BURNOUT = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final BurnoutHolder EMPTY = new BurnoutHolder();
 
     private BurnoutHelper() {
     }
@@ -42,52 +46,52 @@ public final class BurnoutHelper implements IBurnoutHelper {
     }
 
     @Override
-    public float getBurnout(LivingEntity livingEntity) {
-        return getBurnoutHolder(livingEntity).getBurnout();
+    public float getBurnout(LivingEntity entity) {
+        return getBurnoutHolder(entity).orElse(EMPTY).getBurnout();
     }
 
     @Override
-    public float getMaxBurnout(LivingEntity livingEntity) {
-        return (float) livingEntity.getAttributeValue(AMAttributes.MAX_BURNOUT.get());
+    public float getMaxBurnout(LivingEntity entity) {
+        return entity.getAttributes().hasAttribute(AMAttributes.MAX_BURNOUT.get()) ? (float) entity.getAttributeValue(AMAttributes.MAX_BURNOUT.get()) : 0f;
     }
 
     @Override
-    public boolean increaseBurnout(LivingEntity livingEntity, float amount) {
+    public boolean increaseBurnout(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        float max = getMaxBurnout(livingEntity);
-        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(livingEntity);
-        float current = magicHolder.getBurnout();
-        magicHolder.setBurnout(Math.min(current + amount, max));
-        if (livingEntity instanceof Player player) {
-            syncBurnout(player);
-        }
+        runIfPresent(entity, holder -> {
+            float max = getMaxBurnout(entity);
+            float current = holder.getBurnout();
+            holder.setBurnout(Math.min(current + amount, max));
+            if (entity instanceof Player player) {
+                syncBurnout(player);
+            }
+        });
         return true;
     }
 
     @Override
-    public boolean decreaseBurnout(LivingEntity livingEntity, float amount) {
+    public boolean decreaseBurnout(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(livingEntity);
-        float current = magicHolder.getBurnout();
-        if (current - amount < 0) {
-            amount = current;
-        }
-        magicHolder.setBurnout(current - amount);
-        if (livingEntity instanceof Player player) {
-            syncBurnout(player);
-        }
+        runIfPresent(entity, holder -> {
+            float current = holder.getBurnout();
+            holder.setBurnout(Math.max(current - amount, 0));
+            if (entity instanceof Player player) {
+                syncBurnout(player);
+            }
+        });
         return true;
     }
 
     @Override
     public boolean setBurnout(LivingEntity entity, float amount) {
-        if (amount < 0) throw new IllegalArgumentException("Burnout cannot be negative!");
-        float max = getMaxBurnout(entity);
-        BurnoutHelper.BurnoutHolder magicHolder = getBurnoutHolder(entity);
-        magicHolder.setBurnout(Math.min(amount, max));
-        if (entity instanceof Player player) {
-            syncBurnout(player);
-        }
+        if (amount < 0) return false;
+        runIfPresent(entity, holder -> {
+            float max = getMaxBurnout(entity);
+            holder.setBurnout(Math.min(amount, max));
+            if (entity instanceof Player player) {
+                syncBurnout(player);
+            }
+        });
         return true;
     }
 
@@ -100,7 +104,7 @@ public final class BurnoutHelper implements IBurnoutHelper {
     public void syncOnDeath(Player original, Player player) {
         player.getAttribute(AMAttributes.MAX_BURNOUT.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_BURNOUT.get()).getBaseValue());
         player.getAttribute(AMAttributes.BURNOUT_REGEN.get()).setBaseValue(original.getAttribute(AMAttributes.BURNOUT_REGEN.get()).getBaseValue());
-        original.getCapability(BurnoutHelper.BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BurnoutHelper.BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
+        original.getCapability(BURNOUT).ifPresent(burnoutHolder -> player.getCapability(BURNOUT).ifPresent(holder -> holder.onSync(burnoutHolder)));
         syncBurnout(player);
     }
 
@@ -110,16 +114,20 @@ public final class BurnoutHelper implements IBurnoutHelper {
      * @param player The player to sync to.
      */
     public void syncBurnout(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutHelper.BurnoutSyncPacket(getBurnoutHolder(player)), player);
+        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new BurnoutSyncPacket(holder), player));
     }
 
-    private BurnoutHelper.BurnoutHolder getBurnoutHolder(LivingEntity livingEntity) {
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.reviveCaps();
+    private void runIfPresent(LivingEntity entity, Consumer<BurnoutHolder> consumer) {
+        getBurnoutHolder(entity).ifPresent(consumer::accept);
+    }
+
+    private LazyOptional<BurnoutHolder> getBurnoutHolder(LivingEntity entity) {
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.reviveCaps();
         }
-        BurnoutHelper.BurnoutHolder burnoutHolder = livingEntity.getCapability(BurnoutHelper.BURNOUT).orElseThrow(() -> new RuntimeException("Could not retrieve burnout capability for LivingEntity %s{%s}".formatted(livingEntity.getDisplayName().getString(), livingEntity.getUUID())));
-        if (livingEntity instanceof Player && livingEntity.isDeadOrDying()) {
-            livingEntity.invalidateCaps();
+        LazyOptional<BurnoutHolder> burnoutHolder = entity.getCapability(BURNOUT);
+        if (entity instanceof Player && entity.isDeadOrDying()) {
+            entity.invalidateCaps();
         }
         return burnoutHolder;
     }
@@ -146,9 +154,9 @@ public final class BurnoutHelper implements IBurnoutHelper {
 
     public static final class BurnoutHolder {
         public static final Codec<BurnoutHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("burnout").forGetter(BurnoutHolder::getBurnout)).apply(inst, burnout -> {
-            BurnoutHolder manaHolder = new BurnoutHolder();
-            manaHolder.setBurnout(burnout);
-            return manaHolder;
+            BurnoutHolder burnoutHolder = new BurnoutHolder();
+            burnoutHolder.setBurnout(burnout);
+            return burnoutHolder;
         }));
         private float burnout;
 

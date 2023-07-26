@@ -22,6 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -30,11 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
     private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final AffinityHolder EMPTY = new AffinityHolder(Map.of(), true);
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
@@ -71,8 +74,8 @@ public final class AffinityHelper implements IAffinityHelper {
      * @param player The player to get the affinity holder for.
      * @return The affinity holder for the given player.
      */
-    public AffinityHolder getAffinityHolder(Player player) {
-        return player.getCapability(AFFINITY).orElseThrow(() -> new RuntimeException("Could not retrieve affinity capability for player %s".formatted(player.getUUID())));
+    public LazyOptional<AffinityHolder> getAffinityHolder(Player player) {
+        return player.getCapability(AFFINITY);
     }
 
     @Override
@@ -115,7 +118,7 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public double getAffinityDepth(Player player, ResourceLocation affinity) {
-        return getAffinityHolder(player).getAffinityDepth(affinity);
+        return getAffinityHolder(player).orElse(EMPTY).getAffinityDepth(affinity);
     }
 
     @Override
@@ -135,11 +138,12 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
-        if (player.isDeadOrDying()) return;
-        getAffinityHolder(player).subtractFromAffinity(affinity, (float) getAffinityHolder(player).getAffinityDepth(affinity) - amount);
-        if (player instanceof ServerPlayer sp) {
-            syncToPlayer(sp);
-        }
+        runIfPresent(player, holder -> {
+            holder.setAffinity(affinity, amount);
+            if (player instanceof ServerPlayer sp) {
+                syncToPlayer(sp);
+            }
+        });
     }
 
     @Override
@@ -155,29 +159,29 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public void applyAffinityShift(Player player, IAffinity affinity, float shift) {
         if (affinity.getRegistryName() == Affinity.NONE) return;
-        if (player.isDeadOrDying()) return;
-        AffinityHolder storage = getAffinityHolder(player);
-        float adjacentDecrement = shift * ADJACENT_FACTOR;
-        float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
-        float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
-        storage.addToAffinity(affinity.getId(), shift);
-        if (storage.getAffinityDepth(affinity) == MAX_DEPTH) {
-            storage.setLocked(true);
-        }
-        for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
-            storage.subtractFromAffinity(adjacent, adjacentDecrement);
-        }
-        for (ResourceLocation minorOpposite : affinity.getMinorOpposingAffinities()) {
-            storage.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
-        }
-        for (ResourceLocation majorOpposite : affinity.getMajorOpposingAffinities()) {
-            storage.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
-        }
-        ResourceLocation directOpposite = affinity.getDirectOpposingAffinity();
-        storage.subtractFromAffinity(directOpposite, shift);
-        if (player instanceof ServerPlayer sp) {
-            syncToPlayer(sp);
-        }
+        runIfPresent(player, holder -> {
+            float adjacentDecrement = shift * ADJACENT_FACTOR;
+            float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
+            float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
+            holder.addToAffinity(affinity.getId(), shift);
+            if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
+                holder.setLocked(true);
+            }
+            for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
+                holder.subtractFromAffinity(adjacent, adjacentDecrement);
+            }
+            for (ResourceLocation minorOpposite : affinity.getMinorOpposingAffinities()) {
+                holder.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
+            }
+            for (ResourceLocation majorOpposite : affinity.getMajorOpposingAffinities()) {
+                holder.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
+            }
+            ResourceLocation directOpposite = affinity.getDirectOpposingAffinity();
+            holder.subtractFromAffinity(directOpposite, shift);
+            if (player instanceof ServerPlayer sp) {
+                syncToPlayer(sp);
+            }
+        });
     }
 
     /**
@@ -197,7 +201,11 @@ public final class AffinityHelper implements IAffinityHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(getAffinityHolder(player)), player);
+        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SyncPacket(holder), player));
+    }
+
+    private void runIfPresent(Player player, Consumer<AffinityHolder> consumer) {
+        getAffinityHolder(player).ifPresent(consumer::accept);
     }
 
     public static final class SyncPacket extends CodecPacket<AffinityHolder> {
@@ -277,6 +285,16 @@ public final class AffinityHelper implements IAffinityHelper {
          */
         public double getAffinityDepth(IAffinity affinity) {
             return getAffinityDepth(affinity.getId());
+        }
+
+        /**
+         * Adds the given shift to the given affinity.
+         *
+         * @param affinity The id of the affinity to add the given shift to.
+         * @param shift    The shift to add.
+         */
+        public void setAffinity(ResourceLocation affinity, float shift) {
+            depths.compute(affinity, (rl, curr) -> Mth.clamp((double) shift, 0, MAX_DEPTH));
         }
 
         /**

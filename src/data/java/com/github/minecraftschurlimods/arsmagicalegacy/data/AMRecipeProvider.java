@@ -245,6 +245,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('R', AMTags.Items.RUNES)
                 .unlockedBy("has_rabbit_hide", has(Items.RABBIT_HIDE))
                 .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.RUNE_BAG.get())
+                .requires(Items.BUNDLE)
+                .requires(AMTags.Items.RUNES)
+                .unlockedBy("has_rune", has(AMTags.Items.RUNES))
+                .save(consumer, "rune_bag_from_bundle");
         ShapelessRecipeBuilder.shapeless(AMItems.ARCANE_COMPOUND.get())
                 .requires(Tags.Items.DUSTS_GLOWSTONE)
                 .requires(Tags.Items.DUSTS_GLOWSTONE)

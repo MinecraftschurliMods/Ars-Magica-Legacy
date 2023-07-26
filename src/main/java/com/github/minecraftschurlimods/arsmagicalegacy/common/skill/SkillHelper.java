@@ -2,12 +2,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
@@ -32,6 +35,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -213,13 +217,10 @@ public final class SkillHelper implements ISkillHelper {
         return getStackForSkillPoint(item, skillPoint.getId());
     }
 
-    @Nullable
     @Override
     public ISkillPoint getSkillPointForStack(ItemStack stack) {
-        if (stack.getItem() instanceof ISkillPointItem item) {
-            return item.getSkillPoint(stack);
-        }
-        return null;
+        if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
+        return AMSkillPoints.NONE.get();
     }
 
     @Override
