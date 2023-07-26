@@ -25,6 +25,8 @@ public final class ManaHUD extends AbstractHUD {
             mana = manaHelper.getMana(player);
             maxMana = manaHelper.getMaxMana(player);
         }
-        renderBar(poseStack, 0, 0, getWidth(), getHeight(), mana, maxMana, 0x99FFFF);
+        if (maxMana > 0) {
+            renderBar(poseStack, 0, 0, getWidth(), getHeight(), mana, maxMana, 0x99FFFF);
+        }
     }
 }
