@@ -14,9 +14,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "arsmagicalegacy:inscription_table_upgrade_tier_1",
-      "recipe2": "arsmagicalegacy:inscription_table_upgrade_tier_2",
-      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page2.text",
-      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page2.title"
+      "recipe2": "arsmagicalegacy:inscription_table_upgrade_tier_2"
     },
     {
       "type": "patchouli:crafting",
