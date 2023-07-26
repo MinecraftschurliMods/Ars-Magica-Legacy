@@ -1,11 +1,28 @@
 {
   "category": "arsmagicalegacy:mechanics",
-  "icon": "arsmagicalegacy:spell_parchment",
+  "icon": "arsmagicalegacy:inscription_table_upgrade_tier_1",
   "name": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.name",
   "pages": [
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page0.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page1.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:inscription_table_upgrade_tier_1",
+      "recipe2": "arsmagicalegacy:inscription_table_upgrade_tier_2",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page2.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page2.title"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:inscription_table_upgrade_tier_3",
+      "text": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page3.text",
+      "title": "item.arsmagicalegacy.arcane_compendium.mechanics.shape_groups.page3.title"
     }
   ]
 }

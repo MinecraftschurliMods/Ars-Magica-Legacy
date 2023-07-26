@@ -37,8 +37,7 @@
       "type": "patchouli:image",
       "images": [
         "arsmagicalegacy:patchouli_books/arcane_compendium/en_us/images/inscription_table_1.png"
-      ],
-      "text": "Once placed and opened, you are presented with a GUI that consists of four major sections:"
+      ]
     },
     {
       "type": "patchouli:text",
