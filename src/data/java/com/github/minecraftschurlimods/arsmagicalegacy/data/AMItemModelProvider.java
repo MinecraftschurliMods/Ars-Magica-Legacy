@@ -100,7 +100,7 @@ class AMItemModelProvider extends ItemModelProvider {
         itemGenerated(REDSTONE_INLAY, "block/redstone_inlay");
         itemGenerated(GOLD_INLAY, "block/gold_inlay");
         affinityItem(AFFINITY_ESSENCE, true);
-        affinityItem(AFFINITY_TOME, true);
+        affinityItem(AFFINITY_TOME, false);
         itemGenerated(ETHERIUM_PLACEHOLDER);
         itemGenerated(SPELL_PARCHMENT);
         withExistingParent(SPELL_RECIPE, mcLoc("item/written_book"));

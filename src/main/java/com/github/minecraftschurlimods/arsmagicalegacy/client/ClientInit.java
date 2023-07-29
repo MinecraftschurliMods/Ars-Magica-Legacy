@@ -175,11 +175,10 @@ public final class ClientInit {
         for (Item item : ForgeRegistries.ITEMS) {
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             if (itemId == null) continue;
-            if (item instanceof IAffinityItem) {
+            if (item instanceof IAffinityItem affinityItem) {
                 for (Affinity affinity : affinities) {
-                    if (!Affinity.NONE.equals(affinities.getKey(affinity))) {
-                        event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
-                    }
+                    if (Affinity.NONE.equals(affinities.getKey(affinity)) && !affinityItem.hasNoneVariant()) continue;
+                    event.register(new ResourceLocation(affinity.getId().getNamespace(), "item/" + itemId.getPath() + "_" + affinity.getId().getPath()));
                 }
             }
             if (item instanceof ISkillPointItem) {

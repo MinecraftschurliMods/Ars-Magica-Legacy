@@ -354,6 +354,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("crafting_altar_check_time", "The time in ticks between multiblock validation checks for the crafting altar.");
         configTranslation("max_etherium_storage", "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.");
         configTranslation("max_shape_groups", "The maximum number of shape groups allowed for new spells.");
+        configTranslation("affinity_tome_shift", "The affinity shift that should be applied by affinity tomes.");
         configTranslation("mana.base", "The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.multiplier", "The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.regen_multiplier", "The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.");
@@ -472,9 +473,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR, "Spell Grammar");
         add(TranslationConstants.SPELL_RECIPE_TITLE, "Spell Recipe");
         add(TranslationConstants.SPELL_RECIPE_UNKNOWN, "Unknown Item");
-        add(TranslationConstants.SPELL_RECIPE_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
-        add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
@@ -488,7 +487,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.NO_TELEPORT, "You are too distorted to teleport!");
         add(TranslationConstants.NO_TELEPORT_NETHER, "The nether's force forbids you to simply teleport out of it!");
-        add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.PREVENT_BLOCK, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.PREVENT_ITEM, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
         add(TranslationConstants.SPELL_CAST + "cancelled", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "effect_failed", "Spell cast failed!");

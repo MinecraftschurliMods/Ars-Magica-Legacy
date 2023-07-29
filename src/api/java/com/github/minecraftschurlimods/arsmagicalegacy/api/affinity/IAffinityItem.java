@@ -11,6 +11,13 @@ import java.util.Objects;
  */
 public interface IAffinityItem {
     /**
+     * @return Whether this item should have a variant without an affinity or not.
+     */
+    default boolean hasNoneVariant() {
+        return false;
+    }
+
+    /**
      * @param stack The stack to get the affinity from.
      * @return The affinity stored in the stack, or the NONE affinity if the stack does not contain one.
      */

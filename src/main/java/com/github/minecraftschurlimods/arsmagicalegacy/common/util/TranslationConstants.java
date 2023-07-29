@@ -22,9 +22,7 @@ public interface TranslationConstants {
     String SPELL_RECIPE_SPELL_GRAMMAR       = "item."    + ArsMagicaAPI.MOD_ID + ".spell_recipe.spell_grammar";
     String SPELL_RECIPE_TITLE               = "item."    + ArsMagicaAPI.MOD_ID + ".spell_recipe.title";
     String SPELL_RECIPE_UNKNOWN             = "item."    + ArsMagicaAPI.MOD_ID + ".spell_recipe.unknown";
-    String SPELL_RECIPE_UNKNOWN_DESCRIPTION = "item."    + ArsMagicaAPI.MOD_ID + ".spell_recipe.unknown.description";
     String SPELL_UNKNOWN                    = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown";
-    String SPELL_UNKNOWN_DESCRIPTION        = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
     String SPELL_UNNAMED                    = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
     String INSCRIPTION_TABLE_DEFAULT_NAME   = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.default_name";
     String INSCRIPTION_TABLE_NAME           = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.name";
@@ -43,7 +41,8 @@ public interface TranslationConstants {
     String HOLD_SHIFT_FOR_DETAILS           = "message." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String NO_TELEPORT                      = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport";
     String NO_TELEPORT_NETHER               = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport_nether";
-    String PREVENT                          = "message." + ArsMagicaAPI.MOD_ID + ".prevent";
+    String PREVENT_BLOCK                    = "message." + ArsMagicaAPI.MOD_ID + ".prevent_block";
+    String PREVENT_ITEM                     = "message." + ArsMagicaAPI.MOD_ID + ".prevent_item";
     String SPELL_CAST                       = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String TIER                             = "message." + ArsMagicaAPI.MOD_ID + ".tier";
     String ALTAR_POWER                      = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";

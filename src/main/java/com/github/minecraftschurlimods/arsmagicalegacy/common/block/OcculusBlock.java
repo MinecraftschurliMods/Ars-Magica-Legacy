@@ -121,7 +121,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
         if (pLevel.isClientSide()) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(pPlayer)) {
-                pPlayer.sendSystemMessage(Component.translatable(TranslationConstants.PREVENT));
+                pPlayer.sendSystemMessage(Component.translatable(TranslationConstants.PREVENT_BLOCK));
             } else {
                 api.openOcculusGui(pPlayer);
             }

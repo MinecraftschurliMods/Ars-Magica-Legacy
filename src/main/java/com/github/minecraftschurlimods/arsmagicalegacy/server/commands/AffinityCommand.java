@@ -98,6 +98,7 @@ public class AffinityCommand {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
             if (!MinecraftForge.EVENT_BUS.post(event)) {
                 helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepthOrElse(player, affinity, 0) + amount));
+                helper.updateLock(player);
                 MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
         }
@@ -124,6 +125,7 @@ public class AffinityCommand {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
             if (!MinecraftForge.EVENT_BUS.post(event)) {
                 helper.setAffinityDepth(player, affinity, (float) amount);
+                helper.updateLock(player);
                 MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
         }
@@ -147,7 +149,9 @@ public class AffinityCommand {
         var api = ArsMagicaAPI.get();
         for (ServerPlayer player : players) {
             for (Affinity affinity : api.getAffinityRegistry()) {
-                api.getAffinityHelper().setAffinityDepth(player, affinity, 0f);
+                var helper = api.getAffinityHelper();
+                helper.setAffinityDepth(player, affinity, 0f);
+                helper.unlock(player);
             }
         }
         if (players.size() == 1) {

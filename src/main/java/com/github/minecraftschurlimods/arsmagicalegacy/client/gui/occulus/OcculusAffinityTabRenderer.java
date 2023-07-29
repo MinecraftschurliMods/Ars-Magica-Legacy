@@ -55,7 +55,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
         assert player != null;
         for (Affinity aff : affinities) {
             if (Objects.equals(aff.getId(), Affinity.NONE)) continue;
-            double depth = helper.getAffinityDepth(player, aff) / 100;
+            double depth = helper.getAffinityDepth(player, aff);
             double var1 = Math.cos(Math.toRadians(portion * currentID));
             double var2 = Math.sin(Math.toRadians(portion * currentID));
             double var3 = Math.toRadians(portion * currentID - portion / 2.);
@@ -79,7 +79,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
                 RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
                 RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
             }
-            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth * 100), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
+            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
