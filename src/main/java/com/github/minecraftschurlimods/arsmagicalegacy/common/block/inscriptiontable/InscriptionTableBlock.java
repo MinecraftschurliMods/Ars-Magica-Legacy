@@ -39,7 +39,7 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class InscriptionTableBlock extends Block implements EntityBlock {
-    public static final IntegerProperty TIER = IntegerProperty.create("tier", 0, 3);
+    public static final IntegerProperty TIER = IntegerProperty.create(InscriptionTableBlock.TIER_KEY, 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = EnumProperty.create("half", Half.class);
     private static final VoxelShape LEFT_X = AMUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 1, 1, 14, 16), box(15, 13, 1, 16, 14, 16), box(0, 12, 0, 16, 14, 1), box(6, 5, 3, 10, 11, 4), box(4, 3, 3, 12, 5, 4), box(5, 11, 2, 11, 14, 4), box(0, 0, 3, 4, 5, 5), box(12, 0, 3, 16, 5, 5), box(4, 3, 3, 12, 5, 4));
