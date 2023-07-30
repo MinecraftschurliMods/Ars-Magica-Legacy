@@ -286,10 +286,11 @@ public final class AffinityHelper implements IAffinityHelper {
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
         private final Map<ResourceLocation, Double> depths;
-        private boolean locked = false;
+        private boolean locked;
 
         public AffinityHolder(Map<ResourceLocation, Double> depths, boolean locked) {
             this.depths = depths;
+            this.locked = locked;
         }
 
         /**
