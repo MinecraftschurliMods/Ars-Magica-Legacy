@@ -119,7 +119,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
-        forgeBus.addListener(EventHandler::playerItemPickup);
         forgeBus.addListener(EventHandler::playerItemCrafted);
         forgeBus.addListener(EventHandler::playerRespawn);
         forgeBus.addListener(EventHandler::livingDamage);
@@ -247,21 +246,7 @@ public final class EventHandler {
         event.getOriginal().invalidateCaps();
     }
 
-    private static void playerItemPickup(PlayerEvent.ItemPickupEvent event) {
-/*
-        if (event.getPlayer().isCreative()) return;
-        if (event.getPlayer().isSpectator()) return;
-        var api = ArsMagicaAPI.get();
-        var helper = api.getMagicHelper();
-        if (helper.knowsMagic(event.getPlayer())) return;
-        if (!ItemStack.isSameItemSameTags(api.getBookStack(), event.getStack())) return;
-        helper.awardXp(event.getPlayer(), 0);
-*/
-    }
-
     private static void playerItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        if (event.getEntity().isCreative()) return;
-        if (event.getEntity().isSpectator()) return;
         var api = ArsMagicaAPI.get();
         var helper = api.getMagicHelper();
         if (helper.knowsMagic(event.getEntity())) return;
