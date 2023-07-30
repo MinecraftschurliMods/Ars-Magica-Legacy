@@ -165,7 +165,9 @@ public final class Spell implements ISpell {
                 }
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
                 if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    api.getAffinityHelper().applyAffinityShift(event.getEntity(), event.affinity, event.shift);
+                    var helper = ArsMagicaAPI.get().getAffinityHelper();
+                    helper.applyAffinityShift(player, event.affinity, event.shift);
+                    helper.updateLock(player);
                     MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, shift.floatValue(), false));
                 }
             }

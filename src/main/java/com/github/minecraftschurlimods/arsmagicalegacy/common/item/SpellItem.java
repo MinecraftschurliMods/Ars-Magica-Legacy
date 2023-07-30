@@ -62,7 +62,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (player == null) return;
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(player)) {
-            pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION));
+            pTooltipComponents.add(Component.translatable(TranslationConstants.PREVENT_ITEM));
             return;
         }
         ISpell spell = api.getSpellHelper().getSpell(pStack);
@@ -156,7 +156,10 @@ public class SpellItem extends Item implements ISpellItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         var api = ArsMagicaAPI.get();
         ItemStack heldItem = player.getItemInHand(hand);
-        if (!api.getMagicHelper().knowsMagic(player)) return InteractionResultHolder.fail(heldItem);
+        if (!api.getMagicHelper().knowsMagic(player)) {
+            player.displayClientMessage(Component.translatable(TranslationConstants.PREVENT_ITEM), true);
+            return InteractionResultHolder.fail(heldItem);
+        }
         if (heldItem.getItem() instanceof SpellBookItem) {
             heldItem = SpellBookItem.getSelectedSpell(heldItem);
         }

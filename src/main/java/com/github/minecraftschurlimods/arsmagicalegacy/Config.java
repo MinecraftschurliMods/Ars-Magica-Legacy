@@ -147,6 +147,7 @@ public final class Config {
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
         public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
+        public final ForgeConfigSpec.DoubleValue AFFINITY_TOME_SHIFT;
         public final ForgeConfigSpec.DoubleValue MANA_BASE;
         public final ForgeConfigSpec.DoubleValue MANA_MULTIPLIER;
         public final ForgeConfigSpec.DoubleValue MANA_REGEN_MULTIPLIER;
@@ -181,6 +182,10 @@ public final class Config {
                     .comment("The maximum number of shape groups allowed for new spells.")
                     .translation(TranslationConstants.CONFIG + "max_shape_groups")
                     .defineInRange("max_shape_groups", 5, 0, 5);
+            AFFINITY_TOME_SHIFT = builder
+                    .comment("The affinity shift that should be applied by affinity tomes.")
+                    .translation(TranslationConstants.CONFIG + "affinity_tome_shift")
+                    .defineInRange("affinity_tome_shift", 0.1, 0.0, 1.0);
             builder.push("mana");
             MANA_BASE = builder
                     .comment("The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
@@ -203,12 +208,12 @@ public final class Config {
                     .comment("The base value for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.base")
                     .worldRestart()
-                    .defineInRange("base", 200., 0, 1000000);
+                    .defineInRange("base", 80., 0, 1000000);
             BURNOUT_MULTIPLIER = builder
                     .comment("The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 25., 0, 1000000);
+                    .defineInRange("multiplier", 10., 0, 1000000);
             BURNOUT_REGEN_MULTIPLIER = builder
                     .comment("The multiplier for burnout regeneration. Burnout regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
                     .translation(TranslationConstants.CONFIG + "burnout.regen_multiplier")

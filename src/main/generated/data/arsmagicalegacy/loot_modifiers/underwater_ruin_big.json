@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/underwater_ruin_big"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/underwater_ruin_big",
+  "tables": [
+    "minecraft:chests/underwater_ruin_big"
+  ]
+}
