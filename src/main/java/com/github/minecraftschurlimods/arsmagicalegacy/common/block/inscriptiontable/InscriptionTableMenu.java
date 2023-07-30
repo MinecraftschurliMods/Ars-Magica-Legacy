@@ -151,7 +151,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return /*stack.getItem() instanceof ISpellItem || */stack.getItem() == Items.WRITABLE_BOOK;
+            return stack.is(AMTags.Items.INSCRIPTION_TABLE_BOOKS);
         }
 
         @Override
