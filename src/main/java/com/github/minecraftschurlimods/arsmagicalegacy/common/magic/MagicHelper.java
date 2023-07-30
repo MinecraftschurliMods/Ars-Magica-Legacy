@@ -111,7 +111,7 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public boolean knowsMagic(Player player) {
-        return player.isCreative() || player.isSpectator() || getLevel(player) > 0;
+        return !Config.SERVER.REQUIRE_COMPENDIUM_CRAFTING.get() || player.isCreative() || player.isSpectator() || getLevel(player) > 0;
     }
 
     /**

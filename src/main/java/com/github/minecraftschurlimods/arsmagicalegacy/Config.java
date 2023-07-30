@@ -143,6 +143,7 @@ public final class Config {
      * Class holding the server config values.
      */
     public static final class Server {
+        public final ForgeConfigSpec.BooleanValue REQUIRE_COMPENDIUM_CRAFTING;
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
@@ -166,6 +167,10 @@ public final class Config {
         public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
 
         private Server(ForgeConfigSpec.Builder builder) {
+            REQUIRE_COMPENDIUM_CRAFTING = builder
+                    .comment("Whether the player needs to craft the compendium before being able to use magic. If disabled, the player can use magic from the beginning.")
+                    .translation(TranslationConstants.CONFIG + "require_compendium_crafting")
+                    .define("require_compendium_crafting", true);
             BURNOUT_RATIO = builder
                     .comment("The default mana to burnout ratio, used in calculating spell costs.")
                     .translation(TranslationConstants.CONFIG + "burnout_ratio")
