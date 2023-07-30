@@ -30,6 +30,7 @@ public class AMDatagen {
         generator.addProvider(includeServer, new AMLootTableProvider(generator));
         generator.addProvider(includeServer, new AMRecipeProvider(generator));
         AMTagsProvider.add(includeServer, generator, existingFileHelper);
+        generator.addProvider(includeServer, new AMGlobalLootModifierProvider(generator));
         generator.addProvider(includeServer, new AMAltarStructureMaterialProvider(generator, existingFileHelper, registryOps));
         generator.addProvider(includeServer, new AMAltarCapMaterialProvider(generator, existingFileHelper, registryOps));
         generator.addProvider(includeServer, new AMObeliskFuelProvider(generator, existingFileHelper, registryOps));

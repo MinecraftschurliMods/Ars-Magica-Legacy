@@ -144,6 +144,36 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+        runIfPresent(player, holder -> {
+            holder.addToAffinity(affinity, amount);
+            if (player instanceof ServerPlayer sp) {
+                syncToPlayer(sp);
+            }
+        });
+    }
+
+    @Override
+    public void increaseAffinityDepth(Player player, Affinity affinity, float amount) {
+        increaseAffinityDepth(player, affinity.getId(), amount);
+    }
+
+    @Override
+    public void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+        runIfPresent(player, holder -> {
+            holder.subtractFromAffinity(affinity, amount);
+            if (player instanceof ServerPlayer sp) {
+                syncToPlayer(sp);
+            }
+        });
+    }
+
+    @Override
+    public void decreaseAffinityDepth(Player player, Affinity affinity, float amount) {
+        decreaseAffinityDepth(player, affinity.getId(), amount);
+    }
+
+    @Override
     public void applyAffinityShift(Player player, ResourceLocation affinity, float shift) {
         applyAffinityShift(player, Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(affinity)), shift);
     }
@@ -152,6 +182,7 @@ public final class AffinityHelper implements IAffinityHelper {
     public void applyAffinityShift(Player player, Affinity affinity, float shift) {
         if (affinity.getId() == Affinity.NONE) return;
         runIfPresent(player, holder -> {
+            if (holder.locked()) return;
             float adjacentDecrement = shift * ADJACENT_FACTOR;
             float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
             float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
@@ -170,6 +201,33 @@ public final class AffinityHelper implements IAffinityHelper {
             }
             ResourceLocation directOpposite = affinity.directOpposite();
             holder.subtractFromAffinity(directOpposite, shift);
+            if (player instanceof ServerPlayer sp) {
+                syncToPlayer(sp);
+            }
+        });
+    }
+
+    @Override
+    public void lock(Player player) {
+        runIfPresent(player, holder -> holder.setLocked(true));
+    }
+
+    @Override
+    public void unlock(Player player) {
+        runIfPresent(player, holder -> holder.setLocked(false));
+    }
+
+    @Override
+    public void updateLock(Player player) {
+        runIfPresent(player, holder -> {
+            for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+                if (affinity.getId().equals(Affinity.NONE)) continue;
+                if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
+                    lock(player);
+                    return;
+                }
+            }
+            unlock(player);
             if (player instanceof ServerPlayer sp) {
                 syncToPlayer(sp);
             }
@@ -228,10 +286,11 @@ public final class AffinityHelper implements IAffinityHelper {
                 Codec.BOOL.fieldOf("locked").forGetter(AffinityHolder::locked)
         ).apply(inst, AffinityHolder::new));
         private final Map<ResourceLocation, Double> depths;
-        private boolean locked = false;
+        private boolean locked;
 
         public AffinityHolder(Map<ResourceLocation, Double> depths, boolean locked) {
             this.depths = depths;
+            this.locked = locked;
         }
 
         /**

@@ -13,7 +13,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskFuelManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Dryad;
@@ -307,6 +306,7 @@ public final class EventHandler {
         if (!(caster instanceof Player player)) return;
         float cost = event.getBase();
         var api = ArsMagicaAPI.get();
+        cost += api.getBurnoutHelper().getBurnout(caster) / 10f;
         for (ISpellPart iSpellPart : event.getSpell().parts()) {
             if (iSpellPart.getType() != ISpellPart.SpellPartType.COMPONENT) continue;
             ISpellPartData dataForPart = api.getSpellDataManager().getDataForPart(iSpellPart);
@@ -315,7 +315,7 @@ public final class EventHandler {
             for (Affinity aff : affinities) {
                 double value = api.getAffinityHelper().getAffinityDepthOrElse(player, aff, 0);
                 if (value > 0) {
-                    cost -= (float) (cost * (0.5f * value / 100f));
+                    cost -= (float) (cost * 0.5f * value);
                 }
             }
         }

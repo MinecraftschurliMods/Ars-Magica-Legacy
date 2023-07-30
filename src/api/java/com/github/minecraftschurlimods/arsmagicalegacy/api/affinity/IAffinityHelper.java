@@ -100,6 +100,34 @@ public interface IAffinityHelper {
     void setAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
+     * @param player   The player to add the affinity depth for.
+     * @param affinity The id of the affinity to add the depth for.
+     * @param amount   The amount to add.
+     */
+    void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount);
+
+    /**
+     * @param player   The player to add the affinity depth for.
+     * @param affinity The affinity to add the depth for.
+     * @param amount   The amount to add.
+     */
+    void increaseAffinityDepth(Player player, Affinity affinity, float amount);
+
+    /**
+     * @param player   The player to subtract the affinity depth for.
+     * @param affinity The id of the affinity to subtract the depth for.
+     * @param amount   The amount to subtract.
+     */
+    void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount);
+
+    /**
+     * @param player   The player to subtract the affinity depth for.
+     * @param affinity The affinity to subtract the depth for.
+     * @param amount   The amount to subtract.
+     */
+    void decreaseAffinityDepth(Player player, Affinity affinity, float amount);
+
+    /**
      * Applies the affinity shift for the given player and affinity.
      *
      * @param player   The player to shift the affinity for.
@@ -116,4 +144,22 @@ public interface IAffinityHelper {
      * @param shift    The amount to shift.
      */
     void applyAffinityShift(Player player, Affinity affinity, float shift);
+
+    /**
+     * Locks the player's affinities.
+     * @param player The player to lock the affinities for.
+     */
+    void lock(Player player);
+
+    /**
+     * Unlocks the player's affinities.
+     * @param player The player to unlock the affinities for.
+     */
+    void unlock(Player player);
+
+    /**
+     * Locks or unlocks the player's affinities, depending on whether an affinity is at 1.0 or not.
+     * @param player The player to lock or unlock the affinities for.
+     */
+    void updateLock(Player player);
 }

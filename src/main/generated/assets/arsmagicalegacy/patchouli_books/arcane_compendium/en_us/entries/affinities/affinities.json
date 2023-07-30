@@ -1,6 +1,6 @@
 {
   "category": "arsmagicalegacy:affinities",
-  "icon": "minecraft:nether_star",
+  "icon": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:none\"}",
   "name": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.name",
   "pages": [
     {
@@ -14,6 +14,10 @@
     {
       "type": "patchouli:text",
       "text": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.page2.text"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.affinities.affinities.page3.text"
     }
   ],
   "priority": true

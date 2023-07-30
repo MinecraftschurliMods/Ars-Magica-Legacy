@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/abandoned_mineshaft"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/abandoned_mineshaft",
+  "tables": [
+    "minecraft:chests/abandoned_mineshaft"
+  ]
+}
