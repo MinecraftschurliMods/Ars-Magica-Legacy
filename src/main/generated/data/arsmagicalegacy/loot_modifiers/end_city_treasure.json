@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/end_city_treasure",
+  "tables": [
+    "minecraft:chests/end_city_treasure"
+  ]
+}

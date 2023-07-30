@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_temple"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/village/village_temple",
+  "tables": [
+    "minecraft:chests/village/village_temple"
+  ]
+}

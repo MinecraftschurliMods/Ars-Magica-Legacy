@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome",
+          "weight": 19
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+            }
+          ],
+          "name": "arsmagicalegacy:affinity_tome"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 180
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

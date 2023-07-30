@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/ancient_city_ice_box"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/ancient_city_ice_box",
+  "tables": [
+    "minecraft:chests/ancient_city_ice_box"
+  ]
+}

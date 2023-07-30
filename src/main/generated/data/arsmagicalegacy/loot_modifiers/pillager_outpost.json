@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/pillager_outpost"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/pillager_outpost",
+  "tables": [
+    "minecraft:chests/pillager_outpost"
+  ]
+}

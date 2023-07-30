@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/desert_pyramid"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/desert_pyramid",
+  "tables": [
+    "minecraft:chests/desert_pyramid"
+  ]
+}

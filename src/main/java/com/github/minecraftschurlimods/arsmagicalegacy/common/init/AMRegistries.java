@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -69,8 +70,9 @@ public interface AMRegistries {
     DeferredRegister<Feature<?>>              FEATURES            = DeferredRegister.create(ForgeRegistries.FEATURES,           ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for forge registries
-    DeferredRegister<FluidType>               FLUID_TYPES             = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<FluidType>                            FLUID_TYPES             = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,                      ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityDataSerializer<?>>              ENTITY_DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,          ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Codec<? extends IGlobalLootModifier>> GLOBAL_LOOT_MODIFIERS   = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for custom registries
     DeferredRegister<SkillPoint>                         SKILL_POINTS             = DeferredRegister.create(SkillPoint.REGISTRY_KEY,          ArsMagicaAPI.MOD_ID);
@@ -112,6 +114,7 @@ public interface AMRegistries {
         AMStats.register();
         bus.addListener(AMStats::onRegister);
         AMDataSerializers.register();
+        AMLootModifiers.register();
         AMSkillPoints.register();
         AMAffinities.register();
         AMSpellParts.register();
@@ -137,6 +140,7 @@ public interface AMRegistries {
         CUSTOM_STATS.register(bus);
         FLUID_TYPES.register(bus);
         ENTITY_DATA_SERIALIZERS.register(bus);
+        GLOBAL_LOOT_MODIFIERS.register(bus);
         SKILL_POINTS.register(bus);
         AFFINITIES.register(bus);
         SPELL_PARTS.register(bus);

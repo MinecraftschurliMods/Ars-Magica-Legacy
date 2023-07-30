@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/stronghold_library"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/chests/stronghold_library",
+  "tables": [
+    "minecraft:chests/stronghold_library"
+  ]
+}
