@@ -183,6 +183,7 @@
   "config.arsmagicalegacy.mana.regen_multiplier": "The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.",
   "config.arsmagicalegacy.max_etherium_storage": "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.",
   "config.arsmagicalegacy.max_shape_groups": "The maximum number of shape groups allowed for new spells.",
+  "config.arsmagicalegacy.require_compendium_crafting": "Whether the player needs to craft the compendium before being able to use magic. If disabled, the player can use magic from the beginning.",
   "death.attack.falling_star": "%1$s was obliterated by a falling star",
   "death.attack.nature_scythe": "%1$s was ripped apart by %2$s's scythe",
   "death.attack.shockwave": "%1$s was obliterated by a shockwave",
