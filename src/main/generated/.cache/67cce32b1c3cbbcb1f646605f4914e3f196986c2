@@ -1,4 +1,4 @@
-// 1.19.2	2023-07-30T20:54:26.4551074	LootTables
+// 1.19.2	2023-07-30T23:28:33.3928517	LootTables
 b6aa0b154e90cc2ff8bf3eded925ba7f62b77f6a data/arsmagicalegacy/loot_tables/blocks/altar_core.json
 c0afba4d4db1a3b0daf1ce050875fdcd68f7c299 data/arsmagicalegacy/loot_tables/blocks/aum.json
 d41c1158db3f312dd310b6cc779680a10c69aab6 data/arsmagicalegacy/loot_tables/blocks/black_aurem.json
@@ -11,7 +11,7 @@ aa45b9f2f270c85d327998ea24c9c4f37d0d142a data/arsmagicalegacy/loot_tables/blocks
 90d5cf44ad9e46d0c993b539443ca7dcfb2ac8f9 data/arsmagicalegacy/loot_tables/blocks/deepslate_topaz_ore.json
 dec896513300f9a82b1c6d242a29e484592e7155 data/arsmagicalegacy/loot_tables/blocks/deepslate_vinteum_ore.json
 fe48aaa458d4f21b0b04666050a28e94d49ec7e9 data/arsmagicalegacy/loot_tables/blocks/desert_nova.json
-aad5842b249c70844621f8e4931a449975ef9435 data/arsmagicalegacy/loot_tables/blocks/inscription_table.json
+3486a21251ccb7cd083433f75ba670173f25a63a data/arsmagicalegacy/loot_tables/blocks/inscription_table.json
 d4d3296b8d71cb051b90ffd4c403389893461615 data/arsmagicalegacy/loot_tables/blocks/magic_wall.json
 c855d15e53014b3c088dc968d143326093df8bdc data/arsmagicalegacy/loot_tables/blocks/moonstone_block.json
 c16c4ec5c93b2818524eb24a1c4efc8bbf8eaee0 data/arsmagicalegacy/loot_tables/blocks/moonstone_ore.json
