@@ -143,9 +143,11 @@ public final class Config {
      * Class holding the server config values.
      */
     public static final class Server {
+        public final ForgeConfigSpec.BooleanValue REQUIRE_COMPENDIUM_CRAFTING;
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
+        public final ForgeConfigSpec.DoubleValue AFFINITY_TOME_SHIFT;
         public final ForgeConfigSpec.BooleanValue ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING;
         public final ForgeConfigSpec.DoubleValue MANA_BASE;
         public final ForgeConfigSpec.DoubleValue MANA_MULTIPLIER;
@@ -165,6 +167,10 @@ public final class Config {
         public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
 
         private Server(ForgeConfigSpec.Builder builder) {
+            REQUIRE_COMPENDIUM_CRAFTING = builder
+                    .comment("Whether the player needs to craft the compendium before being able to use magic. If disabled, the player can use magic from the beginning.")
+                    .translation(TranslationConstants.CONFIG + "require_compendium_crafting")
+                    .define("require_compendium_crafting", true);
             BURNOUT_RATIO = builder
                     .comment("The default mana to burnout ratio, used in calculating spell costs.")
                     .translation(TranslationConstants.CONFIG + "burnout_ratio")
@@ -177,6 +183,10 @@ public final class Config {
                     .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.")
                     .translation(TranslationConstants.CONFIG + "max_etherium_storage")
                     .defineInRange("max_etherium_storage", 5000, 1, Short.MAX_VALUE);
+            AFFINITY_TOME_SHIFT = builder
+                    .comment("The affinity shift that should be applied by affinity tomes.")
+                    .translation(TranslationConstants.CONFIG + "affinity_tome_shift")
+                    .defineInRange("affinity_tome_shift", 0.1, 0.0, 1.0);
             ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING = builder
                     .comment("Whether inscription table upgrading is allowed in-world. If disabled, the upgrades must be applied through crafting.")
                     .translation(TranslationConstants.CONFIG + "enable_inscription_table_in_world_upgrading")
@@ -203,12 +213,12 @@ public final class Config {
                     .comment("The base value for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.base")
                     .worldRestart()
-                    .defineInRange("base", 200., 0, 1000000);
+                    .defineInRange("base", 80., 0, 1000000);
             BURNOUT_MULTIPLIER = builder
                     .comment("The multiplier for burnout calculation. Burnout is calculated as base + multiplier * (level - 1).")
                     .translation(TranslationConstants.CONFIG + "burnout.multiplier")
                     .worldRestart()
-                    .defineInRange("multiplier", 25., 0, 1000000);
+                    .defineInRange("multiplier", 10., 0, 1000000);
             BURNOUT_REGEN_MULTIPLIER = builder
                     .comment("The multiplier for burnout regeneration. Burnout regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.")
                     .translation(TranslationConstants.CONFIG + "burnout.regen_multiplier")

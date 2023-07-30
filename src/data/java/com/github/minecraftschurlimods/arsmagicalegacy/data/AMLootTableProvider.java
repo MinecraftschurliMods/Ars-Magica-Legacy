@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
@@ -13,16 +14,19 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.ChestLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
@@ -56,7 +60,7 @@ class AMLootTableProvider extends LootTableProvider {
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK), Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY));
+        return ImmutableList.of(Pair.of(BlockLootTableProvider::new, LootContextParamSets.BLOCK), Pair.of(EntityLootTableProvider::new, LootContextParamSets.ENTITY), Pair.of(ChestLootTableProvider::new, LootContextParamSets.CHEST));
     }
 
     @Override
@@ -192,6 +196,56 @@ class AMLootTableProvider extends LootTableProvider {
         @Override
         protected void add(EntityType<?> pEntityType, LootTable.Builder pLootTableBuilder) {
             lootTables.put(pEntityType.getDefaultLootTable(), pLootTableBuilder);
+        }
+    }
+
+    private static class ChestLootTableProvider extends ChestLoot {
+        private final Map<ResourceLocation, LootTable.Builder> lootTables = new HashMap<>();
+
+        protected void addTables() {
+            addTomeLoot(BuiltInLootTables.ANCIENT_CITY, Affinity.NONE, 0.1f);
+            addTomeLoot(BuiltInLootTables.ANCIENT_CITY_ICE_BOX, Affinity.NONE, 0.1f);
+            addTomeLoot(BuiltInLootTables.SHIPWRECK_TREASURE, Affinity.WATER, 0.1f);
+            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_BIG, Affinity.WATER, 0.025f);
+            addTomeLoot(BuiltInLootTables.UNDERWATER_RUIN_SMALL, Affinity.WATER, 0.025f);
+            addTomeLoot(BuiltInLootTables.BASTION_TREASURE, Affinity.FIRE, 0.1f);
+            addTomeLoot(BuiltInLootTables.NETHER_BRIDGE, Affinity.FIRE, 0.05f);
+            addTomeLoot(BuiltInLootTables.ABANDONED_MINESHAFT, Affinity.EARTH, 0.05f);
+            addTomeLoot(BuiltInLootTables.SIMPLE_DUNGEON, Affinity.EARTH, 0.05f);
+            addTomeLoot(BuiltInLootTables.DESERT_PYRAMID, Affinity.AIR, 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_DESERT_HOUSE, Affinity.AIR, 0.02f);
+            addTomeLoot(BuiltInLootTables.IGLOO_CHEST, Affinity.ICE, 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, Affinity.ICE, 0.02f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, Affinity.ICE, 0.02f);
+            addTomeLoot(BuiltInLootTables.PILLAGER_OUTPOST, Affinity.LIGHTNING, 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE, Affinity.LIGHTNING, 0.02f);
+            addTomeLoot(BuiltInLootTables.JUNGLE_TEMPLE, Affinity.NATURE, 0.1f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_PLAINS_HOUSE, Affinity.NATURE, 0.02f);
+            addTomeLoot(BuiltInLootTables.STRONGHOLD_LIBRARY, Affinity.ARCANE, 0.1f);
+            addTomeLoot(BuiltInLootTables.WOODLAND_MANSION, Affinity.ARCANE, 0.05f);
+            addTomeLoot(BuiltInLootTables.VILLAGE_TEMPLE, Affinity.ARCANE, 0.02f);
+            addTomeLoot(BuiltInLootTables.END_CITY_TREASURE, Affinity.ENDER, 0.1f);
+        }
+
+        @Override
+        public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+            addTables();
+            lootTables.forEach(consumer);
+        }
+
+        protected void add(String name, LootTable.Builder pLootTableBuilder) {
+            lootTables.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, name), pLootTableBuilder);
+        }
+
+        @SuppressWarnings("deprecation")
+        protected void addTomeLoot(ResourceLocation lootTable, ResourceLocation affinity, float chance) {
+            var helper = ArsMagicaAPI.get().getAffinityHelper();
+            ItemStack tome = helper.getTomeForAffinity(affinity);
+            ItemStack lifeTome = helper.getTomeForAffinity(Affinity.LIFE);
+            add(lootTable.getPath().replace("chests/", "chests/modify/"), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(tome.getItem()).apply(SetNbtFunction.setTag(tome.getOrCreateTag())).setWeight(19))
+                    .add(LootItem.lootTableItem(lifeTome.getItem()).apply(SetNbtFunction.setTag(lifeTome.getOrCreateTag())).setWeight(1))
+                    .add(EmptyLootItem.emptyItem().setWeight((int) (20 / chance) - 20))));
         }
     }
 }

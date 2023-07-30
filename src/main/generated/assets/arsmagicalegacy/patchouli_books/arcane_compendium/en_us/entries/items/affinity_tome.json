@@ -1,0 +1,66 @@
+{
+  "category": "arsmagicalegacy:items",
+  "icon": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:none\"}",
+  "name": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page0.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page1.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page2.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page3.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page4.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page5.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page6.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page7.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page8.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page9.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page10.text"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "arsmagicalegacy:affinity_tome{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:none\"}",
+      "text": "item.arsmagicalegacy.arcane_compendium.items.affinity_tome.page11.text"
+    }
+  ]
+}

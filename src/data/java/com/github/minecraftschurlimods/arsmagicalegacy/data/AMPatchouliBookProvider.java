@@ -182,6 +182,20 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .build();
         builder.addCategory("items", "Items", "", new ItemStack(AMItems.PURIFIED_VINTEUM_DUST.get()))
                 .setSortnum(2)
+                .addEntry("affinity_tome", "Affinity Tomes", affinityHelper.getTomeForAffinity(Affinity.NONE))
+                .addSimpleTextPage("Affinity Tomes are powerful artifacts that can be found very rarely in loot chests. They come in eleven variants, one for each $(l:affinities/affinities)affinity$() plus a special none-type variant. Using an Affinity Tome will give you a noteable boost in its affinity, while reducing your shift into all other affinities.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.WATER), "Water affinity tomes can be found in underwater structures, such as Underwater Ruins or Shipwreck treasures.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.FIRE), "Fire affinity tomes can be found in Bastion treasures, guarded by Piglins alongside their other valuables. If you're very lucky, you might also find one in a Nether Fortress.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.EARTH), "Earth affinity tomes can be found where miners left their remains. Thus, Abandoned Mineshafts or Dungeons are the best locations to start searching.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.AIR), "Air affinity tomes can be found in areas with hot and dry air, making Desert Pyramids the best location to search for them.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.ICE), "Ice affinity tomes can be found in cold biomes. Igloo laboratories should be double-checked!")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.LIGHTNING), "Lightning affinity tomes can be found mainly in tower-like structures, such as Pillager Outposts.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.NATURE), "Nature affinity tomes can be found hidden in lush places, such as Jungle Temples.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.LIFE), "Life affinity tomes have a special way of appearing. Any place other affinity tomes can spawn at, you have a very low chance to encounter a life tome instead.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.ARCANE), "Arcane affinity tomes are found in places where a lot of sorcery happens. Stronghold libraries and Woodland Mansions are prime examples of that.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.ENDER), "Ender affinity tomes can be found in the only End structure known to yield any loot - the End City.")
+                .addSimpleSpotlightPage(affinityHelper.getTomeForAffinity(Affinity.NONE), "None-type affinity tomes are found in the most nihilistic and dangerous structures of all: the Deep Dark's Ancient Cities.$(br2)These tomes are special because they don't have an affinity associated with them. As such, they lower your shift into all affinities, without buffing anything.")
+                .build()
                 .addEntry("arcane_ash", "Arcane Ash", new ItemStack(AMItems.ARCANE_ASH.get()))
                 .addSimpleTextPage("Created by burning $(l:items/arcane_compound)Arcane Compounds$() in a furnace, Arcane Ash's magical capabilities have made it a cornerstone of advanced magic.")
                 .addSimpleRecipePage("smelting", AMItems.ARCANE_ASH.getId())
@@ -336,11 +350,12 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         modifiers.build();
         TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(Affinity.WATER))
                 .setSortnum(8);
-        affinities.addEntry("affinities", "Affinities", new ItemStack(AMItems.AFFINITY_TOME.get()))
+        affinities.addEntry("affinities", "Affinities", affinityHelper.getTomeForAffinity(Affinity.NONE))
                 .setPriority(true)
                 .addSimpleTextPage("Affinities are magical elements of sorts. All components (excluding some of the very powerful, reality-bending ones) have an affinity that is associated with them. That means that if you use spells with a certain affinity a lot, you will shift into that affinity.")
-                .addSimpleTextPage("Shifting into an affinity bears individual side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
-                .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Affinity essences must be obtained from bosses, but can be duplicated through crafting later. Reports about lost affinity tomes have been spreading as well, though how to obtain or use them is currently subject to investigation.")
+                .addSimpleTextPage("Shifting into an affinity bears unique side effects, called abilities. Each affinity has different abilities. You can read about the abilities for each affinity in the dedicated chapters for them.$(br2)If you wish to see your current shift into an affinity, you can view your shifts in the Affinity tab of the $(l:blocks/occulus)Occulus$().")
+                .addSimpleTextPage("If you fully shift into an affinity, your affinities become locked. This means that your current affinity shifts are permanent and cannot be changed.$(br2)The only way to unlock them again is by using an $(l:items/affinity_tome)Affinity Tome$().")
+                .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Affinity essences must be obtained from bosses, but can be duplicated through crafting later.")
                 .build();
         for (final Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();

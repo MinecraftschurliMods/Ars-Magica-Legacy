@@ -81,7 +81,7 @@ public class SpellRecipeItem extends Item {
         var api = ArsMagicaAPI.get();
         ItemStack stack = player.getItemInHand(hand);
         if (!api.getMagicHelper().knowsMagic(player)) {
-            player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_RECIPE_UNKNOWN_DESCRIPTION), true);
+            player.displayClientMessage(Component.translatable(TranslationConstants.PREVENT_ITEM), true);
             return InteractionResultHolder.fail(stack);
         }
         ISpell spell = api.getSpellHelper().getSpell(stack);

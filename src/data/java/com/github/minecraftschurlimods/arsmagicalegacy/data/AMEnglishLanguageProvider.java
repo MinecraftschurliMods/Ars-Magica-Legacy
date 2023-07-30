@@ -354,9 +354,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.WAVE.getId(), "Wave", "You might not want to surf on this one.", "shapes", "You can project a wave of magic in front of you that rolls forward, applying its effect to everything in its path.");
         skillTranslation(AMSpellParts.WIZARDS_AUTUMN.getId(), "Wizard's Autumn", "Leaves must leave.", "components", "You have learned to focus your digging magic into a small radius that directly affects leaves.$(br2)This component has a built-in $(l:shapes/aoe)AoE$() that can be modified with $(l:modifiers/range)Range$() modifiers.");
         skillTranslation(AMSpellParts.ZONE.getId(), "Zone", "No one can beat me in my sanctuary!", "shapes", "You have learned to focus your will into an area effect that will persist for a time.");
+        configTranslation("require_compendium_crafting", "Whether the player needs to craft the compendium before being able to use magic. If disabled, the player can use magic from the beginning.");
         configTranslation("burnout_ratio", "The default mana to burnout ratio, used in calculating spell costs.");
         configTranslation("crafting_altar_check_time", "The time in ticks between multiblock validation checks for the crafting altar.");
         configTranslation("max_etherium_storage", "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.");
+        configTranslation("affinity_tome_shift", "The affinity shift that should be applied by affinity tomes.");
         configTranslation("enable_inscription_table_in_world_upgrading", "Whether inscription table upgrading is allowed in-world. If disabled, the upgrades must be applied through crafting.");
         configTranslation("mana.base", "The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.multiplier", "The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
@@ -486,9 +488,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_RECIPE_SPELL_GRAMMAR, "Spell Grammar");
         add(TranslationConstants.SPELL_RECIPE_TITLE, "Spell Recipe");
         add(TranslationConstants.SPELL_RECIPE_UNKNOWN, "Unknown Item");
-        add(TranslationConstants.SPELL_RECIPE_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
-        add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
@@ -502,7 +502,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.NO_TELEPORT, "You are too distorted to teleport!");
         add(TranslationConstants.NO_TELEPORT_NETHER, "The nether's force forbids you to simply teleport out of it!");
-        add(TranslationConstants.PREVENT, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.PREVENT_BLOCK, "Mythical forces prevent you from using this block!");
+        add(TranslationConstants.PREVENT_ITEM, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_CAST + "burned_out", "Burned out!");
         add(TranslationConstants.SPELL_CAST + "cancelled", "Spell cast failed!");
         add(TranslationConstants.SPELL_CAST + "effect_failed", "Spell cast failed!");

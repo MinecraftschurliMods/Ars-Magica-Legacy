@@ -1,0 +1,13 @@
+{
+  "type": "arsmagicalegacy:add_pool_to_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/simple_dungeon"
+    }
+  ],
+  "source": "arsmagicalegacy:chests/modify/simple_dungeon",
+  "tables": [
+    "minecraft:chests/simple_dungeon"
+  ]
+}
