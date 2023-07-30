@@ -66,7 +66,7 @@ public class SpellRecipeItem extends Item {
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
         if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID);
-        return super.getName(pStack);
+        return helper.getSpellName(pStack).orElse(super.getName(pStack));
     }
 
     @Override

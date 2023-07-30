@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
@@ -14,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +40,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         super(AMMenuTypes.INSCRIPTION_TABLE.get(), pContainerId);
         table.startOpen(inventory.player);
         this.table = table;
-        addSlot(new InscriptionTableSlot(table, inventory.player.isCreative() ? 48 : 102, 80));
+        addSlot(new InscriptionTableSlot(table, inventory.player.isCreative() ? 48 : 102, 74));
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(inventory, i, 30 + i * 18, 228));
         }
@@ -92,6 +95,13 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     /**
+     * @return The spell name, or null if there is no name.
+     */
+    public Optional<Component> getSpellName() {
+        return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
+    }
+
+    /**
      * @return The max allowed shape groups.
      */
     public int allowedShapeGroups() {
@@ -104,12 +114,12 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @param spellStack  The spell stack.
      * @param shapeGroups The shape groups.
      */
-    public void sendDataToServer(List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
+    public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
         ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
-        table.onSync(spell);
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), spell));
+        table.onSync(name, spell);
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }
 
     /**
@@ -164,7 +174,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
             if (stack.getItem() instanceof ISpellItem) {
                 var helper = ArsMagicaAPI.get().getSpellHelper();
                 ISpell spell = helper.getSpell(stack);
-                table.onSync(spell.isEmpty() ? null : spell);
+                table.onSync(helper.getSpellName(stack).orElse(Component.empty()), spell.isEmpty() ? null : spell);
             }
         }
     }

@@ -33,6 +33,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     private static final Component TITLE = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_TITLE);
     private ItemStack stack = ItemStack.EMPTY;
     private ISpell spellRecipe;
+    private Component spellName;
     private boolean open;
 
     public InscriptionTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -40,13 +41,15 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     }
 
     /**
+     * @param name The spell name.
      * @param spell  The spell.
      * @return A written book with the spell written onto it.
      */
-    public static ItemStack makeRecipe(ISpell spell) {
+    public static ItemStack makeRecipe(Component name, ISpell spell) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ItemStack stack = new ItemStack(AMItems.SPELL_RECIPE.get());
         helper.setSpell(stack, spell);
+        helper.setSpellName(stack, name);
         return stack;
     }
 
@@ -57,16 +60,26 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         if (pTag.contains(SPELL_RECIPE_KEY)) {
             spellRecipe = ISpell.CODEC.decode(NbtOps.INSTANCE, pTag.get(SPELL_RECIPE_KEY)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn).getFirst();
         }
+        if (pTag.contains(SPELL_NAME_KEY)) {
+            spellName = Component.Serializer.fromJson(pTag.getString(SPELL_NAME_KEY));
+        }
     }
 
     /**
      * Synchronizes the block entity.
      *
+     * @param name The spell name.
      * @param spell The spell.
      */
-    public void onSync(@Nullable ISpell spell) {
+    public void onSync(@Nullable Component name, @Nullable ISpell spell) {
+        spellName = name;
         spellRecipe = spell;
         setChanged();
+    }
+
+    @Nullable
+    public Component getSpellName() {
+        return spellName;
     }
 
     @Nullable
@@ -79,12 +92,13 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
      * @return The given item stack with the spell written onto it, or just the given item stack if there is no spell laid out yet.
      */
     public Optional<ItemStack> saveRecipe(ItemStack stack) {
-        return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(spell));
+        return Optional.ofNullable(getSpellRecipe()).map(spell -> spell.isEmpty() ? stack : makeRecipe(Objects.requireNonNullElseGet(spellName, () -> Component.translatable(TranslationConstants.SPELL_RECIPE_TITLE)), spell));
     }
 
     public void createSpell(ServerPlayer player) {
         ItemStack spell = new ItemStack(AMItems.SPELL.get());
         ArsMagicaAPI.get().getSpellHelper().setSpell(spell, Objects.requireNonNull(getSpellRecipe()));
+        ArsMagicaAPI.get().getSpellHelper().setSpellName(spell, spellName);
         player.addItem(spell);
     }
 
@@ -94,6 +108,9 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
         pCompound.put(INVENTORY_KEY, stack.save(new CompoundTag()));
         if (spellRecipe != null) {
             pCompound.put(SPELL_RECIPE_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spellRecipe).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        }
+        if (spellName != null) {
+            pCompound.putString(SPELL_NAME_KEY, Component.Serializer.toJson(spellName));
         }
     }
 

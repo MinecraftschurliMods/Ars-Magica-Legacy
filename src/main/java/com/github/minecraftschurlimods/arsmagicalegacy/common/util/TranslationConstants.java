@@ -25,6 +25,8 @@ public interface TranslationConstants {
     String SPELL_UNKNOWN                    = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown";
     String SPELL_UNKNOWN_DESCRIPTION        = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unknown.description";
     String SPELL_UNNAMED                    = "item."    + ArsMagicaAPI.MOD_ID + ".spell.unnamed";
+    String INSCRIPTION_TABLE_DEFAULT_NAME   = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.default_name";
+    String INSCRIPTION_TABLE_NAME           = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.name";
     String INSCRIPTION_TABLE_SEARCH         = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.search";
     String INSCRIPTION_TABLE_TITLE          = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.title";
     String INSCRIPTION_TABLE_CREATE_SPELL   = "screen."  + ArsMagicaAPI.MOD_ID + ".inscription_table.create_spell";

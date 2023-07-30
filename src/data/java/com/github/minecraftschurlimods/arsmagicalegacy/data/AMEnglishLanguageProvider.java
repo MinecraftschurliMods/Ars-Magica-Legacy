@@ -490,6 +490,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN_DESCRIPTION, "Mythical forces prevent you from using this item!");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
         add(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL, "Create Spell");

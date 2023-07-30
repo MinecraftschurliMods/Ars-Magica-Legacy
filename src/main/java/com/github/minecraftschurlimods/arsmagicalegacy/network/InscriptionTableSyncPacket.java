@@ -10,11 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 
-public record InscriptionTableSyncPacket(BlockPos blockPos, ISpell spell) implements IPacket {
+public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements IPacket {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync");
 
     public InscriptionTableSyncPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readWithCodec(ISpell.CODEC));
+        this(buf.readBlockPos(), buf.readComponent(), buf.readWithCodec(ISpell.CODEC));
     }
 
     @Override
@@ -25,11 +25,12 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, ISpell spell) implem
     @Override
     public void serialize(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
+        buf.writeComponent(name != null ? name : Component.empty());
         buf.writeWithCodec(ISpell.CODEC, spell);
     }
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(blockPos)).onSync(spell));
+        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(blockPos)).onSync(name.getString().length() == 0 ? null : name, spell));
     }
 }

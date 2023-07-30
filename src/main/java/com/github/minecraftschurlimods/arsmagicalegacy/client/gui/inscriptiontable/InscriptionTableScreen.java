@@ -29,9 +29,12 @@ import java.util.Objects;
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
     private static final Component SEARCH_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
+    private static final Component NAME_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_NAME);
+    private static final Component DEFAULT_NAME = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
     private final List<DragArea<SpellPartDraggable>> dragAreas = new ArrayList<>();
     private SpellPartDraggable dragged;
     private EditBox searchBar;
+    private EditBox nameBar;
     private SpellPartSourceArea sourceArea;
     private SpellGrammarArea spellGrammarArea;
     private ShapeGroupListArea shapeGroupArea;
@@ -55,7 +58,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     protected void init() {
         super.init();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
-            addRenderableWidget(new Button(leftPos + 72, topPos + 78, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+            addRenderableWidget(new Button(leftPos + 72, topPos + 72, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
                 if (shapeGroupArea.isValid() && !spellGrammarArea.getAll().isEmpty()) {
                     menu.createSpell();
@@ -64,13 +67,16 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
         spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16);
-        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 102, this);
-        searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 62, 140, 12, 64, searchBar, font, SEARCH_LABEL));
+        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this);
+        searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 140, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
+        nameBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 93, 140, 12, 64, nameBar, font, NAME_LABEL));
         dragAreas.add(sourceArea);
         dragAreas.add(spellGrammarArea);
         dragAreas.add(shapeGroupArea);
         menu.getSpellRecipe().ifPresent(this::existingRecipe);
+        menu.getSpellName().ifPresent(this::existingName);
+        setDragged(null);
     }
 
     @Override
@@ -95,7 +101,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, GUI);
         blit(pPoseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        blit(pPoseStack, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 79, 220, 0, 18, 18);
+        blit(pPoseStack, leftPos + (Objects.requireNonNull(getMinecraft().player).isCreative() ? 47 : 101), topPos + 73, 220, 0, 18, 18);
     }
 
     @Override
@@ -201,7 +207,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         shapeGroupArea.setLocks();
     }
 
+    private void existingName(Component name) {
+        nameBar.setValue(name.getString());
+        nameBar.setTextColor(0xffffff);
+    }
+
     private void sync() {
-        menu.sendDataToServer(spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData());
+        menu.sendDataToServer(nameBar.getValue().equals(NAME_LABEL.getString()) ? null : Component.literal(nameBar.getValue()), spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData());
     }
 }
