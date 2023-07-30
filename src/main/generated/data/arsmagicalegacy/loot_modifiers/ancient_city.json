@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/ancient_city"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/ancient_city",
+  "source": "arsmagicalegacy:chests/modify/ancient_city",
   "tables": [
     "minecraft:chests/ancient_city"
   ]

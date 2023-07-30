@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/village/village_snowy_house"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/village/village_snowy_house",
+  "source": "arsmagicalegacy:chests/modify/village/village_snowy_house",
   "tables": [
     "minecraft:chests/village/village_snowy_house"
   ]

@@ -104,28 +104,28 @@ public interface IAffinityHelper {
      * @param affinity The id of the affinity to add the depth for.
      * @param amount   The amount to add.
      */
-    void addAffinityDepth(Player player, ResourceLocation affinity, float amount);
+    void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount);
 
     /**
      * @param player   The player to add the affinity depth for.
      * @param affinity The affinity to add the depth for.
      * @param amount   The amount to add.
      */
-    void addAffinityDepth(Player player, Affinity affinity, float amount);
+    void increaseAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
      * @param player   The player to subtract the affinity depth for.
      * @param affinity The id of the affinity to subtract the depth for.
      * @param amount   The amount to subtract.
      */
-    void subtractAffinityDepth(Player player, ResourceLocation affinity, float amount);
+    void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount);
 
     /**
      * @param player   The player to subtract the affinity depth for.
      * @param affinity The affinity to subtract the depth for.
      * @param amount   The amount to subtract.
      */
-    void subtractAffinityDepth(Player player, Affinity affinity, float amount);
+    void decreaseAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
      * Applies the affinity shift for the given player and affinity.

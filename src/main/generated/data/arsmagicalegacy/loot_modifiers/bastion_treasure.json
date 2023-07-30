@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/bastion_treasure"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/bastion_treasure",
+  "source": "arsmagicalegacy:chests/modify/bastion_treasure",
   "tables": [
     "minecraft:chests/bastion_treasure"
   ]

@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/simple_dungeon"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/simple_dungeon",
+  "source": "arsmagicalegacy:chests/modify/simple_dungeon",
   "tables": [
     "minecraft:chests/simple_dungeon"
   ]

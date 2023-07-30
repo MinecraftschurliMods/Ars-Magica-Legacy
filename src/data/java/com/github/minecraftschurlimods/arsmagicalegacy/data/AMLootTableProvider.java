@@ -217,7 +217,7 @@ class AMLootTableProvider extends LootTableProvider {
         }
 
         protected void add(String name, LootTable.Builder pLootTableBuilder) {
-            lootTables.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, "chests/modify/" + name), pLootTableBuilder);
+            lootTables.put(new ResourceLocation(ArsMagicaAPI.MOD_ID, name), pLootTableBuilder);
         }
 
         @SuppressWarnings("deprecation")
@@ -225,7 +225,7 @@ class AMLootTableProvider extends LootTableProvider {
             var helper = ArsMagicaAPI.get().getAffinityHelper();
             ItemStack tome = helper.getTomeForAffinity(affinity);
             ItemStack lifeTome = helper.getTomeForAffinity(Affinity.LIFE);
-            add(lootTable.getPath(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+            add(lootTable.getPath().replace("chests/", "chests/modify/"), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                     .add(LootItem.lootTableItem(tome.getItem()).apply(SetNbtFunction.setTag(tome.getOrCreateTag())).setWeight(19))
                     .add(LootItem.lootTableItem(lifeTome.getItem()).apply(SetNbtFunction.setTag(lifeTome.getOrCreateTag())).setWeight(1))
                     .add(EmptyLootItem.emptyItem().setWeight((int) (20 / chance) - 20))));

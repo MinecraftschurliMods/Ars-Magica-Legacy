@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/igloo_chest"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/igloo_chest",
+  "source": "arsmagicalegacy:chests/modify/igloo_chest",
   "tables": [
     "minecraft:chests/igloo_chest"
   ]

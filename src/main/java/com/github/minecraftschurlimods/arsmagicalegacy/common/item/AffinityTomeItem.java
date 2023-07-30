@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
@@ -57,13 +56,13 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
             if (affinity == a && a.getId() != Affinity.NONE) {
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a) + shift, false);
                 if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    helper.addAffinityDepth(pPlayer, a, shift);
+                    helper.increaseAffinityDepth(pPlayer, a, shift);
                     MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a), false));
                 }
             } else {
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a) - shift, false);
                 if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    helper.subtractAffinityDepth(pPlayer, a, shift);
+                    helper.decreaseAffinityDepth(pPlayer, a, shift);
                     MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a), false));
                 }
             }

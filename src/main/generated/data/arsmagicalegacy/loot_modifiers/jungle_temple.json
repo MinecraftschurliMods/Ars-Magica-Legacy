@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/jungle_temple"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/jungle_temple",
+  "source": "arsmagicalegacy:chests/modify/jungle_temple",
   "tables": [
     "minecraft:chests/jungle_temple"
   ]

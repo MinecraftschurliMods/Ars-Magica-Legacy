@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/underwater_ruin_big"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/underwater_ruin_big",
+  "source": "arsmagicalegacy:chests/modify/underwater_ruin_big",
   "tables": [
     "minecraft:chests/underwater_ruin_big"
   ]

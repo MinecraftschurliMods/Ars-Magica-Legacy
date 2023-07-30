@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/underwater_ruin_small"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/underwater_ruin_small",
+  "source": "arsmagicalegacy:chests/modify/underwater_ruin_small",
   "tables": [
     "minecraft:chests/underwater_ruin_small"
   ]

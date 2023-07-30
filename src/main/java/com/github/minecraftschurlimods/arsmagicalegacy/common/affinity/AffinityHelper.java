@@ -144,7 +144,7 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public void addAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+    public void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
         runIfPresent(player, holder -> {
             holder.addToAffinity(affinity, amount);
             if (player instanceof ServerPlayer sp) {
@@ -154,12 +154,12 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public void addAffinityDepth(Player player, Affinity affinity, float amount) {
-        addAffinityDepth(player, affinity.getId(), amount);
+    public void increaseAffinityDepth(Player player, Affinity affinity, float amount) {
+        increaseAffinityDepth(player, affinity.getId(), amount);
     }
 
     @Override
-    public void subtractAffinityDepth(Player player, ResourceLocation affinity, float amount) {
+    public void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
         runIfPresent(player, holder -> {
             holder.subtractFromAffinity(affinity, amount);
             if (player instanceof ServerPlayer sp) {
@@ -169,8 +169,8 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
-    public void subtractAffinityDepth(Player player, Affinity affinity, float amount) {
-        subtractAffinityDepth(player, affinity.getId(), amount);
+    public void decreaseAffinityDepth(Player player, Affinity affinity, float amount) {
+        decreaseAffinityDepth(player, affinity.getId(), amount);
     }
 
     @Override

@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/stronghold_library"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/stronghold_library",
+  "source": "arsmagicalegacy:chests/modify/stronghold_library",
   "tables": [
     "minecraft:chests/stronghold_library"
   ]

@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/end_city_treasure"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/end_city_treasure",
+  "source": "arsmagicalegacy:chests/modify/end_city_treasure",
   "tables": [
     "minecraft:chests/end_city_treasure"
   ]

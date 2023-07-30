@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/abandoned_mineshaft"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/abandoned_mineshaft",
+  "source": "arsmagicalegacy:chests/modify/abandoned_mineshaft",
   "tables": [
     "minecraft:chests/abandoned_mineshaft"
   ]

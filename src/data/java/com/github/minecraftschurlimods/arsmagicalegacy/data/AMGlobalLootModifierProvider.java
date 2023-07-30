@@ -46,7 +46,7 @@ public class AMGlobalLootModifierProvider extends GlobalLootModifierProvider {
         String path = table.getPath();
         add(path.replace("chests/", ""), new AddPoolToTableModifier(
                 new LootItemCondition[]{LootTableIdCondition.builder(table).build()},
-                new ResourceLocation(ArsMagicaAPI.MOD_ID, "chests/modify/" + path),
+                new ResourceLocation(ArsMagicaAPI.MOD_ID, path.replace("chests/", "chests/modify/")),
                 List.of(table)));
     }
 }

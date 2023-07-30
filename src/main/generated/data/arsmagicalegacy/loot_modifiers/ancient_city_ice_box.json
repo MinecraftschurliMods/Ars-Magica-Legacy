@@ -6,7 +6,7 @@
       "loot_table_id": "minecraft:chests/ancient_city_ice_box"
     }
   ],
-  "source": "arsmagicalegacy:chests/modify/chests/ancient_city_ice_box",
+  "source": "arsmagicalegacy:chests/modify/ancient_city_ice_box",
   "tables": [
     "minecraft:chests/ancient_city_ice_box"
   ]
