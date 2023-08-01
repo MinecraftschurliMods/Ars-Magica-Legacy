@@ -1,20 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
+    "G": {
+      "tag": "forge:ingots/gold"
     },
     "T": {
       "tag": "forge:gems/topaz"
-    },
-    "V": {
-      "tag": "forge:dusts/vinteum"
     }
   },
   "pattern": [
-    "ITI",
-    " V ",
-    " I "
+    "GTG",
+    " G ",
+    " G "
   ],
   "result": {
     "item": "arsmagicalegacy:crystal_wrench"

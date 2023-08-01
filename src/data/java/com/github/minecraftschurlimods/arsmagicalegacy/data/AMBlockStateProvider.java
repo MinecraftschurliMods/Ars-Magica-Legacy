@@ -395,7 +395,7 @@ class AMBlockStateProvider extends BlockStateProvider {
     private void wizardsChalkBlock(RegistryObject<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
         for (int i = 0; i < models.length; i++) {
-            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i)).renderType("cutout");
+            models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i)).renderType("translucent");
         }
         getVariantBuilder(block.get()).forAllStates(state -> {
             ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(models[state.getValue(WizardsChalkBlock.VARIANT)]);
