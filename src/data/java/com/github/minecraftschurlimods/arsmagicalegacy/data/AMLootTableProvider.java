@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.ChestLoot;
@@ -27,11 +28,18 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
+import net.minecraft.world.level.storage.loot.providers.nbt.NbtProviders;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -65,7 +73,16 @@ class AMLootTableProvider extends LootTableProvider {
         @Override
         protected void addTables() {
             dropSelf(AMBlocks.OCCULUS.get());
-            add(AMBlocks.INSCRIPTION_TABLE.get(), p -> BlockLoot.createSinglePropConditionTable(p, InscriptionTableBlock.HALF, InscriptionTableBlock.Half.RIGHT));
+            add(AMBlocks.INSCRIPTION_TABLE.get(), p -> {
+                LootPoolSingletonContainer.Builder<?> builder = LootItem.lootTableItem(p);
+                builder.apply(CopyBlockState.copyState(p).copy(InscriptionTableBlock.TIER));
+                LootPool.Builder pool = LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(InscriptionTableBlock.HALF, InscriptionTableBlock.Half.RIGHT)))
+                        .when(ExplosionCondition.survivesExplosion())
+                        .add(builder);
+                return LootTable.lootTable().withPool(pool);
+            });
             dropSelf(AMBlocks.ALTAR_CORE.get());
             dropSelf(AMBlocks.MAGIC_WALL.get());
             add(AMBlocks.OBELISK.get(), p -> BlockLoot.createSinglePropConditionTable(p, ObeliskBlock.PART, ObeliskBlock.Part.LOWER));

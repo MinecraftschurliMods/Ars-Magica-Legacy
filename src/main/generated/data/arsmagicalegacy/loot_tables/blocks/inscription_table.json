@@ -5,19 +5,26 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
+          "block": "arsmagicalegacy:inscription_table",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "half": "right"
+          }
+        },
+        {
           "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
+          "functions": [
             {
               "block": "arsmagicalegacy:inscription_table",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "half": "right"
-              }
+              "function": "minecraft:copy_state",
+              "properties": [
+                "tier"
+              ]
             }
           ],
           "name": "arsmagicalegacy:inscription_table"

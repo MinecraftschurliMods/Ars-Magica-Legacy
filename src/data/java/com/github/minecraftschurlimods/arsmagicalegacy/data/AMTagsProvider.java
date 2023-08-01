@@ -17,6 +17,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -128,6 +129,7 @@ final class AMTagsProvider {
             tag(AMTags.Items.RUNES_RED).add(AMItems.COLORED_RUNE.get(DyeColor.RED));
             tag(AMTags.Items.RUNES_BLACK).add(AMItems.COLORED_RUNE.get(DyeColor.BLACK));
             tag(AMTags.Items.RUNES).addTag(AMTags.Items.RUNES_COLORLESS).addTag(AMTags.Items.RUNES_BLACK).addTag(AMTags.Items.RUNES_BLUE).addTag(AMTags.Items.RUNES_BROWN).addTag(AMTags.Items.RUNES_CYAN).addTag(AMTags.Items.RUNES_GRAY).addTag(AMTags.Items.RUNES_GREEN).addTag(AMTags.Items.RUNES_LIGHT_BLUE).addTag(AMTags.Items.RUNES_LIGHT_GRAY).addTag(AMTags.Items.RUNES_LIME).addTag(AMTags.Items.RUNES_MAGENTA).addTag(AMTags.Items.RUNES_ORANGE).addTag(AMTags.Items.RUNES_PINK).addTag(AMTags.Items.RUNES_PURPLE).addTag(AMTags.Items.RUNES_RED).addTag(AMTags.Items.RUNES_WHITE).addTag(AMTags.Items.RUNES_YELLOW);
+            tag(AMTags.Items.INSCRIPTION_TABLE_BOOKS).add(net.minecraft.world.item.Items.WRITABLE_BOOK);
             tag(AMTags.Items.SPELLCRAFTING_START).addTag(AMTags.Items.RUNES_COLORLESS);
             tag(AMTags.Items.SPELLCRAFTING_END).add(AMItems.SPELL_PARCHMENT.get());
             tag(ItemTags.LOGS).addTag(AMTags.Items.WITCHWOOD_LOGS);

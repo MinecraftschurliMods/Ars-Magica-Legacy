@@ -51,6 +51,16 @@
       "type": "patchouli:crafting",
       "recipe": "arsmagicalegacy:vinteum_block",
       "recipe2": "arsmagicalegacy:vinteum_dust"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:moonstone_block",
+      "recipe2": "arsmagicalegacy:moonstone"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:sunstone_block",
+      "recipe2": "arsmagicalegacy:sunstone"
     }
   ]
 }

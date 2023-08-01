@@ -9,8 +9,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "arsmagicalegacy:obelisk",
-      "recipe2": "arsmagicalegacy:wizards_chalk"
+      "recipe": "arsmagicalegacy:obelisk"
     },
     {
       "type": "patchouli:multiblock",

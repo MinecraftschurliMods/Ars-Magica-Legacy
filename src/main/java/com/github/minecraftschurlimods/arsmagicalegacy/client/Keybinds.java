@@ -23,12 +23,18 @@ public final class Keybinds {
                 ArsMagicaAPI.get().openSpellCustomizationGui(ctx.get("level"), ctx.get("player"), ctx.get("stack"));
                 return true;
             }).build();
-    public static final Keybind NEXT_SHAPE_GROUP = KEYBIND_MANAGER.keybind("next_shape_group", InputConstants.KEY_C)
-            .withModifier(KeyModifier.SHIFT)
+    public static final Keybind NEXT_SHAPE_GROUP = KEYBIND_MANAGER.keybind("next_shape_group", InputConstants.KEY_PERIOD)
             .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
             .withContext(KeyConflictContext.IN_GAME)
             .withCallback(ctx -> {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new NextShapeGroupPacket((InteractionHand) ctx.get("hand")));
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), false));
+                return true;
+            }).build();
+    public static final Keybind PREV_SHAPE_GROUP = KEYBIND_MANAGER.keybind("prev_shape_group", InputConstants.KEY_COMMA)
+            .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
+            .withContext(KeyConflictContext.IN_GAME)
+            .withCallback(ctx -> {
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), true));
                 return true;
             }).build();
 

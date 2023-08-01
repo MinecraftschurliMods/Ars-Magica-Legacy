@@ -2,13 +2,14 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscription
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +40,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         super(AMMenuTypes.INSCRIPTION_TABLE.get(), pContainerId);
         table.startOpen(inventory.player);
         this.table = table;
-        addSlot(new InscriptionTableSlot(table));
+        addSlot(new InscriptionTableSlot(table, inventory.player.isCreative() ? 48 : 102, 74));
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(inventory, i, 30 + i * 18, 228));
         }
@@ -103,17 +105,16 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      * @return The max allowed shape groups.
      */
     public int allowedShapeGroups() {
-        return Config.SERVER.MAX_SHAPE_GROUPS.get();
+        return table.getBlockState().getValue(InscriptionTableBlock.TIER) + 2;
     }
 
     /**
      * Sends the menu data to the server.
      *
-     * @param name        The name of the spell.
      * @param spellStack  The spell stack.
      * @param shapeGroups The shape groups.
      */
-    public void sendDataToServer(Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
+    public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups) {
         var api = ArsMagicaAPI.get();
         Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
         ISpell spell = api.makeSpell(SpellStack.of(spellStack.stream().map(registryAccess).toList()), shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toArray(ShapeGroup[]::new));
@@ -130,7 +131,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
     public void createSpell() {
         Optional<ISpell> recipe = getSpellRecipe();
-        if (recipe.isPresent() && !recipe.get().isEmpty()) {
+        if (recipe.isPresent() && !recipe.get().isEmpty() && recipe.get().isValid()) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
         }
     }
@@ -138,8 +139,8 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     private static class InscriptionTableSlot extends Slot {
         private final InscriptionTableBlockEntity table;
 
-        public InscriptionTableSlot(InscriptionTableBlockEntity table) {
-            super(table, 0, 102, 74);
+        public InscriptionTableSlot(InscriptionTableBlockEntity table, int x, int y) {
+            super(table, 0, x, y);
             this.table = table;
         }
 
@@ -150,7 +151,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return /*stack.getItem() instanceof ISpellItem || */stack.getItem() == Items.WRITABLE_BOOK;
+            return stack.is(AMTags.Items.INSCRIPTION_TABLE_BOOKS);
         }
 
         @Override

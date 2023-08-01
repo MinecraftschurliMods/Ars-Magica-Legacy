@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
@@ -33,6 +34,9 @@ class AMItemModelProvider extends ItemModelProvider {
         singleTexture("arcane_compendium", new ResourceLocation("item/generated"), "layer0", modLoc("item/arcane_compendium"));
         skillPointItem(INFINITY_ORB);
         blockItem(OCCULUS);
+        itemGenerated(INSCRIPTION_TABLE_UPGRADE_TIER_1);
+        itemGenerated(INSCRIPTION_TABLE_UPGRADE_TIER_2);
+        itemGenerated(INSCRIPTION_TABLE_UPGRADE_TIER_3);
         blockItem(ALTAR_CORE);
         blockItem(MAGIC_WALL);
         blockItem(OBELISK).transforms()

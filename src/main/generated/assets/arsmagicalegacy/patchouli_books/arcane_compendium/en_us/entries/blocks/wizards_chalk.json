@@ -1,0 +1,15 @@
+{
+  "category": "arsmagicalegacy:blocks",
+  "icon": "arsmagicalegacy:wizards_chalk{\"Damage\":0}",
+  "name": "item.arsmagicalegacy.arcane_compendium.blocks.wizards_chalk.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.blocks.wizards_chalk.page0.text"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "arsmagicalegacy:wizards_chalk"
+    }
+  ]
+}

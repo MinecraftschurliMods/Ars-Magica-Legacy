@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class SpellRecipeItem extends Item {
-
     public SpellRecipeItem() {
         super(AMItems.HIDDEN_ITEM_1);
     }

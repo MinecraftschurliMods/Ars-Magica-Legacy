@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dropdis;
+package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -24,10 +24,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
@@ -106,6 +110,33 @@ public final class AMUtil {
             hitResult = entityHitResult;
         }
         return hitResult;
+    }
+
+    /**
+     * @param list      The list to get the element from.
+     * @param predicate The predicate to test against.
+     * @return The last element in the given list that matches the given predicate.
+     * @param <T> The type of the list.
+     */
+    @Nullable
+    public static <T> T getFirstMatching(List<T> list, Predicate<T> predicate) {
+        for (T t : list) {
+            if (predicate.test(t)) return t;
+        }
+        return null;
+    }
+
+    /**
+     * @param list      The list to get the element from.
+     * @param predicate The predicate to test against.
+     * @return The last element in the given list that matches the given predicate.
+     * @param <T> The type of the list.
+     */
+    @Nullable
+    public static <T> T getLastMatching(List<T> list, Predicate<T> predicate) {
+        List<T> l = new ArrayList<>(list);
+        Collections.reverse(l);
+        return getFirstMatching(l, predicate);
     }
 
     /**

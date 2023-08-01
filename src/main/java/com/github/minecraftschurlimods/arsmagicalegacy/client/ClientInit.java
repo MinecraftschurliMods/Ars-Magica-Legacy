@@ -13,11 +13,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ObeliskScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RiftScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RuneBagScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SpellBookScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.BurnoutHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ManaHUD;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.hud.ShapeGroupHUD;
@@ -101,7 +101,7 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -137,7 +137,7 @@ public final class ClientInit {
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
         forgeBus.addListener(ClientInit::renderHand);
-        forgeBus.addListener(ClientInit::renderLevelLast);
+        forgeBus.addListener(ClientInit::renderLevelStage);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -293,7 +293,7 @@ public final class ClientInit {
      */
     private static void renderHand(RenderHandEvent event) {
         Player p = ClientHelper.getLocalPlayer();
-        if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
+        if (!(p instanceof LocalPlayer player) || p.isInvisible() || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
         ItemStack itemStack = event.getItemStack();
         if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty()))
             return;
@@ -321,7 +321,8 @@ public final class ClientInit {
         stack.popPose();
     }
 
-    private static void renderLevelLast(RenderLevelLastEvent event) {
+    private static void renderLevelStage(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
         Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
         Level level = Objects.requireNonNull(Minecraft.getInstance().level);
         var helper = ArsMagicaAPI.get().getSpellHelper();

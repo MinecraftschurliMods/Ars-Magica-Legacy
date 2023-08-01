@@ -8,11 +8,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkEvent;
 
-public record NextShapeGroupPacket(InteractionHand hand) implements IPacket {
+public record NextShapeGroupPacket(InteractionHand hand, boolean reverse) implements IPacket {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "next_shape_group");
 
     public NextShapeGroupPacket(FriendlyByteBuf buf) {
-        this(buf.readEnum(InteractionHand.class));
+        this(buf.readEnum(InteractionHand.class), buf.readBoolean());
     }
 
     @Override
@@ -23,13 +23,17 @@ public record NextShapeGroupPacket(InteractionHand hand) implements IPacket {
     @Override
     public void serialize(FriendlyByteBuf buf) {
         buf.writeEnum(hand);
+        buf.writeBoolean(reverse);
     }
 
     @Override
     public void handle(NetworkEvent.Context context) {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            if (player != null) {
+            if (player == null) return;
+            if (reverse) {
+                ArsMagicaAPI.get().getSpellHelper().prevShapeGroup(player.getItemInHand(hand));
+            } else {
                 ArsMagicaAPI.get().getSpellHelper().nextShapeGroup(player.getItemInHand(hand));
             }
         });

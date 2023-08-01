@@ -6,24 +6,19 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.InscriptionTableScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Collections;
 import java.util.List;
 
 @JeiPlugin
@@ -43,16 +38,6 @@ public class JEICompat implements IModPlugin {
                 registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, item, SkillPointSubtypeInterpreter.INSTANCE);
             }
         }
-    }
-
-    @Override
-    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addGuiContainerHandler(InscriptionTableScreen.class, new IGuiContainerHandler<>() {
-            @Override
-            public List<Rect2i> getGuiExtraAreas(InscriptionTableScreen containerScreen) {
-                return containerScreen.getMinecraft().player.isCreative() ? Collections.singletonList(new Rect2i(containerScreen.getGuiLeft() + containerScreen.getXSize(), containerScreen.getGuiTop(), 105, 25)) : Collections.emptyList();
-            }
-        });
     }
 
     @Override

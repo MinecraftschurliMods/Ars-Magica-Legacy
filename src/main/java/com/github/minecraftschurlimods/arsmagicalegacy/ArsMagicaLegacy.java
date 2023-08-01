@@ -40,7 +40,7 @@ import software.bernie.geckolib3.GeckoLib;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 4);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 5);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 

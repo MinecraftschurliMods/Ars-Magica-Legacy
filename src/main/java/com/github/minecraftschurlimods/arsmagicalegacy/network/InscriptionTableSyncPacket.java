@@ -25,12 +25,12 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpe
     @Override
     public void serialize(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        buf.writeComponent(name);
+        buf.writeComponent(name != null ? name : Component.empty());
         buf.writeWithCodec(ISpell.CODEC, spell);
     }
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(blockPos)).onSync(name, spell));
+        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().getLevel().getBlockEntity(blockPos)).onSync(name.getString().length() == 0 ? null : name, spell));
     }
 }

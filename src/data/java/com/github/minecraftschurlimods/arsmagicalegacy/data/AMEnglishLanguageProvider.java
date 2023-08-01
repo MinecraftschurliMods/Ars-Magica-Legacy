@@ -41,6 +41,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 class AMEnglishLanguageProvider extends AMLanguageProvider {
     AMEnglishLanguageProvider(DataGenerator generator) {
         super(generator, "en_us");
@@ -52,6 +53,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         itemGroupTranslation(SpellItem.PREFAB_SPELLS_TAB, ArsMagicaLegacy.getModName() + " - Prefab Spells");
         blockIdTranslation(AMBlocks.OCCULUS);
         blockIdTranslation(AMBlocks.INSCRIPTION_TABLE);
+        itemIdTranslation(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1);
+        itemIdTranslation(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2);
+        itemIdTranslation(AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3);
         blockIdTranslation(AMBlocks.ALTAR_CORE);
         blockIdTranslation(AMBlocks.MAGIC_WALL);
         blockIdTranslation(AMBlocks.OBELISK);
@@ -354,8 +358,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("burnout_ratio", "The default mana to burnout ratio, used in calculating spell costs.");
         configTranslation("crafting_altar_check_time", "The time in ticks between multiblock validation checks for the crafting altar.");
         configTranslation("max_etherium_storage", "The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.");
-        configTranslation("max_shape_groups", "The maximum number of shape groups allowed for new spells.");
         configTranslation("affinity_tome_shift", "The affinity shift that should be applied by affinity tomes.");
+        configTranslation("enable_inscription_table_in_world_upgrading", "Whether inscription table upgrading is allowed in-world. If disabled, the upgrades must be applied through crafting.");
         configTranslation("mana.base", "The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.multiplier", "The multiplier for mana calculation. Mana is calculated as base + multiplier * (level - 1).");
         configTranslation("mana.regen_multiplier", "The multiplier for mana regeneration. Mana regen is calculated as (base + multiplier * (level - 1)) * regen_multiplier.");
@@ -365,8 +369,18 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         configTranslation("leveling.base", "The base value for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
         configTranslation("leveling.multiplier", "The multiplier for leveling calculation. XP cost is calculated as multiplier * base ^ level.");
         configTranslation("leveling.extra_blue_skill_points", "The extra blue skill points a player gets on level 1.");
-        configTranslation("damage", "Damage of damage-based components, in half hearts.");
-        configTranslation("duration", "Duration of effect-based components, in ticks.");
+        configTranslation("spell_parts.damage", "Damage of damage-based components, in half hearts.");
+        configTranslation("spell_parts.duration", "Duration of effect-based components, in ticks.");
+        configTranslation("entities.dryad.bonemeal_timer", "Every X ticks, dryads have a chance to apply bonemeal to the ground around them.");
+        configTranslation("entities.dryad.bonemeal_chance", "The chance of bonemeal being applied.");
+        configTranslation("entities.dryad.bonemeal_radius", "The radius of bonemeal application.");
+        configTranslation("entities.dryad.kill_cooldown", "If enough dryads are killed during this amount of time (in seconds), the Nature Guardian will spawn. Set this to 0 to disable this way of summoning the Nature Guardian (if you have an alternate way to spawn it).");
+        configTranslation("entities.dryad.kills_to_nature_guardian_spawn", "If this amount of dryads is killed within the required timeframe, the Nature Guardian will spawn.");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense"), "Offense");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "defense"), "Defense");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "utility"), "Utility");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity"), "Affinity");
+        occulusTabTranslation(new ResourceLocation(ArsMagicaAPI.MOD_ID, "talent"), "Talents");
         damageSourceTranslation("falling_star", "%1$s was obliterated by a falling star");
         damageSourceTranslation("nature_scythe", "%1$s was ripped apart by %2$s's scythe");
         damageSourceTranslation("shockwave", "%1$s was obliterated by a shockwave");
@@ -548,11 +562,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
         add("key." + ArsMagicaAPI.MOD_ID + ".configure_spell", "Configure Spell");
         add("key." + ArsMagicaAPI.MOD_ID + ".next_shape_group", "Next Shape Group");
+        add("key." + ArsMagicaAPI.MOD_ID + ".prev_shape_group", "Previous Shape Group");
         add("potion.potency.5", "VI");
         add("potion.potency.6", "VII");
-        add("potion.potency.7", "VII");
+        add("potion.potency.7", "VIII");
         add("potion.potency.8", "IX");
         add("potion.potency.9", "X");
+        add("hud_manager", "HUD Manager");
         add("hud_manager.open", "Open HUD Manager");
     }
 
@@ -827,6 +843,16 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      */
     private void skillPointItemTranslation(ResourceLocation skillPointItemId, ResourceLocation skillPointId, String translation) {
         add(Util.makeDescriptionId(Util.makeDescriptionId("item", skillPointItemId), skillPointId), translation);
+    }
+
+    /**
+     * Adds an occulus tab translation.
+     *
+     * @param tab         The occulus tab to add the translation for.
+     * @param translation The translation to use.
+     */
+    private void occulusTabTranslation(ResourceLocation tab, String translation) {
+        add("occulus_tab." + tab.getNamespace() + "." + tab.getPath(), translation);
     }
 
     /**

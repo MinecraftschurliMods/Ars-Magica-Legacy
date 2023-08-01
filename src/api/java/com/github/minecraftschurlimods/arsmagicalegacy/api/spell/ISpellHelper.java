@@ -134,4 +134,11 @@ public interface ISpellHelper {
      * @param stack The spell item stack to select the next shape group of.
      */
     void nextShapeGroup(ItemStack stack);
+
+    /**
+     * Selects the previous shape group of the given spell item stack, wrapping around.
+     *
+     * @param stack The spell item stack to select the next shape group of.
+     */
+    void prevShapeGroup(ItemStack stack);
 }

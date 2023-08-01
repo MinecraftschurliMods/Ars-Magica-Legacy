@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,15 +35,18 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 @SuppressWarnings("deprecation")
 public class InscriptionTableBlock extends Block implements EntityBlock {
-    public static final IntegerProperty TIER = IntegerProperty.create("tier", 0, 3);
+    public static final IntegerProperty TIER = IntegerProperty.create(InscriptionTableBlock.TIER_KEY, 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = EnumProperty.create("half", Half.class);
     private static final VoxelShape LEFT_X = AMUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 1, 1, 14, 16), box(15, 13, 1, 16, 14, 16), box(0, 12, 0, 16, 14, 1), box(6, 5, 3, 10, 11, 4), box(4, 3, 3, 12, 5, 4), box(5, 11, 2, 11, 14, 4), box(0, 0, 3, 4, 5, 5), box(12, 0, 3, 16, 5, 5), box(4, 3, 3, 12, 5, 4));
     private static final VoxelShape LEFT_Z = AMUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 0, 15, 14, 1), box(0, 13, 15, 15, 14, 16), box(15, 12, 0, 16, 14, 16), box(12, 5, 6, 13, 11, 10), box(12, 3, 4, 13, 5, 12), box(12, 11, 5, 14, 14, 11), box(11, 0, 0, 13, 5, 4), box(11, 0, 12, 13, 5, 16), box(12, 3, 4, 13, 5, 12));
     private static final VoxelShape RIGHT_X = AMUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(0, 13, 0, 1, 14, 15), box(15, 13, 0, 16, 14, 15), box(0, 12, 15, 16, 14, 16), box(6, 5, 12, 10, 11, 13), box(4, 3, 12, 12, 5, 13), box(5, 11, 12, 11, 14, 14), box(0, 0, 11, 4, 5, 13), box(12, 0, 11, 16, 5, 13), box(4, 3, 12, 12, 5, 13));
     private static final VoxelShape RIGHT_Z = AMUtil.joinShapes(box(0, 14, 0, 16, 16, 16), box(1, 13, 0, 16, 14, 1), box(1, 13, 15, 16, 14, 16), box(0, 12, 0, 1, 14, 16), box(3, 5, 6, 4, 11, 10), box(3, 3, 4, 4, 5, 12), box(2, 11, 5, 4, 14, 11), box(3, 0, 0, 5, 5, 4), box(3, 0, 12, 5, 5, 16), box(3, 3, 4, 4, 5, 12));
+    private static final String TIER_KEY = "tier";
 
     public InscriptionTableBlock() {
         super(BlockBehaviour.Properties.of(Material.WOOD).strength(2).lightLevel(state -> 1).noOcclusion());
@@ -79,6 +83,14 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pState.getValue(HALF) != Half.LEFT) {
             pLevel.setBlock(pPos.relative(pState.getValue(FACING).getCounterClockWise()), pState.setValue(HALF, Half.LEFT), Block.UPDATE_ALL);
         }
+    }
+
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        if (pStack.hasTag() && Objects.requireNonNull(pStack.getTag()).contains(TIER_KEY)) {
+            pState = pState.setValue(TIER, pStack.getTag().getInt(TIER_KEY));
+        }
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @Override

@@ -17,11 +17,6 @@ public class SelfClearingEditBox extends EditBox {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isFocused()) {
             if (getValue().equals(getMessage().getString())) {

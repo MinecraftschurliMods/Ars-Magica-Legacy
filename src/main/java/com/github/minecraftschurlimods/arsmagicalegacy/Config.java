@@ -147,8 +147,8 @@ public final class Config {
         public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
         public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
         public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
-        public final ForgeConfigSpec.IntValue MAX_SHAPE_GROUPS;
         public final ForgeConfigSpec.DoubleValue AFFINITY_TOME_SHIFT;
+        public final ForgeConfigSpec.BooleanValue ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING;
         public final ForgeConfigSpec.DoubleValue MANA_BASE;
         public final ForgeConfigSpec.DoubleValue MANA_MULTIPLIER;
         public final ForgeConfigSpec.DoubleValue MANA_REGEN_MULTIPLIER;
@@ -183,14 +183,14 @@ public final class Config {
                     .comment("The maximum amount of etherium that can be stored in an obelisk / celestial prism / black aurem.")
                     .translation(TranslationConstants.CONFIG + "max_etherium_storage")
                     .defineInRange("max_etherium_storage", 5000, 1, Short.MAX_VALUE);
-            MAX_SHAPE_GROUPS = builder
-                    .comment("The maximum number of shape groups allowed for new spells.")
-                    .translation(TranslationConstants.CONFIG + "max_shape_groups")
-                    .defineInRange("max_shape_groups", 5, 0, 5);
             AFFINITY_TOME_SHIFT = builder
                     .comment("The affinity shift that should be applied by affinity tomes.")
                     .translation(TranslationConstants.CONFIG + "affinity_tome_shift")
                     .defineInRange("affinity_tome_shift", 0.1, 0.0, 1.0);
+            ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING = builder
+                    .comment("Whether inscription table upgrading is allowed in-world. If disabled, the upgrades must be applied through crafting.")
+                    .translation(TranslationConstants.CONFIG + "enable_inscription_table_in_world_upgrading")
+                    .define("enable_inscription_table_in_world_upgrading", true);
             builder.push("mana");
             MANA_BASE = builder
                     .comment("The base value for mana calculation. Mana is calculated as base + multiplier * (level - 1).")
@@ -254,7 +254,7 @@ public final class Config {
             builder.push("entities");
             builder.push("dryad");
             DRYAD_BONEMEAL_TIMER = builder
-                    .comment("The time in ticks between bonemeal uses.")
+                    .comment("Every X ticks, dryads have a chance to apply bonemeal to the ground around them.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_timer")
                     .defineInRange("bonemeal_timer", 200, 1, 72000);
             DRYAD_BONEMEAL_CHANCE = builder
@@ -266,11 +266,11 @@ public final class Config {
                     .translation(TranslationConstants.CONFIG + "entities.dryad.bonemeal_radius")
                     .defineInRange("bonemeal_radius", 2, 1, Short.MAX_VALUE);
             DRYAD_KILL_COOLDOWN = builder
-                    .comment("The time in seconds between killing dryads before the counter is reset.")
+                    .comment("If enough dryads are killed during this amount of time (in seconds), the Nature Guardian will spawn. Set this to 0 to disable this way of summoning the Nature Guardian (if you have an alternate way to spawn it).")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kill_cooldown")
                     .defineInRange("kill_cooldown", 60L, 0, 36000);
             DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN = builder
-                    .comment("The number of dryads killed before a nature guardian spawns.")
+                    .comment("If this amount of dryads is killed within the required timeframe, the Nature Guardian will spawn.")
                     .translation(TranslationConstants.CONFIG + "entities.dryad.kills_to_nature_guardian_spawn")
                     .defineInRange("kills_to_nature_guardian_spawn", 20, 1, Short.MAX_VALUE);
             builder.pop();
