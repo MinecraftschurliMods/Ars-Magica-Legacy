@@ -293,7 +293,7 @@ public final class ClientInit {
      */
     private static void renderHand(RenderHandEvent event) {
         Player p = ClientHelper.getLocalPlayer();
-        if (!(p instanceof LocalPlayer player) || p.isInvisible()) return;
+        if (!(p instanceof LocalPlayer player) || p.isInvisible() || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) return;
         ItemStack itemStack = event.getItemStack();
         if (!itemStack.is(AMItems.SPELL.get()) && !(itemStack.getItem() instanceof SpellBookItem && !SpellBookItem.getSelectedSpell(itemStack).isEmpty()))
             return;
