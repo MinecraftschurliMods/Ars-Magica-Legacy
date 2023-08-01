@@ -338,6 +338,7 @@ sourcesJar {
 tasks.jarJar.configure {
     archiveClassifier.set('')
     from sourceSets.api.output
+    finalizedBy('reobfJarJar')
 }
 
 tasks.register('apiJar', Jar) {
@@ -395,11 +396,13 @@ artifacts {
 reobf {
     apiJar { classpath.from(sourceSets.api.compileClasspath) }
     jar { classpath.from(sourceSets.main.compileClasspath) }
+    jarJar { classpath.from(sourceSets.main.compileClasspath) }
 }
 
 tasks.register('reobf') {
     dependsOn reobfJar
     dependsOn reobfApiJar
+    dependsOn reobfJarJar
 }
 
 tasks.register('setupGithubActions') {
