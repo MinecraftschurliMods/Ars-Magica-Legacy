@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rabbit_hide": {
+    "has_rune": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:rabbit_hide"
-            ]
+            "tag": "arsmagicalegacy:runes"
           }
         ]
       },
@@ -15,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arsmagicalegacy:rune_bag"
+        "recipe": "minecraft:rune_bag_from_bundle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_rabbit_hide",
+      "has_rune",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "arsmagicalegacy:rune_bag"
+      "minecraft:rune_bag_from_bundle"
     ]
   }
 }

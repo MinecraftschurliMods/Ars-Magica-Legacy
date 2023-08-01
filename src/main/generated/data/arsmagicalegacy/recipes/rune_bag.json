@@ -1,17 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "L": {
-      "tag": "forge:leather"
+    "H": {
+      "item": "minecraft:rabbit_hide"
     },
-    "W": {
-      "tag": "minecraft:wool"
+    "R": {
+      "tag": "arsmagicalegacy:runes"
+    },
+    "S": {
+      "tag": "forge:string"
     }
   },
   "pattern": [
-    "LLL",
-    "W W",
-    "LLL"
+    "SHS",
+    "HRH",
+    "HHH"
   ],
   "result": {
     "item": "arsmagicalegacy:rune_bag"

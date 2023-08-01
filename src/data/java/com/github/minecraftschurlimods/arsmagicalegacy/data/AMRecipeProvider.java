@@ -154,12 +154,11 @@ class AMRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_topaz", has(AMTags.Items.GEMS_TOPAZ))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(AMItems.CRYSTAL_WRENCH.get())
-                .pattern("ITI")
-                .pattern(" V ")
-                .pattern(" I ")
-                .define('I', Tags.Items.INGOTS_IRON)
+                .pattern("GTG")
+                .pattern(" G ")
+                .pattern(" G ")
+                .define('G', Tags.Items.INGOTS_GOLD)
                 .define('T', AMTags.Items.GEMS_TOPAZ)
-                .define('V', AMTags.Items.DUSTS_VINTEUM)
                 .unlockedBy("has_topaz", has(AMTags.Items.GEMS_TOPAZ))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.WIZARDS_CHALK.get())
@@ -185,13 +184,19 @@ class AMRecipeProvider extends RecipeProvider {
                     .save(consumer);
         }
         ShapedRecipeBuilder.shaped(AMItems.RUNE_BAG.get())
-                .pattern("LLL")
-                .pattern("W W")
-                .pattern("LLL")
-                .define('L', Tags.Items.LEATHER)
-                .define('W', ItemTags.WOOL)
-                .unlockedBy("has_leather", has(Tags.Items.LEATHER))
+                .pattern("SHS")
+                .pattern("HRH")
+                .pattern("HHH")
+                .define('S', Tags.Items.STRING)
+                .define('H', Items.RABBIT_HIDE)
+                .define('R', AMTags.Items.RUNES)
+                .unlockedBy("has_rabbit_hide", has(Items.RABBIT_HIDE))
                 .save(consumer);
+        ShapelessRecipeBuilder.shapeless(AMItems.RUNE_BAG.get())
+                .requires(Items.BUNDLE)
+                .requires(AMTags.Items.RUNES)
+                .unlockedBy("has_rune", has(AMTags.Items.RUNES))
+                .save(consumer, "rune_bag_from_bundle");
         ShapelessRecipeBuilder.shapeless(AMItems.ARCANE_COMPOUND.get())
                 .requires(Tags.Items.DUSTS_GLOWSTONE)
                 .requires(Tags.Items.DUSTS_GLOWSTONE)

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/rail_flat",
-  "render_type": "minecraft:cutout",
+  "render_type": "minecraft:translucent",
   "textures": {
     "rail": "arsmagicalegacy:block/wizards_chalk_11"
   }
