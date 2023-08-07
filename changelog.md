@@ -16,6 +16,7 @@
 - Improved and fixed some smaller things in the Occulus and Spell Customization GUIs
 - Changed some recipes to match the new textures
 - Updated the compendium with the changes of this update
+- Learning skills in creative mode now doesn't cost any skill points.
 
 # Fixes
 
@@ -24,3 +25,4 @@
 - Fixed a display issue with the spell model
 - Fixed a few translation issues
 - Removed a few unused translations
+- Sending a learn skill packet to the server now checks whether the player has enough skill points on the server side.
