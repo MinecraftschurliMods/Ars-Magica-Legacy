@@ -30,6 +30,14 @@ public interface ISpellHelper {
     void setSpell(ItemStack stack, ISpell spell);
 
     /**
+     * Validates the given spell. This checks for non-emptiness of the spell stack, the shape groups being correct, and correct location of modifiers (if present).
+     *
+     * @param spell The spell to validate.
+     * @return Whether the given spell is valid or not.
+     */
+    boolean isValidSpell(ISpell spell);
+
+    /**
      * @param stack The stack to get the spell name for.
      * @return An optional containing the spell name, or an empty optional if the given stack does not have a spell name.
      */

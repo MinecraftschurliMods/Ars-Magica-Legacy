@@ -48,7 +48,7 @@ public interface ISpell {
     boolean isEmpty();
 
     /**
-     * @return Whether the spell is valid or not.
+     * @return Whether all parts of the spell are non-null. To check whether a spell is actually valid from a player perspective, use {@link ISpellHelper#isValidSpell(ISpell)} instead.
      */
     boolean isValid();
 
