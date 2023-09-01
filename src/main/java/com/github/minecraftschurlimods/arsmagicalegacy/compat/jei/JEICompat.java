@@ -16,21 +16,20 @@ import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.List;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, ArsMagicaAPI.MOD_ID);
+    private SkillCategory skillCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -55,16 +54,28 @@ public class JEICompat implements IModPlugin {
     }
 
     @Override
+    public void registerCategories(IRecipeCategoryRegistration registration) {
+        skillCategory = new SkillCategory(registration.getJeiHelpers().getGuiHelper());
+        registration.addRecipeCategories(skillCategory);
+    }
+
+    @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get()), new ItemStack(AMItems.INFINITY_ORB.get())));
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, ClientHelper.getRegistryAccess()
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, registryAccess
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
                 .stream()
                 .map(IPrefabSpell::makeSpell)
                 .toList());
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, ClientHelper.getRegistryAccess()
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
                 .stream()
+                .toList());
+        jeiRuntime.getRecipeManager().addRecipes(SkillCategory.RECIPE_TYPE, registryAccess
+                .registryOrThrow(Skill.REGISTRY_KEY)
+                .stream()
+                .map(SkillCategory.Recipe::of)
                 .toList());
     }
 

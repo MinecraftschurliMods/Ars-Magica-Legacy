@@ -36,6 +36,7 @@ public interface TranslationConstants {
     String SPELL_CUSTOMIZATION_TITLE        = "screen."  + ArsMagicaAPI.MOD_ID + ".spell_customization.title";
     String SPELL_PART_MODIFIES              = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modifies";
     String SPELL_PART_MODIFIED_BY           = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modified_by";
+    String SPELL_PART_CATEGORY              = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.category.spell_part.title";
     String CONFIG                           = "config."  + ArsMagicaAPI.MOD_ID + ".";
     String HOLD_SHIFT_FOR_DETAILS           = "message." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String NO_TELEPORT                      = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport";
