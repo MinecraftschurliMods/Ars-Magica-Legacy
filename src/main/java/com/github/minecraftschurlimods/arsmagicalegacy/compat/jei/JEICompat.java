@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.IPrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.compat.jei.ingredient.SkillIngredient;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -24,12 +23,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Comparator;
 import java.util.List;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, ArsMagicaAPI.MOD_ID);
-    private SkillCategory skillCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -55,8 +54,7 @@ public class JEICompat implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        skillCategory = new SkillCategory(registration.getJeiHelpers().getGuiHelper());
-        registration.addRecipeCategories(skillCategory);
+        registration.addRecipeCategories(new SkillCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -66,15 +64,18 @@ public class JEICompat implements IModPlugin {
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, registryAccess
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
                 .stream()
+                .sorted(Comparator.comparing(e -> e.name().toString()))
                 .map(IPrefabSpell::makeSpell)
                 .toList());
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
                 .stream()
+                .sorted(Comparator.comparing(e -> e.getDisplayName(registryAccess).toString()))
                 .toList());
         jeiRuntime.getRecipeManager().addRecipes(SkillCategory.RECIPE_TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
                 .stream()
+                .sorted(Comparator.comparing(e -> e.getDisplayName(registryAccess).toString()))
                 .map(SkillCategory.Recipe::of)
                 .toList());
     }

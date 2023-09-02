@@ -3,16 +3,14 @@ package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -28,9 +26,8 @@ import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
@@ -51,7 +48,7 @@ public class SpellPartPage implements ICustomComponent {
         int cx = x + 50;
         int cy = y + 70;
         poseStack.pushPose();
-        List<ISpellModifier> modifiers = cacheModifiers();
+        List<ISpellModifier> modifiers = AMUtil.getModifiersForPart(_part);
         if (modifiers.isEmpty()) cy -= 16;
         else cy += ((modifiers.size() / 7) * 16) + 8;
         renderRecipe(poseStack, context, cx, cy, mouseX, mouseY);
@@ -59,7 +56,7 @@ public class SpellPartPage implements ICustomComponent {
         ResourceLocation registryName = this._part.getId();
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
         Skill skill = registryAccess.registryOrThrow(Skill.REGISTRY_KEY).get(registryName);
-        TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(skill.getId(registryAccess));
+        TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(Objects.requireNonNull(skill).getId(registryAccess));
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
         GuiComponent.blit(poseStack, cx - 2, cy - 2, context.getGui().getBlitOffset(), 20, 20, sprite);
@@ -71,56 +68,10 @@ public class SpellPartPage implements ICustomComponent {
         poseStack.popPose();
     }
 
-    private List<ISpellModifier> cacheModifiers() {
-        if (_part.getType() == ISpellPart.SpellPartType.MODIFIER) return List.of();
-        Set<ISpellPartStat> stats;
-        if (_part instanceof ISpellComponent component) {
-            stats = component.getStatsUsed();
-        } else if (_part instanceof ISpellShape shape) {
-            stats = shape.getStatsUsed();
-        } else {
-            return List.of();
-        }
-        List<ISpellModifier> modifiers = new ArrayList<>();
-        for (ISpellPart part : ArsMagicaAPI.get().getSpellPartRegistry()) {
-            if (_part == part) continue;
-            if (part instanceof ISpellModifier modifier) {
-                for (ISpellPartStat stat : modifier.getStatsModified()) {
-                    if (stats.contains(stat)) {
-                        modifiers.add(modifier);
-                        break;
-                    }
-                }
-            }
-        }
-        return modifiers;
-    }
-
     @Override
     public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
         part = lookup.apply(IVariable.wrap(part)).asString();
     }
-
-    /*@Override
-    public boolean mouseClicked(final IComponentRenderContext context, final double mouseX, final double mouseY, final int mouseButton) {
-        int posX = x;
-        int posY = y;
-        int startX = 0;
-        int yOffset = -6;
-        List<ISpellModifier> modifiers = cacheModifiers();
-        for (int i = 0; i < modifiers.size(); i++) {
-            if (i % 7 == 0) {
-                startX = (114 / 2) - ((Math.min(7, modifiers.size() - i) * 16) / 2);
-                yOffset += 16;
-            }
-            if (context.isAreaHovered((int)mouseX, (int)mouseY, posX + startX, posY + yOffset, 16, 16)) {
-                PatchouliAPI.get().openBookEntry(PatchouliCompat.ARCANE_COMPENDIUM, modifiers.get(i).getRegistryName(), 0);
-                return true;
-            }
-            startX += 16;
-        }
-        return ICustomComponent.super.mouseClicked(context, mouseX, mouseY, mouseButton);
-    }*/
 
     private void renderModifiers(PoseStack stack, IComponentRenderContext context, int posX, int posY, int mouseX, int mouseY, List<ISpellModifier> modifiers) {
         if (modifiers.isEmpty()) return;

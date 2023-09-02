@@ -2,7 +2,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.chat.Component;
@@ -30,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 
@@ -140,6 +145,33 @@ public final class AMUtil {
     }
 
     /**
+     * @param part The spell part to get the modifiers for.
+     * @return A list of modifiers that can modify the given part.
+     */
+    public static List<ISpellModifier> getModifiersForPart(ISpellPart part) {
+        if (part.getType() == ISpellPart.SpellPartType.MODIFIER) return List.of();
+        Set<ISpellPartStat> stats;
+        if (part instanceof ISpellComponent component) {
+            stats = component.getStatsUsed();
+        } else if (part instanceof ISpellShape shape) {
+            stats = shape.getStatsUsed();
+        } else return List.of();
+        List<ISpellModifier> modifiers = new ArrayList<>();
+        for (ISpellPart p : ArsMagicaAPI.get().getSpellPartRegistry()) {
+            if (part == p) continue;
+            if (p instanceof ISpellModifier modifier) {
+                for (ISpellPartStat stat : modifier.getStatsModified()) {
+                    if (stats.contains(stat)) {
+                        modifiers.add(modifier);
+                        break;
+                    }
+                }
+            }
+        }
+        return modifiers;
+    }
+
+    /**
      * Variant of {@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)} that returns the results in a {@link Vec2}.
      *
      * @param from The start position.
@@ -218,6 +250,11 @@ public final class AMUtil {
         return list.stream().map(ItemFilter::getMatchedStacks).filter(e -> e.length > 0).toList();
     }
 
+    /**
+     * @param random The random to use.
+     * @param bound  The upper bound of the double to generate.
+     * @return A pseudo-randomly generated double between 0 and the given bound.
+     */
     public static double nextDouble(RandomSource random, double bound) {
         double r = random.nextDouble();
         r = r * bound;
