@@ -563,6 +563,9 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(EtheriumType.DARK.getTranslationKey(), "Dark Etherium");
         add(EtheriumType.LIGHT.getTranslationKey(), "Light Etherium");
         add(EtheriumType.NEUTRAL.getTranslationKey(), "Neutral Etherium");
+        add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.DARK.getId().getPath(), "Dark Etherium");
+        add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.LIGHT.getId().getPath(), "Light Etherium");
+        add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.NEUTRAL.getId().getPath(), "Neutral Etherium");
         add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
         add("key." + ArsMagicaAPI.MOD_ID + ".configure_spell", "Configure Spell");
         add("key." + ArsMagicaAPI.MOD_ID + ".next_shape_group", "Next Shape Group");
