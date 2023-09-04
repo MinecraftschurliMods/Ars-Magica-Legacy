@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarC
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarViewBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.AumBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.DesertNovaBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.TarmaRootBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.flower.WakebloomBlock;
@@ -102,7 +101,7 @@ public interface AMBlocks {
     RegistryObject<PressurePlateBlock>    WITCHWOOD_PRESSURE_PLATE = BLOCKS.register("witchwood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get())));
     RegistryObject<StandingSignBlock>     WITCHWOOD_SIGN           = BLOCKS.register("witchwood_sign",           () -> new CustomStandingSignBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noCollission().strength(1.0F), AMWoodTypes.WITCHWOOD));
     RegistryObject<WallSignBlock>         WITCHWOOD_WALL_SIGN      = BLOCKS.register("witchwood_wall_sign",      () -> new CustomWallSignBlock(BlockBehaviour.Properties.copy(AMBlocks.WITCHWOOD_PLANKS.get()).noCollission().strength(1.0F).lootFrom(WITCHWOOD_SIGN), AMWoodTypes.WITCHWOOD));
-    RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      AumBlock::new);
+    RegistryObject<FlowerBlock>           AUM                      = BLOCKS.register("aum",                      () -> new FlowerBlock(AMMobEffects.MANA_REGEN, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock>           CERUBLOSSOM              = BLOCKS.register("cerublossom",              () -> new FlowerBlock(MobEffects.LEVITATION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY)));
     RegistryObject<FlowerBlock>           DESERT_NOVA              = BLOCKS.register("desert_nova",              DesertNovaBlock::new);
     RegistryObject<FlowerBlock>           TARMA_ROOT               = BLOCKS.register("tarma_root",               TarmaRootBlock::new);
