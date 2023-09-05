@@ -10,14 +10,14 @@ jobs:
   build:
     if: startsWith(github.ref, 'refs/tags/')
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
+    secrets:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
     with:
       upload-artifacts: true
       artifact-retention: 1
       publish-to-maven: true
       release-type: release
       datagen-folder: src/main/generated/
-    secrets:
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
   publish:
     needs:
