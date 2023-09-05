@@ -63,15 +63,15 @@ public final class Config {
             MANA_X = builder
                     .comment("Horizontal position of the mana bar.")
                     .translation(TranslationConstants.CONFIG + "mana_x")
-                    .defineInRange("mana_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("mana_x", 6, Short.MIN_VALUE, Short.MAX_VALUE);
             MANA_Y = builder
                     .comment("Vertical position of the mana bar.")
                     .translation(TranslationConstants.CONFIG + "mana_y")
-                    .defineInRange("mana_y", 23, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("mana_y", 14, Short.MIN_VALUE, Short.MAX_VALUE);
             MANA_ANCHOR_X = builder
                     .comment("Horizontal anchor of the mana bar.")
                     .translation(TranslationConstants.CONFIG + "mana_anchor_x")
-                    .defineEnum("mana_anchor_x", HUDElement.AnchorX.CENTER);
+                    .defineEnum("mana_anchor_x", HUDElement.AnchorX.RIGHT);
             MANA_ANCHOR_Y = builder
                     .comment("Horizontal anchor of the mana bar.")
                     .translation(TranslationConstants.CONFIG + "mana_anchor_y")
@@ -81,15 +81,15 @@ public final class Config {
             BURNOUT_X = builder
                     .comment("Horizontal position of the burnout bar.")
                     .translation(TranslationConstants.CONFIG + "burnout_x")
-                    .defineInRange("burnout_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("burnout_x", 6, Short.MIN_VALUE, Short.MAX_VALUE);
             BURNOUT_Y = builder
                     .comment("Vertical position of the burnout bar.")
                     .translation(TranslationConstants.CONFIG + "burnout_y")
-                    .defineInRange("burnout_y", 13, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("burnout_y", 4, Short.MIN_VALUE, Short.MAX_VALUE);
             BURNOUT_ANCHOR_X = builder
                     .comment("Horizontal anchor of the burnout bar.")
                     .translation(TranslationConstants.CONFIG + "burnout_anchor_x")
-                    .defineEnum("burnout_anchor_x", HUDElement.AnchorX.CENTER);
+                    .defineEnum("burnout_anchor_x", HUDElement.AnchorX.RIGHT);
             BURNOUT_ANCHOR_Y = builder
                     .comment("Horizontal anchor of the burnout bar.")
                     .translation(TranslationConstants.CONFIG + "burnout_anchor_y")
@@ -99,15 +99,15 @@ public final class Config {
             XP_X = builder
                     .comment("Horizontal position of the magic xp bar.")
                     .translation(TranslationConstants.CONFIG + "xp_x")
-                    .defineInRange("xp_x", 210, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("xp_x", 6, Short.MIN_VALUE, Short.MAX_VALUE);
             XP_Y = builder
                     .comment("Vertical position of the magic xp bar.")
                     .translation(TranslationConstants.CONFIG + "xp_y")
-                    .defineInRange("xp_y", 33, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("xp_y", 24, Short.MIN_VALUE, Short.MAX_VALUE);
             XP_ANCHOR_X = builder
                     .comment("Horizontal anchor of the magic xp bar.")
                     .translation(TranslationConstants.CONFIG + "xp_anchor_x")
-                    .defineEnum("xp_anchor_x", HUDElement.AnchorX.CENTER);
+                    .defineEnum("xp_anchor_x", HUDElement.AnchorX.RIGHT);
             XP_ANCHOR_Y = builder
                     .comment("Horizontal anchor of the magic xp bar.")
                     .translation(TranslationConstants.CONFIG + "xp_anchor_y")
@@ -117,11 +117,11 @@ public final class Config {
             SPELL_BOOK_X = builder
                     .comment("Horizontal position of the spell book hud.")
                     .translation(TranslationConstants.CONFIG + "spell_book_x")
-                    .defineInRange("spell_book_x", 100, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("spell_book_x", -129, Short.MIN_VALUE, Short.MAX_VALUE);
             SPELL_BOOK_Y = builder
                     .comment("Vertical position of the spell book hud.")
                     .translation(TranslationConstants.CONFIG + "spell_book_y")
-                    .defineInRange("spell_book_y", 19, Short.MIN_VALUE, Short.MAX_VALUE);
+                    .defineInRange("spell_book_y", 18, Short.MIN_VALUE, Short.MAX_VALUE);
             SPELL_BOOK_ANCHOR_X = builder
                     .comment("Horizontal anchor of the spell book hud.")
                     .translation(TranslationConstants.CONFIG + "spell_book_anchor_x")

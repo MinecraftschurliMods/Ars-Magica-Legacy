@@ -332,12 +332,12 @@ public final class ClientInit {
         int color = 0xff0000; //TODO change when Color modifier is added
         for (Player p : level.players()) {
             if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
-            ItemStack stack = p.getMainHandItem();
             InteractionHand hand = InteractionHand.MAIN_HAND;
+            ItemStack stack = getSpellInHand(p, hand);
             if (!(stack.getItem() instanceof ISpellItem)) {
-                stack = p.getOffhandItem();
-                if (!(stack.getItem() instanceof ISpellItem)) continue;
                 hand = InteractionHand.OFF_HAND;
+                stack = getSpellInHand(p, hand);
+                if (!(stack.getItem() instanceof ISpellItem)) continue;
             }
             ISpell spell = helper.getSpell(stack);
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
@@ -358,5 +358,13 @@ public final class ClientInit {
                 }
             }
         }
+    }
+
+    private static ItemStack getSpellInHand(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof SpellBookItem) {
+            stack = SpellBookItem.getSelectedSpell(stack);
+        }
+        return stack;
     }
 }

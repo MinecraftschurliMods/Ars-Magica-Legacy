@@ -11,6 +11,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
@@ -66,6 +67,32 @@ public final class SpellHelper implements ISpellHelper {
     @Override
     public void setSpell(ItemStack stack, ISpell spell) {
         stack.getOrCreateTag().put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).get().mapRight(DataResult.PartialResult::message).ifRight(ArsMagicaLegacy.LOGGER::warn).left().orElse(new CompoundTag()));
+    }
+
+    @Override
+    public boolean isValidSpell(ISpell spell) {
+        //check spell stack
+        if (spell.spellStack().isEmpty()) return false;
+        if (spell.spellStack().parts().get(0).getType() != ISpellPart.SpellPartType.COMPONENT) return false;
+        //find last non-empty shape group
+        List<ShapeGroup> groups = spell.shapeGroups();
+        if (groups.stream().allMatch(ShapeGroup::isEmpty)) return false;
+        int last = -1;
+        for (int i = 0; i < groups.size(); i++) {
+            ShapeGroup group = groups.get(i);
+            if (!group.isEmpty()) {
+                last = i;
+            }
+        }
+        //check for empty shape groups between other non-empty shape groups
+        if (last == -1) return false;
+        groups = groups.stream().filter(e -> !e.isEmpty()).toList();
+        if (last != groups.size() - 1) return false;
+        //check shape groups themselves
+        for (ShapeGroup group : groups) {
+            if (group.parts().get(0).getType() != ISpellPart.SpellPartType.SHAPE) return false;
+        }
+        return true;
     }
 
     @Override
