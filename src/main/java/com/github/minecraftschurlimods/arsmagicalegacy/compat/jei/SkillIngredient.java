@@ -17,13 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SkillIngredient implements IIngredientType<Skill> {
+public class SkillIngredient {
     public static final IIngredientType<Skill> TYPE = () -> Skill.class;
-
-    @Override
-    public Class<? extends Skill> getIngredientClass() {
-        return Skill.class;
-    }
 
     public static class Helper implements IIngredientHelper<Skill> {
         @Override
