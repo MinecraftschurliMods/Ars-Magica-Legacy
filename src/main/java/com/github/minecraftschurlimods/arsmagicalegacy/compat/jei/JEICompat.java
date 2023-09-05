@@ -14,6 +14,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IModIngredientRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
@@ -55,6 +56,13 @@ public class JEICompat implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new SkillCategory(registration.getJeiHelpers().getGuiHelper()));
+    }
+
+    @Override
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, new ItemStack(AMItems.OCCULUS.get()), SkillCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, new ItemStack(AMItems.INSCRIPTION_TABLE.get()), SkillCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, new ItemStack(AMItems.ALTAR_CORE.get()), SkillCategory.RECIPE_TYPE);
     }
 
     @Override
