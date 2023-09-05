@@ -206,7 +206,7 @@ public class SkillCommand {
         if (players.size() == 1) {
             ServerPlayer player = players.iterator().next();
             if (helper.knows(player, skill, registryAccess)) {
-                context.getSource().sendFailure(Component.translatable(SKILL_ALREADY_KNOWN, skill.getDisplayName(), player.getDisplayName()));
+                context.getSource().sendFailure(Component.translatable(SKILL_ALREADY_KNOWN, skill.getDisplayName(registryAccess), player.getDisplayName()));
                 return 0;
             }
         }
@@ -214,9 +214,9 @@ public class SkillCommand {
             helper.learn(player, skill, registryAccess);
         }
         if (players.size() == 1) {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(), players.iterator().next().getDisplayName()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_SINGLE, skill.getDisplayName(registryAccess), players.iterator().next().getDisplayName()), true);
         } else {
-            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_MULTIPLE, skill.getDisplayName(), players.size()), true);
+            context.getSource().sendSuccess(Component.translatable(SKILL_LEARN_MULTIPLE, skill.getDisplayName(registryAccess), players.size()), true);
         }
         return players.size();
     }
