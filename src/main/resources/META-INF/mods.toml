@@ -14,7 +14,7 @@ issueTrackerURL = "${ issue_tracker_url }"
     description = '''
 Continuation of Ars Magica 2 by Mithion
 '''
-    [custom.mc-publish]
+    [mc-publish]
         modrinth = "${ modrinth_project_id }"
         curseforge = ${ curse_project_id }
 
@@ -27,8 +27,9 @@ Continuation of Ars Magica 2 by Mithion
     modId = "theoneprobe"
     mandatory = false
     versionRange = "*"
-    [dependencies.${ mod_id }.custom.mc-publish]
+    [dependencies.${ mod_id }.mc-publish]
         curseforge = "the-one-probe"
+        modrinth = "the-one-probe"
 
 [[dependencies.${ mod_id }]]
     modId = "patchouli"
@@ -43,7 +44,7 @@ Continuation of Ars Magica 2 by Mithion
     versionRange = "${ geckolib_version_range }"
     ordering = "BEFORE"
     side = "BOTH"
-    [dependencies.${ mod_id }.custom.mc-publish]
+    [dependencies.${ mod_id }.mc-publish]
         modrinth = "geckolib"
         curseforge = "geckolib"
 
@@ -57,7 +58,7 @@ Continuation of Ars Magica 2 by Mithion
     modId = "potionbundles"
     mandatory = false
     versionRange = "*"
-    [dependencies.${ mod_id }.custom.mc-publish]
+    [dependencies.${ mod_id }.mc-publish]
         modrinth = "potion-bundles"
         curseforge = "potion-bundles"
 
