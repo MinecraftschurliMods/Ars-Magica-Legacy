@@ -57,7 +57,11 @@ java {
 
     toolchain {
         languageVersion = JavaLanguageVersion.of(project.java_version)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
+        if (!System.getenv('GITHUB_ACTIONS')) {
+            vendor = JvmVendorSpec.matching("JetBrains s.r.o.")
+        } else {
+            vendor = JvmVendorSpec.ADOPTOPENJDK
+        }
     }
 }
 
@@ -258,6 +262,7 @@ minecraft {
         data {
             ideaModule "${project.name.replace(' ', '_')}.data"
             singleInstance true
+            setForceExit false // To allow integration tests to run in CI
             args '--mod', project.mod_id, '--all', '--output', file('src/main/generated/'), '--existing', file('src/main/resources/'), '--mixin.config', "${project.mod_id}_data.mixins.json"
             mods.create("${project.mod_id}") {
                 source sourceSets.api as SourceSet
