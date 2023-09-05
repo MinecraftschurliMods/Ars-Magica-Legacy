@@ -15,6 +15,7 @@ jobs:
       artifact-retention: 1
       publish-to-maven: true
       release-type: release
+      datagen-folder: src/main/generated/
     secrets:
       MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
