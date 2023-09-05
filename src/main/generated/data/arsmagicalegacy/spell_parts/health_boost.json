@@ -9,6 +9,16 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
+        "type": "forge:nbt",
+        "count": 1,
+        "item": "arsmagicalegacy:affinity_essence",
+        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+      }
+    },
+    {
+      "type": "arsmagicalegacy:ingredient",
+      "count": 1,
+      "ingredient": {
         "item": "arsmagicalegacy:light_blue_rune"
       }
     },
