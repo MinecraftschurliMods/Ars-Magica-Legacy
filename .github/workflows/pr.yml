@@ -13,3 +13,4 @@ jobs:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
     with:
       upload-artifacts: true
+      datagen-folder: src/main/generated/
