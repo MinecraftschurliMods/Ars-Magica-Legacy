@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import com.github.minecraftschurlimods.patchouli_datagen.AbstractPageBuilder;
 import com.github.minecraftschurlimods.patchouli_datagen.BookBuilder;
@@ -323,10 +324,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .setSortnum(5);
         TranslatedCategoryBuilder modifiers = builder.addCategory("modifiers", "Modifiers", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/target_non_solid.png")
                 .setSortnum(6);
-/*
-        TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/augmented_casting.png")
-                .setSortnum(7);
-*/
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
             if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
                 TranslatedCategoryBuilder b = switch (spellPart.getType()) {
@@ -348,6 +345,14 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         shapes.build();
         components.build();
         modifiers.build();
+        TranslatedCategoryBuilder talents = builder.addCategory("talents", "Talents", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/mana_regen_boost_1.png")
+                .setSortnum(7);
+        for (ResourceLocation talent : AMTalents.ALL) {
+            TranslatedEntryBuilder entry = talents.addEntry(talent.getPath(), Util.makeDescriptionId("skill", talent) + ".name", talent.getNamespace() + ":textures/icon/skill/" + talent.getPath() + ".png")
+                    .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + talent.getPath()));
+            entry.addSimpleTextPage(entry.getLangKey(0) + ".text").build();
+        }
+        talents.build();
         TranslatedCategoryBuilder affinities = builder.addCategory("affinities", "Affinities", "", affinityHelper.getEssenceForAffinity(Affinity.WATER))
                 .setSortnum(8);
         affinities.addEntry("affinities", "Affinities", affinityHelper.getTomeForAffinity(Affinity.NONE))

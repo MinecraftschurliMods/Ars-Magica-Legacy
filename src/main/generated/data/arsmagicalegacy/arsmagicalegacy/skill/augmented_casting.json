@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "arsmagicalegacy:red": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:talent",
+  "parents": [
+    "arsmagicalegacy:spell_motion"
+  ],
+  "x": 30,
+  "y": 120
+}

@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
@@ -33,6 +34,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.SpellRecipeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
@@ -70,6 +72,7 @@ import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -81,6 +84,7 @@ import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -121,8 +125,11 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemCrafted);
         forgeBus.addListener(EventHandler::playerRespawn);
+        forgeBus.addListener(EventHandler::livingHurt);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventHandler::rightClickBlock);
+        forgeBus.addListener(EventHandler::movementInputUpdate);
+        forgeBus.addListener(EventHandler::affinityChangingPre);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::playerLevelUp);
     }
@@ -261,6 +268,14 @@ public final class EventHandler {
         }
     }
 
+    private static void livingHurt(LivingHurtEvent event) {
+        var api = ArsMagicaAPI.get();
+        var helper = api.getManaHelper();
+        if (event.getEntity() instanceof Player player && api.getSkillHelper().knows(player, AMTalents.SHIELD_OVERLOAD) && helper.getMana(player) == helper.getMaxMana(player)) {
+            event.setAmount(event.getAmount() * 0.95f);
+        }
+    }
+
     private static void livingDamage(LivingDamageEvent event) {
         if (event.getEntity().getHealth() * 4 < event.getEntity().getMaxHealth()) {
             ArsMagicaAPI.get().getContingencyHelper().triggerContingency(event.getEntity(), ContingencyType.HEALTH);
@@ -283,6 +298,20 @@ public final class EventHandler {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
             player.awardStat(Stats.INTERACT_WITH_LECTERN);
             event.setCanceled(true);
+        }
+    }
+
+    private static void movementInputUpdate(MovementInputUpdateEvent event) {
+        Player player = event.getEntity();
+        if (player.isUsingItem() && (player.getUseItem().is(AMItems.SPELL.get()) || player.getUseItem().is(AMItems.SPELL_BOOK.get())) && ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.SPELL_MOTION)) {
+            event.getInput().forwardImpulse *= 5f;
+            event.getInput().leftImpulse *= 5f;
+        }
+    }
+
+    private static void affinityChangingPre(AffinityChangingEvent.Pre event) {
+        if (ArsMagicaAPI.get().getSkillHelper().knows(event.getEntity(), AMTalents.AFFINITY_GAINS_BOOST)) {
+            event.shift *= 1.05;
         }
     }
 
