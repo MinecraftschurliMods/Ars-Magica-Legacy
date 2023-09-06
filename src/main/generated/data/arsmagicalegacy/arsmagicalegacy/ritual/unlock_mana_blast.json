@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:mana_blast"
+    "skill": "arsmagicalegacy:mana_blast"
   },
   "requirements": [],
   "trigger": {

@@ -1,17 +1,15 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "skill": "arsmagicalegacy:daylight"
+    "skill": "arsmagicalegacy:shield_overload"
   },
   "requirements": [],
   "trigger": {
     "type": "arsmagicalegacy:spell_component_cast",
     "components": [
-      "arsmagicalegacy:divine_intervention",
-      "arsmagicalegacy:true_sight"
+      "arsmagicalegacy:shield",
+      "arsmagicalegacy:mana_drain"
     ],
-    "modifiers": [
-      "arsmagicalegacy:solar"
-    ]
+    "modifiers": []
   }
 }

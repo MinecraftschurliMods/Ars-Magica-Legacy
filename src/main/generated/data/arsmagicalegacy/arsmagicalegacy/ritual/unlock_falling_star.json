@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:falling_star"
+    "skill": "arsmagicalegacy:falling_star"
   },
   "requirements": [],
   "trigger": {
