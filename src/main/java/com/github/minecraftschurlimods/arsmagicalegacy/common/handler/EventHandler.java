@@ -44,6 +44,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
@@ -131,6 +132,7 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::movementInputUpdate);
         forgeBus.addListener(EventHandler::affinityChangingPre);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
+        forgeBus.addListener(EventHandler::modifyStats);
         forgeBus.addListener(EventHandler::playerLevelUp);
     }
 
@@ -334,6 +336,16 @@ public final class EventHandler {
             }
         }
         event.setBase(cost);
+    }
+
+    private static void modifyStats(SpellEvent.ModifyStats event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.AUGMENTED_CASTING)) return;
+        if (!(event.stat instanceof SpellPartStats sps)) return;
+        switch (sps) {
+            case BOUNCE, DAMAGE, PIERCING, POWER -> event.modified += 1;
+            case DURATION, HEALING, RANGE, SPEED -> event.modified += event.base * 0.5f;
+        }
     }
 
     private static void playerLevelUp(PlayerLevelUpEvent event) {

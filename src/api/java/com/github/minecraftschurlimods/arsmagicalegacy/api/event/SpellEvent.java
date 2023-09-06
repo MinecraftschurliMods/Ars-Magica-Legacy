@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.event;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
@@ -245,6 +246,24 @@ public abstract class SpellEvent extends LivingEvent {
         public ReagentCost(LivingEntity entity, ISpell spell, List<ItemFilter> reagents) {
             super(entity, spell);
             this.reagents = new ArrayList<>(reagents);
+        }
+    }
+
+    /**
+     * Event to modify the value of spell stats.
+     * This is called whenever a stat modifier is checked, meaning that it may be called multiple times per spell cast.
+     * This is called after spell modifiers have already been considered, meaning that the modified value already contains the modifier values.
+     */
+    public static final class ModifyStats extends SpellEvent {
+        public final ISpellPartStat stat;
+        public final float base;
+        public float modified;
+
+        public ModifyStats(LivingEntity entity, ISpell spell, ISpellPartStat stat, float base, float modified) {
+            super(entity, spell);
+            this.stat = stat;
+            this.base = base;
+            this.modified = modified;
         }
     }
 }
