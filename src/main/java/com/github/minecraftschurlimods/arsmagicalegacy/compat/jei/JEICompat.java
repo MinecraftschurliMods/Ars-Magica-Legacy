@@ -68,6 +68,7 @@ public class JEICompat implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
+        var registry = ArsMagicaAPI.get().getSpellPartRegistry();
         jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(new ItemStack(AMItems.SPELL.get()), new ItemStack(AMItems.INFINITY_ORB.get())));
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, registryAccess
                 .registryOrThrow(PrefabSpell.REGISTRY_KEY)
@@ -78,11 +79,13 @@ public class JEICompat implements IModPlugin {
         jeiRuntime.getIngredientManager().addIngredientsAtRuntime(SkillIngredient.TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
                 .stream()
+                .filter(e -> registry.containsKey(e.getId(registryAccess)))
                 .sorted(Comparator.comparing(e -> e.getDisplayName(registryAccess).toString()))
                 .toList());
         jeiRuntime.getRecipeManager().addRecipes(SkillCategory.RECIPE_TYPE, registryAccess
                 .registryOrThrow(Skill.REGISTRY_KEY)
                 .stream()
+                .filter(e -> registry.containsKey(e.getId(registryAccess)))
                 .sorted(Comparator.comparing(e -> e.getDisplayName(registryAccess).toString()))
                 .map(SkillCategory.Recipe::of)
                 .toList());
