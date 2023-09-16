@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUU
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -86,10 +87,20 @@ final class TickHandler {
 
     private static void manaAndBurnoutRegen(final Player player) {
         var api = ArsMagicaAPI.get();
-        if (player.isDeadOrDying() || !api.getMagicHelper().knowsMagic(player)) return;
-        if (!api.getMagicHelper().knowsMagic(player)) return;
-        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()));
-        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()));
+        var magicHelper = api.getMagicHelper();
+        var skillHelper = api.getSkillHelper();
+        if (player.isDeadOrDying() || !magicHelper.knowsMagic(player)) return;
+        if (!magicHelper.knowsMagic(player)) return;
+        float factor = 1f;
+        if (skillHelper.knows(player, AMTalents.MANA_REGEN_BOOST_3)) {
+            factor = 1.15f;
+        } else if (skillHelper.knows(player, AMTalents.MANA_REGEN_BOOST_2)) {
+            factor = 1.1f;
+        } else if (skillHelper.knows(player, AMTalents.MANA_REGEN_BOOST_1)) {
+            factor = 1.05f;
+        }
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()) * factor);
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()) * factor);
     }
 
     private static void handleAbilities(final Player player) {

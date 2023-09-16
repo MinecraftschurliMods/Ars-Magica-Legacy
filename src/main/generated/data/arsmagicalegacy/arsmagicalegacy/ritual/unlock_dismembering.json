@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:dismembering"
+    "skill": "arsmagicalegacy:dismembering"
   },
   "requirements": [],
   "trigger": {

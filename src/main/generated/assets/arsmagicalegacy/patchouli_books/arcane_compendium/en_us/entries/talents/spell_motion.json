@@ -1,0 +1,12 @@
+{
+  "advancement": "arsmagicalegacy:book/spell_motion",
+  "category": "arsmagicalegacy:talents",
+  "icon": "arsmagicalegacy:textures/icon/skill/spell_motion.png",
+  "name": "skill.arsmagicalegacy.spell_motion.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.talents.spell_motion.page0.text"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "advancement": "arsmagicalegacy:book/shield_overload",
+  "category": "arsmagicalegacy:talents",
+  "icon": "arsmagicalegacy:textures/icon/skill/shield_overload.png",
+  "name": "skill.arsmagicalegacy.shield_overload.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.talents.shield_overload.page0.text"
+    }
+  ]
+}

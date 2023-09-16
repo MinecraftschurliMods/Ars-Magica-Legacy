@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:prosperity"
+    "skill": "arsmagicalegacy:prosperity"
   },
   "requirements": [],
   "trigger": {

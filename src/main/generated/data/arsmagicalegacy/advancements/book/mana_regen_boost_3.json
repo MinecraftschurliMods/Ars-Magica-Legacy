@@ -1,0 +1,16 @@
+{
+  "parent": "arsmagicalegacy:book/root",
+  "criteria": {
+    "knows": {
+      "conditions": {
+        "skill": "arsmagicalegacy:mana_regen_boost_3"
+      },
+      "trigger": "arsmagicalegacy:player_learned_skill"
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ]
+}

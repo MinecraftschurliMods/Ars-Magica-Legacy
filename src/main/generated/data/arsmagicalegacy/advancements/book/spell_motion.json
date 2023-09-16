@@ -1,0 +1,16 @@
+{
+  "parent": "arsmagicalegacy:book/root",
+  "criteria": {
+    "knows": {
+      "conditions": {
+        "skill": "arsmagicalegacy:spell_motion"
+      },
+      "trigger": "arsmagicalegacy:player_learned_skill"
+    }
+  },
+  "requirements": [
+    [
+      "knows"
+    ]
+  ]
+}

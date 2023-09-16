@@ -1,0 +1,12 @@
+{
+  "advancement": "arsmagicalegacy:book/affinity_gains_boost",
+  "category": "arsmagicalegacy:talents",
+  "icon": "arsmagicalegacy:textures/icon/skill/affinity_gains_boost.png",
+  "name": "skill.arsmagicalegacy.affinity_gains_boost.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.talents.affinity_gains_boost.page0.text"
+    }
+  ]
+}
