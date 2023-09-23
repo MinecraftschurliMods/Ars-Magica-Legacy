@@ -514,7 +514,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_CUSTOMIZATION_TITLE, "Spell Customization");
         add(TranslationConstants.SPELL_PART_MODIFIES, "Modifies");
         add(TranslationConstants.SPELL_PART_MODIFIED_BY, "Modified By");
-        add(TranslationConstants.SKILL_CATEGORY, "Skills");
+        add(TranslationConstants.SKILL_CATEGORY, "Spell Parts");
         add(TranslationConstants.SKILL_INGREDIENTS, "Ingredients:");
         add(TranslationConstants.SKILL_AFFINITY_BREAKDOWN, "Affinity Breakdown:");
         add(TranslationConstants.SKILL_MODIFIED_BY, "Modified By:");

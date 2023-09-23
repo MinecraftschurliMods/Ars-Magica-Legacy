@@ -42,6 +42,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
     private static final int SLOT_SIZE = 18;
     private static final int WIDTH = INGREDIENT_COLUMNS * SLOT_SIZE;
     private static final int HEIGHT = 192;
+    private static final int TEXT_BOTTOM_PADDING = 2;
     private final IDrawable background;
     private final IDrawable icon;
 
@@ -74,9 +75,9 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, Recipe recipe, IFocusGroup focuses) {
         var api = ArsMagicaAPI.get();
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
-        int x = 0, y = 0;
+        int x = 0, y = Minecraft.getInstance().font.lineHeight + TEXT_BOTTOM_PADDING;
         builder.addSlot(RecipeIngredientRole.OUTPUT, (WIDTH - SLOT_SIZE) / 2, y).addIngredient(SkillIngredient.TYPE, recipe.skill);
-        y += SLOT_SIZE;
+        y += SLOT_SIZE + TEXT_BOTTOM_PADDING;
         for (int i = 0; i < recipe.recipe.size(); i++) {
             if (i % INGREDIENT_COLUMNS != 0) {
                 x += SLOT_SIZE;
@@ -98,7 +99,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
         y += SLOT_SIZE;
         if (recipe.affinityShifts.size() > 0) {
             x = getAffinityValueAnchor(Minecraft.getInstance().font, recipe.affinityShifts) - 9;
-            y += SLOT_SIZE;
+            y += SLOT_SIZE + TEXT_BOTTOM_PADDING;
             for (Affinity affinity : recipe.affinityShifts.keySet().stream().sorted().toList()) {
                 builder.addSlot(RecipeIngredientRole.RENDER_ONLY, x, y)
                         .addItemStack(api.getAffinityHelper().getEssenceForAffinity(affinity))
@@ -111,6 +112,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
             y += 2;
         }
         if (recipe.modifiers.size() > 0) {
+            y += TEXT_BOTTOM_PADDING;
             for (int i = 0; i < recipe.modifiers.size(); i++) {
                 if (i % INGREDIENT_COLUMNS != 0) {
                     x += SLOT_SIZE;
@@ -128,19 +130,20 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
     @Override
     public void draw(Recipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         Font font = Minecraft.getInstance().font;
-        int y = SLOT_SIZE * 2 - font.lineHeight;
+        drawCentered(stack, font, recipe.skill().getDisplayName(ClientHelper.getRegistryAccess()), 0);
+        int y = SLOT_SIZE * 2 + TEXT_BOTTOM_PADDING;
         drawCentered(stack, font, Component.translatable(TranslationConstants.SKILL_INGREDIENTS), y);
-        y += (recipe.recipe.size() / INGREDIENT_COLUMNS + 1) * SLOT_SIZE + font.lineHeight;
+        y += (recipe.recipe.size() / INGREDIENT_COLUMNS + 1) * SLOT_SIZE + font.lineHeight + TEXT_BOTTOM_PADDING;
         if (!recipe.affinityShifts.isEmpty()) {
             y += SLOT_SIZE - font.lineHeight;
             drawCentered(stack, font, Component.translatable(TranslationConstants.SKILL_AFFINITY_BREAKDOWN), y);
-            y += font.lineHeight + font.lineHeight / 2;
+            y += font.lineHeight + font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
             int x = getAffinityValueAnchor(font, recipe.affinityShifts) + 9;
             for (Affinity affinity : recipe.affinityShifts.keySet().stream().sorted().toList()) {
                 font.draw(stack, String.valueOf(recipe.affinityShifts.get(affinity)), x, y, affinity.color());
                 y += SLOT_SIZE - 2;
             }
-            y += 2 - font.lineHeight / 2;
+            y += 2 - font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
         }
         if (!recipe.modifiers.isEmpty()) {
             y += SLOT_SIZE - font.lineHeight;
