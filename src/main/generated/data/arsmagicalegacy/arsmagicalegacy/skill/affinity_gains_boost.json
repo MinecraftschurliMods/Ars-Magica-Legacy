@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "arsmagicalegacy:blue": 1
+  },
+  "hidden": false,
+  "occulus_tab": "arsmagicalegacy:talent",
+  "parents": [
+    "arsmagicalegacy:mana_regen_boost_1"
+  ],
+  "x": 120,
+  "y": 30
+}

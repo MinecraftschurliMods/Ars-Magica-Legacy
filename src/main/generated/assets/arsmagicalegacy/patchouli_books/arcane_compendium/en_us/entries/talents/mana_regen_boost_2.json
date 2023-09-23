@@ -1,0 +1,12 @@
+{
+  "advancement": "arsmagicalegacy:book/mana_regen_boost_2",
+  "category": "arsmagicalegacy:talents",
+  "icon": "arsmagicalegacy:textures/icon/skill/mana_regen_boost_2.png",
+  "name": "skill.arsmagicalegacy.mana_regen_boost_2.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.talents.mana_regen_boost_2.page0.text"
+    }
+  ]
+}

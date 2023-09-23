@@ -1,0 +1,12 @@
+{
+  "advancement": "arsmagicalegacy:book/augmented_casting",
+  "category": "arsmagicalegacy:talents",
+  "icon": "arsmagicalegacy:textures/icon/skill/augmented_casting.png",
+  "name": "skill.arsmagicalegacy.augmented_casting.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.talents.augmented_casting.page0.text"
+    }
+  ]
+}

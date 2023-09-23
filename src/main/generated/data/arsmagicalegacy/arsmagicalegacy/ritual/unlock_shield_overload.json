@@ -1,0 +1,15 @@
+{
+  "effect": {
+    "type": "arsmagicalegacy:learn_skill",
+    "skill": "arsmagicalegacy:shield_overload"
+  },
+  "requirements": [],
+  "trigger": {
+    "type": "arsmagicalegacy:spell_component_cast",
+    "components": [
+      "arsmagicalegacy:shield",
+      "arsmagicalegacy:mana_drain"
+    ],
+    "modifiers": []
+  }
+}

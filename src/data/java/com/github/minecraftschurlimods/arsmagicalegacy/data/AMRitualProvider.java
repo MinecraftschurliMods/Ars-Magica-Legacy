@@ -8,6 +8,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.EntitySpawnRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.LearnSkillRitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.effect.PlaceBlockRitualEffect;
@@ -131,6 +132,9 @@ public class AMRitualProvider extends RitualProvider {
                 .build();
         builder("unlock_prosperity", new LearnSkillRitualEffect(AMSpellParts.PROSPERITY.get()),
                 new SpellComponentCastRitualTrigger(List.of(AMSpellParts.DIG.get(), AMSpellParts.PHYSICAL_DAMAGE.get()), List.of(AMSpellParts.MINING_POWER.get(), AMSpellParts.SILK_TOUCH.get())))
+                .build();
+        builder("unlock_shield_overload", new LearnSkillRitualEffect(AMTalents.SHIELD_OVERLOAD),
+                new SpellComponentCastRitualTrigger(List.of(AMSpellParts.SHIELD.get(), AMSpellParts.MANA_DRAIN.get())))
                 .build();
     }
 }

@@ -14,6 +14,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkil
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.GREEN;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.RED;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.*;
 
 class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation OFFENSE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense");
@@ -448,6 +449,44 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(FLING.getId())
                 .build();
+        talent(AFFINITY_GAINS_BOOST, 120, 30)
+                .addCost(BLUE.get())
+                .addParent(MANA_REGEN_BOOST_1)
+                .build();
+        talent(AUGMENTED_CASTING, 30, 120)
+                .addCost(RED.get())
+                .addParent(SPELL_MOTION)
+                .build();
+        /*talent(EXTRA_SUMMONS, 30, 165)
+                .addCost(RED.get())
+                .addParent(AUGMENTED_CASTING)
+                .build();
+        talent(MAGE_BAND_1, 120, 75)
+                .addCost(GREEN.get())
+                .addParent(MANA_REGEN_BOOST_2)
+                .build();
+        talent(MAGE_BAND_2, 120, 120)
+                .addCost(RED.get())
+                .addParent(MAGE_BAND_1)
+                .build();*/
+        talent(MANA_REGEN_BOOST_1, 75, 30)
+                .addCost(BLUE.get())
+                .build();
+        talent(MANA_REGEN_BOOST_2, 75, 75)
+                .addCost(GREEN.get())
+                .addParent(MANA_REGEN_BOOST_1)
+                .build();
+        talent(MANA_REGEN_BOOST_3, 75, 120)
+                .addCost(RED.get())
+                .addParent(MANA_REGEN_BOOST_2)
+                .build();
+        talent(SHIELD_OVERLOAD, 30, 30)
+                .setHidden()
+                .build();
+        talent(SPELL_MOTION, 30, 75)
+                .addCost(GREEN.get())
+                .addParent(MANA_REGEN_BOOST_2)
+                .build();
     }
 
     private Builder offense(RegistryObject<? extends ISpellPart> part, int x, int y) {
@@ -462,7 +501,7 @@ class AMSkillProvider extends SkillProvider {
         return builder(part.getId().getPath(), UTILITY, x, y);
     }
 
-    private Builder talent(RegistryObject<? extends ISpellPart> part, int x, int y) {
-        return builder(part.getId().getPath(), TALENT, x, y);
+    private Builder talent(ResourceLocation id, int x, int y) {
+        return builder(id.getPath(), TALENT, x, y);
     }
 }

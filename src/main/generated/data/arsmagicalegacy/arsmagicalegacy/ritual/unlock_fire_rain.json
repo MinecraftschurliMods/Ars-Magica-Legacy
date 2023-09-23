@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:fire_rain"
+    "skill": "arsmagicalegacy:fire_rain"
   },
   "requirements": [],
   "trigger": {

@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:daylight"
+    "skill": "arsmagicalegacy:daylight"
   },
   "requirements": [],
   "trigger": {

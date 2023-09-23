@@ -7,16 +7,6 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
-        "item": "arsmagicalegacy:affinity_essence",
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:air\"}"
-      }
-    },
-    {
-      "type": "arsmagicalegacy:ingredient",
-      "count": 1,
-      "ingredient": {
         "tag": "forge:gems/moonstone"
       }
     },
@@ -33,6 +23,15 @@
       "ingredient": {
         "item": "arsmagicalegacy:tarma_root"
       }
+    },
+    {
+      "type": "arsmagicalegacy:etherium",
+      "amount": 2500,
+      "types": [
+        "LIGHT",
+        "NEUTRAL",
+        "DARK"
+      ]
     }
   ]
 }

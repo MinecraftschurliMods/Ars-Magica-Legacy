@@ -169,7 +169,9 @@ public final class SpellHelper implements ISpellHelper {
                 modified = modifier.modify(baseValue, modified, spell, caster, target);
             }
         }
-        return modified;
+        SpellEvent.ModifyStats event = new SpellEvent.ModifyStats(caster, spell, stat, baseValue, modified);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.modified;
     }
 
     @Override

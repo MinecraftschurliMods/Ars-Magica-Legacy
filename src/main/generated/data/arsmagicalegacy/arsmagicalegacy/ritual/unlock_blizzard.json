@@ -1,7 +1,7 @@
 {
   "effect": {
     "type": "arsmagicalegacy:learn_skill",
-    "spell_part": "arsmagicalegacy:blizzard"
+    "skill": "arsmagicalegacy:blizzard"
   },
   "requirements": [],
   "trigger": {
