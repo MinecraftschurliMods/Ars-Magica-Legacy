@@ -37,6 +37,7 @@ import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -195,6 +196,7 @@ public class SpellItem extends Item implements ISpellItem {
         if (category == PREFAB_SPELLS_TAB) {
             ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY)
                         .stream()
+                        .sorted(Comparator.comparing(e -> e.name().toString()))
                         .map(PrefabSpell::makeSpell)
                         .forEach(items::add);
         }

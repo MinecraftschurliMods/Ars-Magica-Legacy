@@ -36,7 +36,12 @@ public interface TranslationConstants {
     String SPELL_CUSTOMIZATION_TITLE        = "screen."  + ArsMagicaAPI.MOD_ID + ".spell_customization.title";
     String SPELL_PART_MODIFIES              = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modifies";
     String SPELL_PART_MODIFIED_BY           = "screen."  + ArsMagicaAPI.MOD_ID + ".compendium.modified_by";
+    String SKILL_CATEGORY                   = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.skill.title";
+    String SKILL_INGREDIENTS                = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.skill.ingredients";
+    String SKILL_AFFINITY_BREAKDOWN         = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.skill.affinity_breakdown";
+    String SKILL_MODIFIED_BY                = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.skill.modified_by";
     String CONFIG                           = "config."  + ArsMagicaAPI.MOD_ID + ".";
+    String ALTAR_POWER                      = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
     String HOLD_SHIFT_FOR_DETAILS           = "message." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String NO_TELEPORT                      = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport";
     String NO_TELEPORT_NETHER               = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport_nether";
@@ -44,5 +49,4 @@ public interface TranslationConstants {
     String PREVENT_ITEM                     = "message." + ArsMagicaAPI.MOD_ID + ".prevent_item";
     String SPELL_CAST                       = "message." + ArsMagicaAPI.MOD_ID + ".spell_cast.";
     String TIER                             = "message." + ArsMagicaAPI.MOD_ID + ".tier";
-    String ALTAR_POWER                      = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
 }

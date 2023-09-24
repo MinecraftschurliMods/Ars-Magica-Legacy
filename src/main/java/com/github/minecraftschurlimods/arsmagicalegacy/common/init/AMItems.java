@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityEssen
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.AffinityTomeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.ColoredRuneItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.CrystalWrenchItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.EtheriumPlaceholderItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InfinityOrbItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.InscriptionTableUpgradeItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.MageArmorItem;
@@ -118,7 +119,7 @@ public interface AMItems {
     RegistryObject<BlockItem>                    GOLD_INLAY                       = registerBlockItem64(AMBlocks.GOLD_INLAY);
     RegistryObject<AffinityEssenceItem>          AFFINITY_ESSENCE                 = ITEMS.register("affinity_essence", () -> new AffinityEssenceItem(ITEM_64));
     RegistryObject<AffinityTomeItem>             AFFINITY_TOME                    = ITEMS.register("affinity_tome", () -> new AffinityTomeItem(ITEM_64));
-    RegistryObject<Item>                         ETHERIUM_PLACEHOLDER             = ITEMS.register("etherium_placeholder", () -> new Item(HIDDEN_ITEM_1));
+    RegistryObject<EtheriumPlaceholderItem>      ETHERIUM_PLACEHOLDER             = ITEMS.register("etherium_placeholder", () -> new EtheriumPlaceholderItem(HIDDEN_ITEM_1));
     RegistryObject<Item>                         SPELL_PARCHMENT                  = registerItem64("spell_parchment");
     RegistryObject<SpellRecipeItem>              SPELL_RECIPE                     = ITEMS.register("spell_recipe", SpellRecipeItem::new);
     RegistryObject<SpellItem>                    SPELL                            = ITEMS.register("spell", SpellItem::new);
