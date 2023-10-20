@@ -34,9 +34,9 @@ jobs:
       modid: ${{ needs.build.outputs.modid }}
       version: ${{ needs.build.outputs.version }}
     secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+      GH_TOKEN: ${{ matrix.platform == 'GitHub' && secrets.GITHUB_TOKEN || null }}
+      CF_API_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.CF_API_TOKEN || null }}
+      MODRINTH_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.MODRINTH_TOKEN || null }}
 
 #  update-readme:
 #    name: Update README
@@ -55,17 +55,53 @@ jobs:
 #      - name: Push
 #      - name: Create PR
 
-#  send-notification:
-#    name: Send Notification
-#    runs-on: ubuntu-latest
-#    needs:
-#      - build
-#      - publish
-#
-#    steps:
-#      - name: Generate Notification
-#      - name: Send Notification
+  send-notification:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - publish
 
+    steps:
+      - name: Get Timestamp
+        id: timestamp
+        uses: nanzm/get-time-action@v2.0
+        with:
+          format: "YYYY-MM-DDTHH:mm:ssZ"
+      - name: Send Notification
+        uses: Minecraftschurli/notify-discord-action@main
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          username: "Ars Magica: Legacy"
+          avatar_url: https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/blob/version/1.19.x/src/main/resources/logo_small.png?raw=true
+          message: "<&1116598471600914492> An update for Ars Magica: Legacy was released!"
+          embeds: '[
+            {
+              "title": "Update Released",
+              "timestamp": "${{ steps.timestamp.outputs.time }}",
+              "color": "#00ff00",
+              "footer": {
+                "text": "Ars Magica: Legacy"
+              },
+              "thumbnail": {
+                "url": "https://github.com/MinecraftschurliMods/Ars-Magica-Legacy/blob/version/1.19.x/src/main/resources/logo_small.png?raw=true"
+              },
+              "author": {
+                "name": "${{ github.actor }}",
+                "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}"
+              },
+              "fields": [
+                { "name": "Version", "value": "`${{ needs.build.outputs.version }}`" },
+                { "name": "CurseForge", "value": "[Download](${{ needs.publish.outputs.curseforge-url }})", "inline": true },
+                { "name": "Modrinth", "value": "[Download](${{ needs.publish.outputs.modrinth-url }})", "inline": true },
+                { "name": "GitHub", "value": "[View](${{ needs.publish.outputs.github-url }})", "inline": true },
+                { "name": "Summary", "value": "```${{ needs.build.outputs.summary }}```" }
+              ]
+            }
+          ]'
+          allowed_mentions: |
+            &1116598471600914492
+  
   test-outputs:
     name: Test outputs
     runs-on: ubuntu-latest
