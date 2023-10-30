@@ -174,24 +174,24 @@ public final class ClientInit {
     }
 
     private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-        event.register(AMParticleTypes.ARCANE.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.CLOCK.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.EMBER.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.EXPLOSION.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.GHOST.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.HEART.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.LEAF.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.LENS_FLARE.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.LIGHTS.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.PLANT.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.PULSE.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.ROCK.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.ROTATING_RINGS.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.SMOKE.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.SPARKLE.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.STARDUST.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.WATER_BALL.get(), new AMParticle.Provider());
-        event.register(AMParticleTypes.WIND.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.ARCANE.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.CLOCK.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.EMBER.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.EXPLOSION.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.GHOST.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.HEART.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.LEAF.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.LENS_FLARE.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTS.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.PLANT.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.PULSE.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.ROCK.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.ROTATING_RINGS.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.SMOKE.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.SPARKLE.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.STARDUST.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_BALL.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.WIND.get(), AMParticle.Provider::new);
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {

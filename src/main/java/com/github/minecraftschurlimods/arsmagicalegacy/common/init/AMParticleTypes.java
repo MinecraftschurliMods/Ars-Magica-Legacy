@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.PARTICLE_TYPES;
 
@@ -24,4 +25,10 @@ public interface AMParticleTypes {
     RegistryObject<SimpleParticleType> STARDUST       = PARTICLE_TYPES.register("stardust",       () -> new SimpleParticleType(false));
     RegistryObject<SimpleParticleType> WATER_BALL     = PARTICLE_TYPES.register("water_ball",     () -> new SimpleParticleType(false));
     RegistryObject<SimpleParticleType> WIND           = PARTICLE_TYPES.register("wind",           () -> new SimpleParticleType(false));
+
+    /**
+     * Empty method that is required for classloading
+     */
+    @Internal
+    static void register() {}
 }

@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
@@ -37,9 +38,17 @@ public class AMParticle extends TextureSheetParticle {
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprite;
+
+        public Provider(SpriteSet sprite) {
+            this.sprite = sprite;
+        }
+
         @Override
         public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new AMParticle(pLevel, pX, pY, pZ);
+            AMParticle particle = new AMParticle(pLevel, pX, pY, pZ);
+            particle.pickSprite(sprite);
+            return particle;
         }
     }
 }

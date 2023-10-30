@@ -110,6 +110,7 @@ public interface AMRegistries {
         AMSounds.register();
         AMEntities.register();
         AMBlockEntities.register();
+        AMParticleTypes.register();
         AMMenuTypes.register();
         AMStats.register();
         bus.addListener(AMStats::onRegister);
