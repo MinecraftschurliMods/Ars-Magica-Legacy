@@ -418,7 +418,7 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('P', Items.PAPER)
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(consumer);
-        ShapelessRecipeBuilder.shapeless(AMItems.MANA_CAKE.get(), 3)
+        ShapelessRecipeBuilder.shapeless(AMItems.MANA_CAKE.get())
                 .requires(Tags.Items.CROPS_WHEAT)
                 .requires(Items.SUGAR)
                 .requires(AMItems.AUM.get())
@@ -426,10 +426,9 @@ class AMRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_cerublossom", has(AMItems.CERUBLOSSOM.get()))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(AMItems.MANA_MARTINI.get())
-                .requires(Tags.Items.RODS_WOODEN)
-                .requires(Tags.Items.CROPS_POTATO)
+                .requires(Items.BAMBOO)
                 .requires(Items.ICE)
-                .requires(Items.SUGAR)
+                .requires(AMTags.Items.DUSTS_VINTEUM)
                 .requires(PartialNBTIngredient.of(Items.POTION, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER).getOrCreateTag()))
                 .unlockedBy("has_ice", has(Items.ICE))
                 .save(consumer);
