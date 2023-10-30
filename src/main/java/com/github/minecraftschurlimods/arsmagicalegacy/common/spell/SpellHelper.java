@@ -180,9 +180,17 @@ public final class SpellHelper implements ISpellHelper {
         Pair<? extends ISpellPart, List<ISpellModifier>> part = pwm.get(index);
         switch (part.getFirst().getType()) {
             case COMPONENT -> {
-                if (level.isClientSide()) return SpellCastResult.SUCCESS;
-                SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 ISpellComponent component = (ISpellComponent) part.getFirst();
+                if (level.isClientSide()) {
+                    if (target instanceof EntityHitResult entityHitResult) {
+                        component.spawnParticles(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
+                    }
+                    if (target instanceof BlockHitResult blockHitResult) {
+                        component.spawnParticles(spell, caster, level, part.getSecond(), blockHitResult, index + 1, castingTicks);
+                    }
+                    return SpellCastResult.SUCCESS;
+                }
+                SpellCastResult result = SpellCastResult.EFFECT_FAILED;
                 if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, part.getSecond(), target))) return SpellCastResult.CANCELLED;
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
