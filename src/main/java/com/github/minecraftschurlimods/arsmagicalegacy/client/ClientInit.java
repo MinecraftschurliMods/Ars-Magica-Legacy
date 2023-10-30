@@ -57,9 +57,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
@@ -100,6 +102,7 @@ import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -126,6 +129,7 @@ public final class ClientInit {
         HUDManager.enableKeybind();
         modEventBus.addListener(ClientInit::clientSetup);
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
+        modEventBus.addListener(ClientInit::registerParticleProviders);
         modEventBus.addListener(ClientInit::modelRegister);
         modEventBus.addListener(ClientInit::modelBake);
         modEventBus.addListener(ClientInit::registerLayerDefinitions);
@@ -167,6 +171,27 @@ public final class ClientInit {
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(SpellIconAtlas.instance());
         event.registerReloadListener(SkillIconAtlas.instance());
+    }
+
+    private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.register(AMParticleTypes.ARCANE.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.CLOCK.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.EMBER.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.EXPLOSION.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.GHOST.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.HEART.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.LEAF.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.LENS_FLARE.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.LIGHTS.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.PLANT.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.PULSE.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.ROCK.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.ROTATING_RINGS.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.SMOKE.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.SPARKLE.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.STARDUST.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.WATER_BALL.get(), new AMParticle.Provider());
+        event.register(AMParticleTypes.WIND.get(), new AMParticle.Provider());
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {
