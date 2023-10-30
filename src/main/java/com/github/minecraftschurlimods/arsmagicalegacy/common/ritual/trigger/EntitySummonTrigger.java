@@ -35,7 +35,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
 
     @Override
     public void register(Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> {
+        MinecraftForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> { // TODO change to LivingSpawnEvent.SpecialSpawn in 1.20.2
             if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
             Entity entity = event.getEntity();
             if (!predicate.matches(serverLevel, Vec3.atCenterOf(entity.blockPosition()), entity)) return;
