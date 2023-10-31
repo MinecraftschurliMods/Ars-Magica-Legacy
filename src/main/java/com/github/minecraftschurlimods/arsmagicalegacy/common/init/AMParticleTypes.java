@@ -7,24 +7,28 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.PARTICLE_TYPES;
 
 public interface AMParticleTypes {
-    RegistryObject<SimpleParticleType> ARCANE         = PARTICLE_TYPES.register("arcane",         () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> CLOCK          = PARTICLE_TYPES.register("clock",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> EMBER          = PARTICLE_TYPES.register("ember",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> EXPLOSION      = PARTICLE_TYPES.register("explosion",      () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> GHOST          = PARTICLE_TYPES.register("ghost",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> HEART          = PARTICLE_TYPES.register("heart",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> LEAF           = PARTICLE_TYPES.register("leaf",           () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> LENS_FLARE     = PARTICLE_TYPES.register("lens_flare",     () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> LIGHTS         = PARTICLE_TYPES.register("lights",         () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> PLANT          = PARTICLE_TYPES.register("plant",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> PULSE          = PARTICLE_TYPES.register("pulse",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> ROCK           = PARTICLE_TYPES.register("rock",           () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> ROTATING_RINGS = PARTICLE_TYPES.register("rotating_rings", () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> SMOKE          = PARTICLE_TYPES.register("smoke",          () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> SPARKLE        = PARTICLE_TYPES.register("sparkle",        () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> STARDUST       = PARTICLE_TYPES.register("stardust",       () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> WATER_BALL     = PARTICLE_TYPES.register("water_ball",     () -> new SimpleParticleType(false));
-    RegistryObject<SimpleParticleType> WIND           = PARTICLE_TYPES.register("wind",           () -> new SimpleParticleType(false));
+    RegistryObject<SimpleParticleType> ARCANE         = register("arcane");
+    RegistryObject<SimpleParticleType> CLOCK          = register("clock");
+    RegistryObject<SimpleParticleType> EMBER          = register("ember");
+    RegistryObject<SimpleParticleType> EXPLOSION      = register("explosion");
+    RegistryObject<SimpleParticleType> GHOST          = register("ghost");
+    RegistryObject<SimpleParticleType> HEART          = register("heart");
+    RegistryObject<SimpleParticleType> LEAF           = register("leaf");
+    RegistryObject<SimpleParticleType> LENS_FLARE     = register("lens_flare");
+    RegistryObject<SimpleParticleType> LIGHTS         = register("lights");
+    RegistryObject<SimpleParticleType> PLANT          = register("plant");
+    RegistryObject<SimpleParticleType> PULSE          = register("pulse");
+    RegistryObject<SimpleParticleType> ROCK           = register("rock");
+    RegistryObject<SimpleParticleType> ROTATING_RINGS = register("rotating_rings");
+    RegistryObject<SimpleParticleType> SMOKE          = register("smoke");
+    RegistryObject<SimpleParticleType> SPARKLE        = register("sparkle");
+    RegistryObject<SimpleParticleType> STARDUST       = register("stardust");
+    RegistryObject<SimpleParticleType> WATER_BALL     = register("water_ball");
+    RegistryObject<SimpleParticleType> WIND           = register("wind");
+
+    private static RegistryObject<SimpleParticleType> register(String name) {
+        return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
+    }
 
     /**
      * Empty method that is required for classloading

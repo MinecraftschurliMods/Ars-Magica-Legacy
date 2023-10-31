@@ -28,6 +28,10 @@ public abstract class ParticleController {
         }
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
     void baseTick() {
         if (!particle.isAlive() || finished) return;
         if (first) {
