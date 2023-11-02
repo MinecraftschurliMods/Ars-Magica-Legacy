@@ -10,11 +10,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStatModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellParticleSpawner;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentParticlesPacket;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +42,9 @@ import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public final class SpellHelper implements ISpellHelper {
@@ -47,6 +52,7 @@ public final class SpellHelper implements ISpellHelper {
     private static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
     private static final String SPELL_ICON_KEY = ArsMagicaAPI.MOD_ID + ":spell_icon";
     private static final String SPELL_NAME_KEY = ArsMagicaAPI.MOD_ID + ":spell_name";
+    private final Map<ISpellComponent, ISpellParticleSpawner> particleSpawners = new HashMap<>();
 
     private SpellHelper() {
     }
@@ -140,9 +146,23 @@ public final class SpellHelper implements ISpellHelper {
         }
     }
 
+    @Override
+    public void registerParticleSpawner(ISpellComponent component, ISpellParticleSpawner particleSpawner) {
+        particleSpawners.put(component, particleSpawner);
+    }
+
+    @Override
+    public void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, int color) {
+        ISpellParticleSpawner spawner = particleSpawners.get(component);
+        if (spawner != null) {
+            spawner.spawnParticles(spell, caster, hit, color);
+        }
+    }
+
     //Optimized and adapted from GameRenderer#pick
     @Override
-    public @Nullable Entity getPointedEntity(Entity entity, double range) {
+    @Nullable
+    public Entity getPointedEntity(Entity entity, double range) {
         Vec3 from = entity.getEyePosition(1);
         Vec3 view = entity.getViewVector(1);
         Vec3 to = from.add(view.x * range, view.y * range, view.z * range);
@@ -177,32 +197,33 @@ public final class SpellHelper implements ISpellHelper {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, @Nullable HitResult target, int castingTicks, int index, boolean awardXp) {
         List<Pair<? extends ISpellPart, List<ISpellModifier>>> pwm = spell.partsWithModifiers();
-        Pair<? extends ISpellPart, List<ISpellModifier>> part = pwm.get(index);
-        switch (part.getFirst().getType()) {
+        Pair<? extends ISpellPart, List<ISpellModifier>> pair = pwm.get(index);
+        ISpellPart part = pair.getFirst();
+        List<ISpellModifier> modifiers = pair.getSecond();
+        switch (part.getType()) {
             case COMPONENT -> {
-                ISpellComponent component = (ISpellComponent) part.getFirst();
-                if (level.isClientSide()) {
-                    if (target instanceof EntityHitResult entityHitResult) {
-                        component.spawnParticles(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
-                    }
-                    if (target instanceof BlockHitResult blockHitResult) {
-                        component.spawnParticles(spell, caster, level, part.getSecond(), blockHitResult, index + 1, castingTicks);
-                    }
-                    return SpellCastResult.SUCCESS;
-                }
+                if (level.isClientSide()) return SpellCastResult.SUCCESS;
+                ISpellComponent component = (ISpellComponent) part;
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
-                if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, part.getSecond(), target))) return SpellCastResult.CANCELLED;
+                if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, modifiers, target)))
+                    return SpellCastResult.CANCELLED;
                 if (target instanceof EntityHitResult entityHitResult) {
-                    result = component.invoke(spell, caster, level, part.getSecond(), entityHitResult, index + 1, castingTicks);
+                    result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
+                    if (result.isSuccess()) {
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAll(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), component.getColor(modifiers)));
+                    }
                 }
                 if (target instanceof BlockHitResult blockHitResult) {
-                    result = component.invoke(spell, caster, level, part.getSecond(), blockHitResult, index + 1, castingTicks);
+                    result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
+                    if (result.isSuccess()) {
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAll(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), component.getColor(modifiers)));
+                    }
                 }
                 return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
             }
             case SHAPE -> {
-                ISpellShape shape = (ISpellShape) part.getFirst();
-                return shape.invoke(spell, caster, level, part.getSecond(), target, castingTicks, index + 1, awardXp);
+                ISpellShape shape = (ISpellShape) part;
+                return shape.invoke(spell, caster, level, modifiers, target, castingTicks, index + 1, awardXp);
             }
             default -> {
                 return SpellCastResult.EFFECT_FAILED;

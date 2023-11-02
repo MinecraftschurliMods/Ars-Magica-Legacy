@@ -11,26 +11,30 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
 
 public class AMParticle extends TextureSheetParticle {
     private final List<ParticleController> controllers = new ArrayList<>();
     private boolean stoppedByCollision = false;
 
-    public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprite) {
+    private AMParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
         super(pLevel, pX, pY, pZ);
+        Minecraft.getInstance().particleEngine.add(this);
+    }
+
+    public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprite) {
+        this(pLevel, pX, pY, pZ);
         pickSprite(sprite);
     }
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
-        super(pLevel, pX, pY, pZ);
+        this(pLevel, pX, pY, pZ);
         if (Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0) instanceof TextureSheetParticle tsp) {
             sprite = tsp.sprite;
         }
@@ -111,6 +115,10 @@ public class AMParticle extends TextureSheetParticle {
         setGravity(0);
     }
 
+    public void setColor(int color) {
+        setColor((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF);
+    }
+
     public void setColor(int red, int green, int blue) {
         setRed(red);
         setGreen(green);
@@ -145,6 +153,10 @@ public class AMParticle extends TextureSheetParticle {
     public AMParticle addController(ParticleController controller) {
         controllers.add(controller);
         return this;
+    }
+
+    public RandomSource random() {
+        return random;
     }
 
     @Override
@@ -225,17 +237,18 @@ public class AMParticle extends TextureSheetParticle {
             controller.baseTick();
             if (!controller.isFinished() && controller.stopOtherControllers) break;
         }
+        setYSpeed(getYSpeed() - 0.04 * getGravity());
         move(getXSpeed(), getYSpeed(), getZSpeed());
         if (isEvadeCeiling() && getY() == getYOld()) {
-            setX(getX() * 1.1);
-            setZ(getZ() * 1.1);
+            setXSpeed(getXSpeed() * 1.1);
+            setZSpeed(getZSpeed() * 1.1);
         }
-        setX(getX() * getFriction());
-        setY(getY() * getFriction());
-        setZ(getZ() * getFriction());
+        setXSpeed(getXSpeed() * getFriction());
+        setYSpeed(getYSpeed() * getFriction());
+        setZSpeed(getZSpeed() * getFriction());
         if (isOnGround()) {
-            setX(getX() * 0.7);
-            setZ(getZ() * 0.7);
+            setXSpeed(getXSpeed() * 0.7);
+            setZSpeed(getZSpeed() * 0.7);
         }
     }
 
@@ -264,6 +277,10 @@ public class AMParticle extends TextureSheetParticle {
             double d1 = (aabb.minZ + aabb.maxZ - pWidth) / 2;
             setBoundingBox(new AABB(d0, aabb.minY, d1, d0 + pWidth, aabb.minY + pHeight, d1 + pWidth));
         }
+    }
+
+    public void addRandomOffset(double x, double y, double z) {
+        setPosition(getX() + random.nextDouble() * x - x / 2, getY() + random.nextDouble() * y - y / 2, getZ() + random.nextDouble() * z - z / 2);
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {

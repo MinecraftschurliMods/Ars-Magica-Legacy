@@ -5,7 +5,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -45,53 +44,23 @@ public interface ISpellComponent extends ISpellPart {
     SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed);
 
     /**
-     * Spawn particle effects for this spell. Called only on the client.
-     *
-     * @param spell     The spell being cast.
-     * @param caster    The caster of the spell.
-     * @param level     The level the spell is being cast in.
-     * @param modifiers The modifiers modifying this component.
-     * @param target    The target.
-     * @param index     The index of this spell component in the spell execution stack.
-     * @param ticksUsed The amount of ticks the spell is being cast for.
-     */
-    @OverrideOnly
-    default void spawnParticles(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {}
-
-    /**
-     * Spawn particle effects for this spell. Called only on the client.
-     *
-     * @param spell     The spell being cast.
-     * @param caster    The caster of the spell.
-     * @param level     The level the spell is being cast in.
-     * @param modifiers The modifiers modifying this component.
-     * @param target    The target.
-     * @param index     The index of this spell component in the spell execution stack.
-     * @param ticksUsed The amount of ticks the spell is being cast for.
-     */
-    @OverrideOnly
-    default void spawnParticles(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {}
-
-    /**
      * Returns the default color to use for this component's visual effects.
-     * If null, particles should be used without any color modifier applied.
+     * If -1, particles should be used without any color modifier applied.
      *
      * @return The default color to use for this component's visual effects.
      */
-    @Nullable
-    default Integer defaultColor() {
-        return null;
+    default int defaultColor() {
+        return -1;
     }
 
     /**
      * Returns the color for this component's visual effects. Uses the color modifier, or the result of {@link ISpellComponent#defaultColor()} if no color modifier is present.
-     * If null, particles should be used without any color modifier applied.
+     * If -1, particles should be used without any color modifier applied.
      *
      * @param modifiers The modifier list for this component.
      * @return The color modifier for this component.
      */
-    @Nullable
-    default Integer getColor(List<ISpellModifier> modifiers) {
+    default int getColor(List<ISpellModifier> modifiers) {
         return defaultColor(); // TODO: color modifier
     }
 

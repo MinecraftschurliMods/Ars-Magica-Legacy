@@ -73,7 +73,6 @@ import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -129,7 +128,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::livingHurt);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventHandler::rightClickBlock);
-        forgeBus.addListener(EventHandler::movementInputUpdate);
         forgeBus.addListener(EventHandler::affinityChangingPre);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::modifyStats);
@@ -303,17 +301,9 @@ public final class EventHandler {
         }
     }
 
-    private static void movementInputUpdate(MovementInputUpdateEvent event) {
-        Player player = event.getEntity();
-        if (player.isUsingItem() && (player.getUseItem().is(AMItems.SPELL.get()) || player.getUseItem().is(AMItems.SPELL_BOOK.get())) && ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.SPELL_MOTION)) {
-            event.getInput().forwardImpulse *= 5f;
-            event.getInput().leftImpulse *= 5f;
-        }
-    }
-
     private static void affinityChangingPre(AffinityChangingEvent.Pre event) {
         if (ArsMagicaAPI.get().getSkillHelper().knows(event.getEntity(), AMTalents.AFFINITY_GAINS_BOOST)) {
-            event.shift *= 1.05;
+            event.shift *= 1.05f;
         }
     }
 
