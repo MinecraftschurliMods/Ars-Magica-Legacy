@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class AMParticle extends TextureSheetParticle {
     private final List<ParticleController> controllers = new ArrayList<>();
     private boolean stoppedByCollision = false;
@@ -61,8 +62,6 @@ public class AMParticle extends TextureSheetParticle {
     public void setZSpeed(double zd) {this.zd = zd;}
     public int getAge() {return age;}
     public void setAge(int age) {this.age = age;}
-    public int getLifetime() {return lifetime;}
-    public void setLifetime(int lifetime) {this.lifetime = lifetime;}
     public float getGravity() {return gravity;}
     public void setGravity(float gravity) {this.gravity = gravity;}
     public float getFriction() {return friction;}
@@ -150,13 +149,16 @@ public class AMParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public AMParticle addController(ParticleController controller) {
+    public void addController(ParticleController controller) {
         controllers.add(controller);
-        return this;
     }
 
     public RandomSource random() {
         return random;
+    }
+
+    public ClientLevel level() {
+        return level;
     }
 
     @Override

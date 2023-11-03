@@ -5,6 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FloatUpwardController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitEntityController;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +21,6 @@ import java.util.Objects;
 /**
  * Helper class that holds and registered all the various spell particle spawners.
  */
-@SuppressWarnings("resource")
 public final class SpellParticleSpawners {
     /**
      * Should be called during client setup.
@@ -32,6 +33,7 @@ public final class SpellParticleSpawners {
         helper.registerParticleSpawner(AMSpellParts.LIGHTNING_DAMAGE.get(), SpellParticleSpawners::lightningDamage);
         helper.registerParticleSpawner(AMSpellParts.MAGIC_DAMAGE.get(), SpellParticleSpawners::magicDamage);
         helper.registerParticleSpawner(AMSpellParts.PHYSICAL_DAMAGE.get(), SpellParticleSpawners::physicalDamage);
+        helper.registerParticleSpawner(AMSpellParts.ABSORPTION.get(), SpellParticleSpawners::absorption);
     }
 
     private static void drowningDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
@@ -58,16 +60,29 @@ public final class SpellParticleSpawners {
         damage(AMParticleTypes.EMBER.get(), hit, color);
     }
 
+    private static void absorption(ISpell spell, LivingEntity caster, HitResult hit, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.SPARKLE.get());
+            particle.setLifetime(20);
+            particle.scale(0.2f);
+            particle.addRandomOffset(1, 1, 1);
+            particle.addController(new FloatUpwardController(particle, false, false, 0, 0.1));
+            particle.addController(new OrbitEntityController(particle, false, false, ehr.getEntity(), 0.5).setIgnoreY(true).setDistance(0.3 * particle.random().nextDouble() * 0.3));
+            particle.setColor(color == -1 ? 0x007fff : color);
+        }
+    }
+
     //region helpers
     private static void damage(ParticleOptions options, HitResult hit, int color) {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 25; i++) {
             AMParticle particle = particle(hit, options);
             RandomSource random = particle.random();
-            particle.addRandomOffset(1, 0.5, 1);
-            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2 - 0.1);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2, random.nextDouble() * 0.2 - 0.1);
             particle.setLifetime(5);
             particle.setNoGravity();
             particle.scale(0.1f);
+            particle.addRandomOffset(1, 0.5, 1);
             if (color != -1) {
                 particle.setColor(color);
             }
