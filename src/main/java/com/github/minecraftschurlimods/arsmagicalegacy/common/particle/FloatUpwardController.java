@@ -5,8 +5,8 @@ public class FloatUpwardController extends ParticleController {
     private final double halfJitter;
     private final double speed;
 
-    public FloatUpwardController(AMParticle particle, boolean stopOtherControllers, boolean killParticleOnFinish, double jitter, double speed) {
-        super(particle, stopOtherControllers, killParticleOnFinish);
+    public FloatUpwardController(AMParticle particle, double jitter, double speed) {
+        super(particle);
         this.jitter = jitter;
         this.halfJitter = jitter / 2;
         this.speed = speed;

@@ -5,8 +5,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FadeOutController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FloatUpwardController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitEntityController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitPointController;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,49 +36,82 @@ public final class SpellParticleSpawners {
         helper.registerParticleSpawner(AMSpellParts.MAGIC_DAMAGE.get(), SpellParticleSpawners::magicDamage);
         helper.registerParticleSpawner(AMSpellParts.PHYSICAL_DAMAGE.get(), SpellParticleSpawners::physicalDamage);
         helper.registerParticleSpawner(AMSpellParts.ABSORPTION.get(), SpellParticleSpawners::absorption);
+        helper.registerParticleSpawner(AMSpellParts.BLINDNESS.get(), SpellParticleSpawners::blindness);
+        helper.registerParticleSpawner(AMSpellParts.HASTE.get(), SpellParticleSpawners::haste);
     }
 
     private static void drowningDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(ParticleTypes.BUBBLE, hit, color);
+        damage(ParticleTypes.BUBBLE, hit, color, 25);
     }
 
     private static void fireDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(AMParticleTypes.EXPLOSION.get(), hit, color);
+        damage(AMParticleTypes.EXPLOSION.get(), hit, color, 5);
     }
 
     private static void frostDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(ParticleTypes.SNOWFLAKE, hit, color);
+        damage(ParticleTypes.SNOWFLAKE, hit, color, 25);
     }
 
     private static void lightningDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(ParticleTypes.CLOUD, hit, color);
+        damage(ParticleTypes.ANGRY_VILLAGER, hit, color, 5);
     }
 
     private static void magicDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(AMParticleTypes.ARCANE.get(), hit, color);
+        damage(AMParticleTypes.ARCANE.get(), hit, color, 5);
     }
 
     private static void physicalDamage(ISpell spell, LivingEntity caster, HitResult hit, int color) {
-        damage(AMParticleTypes.EMBER.get(), hit, color);
+        damage(AMParticleTypes.EMBER.get(), hit, color == -1 ? 0xcc3333 : color, 5);
     }
 
     private static void absorption(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
             AMParticle particle = particle(hit, AMParticleTypes.SPARKLE.get());
+            particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
+            particle.setColor(color == -1 ? 0x007fff : color);
             particle.scale(0.2f);
             particle.addRandomOffset(1, 1, 1);
-            particle.addController(new FloatUpwardController(particle, false, false, 0, 0.1));
-            particle.addController(new OrbitEntityController(particle, false, false, ehr.getEntity(), 0.5).setIgnoreY(true).setDistance(0.3 * particle.random().nextDouble() * 0.3));
-            particle.setColor(color == -1 ? 0x007fff : color);
+            particle.addController(new FloatUpwardController(particle, 0, 0.1));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+        }
+    }
+
+    private static void blindness(ISpell spell, LivingEntity caster, HitResult hit, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.LENS_FLARE.get());
+            particle.addRandomOffset(1, 1, 1);
+            particle.setLifetime(25 + particle.random().nextInt(10));
+            particle.setColor(color == -1 ? 0x000000 : color);
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(0.5 + particle.random().nextDouble()));
+        }
+    }
+
+    private static void haste(ISpell spell, LivingEntity caster, HitResult hit, int color) {
+        Vec3 location = hit.getLocation();
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, ParticleTypes.ENCHANT);
+            particle.setY(particle.getY() - 1);
+            particle.setLifetime(20);
+            particle.scale(0.1f);
+            particle.addController(new FloatUpwardController(particle, 0, 0.1));
+            particle.addController(new OrbitPointController(particle, location).setSpeed(0.1).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new FadeOutController(particle, 0.05f).killsParticleOnFinish());
+            particle.addRandomOffset(1, 1, 1);
+            if (color != -1) {
+                particle.setColor(color);
+            }
         }
     }
 
     //region helpers
-    private static void damage(ParticleOptions options, HitResult hit, int color) {
-        for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, options);
+    private static void damage(ParticleOptions options, HitResult hit, int color, int amount) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        Vec3 vec = hit.getLocation();
+        for (int i = 0; i < amount; i++) {
+            AMParticle particle = new AMParticle(level(), vec.x, ehr.getEntity().getEyeY(), vec.z, options);
             RandomSource random = particle.random();
             particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2, random.nextDouble() * 0.2 - 0.1);
             particle.setLifetime(5);

@@ -2,15 +2,23 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 
 public abstract class ParticleController {
     protected final AMParticle particle;
-    protected final boolean stopOtherControllers;
-    protected final boolean killOnFinish;
+    protected boolean stopOtherControllers = false;
+    protected boolean killOnFinish = false;
     private boolean first = true;
     private boolean finished = false;
 
-    public ParticleController(AMParticle particle, boolean stopOtherControllers, boolean killParticleOnFinish) {
+    public ParticleController(AMParticle particle) {
         this.particle = particle;
-        this.stopOtherControllers = stopOtherControllers;
-        this.killOnFinish = killParticleOnFinish;
+    }
+
+    public ParticleController stopsOtherControllers() {
+        stopOtherControllers = true;
+        return this;
+    }
+
+    public ParticleController killsParticleOnFinish() {
+        killOnFinish = true;
+        return this;
     }
 
     public abstract void tick();

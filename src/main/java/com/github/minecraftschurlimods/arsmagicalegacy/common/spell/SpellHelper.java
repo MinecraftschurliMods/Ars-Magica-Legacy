@@ -20,6 +20,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentPar
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -210,13 +211,13 @@ public final class SpellHelper implements ISpellHelper {
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAll(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), component.getColor(modifiers)));
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), component.getColor(modifiers)), level, new BlockPos(target.getLocation()), 64);
                     }
                 }
                 if (target instanceof BlockHitResult blockHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAll(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), component.getColor(modifiers)));
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), component.getColor(modifiers)), level, new BlockPos(target.getLocation()), 64);
                     }
                 }
                 return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
