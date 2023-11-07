@@ -8,18 +8,18 @@ on:
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/tags/')
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
-    secrets:
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
     with:
       upload-artifacts: true
       artifact-retention: 1
       publish-to-maven: true
       release-type: release
       datagen-folder: src/main/generated/
+    secrets:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
   publish:
+    uses: MinecraftschurliMods/.github/.github/workflows/publish.yml@main
     needs:
       - build
     strategy:
@@ -29,7 +29,6 @@ jobs:
           - GitHub
           - CurseForge
           - Modrinth
-    uses: MinecraftschurliMods/.github/.github/workflows/publish.yml@main
     with:
       platform: ${{ matrix.platform }}
       modid: ${{ needs.build.outputs.modid }}
@@ -40,10 +39,10 @@ jobs:
       MODRINTH_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.MODRINTH_TOKEN || null }}
 
   notify-discord:
+    uses: MinecraftschurliMods/.github/.github/workflows/notify_discord.yml@main
     needs:
       - build
       - publish
-    uses: MinecraftschurliMods/.github/.github/workflows/notify_discord.yml@main
     with:
       project_name: "Ars Magica: Legacy"
       version: ${{ needs.build.outputs.version }}
@@ -56,19 +55,90 @@ jobs:
     secrets:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
-#  update-readme:
-#    name: Update README
-#    runs-on: ubuntu-latest
-#    needs:
-#      - build
-#      - publish
-#
-#    steps:
-#      - name: Checkout
-#      - name: Generate Data
-#      - name: Render readme
-#      - name: Commit readme
-#      - name: Bump version number
-#      - name: Commit version number
-#      - name: Push
-#      - name: Create PR
+  update-readme:
+    name: Update README
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - publish
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: "Update README.md"
+        uses: Minecraftschurli/format-with-liquid-action@main
+        with:
+          template-file: ./.github/README_TEMPLATE.md
+          output-file: ./README.md
+          apiLink: 'https://minecraftschurli.ddns.net/repository/javadoc/maven-public/com/github/minecraftschurlimods/arsmagicalegacy/${{ needs.build.outputs.version }}'
+          projectLinks: '[
+            "{% link name:\"CurseForge Project\" text:\"CurseForge\" url:\"https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy\" %}",
+            "{% link name:\"Modrinth Project\" text:\"Modrinth\" url:\"https://modrinth.com/mod/ars-magica-legacy\" %}"
+          ]'
+          dependencies: '[
+            {
+              "name": "Forge",
+              "url": "https://files.minecraftforge.net/",
+              "required": true
+            }, {
+              "name": "GeckoLib",
+              "curseforge": "https://www.curseforge.com/minecraft/mc-mods/geckolib",
+              "modrinth": "https://modrinth.com/mod/geckolib",
+              "required": true
+            }, {
+              "name": "Patchouli",
+              "curseforge": "https://www.curseforge.com/minecraft/mc-mods/patchouli",
+              "modrinth": "https://modrinth.com/mod/patchouli",
+              "required": true
+            }, {
+              "name": "Curios",
+              "curseforge": "https://www.curseforge.com/minecraft/mc-mods/curios",
+              "modrinth": "https://modrinth.com/mod/curios",
+              "required": false
+            }, {
+              "name": "JEI",
+              "curseforge": "https://www.curseforge.com/minecraft/mc-mods/jei",
+              "modrinth": "https://modrinth.com/mod/jei",
+              "required": false
+            }, {
+              "name": "The One Probe",
+              "curseforge": "https://www.curseforge.com/minecraft/mc-mods/the-one-probe",
+              "modrinth": "https://modrinth.com/mod/the-one-probe",
+              "required": false
+            }
+          ]'
+          badges: '[
+            {
+              "name": "Build Status",
+              "url": "https://img.shields.io/github/actions/workflow/status/${{ github.repository }}/build.yml?logo=github",
+              "link": "https://github.com/${{ github.repository }}/actions/workflows/build.yml"
+            }, {
+              "name": "GitHub Releases",
+              "url": "https://img.shields.io/github/v/release/${{ github.repository }}?sort=semver&display_name=tag&logo=github",
+              "link": "https://github.com/${{ github.repository }}/releases/latest"
+            }, {
+              "name": "GitHub Issues",
+              "url": "https://img.shields.io/github/issues-raw/${{ github.repository }}/bug?label=open%20bugs",
+              "link": "https://github.com/${{ github.repository }}/issues?q=is%3Aopen+is%3Aissue+label%3Abug"
+            }, {
+              "name": "Maven",
+              "url": "https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fminecraftschurli.ddns.net%2Frepository%2Fmaven-public%2Fcom%2Fgithub%2Fminecraftschurlimods%2Farsmagicalegacy%2Fmaven-metadata.xml&versionPrefix=${{ needs.build.outputs.mc_version }}",
+              "link": "https://minecraftschurli.ddns.net/repository/#/maven-public/com/github/minecraftschurli/arsmagicalegacy"
+            }, {
+              "name": "CurseForge Downloads",
+              "url": "https://img.shields.io/curseforge/dt/${{ needs.build.outputs.curse_project_id }}?logo=curseforge&label=CurseForge%20Downloads&color=orange",
+              "link": "https://www.curseforge.com/minecraft/mc-mods/ars-magica-legacy"
+            }, {
+              "name": "Modrinth Downloads",
+              "url": "https://img.shields.io/modrinth/dt/${{ needs.build.outputs.modrinth_project_id }}?logo=modrinth&logoColor=%231bd96a&label=Modrinth%20Downloads&color=%231bd96a",
+              "link": "https://modrinth.com/mod/ars-magica-legacy"
+            }, {
+              "name": "Discord",
+              "url": "https://img.shields.io/discord/358283695104458752?logo=discord&label=Discord&color=%235865F2",
+              "link": "https://discord.gg/GcFqXwX"
+            }
+          ]'
+      - name: "Create Pull Request"
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit_message: "Update README.md"
+          

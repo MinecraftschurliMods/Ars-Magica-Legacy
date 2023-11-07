@@ -1,6 +1,6 @@
 ## Developing addons
 
-You can develop addons for this mod using the {% link url:apiLink.url name:"Ars Magica API" text:"Ars Magica API" %}.
+You can develop addons for this mod using the {% link url:apiLink name:"Ars Magica API" text:"Ars Magica API" %}.
 To use the API you need to first add the maven repository to your `build.gradle`:
 
 ```groovy
