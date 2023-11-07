@@ -185,7 +185,6 @@ public final class ClientInit {
         event.register(AMParticleTypes.EMBER.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.EXPLOSION.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.GHOST.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.HEART.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.LEAF.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.LENS_FLARE.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.LIGHTS.get(), AMParticle.Provider::new);
@@ -193,8 +192,6 @@ public final class ClientInit {
         event.register(AMParticleTypes.PULSE.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.ROCK.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.ROTATING_RINGS.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.SMOKE.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.SPARKLE.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.STARDUST.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.WATER_BALL.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.WIND.get(), AMParticle.Provider::new);

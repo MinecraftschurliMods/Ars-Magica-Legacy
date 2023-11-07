@@ -12,7 +12,6 @@ public interface AMParticleTypes {
     RegistryObject<SimpleParticleType> EMBER          = register("ember");
     RegistryObject<SimpleParticleType> EXPLOSION      = register("explosion");
     RegistryObject<SimpleParticleType> GHOST          = register("ghost");
-    RegistryObject<SimpleParticleType> HEART          = register("heart");
     RegistryObject<SimpleParticleType> LEAF           = register("leaf");
     RegistryObject<SimpleParticleType> LENS_FLARE     = register("lens_flare");
     RegistryObject<SimpleParticleType> LIGHTS         = register("lights");
@@ -20,8 +19,6 @@ public interface AMParticleTypes {
     RegistryObject<SimpleParticleType> PULSE          = register("pulse");
     RegistryObject<SimpleParticleType> ROCK           = register("rock");
     RegistryObject<SimpleParticleType> ROTATING_RINGS = register("rotating_rings");
-    RegistryObject<SimpleParticleType> SMOKE          = register("smoke");
-    RegistryObject<SimpleParticleType> SPARKLE        = register("sparkle");
     RegistryObject<SimpleParticleType> STARDUST       = register("stardust");
     RegistryObject<SimpleParticleType> WATER_BALL     = register("water_ball");
     RegistryObject<SimpleParticleType> WIND           = register("wind");
