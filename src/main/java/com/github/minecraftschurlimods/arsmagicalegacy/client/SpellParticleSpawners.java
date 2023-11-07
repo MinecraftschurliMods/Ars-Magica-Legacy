@@ -17,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Objects;
 
@@ -27,6 +28,7 @@ public final class SpellParticleSpawners {
     /**
      * Should be called during client setup.
      */
+    @Internal
     static void init() {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         helper.registerParticleSpawner(AMSpellParts.DROWNING_DAMAGE.get(), SpellParticleSpawners::drowningDamage);
@@ -75,10 +77,9 @@ public final class SpellParticleSpawners {
     private static void absorption(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get());
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get(), color == -1 ? 0x007fff : color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
-            particle.setColor(color == -1 ? 0x007fff : color);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
@@ -89,9 +90,8 @@ public final class SpellParticleSpawners {
     private static void blindness(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 15; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.LENS_FLARE.get());
+            AMParticle particle = particle(hit, AMParticleTypes.LENS_FLARE.get(), color == -1 ? 0x000000 : color);
             particle.setLifetime(25 + particle.random().nextInt(10));
-            particle.setColor(color == -1 ? 0x000000 : color);
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(0.5 + particle.random().nextDouble()));
             particle.addRandomOffset(1, 1, 1);
         }
@@ -99,7 +99,7 @@ public final class SpellParticleSpawners {
 
     private static void haste(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.LIGHTS.get());
+            AMParticle particle = particle(hit, AMParticleTypes.LIGHTS.get(), color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
             particle.scale(0.1f);
@@ -107,15 +107,12 @@ public final class SpellParticleSpawners {
             particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.1).setDistance(0.3 + particle.random().nextDouble() * 0.3));
             particle.addController(new FadeOutController(particle, 0.05f).killsParticleOnFinish());
             particle.addRandomOffset(1, 1, 1);
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
     private static void invisibility(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.EMBER.get());
+            AMParticle particle = particle(hit, AMParticleTypes.EMBER.get(), color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
             particle.scale(0.1f);
@@ -123,15 +120,12 @@ public final class SpellParticleSpawners {
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
             particle.addController(new FadeOutController(particle, 0.05f).killsParticleOnFinish());
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
     private static void jumpBoost(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         for (int i = 0; i < 15; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.WIND.get());
+            AMParticle particle = particle(hit, AMParticleTypes.WIND.get(), color);
             particle.setY(particle.getY() - 1);
             RandomSource random = particle.random();
             particle.setSpeed(random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2, random.nextDouble() * 0.1 - 0.05);
@@ -139,18 +133,14 @@ public final class SpellParticleSpawners {
             particle.setNoGravity();
             particle.scale(0.1f);
             particle.addRandomOffset(1, 0.5, 1);
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
     private static void levitation(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 15; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.EMBER.get());
+            AMParticle particle = particle(hit, AMParticleTypes.EMBER.get(), color == -1 ? 0x333399 : color);
             particle.setLifetime(40);
-            particle.setColor(color == -1 ? 0x333399 : color);
             particle.scale(0.1f);
             RandomSource random = particle.random();
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1 + random.nextDouble() * 0.1).setDistance(0.4 + random.nextDouble() * 0.4));
@@ -161,9 +151,8 @@ public final class SpellParticleSpawners {
     private static void nightVision(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 8; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.LIGHTS.get());
+            AMParticle particle = particle(hit, AMParticleTypes.LIGHTS.get(), color == -1 ? 0x337f33 : color);
             particle.setLifetime(30);
-            particle.setColor(color == -1 ? 0x337f33 : color);
             particle.scale(0.1f);
             RandomSource random = particle.random();
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1 + random.nextDouble() * 0.1).setDistance(0.4 + random.nextDouble() * 0.4));
@@ -174,10 +163,9 @@ public final class SpellParticleSpawners {
     private static void regeneration(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get());
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get(), color == -1 ? 0x19ffcc : color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
-            particle.setColor(color == -1 ? 0x19ffcc : color);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
@@ -188,39 +176,33 @@ public final class SpellParticleSpawners {
     private static void slowness(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get());
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get(), color);
             particle.setY(particle.getY() + 1);
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, -0.1));
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2).setDistance(0.3 + particle.random().nextDouble() * 0.3));
             particle.addRandomOffset(1, 2, 1);
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
     private static void slowFalling(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.WIND.get());
+            AMParticle particle = particle(hit, AMParticleTypes.WIND.get(), color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
             particle.addRandomOffset(1, 1, 1);
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
     private static void waterBreathing(ISpell spell, LivingEntity caster, HitResult hit, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.WATER_BALL.get());
+            AMParticle particle = particle(hit, AMParticleTypes.WATER_BALL.get(), color);
             particle.setY(particle.getY() - 1);
             particle.setLifetime(20);
             particle.setAlpha(0.2f);
@@ -228,9 +210,6 @@ public final class SpellParticleSpawners {
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
             particle.addRandomOffset(1, 1, 1);
-            if (color != -1) {
-                particle.setColor(color);
-            }
         }
     }
 
@@ -252,9 +231,13 @@ public final class SpellParticleSpawners {
         }
     }
 
-    private static AMParticle particle(HitResult hit, ParticleOptions options) {
+    private static AMParticle particle(HitResult hit, ParticleOptions options, int color) {
         Vec3 vec = hit.getLocation();
-        return new AMParticle(level(), vec.x, hit instanceof EntityHitResult ehr ? ehr.getEntity().getEyeY() : vec.y, vec.z, options);
+        AMParticle particle = new AMParticle(level(), vec.x, hit instanceof EntityHitResult ehr ? ehr.getEntity().getEyeY() : vec.y, vec.z, options);
+        if (color != -1) {
+            particle.setColor(color);
+        }
+        return particle;
     }
 
     private static ClientLevel level() {
