@@ -6,6 +6,7 @@ public class FadeOutController extends ParticleController {
     public FadeOutController(AMParticle particle, float speed) {
         super(particle);
         this.speed = speed;
+        killsParticleOnFinish();
     }
 
     public FadeOutController(AMParticle particle) {

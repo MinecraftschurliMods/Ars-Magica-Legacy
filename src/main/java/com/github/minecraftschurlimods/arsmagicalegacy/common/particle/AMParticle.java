@@ -31,11 +31,13 @@ public class AMParticle extends TextureSheetParticle {
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprite) {
         this(pLevel, pX, pY, pZ);
+        setLifetime(-1);
         pickSprite(sprite);
     }
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
         this(pLevel, pX, pY, pZ);
+        setLifetime(-1);
         if (Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0) instanceof TextureSheetParticle tsp) {
             sprite = tsp.sprite;
         }
@@ -161,6 +163,16 @@ public class AMParticle extends TextureSheetParticle {
         return level;
     }
 
+    public double distanceTo(Vec3 vec) {
+        return Math.sqrt(distanceToSq(vec));
+    }
+
+    public double distanceToSq(Vec3 vec) {
+        double x = Math.abs(vec.x - getX());
+        double z = Math.abs(vec.z - getZ());
+        return x * x + z * z;
+    }
+
     @Override
     public boolean isAlive() {
         return !isRemoved();
@@ -231,7 +243,7 @@ public class AMParticle extends TextureSheetParticle {
         setYOld(getY());
         setZOld(getZ());
         setAge(getAge() + 1);
-        if (getAge() >= getLifetime()) {
+        if (getAge() >= getLifetime() && getLifetime() != -1) {
             remove();
             return;
         }
