@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -105,7 +106,7 @@ public interface ISpellHelper {
      * @param hit       The hit result to use.
      * @param color     The color to use. May be -1, which indicates that no color should be used.
      */
-    void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, int color);
+    void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color);
 
     /**
      * Performs a ray trace and returns the entity the given entity is currently looking at.

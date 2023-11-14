@@ -261,16 +261,6 @@ public final class AMUtil {
 
     /**
      * @param random The random to use.
-     * @param min    The min value of the double to generate.
-     * @param max    The max value of the double to generate.
-     * @return A pseudo-randomly generated double between the given min and max values.
-     */
-    public static double nextDouble(RandomSource random, double min, double max) {
-        return min + nextDouble(random, max - min);
-    }
-
-    /**
-     * @param random The random to use.
      * @param bound  The upper bound of the double to generate.
      * @return A pseudo-randomly generated double between 0 and the given bound.
      */

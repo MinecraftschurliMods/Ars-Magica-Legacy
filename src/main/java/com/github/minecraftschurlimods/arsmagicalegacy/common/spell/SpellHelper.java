@@ -25,6 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -153,10 +154,10 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, int color) {
+    public void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
         ISpellParticleSpawner spawner = particleSpawners.get(component);
         if (spawner != null) {
-            spawner.spawnParticles(spell, caster, hit, color);
+            spawner.spawnParticles(spell, caster, hit, random, color);
         }
     }
 

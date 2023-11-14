@@ -1,20 +1,22 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.world.phys.Vec3;
 
 public class OrbitPointController extends ParticleController {
     private final Vec3 target;
+    private final double speed;
     private boolean clockwise;
     private double distance;
-    private double speed;
     private double angle;
     private boolean currentDistance;
     private double shrinkSpeed = 0;
     private double shrinkDistance = 0;
 
-    public OrbitPointController(AMParticle particle, Vec3 target) {
+    public OrbitPointController(AMParticle particle, Vec3 target, double speed) {
         super(particle);
         this.target = target;
+        this.speed = speed;
         clockwise = particle.random().nextBoolean();
         angle = particle.random().nextInt(360);
         distance = 1 + particle.random().nextDouble() * 0.5;
@@ -23,11 +25,6 @@ public class OrbitPointController extends ParticleController {
     public OrbitPointController setDistance(double distance) {
         this.distance = distance;
         currentDistance = false;
-        return this;
-    }
-
-    public OrbitPointController setSpeed(double speed) {
-        this.speed = speed;
         return this;
     }
 
@@ -55,10 +52,7 @@ public class OrbitPointController extends ParticleController {
     @Override
     public void tick() {
         angle += clockwise ? speed : -speed;
-        while (angle < 0) {
-            angle += 360;
-        }
-        angle %= 360;
+        angle = AMUtil.wrap(angle, 360);
         double d;
         if (currentDistance) {
             double dx = target.x - particle.getX();

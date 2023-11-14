@@ -22,17 +22,17 @@ public class ApproachEntityController extends ParticleController {
             finish();
             return;
         }
-        double deltaX = target.getX() - particle.getX();
-        double deltaZ = target.getZ() - particle.getZ();
-        double angle = Math.atan2(deltaZ, deltaX);
-        double deltaY;
+        double dx = target.getX() - particle.getX();
+        double dz = target.getZ() - particle.getZ();
+        double angle = Math.atan2(dz, dx);
+        double dy;
         if (target instanceof LivingEntity living) {
-            deltaY = particle.getY() - living.getEyeY();
+            dy = particle.getY() - living.getEyeY();
         } else if (target instanceof ItemEntity) {
-            deltaY = particle.getY() - target.getY();
+            dy = particle.getY() - target.getY();
         } else {
-            deltaY = particle.getY() - (target.getY() + target.getBbHeight() / 2);
+            dy = particle.getY() - (target.getY() + target.getBbHeight() / 2);
         }
-        particle.setPosition(particle.getX() + speed * Math.cos(angle), particle.getY() - speed * Math.sin(-Math.atan2(deltaY, Math.sqrt(deltaX * deltaX + deltaZ * deltaZ))), particle.getZ() + speed * Math.sin(angle));
+        particle.setPosition(particle.getX() + speed * Math.cos(angle), particle.getY() - speed * Math.sin(-Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))), particle.getZ() + speed * Math.sin(angle));
     }
 }
