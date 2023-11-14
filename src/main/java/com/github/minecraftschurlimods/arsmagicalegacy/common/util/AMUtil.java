@@ -15,7 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -257,15 +256,6 @@ public final class AMUtil {
             result = Shapes.join(result, shape, BooleanOp.OR);
         }
         return result;
-    }
-
-    /**
-     * @param random The random to use.
-     * @param bound  The upper bound of the double to generate.
-     * @return A pseudo-randomly generated double between 0 and the given bound.
-     */
-    public static double nextDouble(RandomSource random, double bound) {
-        return random.nextDouble() * bound;
     }
 
     /**

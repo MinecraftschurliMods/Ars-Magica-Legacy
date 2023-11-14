@@ -32,8 +32,8 @@ public class Storm extends AbstractComponent {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
                 if (random < 20) {
-                    double posX = caster.getX() + AMUtil.nextDouble(level.random, 100) - 50;
-                    double posZ = caster.getZ() + AMUtil.nextDouble(level.random, 100) - 50;
+                    double posX = caster.getX() + level.getRandom().nextDouble() * 100 - 50;
+                    double posZ = caster.getZ() + level.getRandom().nextDouble() * 100 - 50;
                     double posY = caster.getY();
                     while (!level.canSeeSky(new BlockPos(posX, posY, posZ))) {
                         posY++;
