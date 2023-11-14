@@ -6,12 +6,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTyp
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ApproachEntityController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ApproachPointController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FadeOutController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FloatUpwardController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.LeaveTrailController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.MoveInDirectionController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitEntityController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.OrbitPointController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -99,7 +101,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addRandomOffset(1, 1, 1);
         }
     }
@@ -108,8 +110,9 @@ public final class SpellParticleSpawners {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 15; i++) {
             AMParticle particle = particle(hit, AMParticleTypes.LENS_FLARE.get(), color == -1 ? 0x000000 : color);
-            particle.setLifetime(25 + particle.random().nextInt(10));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(0.5 + particle.random().nextDouble()));
+            RandomSource random = particle.random();
+            particle.setLifetime(25 + random.nextInt(10));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(random.nextDouble() + 0.5));
             particle.addRandomOffset(1, 1, 1);
         }
     }
@@ -121,7 +124,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.1f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.1).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.1).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addController(new FadeOutController(particle, 0.05f).killsParticleOnFinish());
             particle.addRandomOffset(1, 1, 1);
         }
@@ -135,7 +138,7 @@ public final class SpellParticleSpawners {
             particle.scale(0.1f);
             particle.addRandomOffset(1, 1, 1);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitPointController(particle, hit.getLocation()).setSpeed(0.5).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addController(new FadeOutController(particle, 0.05f).killsParticleOnFinish());
         }
     }
@@ -145,7 +148,7 @@ public final class SpellParticleSpawners {
             AMParticle particle = particle(hit, AMParticleTypes.WIND.get(), color);
             particle.setY(particle.getY() - 1);
             RandomSource random = particle.random();
-            particle.setSpeed(random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2, random.nextDouble() * 0.1 - 0.05);
+            particle.setSpeed(AMUtil.nextDouble(random, -0.05, 0.05), random.nextDouble() * 0.2, AMUtil.nextDouble(random, -0.05, 0.05));
             particle.setLifetime(15);
             particle.setNoGravity();
             particle.scale(0.1f);
@@ -160,7 +163,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(40);
             particle.scale(0.1f);
             RandomSource random = particle.random();
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1 + random.nextDouble() * 0.1).setDistance(0.4 + random.nextDouble() * 0.4));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), AMUtil.nextDouble(random, 0.1, 0.2)).setDistance(AMUtil.nextDouble(random, 0.4, 0.8)));
             particle.addRandomOffset(1, 0.5, 1);
         }
     }
@@ -172,7 +175,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(30);
             particle.scale(0.1f);
             RandomSource random = particle.random();
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1 + random.nextDouble() * 0.1).setDistance(0.4 + random.nextDouble() * 0.4));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), AMUtil.nextDouble(random, 0.1, 0.2)).setDistance(AMUtil.nextDouble(random, 0.4, 0.8)));
             particle.addRandomOffset(1, 0.5, 1);
         }
     }
@@ -185,7 +188,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addRandomOffset(1, 1, 1);
         }
     }
@@ -198,7 +201,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, -0.1));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addRandomOffset(1, 2, 1);
         }
     }
@@ -211,7 +214,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addRandomOffset(1, 1, 1);
         }
     }
@@ -225,7 +228,7 @@ public final class SpellParticleSpawners {
             particle.setAlpha(0.2f);
             particle.scale(0.2f);
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(0.3 + particle.random().nextDouble() * 0.3));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.5).setDistance(AMUtil.nextDouble(particle.random(), 0.3, 0.6)));
             particle.addRandomOffset(1, 1, 1);
         }
     }
@@ -236,7 +239,7 @@ public final class SpellParticleSpawners {
             AMParticle particle = particle(hit, AMParticleTypes.STARDUST.get(), color);
             RandomSource random = particle.random();
             particle.setLifetime(25 + random.nextInt(10));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(0.5 + random.nextDouble()));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1).setDistance(AMUtil.nextDouble(particle.random(), 0.5, 1.5)));
         }
     }
 
@@ -267,7 +270,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.1f);
             particle.addRandomOffset(1, 0.5, 1);
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2 + particle.random().nextDouble() * 0.2));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), AMUtil.nextDouble(particle.random(), 0.2, 0.4)));
         }
     }
 
@@ -275,7 +278,7 @@ public final class SpellParticleSpawners {
         for (int i = 0; i < 5; i++) {
             AMParticle particle = particle(hit, ParticleTypes.SNOWFLAKE, color);
             RandomSource random = particle.random();
-            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, 0.3, random.nextDouble() * 0.2 - 0.1);
+            particle.setSpeed(AMUtil.nextDouble(random, -0.1, 0.1), 0.3, AMUtil.nextDouble(random, -0.1, 0.1));
             particle.setLifetime(10);
             particle.scale(0.1f);
             particle.setNoGravity();
@@ -339,7 +342,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(20);
             particle.scale(0.1f);
             particle.addController(new FadeOutController(particle, 0.05f));
-            particle.addController(new MoveInDirectionController(particle, target instanceof LivingEntity living ? living.getYHeadRot() : target.getYRot(), target.getXRot(), 0.1 + particle.random().nextDouble() * 0.5));
+            particle.addController(new MoveInDirectionController(particle, (target instanceof LivingEntity living ? living.getYHeadRot() : target.getYRot()) + 90, target.getXRot(), AMUtil.nextDouble(particle.random(), 0.1, 0.6)));
             particle.addRandomOffset(1, 2, 1);
         }
     }
@@ -351,7 +354,7 @@ public final class SpellParticleSpawners {
             particle.setLifetime(40);
             particle.scale(0.1f);
             particle.addController(new FadeOutController(particle, 0.05f));
-            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.1 + particle.random().nextDouble() * 0.1));
+            particle.addController(new OrbitEntityController(particle, ehr.getEntity(), AMUtil.nextDouble(particle.random(), 0.1, 0.2)));
             particle.addRandomOffset(1, 2, 1);
         }
     }
@@ -391,7 +394,7 @@ public final class SpellParticleSpawners {
         for (int i = 0; i < amount; i++) {
             AMParticle particle = new AMParticle(level(), vec.x, ehr.getEntity().getEyeY(), vec.z, options);
             RandomSource random = particle.random();
-            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2, random.nextDouble() * 0.2 - 0.1);
+            particle.setSpeed(AMUtil.nextDouble(particle.random(), -0.1, 0.1), random.nextDouble() * 0.2, AMUtil.nextDouble(particle.random(), -0.1, 0.1));
             particle.setLifetime(5);
             particle.setNoGravity();
             particle.scale(0.1f);

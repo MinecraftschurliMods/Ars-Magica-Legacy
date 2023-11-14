@@ -260,11 +260,13 @@ public final class AMUtil {
     }
 
     /**
-     * @param list The list of reagents to convert into a list of crafting ingredients.
-     * @return A list of crafting ingredients, derived from the reagent list.
+     * @param random The random to use.
+     * @param min    The min value of the double to generate.
+     * @param max    The max value of the double to generate.
+     * @return A pseudo-randomly generated double between the given min and max values.
      */
-    public static List<ItemStack[]> reagentsToIngredients(List<ItemFilter> list) {
-        return list.stream().map(ItemFilter::getMatchedStacks).filter(e -> e.length > 0).toList();
+    public static double nextDouble(RandomSource random, double min, double max) {
+        return min + nextDouble(random, max - min);
     }
 
     /**
@@ -273,11 +275,29 @@ public final class AMUtil {
      * @return A pseudo-randomly generated double between 0 and the given bound.
      */
     public static double nextDouble(RandomSource random, double bound) {
-        double r = random.nextDouble();
-        r = r * bound;
-        if (r >= bound) {
-            r = Double.longBitsToDouble(Double.doubleToLongBits(bound) - 1);
+        return random.nextDouble() * bound;
+    }
+
+    /**
+     * @param list The list of reagents to convert into a list of crafting ingredients.
+     * @return A list of crafting ingredients, derived from the reagent list.
+     */
+    public static List<ItemStack[]> reagentsToIngredients(List<ItemFilter> list) {
+        return list.stream().map(ItemFilter::getMatchedStacks).filter(e -> e.length > 0).toList();
+    }
+
+    /**
+     * @param value The value to wrap.
+     * @param max   The upper value to wrap around.
+     * @return The given value, wrapped between 0 and the max value.
+     */
+    public static double wrap(double value, double max) {
+        while (value < 0) {
+            value += max;
         }
-        return r;
+        while (value >= max) {
+            value -= max;
+        }
+        return value;
     }
 }
