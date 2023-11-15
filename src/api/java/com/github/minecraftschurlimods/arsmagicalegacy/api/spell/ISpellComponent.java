@@ -44,24 +44,14 @@ public interface ISpellComponent extends ISpellPart {
     SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed);
 
     /**
-     * Returns the default color to use for this component's visual effects.
-     * If -1, particles should be used without any color modifier applied.
-     *
-     * @return The default color to use for this component's visual effects.
-     */
-    default int defaultColor() {
-        return -1;
-    }
-
-    /**
-     * Returns the color for this component's visual effects. Uses the color modifier, or the result of {@link ISpellComponent#defaultColor()} if no color modifier is present.
+     * Returns the color for this component's visual effects. Uses the color modifier, or -1 if no color modifier is present.
      * If -1, particles should be used without any color modifier applied.
      *
      * @param modifiers The modifier list for this component.
      * @return The color modifier for this component.
      */
     default int getColor(List<ISpellModifier> modifiers) {
-        return defaultColor(); // TODO: color modifier
+        return -1; // TODO: color modifier
     }
 
     /**
