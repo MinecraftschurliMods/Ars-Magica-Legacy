@@ -73,7 +73,6 @@ import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -129,7 +128,6 @@ public final class EventHandler {
         forgeBus.addListener(EventHandler::livingHurt);
         forgeBus.addListener(EventHandler::livingDamage);
         forgeBus.addListener(EventHandler::rightClickBlock);
-        forgeBus.addListener(EventHandler::movementInputUpdate);
         forgeBus.addListener(EventHandler::affinityChangingPre);
         forgeBus.addListener(EventPriority.HIGH, EventHandler::manaCostPre);
         forgeBus.addListener(EventHandler::modifyStats);
@@ -300,14 +298,6 @@ public final class EventHandler {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenSpellRecipeGuiInLecternPacket(stack, pos, lectern.getPage()), player);
             player.awardStat(Stats.INTERACT_WITH_LECTERN);
             event.setCanceled(true);
-        }
-    }
-
-    private static void movementInputUpdate(MovementInputUpdateEvent event) {
-        Player player = event.getEntity();
-        if (player.isUsingItem() && (player.getUseItem().is(AMItems.SPELL.get()) || player.getUseItem().is(AMItems.SPELL_BOOK.get())) && ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.SPELL_MOTION)) {
-            event.getInput().forwardImpulse *= 5f;
-            event.getInput().leftImpulse *= 5f;
         }
     }
 

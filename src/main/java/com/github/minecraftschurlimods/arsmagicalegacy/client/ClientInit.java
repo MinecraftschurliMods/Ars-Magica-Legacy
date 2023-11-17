@@ -58,6 +58,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
@@ -97,6 +98,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -133,6 +135,7 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::itemColors);
         modEventBus.addListener(ClientInit::registerHUDs);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        forgeBus.addListener(ClientInit::movementInputUpdate);
         forgeBus.addListener(ClientInit::mouseScroll);
         forgeBus.addListener(ClientInit::entityRenderPre);
         forgeBus.addListener(ClientInit::entityRenderPost);
@@ -272,6 +275,14 @@ public final class ClientInit {
             EtheriumType type = ArsMagicaAPI.get().getEtheriumHelper().getEtheriumType(stack);
             return ColorUtil.argbToRgb(tintIndex == 0 && type != null ? type.getColor() : EtheriumType.NEUTRAL.getColor());
         }, AMItems.ETHERIUM_PLACEHOLDER.get());
+    }
+
+    private static void movementInputUpdate(MovementInputUpdateEvent event) {
+        Player player = event.getEntity();
+        if (player.isUsingItem() && (player.getUseItem().is(AMItems.SPELL.get()) || player.getUseItem().is(AMItems.SPELL_BOOK.get())) && ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.SPELL_MOTION)) {
+            event.getInput().forwardImpulse *= 5f;
+            event.getInput().leftImpulse *= 5f;
+        }
     }
 
     private static void mouseScroll(InputEvent.MouseScrollingEvent event) {

@@ -30,7 +30,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
+        super(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 

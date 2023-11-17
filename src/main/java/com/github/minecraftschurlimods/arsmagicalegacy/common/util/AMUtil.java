@@ -9,10 +9,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -29,6 +33,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -262,5 +268,29 @@ public final class AMUtil {
             r = Double.longBitsToDouble(Double.doubleToLongBits(bound) - 1);
         }
         return r;
+    }
+
+    /**
+     * Get the local registry access.
+     *
+     * @return the local registry access.
+     */
+    public static RegistryAccess getRegistryAccess() {
+        if (FMLEnvironment.dist.isClient()) {
+            return ClientHelper.getRegistryAccess();
+        } else {
+            return ServerLifecycleHooks.getCurrentServer().registryAccess();
+        }
+    }
+
+    /**
+     * Get the registry for the provided key from the local registry access.
+     *
+     * @param key the key of the registry
+     * @return the registry for the key
+     * @param <T> the type of the registry
+     */
+    public static <T> Registry<T> getRegistry(ResourceKey<Registry<T>> key) {
+        return getRegistryAccess().registryOrThrow(key);
     }
 }
