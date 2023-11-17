@@ -13,9 +13,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -119,16 +117,5 @@ public final class ClientHelper {
         ClientPacketListener connection = Minecraft.getInstance().getConnection();
         if (connection == null) return RegistryAccess.BUILTIN.get();
         return connection.registryAccess();
-    }
-
-    /**
-     * Get the registry for the provided key from the local registry access.
-     *
-     * @param key the key of the registry
-     * @return the registry for the key
-     * @param <T> the type of the registry
-     */
-    public static <T> Registry<T> getRegistry(ResourceKey<Registry<T>> key) {
-        return getRegistryAccess().registryOrThrow(key);
     }
 }

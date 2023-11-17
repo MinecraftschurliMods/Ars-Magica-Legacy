@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.compat.jei;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientHelper;
@@ -28,7 +29,7 @@ public class SkillIngredient {
 
         @Override
         public String getDisplayName(Skill ingredient) {
-            return ingredient.getDisplayName(ClientHelper.getRegistryAccess()).getString();
+            return ingredient.getDisplayName(AMUtil.getRegistryAccess()).getString();
         }
 
         @Override
@@ -38,7 +39,7 @@ public class SkillIngredient {
 
         @Override
         public ResourceLocation getResourceLocation(Skill ingredient) {
-            return ingredient.getId(ClientHelper.getRegistryAccess());
+            return ingredient.getId(AMUtil.getRegistryAccess());
         }
 
         @Override
@@ -61,7 +62,7 @@ public class SkillIngredient {
 
         @Override
         public List<Component> getTooltip(Skill ingredient, TooltipFlag tooltipFlag) {
-            return List.of(ingredient.getDisplayName(ClientHelper.getRegistryAccess()));
+            return List.of(ingredient.getDisplayName(AMUtil.getRegistryAccess()));
         }
     }
 }

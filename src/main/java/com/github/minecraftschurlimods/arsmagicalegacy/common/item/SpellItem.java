@@ -194,11 +194,11 @@ public class SpellItem extends Item implements ISpellItem {
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == PREFAB_SPELLS_TAB) {
-            ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY)
-                        .stream()
-                        .sorted(Comparator.comparing(e -> e.name().toString()))
-                        .map(PrefabSpell::makeSpell)
-                        .forEach(items::add);
+            AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY)
+                  .stream()
+                  .sorted(Comparator.comparing(e -> e.name().toString()))
+                  .map(PrefabSpell::makeSpell)
+                  .forEach(items::add);
         }
     }
 
