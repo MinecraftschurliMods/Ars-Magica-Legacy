@@ -8,75 +8,49 @@ on:
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/tags/')
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
-    secrets:
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
     with:
       upload-artifacts: true
       artifact-retention: 1
       publish-to-maven: true
       release-type: release
       datagen-folder: src/main/generated/
+    secrets:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
   publish:
+    uses: MinecraftschurliMods/.github/.github/workflows/publish.yml@main
     needs:
       - build
     strategy:
+      fail-fast: true
       matrix:
         platform:
           - GitHub
           - CurseForge
           - Modrinth
-    uses: MinecraftschurliMods/.github/.github/workflows/publish.yml@main
     with:
       platform: ${{ matrix.platform }}
       modid: ${{ needs.build.outputs.modid }}
       version: ${{ needs.build.outputs.version }}
     secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+      GH_TOKEN: ${{ matrix.platform == 'GitHub' && secrets.GITHUB_TOKEN || null }}
+      CF_API_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.CF_API_TOKEN || null }}
+      MODRINTH_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.MODRINTH_TOKEN || null }}
 
-  post-release:
-    name: Post Release
-    runs-on: ubuntu-latest
+  notify-discord:
+    uses: MinecraftschurliMods/.github/.github/workflows/notify_discord.yml@main
     needs:
       - build
       - publish
-
-    steps:
-      - name: Test outputs
-        run: |
-          echo "modrinth-id: ${{ needs.publish.outputs.modrinth-id }}"
-          echo "modrinth-version: ${{ needs.publish.outputs.modrinth-version }}"
-          echo "modrinth-url: ${{ needs.publish.outputs.modrinth-url }}"
-          echo "modrinth-files: ${{ needs.publish.outputs.modrinth-files }}"
-          echo "curseforge-id: ${{ needs.publish.outputs.curseforge-id }}"
-          echo "curseforge-version: ${{ needs.publish.outputs.curseforge-version }}"
-          echo "curseforge-url: ${{ needs.publish.outputs.curseforge-url }}"
-          echo "curseforge-files: ${{ needs.publish.outputs.curseforge-files }}"
-          echo "github-repo: ${{ needs.publish.outputs.github-repo }}"
-          echo "github-tag: ${{ needs.publish.outputs.github-tag }}"
-          echo "github-url: ${{ needs.publish.outputs.github-url }}"
-          echo "github-files: ${{ needs.publish.outputs.github-files }}"
-          echo "modid: ${{ needs.build.outputs.modid }}"
-          echo "version: ${{ needs.build.outputs.version }}"
-          echo "summary: ${{ needs.build.outputs.summary }}"
-
-#      - name: Post Release
-#        uses: Minecraftschurli/post-release-action@main
-#        with:
-#          webhook-url: ${{ secrets.WEBHOOK_URL }}
-#          webhook-name: "Ars Magica: Legacy"
-#          webhook-avatar: "https://raw.githubusercontent.com/MinecraftschurliMods/Ars-Magica-Legacy/version/1.19.x/src/main/resources/logo_small.png"
-#          webhook-title: "Version {version} of Ars Magica: Legacy released!"
-#          webhook-message: ${{ needs.release.outputs.summary }}
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          readme-template: ".github/README_TEMPLATE.md"
-#          version: ${{ needs.release.outputs.version }}
-#          exclude-links-webhook: "GitHub"
-#          published-to: ${{ needs.release.outputs.published-to }}
-#          github-link: ${{ needs.release.outputs.github-link }}
-#          modrinth-link: ${{ needs.release.outputs.modrinth-link }}
-#          curseforge-link: ${{ needs.release.outputs.curseforge-link }}
+    with:
+      project_name: "Ars Magica: Legacy"
+      version: ${{ needs.build.outputs.version }}
+      summary: ${{ needs.build.outputs.summary }}
+      curseforge_url: ${{ needs.publish.outputs.curseforge-url }}
+      modrinth_url: ${{ needs.publish.outputs.modrinth-url }}
+      github_url: ${{ needs.publish.outputs.github-url }}
+      logo_url: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/src/main/resources/logo_small.png
+      update_ping: "&1116598471600914492"
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
