@@ -10,12 +10,14 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 import java.util.Map;
@@ -33,9 +35,9 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
 
     @Override
     public void register(Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((LivingSpawnEvent.SpecialSpawn event) -> {// TODO: find a better event to do this
-            if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
-            LivingEntity entity = event.getEntity();
+        MinecraftForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> { // TODO change to LivingSpawnEvent.SpecialSpawn in 1.20.2
+            if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+            Entity entity = event.getEntity();
             if (!predicate.matches(serverLevel, Vec3.atCenterOf(entity.blockPosition()), entity)) return;
             for (Player player : serverLevel.getEntitiesOfClass(Player.class, AABB.ofSize(entity.position(), 5, 5, 5))) {
                 if (ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", entity)))) {
