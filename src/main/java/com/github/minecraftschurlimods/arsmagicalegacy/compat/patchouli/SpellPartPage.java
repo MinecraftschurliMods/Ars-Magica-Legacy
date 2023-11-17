@@ -83,7 +83,7 @@ public class SpellPartPage implements ICustomComponent {
         int yOffset = -6;
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RegistryAccess registryAccess = ClientHelper.getRegistryAccess();
-        Registry<Skill> skillRegistry = ClientHelper.getRegistry(Skill.REGISTRY_KEY);
+        Registry<Skill> skillRegistry = AMUtil.getRegistry(Skill.REGISTRY_KEY);
         for (int i = 0; i < modifiers.size(); i++) {
             ISpellModifier modifier = modifiers.get(i);
             ResourceLocation registryName = modifier.getId();
