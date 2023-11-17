@@ -69,7 +69,7 @@ public class ObeliskMenu extends AbstractContainerMenu {
                 if (!moveItemStackTo(stack, 1, 37, true)) return ItemStack.EMPTY;
                 slot.onQuickCraft(stack, itemstack);
             } else {
-                if (getSlot(0).mayPlace(stack)) {
+                if ((getSlot(0) instanceof ObeliskFuelSlot && ObeliskFuelManager.isFuel(player.getLevel().registryAccess(), stack)) || getSlot(0).mayPlace(stack)) {
                     if (!moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
                 } else if (index < 28) {
                     if (!moveItemStackTo(stack, 28, 37, false)) return ItemStack.EMPTY;
