@@ -97,7 +97,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
             }
         }
         y += SLOT_SIZE;
-        if (recipe.affinityShifts.size() > 0) {
+        if (!recipe.affinityShifts.isEmpty()) {
             x = getAffinityValueAnchor(Minecraft.getInstance().font, recipe.affinityShifts) - 9;
             y += SLOT_SIZE + TEXT_BOTTOM_PADDING;
             for (Affinity affinity : recipe.affinityShifts.keySet().stream().sorted().toList()) {
@@ -105,13 +105,13 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
                         .addItemStack(api.getAffinityHelper().getEssenceForAffinity(affinity))
                         .addTooltipCallback((slot, tooltip) -> {
                             tooltip.clear();
-                            tooltip.add(affinity.getDisplayName(ClientHelper.getRegistryAccess()));
+                            tooltip.add(affinity.getDisplayName(registryAccess));
                         });
                 y += SLOT_SIZE - 2;
             }
             y += 2;
         }
-        if (recipe.modifiers.size() > 0) {
+        if (!recipe.modifiers.isEmpty()) {
             y += TEXT_BOTTOM_PADDING;
             for (int i = 0; i < recipe.modifiers.size(); i++) {
                 if (i % INGREDIENT_COLUMNS != 0) {

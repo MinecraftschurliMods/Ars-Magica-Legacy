@@ -1,11 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.InlayBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.ICompatHandler;
 import net.minecraft.core.BlockPos;
@@ -27,8 +27,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.IStateMatcher;
@@ -316,10 +314,7 @@ public class PatchouliCompat implements ICompatHandler {
     }
 
     static <T> Registry<T> getRegistry(@Nullable BlockGetter blockGetter, ResourceKey<Registry<T>> key) {
-        return (blockGetter instanceof Level level ? level.registryAccess() : switch (EffectiveSide.get()) {
-            case CLIENT -> ClientHelper.getRegistryAccess();
-            case SERVER -> ServerLifecycleHooks.getCurrentServer().registryAccess();
-        }).registryOrThrow(key);
+        return (blockGetter instanceof Level level ? level.registryAccess() : AMUtil.getRegistryAccess()).registryOrThrow(key);
     }
 
     @Override
