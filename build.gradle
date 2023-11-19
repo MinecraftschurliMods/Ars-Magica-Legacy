@@ -212,7 +212,7 @@ dependencies {
             println 'Using github packages'
         }
         runtimeMod fg.deobf("com.github.minecraftschurlimods:potionbundles:${project.potionbundles_version}")
-        //runtimeMod fg.deobf("maven.modrinth:embeddium:fUvrPCLk")
+        runtimeMod fg.deobf("maven.modrinth:embeddium:fUvrPCLk")
         //runtimeMod fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.2:${project.controlling_version}")
     }
 
