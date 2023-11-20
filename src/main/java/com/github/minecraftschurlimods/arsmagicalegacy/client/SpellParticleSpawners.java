@@ -7,6 +7,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ApproachEntityController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ApproachPointController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ArcToEntityController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ArcToPointController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FadeOutController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FloatUpwardController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.LeaveTrailController;
@@ -85,6 +87,20 @@ public final class SpellParticleSpawners {
         helper.registerParticleSpawner(AMSpellParts.GROW.get(),                SpellParticleSpawners::grow);
         helper.registerParticleSpawner(AMSpellParts.HARVEST.get(),             SpellParticleSpawners::harvest);
         helper.registerParticleSpawner(AMSpellParts.HEAL.get(),                SpellParticleSpawners::heal);
+        helper.registerParticleSpawner(AMSpellParts.IGNITION.get(),            SpellParticleSpawners::ignition);
+        helper.registerParticleSpawner(AMSpellParts.KNOCKBACK.get(),           SpellParticleSpawners::knockback);
+        helper.registerParticleSpawner(AMSpellParts.LIFE_DRAIN.get(),          SpellParticleSpawners::lifeDrain);
+        helper.registerParticleSpawner(AMSpellParts.LIFE_TAP.get(),            SpellParticleSpawners::lifeTap);
+        helper.registerParticleSpawner(AMSpellParts.LIGHT.get(),               SpellParticleSpawners::light);
+        helper.registerParticleSpawner(AMSpellParts.MANA_BLAST.get(),          SpellParticleSpawners::manaBlast);
+        helper.registerParticleSpawner(AMSpellParts.MANA_DRAIN.get(),          SpellParticleSpawners::manaDrain);
+        helper.registerParticleSpawner(AMSpellParts.MELT_ARMOR.get(),          SpellParticleSpawners::meltArmor);
+        helper.registerParticleSpawner(AMSpellParts.PLANT.get(),               SpellParticleSpawners::plant);
+        helper.registerParticleSpawner(AMSpellParts.PLOW.get(),                SpellParticleSpawners::plow);
+        helper.registerParticleSpawner(AMSpellParts.RECALL.get(),              SpellParticleSpawners::recall);
+        helper.registerParticleSpawner(AMSpellParts.REPEL.get(),               SpellParticleSpawners::repel);
+        helper.registerParticleSpawner(AMSpellParts.STORM.get(),               SpellParticleSpawners::storm);
+        helper.registerParticleSpawner(AMSpellParts.TRANSPLACE.get(),          SpellParticleSpawners::transplace);
     }
 
     private static void drowningDamage(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
@@ -530,6 +546,138 @@ public final class SpellParticleSpawners {
                 particle.addController(new OrbitEntityController(particle, target, 0.5).setDistance(0.3 + random.nextDouble() * 0.3));
                 particle.addRandomOffset(1, 1, 1);
             }
+        }
+    }
+
+    private static void ignition(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.EXPLOSION, color, 5);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, 0.3, random.nextDouble() * 0.2 - 0.1);
+            particle.setGravity(1);
+            particle.scale(0.1f);
+            particle.addRandomOffset(1, 0.5, 1);
+        }
+    }
+
+    private static void knockback(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        Entity target = ehr.getEntity();
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color, 20);
+            particle.addController(new FadeOutController(particle, 0.05f));
+            particle.addController(new MoveInDirectionController(particle, Math.toDegrees(Math.atan2(target.getX() - caster.getX(), target.getZ() - caster.getZ())), 0, 0.1 + random.nextDouble() * 0.5));
+            particle.addRandomOffset(1, 2, 1);
+        }
+    }
+
+    private static void lifeDrain(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.EMBER, color == -1 ? 0xff3333 : color, -1);
+            particle.setAlpha(0.5f);
+            particle.addController(new ArcToEntityController(particle, caster, 0.03));
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void lifeTap(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color == -1 ? random.nextBoolean() ? 0x66197f : 0x197f19 : color, 15);
+            particle.scale(0.1f);
+            particle.addController(new ApproachEntityController(particle, ehr.getEntity(), 0.1, 0.1));
+            particle.addRandomOffset(2, 2, 2);
+        }
+    }
+
+    private static void light(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 5; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color == -1 ? 0x9933cc : color, 5);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2, random.nextDouble() * 0.2 - 0.1);
+            particle.setGravity(1);
+            particle.addRandomOffset(1, 0.5, 1);
+        }
+    }
+
+    private static void manaBlast(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        for (int i = 0; i < 100; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color == -1 ? 0x9900e5 : color);
+            particle.addController(new ApproachEntityController(particle, ehr.getEntity(), 0.15, 0.1));
+            particle.addController(new FadeOutController(particle, 0.1f));
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void manaDrain(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color == -1 ? 0x0066ff : color, -1);
+            particle.setAlpha(0.5f);
+            particle.addController(new ArcToEntityController(particle, caster, 0.03));
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void meltArmor(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color == -1 ? 0xb26633 : color, 20);
+        particle.setAlpha(0.1f);
+        particle.scale(0.3f);
+    }
+
+    private static void plant(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.PLANT, color, 20);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, 0.2, random.nextDouble() * 0.2 - 0.1);
+            particle.setGravity(1);
+            particle.scale(0.1f);
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void plow(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 10; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.ROCK, color, 20);
+            particle.setY(particle.getY() + 1);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, 0.2, random.nextDouble() * 0.2 - 0.1);
+            particle.setGravity(1);
+            particle.scale(0.05f);
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void recall(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.ARCANE, color, 20);
+            particle.setY(particle.getY() - 1);
+            particle.addController(new ApproachEntityController(particle, ehr.getEntity(), 0.3, 0.1));
+            particle.addRandomOffset(3, 2, 3);
+        }
+    }
+
+    private static void repel(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color, 20);
+        particle.addController(new FadeOutController(particle, 0.05f));
+    }
+
+    private static void storm(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color, 40); // TODO symbols particle type
+        particle.scale(0.1f);
+        particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2).setDistance(1));
+    }
+
+    private static void transplace(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        Entity target = ehr.getEntity();
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(new EntityHitResult(caster), AMParticleTypes.STARDUST, color == -1 ? 0xff0000 : color, 40);
+            particle.addController(new ArcToPointController(particle, caster.position(), target.position(), 0.05));
+            particle.addRandomOffset(1, 1, 1);
+        }
+        for (int i = 0; i < 15; i++) {
+            AMParticle particle = particle(new EntityHitResult(caster), AMParticleTypes.STARDUST, color == -1 ? 0x0000ff : 0xffffff - color, 40);
+            particle.addController(new ArcToPointController(particle, caster.position(), target.position(), 0.05));
+            particle.addRandomOffset(1, 1, 1);
         }
     }
 

@@ -48,6 +48,27 @@ import java.util.stream.Collector;
 
 public final class AMUtil {
     /**
+     * Calculates the point at the given progress on the Bézier curve defined by the four given points.
+     *
+     * @param start    The start point for the Bézier curve.
+     * @param control1 The first control point for the Bézier curve.
+     * @param control2 The second control point for the Bézier curve.
+     * @param end      The end point for the Bézier curve.
+     * @param progress The progress of the calculation.
+     * @return The point at the given progress on the Bézier curve defined by the four given points.
+     */
+    public static Vec3 bezier(Vec3 start, Vec3 control1, Vec3 control2, Vec3 end, double progress) {
+        progress = Mth.clamp(0, 1, progress);
+        double invertedValue = 1 - progress;
+        Vec3 result = new Vec3(0, 0, 0);
+        result.add(start.scale(invertedValue * invertedValue * invertedValue));
+        result.add(control1.scale(3 * invertedValue * invertedValue * progress));
+        result.add(control2.scale(3 * invertedValue * progress * progress));
+        result.add(end.scale(progress * progress * progress));
+        return result;
+    }
+
+    /**
      * @param view The view vector to which the resulting point is the closest.
      * @param a    The first coordinate of the line.
      * @param b    The second coordinate of the line.
@@ -273,6 +294,21 @@ public final class AMUtil {
     }
 
     /**
+     * @param value The value to wrap.
+     * @param max   The upper value to wrap around.
+     * @return The given value, wrapped between 0 and the max value.
+     */
+    public static double wrap(double value, double max) {
+        while (value < 0) {
+            value += max;
+        }
+        while (value >= max) {
+            value -= max;
+        }
+        return value;
+    }
+
+    /**
      * Get the local registry access.
      *
      * @return the local registry access.
@@ -294,20 +330,5 @@ public final class AMUtil {
      */
     public static <T> Registry<T> getRegistry(ResourceKey<Registry<T>> key) {
         return getRegistryAccess().registryOrThrow(key);
-    }
-
-    /**
-     * @param value The value to wrap.
-     * @param max   The upper value to wrap around.
-     * @return The given value, wrapped between 0 and the max value.
-     */
-    public static double wrap(double value, double max) {
-        while (value < 0) {
-            value += max;
-        }
-        while (value >= max) {
-            value -= max;
-        }
-        return value;
     }
 }
