@@ -19,6 +19,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -78,6 +79,12 @@ public final class SpellParticleSpawners {
         helper.registerParticleSpawner(AMSpellParts.DISPEL.get(),              SpellParticleSpawners::dispel);
         helper.registerParticleSpawner(AMSpellParts.DIVINE_INTERVENTION.get(), SpellParticleSpawners::divineIntervention);
         helper.registerParticleSpawner(AMSpellParts.DROUGHT.get(),             SpellParticleSpawners::drought);
+        helper.registerParticleSpawner(AMSpellParts.ENDER_INTERVENTION.get(),  SpellParticleSpawners::enderIntervention);
+        helper.registerParticleSpawner(AMSpellParts.FLING.get(),               SpellParticleSpawners::fling);
+        helper.registerParticleSpawner(AMSpellParts.FORGE.get(),               SpellParticleSpawners::forge);
+        helper.registerParticleSpawner(AMSpellParts.GROW.get(),                SpellParticleSpawners::grow);
+        helper.registerParticleSpawner(AMSpellParts.HARVEST.get(),             SpellParticleSpawners::harvest);
+        helper.registerParticleSpawner(AMSpellParts.HEAL.get(),                SpellParticleSpawners::heal);
     }
 
     private static void drowningDamage(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
@@ -454,6 +461,75 @@ public final class SpellParticleSpawners {
             particle.addController(new FadeOutController(particle, 0.05f));
             particle.addController(new FloatUpwardController(particle, 0, 0.1));
             particle.addRandomOffset(1, 0, 1);
+        }
+    }
+
+    private static void enderIntervention(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 100; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.GHOST, color == -1 ? 0xb23333 : color, 25 + random.nextInt(10));
+            particle.setY(particle.getY() - 1);
+            particle.addController(new FloatUpwardController(particle, 0, 0.1));
+            particle.addRandomOffset(1, 2, 1);
+        }
+    }
+
+    private static void fling(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.WIND, color, 20);
+            particle.addController(new FloatUpwardController(particle, 0, 0.3 + random.nextDouble() * 0.3));
+            particle.addRandomOffset(1, 2, 1);
+        }
+    }
+
+    private static void forge(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color == -1 ? 0xb26633 : color, 20);
+        particle.setAlpha(0.1f);
+        particle.scale(0.3f);
+    }
+
+    private static void grow(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.PLANT, color, 20);
+            particle.setY(particle.getY() + 1);
+            particle.scale(0.1f);
+            particle.addController(new FadeOutController(particle, 0.05f));
+            particle.addController(new FloatUpwardController(particle, 0, 0.1));
+            particle.addController(new OrbitPointController(particle, hit.getLocation().add(0.5, 0.5, 0.5), 0.1).setDistance(0.3 + random.nextDouble() * 0.3));
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void harvest(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        for (int i = 0; i < 25; i++) {
+            AMParticle particle = particle(hit, AMParticleTypes.PLANT, color == -1 ? 0xb23319 : color, 20);
+            particle.setY(particle.getY() + 1);
+            particle.setGravity(1);
+            particle.scale(0.1f);
+            particle.addController(new FloatUpwardController(particle, 0, 0.3));
+            particle.addRandomOffset(1, 1, 1);
+        }
+    }
+
+    private static void heal(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
+        if (!(hit instanceof EntityHitResult ehr)) return;
+        Entity target = ehr.getEntity();
+        if (target instanceof LivingEntity living && living.getMobType() == MobType.UNDEAD) {
+            for (int i = 0; i < 25; i++) {
+                AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color == -1 ? 0xff3333 : color, null); // TODO symbols particle type
+                particle.setY(particle.getY() - 1);
+                particle.scale(0.1f);
+                particle.addController(new FloatUpwardController(particle, 0, -0.01));
+                particle.addController(new FadeOutController(particle, 0.02f));
+                particle.addRandomOffset(1, 1, 1);
+            }
+        } else {
+            for (int i = 0; i < 25; i++) {
+                AMParticle particle = particle(hit, AMParticleTypes.STARDUST, color == -1 ? 0x19ff19 : color, 20);
+                particle.setY(particle.getY() - 1);
+                particle.addController(new FloatUpwardController(particle, 0, 0.1));
+                particle.addController(new OrbitEntityController(particle, target, 0.5).setDistance(0.3 + random.nextDouble() * 0.3));
+                particle.addRandomOffset(1, 1, 1);
+            }
         }
     }
 
