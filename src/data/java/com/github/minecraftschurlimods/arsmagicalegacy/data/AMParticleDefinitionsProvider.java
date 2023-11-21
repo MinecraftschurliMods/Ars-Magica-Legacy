@@ -4,10 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class AMParticleDefinitionsProvider extends AbstractParticleDefinitionsProvider {
     protected AMParticleDefinitionsProvider(DataGenerator generator) {
@@ -63,6 +60,6 @@ public class AMParticleDefinitionsProvider extends AbstractParticleDefinitionsPr
      * @param count The texture count to use.
      */
     private void addMultiple(String name, int count) {
-        add(name, IntStream.range(0, count).mapToObj(e -> new ResourceLocation(name + "_" + e)).toList());
+        add(name, IntStream.range(0, count).mapToObj(e -> new ResourceLocation(ArsMagicaAPI.MOD_ID, name + "_" + e)).toList());
     }
 }

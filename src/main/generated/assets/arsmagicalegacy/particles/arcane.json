@@ -1,12 +1,12 @@
 {
   "textures": [
-    "minecraft:arcane_0",
-    "minecraft:arcane_1",
-    "minecraft:arcane_2",
-    "minecraft:arcane_3",
-    "minecraft:arcane_4",
-    "minecraft:arcane_5",
-    "minecraft:arcane_6",
-    "minecraft:arcane_7"
+    "arsmagicalegacy:arcane_0",
+    "arsmagicalegacy:arcane_1",
+    "arsmagicalegacy:arcane_2",
+    "arsmagicalegacy:arcane_3",
+    "arsmagicalegacy:arcane_4",
+    "arsmagicalegacy:arcane_5",
+    "arsmagicalegacy:arcane_6",
+    "arsmagicalegacy:arcane_7"
   ]
 }
