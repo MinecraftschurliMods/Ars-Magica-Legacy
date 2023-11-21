@@ -325,7 +325,7 @@ public final class SpellParticleSpawners {
     private static void shield(ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color) {
         if (!(hit instanceof EntityHitResult ehr)) return;
         for (int i = 0; i < 25; i++) {
-            AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color, 10); // TODO symbols particle type
+            AMParticle particle = particle(hit, AMParticleTypes.SYMBOLS.random(random), color, 10);
             particle.setY(particle.getY() - 1);
             particle.scale(0.1f);
             particle.addController(new OrbitEntityController(particle, ehr.getEntity(), 0.2).setDistance(1));
@@ -525,7 +525,7 @@ public final class SpellParticleSpawners {
         Entity target = ehr.getEntity();
         if (target instanceof LivingEntity living && living.getMobType() == MobType.UNDEAD) {
             for (int i = 0; i < 25; i++) {
-                AMParticle particle = particle(hit, AMParticleTypes.LIGHTS, color == -1 ? 0xff3333 : color, null); // TODO symbols particle type
+                AMParticle particle = particle(hit, AMParticleTypes.SYMBOLS.random(random), color == -1 ? 0xff3333 : color, null);
                 particle.setY(particle.getY() - 1);
                 particle.scale(0.1f);
                 particle.addController(new FloatUpwardController(particle, 0, -0.01));

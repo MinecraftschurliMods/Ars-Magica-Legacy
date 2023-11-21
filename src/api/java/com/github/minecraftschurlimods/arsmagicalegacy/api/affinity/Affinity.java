@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -25,8 +26,9 @@ import java.util.stream.Collectors;
  * @param directOpposite The direct opposing affinity for this affinity.
  * @param castSound      The sound to play when casting a spell with this affinity.
  * @param loopSound      The sound to play when casting a continuous spell with this affinity.
+ * @param particle       The particle type associated with this affinity.
  */
-public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound) implements Comparable<Affinity>, ITranslatable {
+public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound, Supplier<? extends ParticleType<?>> particle) implements Comparable<Affinity>, ITranslatable {
     public static final String AFFINITY = "affinity";
     public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, AFFINITY));
 
@@ -90,6 +92,14 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
         return loopSound().get();
     }
 
+    /**
+     * @return The sound that should be played when casting a continuous spell with this affinity.
+     */
+    @Nullable
+    public ParticleType<?> getParticle() {
+        return particle().get();
+    }
+
     @Override
     public String getType() {
         return AFFINITY;
@@ -112,6 +122,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
         private ResourceLocation directOpposite;
         private Supplier<SoundEvent> castSound;
         private Supplier<SoundEvent> loopSound;
+        private Supplier<? extends ParticleType<?>> particle;
 
         /**
          * @param color The color to set.
@@ -186,6 +197,15 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
         }
 
         /**
+         * @param particle The particle type to set.
+         * @return This builder, for chaining.
+         */
+        public Builder setParticle(Supplier<? extends ParticleType<?>> particle) {
+            this.particle = particle;
+            return this;
+        }
+
+        /**
          * @return The affinity created from this builder.
          */
         public Affinity build() {
@@ -195,7 +215,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
             if (directOpposite == null) {
                 throw new IllegalStateException("An affinity needs a direct opposite!");
             }
-            return new Affinity(color, minorOpposites, majorOpposites, directOpposite, castSound, loopSound);
+            return new Affinity(color, minorOpposites, majorOpposites, directOpposite, castSound, loopSound, particle);
         }
     }
 }
