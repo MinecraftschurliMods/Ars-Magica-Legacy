@@ -31,13 +31,11 @@ public class AMParticle extends TextureSheetParticle {
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprite) {
         this(pLevel, pX, pY, pZ);
-        setLifetime(-1);
         pickSprite(sprite);
     }
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
         this(pLevel, pX, pY, pZ);
-        setLifetime(-1);
         if (Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0) instanceof TextureSheetParticle tsp) {
             sprite = tsp.sprite;
         }

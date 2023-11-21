@@ -54,7 +54,9 @@ public record SpawnComponentParticlesPacket(ISpellComponent component, LivingEnt
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        var helper = ArsMagicaAPI.get().getSpellHelper();
-        helper.spawnParticles(component, helper.getSpell(AMUtil.getSpellStack(caster)), caster, hit.map(l -> l, r -> r), Objects.requireNonNull(ClientHelper.getLocalLevel()).getRandom(), color);
+        context.enqueueWork(() -> {
+            var helper = ArsMagicaAPI.get().getSpellHelper();
+            helper.spawnParticles(component, helper.getSpell(AMUtil.getSpellStack(caster)), caster, hit.map(l -> l, r -> r), Objects.requireNonNull(ClientHelper.getLocalLevel()).getRandom(), color);
+        });
     }
 }
