@@ -51,11 +51,6 @@ public class ManaVortex extends Entity {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }

@@ -25,6 +25,7 @@ public class Light extends Effect {
         BlockPos pos = target.getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
         if (level.getBlockState(pos).isAir()) {
             level.setBlock(pos, Blocks.LIGHT.defaultBlockState(), Block.UPDATE_ALL);
+            return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
     }

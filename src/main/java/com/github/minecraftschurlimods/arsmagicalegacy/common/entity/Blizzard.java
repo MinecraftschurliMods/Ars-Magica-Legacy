@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -14,8 +15,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Blizzard extends Entity implements ItemSupplier {
+public class Blizzard extends Entity implements ISpellEffectEntity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.FLOAT);
@@ -65,11 +64,6 @@ public class Blizzard extends Entity implements ItemSupplier {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public Packet<?> getAddEntityPacket() {
         Entity entity = getOwner();
         return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
@@ -100,11 +94,6 @@ public class Blizzard extends Entity implements ItemSupplier {
         }
     }
 
-    @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
-    }
-
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -113,6 +102,7 @@ public class Blizzard extends Entity implements ItemSupplier {
         entityData.set(DURATION, duration);
     }
 
+    @Override
     @Nullable
     public LivingEntity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));

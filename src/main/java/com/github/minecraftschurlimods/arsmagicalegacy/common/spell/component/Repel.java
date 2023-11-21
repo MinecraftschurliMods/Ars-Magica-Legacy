@@ -7,6 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -26,6 +27,7 @@ public class Repel extends AbstractComponent {
         boolean success = false;
         for (Entity e : caster.level.getEntities(targetEntity, aabb)) {
             if (e == caster) continue;
+            if (e instanceof OwnableEntity ownable && ownable.getOwner() != null && ownable.getOwner().is(e)) continue;
             success = true;
             Vec3 vec = e.position();
             double distance = targetPos.distanceTo(vec) + 0.1;

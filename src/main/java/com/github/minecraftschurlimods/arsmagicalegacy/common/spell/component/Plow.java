@@ -26,6 +26,6 @@ public class Plow extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         ItemStack hoe = new ItemStack(Items.WOODEN_HOE);
         InteractionResult result = hoe.useOn(new UseOnContext(level, caster instanceof Player player ? player : null, InteractionHand.MAIN_HAND, hoe, target));
-        return result == InteractionResult.SUCCESS ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
+        return result.consumesAction() ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 }

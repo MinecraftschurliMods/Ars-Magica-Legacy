@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FallingStar extends Entity implements ItemSupplier {
+public class FallingStar extends Entity implements ISpellEffectEntity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
@@ -65,11 +64,6 @@ public class FallingStar extends Entity implements ItemSupplier {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
         return false;
     }
 
@@ -113,11 +107,6 @@ public class FallingStar extends Entity implements ItemSupplier {
         if (timeSinceImpact > getRadius() * 10) {
             kill();
         }
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
     }
 
     @Nullable

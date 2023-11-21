@@ -333,7 +333,7 @@ public final class EventHandler {
         if (!ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.AUGMENTED_CASTING)) return;
         if (!(event.stat instanceof SpellPartStats sps)) return;
         switch (sps) {
-            case BOUNCE, DAMAGE, PIERCING, POWER -> event.modified += 1;
+            case DAMAGE, FORTUNE, PIERCING, POWER -> event.modified += 1;
             case DURATION, HEALING, RANGE, SPEED -> event.modified += event.base * 0.5f;
         }
     }

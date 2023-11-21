@@ -29,10 +29,10 @@ public class Plant extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        if (!(caster instanceof Player)) return SpellCastResult.EFFECT_FAILED;
+        if (!(caster instanceof Player player)) return SpellCastResult.EFFECT_FAILED;
         BlockPos pos = target.getBlockPos();
         BlockState state = level.getBlockState(pos);
-        AbstractContainerMenu inv = ((Player) caster).containerMenu;
+        AbstractContainerMenu inv = player.containerMenu;
         Map<Integer, ItemStack> map = new HashMap<>();
         for (int i = 0; i < inv.slots.size(); i++) {
             ItemStack slotStack = inv.getSlot(i).getItem();
@@ -40,13 +40,15 @@ public class Plant extends AbstractComponent {
                 map.put(i, slotStack);
             }
         }
-        if (map.size() > 0 && !state.isAir() && level.getBlockState(pos.above()).isAir()) {
+        if (!map.isEmpty() && !state.isAir() && level.getBlockState(pos.above()).isAir()) {
             boolean success = false;
             for (int i : map.keySet()) {
                 ItemStack seedStack = map.get(i);
                 if (((BlockItem) seedStack.getItem()).getBlock() instanceof IPlantable plant && state.canSustainPlant(level, pos, Direction.UP, plant)) {
                     level.setBlock(pos.above(), plant.getPlant(level, pos), Block.UPDATE_ALL);
-                    seedStack.shrink(1);
+                    if (!player.isCreative()) {
+                        seedStack.shrink(1);
+                    }
                     success = true;
                     break;
                 }

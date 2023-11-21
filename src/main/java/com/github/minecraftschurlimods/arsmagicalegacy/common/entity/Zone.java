@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
@@ -18,8 +19,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zone extends Entity implements ItemSupplier {
+public class Zone extends Entity implements ISpellEffectEntity {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
@@ -87,11 +86,6 @@ public class Zone extends Entity implements ItemSupplier {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public Packet<?> getAddEntityPacket() {
         Entity entity = getOwner();
         return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
@@ -134,11 +128,6 @@ public class Zone extends Entity implements ItemSupplier {
         }
     }
 
-    @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
-    }
-
     public boolean getTargetNonSolid() {
         return entityData.get(TARGET_NON_SOLID);
     }
@@ -163,6 +152,7 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.set(INDEX, index);
     }
 
+    @Override
     @Nullable
     public LivingEntity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));
