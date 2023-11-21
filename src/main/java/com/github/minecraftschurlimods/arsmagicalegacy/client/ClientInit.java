@@ -179,6 +179,17 @@ public final class ClientInit {
     }
 
     private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.register(AMParticleTypes.NONE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.FIRE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.EARTH_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.AIR_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.ICE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTNING_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.NATURE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.LIFE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.ARCANE_HAND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.ENDER_HAND.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.ARCANE.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.CLOCK.get(), AMParticle.Provider::new);
         event.register(AMParticleTypes.EMBER.get(), AMParticle.Provider::new);
@@ -249,7 +260,7 @@ public final class ClientInit {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);

@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @param loopSound      The sound to play when casting a continuous spell with this affinity.
  * @param particle       The particle type associated with this affinity.
  */
-public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound, Supplier<? extends ParticleType<?>> particle) implements Comparable<Affinity>, ITranslatable {
+public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
     public static final String AFFINITY = "affinity";
     public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, AFFINITY));
 
@@ -96,7 +97,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
      * @return The sound that should be played when casting a continuous spell with this affinity.
      */
     @Nullable
-    public ParticleType<?> getParticle() {
+    public ParticleOptions getParticle() {
         return particle().get();
     }
 
@@ -122,7 +123,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
         private ResourceLocation directOpposite;
         private Supplier<SoundEvent> castSound;
         private Supplier<SoundEvent> loopSound;
-        private Supplier<? extends ParticleType<?>> particle;
+        private Supplier<? extends ParticleOptions> particle;
 
         /**
          * @param color The color to set.
@@ -200,7 +201,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param particle The particle type to set.
          * @return This builder, for chaining.
          */
-        public Builder setParticle(Supplier<? extends ParticleType<?>> particle) {
+        public Builder setParticle(Supplier<? extends ParticleOptions> particle) {
             this.particle = particle;
             return this;
         }

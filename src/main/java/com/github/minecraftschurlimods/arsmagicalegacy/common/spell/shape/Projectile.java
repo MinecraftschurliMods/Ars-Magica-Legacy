@@ -41,8 +41,6 @@ public class Projectile extends AbstractShape {
             projectile.setPierces((int) helper.getModifiedStat(0, SpellPartStats.PIERCING, modifiers, spell, caster, hit));
             projectile.setGravity(helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f);
             projectile.setSpeed(helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit));
-            Affinity affinity = spell.primaryAffinity();
-            projectile.setIcon(affinity == AMAffinities.NONE.get() ? new ItemStack(AMItems.BLANK_RUNE.get()) : api.getAffinityHelper().getEssenceForAffinity(affinity));
             projectile.setSpell(spell);
             level.addFreshEntity(projectile);
         }

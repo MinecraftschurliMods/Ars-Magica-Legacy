@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
@@ -710,6 +711,25 @@ public final class SpellParticleSpawners {
             particle.setLifetime(lifetime);
         }
         return particle;
+    }
+    //endregion
+
+    //region non-component
+    public static void handleReceivedPacket(Entity entity) {
+        if (entity instanceof Projectile projectile) {
+            projectile(projectile);
+        }
+    }
+
+    private static void projectile(Projectile projectile) {
+        AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), projectile.getX(), projectile.getY(), projectile.getZ(), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()));
+        particle.setLifetime(10);
+        particle.setNoGravity();
+        particle.scale(0.05f);
+        particle.addController(new FloatUpwardController(particle, 0.1, 0));
+        particle.addController(new FadeOutController(particle, 0.1f));
+        particle.addRandomOffset(0.3, 0.3, 0.3);
+        //TODO color modifier
     }
     //endregion
 }
