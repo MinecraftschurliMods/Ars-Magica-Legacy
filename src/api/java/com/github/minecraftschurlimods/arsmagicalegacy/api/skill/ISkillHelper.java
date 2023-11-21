@@ -143,6 +143,7 @@ public interface ISkillHelper {
      * @param amount     The amount of skill points to consume.
      * @return Whether the consumption was successful or not.
      */
+    //TODO convert to void
     boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount);
 
     /**
@@ -153,6 +154,7 @@ public interface ISkillHelper {
      * @param amount     The amount of skill points to consume.
      * @return Whether the consumption was successful or not.
      */
+    //TODO convert to void
     boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount);
 
     /**
@@ -162,6 +164,7 @@ public interface ISkillHelper {
      * @param skillPoint The id of the skill point type to consume.
      * @return Whether the consumption was successful or not.
      */
+    //TODO convert to void
     boolean consumeSkillPoint(Player player, ResourceLocation skillPoint);
 
     /**
@@ -171,6 +174,7 @@ public interface ISkillHelper {
      * @param skillPoint The skill point type to consume.
      * @return Whether the consumption was successful or not.
      */
+    //TODO convert to void
     boolean consumeSkillPoint(Player player, SkillPoint skillPoint);
 
     /**
