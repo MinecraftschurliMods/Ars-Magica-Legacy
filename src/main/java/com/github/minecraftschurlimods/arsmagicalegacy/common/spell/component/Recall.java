@@ -36,13 +36,13 @@ public class Recall extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))
             return SpellCastResult.EFFECT_FAILED;
-        return performRecall(target.getEntity(), level, AMUtil.getSpellStack(caster).getOrCreateTag()) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
+        return performRecall(target.getEntity(), level, ArsMagicaAPI.get().getSpellHelper().getSpellItemStackFromEntity(caster).getOrCreateTag()) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         if (!caster.isShiftKeyDown()) return SpellCastResult.EFFECT_FAILED;
-        ItemStack stack = AMUtil.getSpellStack(caster);
+        ItemStack stack = ArsMagicaAPI.get().getSpellHelper().getSpellItemStackFromEntity(caster);
         CompoundTag tag = stack.getOrCreateTag();
         BlockPos pos = target.getBlockPos();
         if (level.getBlockState(target.getBlockPos()).isSolidRender(level, target.getBlockPos())) {

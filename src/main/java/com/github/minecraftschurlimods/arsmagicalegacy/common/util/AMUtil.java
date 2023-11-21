@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -10,7 +9,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -19,9 +17,7 @@ import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -57,7 +53,7 @@ public final class AMUtil {
      * @param delta    The delta value of the calculation.
      * @return The point at the given delta value on the Bézier curve defined by the four given points.
      */
-    public static Vec3 bezier(Vec3 start, Vec3 control1, Vec3 control2, Vec3 end, double delta) { //fixme
+    public static Vec3 bezier(Vec3 start, Vec3 control1, Vec3 control2, Vec3 end, double delta) {
         delta = Mth.clamp(delta, 0, 1);
         double invertedDelta = 1 - delta;
         return Vec3.ZERO
@@ -213,33 +209,6 @@ public final class AMUtil {
         float x = Mth.wrapDegrees((float) Math.toDegrees(-Mth.atan2(d1, d3)));
         float y = Mth.wrapDegrees((float) Math.toDegrees(Mth.atan2(d2, d0)) - 90f);
         return new Vec2(x, y);
-    }
-
-    /**
-     * Returns the spell item stack in the given hand, considering spell books. Note that this does not actually whether the stack in question has a spell.
-     *
-     * @param entity The entity to use.
-     * @param hand   The hand to use.
-     * @return The spell item stack in the given hand.
-     */
-    public static ItemStack getSpellInHand(LivingEntity entity, InteractionHand hand) {
-        ItemStack stack = entity.getItemInHand(hand);
-        if (stack.getItem() instanceof SpellBookItem) {
-            stack = SpellBookItem.getSelectedSpell(stack);
-        }
-        return stack;
-    }
-
-    /**
-     * @param entity The entity to get this for.
-     * @return The item stack with the spell in the given entity's main hand or, if absent, in the given entity's offhand instead.
-     */
-    public static ItemStack getSpellStack(LivingEntity entity) {
-        ItemStack stack = getSpellInHand(entity, InteractionHand.MAIN_HAND);
-        var helper = ArsMagicaAPI.get().getSpellHelper();
-        if (helper.getSpell(stack) != ISpell.EMPTY) return stack;
-        stack = getSpellInHand(entity, InteractionHand.OFF_HAND);
-        return helper.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
     }
 
     /**

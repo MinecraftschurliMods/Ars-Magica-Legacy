@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -37,6 +38,26 @@ public interface ISpellHelper {
      * @return Whether the given spell is valid or not.
      */
     boolean isValidSpell(ISpell spell);
+
+    /**
+     * Returns the item stack containing the spell the given entity is currently using, taking spell books into consideration.
+     * Returns empty if the entity is not currently holding anything that can be interpreted as a spell.
+     * This is needed e.g. when using a spell's shift-right click action.
+     *
+     * @param entity The entity to get the spell item stack from.
+     * @return The item stack containing the spell the given entity is currently using.
+     */
+    ItemStack getSpellItemStackFromEntity(LivingEntity entity);
+
+    /**
+     * Returns the item stack the given entity is currently holding in the given hand if said stack is a spell, taking spell books into consideration.
+     * Returns empty if the stack is not actually anything that can be interpreted as a spell.
+     *
+     * @param entity The entity to get the spell item stack from.
+     * @param hand   The hand to get the spell item stack from.
+     * @return The spell item stack the given entity is currently holding in the given hand.
+     */
+    ItemStack getSpellItemStackInHand(LivingEntity entity, InteractionHand hand);
 
     /**
      * @param stack The stack to get the spell name for.

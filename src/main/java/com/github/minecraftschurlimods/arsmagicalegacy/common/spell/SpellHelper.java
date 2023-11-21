@@ -15,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.ItemHandlerExtractionQuery;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentParticlesPacket;
 import com.mojang.datafixers.util.Either;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -101,6 +103,24 @@ public final class SpellHelper implements ISpellHelper {
             if (group.parts().get(0).getType() != ISpellPart.SpellPartType.SHAPE) return false;
         }
         return true;
+    }
+
+    @Override
+    public ItemStack getSpellItemStackFromEntity(LivingEntity entity) {
+        ItemStack stack = getSpellItemStackInHand(entity, InteractionHand.MAIN_HAND);
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        if (helper.getSpell(stack) != ISpell.EMPTY) return stack;
+        stack = getSpellItemStackInHand(entity, InteractionHand.OFF_HAND);
+        return helper.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack getSpellItemStackInHand(LivingEntity entity, InteractionHand hand) {
+        ItemStack stack = entity.getItemInHand(hand);
+        if (stack.getItem() instanceof SpellBookItem) {
+            stack = SpellBookItem.getSelectedSpell(stack);
+        }
+        return stack;
     }
 
     @Override

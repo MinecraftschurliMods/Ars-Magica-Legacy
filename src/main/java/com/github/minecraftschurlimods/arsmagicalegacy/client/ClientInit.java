@@ -66,7 +66,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticl
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
 import com.github.minecraftschurlimods.betterhudlib.HUDManager;
@@ -368,10 +367,10 @@ public final class ClientInit {
         for (Player p : level.players()) {
             if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
             InteractionHand hand = InteractionHand.MAIN_HAND;
-            ItemStack stack = AMUtil.getSpellInHand(p, hand);
+            ItemStack stack = helper.getSpellItemStackInHand(p, hand);
             if (!(stack.getItem() instanceof ISpellItem)) {
                 hand = InteractionHand.OFF_HAND;
-                stack = AMUtil.getSpellInHand(p, hand);
+                stack = helper.getSpellItemStackInHand(p, hand);
                 if (!(stack.getItem() instanceof ISpellItem)) continue;
             }
             ISpell spell = helper.getSpell(stack);
