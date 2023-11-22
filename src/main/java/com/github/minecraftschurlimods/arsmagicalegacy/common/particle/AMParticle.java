@@ -3,14 +3,12 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -293,18 +291,5 @@ public class AMParticle extends TextureSheetParticle {
 
     public void addRandomOffset(double x, double y, double z) {
         setPosition(getX() + random.nextDouble() * x - x / 2, getY() + random.nextDouble() * y - y / 2, getZ() + random.nextDouble() * z - z / 2);
-    }
-
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprite;
-
-        public Provider(SpriteSet sprite) {
-            this.sprite = sprite;
-        }
-
-        @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new AMParticle(pLevel, pX, pY, pZ, sprite);
-        }
     }
 }

@@ -30,8 +30,6 @@ public record SpawnAMParticlesPacket(Entity entity) implements IPacket {
 
     @Override
     public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> {
-            SpellParticleSpawners.handleReceivedPacket(entity());
-        });
+        context.enqueueWork(() -> SpellParticleSpawners.handleReceivedPacket(entity()));
     }
 }

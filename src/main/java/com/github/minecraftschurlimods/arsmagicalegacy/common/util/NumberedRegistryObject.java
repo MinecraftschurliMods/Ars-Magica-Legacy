@@ -6,6 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.IntFunction;
 
@@ -65,5 +66,12 @@ public class NumberedRegistryObject<B, T extends B> {
      */
     public ResourceLocation randomId(RandomSource random) {
         return map.get(random.nextInt(map.size())).getId();
+    }
+
+    /**
+     * @return An unmodifiable view of all values this registry object wraps.
+     */
+    public Map<Integer, RegistryObject<T>> values() {
+        return Collections.unmodifiableMap(map);
     }
 }

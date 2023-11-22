@@ -62,7 +62,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMVanillaParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
@@ -81,10 +81,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -115,6 +115,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
@@ -179,32 +180,35 @@ public final class ClientInit {
     }
 
     private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-        event.register(AMParticleTypes.NONE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.WATER_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.FIRE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.EARTH_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.AIR_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ICE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.LIGHTNING_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.NATURE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.LIFE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ARCANE_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ENDER_HAND.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ARCANE.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.CLOCK.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.EMBER.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.EXPLOSION.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.GHOST.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.LEAF.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.LENS_FLARE.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.LIGHTS.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.PLANT.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.PULSE.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ROCK.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.ROTATING_RINGS.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.STARDUST.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.WATER_BALL.get(), AMParticle.Provider::new);
-        event.register(AMParticleTypes.WIND.get(), AMParticle.Provider::new);
+        event.register(AMParticleTypes.NONE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.FIRE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EARTH_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.AIR_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ICE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTNING_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.NATURE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIFE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ARCANE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ENDER_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ARCANE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.CLOCK.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EMBER.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EXPLOSION.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.GHOST.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LEAF.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LENS_FLARE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTS.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.PLANT.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.PULSE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ROCK.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ROTATING_RINGS.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.STARDUST.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_BALL.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WIND.get(), AMVanillaParticle.Provider::new);
+        for (Map.Entry<Integer, RegistryObject<SimpleParticleType>> symbol : AMParticleTypes.SYMBOLS.values().entrySet()) {
+            event.register(symbol.getValue().get(), AMVanillaParticle.Provider::new);
+        }
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {
