@@ -53,7 +53,7 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
 
     protected static boolean tryReflect(Entity e) {
         if (!(e instanceof LivingEntity living)) return true;
-        if (living.hasEffect(AMMobEffects.REFLECT.get())) return true;
+        if (!living.hasEffect(AMMobEffects.REFLECT.get())) return true;
         MobEffectInstance reflect = living.getEffect(AMMobEffects.REFLECT.get());
         if (reflect.getAmplifier() == 0) {
             living.removeEffect(AMMobEffects.REFLECT.get());

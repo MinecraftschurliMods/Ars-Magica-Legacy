@@ -64,7 +64,7 @@ public class Wall extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide() || tickCount % 4 != 0) return;
+        if (level.isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
@@ -90,7 +90,9 @@ public class Wall extends AbstractSpellEntity {
                 ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true);
             }
         }
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+        if (tickCount > 0 && !level.isClientSide()) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+        }
     }
 
     @Override

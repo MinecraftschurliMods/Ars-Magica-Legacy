@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
@@ -716,8 +717,11 @@ public final class SpellParticleSpawners {
     //endregion
 
     //region non-component
-    public static void handleReceivedPacket(Entity entity) {
-        if (entity instanceof Projectile projectile) {
+    public static void handleReceivedPacket(int i) {
+        Entity entity = Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i);
+        if (entity == null) {
+            ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
+        } else if (entity instanceof Projectile projectile) {
             projectile(projectile);
         } else if (entity instanceof Wall wall) {
             wall(wall);
@@ -748,9 +752,9 @@ public final class SpellParticleSpawners {
         double maxX = posX + radius;
         double maxY = posY + 3;
         double maxZ = posZ + radius;
-        for (double x = minX; x <= maxX; x += 0.2) {
-            for (double y = minY; y <= maxY; y += 0.2) {
-                for (double z = minZ; z <= maxZ; z += 0.2) {
+        for (double x = minX; x <= maxX; x += 0.25) {
+            for (double y = minY; y <= maxY; y += 0.25) {
+                for (double z = minZ; z <= maxZ; z += 0.25) {
                     double newX = x + random.nextDouble() * 0.2 - 0.1;
                     double newZ = z + random.nextDouble() * 0.2 - 0.1;
                     if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
