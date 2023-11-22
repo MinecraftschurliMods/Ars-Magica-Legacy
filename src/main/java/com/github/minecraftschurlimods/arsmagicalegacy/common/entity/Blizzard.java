@@ -1,12 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,13 +13,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class Blizzard extends Entity implements ISpellEffectEntity {
+public class Blizzard extends AbstractSpellEntity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.FLOAT);
@@ -59,41 +52,20 @@ public class Blizzard extends Entity implements ISpellEffectEntity {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
     public void tick() {
-        if (tickCount > getDuration()) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
+        super.tick();
         for (int i = 0; i < 20 * getRadius(); ++i) {
             level.addParticle(ParticleTypes.SNOWFLAKE, getRandomX(getRadius() * 2), getY() + (2d * random.nextDouble() - 1d) * getRadius() / 2, getRandomZ(getRadius() * 2), 0, 0, 0);
         }
-        if (level.isClientSide()) return;
-        if (tickCount % 5 == 0) {
-            List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY() - getRadius(), getZ() - getRadius(), getX() + getRadius(), getY() + getRadius(), getZ() + getRadius()));
-            for (Entity entity : list) {
-                if (entity == this || entity == getOwner()) continue;
-                if (entity instanceof PartEntity) {
-                    entity = ((PartEntity<?>) entity).getParent();
-                }
-                if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    living.hurt(DamageSource.FREEZE, getDamage());
-                    living.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
-                }
-            }
-        }
+        if (level.isClientSide() || tickCount % 5 != 0) return;
+        float damage = getDamage();
+        forAllInRange(getRadius(), true,  e -> {
+            e.hurt(DamageSource.FREEZE, damage);
+            e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
+        });
     }
 
+    @Override
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -104,11 +76,11 @@ public class Blizzard extends Entity implements ISpellEffectEntity {
 
     @Override
     @Nullable
-    public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
-        return entity instanceof LivingEntity ? (LivingEntity) entity : null;
+    public Entity getOwner() {
+        return level.getEntity(entityData.get(OWNER));
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
     }

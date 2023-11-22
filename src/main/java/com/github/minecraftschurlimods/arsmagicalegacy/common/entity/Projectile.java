@@ -3,20 +3,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class Projectile extends Entity implements ISpellEffectEntity {
+public class Projectile extends AbstractSpellEntity {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
@@ -85,18 +80,12 @@ public class Projectile extends Entity implements ISpellEffectEntity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
     public void tick() {
-        if (tickCount > getDuration() || getOwner() == null) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
+        super.tick();
         HitResult result = AMUtil.getHitResult(position(), position().add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
+        LivingEntity owner = getOwner();
+        int index = getIndex();
+        ISpell spell = getSpell();
         if (result.getType().equals(HitResult.Type.BLOCK)) {
             level.getBlockState(((BlockHitResult) result).getBlockPos()).entityInside(level, ((BlockHitResult) result).getBlockPos(), this);
             if (getBounces() > 0) {
@@ -115,28 +104,17 @@ public class Projectile extends Entity implements ISpellEffectEntity {
                 setDeltaMovement(newX * speed, newY * speed, newZ * speed);
                 setBounces(getBounces() - 1);
             } else if (!level.isClientSide()) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
                 decreaseBounces();
             }
         } else if (result.getType().equals(HitResult.Type.ENTITY) && !level.isClientSide()) {
-            Entity entity = ((EntityHitResult) result).getEntity();
-            if (entity instanceof PartEntity) {
-                entity = ((PartEntity<?>) entity).getParent();
+            Entity e = ((EntityHitResult) result).getEntity();
+            if (e instanceof PartEntity<?> part) {
+                e = part.getParent();
             }
-            if (entity != getOwner() && entity instanceof LivingEntity living) {
-                if (living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    MobEffectInstance reflect = living.getEffect(AMMobEffects.REFLECT.get());
-                    if (reflect.getAmplifier() == 0) {
-                        living.removeEffect(AMMobEffects.REFLECT.get());
-                    } else {
-                        MobEffectInstance effect = new MobEffectInstance(reflect.getEffect(), reflect.getDuration(), reflect.getAmplifier(), reflect.isAmbient(), reflect.isVisible(), reflect.showIcon());
-                        living.removeEffect(AMMobEffects.REFLECT.get());
-                        living.addEffect(effect);
-                    }
-                } else {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
-                    decreaseBounces();
-                }
+            if (e != owner && tryReflect(e)) {
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+                decreaseBounces();
             }
         }
         setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - getGravity(), getDeltaMovement().z);
@@ -170,6 +148,7 @@ public class Projectile extends Entity implements ISpellEffectEntity {
         entityData.set(BOUNCES, bounces);
     }
 
+    @Override
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -201,6 +180,7 @@ public class Projectile extends Entity implements ISpellEffectEntity {
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
     }
