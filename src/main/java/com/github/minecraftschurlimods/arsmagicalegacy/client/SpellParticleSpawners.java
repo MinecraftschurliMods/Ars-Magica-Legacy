@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
@@ -718,18 +719,54 @@ public final class SpellParticleSpawners {
     public static void handleReceivedPacket(Entity entity) {
         if (entity instanceof Projectile projectile) {
             projectile(projectile);
+        } else if (entity instanceof Wall wall) {
+            wall(wall);
         }
     }
 
     private static void projectile(Projectile projectile) {
-        AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), projectile.getX(), projectile.getY(), projectile.getZ(), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()));
-        particle.setLifetime(5);
-        particle.setNoGravity();
+        AMParticle particle = particle(new EntityHitResult(projectile), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()), -1, 5); //TODO color modifier
         particle.scale(0.05f);
         particle.addController(new FloatUpwardController(particle, 0.1, 0));
         particle.addController(new FadeOutController(particle, 0.2f));
         particle.addRandomOffset(0.3, 0.3, 0.3);
-        //TODO color modifier
+    }
+
+    private static void wall(Wall wall) {
+        ParticleOptions options = Objects.requireNonNull(wall.getSpell().primaryAffinity().getParticle());
+        RandomSource random = wall.level.getRandom();
+        double posX = wall.getX(), posY = wall.getY(), posZ = wall.getZ();
+        double radius = wall.getRadius();
+        double rotation = wall.getYRot();
+        double cos = Math.cos(Math.toRadians(rotation)) * radius;
+        double sin = Math.sin(Math.toRadians(rotation)) * radius;
+        Vec3 a = new Vec3(posX - cos, posY, posZ - sin);
+        Vec3 b = new Vec3(posX + cos, posY, posZ + sin);
+        double minX = posX - radius;
+        double minY = posY - 1;
+        double minZ = posZ - radius;
+        double maxX = posX + radius;
+        double maxY = posY + 3;
+        double maxZ = posZ + radius;
+        for (double x = minX; x <= maxX; x += 0.2) {
+            for (double y = minY; y <= maxY; y += 0.2) {
+                for (double z = minZ; z <= maxZ; z += 0.2) {
+                    double newX = x + random.nextDouble() * 0.2 - 0.1;
+                    double newZ = z + random.nextDouble() * 0.2 - 0.1;
+                    if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
+                        Vec3 newVec = new Vec3(newX, posY, newZ);
+                        if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(wall.position()) < 0.5) {
+                            AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), newX, y, newZ, options);
+                            particle.setNoGravity();
+                            particle.setLifetime(5);
+                            particle.scale(0.15f);
+                            particle.addController(new FloatUpwardController(particle, 0, 0.07));
+                            particle.addRandomOffset(1, 1, 1);
+                        }
+                    }
+                }
+            }
+        }
     }
     //endregion
 }

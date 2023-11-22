@@ -7,7 +7,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellEffectEnt
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -83,42 +83,30 @@ public class Wall extends Entity implements ISpellEffectEntity {
             remove(RemovalReason.KILLED);
             return;
         }
-        Vec3 a = new Vec3(getX() - Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() - Math.sin(Math.toRadians(getYRot())) * getRadius());
-        Vec3 b = new Vec3(getX() + Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() + Math.sin(Math.toRadians(getYRot())) * getRadius());
-        double minX = getX() - getRadius();
+        if (level.isClientSide() || tickCount % 4 != 0) return;
+        float radius = getRadius();
+        double cos = Math.cos(Math.toRadians(getYRot())) * radius;
+        double sin = Math.sin(Math.toRadians(getYRot())) * radius;
+        Vec3 a = new Vec3(getX() - cos, getY(), getZ() - sin);
+        Vec3 b = new Vec3(getX() + cos, getY(), getZ() + sin);
+        double minX = getX() - radius;
         double minY = getY() - 1;
-        double minZ = getZ() - getRadius();
-        double maxX = getX() + getRadius();
+        double minZ = getZ() - radius;
+        double maxX = getX() + radius;
         double maxY = getY() + 3;
-        double maxZ = getZ() + getRadius();
-        if (level.isClientSide()) {
-            for (double x = minX; x <= maxX; x += 0.2) {
-                for (double y = minY; y <= maxY; y += 0.2) {
-                    for (double z = minZ; z <= maxZ; z += 0.2) {
-                        double newX = x + level.getRandom().nextDouble() * 0.2 - 0.1;
-                        double newZ = z + level.getRandom().nextDouble() * 0.2 - 0.1;
-                        if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
-                            Vec3 newVec = new Vec3(newX, getY(), newZ);
-                            if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position()) < 0.5) {
-                                level.addParticle(ParticleTypes.PORTAL, newX, y + level.getRandom().nextDouble() * 0.2 - 0.1, newZ, (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
-                            }
-                        }
-                    }
-                }
+        double maxZ = getZ() + radius;
+        for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
+            if (e == this) continue;
+            if (e instanceof PartEntity<?> part) {
+                e = part.getParent();
             }
-        } else if (tickCount % 4 == 0) {
-            for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
-                if (e == this) continue;
-                if (e instanceof PartEntity) {
-                    e = ((PartEntity<?>) e).getParent();
-                }
-                Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
-                closest = new Vec3(closest.x, getY(), closest.z);
-                if (e instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
-                }
+            Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
+            closest = new Vec3(closest.x, getY(), closest.z);
+            if (e instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
+                ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
             }
         }
+        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
     }
 
     public int getDuration() {

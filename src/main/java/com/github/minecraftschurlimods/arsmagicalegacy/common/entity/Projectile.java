@@ -142,7 +142,7 @@ public class Projectile extends Entity implements ISpellEffectEntity {
         setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - getGravity(), getDeltaMovement().z);
         setPos(position().add(getDeltaMovement()));
         if (!level.isClientSide()) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllTracking(new SpawnAMParticlesPacket(this), this);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
 
