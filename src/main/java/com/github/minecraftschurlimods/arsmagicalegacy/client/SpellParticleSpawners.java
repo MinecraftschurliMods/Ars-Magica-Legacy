@@ -723,11 +723,11 @@ public final class SpellParticleSpawners {
 
     private static void projectile(Projectile projectile) {
         AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), projectile.getX(), projectile.getY(), projectile.getZ(), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()));
-        particle.setLifetime(10);
+        particle.setLifetime(5);
         particle.setNoGravity();
         particle.scale(0.05f);
         particle.addController(new FloatUpwardController(particle, 0.1, 0));
-        particle.addController(new FadeOutController(particle, 0.1f));
+        particle.addController(new FadeOutController(particle, 0.2f));
         particle.addRandomOffset(0.3, 0.3, 0.3);
         //TODO color modifier
     }

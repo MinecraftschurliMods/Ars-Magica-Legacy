@@ -3,13 +3,16 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class AMVanillaParticle extends SimpleAnimatedParticle {
     public AMVanillaParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, 0);
+        setSpriteFromAge(pSprites);
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
