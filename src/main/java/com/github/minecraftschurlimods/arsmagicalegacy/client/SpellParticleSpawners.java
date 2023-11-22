@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
@@ -725,6 +726,8 @@ public final class SpellParticleSpawners {
             projectile(projectile);
         } else if (entity instanceof Wall wall) {
             wall(wall);
+        } else if (entity instanceof Wave wave) {
+            wave(wave);
         }
     }
 
@@ -736,12 +739,9 @@ public final class SpellParticleSpawners {
         particle.addRandomOffset(0.3, 0.3, 0.3);
     }
 
-    private static void wall(Wall wall) {
-        ParticleOptions options = Objects.requireNonNull(wall.getSpell().primaryAffinity().getParticle());
-        RandomSource random = wall.level.getRandom();
-        double posX = wall.getX(), posY = wall.getY(), posZ = wall.getZ();
-        double radius = wall.getRadius();
-        double rotation = wall.getYRot();
+    private static void wallOrWave(ISpell spell, RandomSource random, Vec3 position, float radius, float rotation) {
+        double posX = position.x, posY = position.y, posZ = position.z;
+        ParticleOptions options = Objects.requireNonNull(spell.primaryAffinity().getParticle());
         double cos = Math.cos(Math.toRadians(rotation)) * radius;
         double sin = Math.sin(Math.toRadians(rotation)) * radius;
         Vec3 a = new Vec3(posX - cos, posY, posZ - sin);
@@ -759,7 +759,7 @@ public final class SpellParticleSpawners {
                     double newZ = z + random.nextDouble() * 0.2 - 0.1;
                     if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
                         Vec3 newVec = new Vec3(newX, posY, newZ);
-                        if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(wall.position()) < 0.5) {
+                        if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position) < 0.5) {
                             AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), newX, y, newZ, options);
                             particle.setNoGravity();
                             particle.setLifetime(5);
@@ -771,6 +771,14 @@ public final class SpellParticleSpawners {
                 }
             }
         }
+    }
+
+    private static void wall(Wall wall) {
+        wallOrWave(wall.getSpell(), wall.level.getRandom(), wall.position(), wall.getRadius(), wall.getYRot());
+    }
+
+    private static void wave(Wave wave) {
+        wallOrWave(wave.getSpell(), wave.level.getRandom(), wave.position(), wave.getRadius(), wave.getYRot());
     }
     //endregion
 }

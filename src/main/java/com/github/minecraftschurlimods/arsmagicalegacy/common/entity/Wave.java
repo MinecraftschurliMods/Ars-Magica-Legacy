@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -81,9 +82,6 @@ public class Wave extends AbstractSpellEntity {
         super.tick();
         float speed = getSpeed();
         setPos(getX() + getDeltaMovement().x() * speed / 10f, getY() + getDeltaMovement().y() * speed / 10f, getZ() + getDeltaMovement().z() * speed / 10f);
-        for (int i = 0; i < 8; ++i) {
-            level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5), getY() + (2d * random.nextDouble() - 1d) * 0.5, getRandomZ(0.5), (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
-        }
         if (level.isClientSide()) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
@@ -103,6 +101,9 @@ public class Wave extends AbstractSpellEntity {
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
             ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+        }
+        if (tickCount > 0 && !level.isClientSide()) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
 

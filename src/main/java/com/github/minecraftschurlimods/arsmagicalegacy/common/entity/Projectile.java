@@ -119,7 +119,7 @@ public class Projectile extends AbstractSpellEntity {
         }
         setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - getGravity(), getDeltaMovement().z);
         setPos(position().add(getDeltaMovement()));
-        if (!level.isClientSide()) {
+        if (tickCount > 0 && !level.isClientSide()) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
