@@ -82,14 +82,12 @@ public class Wave extends AbstractSpellEntity {
         super.tick();
         float speed = getSpeed();
         setPos(getX() + getDeltaMovement().x() * speed / 10f, getY() + getDeltaMovement().y() * speed / 10f, getZ() + getDeltaMovement().z() * speed / 10f);
-        if (level.isClientSide()) return;
+        if (level.isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
         ISpell spell = getSpell();
-        if (tickCount % 10 == 0) {
-            forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
-        }
+        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
         List<Vec3> list = new ArrayList<>();
         for (int x = (int) Math.rint(-radius); x <= (int) Math.rint(radius); x++) {
             for (int y = (int) Math.rint(-radius); y <= (int) Math.rint(radius); y++) {
@@ -102,7 +100,7 @@ public class Wave extends AbstractSpellEntity {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
             ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
         }
-        if (tickCount > 0 && !level.isClientSide()) {
+        if (tickCount > 0) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }

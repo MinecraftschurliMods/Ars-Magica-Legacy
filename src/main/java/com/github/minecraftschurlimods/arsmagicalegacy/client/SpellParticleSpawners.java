@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Zone;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
@@ -728,6 +729,8 @@ public final class SpellParticleSpawners {
             wall(wall);
         } else if (entity instanceof Wave wave) {
             wave(wave);
+        } else if (entity instanceof Zone zone) {
+            zone(zone);
         }
     }
 
@@ -766,6 +769,7 @@ public final class SpellParticleSpawners {
                             particle.scale(0.15f);
                             particle.addController(new FloatUpwardController(particle, 0, 0.07));
                             particle.addRandomOffset(1, 1, 1);
+                            //TODO color modifier
                         }
                     }
                 }
@@ -779,6 +783,21 @@ public final class SpellParticleSpawners {
 
     private static void wave(Wave wave) {
         wallOrWave(wave.getSpell(), wave.level.getRandom(), wave.position(), wave.getRadius(), wave.getYRot());
+    }
+
+    private static void zone(Zone zone) {
+        ParticleOptions options = zone.getSpell().primaryAffinity().getParticle();
+        Vec3 position = zone.position();
+        double x = position.x, y = position.y, z = position.z;
+        float radius = zone.getRadius();
+        for (int i = 0; i < 30; i++) { //fixme: all particles spawn at the exact same position
+            AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), x, y, z, options);
+            particle.addRandomOffset(radius, 1, radius);
+            particle.setLifetime(20);
+            particle.scale(0.15f);
+            particle.addController(new FloatUpwardController(particle, 0, 0.07));
+            //TODO color modifier
+        }
     }
     //endregion
 }

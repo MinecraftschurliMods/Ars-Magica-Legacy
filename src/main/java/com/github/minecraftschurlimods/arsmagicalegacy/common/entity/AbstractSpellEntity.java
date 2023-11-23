@@ -75,8 +75,8 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
             if (skipOwner && e == getOwner()) continue;
             if (e instanceof Player player && player.isCreative()) continue;
             if (e instanceof AbstractSpellEntity) continue;
-            if (tryReflect(e)) {
-                consumer.accept((LivingEntity) e);
+            if (tryReflect(e) && e instanceof LivingEntity living && !living.isDeadOrDying()) {
+                consumer.accept(living);
             }
         }
     }

@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -76,22 +77,14 @@ public class Zone extends AbstractSpellEntity {
 
     @Override
     public void tick() {
-        LivingEntity owner = getOwner();
-        if (tickCount > getDuration() || owner == null) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
+        super.tick();
         setPos(getX(), getY() - getGravity(), getZ());
-        for (int i = 0; i < 8; ++i) {
-            level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), (random.nextDouble() - 0.5D) * 2D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2D);
-        }
-        if (level.isClientSide()) return;
+        if (level.isClientSide() || tickCount % 5 != 0) return;
+        LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
         ISpell spell = getSpell();
-        if (tickCount % 10 == 0) {
-            forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
-        }
+        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
         List<Vec3> list = new ArrayList<>();
         for (int x = (int) Math.rint(-radius); x <= (int) Math.rint(radius); x++) {
             for (int y = (int) Math.rint(-getBbHeight()); y <= (int) Math.rint(getBbHeight()); y++) {
@@ -103,6 +96,9 @@ public class Zone extends AbstractSpellEntity {
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
             ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
+        }
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
 

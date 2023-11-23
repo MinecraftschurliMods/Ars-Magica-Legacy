@@ -90,7 +90,7 @@ public class Wall extends AbstractSpellEntity {
                 ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true);
             }
         }
-        if (tickCount > 0 && !level.isClientSide()) {
+        if (tickCount > 0) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
