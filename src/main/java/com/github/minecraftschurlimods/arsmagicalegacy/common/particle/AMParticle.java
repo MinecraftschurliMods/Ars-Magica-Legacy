@@ -34,9 +34,13 @@ public class AMParticle extends TextureSheetParticle {
 
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
         this(pLevel, pX, pY, pZ);
-        if (Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0) instanceof TextureSheetParticle tsp) {
+        Particle vanillaParticle = Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0);
+        if (vanillaParticle instanceof TextureSheetParticle tsp) {
             sprite = tsp.sprite;
         }
+//        if (vanillaParticle != null) {
+//            vanillaParticle.remove();
+//        }
     }
 
     //@formatter:off

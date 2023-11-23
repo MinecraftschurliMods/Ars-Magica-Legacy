@@ -719,7 +719,7 @@ public final class SpellParticleSpawners {
     //endregion
 
     //region non-component
-    public static void handleReceivedPacket(int i) {
+    public static void handleReceivedPacket(int i) { //fixme: particles are invisible
         Entity entity = Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i);
         if (entity == null) {
             ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
@@ -743,8 +743,9 @@ public final class SpellParticleSpawners {
     }
 
     private static void wallOrWave(ISpell spell, RandomSource random, Vec3 position, float radius, float rotation) {
-        double posX = position.x, posY = position.y, posZ = position.z;
+        ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
         ParticleOptions options = Objects.requireNonNull(spell.primaryAffinity().getParticle());
+        double posX = position.x, posY = position.y, posZ = position.z;
         double cos = Math.cos(Math.toRadians(rotation)) * radius;
         double sin = Math.sin(Math.toRadians(rotation)) * radius;
         Vec3 a = new Vec3(posX - cos, posY, posZ - sin);
@@ -763,7 +764,7 @@ public final class SpellParticleSpawners {
                     if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
                         Vec3 newVec = new Vec3(newX, posY, newZ);
                         if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position) < 0.5) {
-                            AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), newX, y, newZ, options);
+                            AMParticle particle = new AMParticle(level, newX, y, newZ, options);
                             particle.setNoGravity();
                             particle.setLifetime(5);
                             particle.scale(0.15f);
@@ -786,16 +787,18 @@ public final class SpellParticleSpawners {
     }
 
     private static void zone(Zone zone) {
+        ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
         ParticleOptions options = zone.getSpell().primaryAffinity().getParticle();
         Vec3 position = zone.position();
         double x = position.x, y = position.y, z = position.z;
         float radius = zone.getRadius();
-        for (int i = 0; i < 30; i++) { //fixme: all particles spawn at the exact same position
-            AMParticle particle = new AMParticle((ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), x, y, z, options);
-            particle.addRandomOffset(radius, 1, radius);
+        for (int i = 0; i < 30; i++) {
+            AMParticle particle = new AMParticle(level, x, y, z, options);
+            particle.setNoGravity();
             particle.setLifetime(20);
             particle.scale(0.15f);
             particle.addController(new FloatUpwardController(particle, 0, 0.07));
+            particle.addRandomOffset(radius, 1, radius);
             //TODO color modifier
         }
     }
