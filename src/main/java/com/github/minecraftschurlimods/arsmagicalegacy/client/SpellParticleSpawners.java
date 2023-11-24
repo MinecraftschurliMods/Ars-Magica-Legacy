@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FallingStar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
@@ -14,6 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ApproachEntityController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ArcToEntityController;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.ChangeSizeController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FadeOutController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.FloatUpwardController;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.LeaveTrailController;
@@ -685,6 +687,8 @@ public final class SpellParticleSpawners {
             ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
         } else if (entity instanceof Blizzard blizzard) {
             blizzard(blizzard);
+        } else if (entity instanceof FallingStar fallingStar) {
+            fallingStar(fallingStar);
         } else if (entity instanceof FireRain fireRain) {
             fireRain(fireRain);
         } else if (entity instanceof Projectile projectile) {
@@ -710,6 +714,35 @@ public final class SpellParticleSpawners {
             particle.addRandomOffset(radius * 2, 1, radius * 2);
             //TODO color modifier
         });
+    }
+
+    private static void fallingStar(FallingStar fallingStar) {
+        ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
+        RandomSource random = level.getRandom();
+        if (fallingStar.hasImpacted()) {
+            float damage = fallingStar.getDamage();
+            float radius = fallingStar.getRadius();
+            EntityHitResult hit = new EntityHitResult(fallingStar);
+            for (int i = 0; i < damage * 24; i++) {
+                Vec3 speed = Vec3.directionFromRotation(0, i / 24f / damage * 360f).normalize();
+                AMParticle particle = particle(hit, AMParticleTypes.EMBER.get(), -1, (int) (damage * radius));
+                particle.setSpeed(speed.x * 0.5, speed.y * 0.5, speed.z * 0.5);
+                //TODO color modifier
+                float color = random.nextFloat();
+                particle.setColor(color * 0.24f, color * 0.58f, color * 0.71f);
+                particle.addRandomOffset(0.5, 0.5, 0.5);
+            }
+        } else {
+            Vec3 movement = fallingStar.getDeltaMovement();
+            for (float i = 0; i < Math.abs(movement.y); i++) {
+                AMParticle particle = new AMParticle(level, fallingStar.getX() + movement.x * i, fallingStar.getY() + movement.y * i, fallingStar.getZ() + movement.z * i, AMParticleTypes.EMBER.get());
+                particle.setLifetime(5);
+                //TODO color modifier
+                float color = random.nextFloat();
+                particle.setColor(color * 0.24f, color * 0.58f, color * 0.71f);
+                particle.addController(new ChangeSizeController(particle, 0.5f, 0.05f, 20));
+            }
+        }
     }
 
     private static void fireRain(FireRain fireRain) {

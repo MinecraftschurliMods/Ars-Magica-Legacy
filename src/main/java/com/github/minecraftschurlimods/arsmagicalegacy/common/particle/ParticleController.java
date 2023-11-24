@@ -4,6 +4,7 @@ public abstract class ParticleController {
     protected final AMParticle particle;
     protected boolean stopOtherControllers = false;
     protected boolean killOnFinish = false;
+    protected int tickCount = 0;
     private boolean first = true;
     private boolean finished = false;
 
@@ -39,6 +40,7 @@ public abstract class ParticleController {
     }
 
     void baseTick() {
+        tickCount++;
         if (!particle.isAlive() || finished) return;
         if (first) {
             tickFirst();

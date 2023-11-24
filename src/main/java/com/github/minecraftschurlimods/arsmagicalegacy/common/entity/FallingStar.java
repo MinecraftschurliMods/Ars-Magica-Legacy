@@ -1,11 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
-import com.mojang.math.Vector3f;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -27,7 +26,6 @@ public class FallingStar extends AbstractSpellEntity {
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
-    private static final ParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(0.24f, 0.24f, 0.8f), 1);
     private final DamageSource damageSource = AMDamageSources.fallingStar(this);
     private final Set<LivingEntity> damaged = new HashSet<>();
     private int timeSinceImpact = -1;
@@ -65,8 +63,8 @@ public class FallingStar extends AbstractSpellEntity {
         if (timeSinceImpact == -1) {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
-            for (int i = 0; i < 8; i++) {
-                level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10, position().y() + (i - 4) * Math.abs(getDeltaMovement().y()) / 8f, position().z() + random.nextDouble() / 10, 0, -0.1, 0);
+            if (!level.isClientSide() && tickCount > 0) {
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
             }
             HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level, 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
@@ -77,20 +75,17 @@ public class FallingStar extends AbstractSpellEntity {
                 }
                 moveTo(vec);
             }
-            timeSinceImpact = 0;
         }
         timeSinceImpact++;
-        double scaledTimeSinceImpact = timeSinceImpact / 10d;
-        for (int i = 0; i < getDamage() * 24; i++) {
-            Vec3 offset = Vec3.directionFromRotation(0, i / 24f / getDamage() * 360f).multiply(scaledTimeSinceImpact, scaledTimeSinceImpact, scaledTimeSinceImpact);
-            level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10 + offset.x(), position().y() + 1.5 - random.nextDouble() * 2, position().z() + random.nextDouble() / 10 + offset.z(), 0, 0, 0);
+        if (!level.isClientSide() && timeSinceImpact < 2) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
-        for (Entity e : level.getEntities(this, getBoundingBox().inflate(scaledTimeSinceImpact, 1, scaledTimeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
+        for (Entity e : level.getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;
             e.hurt(damageSource, getDamage());
             damaged.add((LivingEntity) e);
         }
-        if (timeSinceImpact > getRadius() * 10) {
+        if (timeSinceImpact > getRadius()) {
             kill();
         }
     }
@@ -126,5 +121,9 @@ public class FallingStar extends AbstractSpellEntity {
 
     public void setRadius(float radius) {
         entityData.set(RADIUS, radius);
+    }
+
+    public boolean hasImpacted() {
+        return timeSinceImpact > -1;
     }
 }
