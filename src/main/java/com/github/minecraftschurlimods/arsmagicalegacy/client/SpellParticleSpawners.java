@@ -719,7 +719,7 @@ public final class SpellParticleSpawners {
     //endregion
 
     //region non-component
-    public static void handleReceivedPacket(int i) { //fixme: particles are invisible
+    public static void handleReceivedPacket(int i) {
         Entity entity = Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i);
         if (entity == null) {
             ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
@@ -788,9 +788,9 @@ public final class SpellParticleSpawners {
 
     private static void zone(Zone zone) {
         ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
-        ParticleOptions options = zone.getSpell().primaryAffinity().getParticle();
+        ParticleOptions options = Objects.requireNonNull(zone.getSpell().primaryAffinity().getParticle());
         Vec3 position = zone.position();
-        double x = position.x, y = position.y, z = position.z;
+        double x = position.x, y = zone.getEyeY(), z = position.z;
         float radius = zone.getRadius();
         for (int i = 0; i < 30; i++) {
             AMParticle particle = new AMParticle(level, x, y, z, options);

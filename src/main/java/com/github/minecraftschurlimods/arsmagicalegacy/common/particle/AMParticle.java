@@ -1,14 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -18,29 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class AMParticle extends TextureSheetParticle {
+public class AMParticle extends SimpleAnimatedParticle {
     private final List<ParticleController> controllers = new ArrayList<>();
     private boolean stoppedByCollision = false;
 
-    private AMParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
-        super(pLevel, pX, pY, pZ);
+    private AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprites) {
+        super(pLevel, pX, pY, pZ, sprites, 0);
         Minecraft.getInstance().particleEngine.add(this);
     }
 
-    public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprite) {
-        this(pLevel, pX, pY, pZ);
-        pickSprite(sprite);
-    }
-
     public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
-        this(pLevel, pX, pY, pZ);
+        this(pLevel, pX, pY, pZ, (SpriteSet) null);
         Particle vanillaParticle = Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0);
-        if (vanillaParticle instanceof TextureSheetParticle tsp) {
+        // SimpleAnimatedParticle doesn't actually set the sprite until the first tick, so we need to work around this
+        if (vanillaParticle instanceof SimpleAnimatedParticle sap) {
+            sprites = sap.sprites;
+            setSprite(sprites.get(0, 1));
+        } else if (vanillaParticle instanceof TextureSheetParticle tsp) {
             sprite = tsp.sprite;
         }
-//        if (vanillaParticle != null) {
-//            vanillaParticle.remove();
-//        }
+        if (vanillaParticle != null) {
+            vanillaParticle.remove();
+        }
     }
 
     //@formatter:off
@@ -72,6 +75,10 @@ public class AMParticle extends TextureSheetParticle {
     public void setWidth(float width) {this.bbWidth = width;}
     public float getHeight() {return bbHeight;}
     public void setHeight(float height) {this.bbHeight = height;}
+    public float getRoll() {return roll;}
+    public void setRoll(float roll) {this.roll = roll;}
+    public float getOldRoll() {return oRoll;}
+    public void setOldRoll(float oldRoll) {this.oRoll = oldRoll;}
     public float getRed() {return rCol;}
     public void setRed(float red) {this.rCol = red;}
     public void setRed(int red) {setRed(red / 255f);}
@@ -94,6 +101,10 @@ public class AMParticle extends TextureSheetParticle {
     public void setEvadeCeiling(boolean evadeCeiling) {this.speedUpWhenYMotionIsBlocked = evadeCeiling;}
     public AABB getBoundingBox() {return super.getBoundingBox();}
     public void setBoundingBox(AABB boundingBox) {super.setBoundingBox(boundingBox);}
+    public float getQuadSize() {return quadSize;}
+    public void setQuadSize(float quadSize) {this.quadSize = quadSize;}
+    public TextureAtlasSprite getSprite() {return sprite;}
+    public void setSprite(TextureAtlasSprite sprite) {this.sprite = sprite;}
     //@formatter:on
 
     public void setPosition(double x, double y, double z) {
@@ -146,21 +157,12 @@ public class AMParticle extends TextureSheetParticle {
         setAlpha(alpha);
     }
 
-    @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    public void addController(ParticleController controller) {
-        controllers.add(controller);
+    public ClientLevel level() {
+        return level;
     }
 
     public RandomSource random() {
         return random;
-    }
-
-    public ClientLevel level() {
-        return level;
     }
 
     public double distanceTo(Vec3 vec) {
@@ -176,6 +178,99 @@ public class AMParticle extends TextureSheetParticle {
     @Override
     public boolean isAlive() {
         return !isRemoved();
+    }
+
+    @Override
+    public void remove() {
+        setRemoved(true);
+    }
+
+    @Override
+    public void setPos(double pX, double pY, double pZ) {
+        setX(pX);
+        setY(pY);
+        setZ(pZ);
+        float f = getWidth() / 2;
+        setBoundingBox(new AABB(pX - f, pY, pZ - f, pX + f, pY + getHeight(), pZ + f));
+    }
+
+    @Override
+    public void setParticleSpeed(double pXd, double pYd, double pZd) {
+        setSpeed(pXd, pYd, pZd);
+    }
+
+    @Override
+    public Particle setPower(float pMultiplier) {
+        setSpeed(getXSpeed() * pMultiplier, (getYSpeed() - 0.1) * pMultiplier + 0.1, getZSpeed() * pMultiplier);
+        return this;
+    }
+
+    @Override
+    public Particle scale(float pScale) {
+        setSize(0.2f * pScale, 0.2f * pScale);
+        return this;
+    }
+
+    @Override
+    protected void setSize(float pWidth, float pHeight) {
+        if (pWidth != getWidth() || pHeight != getHeight()) {
+            setWidth(pWidth);
+            setHeight(pHeight);
+            AABB aabb = getBoundingBox();
+            double d0 = (aabb.minX + aabb.maxX - pWidth) / 2;
+            double d1 = (aabb.minZ + aabb.maxZ - pWidth) / 2;
+            setBoundingBox(new AABB(d0, aabb.minY, d1, d0 + pWidth, aabb.minY + pHeight, d1 + pWidth));
+        }
+    }
+
+    @Override
+    protected void setLocationFromBoundingbox() {
+        AABB aabb = getBoundingBox();
+        setX((aabb.minX + aabb.maxX) / 2);
+        setY(aabb.minY);
+        setZ((aabb.minZ + aabb.maxZ) / 2);
+    }
+
+    @Override
+    public void pickSprite(SpriteSet pSprite) {
+        setSprite(pSprite.get(random()));
+    }
+
+    @Override
+    public void setSpriteFromAge(SpriteSet pSprite) {
+        if (isAlive()) {
+            setSprite(pSprite.get(getAge(), getLifetime()));
+        }
+    }
+
+    @Override
+    public void tick() {
+        setXOld(getX());
+        setYOld(getY());
+        setZOld(getZ());
+        setAge(getAge() + 1);
+        if (getAge() >= getLifetime() && getLifetime() != -1) {
+            remove();
+            return;
+        }
+        for (ParticleController controller : controllers) {
+            controller.baseTick();
+            if (!controller.isFinished() && controller.stopOtherControllers) break;
+        }
+        setYSpeed(getYSpeed() - 0.04 * getGravity());
+        move(getXSpeed(), getYSpeed(), getZSpeed());
+        if (isEvadeCeiling() && getY() == getYOld()) {
+            setXSpeed(getXSpeed() * 1.1);
+            setZSpeed(getZSpeed() * 1.1);
+        }
+        setXSpeed(getXSpeed() * getFriction());
+        setYSpeed(getYSpeed() * getFriction());
+        setZSpeed(getZSpeed() * getFriction());
+        if (isOnGround()) {
+            setXSpeed(getXSpeed() * 0.7);
+            setZSpeed(getZSpeed() * 0.7);
+        }
+        setSpriteFromAge(sprites);
     }
 
     @Override
@@ -207,90 +302,40 @@ public class AMParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void remove() {
-        setRemoved(true);
-    }
-
-    @Override
-    public Particle scale(float pScale) {
-        setSize(0.2f * pScale, 0.2f * pScale);
-        return this;
-    }
-
-    @Override
-    public void setParticleSpeed(double pXd, double pYd, double pZd) {
-        setSpeed(pXd, pYd, pZd);
-    }
-
-    @Override
-    public void setPos(double pX, double pY, double pZ) {
-        setX(pX);
-        setY(pY);
-        setZ(pZ);
-        float f = getWidth() / 2;
-        setBoundingBox(new AABB(pX - f, pY, pZ - f, pX + f, pY + getHeight(), pZ + f));
-    }
-
-    @Override
-    public Particle setPower(float pMultiplier) {
-        setSpeed(getXSpeed() * pMultiplier, (getYSpeed() - 0.1) * pMultiplier + 0.1, getZSpeed() * pMultiplier);
-        return this;
-    }
-
-    @Override
-    public void tick() {
-        setXOld(getX());
-        setYOld(getY());
-        setZOld(getZ());
-        setAge(getAge() + 1);
-        if (getAge() >= getLifetime() && getLifetime() != -1) {
-            remove();
-            return;
+    public void render(VertexConsumer vc, Camera camera, float partialTicks) {
+        Vector3f[] vec = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
+        Quaternion quaternion;
+        if (roll == 0) {
+            quaternion = camera.rotation();
+        } else {
+            quaternion = new Quaternion(camera.rotation());
+            quaternion.mul(Vector3f.ZP.rotation(Mth.lerp(partialTicks, getOldRoll(), getRoll())));
         }
-        for (ParticleController controller : controllers) {
-            controller.baseTick();
-            if (!controller.isFinished() && controller.stopOtherControllers) break;
+        new Vector3f(-1, -1, 0).transform(quaternion);
+        Vec3 position = camera.getPosition();
+        float lerpedX = (float) (Mth.lerp(partialTicks, getXOld(), getX()) - position.x());
+        float lerpedY = (float) (Mth.lerp(partialTicks, getYOld(), getY()) - position.y());
+        float lerpedZ = (float) (Mth.lerp(partialTicks, getZOld(), getZ()) - position.z());
+        float quadSize = getQuadSize(partialTicks);
+        for(int i = 0; i < 4; ++i) {
+            Vector3f v = vec[i];
+            v.transform(quaternion);
+            v.mul(quadSize);
+            v.add(lerpedX, lerpedY, lerpedZ);
         }
-        setYSpeed(getYSpeed() - 0.04 * getGravity());
-        move(getXSpeed(), getYSpeed(), getZSpeed());
-        if (isEvadeCeiling() && getY() == getYOld()) {
-            setXSpeed(getXSpeed() * 1.1);
-            setZSpeed(getZSpeed() * 1.1);
-        }
-        setXSpeed(getXSpeed() * getFriction());
-        setYSpeed(getYSpeed() * getFriction());
-        setZSpeed(getZSpeed() * getFriction());
-        if (isOnGround()) {
-            setXSpeed(getXSpeed() * 0.7);
-            setZSpeed(getZSpeed() * 0.7);
-        }
+        float u0 = getU0();
+        float u1 = getU1();
+        float v0 = getV0();
+        float v1 = getV1();
+        int light = getLightColor(partialTicks);
+        vc.vertex(vec[0].x(), vec[0].y(), vec[0].z()).uv(u1, v1).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
+        vc.vertex(vec[1].x(), vec[1].y(), vec[1].z()).uv(u1, v0).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
+        vc.vertex(vec[2].x(), vec[2].y(), vec[2].z()).uv(u0, v0).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
+        vc.vertex(vec[3].x(), vec[3].y(), vec[3].z()).uv(u0, v1).color(getRed(), getGreen(), getBlue(), getAlpha()).uv2(light).endVertex();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    protected int getLightColor(float pPartialTick) {
-        BlockPos blockpos = new BlockPos(getX(), getY(), getZ());
-        return level.hasChunkAt(blockpos) ? LevelRenderer.getLightColor(level, blockpos) : 0;
-    }
-
-    @Override
-    protected void setLocationFromBoundingbox() {
-        AABB aabb = getBoundingBox();
-        setX((aabb.minX + aabb.maxX) / 2);
-        setY(aabb.minY);
-        setZ((aabb.minZ + aabb.maxZ) / 2);
-    }
-
-    @Override
-    protected void setSize(float pWidth, float pHeight) {
-        if (pWidth != getWidth() || pHeight != getHeight()) {
-            setWidth(pWidth);
-            setHeight(pHeight);
-            AABB aabb = getBoundingBox();
-            double d0 = (aabb.minX + aabb.maxX - pWidth) / 2;
-            double d1 = (aabb.minZ + aabb.maxZ - pWidth) / 2;
-            setBoundingBox(new AABB(d0, aabb.minY, d1, d0 + pWidth, aabb.minY + pHeight, d1 + pWidth));
-        }
+    public void addController(ParticleController controller) {
+        controllers.add(controller);
     }
 
     public void addRandomOffset(double x, double y, double z) {
