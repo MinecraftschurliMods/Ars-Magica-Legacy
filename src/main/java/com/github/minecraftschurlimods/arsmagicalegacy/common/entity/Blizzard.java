@@ -1,8 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -54,15 +55,15 @@ public class Blizzard extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        for (int i = 0; i < 20 * getRadius(); ++i) {
-            level.addParticle(ParticleTypes.SNOWFLAKE, getRandomX(getRadius() * 2), getY() + (2d * random.nextDouble() - 1d) * getRadius() / 2, getRandomZ(getRadius() * 2), 0, 0, 0);
-        }
         if (level.isClientSide() || tickCount % 5 != 0) return;
         float damage = getDamage();
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(DamageSource.FREEZE, damage);
             e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
         });
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+        }
     }
 
     @Override

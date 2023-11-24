@@ -3,6 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
@@ -681,6 +683,10 @@ public final class SpellParticleSpawners {
         Entity entity = Objects.requireNonNull(ClientHelper.getLocalLevel()).getEntity(i);
         if (entity == null) {
             ArsMagicaLegacy.LOGGER.trace("Tried to spawn particles for entity id {}, but the entity was null. It probably wasn't synced yet", i);
+        } else if (entity instanceof Blizzard blizzard) {
+            blizzard(blizzard);
+        } else if (entity instanceof FireRain fireRain) {
+            fireRain(fireRain);
         } else if (entity instanceof Projectile projectile) {
             projectile(projectile);
         } else if (entity instanceof Wall wall) {
@@ -692,8 +698,34 @@ public final class SpellParticleSpawners {
         }
     }
 
+    private static void blizzard(Blizzard blizzard) {
+        float radius = blizzard.getRadius();
+        RandomSource random = blizzard.getLevel().getRandom();
+        AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), blizzard.getX(), blizzard.getY() + 10, blizzard.getZ(), ParticleTypes.SNOWFLAKE).forEach(particle -> {
+            particle.setAlpha(0.6f);
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2 - 0.1);
+            particle.setLifetime(40);
+            particle.setGravity(1);
+            particle.scale(0.1f);
+            particle.addRandomOffset(radius * 2, 1, radius * 2);
+            //TODO color modifier
+        });
+    }
+
+    private static void fireRain(FireRain fireRain) {
+        float radius = fireRain.getRadius();
+        RandomSource random = fireRain.getLevel().getRandom();
+        AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), fireRain.getX(), fireRain.getY() + 10, fireRain.getZ(), AMParticleTypes.EXPLOSION.get()).forEach(particle -> {
+            particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2 - 0.1);
+            particle.setLifetime(40);
+            particle.setGravity(1);
+            particle.addRandomOffset(radius * 2, 1, radius * 2);
+            //TODO color modifier
+        });
+    }
+
     private static void projectile(Projectile projectile) {
-        AMParticle particle = particle(new EntityHitResult(projectile), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()), -1, 5); //TODO color modifier
+        AMParticle particle = particle(new EntityHitResult(projectile), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()), -1, 5);
         particle.scale(0.05f);
         particle.addController(new FloatUpwardController(particle, 0.05, 0));
         particle.addController(new FadeOutController(particle, 0.2f));

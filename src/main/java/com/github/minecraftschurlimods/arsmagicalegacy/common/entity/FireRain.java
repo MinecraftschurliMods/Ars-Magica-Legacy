@@ -1,7 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -52,14 +53,14 @@ public class FireRain extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        for (int i = 0; i < 20 * getRadius(); ++i) {
-            level.addParticle(ParticleTypes.FLAME, getRandomX(getRadius() * 2), getY() + (2d * random.nextDouble() - 1d) * getRadius() / 2, getRandomZ(getRadius() * 2), 0, 0, 0);
-        }
         if (level.isClientSide() || tickCount % 5 != 0) return;
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(DamageSource.IN_FIRE, getDamage());
             e.setRemainingFireTicks(50);
         });
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+        }
     }
 
     @Override
