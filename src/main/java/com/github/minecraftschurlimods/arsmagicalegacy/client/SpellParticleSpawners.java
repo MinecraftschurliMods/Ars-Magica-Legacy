@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Blizzard;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FallingStar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.FireRain;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaVortex;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Projectile;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wall;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Wave;
@@ -691,6 +692,8 @@ public final class SpellParticleSpawners {
             fallingStar(fallingStar);
         } else if (entity instanceof FireRain fireRain) {
             fireRain(fireRain);
+        } else if (entity instanceof ManaVortex manaVortex) {
+            manaVortex(manaVortex);
         } else if (entity instanceof Projectile projectile) {
             projectile(projectile);
         } else if (entity instanceof Wall wall) {
@@ -755,6 +758,22 @@ public final class SpellParticleSpawners {
             particle.addRandomOffset(radius * 2, 1, radius * 2);
             //TODO color modifier
         });
+    }
+
+    private static void manaVortex(ManaVortex manaVortex) {
+        int duration = manaVortex.getDuration();
+        RandomSource random = manaVortex.getLevel().getRandom();
+        if (duration - manaVortex.tickCount > 30) {
+            AMParticle particle = particle(new EntityHitResult(manaVortex), AMParticleTypes.EMBER.get(), 0x3d3dcc, 10 + manaVortex.getLevel().getRandom().nextInt(10));
+            particle.addRandomOffset(0.2, 0.2, 0.2);
+        }
+        if (duration - manaVortex.tickCount <= 10) {
+            particles(72, new EntityHitResult(manaVortex), AMParticleTypes.EMBER, 0x3d3dcc, 20, particle -> {
+                particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.2, random.nextDouble() * 0.2 - 0.1);
+                particle.addController(new FadeOutController(particle, 0.02f));
+                particle.addRandomOffset(0.2, 0.2, 0.2);
+            });
+        }
     }
 
     private static void projectile(Projectile projectile) {
