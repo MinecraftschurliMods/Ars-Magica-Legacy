@@ -20,9 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 class EtheriumProbeInfoProvider implements IProbeInfoProvider {
+    private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+
     @Override
     public ResourceLocation getID() {
-        return new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+        return ID;
     }
 
     @Override
