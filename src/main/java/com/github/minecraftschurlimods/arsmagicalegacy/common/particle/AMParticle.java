@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +27,14 @@ public class AMParticle extends SimpleAnimatedParticle {
     private final List<ParticleController> controllers = new ArrayList<>();
     private boolean stoppedByCollision = false;
 
-    private AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet sprites) {
-        super(pLevel, pX, pY, pZ, sprites, 0);
+    private AMParticle(ClientLevel level, double x, double y, double z, @Nullable SpriteSet sprites) {
+        super(level, x, y, z, sprites, 0);
         Minecraft.getInstance().particleEngine.add(this);
     }
 
-    public AMParticle(ClientLevel pLevel, double pX, double pY, double pZ, ParticleOptions options) {
-        this(pLevel, pX, pY, pZ, (SpriteSet) null);
-        Particle vanillaParticle = Minecraft.getInstance().particleEngine.createParticle(options, pX, pY, pZ, 0, 0, 0);
-        // SimpleAnimatedParticle doesn't actually set the sprite until the first tick, so we need to work around this
+    public AMParticle(ClientLevel level, double x, double y, double z, ParticleOptions options) {
+        this(level, x, y, z, (SpriteSet) null);
+        Particle vanillaParticle = Minecraft.getInstance().particleEngine.createParticle(options, x, y, z, 0, 0, 0);
         if (vanillaParticle instanceof SimpleAnimatedParticle sap) {
             sprites = sap.sprites;
             setSprite(sprites.get(0, 1));
@@ -44,6 +44,26 @@ public class AMParticle extends SimpleAnimatedParticle {
         if (vanillaParticle != null) {
             vanillaParticle.remove();
         }
+    }
+
+    public static List<AMParticle> bulkCreate(int count, ClientLevel level, double x, double y, double z, ParticleOptions options) {
+        TextureAtlasSprite sprite;
+        SpriteSet sprites = null;
+        Particle vanillaParticle = Minecraft.getInstance().particleEngine.createParticle(options, x, y, z, 0, 0, 0);
+        if (vanillaParticle instanceof SimpleAnimatedParticle sap) {
+            sprites = sap.sprites;
+            sprite = sprites.get(0, 1);
+        } else if (vanillaParticle instanceof TextureSheetParticle tsp) {
+            sprite = tsp.sprite;
+        } else return List.of();
+        vanillaParticle.remove();
+        List<AMParticle> result = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            AMParticle particle = new AMParticle(level, x, y, z, sprites);
+            particle.setSprite(sprite);
+            result.add(particle);
+        }
+        return result;
     }
 
     //@formatter:off
@@ -105,6 +125,8 @@ public class AMParticle extends SimpleAnimatedParticle {
     public void setQuadSize(float quadSize) {this.quadSize = quadSize;}
     public TextureAtlasSprite getSprite() {return sprite;}
     public void setSprite(TextureAtlasSprite sprite) {this.sprite = sprite;}
+    public SpriteSet getSprites() {return sprites;}
+    public void setSprites(SpriteSet sprites) {this.sprites = sprites;}
     //@formatter:on
 
     public void setPosition(double x, double y, double z) {
@@ -270,7 +292,9 @@ public class AMParticle extends SimpleAnimatedParticle {
             setXSpeed(getXSpeed() * 0.7);
             setZSpeed(getZSpeed() * 0.7);
         }
-        setSpriteFromAge(sprites);
+        if (sprites != null) {
+            setSpriteFromAge(sprites);
+        }
     }
 
     @Override
