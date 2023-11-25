@@ -174,13 +174,6 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
     }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup 'maven.modrinth'
-        }
-    }
 }
 
 dependencies {
