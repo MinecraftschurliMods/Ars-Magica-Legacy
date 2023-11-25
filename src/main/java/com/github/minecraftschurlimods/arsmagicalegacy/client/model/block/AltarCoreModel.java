@@ -30,6 +30,7 @@ public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
             BlockState camoState = extraData.get(AltarCoreBlockEntity.CAMO_STATE);
             if (camoState != null) {
                 BakedModel blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(camoState);
+                if (!blockModel.getRenderTypes(state, rand, extraData).contains(renderType)) return super.getQuads(state, side, rand, extraData, renderType);
                 List<BakedQuad> quads = new ArrayList<>(blockModel.getQuads(camoState, side, rand, ModelData.EMPTY, renderType));
                 quads.addAll(super.getQuads(state, side, rand, extraData, renderType));
                 return quads;
