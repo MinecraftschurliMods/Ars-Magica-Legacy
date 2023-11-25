@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.theoneprobe;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
@@ -30,20 +31,7 @@ class EtheriumProbeInfoProvider implements IProbeInfoProvider {
     @Override
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, BlockState blockState, IProbeHitData iProbeHitData) {
         BlockPos pos = iProbeHitData.getPos();
-        int tier;
-        if (blockState.getBlock() instanceof ObeliskBlock obeliskBlock) {
-            pos = pos.below(blockState.getValue(ObeliskBlock.PART).ordinal());
-            tier = obeliskBlock.getTier(level, pos);
-        } else if (blockState.getBlock() instanceof CelestialPrismBlock celestialPrismBlock) {
-            if (blockState.getValue(CelestialPrismBlock.HALF) != DoubleBlockHalf.LOWER) {
-                pos = pos.below();
-            }
-            tier = celestialPrismBlock.getTier(level, pos);
-        } else if (blockState.getBlock() instanceof BlackAuremBlock blackAuremBlock) {
-            tier = blackAuremBlock.getTier(level, pos);
-        } else {
-            tier = -1;
-        }
+        int tier = blockState.getBlock() instanceof ITierCheckingBlock tierBlock ? tierBlock.getTier(level, pos) : -1;
         ArsMagicaAPI.get().getEtheriumHelper().getEtheriumProvider(level, pos).ifPresent(provider -> iProbeInfo.progress(provider.getAmount(), provider.getMax(), iProbeInfo.defaultProgressStyle().filledColor(provider.getType().getColor()).alternateFilledColor(Color.darker(provider.getType().getColor(), .8)).numberFormat(NumberFormat.FULL)));
         if (tier > -1) {
             iProbeInfo.mcText(Component.translatable(TranslationConstants.TIER, tier));

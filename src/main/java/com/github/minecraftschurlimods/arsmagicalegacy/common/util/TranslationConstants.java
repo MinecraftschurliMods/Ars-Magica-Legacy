@@ -42,6 +42,7 @@ public interface TranslationConstants {
     String SKILL_MODIFIED_BY                = "screen."  + ArsMagicaAPI.MOD_ID + ".jei.skill.modified_by";
     String CONFIG                           = "config."  + ArsMagicaAPI.MOD_ID + ".";
     String ALTAR_POWER                      = "message." + ArsMagicaAPI.MOD_ID + ".altar_power";
+    String ETHERIUM_AMOUNT                  = "message." + ArsMagicaAPI.MOD_ID + ".etherium_amount";
     String HOLD_SHIFT_FOR_DETAILS           = "message." + ArsMagicaAPI.MOD_ID + ".hold_shift_for_details";
     String NO_TELEPORT                      = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport";
     String NO_TELEPORT_NETHER               = "message." + ArsMagicaAPI.MOD_ID + ".no_teleport_nether";

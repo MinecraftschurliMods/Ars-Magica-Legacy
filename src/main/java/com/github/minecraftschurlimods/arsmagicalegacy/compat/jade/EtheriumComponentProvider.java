@@ -1,14 +1,41 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jade;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import org.jetbrains.annotations.Nullable;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
+import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.view.IServerExtensionProvider;
+import snownee.jade.api.view.ViewGroup;
 
-public class EtheriumComponentProvider implements IBlockComponentProvider {
+import java.util.List;
+
+class EtheriumComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
     private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium");
+    private static final String ETHERIUM = "etherium";
+    private static final String MAX_ETHERIUM = "max_etherium";
+    private static final String TIER = "tier";
+    static final EtheriumComponentProvider INSTANCE = new EtheriumComponentProvider();
+
+    private EtheriumComponentProvider() {}
 
     @Override
     public ResourceLocation getUid() {
@@ -17,5 +44,23 @@ public class EtheriumComponentProvider implements IBlockComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
+        CompoundTag tag = blockAccessor.getServerData();
+        if (tag.contains(TIER)) {
+            iTooltip.add(Component.translatable(TranslationConstants.TIER, tag.getInt(TIER)));
+        }
+        if (tag.contains(ETHERIUM) && tag.contains(MAX_ETHERIUM)) {
+            iTooltip.add(Component.translatable(TranslationConstants.ETHERIUM_AMOUNT, tag.getInt(ETHERIUM), tag.getInt(MAX_ETHERIUM)));
+        }
+    }
+
+    @Override
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
+        BlockPos pos = blockEntity.getBlockPos();
+        int tier = blockEntity.getBlockState().getBlock() instanceof ITierCheckingBlock tierBlock ? tierBlock.getTier(level, pos) : -1;
+        compoundTag.putInt(TIER, tier);
+        ArsMagicaAPI.get().getEtheriumHelper().getEtheriumProvider(level, pos).ifPresent(provider -> {
+            compoundTag.putInt(ETHERIUM, provider.getAmount());
+            compoundTag.putInt(MAX_ETHERIUM, provider.getMax());
+        });
     }
 }

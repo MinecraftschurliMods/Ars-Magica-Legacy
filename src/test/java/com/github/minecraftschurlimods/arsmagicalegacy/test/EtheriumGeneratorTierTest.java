@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.test;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
