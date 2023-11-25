@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;

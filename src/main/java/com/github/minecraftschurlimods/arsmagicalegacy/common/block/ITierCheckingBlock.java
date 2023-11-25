@@ -1,4 +1,4 @@
-package com.github.minecraftschurlimods.arsmagicalegacy.api.util;
+package com.github.minecraftschurlimods.arsmagicalegacy.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
