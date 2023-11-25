@@ -1,5 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jade;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem.BlackAuremBlockEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism.CelestialPrismBlock;
@@ -20,6 +22,7 @@ import snownee.jade.api.WailaPlugin;
 public class JadePlugin implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
+        registration.registerBlockDataProvider(AltarComponentProvider.INSTANCE, AltarCoreBlockEntity.class);
         registration.registerBlockDataProvider(EtheriumComponentProvider.INSTANCE, ObeliskBlockEntity.class);
         registration.registerBlockDataProvider(EtheriumComponentProvider.INSTANCE, CelestialPrismBlockEntity.class);
         registration.registerBlockDataProvider(EtheriumComponentProvider.INSTANCE, BlackAuremBlockEntity.class);
@@ -27,6 +30,7 @@ public class JadePlugin implements IWailaPlugin {
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
+        registration.registerBlockComponent(AltarComponentProvider.INSTANCE, AltarCoreBlock.class);
         registration.registerBlockComponent(EtheriumComponentProvider.INSTANCE, ObeliskBlock.class);
         registration.registerBlockComponent(EtheriumComponentProvider.INSTANCE, CelestialPrismBlock.class);
         registration.registerBlockComponent(EtheriumComponentProvider.INSTANCE, BlackAuremBlock.class);
