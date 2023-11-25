@@ -207,7 +207,9 @@ dependencies {
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
-    implementation fg.deobf("curse.maven:jade-324717:${project.jade_version}")
+    // jade for integration
+    modAPI fg.deobf("curse.maven:jade-324717:${project.jade_version}")
+    runtimeMod fg.deobf("curse.maven:jade-324717:${project.jade_version}")
 
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
