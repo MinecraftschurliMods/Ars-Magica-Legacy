@@ -175,10 +175,10 @@ repositories {
         url = 'https://modmaven.k-4u.nl'
     }
     maven {
-        name = 'CurseMaven'
-        url = 'https://www.cursemaven.com'
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
         content {
-            includeGroup 'curse.maven'
+            includeGroup 'maven.modrinth'
         }
     }
 }
@@ -208,8 +208,8 @@ dependencies {
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
 
     // jade for integration
-    modAPI fg.deobf("curse.maven:jade-324717:${project.jade_version}")
-    runtimeMod fg.deobf("curse.maven:jade-324717:${project.jade_version}")
+    modAPI fg.deobf("maven.modrinth:jade:${project.jade_version}")
+    runtimeMod fg.deobf("maven.modrinth:jade:${project.jade_version}")
 
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
