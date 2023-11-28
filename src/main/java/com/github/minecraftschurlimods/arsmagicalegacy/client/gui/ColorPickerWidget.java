@@ -202,9 +202,9 @@ public class ColorPickerWidget extends AbstractWidget {
 
         @Override
         public void onClick(double pMouseX, double pMouseY) {
-            hue.set(_hue);
-            saturation.set(_saturation);
             brightness.set(_brightness);
+            saturation.set(_saturation);
+            hue.set(_hue);
         }
 
         @Override
