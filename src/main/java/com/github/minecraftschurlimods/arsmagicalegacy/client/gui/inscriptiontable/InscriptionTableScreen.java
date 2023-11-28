@@ -64,6 +64,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     protected void init() {
         super.init();
+        dragAreas.clear();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
             addRenderableWidget(new Button(leftPos + 72, topPos + 72, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
