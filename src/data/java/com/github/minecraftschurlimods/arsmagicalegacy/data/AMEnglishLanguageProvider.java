@@ -519,6 +519,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SKILL_AFFINITY_BREAKDOWN, "Affinity Breakdown:");
         add(TranslationConstants.SKILL_MODIFIED_BY, "Modified By:");
         add(TranslationConstants.ALTAR_POWER, "Power: %s");
+        add(TranslationConstants.ETHERIUM_AMOUNT, "Etherium: %d / %d");
         add(TranslationConstants.HOLD_SHIFT_FOR_DETAILS, "Hold Shift for details");
         add(TranslationConstants.NO_TELEPORT, "You are too distorted to teleport!");
         add(TranslationConstants.NO_TELEPORT_NETHER, "The nether's force forbids you to simply teleport out of it!");
@@ -577,6 +578,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.DARK.getId().getPath(), "Dark Etherium");
         add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.LIGHT.getId().getPath(), "Light Etherium");
         add(AMItems.ETHERIUM_PLACEHOLDER.get().getDescriptionId() + "." + EtheriumType.NEUTRAL.getId().getPath(), "Neutral Etherium");
+        add("config.jade.plugin_" + ArsMagicaAPI.MOD_ID + ".altar", "Altar");
+        add("config.jade.plugin_" + ArsMagicaAPI.MOD_ID + ".etherium", "Etherium");
         add("key.category." + ArsMagicaAPI.MOD_ID, ArsMagicaLegacy.getModName());
         add("key." + ArsMagicaAPI.MOD_ID + ".configure_spell", "Configure Spell");
         add("key." + ArsMagicaAPI.MOD_ID + ".next_shape_group", "Next Shape Group");

@@ -174,6 +174,13 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.k-4u.nl'
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
 }
 
 dependencies {
@@ -199,6 +206,10 @@ dependencies {
     // theoneprobe for integration
     modAPI fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}:api") { transitive = false }
     runtimeMod fg.deobf("mcjty.theoneprobe:theoneprobe:${project.top_version}") { transitive = false }
+
+    // jade for integration
+    modAPI fg.deobf("maven.modrinth:jade:${project.jade_version}")
+    runtimeMod fg.deobf("maven.modrinth:jade:${project.jade_version}")
 
     if (!System.getenv('GITHUB_ACTIONS')) {
         if (project.hasProperty('github_packages_user') && project.hasProperty('github_packages_token')) {
