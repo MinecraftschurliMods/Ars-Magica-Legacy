@@ -506,21 +506,6 @@ class AMRecipeProvider extends RecipeProvider {
                 .define('R', AMItems.COLORED_RUNE.get(DyeColor.RED))
                 .unlockedBy("has_rune", has(AMItems.COLORED_RUNE.get(DyeColor.RED)))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(AMItems.SPELL_DYE.get())
-                .pattern("RGB")
-                .pattern("WHK")
-                .pattern("CYM")
-                .define('R', Tags.Items.DYES_RED)
-                .define('G', Tags.Items.DYES_GREEN)
-                .define('B', Tags.Items.DYES_BLUE)
-                .define('W', Tags.Items.DYES_WHITE)
-                .define('H', AMTags.Items.GEMS_CHIMERITE)
-                .define('K', Tags.Items.DYES_BLACK)
-                .define('C', Tags.Items.DYES_CYAN)
-                .define('Y', Tags.Items.DYES_YELLOW)
-                .define('M', Tags.Items.DYES_MAGENTA)
-                .unlockedBy("has_chimerite", has(AMTags.Items.GEMS_CHIMERITE))
-                .save(consumer);
     }
 
     protected static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pUnpacked, TagKey<Item> pUnpackedTag, ItemLike pPacked, TagKey<Item> pPackedTag) {
