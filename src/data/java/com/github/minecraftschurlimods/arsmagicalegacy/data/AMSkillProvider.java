@@ -487,7 +487,7 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(GREEN.get())
                 .addParent(MANA_REGEN_BOOST_2)
                 .build();
-        talent(COLOR.getId(), 100, 75)
+        talent(COLOR.getId(), 30, 30)
                 .addCost(BLUE.get())
                 .build();
     }
