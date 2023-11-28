@@ -119,7 +119,7 @@ public interface ISpellHelper {
      * @param spell          The spell that the part belongs to.
      * @param caster         The entity casting the spell.
      * @param target         The target of the spell cast.
-     * @param componentIndex The 1 based index of the current component.
+     * @param componentIndex The 1 based index of the currently invoked part.
      * @return The modified value of the stat.
      */
     float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target, int componentIndex);
@@ -132,7 +132,7 @@ public interface ISpellHelper {
      * @param level        The level the spell is cast in.
      * @param target       The target of the spell cast.
      * @param castingTicks How long the spell has already been cast.
-     * @param index        The shape group index.
+     * @param index        The 1 based index of the currently invoked part.
      * @param awardXp      The magic xp awarded for casting this spell.
      * @return A SpellCastResult that represents the spell casting outcome.
      */
@@ -152,5 +152,14 @@ public interface ISpellHelper {
      */
     void prevShapeGroup(ItemStack stack);
 
-    int getColor(List<ISpellModifier> modifiers, ISpell spell, Player player, int index, int defaultColor);
+    /**
+     * {@return the color for the current part}
+     * 
+     * @param modifiers    The list of modifiers for the currently invoked part.
+     * @param spell        The spell being cast.
+     * @param caster       The entity casting the spell.
+     * @param index        The 1 based index of the currently invoked part.
+     * @param defaultColor The default color to use as fallback.
+     */
+    int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor);
 }

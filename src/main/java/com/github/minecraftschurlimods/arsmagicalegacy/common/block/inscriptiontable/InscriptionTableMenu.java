@@ -94,14 +94,14 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     /**
-     * @return The spell name, or null if there is no name.
+     * {@return The spell name, or null if there is no name}
      */
     public Optional<Component> getSpellName() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellName);
     }
 
     /**
-     * @return The max allowed shape groups.
+     * {@return The max allowed shape groups}
      */
     public int allowedShapeGroups() {
         return table.getBlockState().getValue(InscriptionTableBlock.TIER) + 2;
@@ -112,7 +112,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      *
      * @param spellStack     The spell stack.
      * @param shapeGroups    The shape groups.
-     * @param additionalData
+     * @param additionalData The additional data that the parts can use.
      */
     public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups, CompoundTag additionalData) {
         var api = ArsMagicaAPI.get();
@@ -123,7 +123,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
     }
 
     /**
-     * @return An optional containing the spell recipe, or an empty optional if there is no spell recipe laid out yet.
+     * {@return An optional containing the spell recipe, or an empty optional if there is no spell recipe laid out yet}
      */
     public Optional<ISpell> getSpellRecipe() {
         return Optional.ofNullable(table).map(InscriptionTableBlockEntity::getSpellRecipe);

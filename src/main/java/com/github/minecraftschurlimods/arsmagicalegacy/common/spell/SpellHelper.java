@@ -230,7 +230,7 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public int getColor(List<ISpellModifier> modifiers, ISpell spell, Player player, int index, int defaultColor) {
-        return (int) getModifiedStat(defaultColor, SpellPartStats.COLOR, modifiers, spell, player, null, index);
+    public int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor) {
+        return (int) getModifiedStat(defaultColor, SpellPartStats.COLOR, modifiers, spell, caster, null, index);
     }
 }
