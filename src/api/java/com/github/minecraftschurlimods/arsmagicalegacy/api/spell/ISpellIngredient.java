@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;

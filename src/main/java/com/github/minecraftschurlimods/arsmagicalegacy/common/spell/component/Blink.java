@@ -26,7 +26,7 @@ public class Blink extends AbstractComponent {
             return SpellCastResult.EFFECT_FAILED;
         Entity entity = target.getEntity();
         double oldX = entity.getX(), oldY = entity.getEyeY(), oldZ = entity.getZ();
-        for (int range = Math.round(ArsMagicaAPI.get().getSpellHelper().getModifiedStat(5, SpellPartStats.RANGE, modifiers, spell, caster, target) * 4); range > 0; range--) {
+        for (int range = Math.round(ArsMagicaAPI.get().getSpellHelper().getModifiedStat(5, SpellPartStats.RANGE, modifiers, spell, caster, target, index) * 4); range > 0; range--) {
             double x = oldX + entity.getLookAngle().x() * range;
             double y = oldY + entity.getLookAngle().y() * range;
             double z = oldZ + entity.getLookAngle().z() * range;

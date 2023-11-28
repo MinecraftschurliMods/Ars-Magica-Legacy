@@ -20,13 +20,13 @@ public class Explosion extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        level.explode(caster, target.getLocation().x(), target.getLocation().y(), target.getLocation().z(), ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target), BlockInteraction.BREAK);
+        level.explode(caster, target.getLocation().x(), target.getLocation().y(), target.getLocation().z(), ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index), BlockInteraction.BREAK);
         return SpellCastResult.SUCCESS;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        level.explode(caster, target.getLocation().x(), target.getLocation().y(), target.getLocation().z(), ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target), BlockInteraction.BREAK);
+        level.explode(caster, target.getLocation().x(), target.getLocation().y(), target.getLocation().z(), ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index), BlockInteraction.BREAK);
         return SpellCastResult.SUCCESS;
     }
 }

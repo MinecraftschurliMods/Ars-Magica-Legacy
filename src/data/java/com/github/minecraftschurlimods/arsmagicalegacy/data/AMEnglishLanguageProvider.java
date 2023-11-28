@@ -262,6 +262,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         skillTranslation(AMSpellParts.CHAIN.getId(), "Chain", "Looks like you brought friends. Well, I don't mind, you're all gonna die.", "shapes", "You can modify your Beam spell to jump from target to target, hitting up to five enemies, at the cost of range - it is now limited to 16 blocks instead of 64. The jump range between targets is 4 blocks, but can be extended using $(l:modifiers/range)Range$() modifiers.$(br2)The spell will never harm its caster. When the spell is used on a block, the chaining behavior does not occur, and it will act like a regular beam.");
         skillTranslation(AMSpellParts.CHANNEL.getId(), "Channel", "You might want to concentrate.", "shapes", "Through intense concentration, you can maintain a flow of magic on yourself.$(br2)This is useful for things like $(l:components/heal)Heal$(), $(l:components/attract)Attract$() and $(l:components/repel)Repel$().");
         skillTranslation(AMSpellParts.CHARM.getId(), "Charm", "One plus one is three!", "components", "You can cause breedable creatures to breed.");
+        skillTranslation(AMSpellParts.COLOR.getId(), "Color", "Rainbow!", "modifiers", "This modifier allows changing the particles of a spell component. Want green fireballs? Have at it!$(br2)The color is determined during spell creation, and cannot be changed after the spell is crafted.");
         skillTranslation(AMSpellParts.CONTINGENCY_DAMAGE.getId(), "Contingency: Damage", "Hurting me? That would be bad.", "shapes", "You have managed to create a spell that triggers only when you get hurt.$(br2)You can only have one contingency active at a time.");
         skillTranslation(AMSpellParts.CONTINGENCY_DEATH.getId(), "Contingency: Death", "You're coming with me.", "shapes", "Enemies may get you, but in those few seconds it takes, you will have all the time you need to ensure they come along for the ride.$(br2)You can only have one contingency active at a time.");
         skillTranslation(AMSpellParts.CONTINGENCY_FALL.getId(), "Contingency: Fall", "The higher you climb, the harder you fall.", "shapes", "You have figured out a spell shape that triggers when falling the instant before you hit the ground.$(br2)You can only have one contingency active at a time.");
@@ -501,11 +502,13 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_RECIPE_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
-        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");
         add(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL, "Create Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_TITLE, "Choose Color");
+        add(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_CANCEL, "Cancel");
+        add(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_DONE, "Done");
         add(TranslationConstants.OBELISK_TITLE, "Obelisk");
         add(TranslationConstants.OCCULUS_MISSING_REQUIREMENTS, "You lack the skill points or parent skills to learn this skill!");
         add(TranslationConstants.RANGE_LOWER, "Min: %s");

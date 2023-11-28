@@ -29,14 +29,14 @@ public class Zone extends AbstractShape {
                 zone.moveTo(caster.position());
             }
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0) {
+            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0) {
                 zone.setTargetNonSolid();
             }
-            zone.setDuration(200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit));
+            zone.setDuration(200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
             zone.setIndex(index);
             zone.setOwner(caster);
-            zone.setGravity(0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit));
-            zone.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit));
+            zone.setGravity(0.025f * helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit, index));
+            zone.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit, index));
             zone.setSpell(spell);
             level.addFreshEntity(zone);
         }

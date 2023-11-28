@@ -161,12 +161,13 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target) {
+    public float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target, int componentIndex) {
+        componentIndex--;
         float modified = baseValue;
         for (ISpellModifier iSpellModifier : modifiers) {
             if (iSpellModifier.getStatsModified().contains(stat)) {
                 ISpellPartStatModifier modifier = iSpellModifier.getStatModifier(stat);
-                modified = modifier.modify(baseValue, modified, spell, caster, target);
+                modified = modifier.modify(baseValue, modified, spell, caster, target, componentIndex);
             }
         }
         SpellEvent.ModifyStats event = new SpellEvent.ModifyStats(caster, spell, stat, baseValue, modified);
@@ -226,5 +227,10 @@ public final class SpellHelper implements ISpellHelper {
         }
         spell.currentShapeGroupIndex(index);
         helper.setSpell(stack, spell);
+    }
+
+    @Override
+    public int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor) {
+        return (int) getModifiedStat(defaultColor, SpellPartStats.COLOR, modifiers, spell, caster, null, index);
     }
 }

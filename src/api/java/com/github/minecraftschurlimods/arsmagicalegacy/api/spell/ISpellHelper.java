@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -113,14 +114,15 @@ public interface ISpellHelper {
     /**
      * Get the stat value modified by the modifiers.
      *
-     * @param baseValue The base value for the stat.
-     * @param stat      The stat that is modified.
-     * @param spell     The spell that the part belongs to.
-     * @param caster    The entity casting the spell.
-     * @param target    The target of the spell cast.
+     * @param baseValue      The base value for the stat.
+     * @param stat           The stat that is modified.
+     * @param spell          The spell that the part belongs to.
+     * @param caster         The entity casting the spell.
+     * @param target         The target of the spell cast.
+     * @param componentIndex The 1 based index of the currently invoked part.
      * @return The modified value of the stat.
      */
-    float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target);
+    float getModifiedStat(float baseValue, ISpellPartStat stat, List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, @Nullable HitResult target, int componentIndex);
 
     /**
      * Casts the spell.
@@ -130,7 +132,7 @@ public interface ISpellHelper {
      * @param level        The level the spell is cast in.
      * @param target       The target of the spell cast.
      * @param castingTicks How long the spell has already been cast.
-     * @param index        The shape group index.
+     * @param index        The 1 based index of the currently invoked part.
      * @param awardXp      The magic xp awarded for casting this spell.
      * @return A SpellCastResult that represents the spell casting outcome.
      */
@@ -149,4 +151,15 @@ public interface ISpellHelper {
      * @param stack The spell item stack to select the next shape group of.
      */
     void prevShapeGroup(ItemStack stack);
+
+    /**
+     * {@return the color for the current part}
+     * 
+     * @param modifiers    The list of modifiers for the currently invoked part.
+     * @param spell        The spell being cast.
+     * @param caster       The entity casting the spell.
+     * @param index        The 1 based index of the currently invoked part.
+     * @param defaultColor The default color to use as fallback.
+     */
+    int getColor(List<ISpellModifier> modifiers, ISpell spell, LivingEntity caster, int index, int defaultColor);
 }

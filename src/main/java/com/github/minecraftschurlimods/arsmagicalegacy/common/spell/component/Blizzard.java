@@ -22,25 +22,25 @@ public class Blizzard extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        spawn(spell, caster, level, modifiers, target);
+        spawn(spell, caster, level, modifiers, target, index);
         return SpellCastResult.SUCCESS;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        spawn(spell, caster, level, modifiers, target);
+        spawn(spell, caster, level, modifiers, target, index);
         return SpellCastResult.SUCCESS;
     }
 
-    private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
+    private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target, final int index) {
         if (!level.isClientSide()) {
             var blizzard = Objects.requireNonNull(AMEntities.BLIZZARD.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             blizzard.setPos(target.getLocation());
-            blizzard.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target));
+            blizzard.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target, index));
             blizzard.setOwner(caster);
-            blizzard.setDamage(helper.getModifiedStat(2, SpellPartStats.DAMAGE, modifiers, spell, caster, target));
-            blizzard.setRadius(helper.getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target));
+            blizzard.setDamage(helper.getModifiedStat(2, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
+            blizzard.setRadius(helper.getModifiedStat(2, SpellPartStats.RANGE, modifiers, spell, caster, target, index));
             level.addFreshEntity(blizzard);
         }
     }

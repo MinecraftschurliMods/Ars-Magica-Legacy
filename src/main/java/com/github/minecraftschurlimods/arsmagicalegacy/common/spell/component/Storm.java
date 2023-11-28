@@ -27,7 +27,7 @@ public class Storm extends AbstractComponent {
         super(SpellPartStats.DURATION);
     }
 
-    private static SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target) {
+    private static SpellCastResult performStorm(LivingEntity caster, Level level, List<ISpellModifier> modifiers, ISpell spell, HitResult target, int index) {
         if (!level.isClientSide()) {
             if (level.getRainLevel(1f) > 0.9) {
                 int random = level.random.nextInt(100);
@@ -60,7 +60,7 @@ public class Storm extends AbstractComponent {
                     }
                 }
             } else {
-                ((ServerLevel) level).setWeatherParameters(0, (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target), true, true);
+                ((ServerLevel) level).setWeatherParameters(0, (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target, index), true, true);
             }
         }
         return SpellCastResult.EFFECT_FAILED;
@@ -68,11 +68,11 @@ public class Storm extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
+        return performStorm(caster, level, modifiers, spell, target, index);
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        return performStorm(caster, level, modifiers, spell, target);
+        return performStorm(caster, level, modifiers, spell, target, index);
     }
 }

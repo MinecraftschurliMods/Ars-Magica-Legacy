@@ -426,9 +426,7 @@ tasks.register('setupGitHubActions') {
         var output = new File(System.getenv('GITHUB_OUTPUT'))
         output << "modid=${project.mod_id}\n"
         output << "version=${project.version}\n"
-        output << "mv_version=${project.mc_version}\n"
-        output << "curse_project_id=${project.curse_project_id}\n"
-        output << "modrinth_project_id=${project.modrinth_project_id}\n"
+        output << "mc_version=${project.mc_version}\n"
     }
 }
 

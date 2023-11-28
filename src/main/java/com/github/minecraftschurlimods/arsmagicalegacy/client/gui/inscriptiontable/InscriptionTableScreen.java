@@ -5,33 +5,40 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorPickerScreen;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.SelfClearingEditBox;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableMenu;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Color;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionTableMenu> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
     private static final Component SEARCH_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_SEARCH);
     private static final Component NAME_LABEL = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_NAME);
-    private static final Component DEFAULT_NAME = Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME);
     private final List<DragArea<SpellPartDraggable>> dragAreas = new ArrayList<>();
+    private final Map<Pair<Integer, Integer>, Integer> colorData = new HashMap<>();
     private SpellPartDraggable dragged;
     private EditBox searchBar;
     private EditBox nameBar;
@@ -57,6 +64,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     protected void init() {
         super.init();
+        dragAreas.clear();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
             addRenderableWidget(new Button(leftPos + 72, topPos + 72, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
@@ -68,8 +76,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }));
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
-        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16);
-        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this);
+        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, index) -> this.onDrop(part, -1, index));
+        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this, this::onDrop);
         searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 140, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
         nameBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 93, 140, 12, 64, nameBar, font, NAME_LABEL));
@@ -79,6 +87,16 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         menu.getSpellRecipe().ifPresent(this::existingRecipe);
         menu.getSpellName().ifPresent(this::existingName);
         setDragged(null);
+    }
+
+    private void onDrop(SpellPartDraggable part, int groupIndex, int innerIndex) {
+        if (part.getPart() == AMSpellParts.COLOR.get()) {
+            Pair<Integer, Integer> key = Pair.of(groupIndex, innerIndex);
+            ColorPickerScreen colorPicker = new ColorPickerScreen(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_TITLE), colorData.getOrDefault(key, 0xffffff), true, color -> {
+                colorData.put(key, color);
+            });
+            getMinecraft().pushGuiLayer(colorPicker);
+        }
     }
 
     @Override
@@ -195,15 +213,34 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void existingRecipe(ISpell spell) {
-        for (ISpellPart part : spell.spellStack().parts()) {
-            spellGrammarArea.drop(new SpellPartDraggable(part), 0, 0);
+        CompoundTag additionalData = spell.additionalData();
+        {
+            List<ISpellPart> parts = spell.spellStack().parts();
+            for (int i = 0; i < parts.size(); i++) {
+                ISpellPart part = parts.get(i);
+                if (part == AMSpellParts.COLOR.get()) {
+                    Integer data = Color.getData(additionalData, -1, i);
+                    if (data != null) {
+                        colorData.put(Pair.of(-1, i), data);
+                    }
+                }
+                spellGrammarArea.drop(new SpellPartDraggable(part), Integer.MAX_VALUE, Integer.MAX_VALUE);
+            }
         }
         List<ShapeGroup> shapeGroups = spell.shapeGroups();
         for (int i = 0; i < shapeGroups.size(); i++) {
             ShapeGroupArea area = shapeGroupArea.get(i);
             ShapeGroup group = shapeGroups.get(i);
-            for (ISpellPart part : group.parts()) {
-                area.drop(new SpellPartDraggable(part), 0, 0);
+            List<ISpellPart> parts = group.parts();
+            for (int j = 0; j < parts.size(); j++) {
+                ISpellPart part = parts.get(j);
+                if (part == AMSpellParts.COLOR.get()) {
+                    Integer data = Color.getData(additionalData, j, i);
+                    if (data != null) {
+                        colorData.put(Pair.of(j, i), data);
+                    }
+                }
+                area.drop(new SpellPartDraggable(part), Integer.MAX_VALUE, Integer.MAX_VALUE);
             }
         }
         shapeGroupArea.setLocks();
@@ -215,6 +252,31 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
 
     private void sync() {
-        menu.sendDataToServer(nameBar.getValue().equals(NAME_LABEL.getString()) ? null : Component.literal(nameBar.getValue()), spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData());
+        menu.sendDataToServer(nameBar.getValue().equals(NAME_LABEL.getString()) ? null : Component.literal(nameBar.getValue()), spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData(), compileAdditionalData());
+    }
+
+    private CompoundTag compileAdditionalData() {
+        CompoundTag compoundTag = new CompoundTag();
+        colorData.forEach((key, value) -> {
+            int shapeGropIndex = key.getFirst();
+            int innerIndex;
+            if (shapeGropIndex < 0) {
+                innerIndex = findIndexOfModified(spellGrammarArea.getAll(), key.getSecond());
+            } else {
+                innerIndex = findIndexOfModified(shapeGroupArea.get(shapeGropIndex).getAll(), key.getSecond());
+            }
+            compoundTag.putInt(Color.getKey(shapeGropIndex, innerIndex), value);
+        });
+        return compoundTag;
+    }
+    
+    private int findIndexOfModified(List<SpellPartDraggable> parts, int modifierIndex) {
+        for (int i = parts.size() - 1 - modifierIndex; i >= 0; i--) {
+            SpellPartDraggable part = parts.get(i);
+            if (part.getPart().getType() != ISpellPart.SpellPartType.MODIFIER) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

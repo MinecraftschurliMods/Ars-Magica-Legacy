@@ -431,7 +431,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (recipe == null || recipe.isEmpty()) {
-            Optional.of(ArsMagicaAPI.get().getSpellHelper().getSpell(getBook())).filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            getSpell().filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
                 requiredPower = this.recipe.size();
             }, () -> {
@@ -440,6 +440,11 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
             });
         }
         return recipe;
+    }
+
+    @NotNull
+    public Optional<ISpell> getSpell() {
+        return Optional.of(ArsMagicaAPI.get().getSpellHelper().getSpell(getBook()));
     }
 
     /**

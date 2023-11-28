@@ -4,15 +4,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
  * Utility class for default spell part stat modifiers.
  */
 public final class DefaultSpellPartStatModifier {
-    public static final ISpellPartStatModifier NOOP = (base, modified, spell, caster, target) -> modified;
-    public static final ISpellPartStatModifier COUNTING = (base, modified, spell, caster, target) -> modified + 1;
+    public static final ISpellPartStatModifier NOOP = (base, modified, spell, caster, target, componentIndex) -> modified;
+    public static final ISpellPartStatModifier COUNTING = (base, modified, spell, caster, target, componentIndex) -> modified + 1;
 
     /**
      * @param value The value to add.
      * @return A new spell part stat modifier that adds the given value to the modified value.
      */
     public static ISpellPartStatModifier add(float value) {
-        return (base, modified, spell, caster, target) -> modified + value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified + value;
     }
 
     /**
@@ -20,7 +20,7 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that subtracts the given value from the modified value.
      */
     public static ISpellPartStatModifier subtract(float value) {
-        return (base, modified, spell, caster, target) -> modified - value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified - value;
     }
 
     /**
@@ -28,7 +28,7 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that multiplies the given value with the modified value.
      */
     public static ISpellPartStatModifier multiply(float value) {
-        return (base, modified, spell, caster, target) -> modified * value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified * value;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that adds the base value, multiplied with the given value, to the modified value.
      */
     public static ISpellPartStatModifier addMultipliedBase(float value) {
-        return (base, modified, spell, caster, target) -> modified + base * value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified + base * value;
     }
 
     /**
@@ -44,7 +44,7 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that subtracts the base value, multiplied with the given value, from the modified value.
      */
     public static ISpellPartStatModifier subtractMultipliedBase(float value) {
-        return (base, modified, spell, caster, target) -> modified - base * value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified - base * value;
     }
 
     /**
@@ -52,7 +52,7 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that adds the modified value, multiplied with the given value, to the modified value.
      */
     public static ISpellPartStatModifier addMultiplied(float value) {
-        return (base, modified, spell, caster, target) -> modified + modified * value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified + modified * value;
     }
 
     /**
@@ -60,6 +60,6 @@ public final class DefaultSpellPartStatModifier {
      * @return A new spell part stat modifier that subtracts the modified value, multiplied with the given value, from the modified value.
      */
     public static ISpellPartStatModifier subtractMultiplied(float value) {
-        return (base, modified, spell, caster, target) -> modified - modified * value;
+        return (base, modified, spell, caster, target, componentIndex) -> modified - modified * value;
     }
 }

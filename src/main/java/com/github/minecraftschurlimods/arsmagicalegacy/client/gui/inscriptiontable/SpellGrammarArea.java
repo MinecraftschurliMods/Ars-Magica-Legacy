@@ -5,11 +5,15 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.Drag
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
+
 public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
     private static final int X_PADDING = 4;
+    private final BiConsumer<SpellPartDraggable, Integer> onDrop;
 
-    public SpellGrammarArea(int x, int y, int width, int height) {
+    public SpellGrammarArea(int x, int y, int width, int height, BiConsumer<SpellPartDraggable, Integer> onDrop) {
         super(x, y, width, height, 8);
+        this.onDrop = onDrop;
     }
 
     @Override
@@ -35,5 +39,10 @@ public class SpellGrammarArea extends DragTargetArea<SpellPartDraggable> {
         for (int i = 0; i < contents.size(); i++) {
             contents.get(i).render(pPoseStack, x + i * SpellPartDraggable.SIZE + X_PADDING, y, pPartialTick);
         }
+    }
+
+    @Override
+    public void onDrop(SpellPartDraggable draggable, int index) {
+        onDrop.accept(draggable, index);
     }
 }

@@ -21,8 +21,8 @@ public class SpellPartDraggable extends Draggable<ISpellPart> {
     protected SpellPartDraggable(ISpellPart content) {
         super(SIZE, SIZE, content);
         ResourceLocation id = content.getId();
-        sprite = SkillIconAtlas.instance().getSprite(id);
-        translationKey = Component.translatable("skill." + id.getNamespace() + "." + id.getPath() + ".name");
+        this.sprite = SkillIconAtlas.instance().getSprite(id);
+        this.translationKey = Component.translatable("skill." + id.getNamespace() + "." + id.getPath() + ".name");
     }
 
     public ISpellPart getPart() {

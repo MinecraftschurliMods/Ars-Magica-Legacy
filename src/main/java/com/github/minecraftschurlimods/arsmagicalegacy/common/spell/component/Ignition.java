@@ -33,7 +33,7 @@ public class Ignition extends AbstractComponent {
             return SpellCastResult.SUCCESS;
         }
         if (target.getEntity().isOnFire()) return SpellCastResult.EFFECT_FAILED;
-        target.getEntity().setSecondsOnFire((int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(3, SpellPartStats.DURATION, modifiers, spell, caster, target));
+        target.getEntity().setSecondsOnFire((int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(3, SpellPartStats.DURATION, modifiers, spell, caster, target, index));
         return SpellCastResult.SUCCESS;
     }
 

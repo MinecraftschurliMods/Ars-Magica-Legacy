@@ -1,0 +1,16 @@
+{
+  "advancement": "arsmagicalegacy:book/color",
+  "category": "arsmagicalegacy:modifiers",
+  "icon": "arsmagicalegacy:textures/icon/skill/color.png",
+  "name": "skill.arsmagicalegacy.color.name",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "item.arsmagicalegacy.arcane_compendium.modifiers.color.page0.text"
+    },
+    {
+      "type": "arsmagicalegacy:spell_part",
+      "part": "arsmagicalegacy:color"
+    }
+  ]
+}
