@@ -64,7 +64,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMVanillaParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Beam;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
@@ -140,6 +139,7 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::registerRenderers);
         modEventBus.addListener(ClientInit::itemColors);
         modEventBus.addListener(ClientInit::registerHUDs);
+        modEventBus.addListener(AMShaders::init);
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::movementInputUpdate);
         forgeBus.addListener(ClientInit::mouseScroll);
@@ -392,17 +392,17 @@ public final class ClientInit {
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
             ISpellPart part = pair.getFirst();
             List<ISpellModifier> modifiers = pair.getSecond();
-            int color = Beam.getBeamColor(spell, modifiers);
+            int color = helper.getColor(modifiers, spell, p, 1, 0xff0000);
             if (part == AMSpellParts.BEAM.get()) {
-                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null) > 0);
+                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
                 if (hitResult.getType() == HitResult.Type.MISS) continue;
                 BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
             } else if (part == AMSpellParts.CHAIN.get()) {
-                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null) > 0);
+                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
                 if (hitResult.getType() == HitResult.Type.MISS) continue;
                 BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
                 if (hitResult instanceof EntityHitResult ehr) {
-                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, p, ehr), p);
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, p, ehr, 1), p);
                     for (int i = 0; i < list.size() - 1; i++) {
                         BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
                     }

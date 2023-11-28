@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 
 import java.util.Locale;
 import java.util.function.BiPredicate;
@@ -146,16 +145,17 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
     }
 
     /**
-     * @param world The world this block is in.
+     * @param level The world this block is in.
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
     @Override
-    public int getTier(Level world, BlockPos pos) {
+    public int getTier(Level level, BlockPos pos) {
+        pos = pos.below(level.getBlockState(pos).getValue(ObeliskBlock.PART).ordinal());
         int tier = 0;
-        if (OBELISK_CHALK.test(world, pos)) {
+        if (OBELISK_CHALK.test(level, pos)) {
             tier = 1;
-            if (OBELISK_PILLARS.test(world, pos)) {
+            if (OBELISK_PILLARS.test(level, pos)) {
                 tier = 2;
             }
         }

@@ -25,7 +25,7 @@ public class ManaBlast extends AbstractComponent {
         var api = ArsMagicaAPI.get();
         var helper = api.getManaHelper();
         float mana = helper.getMana(caster);
-        living.hurt(DamageSource.indirectMagic(caster, null), api.getSpellHelper().getModifiedStat((float) (mana / Config.SERVER.MANA_MULTIPLIER.get()), SpellPartStats.DAMAGE, modifiers, spell, caster, target));
+        living.hurt(DamageSource.indirectMagic(caster, null), api.getSpellHelper().getModifiedStat((float) (mana / Config.SERVER.MANA_MULTIPLIER.get()), SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
         helper.decreaseMana(caster, mana);
         return SpellCastResult.SUCCESS;
     }

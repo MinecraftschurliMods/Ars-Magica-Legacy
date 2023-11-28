@@ -23,24 +23,24 @@ public class FallingStar extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        spawn(spell, caster, level, modifiers, target);
+        spawn(spell, caster, level, modifiers, target, index);
         return SpellCastResult.SUCCESS;
     }
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
-        spawn(spell, caster, level, modifiers, target);
+        spawn(spell, caster, level, modifiers, target, index);
         return SpellCastResult.SUCCESS;
     }
 
-    private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target) {
+    private static void spawn(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, HitResult target, int index) {
         if (!level.isClientSide()) {
             var fallingStar = Objects.requireNonNull(AMEntities.FALLING_STAR.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             fallingStar.setPos(new Vec3(target.getLocation().x(), target.getLocation().y() + 64, target.getLocation().z()));
             fallingStar.setOwner(caster);
-            fallingStar.setDamage(helper.getModifiedStat(6, SpellPartStats.DAMAGE, modifiers, spell, caster, target));
-            fallingStar.setRadius(helper.getModifiedStat(6, SpellPartStats.RANGE, modifiers, spell, caster, target));
+            fallingStar.setDamage(helper.getModifiedStat(6, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
+            fallingStar.setRadius(helper.getModifiedStat(6, SpellPartStats.RANGE, modifiers, spell, caster, target, index));
             level.addFreshEntity(fallingStar);
         }
     }

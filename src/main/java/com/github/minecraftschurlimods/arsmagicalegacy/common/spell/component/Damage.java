@@ -50,11 +50,11 @@ public class Damage extends AbstractComponent {
         if (living instanceof Player && living != caster && !((ServerLevel) level).getServer().isPvpAllowed() && damage > 0)
             return SpellCastResult.EFFECT_FAILED;
         if (damage < 0) {
-            damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.HEALING, modifiers, spell, caster, target);
+            damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.HEALING, modifiers, spell, caster, target, index);
             living.heal(-damage);
             return SpellCastResult.SUCCESS;
         }
-        damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.DAMAGE, modifiers, spell, caster, target);
+        damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(damage, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index);
         return living.hurt(damageSourceFunction.apply(caster), damage) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 

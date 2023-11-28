@@ -30,7 +30,7 @@ public class AoE extends AbstractShape {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         if (hit == null) return SpellCastResult.EFFECT_FAILED;
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit);
+        float radius = helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit, index);
         boolean appliedToAtLeastOneEntity = false;
         for (Entity e : level.getEntities(caster, AABB.ofSize(hit.getLocation(), radius * 2, radius * 2, radius * 2))) {
             if (e == caster || e instanceof ItemEntity || e instanceof Projectile) continue;

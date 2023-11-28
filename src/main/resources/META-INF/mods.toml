@@ -24,6 +24,16 @@ Continuation of Ars Magica 2 by Mithion
     versionRange = "${ jei_version_range }"
 
 [[dependencies.${ mod_id }]]
+    modId = "embeddium"
+    mandatory = false
+    versionRange = "${ embeddium_version_range }"
+
+[[dependencies.${ mod_id }]]
+    modId = "jade"
+    mandatory = false
+    versionRange = "${ jade_version_range }"
+
+[[dependencies.${ mod_id }]]
     modId = "theoneprobe"
     mandatory = false
     versionRange = "*"

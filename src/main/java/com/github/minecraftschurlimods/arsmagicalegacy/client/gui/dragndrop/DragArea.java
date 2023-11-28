@@ -49,5 +49,11 @@ public abstract class DragArea<T extends Draggable<?>> implements Widget {
 
     public void drop(T draggable, int mouseX, int mouseY) {
         contents.add(draggable);
+        int index = contents.size() - 1;
+        if (mouseX != Integer.MAX_VALUE && mouseY != Integer.MAX_VALUE) {
+            onDrop(draggable, index);
+        }
     }
+
+    public void onDrop(T draggable, int index) {}
 }

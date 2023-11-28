@@ -49,6 +49,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Su
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Telekinesis;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.Transplace;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.component.WizardsAutumn;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Color;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.GenericSpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Lunar;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.modifier.Solar;
@@ -189,6 +190,7 @@ public interface AMSpellParts {
     RegistryObject<ISpellModifier>     SOLAR               = SPELL_PARTS.register("solar",               Solar::new);
     RegistryObject<ISpellModifier>     TARGET_NON_SOLID    = SPELL_PARTS.register("target_non_solid",    () -> new GenericSpellModifier().addStatModifier(SpellPartStats.TARGET_NON_SOLID, DefaultSpellPartStatModifier.COUNTING));
     RegistryObject<ISpellModifier>     VELOCITY            = SPELL_PARTS.register("velocity",            () -> new GenericSpellModifier().addStatModifier(SpellPartStats.SPEED, DefaultSpellPartStatModifier.addMultipliedBase(0.5f)));
+    RegistryObject<ISpellModifier>     COLOR               = SPELL_PARTS.register("color",               Color::new);
 
     /**
      * Empty method that is required for classloading

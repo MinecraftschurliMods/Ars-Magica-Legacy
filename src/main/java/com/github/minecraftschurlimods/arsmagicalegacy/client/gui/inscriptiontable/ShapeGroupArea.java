@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     private static final ResourceLocation GUI = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/inscription_table.png");
@@ -23,10 +24,12 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     private static final int Y_PADDING = 1;
     static final int WIDTH = 36;
     static final int HEIGHT = 34;
+    private final BiConsumer<SpellPartDraggable, Integer> onDrop;
     private LockState lockState = LockState.NONE;
 
-    public ShapeGroupArea(int x, int y) {
+    public ShapeGroupArea(int x, int y, BiConsumer<SpellPartDraggable, Integer> onDrop) {
         super(x, y, WIDTH, HEIGHT, ROWS * COLUMNS);
+        this.onDrop = onDrop;
     }
 
     public void setLockState(LockState lockState) {
@@ -82,6 +85,11 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
                 contents.get(index).render(pPoseStack, x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE + Y_PADDING, pPartialTick);
             }
         }
+    }
+
+    @Override
+    public void onDrop(SpellPartDraggable draggable, int index) {
+        this.onDrop.accept(draggable, index);
     }
 
     public static boolean isValid(List<SpellPartDraggable> list) {

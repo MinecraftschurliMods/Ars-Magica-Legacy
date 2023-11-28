@@ -49,22 +49,22 @@ public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlo
     }
 
     /**
-     * @param world The world this block is in.
+     * @param level The world this block is in.
      * @param pos   The position of the core block.
      * @return The tier of the surrounding multiblock.
      */
     @Override
-    public int getTier(Level world, BlockPos pos) {
+    public int getTier(Level level, BlockPos pos) {
         pos = pos.below();
         int tier = 0;
-        if (CHALK.test(world, pos)) {
-            if (PILLAR1.test(world, pos)) {
+        if (CHALK.test(level, pos)) {
+            if (PILLAR1.test(level, pos)) {
                 tier = 2;
-            } else if (PILLAR2.test(world, pos)) {
+            } else if (PILLAR2.test(level, pos)) {
                 tier = 3;
-            } else if (PILLAR3.test(world, pos)) {
+            } else if (PILLAR3.test(level, pos)) {
                 tier = 4;
-            } else if (PILLAR4.test(world, pos)) {
+            } else if (PILLAR4.test(level, pos)) {
                 tier = 5;
             } else {
                 tier = 1;

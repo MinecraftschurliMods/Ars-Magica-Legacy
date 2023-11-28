@@ -30,15 +30,15 @@ public class Wave extends AbstractShape {
             }
             wave.setDeltaMovement(caster.getLookAngle());
             var helper = ArsMagicaAPI.get().getSpellHelper();
-            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0) {
+            if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0) {
                 wave.setTargetNonSolid();
             }
-            wave.setDuration((int) helper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit));
+            wave.setDuration((int) helper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
             wave.setIndex(index);
             wave.setOwner(caster);
-            wave.setGravity(helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit) * 0.025f);
-            wave.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit));
-            wave.setSpeed(1 + helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit));
+            wave.setGravity(helper.getModifiedStat(0, SpellPartStats.GRAVITY, modifiers, spell, caster, hit, index) * 0.025f);
+            wave.setRadius(helper.getModifiedStat(1, SpellPartStats.SIZE, modifiers, spell, caster, hit, index));
+            wave.setSpeed(1 + helper.getModifiedStat(0.2f, SpellPartStats.SPEED, modifiers, spell, caster, hit, index));
             wave.setSpell(spell);
             level.addFreshEntity(wave);
         }

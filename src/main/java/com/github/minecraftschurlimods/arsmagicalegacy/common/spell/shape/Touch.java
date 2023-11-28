@@ -20,7 +20,7 @@ public class Touch extends AbstractShape {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, @Nullable HitResult hit, int ticksUsed, int index, boolean awardXp) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        return helper.invoke(spell, caster, level, helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit) > 0), ticksUsed, index, awardXp);
+        return helper.invoke(spell, caster, level, helper.trace(caster, level, helper.getModifiedStat(2.5f, SpellPartStats.RANGE, modifiers, spell, caster, hit, index), true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0), ticksUsed, index, awardXp);
     }
 
     @Override

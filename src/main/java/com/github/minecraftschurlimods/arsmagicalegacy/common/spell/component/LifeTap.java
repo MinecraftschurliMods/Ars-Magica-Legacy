@@ -22,7 +22,7 @@ public class LifeTap extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {
             var api = ArsMagicaAPI.get();
-            float damage = api.getSpellHelper().getModifiedStat(2, living.isInvertedHealAndHarm() ? SpellPartStats.HEALING : SpellPartStats.DAMAGE, modifiers, spell, caster, target) * 2;
+            float damage = api.getSpellHelper().getModifiedStat(2, living.isInvertedHealAndHarm() ? SpellPartStats.HEALING : SpellPartStats.DAMAGE, modifiers, spell, caster, target, index) * 2;
             if (living.hurt(DamageSource.OUT_OF_WORLD, damage)) {
                 api.getManaHelper().increaseMana(caster, damage * api.getManaHelper().getMaxMana(caster) * 0.01f);
             }

@@ -38,13 +38,13 @@ public class Dig extends AbstractComponent {
         if (hardness < 0) return SpellCastResult.EFFECT_FAILED;
         var api = ArsMagicaAPI.get();
         var helper = api.getSpellHelper();
-        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int) helper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target)), state))
+        if (!state.requiresCorrectToolForDrops() && !TierSortingRegistry.isCorrectTierForDrops(TierMapping.instance().getTierForPower((int) helper.getModifiedStat(2, SpellPartStats.MINING_TIER, modifiers, spell, caster, target, index)), state))
             return SpellCastResult.EFFECT_FAILED;
         if (!(caster instanceof Player player && player.isCreative()) && !api.getManaHelper().decreaseMana(caster, hardness * 1.28f))
             return SpellCastResult.NOT_ENOUGH_MANA;
         if (caster instanceof Player player) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target), (int) helper.getModifiedStat(0, SpellPartStats.SILK_TOUCH, modifiers, spell, caster, target));
+            ItemStack dummyStack = AMUtil.createDummyStack((int) helper.getModifiedStat(0, SpellPartStats.FORTUNE, modifiers, spell, caster, target, index), (int) helper.getModifiedStat(0, SpellPartStats.SILK_TOUCH, modifiers, spell, caster, target, index));
             state.getBlock().playerDestroy(level, player, blockPos, state, blockEntity, dummyStack);
         }
         level.destroyBlock(blockPos, false);
