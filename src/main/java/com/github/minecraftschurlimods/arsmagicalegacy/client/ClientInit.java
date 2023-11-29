@@ -392,7 +392,7 @@ public final class ClientInit {
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
             ISpellPart part = pair.getFirst();
             List<ISpellModifier> modifiers = pair.getSecond();
-            int color = helper.getColor(modifiers, spell, p, 1, 0xff0000);
+            int color = helper.getColor(modifiers, spell, p, 1, spell.primaryAffinity().color());
             if (part == AMSpellParts.BEAM.get()) {
                 HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
                 if (hitResult.getType() == HitResult.Type.MISS) continue;

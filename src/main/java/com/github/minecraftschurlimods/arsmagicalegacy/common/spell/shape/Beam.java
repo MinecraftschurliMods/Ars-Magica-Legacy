@@ -37,8 +37,4 @@ public class Beam extends AbstractShape {
     public boolean needsToComeFirst() {
         return true;
     }
-
-    public static int getBeamColor(ISpell spell, List<ISpellModifier> modifiers) {
-        return spell.primaryAffinity().color(); //TODO color modifier
-    }
 }
