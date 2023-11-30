@@ -708,6 +708,7 @@ public final class SpellParticleSpawners {
     private static void blizzard(Blizzard blizzard) {
         float radius = blizzard.getRadius();
         RandomSource random = blizzard.getLevel().getRandom();
+        int color = blizzard.getColor();
         AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), blizzard.getX(), blizzard.getY() + 10, blizzard.getZ(), ParticleTypes.SNOWFLAKE).forEach(particle -> {
             particle.setAlpha(0.6f);
             particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2 - 0.1);
@@ -715,13 +716,16 @@ public final class SpellParticleSpawners {
             particle.setGravity(1);
             particle.scale(0.1f);
             particle.addRandomOffset(radius * 2, 1, radius * 2);
-            //TODO color modifier
+            if (color != -1) {
+                particle.setColor(color);
+            }
         });
     }
 
     private static void fallingStar(FallingStar fallingStar) {
         ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
         RandomSource random = level.getRandom();
+        int color = fallingStar.getColor();
         if (fallingStar.hasImpacted()) {
             float damage = fallingStar.getDamage();
             float radius = fallingStar.getRadius();
@@ -730,9 +734,12 @@ public final class SpellParticleSpawners {
                 Vec3 speed = Vec3.directionFromRotation(0, i / 24f / damage * 360f).normalize();
                 AMParticle particle = particle(hit, AMParticleTypes.EMBER.get(), -1, (int) (damage * radius));
                 particle.setSpeed(speed.x * 0.5, speed.y * 0.5, speed.z * 0.5);
-                //TODO color modifier
-                float color = random.nextFloat();
-                particle.setColor(color * 0.24f, color * 0.58f, color * 0.71f);
+                if (color == -1) {
+                    float f = random.nextFloat();
+                    particle.setColor(f * 0.24f, f * 0.58f, f * 0.71f);
+                } else {
+                    particle.setColor(color);
+                }
                 particle.addRandomOffset(0.5, 0.5, 0.5);
             }
         } else {
@@ -740,9 +747,12 @@ public final class SpellParticleSpawners {
             for (float i = 0; i < Math.abs(movement.y); i++) {
                 AMParticle particle = new AMParticle(level, fallingStar.getX() + movement.x * i, fallingStar.getY() + movement.y * i, fallingStar.getZ() + movement.z * i, AMParticleTypes.EMBER.get());
                 particle.setLifetime(5);
-                //TODO color modifier
-                float color = random.nextFloat();
-                particle.setColor(color * 0.24f, color * 0.58f, color * 0.71f);
+                if (color == -1) {
+                    float f = random.nextFloat();
+                    particle.setColor(f * 0.24f, f * 0.58f, f * 0.71f);
+                } else {
+                    particle.setColor(color);
+                }
                 particle.addController(new ChangeSizeController(particle, 0.5f, 0.05f, 20));
             }
         }
@@ -751,12 +761,15 @@ public final class SpellParticleSpawners {
     private static void fireRain(FireRain fireRain) {
         float radius = fireRain.getRadius();
         RandomSource random = fireRain.getLevel().getRandom();
+        int color = fireRain.getColor();
         AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), fireRain.getX(), fireRain.getY() + 10, fireRain.getZ(), AMParticleTypes.EXPLOSION.get()).forEach(particle -> {
             particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2 - 0.1);
             particle.setLifetime(40);
             particle.setGravity(1);
             particle.addRandomOffset(radius * 2, 1, radius * 2);
-            //TODO color modifier
+            if (color != -1) {
+                particle.setColor(color);
+            }
         });
     }
 
@@ -777,15 +790,18 @@ public final class SpellParticleSpawners {
     }
 
     private static void projectile(Projectile projectile) {
+        int color = projectile.getColor();
         AMParticle particle = particle(new EntityHitResult(projectile), Objects.requireNonNull(projectile.getSpell().primaryAffinity().getParticle()), -1, 5);
         particle.scale(0.05f);
         particle.addController(new FloatUpwardController(particle, 0.05, 0));
         particle.addController(new FadeOutController(particle, 0.2f));
         particle.addRandomOffset(0.1, 0.1, 0.1);
-        //TODO color modifier
+        if (color != -1) {
+            particle.setColor(color);
+        }
     }
 
-    private static void wallOrWave(ISpell spell, RandomSource random, Vec3 position, float radius, float rotation) {
+    private static void wallOrWave(ISpell spell, RandomSource random, Vec3 position, float radius, float rotation, int color) {
         ClientLevel level = (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel());
         ParticleOptions options = Objects.requireNonNull(spell.primaryAffinity().getParticle());
         double posX = position.x, posY = position.y, posZ = position.z;
@@ -813,7 +829,9 @@ public final class SpellParticleSpawners {
                             particle.scale(0.15f);
                             particle.addController(new FloatUpwardController(particle, 0, 0.07));
                             particle.addRandomOffset(1, 1, 1);
-                            //TODO color modifier
+                            if (color != -1) {
+                                particle.setColor(color);
+                            }
                         }
                     }
                 }
@@ -822,11 +840,11 @@ public final class SpellParticleSpawners {
     }
 
     private static void wall(Wall wall) {
-        wallOrWave(wall.getSpell(), wall.level.getRandom(), wall.position(), wall.getRadius(), wall.getYRot());
+        wallOrWave(wall.getSpell(), wall.level.getRandom(), wall.position(), wall.getRadius(), wall.getYRot(), wall.getColor());
     }
 
     private static void wave(Wave wave) {
-        wallOrWave(wave.getSpell(), wave.level.getRandom(), wave.position(), wave.getRadius(), wave.getYRot());
+        wallOrWave(wave.getSpell(), wave.level.getRandom(), wave.position(), wave.getRadius(), wave.getYRot(), wave.getColor());
     }
 
     private static void zone(Zone zone) {
@@ -835,6 +853,7 @@ public final class SpellParticleSpawners {
         Vec3 position = zone.position();
         double x = position.x, y = zone.getEyeY(), z = position.z;
         float radius = zone.getRadius();
+        int color = zone.getColor();
         for (int i = 0; i < 30; i++) {
             AMParticle particle = new AMParticle(level, x, y, z, options);
             particle.setNoGravity();
@@ -842,7 +861,9 @@ public final class SpellParticleSpawners {
             particle.scale(0.15f);
             particle.addController(new FloatUpwardController(particle, 0, 0.07));
             particle.addRandomOffset(radius, 1, radius);
-            //TODO color modifier
+            if (color != -1) {
+                particle.setColor(color);
+            }
         }
     }
     //endregion

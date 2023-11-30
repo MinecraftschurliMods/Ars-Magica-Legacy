@@ -22,6 +22,7 @@ import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class Wall extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
@@ -34,6 +35,7 @@ public class Wall extends AbstractSpellEntity {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
@@ -44,6 +46,7 @@ public class Wall extends AbstractSpellEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -54,6 +57,7 @@ public class Wall extends AbstractSpellEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -93,6 +97,15 @@ public class Wall extends AbstractSpellEntity {
         if (tickCount > 0) {
             ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 
     @Override

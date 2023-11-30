@@ -27,6 +27,8 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
 
     public abstract int getDuration();
 
+    public abstract int getColor();
+
     @Nullable
     @Override
     public UUID getOwnerUUID() {

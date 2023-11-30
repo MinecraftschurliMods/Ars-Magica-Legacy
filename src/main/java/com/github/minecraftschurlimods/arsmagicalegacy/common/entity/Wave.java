@@ -27,6 +27,7 @@ import java.util.List;
 
 public class Wave extends AbstractSpellEntity {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wave.class, EntityDataSerializers.INT);
@@ -42,6 +43,7 @@ public class Wave extends AbstractSpellEntity {
     @Override
     protected void defineSynchedData() {
         entityData.define(TARGET_NON_SOLID, false);
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
@@ -55,6 +57,7 @@ public class Wave extends AbstractSpellEntity {
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -68,6 +71,7 @@ public class Wave extends AbstractSpellEntity {
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -111,6 +115,15 @@ public class Wave extends AbstractSpellEntity {
 
     public void setTargetNonSolid() {
         entityData.set(TARGET_NON_SOLID, true);
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 
     @Override

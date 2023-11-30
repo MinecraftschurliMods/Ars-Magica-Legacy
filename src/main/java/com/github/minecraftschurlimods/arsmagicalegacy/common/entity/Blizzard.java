@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class Blizzard extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Blizzard.class, EntityDataSerializers.FLOAT);
@@ -28,6 +29,7 @@ public class Blizzard extends AbstractSpellEntity {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(OWNER, 0);
         entityData.define(DAMAGE, 0f);
@@ -37,6 +39,7 @@ public class Blizzard extends AbstractSpellEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(DAMAGE, tag.getFloat("Damage"));
@@ -46,6 +49,7 @@ public class Blizzard extends AbstractSpellEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Damage", entityData.get(DAMAGE));
@@ -100,5 +104,14 @@ public class Blizzard extends AbstractSpellEntity {
 
     public void setRadius(float radius) {
         entityData.set(RADIUS, radius);
+    }
+
+    @Override
+    public int getColor() {
+        return entityData.get(COLOR);
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 }

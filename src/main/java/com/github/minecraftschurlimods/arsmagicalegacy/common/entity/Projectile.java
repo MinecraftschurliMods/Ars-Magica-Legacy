@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 public class Projectile extends AbstractSpellEntity {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BOUNCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PIERCES = SynchedEntityData.defineId(Projectile.class, EntityDataSerializers.INT);
@@ -42,6 +43,7 @@ public class Projectile extends AbstractSpellEntity {
     protected void defineSynchedData() {
         entityData.define(TARGET_NON_SOLID, false);
         entityData.define(BOUNCES, 0);
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(PIERCES, 0);
@@ -56,6 +58,7 @@ public class Projectile extends AbstractSpellEntity {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
         entityData.set(BOUNCES, tag.getInt("Bounces"));
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(PIERCES, tag.getInt("Pierces"));
@@ -70,6 +73,7 @@ public class Projectile extends AbstractSpellEntity {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
         tag.putInt("Bounces", entityData.get(BOUNCES));
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Pierces", entityData.get(PIERCES));
@@ -146,6 +150,15 @@ public class Projectile extends AbstractSpellEntity {
 
     public void setBounces(int bounces) {
         entityData.set(BOUNCES, bounces);
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 
     @Override

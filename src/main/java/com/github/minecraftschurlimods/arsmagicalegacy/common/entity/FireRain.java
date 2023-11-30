@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class FireRain extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.FLOAT);
@@ -26,6 +27,7 @@ public class FireRain extends AbstractSpellEntity {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(OWNER, 0);
         entityData.define(DAMAGE, 0f);
@@ -35,6 +37,7 @@ public class FireRain extends AbstractSpellEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(DAMAGE, tag.getFloat("Damage"));
@@ -44,6 +47,7 @@ public class FireRain extends AbstractSpellEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Damage", entityData.get(DAMAGE));
@@ -97,5 +101,14 @@ public class FireRain extends AbstractSpellEntity {
 
     public void setRadius(float radius) {
         entityData.set(RADIUS, radius);
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 }

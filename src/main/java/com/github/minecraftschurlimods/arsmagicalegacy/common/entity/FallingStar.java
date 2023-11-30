@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FallingStar extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
@@ -36,6 +37,7 @@ public class FallingStar extends AbstractSpellEntity {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(OWNER, 0);
         entityData.define(DAMAGE, 10f);
         entityData.define(RADIUS, 6f);
@@ -44,6 +46,7 @@ public class FallingStar extends AbstractSpellEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(DAMAGE, tag.getFloat("Damage"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
@@ -52,6 +55,7 @@ public class FallingStar extends AbstractSpellEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Damage", entityData.get(DAMAGE));
         tag.putFloat("Radius", entityData.get(RADIUS));
@@ -125,5 +129,14 @@ public class FallingStar extends AbstractSpellEntity {
 
     public boolean hasImpacted() {
         return timeSinceImpact > -1;
+    }
+
+    @Override
+    public int getColor() {
+        return entityData.get(COLOR);
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 }
