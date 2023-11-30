@@ -271,7 +271,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     }
     
     private int findIndexOfModified(List<SpellPartDraggable> parts, int modifierIndex) {
-        for (int i = parts.size() - 1 - modifierIndex; i >= 0; i--) {
+        for (int i = modifierIndex; i >= 0; i--) {
             SpellPartDraggable part = parts.get(i);
             if (part.getPart().getType() != ISpellPart.SpellPartType.MODIFIER) {
                 return i;

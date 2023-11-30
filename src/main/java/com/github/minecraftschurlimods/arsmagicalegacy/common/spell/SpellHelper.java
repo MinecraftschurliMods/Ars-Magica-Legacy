@@ -233,13 +233,13 @@ public final class SpellHelper implements ISpellHelper {
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index, -1)), level, new BlockPos(target.getLocation()), 64);
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index + 1, -1)), level, new BlockPos(target.getLocation()), 64);
                     }
                 }
                 if (target instanceof BlockHitResult blockHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index, -1)), level, new BlockPos(target.getLocation()), 64);
+                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)), level, new BlockPos(target.getLocation()), 64);
                     }
                 }
                 return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);
