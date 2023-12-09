@@ -7,8 +7,8 @@ import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
     private final List<ShapeGroupArea> shapeGroups;
@@ -119,5 +119,9 @@ public class ShapeGroupListArea extends DragTargetArea<SpellPartDraggable> {
                 area.setLockState(ShapeGroupArea.LockState.ALL);
             }
         }
+    }
+
+    public List<ShapeGroupArea> getShapeGroups() {
+        return Collections.unmodifiableList(shapeGroups);
     }
 }
