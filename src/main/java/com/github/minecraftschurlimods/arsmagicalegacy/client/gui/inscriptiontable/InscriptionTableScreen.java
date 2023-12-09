@@ -73,8 +73,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }));
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
-        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> {});
-        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this, (part, i,j ) -> {});
+        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> onPartClicked(part, InputConstants.MOUSE_BUTTON_RIGHT));
+        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this, (part, i, j) -> onPartClicked(part, InputConstants.MOUSE_BUTTON_RIGHT));
         searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 140, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
         nameBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 93, 140, 12, 64, nameBar, font, NAME_LABEL));
@@ -127,7 +127,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         if (hoveredElement == null) {
             return super.mouseClicked(pMouseX, pMouseY, pButton);
         }
-        onPartClicked(hoveredElement);
+        onPartClicked(hoveredElement, pButton);
         return true;
     }
 
@@ -255,9 +255,9 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         menu.sendDataToServer(nameBar.getValue().equals(NAME_LABEL.getString()) ? null : Component.literal(nameBar.getValue()), spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData(), compileAdditionalData());
     }
 
-    private void onPartClicked(SpellPartDraggable part) {
+    private void onPartClicked(SpellPartDraggable part, int button) {
         ISpellPart spellPart = part.getPart();
-        if (spellPart == AMSpellParts.COLOR.get()) {
+        if (spellPart == AMSpellParts.COLOR.get() && minecraft.options.keyUse.isActiveAndMatches(InputConstants.Type.MOUSE.getOrCreate(button))) {
             SpellPartDraggable.Key<Integer> colorKey = SpellPartDraggable.Key.get("color");
             ColorPickerScreen colorPicker = new ColorPickerScreen(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_TITLE), part.getData(colorKey, 0xffffff), true, color -> part.setData(colorKey, color));
             getMinecraft().pushGuiLayer(colorPicker);
