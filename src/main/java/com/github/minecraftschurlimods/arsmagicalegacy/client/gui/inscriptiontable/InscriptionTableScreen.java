@@ -25,6 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             }));
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
-        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> onPartClicked(part, InputConstants.MOUSE_BUTTON_RIGHT));
-        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this, (part, i, j) -> onPartClicked(part, InputConstants.MOUSE_BUTTON_RIGHT));
+        spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> onPartDropped(part));
+        shapeGroupArea = new ShapeGroupListArea(leftPos + 20, topPos + 107, this, (part, i, j) -> onPartDropped(part));
         searchBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 59, 140, 12, 64, searchBar, font, SEARCH_LABEL));
         searchBar.setResponder(e -> sourceArea.setNameFilter(e.equals(SEARCH_LABEL.getString()) ? "" : e));
         nameBar = addRenderableWidget(new SelfClearingEditBox(leftPos + 40, topPos + 93, 140, 12, 64, nameBar, font, NAME_LABEL));
@@ -127,8 +128,7 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         if (hoveredElement == null) {
             return super.mouseClicked(pMouseX, pMouseY, pButton);
         }
-        onPartClicked(hoveredElement, pButton);
-        return true;
+        return onPartClicked(hoveredElement, pButton);
     }
 
     @Override
@@ -255,13 +255,26 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         menu.sendDataToServer(nameBar.getValue().equals(NAME_LABEL.getString()) ? null : Component.literal(nameBar.getValue()), spellGrammarArea.getAll().stream().map(e -> e.getPart().getId()).toList(), shapeGroupArea.getShapeGroupData(), compileAdditionalData());
     }
 
-    private void onPartClicked(SpellPartDraggable part, int button) {
+    private boolean onPartClicked(SpellPartDraggable part, int button) {
         ISpellPart spellPart = part.getPart();
-        if (spellPart == AMSpellParts.COLOR.get() && minecraft.options.keyUse.isActiveAndMatches(InputConstants.Type.MOUSE.getOrCreate(button))) {
-            SpellPartDraggable.Key<Integer> colorKey = SpellPartDraggable.Key.get("color");
-            ColorPickerScreen colorPicker = new ColorPickerScreen(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_TITLE), part.getData(colorKey, 0xffffff), true, color -> part.setData(colorKey, color));
-            getMinecraft().pushGuiLayer(colorPicker);
+        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT && spellPart == AMSpellParts.COLOR.get()) {
+            openColorPicker(part);
+            return true;
         }
+        return false;
+    }
+
+    private void onPartDropped(SpellPartDraggable part) {
+        ISpellPart spellPart = part.getPart();
+        if (spellPart == AMSpellParts.COLOR.get()) {
+            openColorPicker(part);
+        }
+    }
+
+    private void openColorPicker(SpellPartDraggable part) {
+        SpellPartDraggable.Key<Integer> colorKey = SpellPartDraggable.Key.get("color");
+        ColorPickerScreen colorPicker = new ColorPickerScreen(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_TITLE), part.getData(colorKey, 0xffffff), true, color -> part.setData(colorKey, color));
+        getMinecraft().pushGuiLayer(colorPicker);
     }
 
     private CompoundTag compileAdditionalData() {
