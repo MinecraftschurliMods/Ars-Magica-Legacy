@@ -4,36 +4,31 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zone extends Entity implements ItemSupplier {
+public class Zone extends AbstractSpellEntity {
     private static final EntityDataAccessor<Boolean> TARGET_NON_SOLID = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Zone.class, EntityDataSerializers.INT);
@@ -49,6 +44,7 @@ public class Zone extends Entity implements ItemSupplier {
     @Override
     protected void defineSynchedData() {
         entityData.define(TARGET_NON_SOLID, false);
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
@@ -61,6 +57,7 @@ public class Zone extends Entity implements ItemSupplier {
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         entityData.set(TARGET_NON_SOLID, tag.getBoolean("TargetNonSolid"));
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -73,6 +70,7 @@ public class Zone extends Entity implements ItemSupplier {
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
         tag.putBoolean("TargetNonSolid", entityData.get(TARGET_NON_SOLID));
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -82,61 +80,30 @@ public class Zone extends Entity implements ItemSupplier {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
     public void tick() {
-        if (tickCount > getDuration() || getOwner() == null) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
+        super.tick();
         setPos(getX(), getY() - getGravity(), getZ());
-        for (int i = 0; i < 8; ++i) {
-            level.addParticle(ParticleTypes.PORTAL, getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), (random.nextDouble() - 0.5D) * 2D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2D);
-        }
-        if (level.isClientSide()) return;
-        if (tickCount % 10 == 0) {
-            List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY(), getZ() - getRadius(), getX() + getRadius(), getY() + getBbHeight(), getZ() + getRadius()));
-            for (Entity entity : list) {
-                if (entity == this) continue;
-                if (entity instanceof PartEntity) {
-                    entity = ((PartEntity<?>) entity).getParent();
-                }
-                if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, new EntityHitResult(entity), tickCount, getIndex(), true);
-                }
-            }
-        }
+        if (level.isClientSide() || tickCount % 5 != 0) return;
+        LivingEntity owner = getOwner();
+        int index = getIndex();
+        float radius = getRadius();
+        ISpell spell = getSpell();
+        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
         List<Vec3> list = new ArrayList<>();
-        for (int x = (int) Math.rint(-getRadius()); x <= (int) Math.rint(getRadius()); x++) {
+        for (int x = (int) Math.rint(-radius); x <= (int) Math.rint(radius); x++) {
             for (int y = (int) Math.rint(-getBbHeight()); y <= (int) Math.rint(getBbHeight()); y++) {
-                for (int z = (int) Math.rint(-getRadius()); z <= (int) Math.rint(getRadius()); z++) {
+                for (int z = (int) Math.rint(-radius); z <= (int) Math.rint(radius); z++) {
                     list.add(new Vec3(getX() + x, getY() + y, getZ() + z));
                 }
             }
         }
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, result, tickCount, getIndex(), true);
+            ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
         }
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+        }
     }
 
     public boolean getTargetNonSolid() {
@@ -147,6 +114,16 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.set(TARGET_NON_SOLID, true);
     }
 
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
+    }
+
+    @Override
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -163,12 +140,14 @@ public class Zone extends Entity implements ItemSupplier {
         entityData.set(INDEX, index);
     }
 
+    @Override
     @Nullable
     public LivingEntity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
     }

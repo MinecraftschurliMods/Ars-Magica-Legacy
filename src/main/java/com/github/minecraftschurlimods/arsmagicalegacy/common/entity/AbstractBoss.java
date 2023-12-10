@@ -131,11 +131,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public float getStepHeight() {
         return 1.02f;
     }

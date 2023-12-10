@@ -25,6 +25,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Collection;
@@ -34,11 +35,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
     private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final KnowledgeHolder EMPTY = new KnowledgeHolder(Set.of(), Map.of());
 
     private SkillHelper() {}
 
@@ -62,126 +65,154 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public boolean knows(Player player, ResourceLocation skill) {
-        return getKnowledgeHolder(player).knows(skill);
+        return getKnowledgeHolder(player).orElse(EMPTY).knows(skill);
     }
 
     @Override
     public boolean knows(Player player, Skill skill, RegistryAccess registryAccess) {
-        return getKnowledgeHolder(player).knows(skill, registryAccess);
+        return getKnowledgeHolder(player).orElse(EMPTY).knows(skill, registryAccess);
     }
 
     @Override
     public boolean canLearn(Player player, ResourceLocation skill, RegistryAccess registryAccess) {
-        return getKnowledgeHolder(player).canLearn(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).getOptional(skill).orElseThrow());
+        return getKnowledgeHolder(player).orElse(EMPTY).canLearn(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).getOptional(skill).orElseThrow());
     }
 
     @Override
     public boolean canLearn(Player player, Skill skill) {
-        return getKnowledgeHolder(player).canLearn(skill);
+        return getKnowledgeHolder(player).orElse(EMPTY).canLearn(skill);
     }
 
     @Override
     public void learn(Player player, ResourceLocation skill) {
-        getKnowledgeHolder(player).learn(skill);
-        if (player instanceof ServerPlayer serverPlayer) {
-            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill);
-        }
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.learn(skill);
+            if (player instanceof ServerPlayer serverPlayer) {
+                AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill);
+            }
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void learn(Player player, Skill skill, RegistryAccess registryAccess) {
-        getKnowledgeHolder(player).learn(skill, registryAccess);
-        if (player instanceof ServerPlayer serverPlayer) {
-            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill.getId(registryAccess));
-        }
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.learn(skill, registryAccess);
+            if (player instanceof ServerPlayer serverPlayer) {
+                AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill.getId(registryAccess));
+            }
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void forget(Player player, ResourceLocation skill) {
-        getKnowledgeHolder(player).forget(skill);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.forget(skill);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void forget(Player player, Skill skill, RegistryAccess registryAccess) {
-        getKnowledgeHolder(player).forget(skill, registryAccess);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.forget(skill, registryAccess);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void learnAll(Player player, RegistryAccess registryAccess) {
-        getKnowledgeHolder(player).learnAll(registryAccess);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.learnAll(registryAccess);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void forgetAll(Player player) {
-        getKnowledgeHolder(player).forgetAll();
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.forgetAll();
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public int getSkillPoint(Player player, ResourceLocation point) {
-        return getKnowledgeHolder(player).getSkillPoint(point);
+        return getKnowledgeHolder(player).orElse(EMPTY).getSkillPoint(point);
     }
 
     @Override
     public int getSkillPoint(Player player, SkillPoint point) {
-        return getKnowledgeHolder(player).getSkillPoint(point);
+        return getKnowledgeHolder(player).orElse(EMPTY).getSkillPoint(point);
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.addSkillPoint(skillPoint, amount);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void addSkillPoint(Player player, SkillPoint skillPoint, int amount) {
-        getKnowledgeHolder(player).addSkillPoint(skillPoint, amount);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.addSkillPoint(skillPoint, amount);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint) {
-        getKnowledgeHolder(player).addSkillPoint(skillPoint);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.addSkillPoint(skillPoint);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public void addSkillPoint(Player player, SkillPoint skillPoint) {
-        getKnowledgeHolder(player).addSkillPoint(skillPoint);
-        syncToPlayer(player);
+        runIfPresent(player, holder -> {
+            holder.addSkillPoint(skillPoint);
+            syncToPlayer(player);
+        });
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
-        syncToPlayer(player);
-        return success;
+        runIfPresent(player, holder -> {
+            holder.consumeSkillPoint(skillPoint, amount);
+            syncToPlayer(player);
+        });
+        return true;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount) {
-        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint, amount);
-        syncToPlayer(player);
-        return success;
+        runIfPresent(player, holder -> {
+            holder.consumeSkillPoint(skillPoint, amount);
+            syncToPlayer(player);
+        });
+        return true;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint) {
-        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
-        syncToPlayer(player);
-        return success;
+        runIfPresent(player, holder -> {
+            holder.consumeSkillPoint(skillPoint);
+            syncToPlayer(player);
+        });
+        return true;
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, SkillPoint skillPoint) {
-        boolean success = getKnowledgeHolder(player).consumeSkillPoint(skillPoint);
-        syncToPlayer(player);
-        return success;
+        runIfPresent(player, holder -> {
+            holder.consumeSkillPoint(skillPoint);
+            syncToPlayer(player);
+        });
+        return true;
     }
 
     @Override
@@ -214,7 +245,7 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public Collection<ResourceLocation> getKnownSkills(Player player) {
-        return getKnowledgeHolder(player).skills();
+        return getKnowledgeHolder(player).orElse(EMPTY).skills();
     }
 
     /**
@@ -234,14 +265,23 @@ public final class SkillHelper implements ISkillHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        if (player.getGameProfile().getName().equals("test-mock-player")) {
-            return;
-        }
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(getKnowledgeHolder(player)), player);
+        if (player.getGameProfile().getName().equals("test-mock-player")) return;
+        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(holder), player));
     }
 
-    private KnowledgeHolder getKnowledgeHolder(Player player) {
-        return player.getCapability(KNOWLEDGE).orElseThrow(() -> new RuntimeException("Could not retrieve skill capability for player %s{%s}".formatted(player.getDisplayName().getString(), player.getUUID())));
+    private void runIfPresent(Player player, Consumer<KnowledgeHolder> consumer) {
+        getKnowledgeHolder(player).ifPresent(consumer::accept);
+    }
+
+    private LazyOptional<KnowledgeHolder> getKnowledgeHolder(Player player) {
+        if (player.isDeadOrDying()) {
+            player.reviveCaps();
+        }
+        LazyOptional<KnowledgeHolder> knowledgeHolder = player.getCapability(KNOWLEDGE);
+        if (player.isDeadOrDying()) {
+            player.invalidateCaps();
+        }
+        return knowledgeHolder;
     }
 
     public static final class SkillSyncPacket extends CodecPacket<KnowledgeHolder> {

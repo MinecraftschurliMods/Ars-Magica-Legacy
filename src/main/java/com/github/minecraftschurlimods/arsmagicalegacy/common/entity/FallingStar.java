@@ -1,14 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
-import com.mojang.math.Vector3f;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,8 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -27,11 +22,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FallingStar extends Entity implements ItemSupplier {
+public class FallingStar extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(FallingStar.class, EntityDataSerializers.FLOAT);
-    private static final ParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(0.24f, 0.24f, 0.8f), 1);
     private final DamageSource damageSource = AMDamageSources.fallingStar(this);
     private final Set<LivingEntity> damaged = new HashSet<>();
     private int timeSinceImpact = -1;
@@ -42,6 +37,7 @@ public class FallingStar extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(OWNER, 0);
         entityData.define(DAMAGE, 10f);
         entityData.define(RADIUS, 6f);
@@ -50,6 +46,7 @@ public class FallingStar extends Entity implements ItemSupplier {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(DAMAGE, tag.getFloat("Damage"));
         entityData.set(RADIUS, tag.getFloat("Radius"));
@@ -58,25 +55,10 @@ public class FallingStar extends Entity implements ItemSupplier {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Damage", entityData.get(DAMAGE));
         tag.putFloat("Radius", entityData.get(RADIUS));
-    }
-
-    @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
     }
 
     @Override
@@ -85,8 +67,8 @@ public class FallingStar extends Entity implements ItemSupplier {
         if (timeSinceImpact == -1) {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
-            for (int i = 0; i < 8; i++) {
-                level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10, position().y() + (i - 4) * Math.abs(getDeltaMovement().y()) / 8f, position().z() + random.nextDouble() / 10, 0, -0.1, 0);
+            if (!level.isClientSide() && tickCount > 0) {
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
             }
             HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level, 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
@@ -97,37 +79,36 @@ public class FallingStar extends Entity implements ItemSupplier {
                 }
                 moveTo(vec);
             }
-            timeSinceImpact = 0;
         }
         timeSinceImpact++;
-        double scaledTimeSinceImpact = timeSinceImpact / 10d;
-        for (int i = 0; i < getDamage() * 24; i++) {
-            Vec3 offset = Vec3.directionFromRotation(0, i / 24f / getDamage() * 360f).multiply(scaledTimeSinceImpact, scaledTimeSinceImpact, scaledTimeSinceImpact);
-            level.addParticle(PARTICLE, position().x() + random.nextDouble() / 10 + offset.x(), position().y() + 1.5 - random.nextDouble() * 2, position().z() + random.nextDouble() / 10 + offset.z(), 0, 0, 0);
+        if (!level.isClientSide() && timeSinceImpact < 2) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
-        for (Entity e : level.getEntities(this, getBoundingBox().inflate(scaledTimeSinceImpact, 1, scaledTimeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
+        for (Entity e : level.getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;
             e.hurt(damageSource, getDamage());
             damaged.add((LivingEntity) e);
         }
-        if (timeSinceImpact > getRadius() * 10) {
+        if (timeSinceImpact > getRadius()) {
             kill();
         }
     }
 
     @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
-    }
-
     @Nullable
-    public LivingEntity getOwner() {
+    public Entity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
+    }
+
+    @Override
+    public int getDuration() {
+        return Integer.MAX_VALUE;
     }
 
     public float getDamage() {
@@ -144,5 +125,18 @@ public class FallingStar extends Entity implements ItemSupplier {
 
     public void setRadius(float radius) {
         entityData.set(RADIUS, radius);
+    }
+
+    public boolean hasImpacted() {
+        return timeSinceImpact > -1;
+    }
+
+    @Override
+    public int getColor() {
+        return entityData.get(COLOR);
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 }

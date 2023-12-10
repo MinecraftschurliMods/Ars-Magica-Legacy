@@ -1,11 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,16 +11,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class FireRain extends Entity implements ItemSupplier {
+public class FireRain extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FireRain.class, EntityDataSerializers.FLOAT);
@@ -34,6 +27,7 @@ public class FireRain extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(OWNER, 0);
         entityData.define(DAMAGE, 0f);
@@ -43,6 +37,7 @@ public class FireRain extends Entity implements ItemSupplier {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(OWNER, tag.getInt("Owner"));
         entityData.set(DAMAGE, tag.getFloat("Damage"));
@@ -52,6 +47,7 @@ public class FireRain extends Entity implements ItemSupplier {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Owner", entityData.get(OWNER));
         tag.putFloat("Damage", entityData.get(DAMAGE));
@@ -59,51 +55,19 @@ public class FireRain extends Entity implements ItemSupplier {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
     public void tick() {
-        if (tickCount > getDuration()) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
-        for (int i = 0; i < 20 * getRadius(); ++i) {
-            level.addParticle(ParticleTypes.FLAME, getRandomX(getRadius() * 2), getY() + (2d * random.nextDouble() - 1d) * getRadius() / 2, getRandomZ(getRadius() * 2), 0, 0, 0);
-        }
-        if (level.isClientSide()) return;
-        if (tickCount % 5 == 0) {
-            List<Entity> list = level.getEntities(this, new AABB(getX() - getRadius(), getY() - getRadius(), getZ() - getRadius(), getX() + getRadius(), getY() + getRadius(), getZ() + getRadius()));
-            for (Entity entity : list) {
-                if (entity == this || entity == getOwner()) continue;
-                if (entity instanceof PartEntity) {
-                    entity = ((PartEntity<?>) entity).getParent();
-                }
-                if (entity instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get())) {
-                    living.hurt(DamageSource.IN_FIRE, getDamage());
-                    living.setRemainingFireTicks(50);
-                }
-            }
+        super.tick();
+        if (level.isClientSide() || tickCount % 5 != 0) return;
+        forAllInRange(getRadius(), true,  e -> {
+            e.hurt(DamageSource.IN_FIRE, getDamage());
+            e.setRemainingFireTicks(50);
+        });
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
 
     @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
-    }
-
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -112,12 +76,13 @@ public class FireRain extends Entity implements ItemSupplier {
         entityData.set(DURATION, duration);
     }
 
+    @Override
     @Nullable
-    public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
-        return entity instanceof LivingEntity ? (LivingEntity) entity : null;
+    public Entity getOwner() {
+        return level.getEntity(entityData.get(OWNER));
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
     }
@@ -136,5 +101,14 @@ public class FireRain extends Entity implements ItemSupplier {
 
     public void setRadius(float radius) {
         entityData.set(RADIUS, radius);
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
     }
 }

@@ -303,7 +303,7 @@ public final class EventHandler {
 
     private static void affinityChangingPre(AffinityChangingEvent.Pre event) {
         if (ArsMagicaAPI.get().getSkillHelper().knows(event.getEntity(), AMTalents.AFFINITY_GAINS_BOOST)) {
-            event.shift *= 1.05;
+            event.shift *= 1.05f;
         }
     }
 
@@ -333,7 +333,7 @@ public final class EventHandler {
         if (!ArsMagicaAPI.get().getSkillHelper().knows(player, AMTalents.AUGMENTED_CASTING)) return;
         if (!(event.stat instanceof SpellPartStats sps)) return;
         switch (sps) {
-            case BOUNCE, DAMAGE, PIERCING, POWER -> event.modified += 1;
+            case DAMAGE, FORTUNE, PIERCING, POWER -> event.modified += 1;
             case DURATION, HEALING, RANGE, SPEED -> event.modified += event.base * 0.5f;
         }
     }

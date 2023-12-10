@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public interface ISpellComponent extends ISpellPart {
     /**
-     * Invoke this spell component for an entity.
+     * Invoke this spell component for an entity. Called only on the server.
      *
      * @param spell     The spell being cast.
      * @param caster    The caster of the spell.
@@ -29,7 +29,7 @@ public interface ISpellComponent extends ISpellPart {
     SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed);
 
     /**
-     * Invoke this spell component for a block.
+     * Invoke this spell component for a block. Called only on the server.
      *
      * @param spell     The spell being cast.
      * @param caster    The caster of the spell.

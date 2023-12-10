@@ -57,10 +57,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMWoodTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.particle.AMVanillaParticle;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
@@ -78,10 +80,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -102,6 +104,7 @@ import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -111,6 +114,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
@@ -128,6 +132,7 @@ public final class ClientInit {
         HUDManager.enableKeybind();
         modEventBus.addListener(ClientInit::clientSetup);
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
+        modEventBus.addListener(ClientInit::registerParticleProviders);
         modEventBus.addListener(ClientInit::modelRegister);
         modEventBus.addListener(ClientInit::modelBake);
         modEventBus.addListener(ClientInit::registerLayerDefinitions);
@@ -150,6 +155,7 @@ public final class ClientInit {
         CompatManager.clientInit(event);
         ItemBlockRenderTypes.setRenderLayer(AMFluids.LIQUID_ESSENCE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMFluids.FLOWING_LIQUID_ESSENCE.get(), RenderType.translucent());
+        SpellParticleSpawners.init();
     }
 
     private static void registerMenuScreens() {
@@ -171,6 +177,38 @@ public final class ClientInit {
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(SpellIconAtlas.instance());
         event.registerReloadListener(SkillIconAtlas.instance());
+    }
+
+    private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.register(AMParticleTypes.NONE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.FIRE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EARTH_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.AIR_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ICE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTNING_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.NATURE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIFE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ARCANE_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ENDER_HAND.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ARCANE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.CLOCK.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EMBER.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.EXPLOSION.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.GHOST.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LEAF.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LENS_FLARE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.LIGHTS.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.PLANT.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.PULSE.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ROCK.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.ROTATING_RINGS.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.STARDUST.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WATER_BALL.get(), AMVanillaParticle.Provider::new);
+        event.register(AMParticleTypes.WIND.get(), AMVanillaParticle.Provider::new);
+        for (Map.Entry<Integer, RegistryObject<SimpleParticleType>> symbol : AMParticleTypes.SYMBOLS.values().entrySet()) {
+            event.register(symbol.getValue().get(), AMVanillaParticle.Provider::new);
+        }
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {
@@ -226,7 +264,7 @@ public final class ClientInit {
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(AMEntities.PROJECTILE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WALL.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.WAVE.get(), EmptyRenderer::new);
         event.registerEntityRenderer(AMEntities.ZONE.get(), EmptyRenderer::new);
@@ -344,39 +382,32 @@ public final class ClientInit {
         for (Player p : level.players()) {
             if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
             InteractionHand hand = InteractionHand.MAIN_HAND;
-            ItemStack stack = getSpellInHand(p, hand);
+            ItemStack stack = helper.getSpellItemStackInHand(p, hand);
             if (!(stack.getItem() instanceof ISpellItem)) {
                 hand = InteractionHand.OFF_HAND;
-                stack = getSpellInHand(p, hand);
+                stack = helper.getSpellItemStackInHand(p, hand);
                 if (!(stack.getItem() instanceof ISpellItem)) continue;
             }
             ISpell spell = helper.getSpell(stack);
             Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
             ISpellPart part = pair.getFirst();
-            int color = helper.getColor(pair.getSecond(), spell, p, 1, 0xff0000);
+            List<ISpellModifier> modifiers = pair.getSecond();
+            int color = helper.getColor(modifiers, spell, p, 1, spell.primaryAffinity().color());
             if (part == AMSpellParts.BEAM.get()) {
-                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null, 1) > 0);
+                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
                 if (hitResult.getType() == HitResult.Type.MISS) continue;
                 BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
             } else if (part == AMSpellParts.CHAIN.get()) {
-                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, pair.getSecond(), spell, p, null, 1) > 0);
+                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
                 if (hitResult.getType() == HitResult.Type.MISS) continue;
                 BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
                 if (hitResult instanceof EntityHitResult ehr) {
-                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, pair.getSecond(), spell, p, ehr, 1), p);
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, p, ehr, 1), p);
                     for (int i = 0; i < list.size() - 1; i++) {
                         BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
                     }
                 }
             }
         }
-    }
-
-    private static ItemStack getSpellInHand(Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof SpellBookItem) {
-            stack = SpellBookItem.getSelectedSpell(stack);
-        }
-        return stack;
     }
 }

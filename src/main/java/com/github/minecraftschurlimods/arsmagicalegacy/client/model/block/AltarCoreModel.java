@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
+    private static final boolean IS_SODIUM_PRESENT = ModList.get().isLoaded("embeddium") || ModList.get().isLoaded("rubidium");
+
     public AltarCoreModel(BakedModel originalModel) {
         super(originalModel);
     }
@@ -30,7 +33,8 @@ public class AltarCoreModel extends BakedModelWrapper<BakedModel> {
             BlockState camoState = extraData.get(AltarCoreBlockEntity.CAMO_STATE);
             if (camoState != null) {
                 BakedModel blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(camoState);
-                if (!blockModel.getRenderTypes(state, rand, extraData).contains(renderType)) return super.getQuads(state, side, rand, extraData, renderType);
+                if (IS_SODIUM_PRESENT && !blockModel.getRenderTypes(state, rand, extraData).contains(renderType))
+                    return super.getQuads(state, side, rand, extraData, renderType);
                 List<BakedQuad> quads = new ArrayList<>(blockModel.getQuads(camoState, side, rand, ModelData.EMPTY, renderType));
                 quads.addAll(super.getQuads(state, side, rand, extraData, renderType));
                 return quads;

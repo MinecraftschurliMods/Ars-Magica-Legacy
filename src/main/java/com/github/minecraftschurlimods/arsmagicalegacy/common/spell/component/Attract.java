@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractSpellEntity;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +27,7 @@ public class Attract extends AbstractComponent {
         boolean success = false;
         for (Entity e : caster.level.getEntities(targetEntity, aabb)) {
             if (e == caster) continue;
+            if (e instanceof AbstractSpellEntity effect && effect.getOwner() != null && effect.getOwner().is(e)) continue;
             success = true;
             Vec3 vec = e.position();
             double distance = targetPos.distanceTo(vec) + 0.1;

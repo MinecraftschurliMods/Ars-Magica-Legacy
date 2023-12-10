@@ -114,7 +114,7 @@ public class ColorPickerScreen extends Screen {
             }
         }));
         addRenderableWidget(new Button(cX - 95, cY + 75, 50, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_CANCEL), b -> onClose()));
-        addRenderableWidget(new Button(cX + 10, cY + 75, 50, 20, Component.literal(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_DONE), b -> {
+        addRenderableWidget(new Button(cX + 10, cY + 75, 50, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_DONE), b -> {
             save();
             onClose();
         }));

@@ -131,6 +131,9 @@ class AMLootTableProvider extends LootTableProvider {
             add(AMBlocks.POTTED_WITCHWOOD_SAPLING.get(), p -> BlockLoot.createPotFlowerItemTable(AMBlocks.WITCHWOOD_SAPLING.get()));
             dropSelf(AMBlocks.VINTEUM_TORCH.get());
             dropSelf(AMBlocks.VINTEUM_WALL_TORCH.get());
+            dropSelf(AMBlocks.IRON_INLAY.get());
+            dropSelf(AMBlocks.REDSTONE_INLAY.get());
+            dropSelf(AMBlocks.GOLD_INLAY.get());
         }
 
         @Override

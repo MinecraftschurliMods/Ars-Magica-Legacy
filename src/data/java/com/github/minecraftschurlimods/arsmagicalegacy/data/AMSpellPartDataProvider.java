@@ -644,7 +644,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS)), 1))
                 .build();
         builder(AMSpellParts.COLOR, 1.0f)
-                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.SPELL_DYE.get()), 1))
+                .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CHIMERITE.get()), 1))
                 .build();
     }
 }

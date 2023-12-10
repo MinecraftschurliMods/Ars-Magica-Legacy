@@ -34,7 +34,7 @@ public class MeteoriteFeature extends Feature<MeteoriteConfiguration> {
             int z = random.nextInt(config.width());
             float f = (float) (x + y + z) * 0.333F + 0.5F;
             for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-x, -y, -z), origin.offset(x, y, z))) {
-                if (pos.distSqr(origin) <= f * (0.95 + AMUtil.nextDouble(random, 0.1))) {
+                if (pos.distSqr(origin) <= f * (0.95 + level.getRandom().nextDouble() * 0.1)) {
                     level.setBlock(pos, config.fluidState(), Block.UPDATE_CLIENTS);
                 } else if (pos.distSqr(origin) <= f * f) {
                     level.setBlock(pos, random.nextDouble() < config.rareChance() ? config.rareState() : config.baseState(), Block.UPDATE_CLIENTS);

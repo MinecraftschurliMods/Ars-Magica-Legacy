@@ -1,7 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
@@ -18,9 +17,7 @@ import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -46,6 +43,26 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 public final class AMUtil {
+    /**
+     * Calculates the point at the given delta value on the Bézier curve defined by the four given points.
+     *
+     * @param start    The start point for the Bézier curve.
+     * @param control1 The first control point for the Bézier curve.
+     * @param control2 The second control point for the Bézier curve.
+     * @param end      The end point for the Bézier curve.
+     * @param delta    The delta value of the calculation.
+     * @return The point at the given delta value on the Bézier curve defined by the four given points.
+     */
+    public static Vec3 bezier(Vec3 start, Vec3 control1, Vec3 control2, Vec3 end, double delta) {
+        delta = Mth.clamp(delta, 0, 1);
+        double invertedDelta = 1 - delta;
+        return Vec3.ZERO
+                .add(start.scale(invertedDelta * invertedDelta * invertedDelta))
+                .add(control1.scale(3 * invertedDelta * invertedDelta * delta))
+                .add(control2.scale(3 * invertedDelta * delta * delta))
+                .add(end.scale(delta * delta * delta));
+    }
+
     /**
      * @param view The view vector to which the resulting point is the closest.
      * @param a    The first coordinate of the line.
@@ -195,18 +212,6 @@ public final class AMUtil {
     }
 
     /**
-     * @param entity The entity to get this for.
-     * @return The item stack with the spell in the given entity's main hand or, if absent, in the given entity's offhand instead.
-     */
-    public static ItemStack getSpellStack(LivingEntity entity) {
-        ItemStack stack = entity.getMainHandItem();
-        var helper = ArsMagicaAPI.get().getSpellHelper();
-        if (helper.getSpell(stack) != ISpell.EMPTY) return stack;
-        stack = entity.getOffhandItem();
-        return helper.getSpell(stack) != ISpell.EMPTY ? stack : ItemStack.EMPTY;
-    }
-
-    /**
      * @param i1 The first ingredient to match.
      * @param i2 The second ingredient to match.
      * @return Whether the two ingredients' item stack lists match, ignoring item counts.
@@ -257,17 +262,18 @@ public final class AMUtil {
     }
 
     /**
-     * @param random The random to use.
-     * @param bound  The upper bound of the double to generate.
-     * @return A pseudo-randomly generated double between 0 and the given bound.
+     * @param value The value to wrap.
+     * @param max   The upper value to wrap around.
+     * @return The given value, wrapped between 0 and the max value.
      */
-    public static double nextDouble(RandomSource random, double bound) {
-        double r = random.nextDouble();
-        r = r * bound;
-        if (r >= bound) {
-            r = Double.longBitsToDouble(Double.doubleToLongBits(bound) - 1);
+    public static double wrap(double value, double max) {
+        while (value < 0) {
+            value += max;
         }
-        return r;
+        while (value >= max) {
+            value -= max;
+        }
+        return value;
     }
 
     /**

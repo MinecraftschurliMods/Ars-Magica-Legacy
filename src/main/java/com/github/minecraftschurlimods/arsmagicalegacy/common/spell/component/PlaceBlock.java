@@ -34,7 +34,7 @@ public class PlaceBlock extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, BlockHitResult target, int index, int ticksUsed) {
         if (!(caster instanceof Player player)) return SpellCastResult.EFFECT_FAILED;
-        ItemStack stack = AMUtil.getSpellStack(player);
+        ItemStack stack = ArsMagicaAPI.get().getSpellHelper().getSpellItemStackFromEntity(player);
         if (player.isShiftKeyDown()) {
             BlockState state = level.getBlockState(target.getBlockPos());
             if (!state.isAir() && state.getBlock().asItem() != Items.AIR) {

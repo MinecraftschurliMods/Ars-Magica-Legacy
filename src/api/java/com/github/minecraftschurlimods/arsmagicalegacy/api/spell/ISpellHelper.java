@@ -3,6 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -37,6 +39,26 @@ public interface ISpellHelper {
      * @return Whether the given spell is valid or not.
      */
     boolean isValidSpell(ISpell spell);
+
+    /**
+     * Returns the item stack containing the spell the given entity is currently using, taking spell books into consideration.
+     * Returns empty if the entity is not currently holding anything that can be interpreted as a spell.
+     * This is needed e.g. when using a spell's shift-right click action.
+     *
+     * @param entity The entity to get the spell item stack from.
+     * @return The item stack containing the spell the given entity is currently using.
+     */
+    ItemStack getSpellItemStackFromEntity(LivingEntity entity);
+
+    /**
+     * Returns the item stack the given entity is currently holding in the given hand if said stack is a spell, taking spell books into consideration.
+     * Returns empty if the stack is not actually anything that can be interpreted as a spell.
+     *
+     * @param entity The entity to get the spell item stack from.
+     * @param hand   The hand to get the spell item stack from.
+     * @return The spell item stack the given entity is currently holding in the given hand.
+     */
+    ItemStack getSpellItemStackInHand(LivingEntity entity, InteractionHand hand);
 
     /**
      * @param stack The stack to get the spell name for.
@@ -90,10 +112,29 @@ public interface ISpellHelper {
     void consumeReagents(LivingEntity entity, Collection<ItemFilter> reagents);
 
     /**
+     * Registers a spell particle spawner for a given component. This is only required on the client and may thus be left untouched on the server.
+     *
+     * @param component       The component to register a particle spawner for.
+     * @param particleSpawner The particle spawner to register.
+     */
+    void registerParticleSpawner(ISpellComponent component, ISpellParticleSpawner particleSpawner);
+
+    /**
+     * Spawns spell particles for the given component. This should only ever be called on the client!
+     *
+     * @param component The component to spawn spell particles for.
+     * @param spell     The spell that spawned the particles.
+     * @param caster    The entity that cast the spell.
+     * @param hit       The hit result to use.
+     * @param color     The color to use. May be -1, which indicates that no color should be used.
+     */
+    void spawnParticles(ISpellComponent component, ISpell spell, LivingEntity caster, HitResult hit, RandomSource random, int color);
+
+    /**
      * Performs a ray trace and returns the entity the given entity is currently looking at.
      *
-     * @param entity     The entity to start the ray trace from.
-     * @param range      The range of the ray trace.
+     * @param entity The entity to start the ray trace from.
+     * @param range  The range of the ray trace.
      * @return The entity the given entity is currently looking at, or null if no entity was found.
      */
     @Nullable

@@ -4,22 +4,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDataSerializers;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -27,7 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class Wall extends Entity implements ItemSupplier {
+public class Wall extends AbstractSpellEntity {
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(Wall.class, EntityDataSerializers.INT);
@@ -40,6 +35,7 @@ public class Wall extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(COLOR, -1);
         entityData.define(DURATION, 200);
         entityData.define(INDEX, 0);
         entityData.define(OWNER, 0);
@@ -50,6 +46,7 @@ public class Wall extends Entity implements ItemSupplier {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        entityData.set(COLOR, tag.getInt("Color"));
         entityData.set(DURATION, tag.getInt("Duration"));
         entityData.set(INDEX, tag.getInt("Index"));
         entityData.set(OWNER, tag.getInt("Owner"));
@@ -60,6 +57,7 @@ public class Wall extends Entity implements ItemSupplier {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         CompoundTag tag = pCompound.getCompound(ArsMagicaAPI.MOD_ID);
+        tag.putInt("Color", entityData.get(COLOR));
         tag.putInt("Duration", entityData.get(DURATION));
         tag.putInt("Index", entityData.get(INDEX));
         tag.putInt("Owner", entityData.get(OWNER));
@@ -68,70 +66,49 @@ public class Wall extends Entity implements ItemSupplier {
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        Entity entity = getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
     public void tick() {
-        if (tickCount > getDuration() || getOwner() == null) {
-            remove(RemovalReason.KILLED);
-            return;
-        }
-        Vec3 a = new Vec3(getX() - Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() - Math.sin(Math.toRadians(getYRot())) * getRadius());
-        Vec3 b = new Vec3(getX() + Math.cos(Math.toRadians(getYRot())) * getRadius(), getY(), getZ() + Math.sin(Math.toRadians(getYRot())) * getRadius());
-        double minX = getX() - getRadius();
+        super.tick();
+        if (level.isClientSide() || tickCount % 5 != 0) return;
+        LivingEntity owner = getOwner();
+        int index = getIndex();
+        float radius = getRadius();
+        ISpell spell = getSpell();
+        double cos = Math.cos(Math.toRadians(getYRot())) * radius;
+        double sin = Math.sin(Math.toRadians(getYRot())) * radius;
+        Vec3 a = new Vec3(getX() - cos, getY(), getZ() - sin);
+        Vec3 b = new Vec3(getX() + cos, getY(), getZ() + sin);
+        double minX = getX() - radius;
         double minY = getY() - 1;
-        double minZ = getZ() - getRadius();
-        double maxX = getX() + getRadius();
+        double minZ = getZ() - radius;
+        double maxX = getX() + radius;
         double maxY = getY() + 3;
-        double maxZ = getZ() + getRadius();
-        if (level.isClientSide()) {
-            for (double x = minX; x <= maxX; x += 0.2) {
-                for (double y = minY; y <= maxY; y += 0.2) {
-                    for (double z = minZ; z <= maxZ; z += 0.2) {
-                        double newX = x + AMUtil.nextDouble(random, 0.2) - 0.1;
-                        double newZ = z + AMUtil.nextDouble(random, 0.2) - 0.1;
-                        if (newX > minX && newX < maxX && newZ > minZ && newZ < maxZ) {
-                            Vec3 newVec = new Vec3(newX, getY(), newZ);
-                            if (newVec.distanceTo(a) < 0.5 || newVec.distanceTo(b) < 0.5 || newVec.distanceTo(position()) < 0.5) {
-                                level.addParticle(ParticleTypes.PORTAL, newX, y + AMUtil.nextDouble(random, 0.2) - 0.1, newZ, (random.nextDouble() - 0.5) * 2, -random.nextDouble(), (random.nextDouble() - 0.5) * 2);
-                            }
-                        }
-                    }
-                }
+        double maxZ = getZ() + radius;
+        for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
+            if (e == this) continue;
+            if (e instanceof PartEntity<?> part) {
+                e = part.getParent();
             }
-        } else if (tickCount % 4 == 0) {
-            for (Entity e : level.getEntities(this, new AABB(minX, minY, minZ, maxX, maxY, maxZ))) {
-                if (e == this) continue;
-                if (e instanceof PartEntity) {
-                    e = ((PartEntity<?>) e).getParent();
-                }
-                Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
-                closest = new Vec3(closest.x, getY(), closest.z);
-                if (e instanceof LivingEntity living && !living.hasEffect(AMMobEffects.REFLECT.get()) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
-                    ArsMagicaAPI.get().getSpellHelper().invoke(getSpell(), getOwner(), level, new EntityHitResult(e), tickCount, getIndex(), true);
-                }
+            Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
+            closest = new Vec3(closest.x, getY(), closest.z);
+            if (tryReflect(e) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true);
             }
+        }
+        if (tickCount > 0) {
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
         }
     }
 
     @Override
-    public ItemStack getItem() {
-        return ItemStack.EMPTY;
+    public int getColor() {
+        return 0;
     }
 
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
+    }
+
+    @Override
     public int getDuration() {
         return entityData.get(DURATION);
     }
@@ -148,12 +125,14 @@ public class Wall extends Entity implements ItemSupplier {
         entityData.set(INDEX, index);
     }
 
+    @Override
     @Nullable
     public LivingEntity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity ? (LivingEntity) entity : null;
     }
 
+    @Override
     public void setOwner(LivingEntity owner) {
         entityData.set(OWNER, owner.getId());
     }
