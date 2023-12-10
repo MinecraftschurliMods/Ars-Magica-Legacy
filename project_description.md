@@ -6,7 +6,7 @@ A renewed look into Minecraft with a splash of magic...
 
 ## Introduction
 
-Ars Magica: Legacy is a port of Mithion's [Ars Magica 2](https://mc-mods.cf/ars-magica-2) for 1.18.1+.
+Ars Magica: Legacy is a port of Mithion's [Ars Magica 2](https://curseforge.com/minecraft/mc-mods/ars-magica-2) for 1.18.1+.
 
 It features an exciting way of creating spells, which can be used in several ways to buff yourself, serve as a tool replacement, fight against mobs and much more!
 
@@ -14,7 +14,7 @@ As of now, the mod is still actively developed. This means that many features ar
 
 If you want to support the project, you can donate via [Patreon](https://www.patreon.com/minecraftschurli) or [Paypal](http://paypal.me/minecraftschurli). You can also join our [Discord Server](https://discord.gg/GcFqXwX).
 
-The old mod's potion bundles were moved into their own project: Potion Bundles ([CurseForge](https://mc-mods.cf/potion-bundles) / [Modrinth](https://modrinth.com/mod/potion-bundles)). Be sure to check it out too!
+The old mod's potion bundles were moved into their own project: Potion Bundles ([CurseForge](https://curseforge.com/minecraft/mc-mods/potion-bundles) / [Modrinth](https://modrinth.com/mod/potion-bundles)). Be sure to check it out too!
 
 ## Getting Started
 
@@ -44,10 +44,10 @@ In the underground, you will find a variety of ores added by this mod. The most 
 
 ## Dependencies & Compatibility
 
-This mod requires Patchouli ([CurseForge](https://mc-mods.cf/patchouli) / [Modrinth](https://modrinth.com/mod/patchouli)) version 1.18-58 or newer for the in-game documentation.
-From version 1.2.0 onwards, this mod requires GeckoLib ([CurseForge](https://mc-mods.cf/geckolib) / [Modrinth](https://modrinth.com/mod/geckolib)).
+This mod requires Patchouli ([CurseForge](https://curseforge.com/minecraft/mc-mods/patchouli) / [Modrinth](https://modrinth.com/mod/patchouli)) version 1.18-58 or newer for the in-game documentation.
+From version 1.2.0 onwards, this mod requires GeckoLib ([CurseForge](https://curseforge.com/minecraft/mc-mods/geckolib) / [Modrinth](https://modrinth.com/mod/geckolib)).
 
-This mod has optional integration with [JEI](https://mc-mods.cf/jei), [Curios](https://mc-mods.cf/curios) and [The One Probe](https://mc-mods.cf/the-one-probe).
+This mod has optional integration with [JEI](https://curseforge.com/minecraft/mc-mods/jei), [Curios](https://curseforge.com/minecraft/mc-mods/curios), [Embeddium](https://curseforge.com/minecraft/mc-mods/embeddium), [Jade](https://curseforge.com/minecraft/mc-mods/jade), [The One Probe](https://curseforge.com/minecraft/mc-mods/the-one-probe).
 
 This mod is not compatible with OptiFine or most similar mods, due to them breaking rendering internals.
 
