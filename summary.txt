@@ -1,1 +1,1 @@
-Implements most of the WIP spellparts, and includes various minor changes and fixes.
+Adds talents, spell particles, the Color modifier, and various mod integrations; reworks the inscription table, makes affinity tomes obtainable in survival, various minor changes and fixes
