@@ -54,6 +54,8 @@ val top_version: String by project
 val curios_version: String by project
 val patchouli_version: String by project
 val geckolib_version: String by project
+val jade_version: String by project
+val embeddium_version: String by project
 val potionbundles_version: String by project
 val controlling_version: String by project
 
@@ -263,6 +265,13 @@ repositories {
         name = "ModMaven"
         url = uri("https://modmaven.k-4u.nl")
     }
+    maven {
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
@@ -289,11 +298,16 @@ dependencies {
     modAPI(fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}:api") { (this as ModuleDependency).setTransitive(false) })
     runtimeMod(fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") { (this as ModuleDependency).setTransitive(false) })
 
+    // jade for integration
+    modAPI(fg.deobf("maven.modrinth:jade:${jade_version}"))
+    runtimeMod(fg.deobf("maven.modrinth:jade:${jade_version}"))
+
     if (System.getenv("GITHUB_ACTIONS") == null || System.getenv("GITHUB_ACTIONS").isEmpty()) {
         if (project.hasProperty("github_packages_user") && project.hasProperty("github_packages_token")) {
             println("Using github packages")
         }
         runtimeMod(fg.deobf("com.github.minecraftschurlimods:potionbundles:${potionbundles_version}"))
+        //runtimeMod(fg.deobf("maven.modrinth:embeddium:${embeddium_version}"))
         //runtimeMod(fg.deobf("com.blamejared.controlling:Controlling-forge-1.19.2:${project.controlling_version}"))
     }
 
