@@ -113,11 +113,11 @@ public class ColorPickerScreen extends Screen {
                 hexColor.setValue(trimmed);
             }
         }));
-        addRenderableWidget(new Button(cX - 95, cY + 75, 50, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_CANCEL), b -> onClose()));
-        addRenderableWidget(new Button(cX + 10, cY + 75, 50, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_DONE), b -> {
+        addRenderableWidget(Button.builder(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_CANCEL), b -> onClose()).bounds(cX - 95, cY + 75, 50, 20).build());
+        addRenderableWidget(Button.builder(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_COLOR_PICKER_DONE), b -> {
             save();
             onClose();
-        }));
+        }).bounds(cX + 10, cY + 75, 50, 20).build());
     }
 
     @Override

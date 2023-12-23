@@ -16,7 +16,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
@@ -51,6 +50,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
@@ -198,7 +198,7 @@ public final class EventHandler {
         builder.icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
                .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
                .withSearchBar()
-               .displayItems((params, output) -> ClientHelper.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
+               .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {

@@ -138,11 +138,6 @@ public abstract class AbstractBoss extends Monster implements ISpellCasterEntity
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(0, new DispelGoal<>(this));

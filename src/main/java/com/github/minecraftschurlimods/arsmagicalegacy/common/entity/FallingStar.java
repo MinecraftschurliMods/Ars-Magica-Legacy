@@ -96,9 +96,9 @@ public class FallingStar extends AbstractSpellEntity {
 
     @Override
     @Nullable
-    public Entity getOwner() {
+    public LivingEntity getOwner() {
         Entity entity = level.getEntity(entityData.get(OWNER));
-        return entity instanceof LivingEntity ? (LivingEntity) entity : null;
+        return entity instanceof LivingEntity living ? living : null;
     }
 
     @Override

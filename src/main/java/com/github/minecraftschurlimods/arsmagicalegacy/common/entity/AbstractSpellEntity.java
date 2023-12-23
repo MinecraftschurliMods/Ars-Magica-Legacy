@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -48,7 +49,7 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         Entity entity = getOwner();
         return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
     }

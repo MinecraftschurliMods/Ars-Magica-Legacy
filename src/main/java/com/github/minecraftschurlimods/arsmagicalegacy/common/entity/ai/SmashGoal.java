@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Shockwave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 

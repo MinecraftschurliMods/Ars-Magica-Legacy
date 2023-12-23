@@ -1,3 +1,4 @@
+/*
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jade;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.altar.AltarCoreBlock;
@@ -69,3 +70,4 @@ public class JadePlugin implements IWailaPlugin {
         }));
     }
 }
+*/

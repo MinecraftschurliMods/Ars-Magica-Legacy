@@ -1,3 +1,4 @@
+/*
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jade;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
@@ -52,3 +53,4 @@ class EtheriumComponentProvider implements IBlockComponentProvider, IServerDataP
         });
     }
 }
+*/
