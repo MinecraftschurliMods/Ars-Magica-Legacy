@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.Obel
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookMenu;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.rift.RiftMenu;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;

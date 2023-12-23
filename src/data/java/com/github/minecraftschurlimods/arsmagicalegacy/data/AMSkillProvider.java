@@ -8,7 +8,13 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkil
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.GREEN;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints.RED;
 import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts.*;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.AFFINITY_GAINS_BOOST;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.AUGMENTED_CASTING;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.MANA_REGEN_BOOST_1;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.MANA_REGEN_BOOST_2;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.MANA_REGEN_BOOST_3;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.SHIELD_OVERLOAD;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents.SPELL_MOTION;
 
 class AMSkillProvider extends SkillProvider {
     private static final ResourceLocation OFFENSE = new ResourceLocation(ArsMagicaAPI.MOD_ID, "offense");

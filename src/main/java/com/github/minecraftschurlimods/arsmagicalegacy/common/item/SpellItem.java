@@ -34,7 +34,6 @@ import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;

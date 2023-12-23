@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.data.AbstractRegistryDataProvider;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.data.DatapackRegistryProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
