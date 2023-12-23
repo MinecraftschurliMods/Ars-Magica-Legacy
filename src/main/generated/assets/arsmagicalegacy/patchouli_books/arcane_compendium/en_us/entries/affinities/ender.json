@@ -13,18 +13,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.poison_resistance.description",
-      "title": "ability.arsmagicalegacy.poison_resistance.name"
+      "text": "ability.arsmagicalegacy.light_health_reduction.description",
+      "title": "ability.arsmagicalegacy.light_health_reduction.name"
     },
     {
       "type": "patchouli:text",
       "text": "ability.arsmagicalegacy.night_vision.description",
       "title": "ability.arsmagicalegacy.night_vision.name"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.light_health_reduction.description",
-      "title": "ability.arsmagicalegacy.light_health_reduction.name"
     },
     {
       "type": "patchouli:text",

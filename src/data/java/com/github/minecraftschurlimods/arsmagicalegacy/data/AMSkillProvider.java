@@ -449,45 +449,45 @@ class AMSkillProvider extends SkillProvider {
                 .addCost(RED.get())
                 .addParent(FLING.getId())
                 .build());
-        add(AFFINITY_GAINS_BOOST.getId(), talent(120, 30)
+        add(AFFINITY_GAINS_BOOST, talent(120, 30)
                 .addCost(BLUE.get())
                 .addParent(MANA_REGEN_BOOST_1)
                 .build());
-        add(AUGMENTED_CASTING.getId(), talent(30, 120)
+        add(AUGMENTED_CASTING, talent(30, 120)
                 .addCost(RED.get())
                 .addParent(SPELL_MOTION)
                 .build());
-        /*add(EXTRA_SUMMONS.getId(), talent(30, 165)
+        /*add(EXTRA_SUMMONS, talent(30, 165)
                 .addCost(RED.get())
                 .addParent(AUGMENTED_CASTING)
                 .build());
-        add(MAGE_BAND_1.getId(), talent(120, 75)
+        add(MAGE_BAND_1, talent(120, 75)
                 .addCost(GREEN.get())
                 .addParent(MANA_REGEN_BOOST_2)
                 .build());
-        add(MAGE_BAND_2.getId(), talent(120, 120)
+        add(MAGE_BAND_2, talent(120, 120)
                 .addCost(RED.get())
                 .addParent(MAGE_BAND_1)
                 .build());*/
-        add(MANA_REGEN_BOOST_1.getId(), talent(75, 30)
+        add(MANA_REGEN_BOOST_1, talent(75, 30)
                 .addCost(BLUE.get())
                 .build());
-        add(MANA_REGEN_BOOST_2.getId(), talent(75, 75)
+        add(MANA_REGEN_BOOST_2, talent(75, 75)
                 .addCost(GREEN.get())
                 .addParent(MANA_REGEN_BOOST_1)
                 .build());
-        add(MANA_REGEN_BOOST_3.getId(), talent(75, 120)
+        add(MANA_REGEN_BOOST_3, talent(75, 120)
                 .addCost(RED.get())
                 .addParent(MANA_REGEN_BOOST_2)
                 .build());
-        add(SHIELD_OVERLOAD.getId(), talent(30, 30)
+        add(SHIELD_OVERLOAD, talent(30, 30)
                 .setHidden()
                 .build());
-        add(SPELL_MOTION.getId(), talent(30, 75)
+        add(SPELL_MOTION, talent(30, 75)
                 .addCost(GREEN.get())
                 .addParent(MANA_REGEN_BOOST_2)
                 .build());
-        add(COLOR.getId().getId(), talent(30, 30)
+        add(COLOR.getId(), talent(30, 30)
                 .addCost(BLUE.get())
                 .build());
     }

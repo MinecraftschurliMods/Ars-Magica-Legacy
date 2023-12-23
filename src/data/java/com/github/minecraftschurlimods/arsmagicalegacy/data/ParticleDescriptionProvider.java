@@ -5,92 +5,101 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 // Copied from https://github.com/neoforged/NeoForge/blob/1.20.x/src/main/java/net/neoforged/neoforge/common/data/ParticleDescriptionProvider.java
 // TODO replace on newer versions
 public abstract class ParticleDescriptionProvider implements DataProvider {
+    private final PackOutput.PathProvider particlesPath;
     private final ExistingFileHelper fileHelper;
-    private final Map<ResourceLocation, List<String>> descriptions = new HashMap<>();
-    private final DataGenerator.PathProvider particlesPath;
+    private final Map<ResourceLocation, List<String>> descriptions;
 
-    protected ParticleDescriptionProvider(DataGenerator output, ExistingFileHelper fileHelper) {
-        particlesPath = output.createPathProvider(DataGenerator.Target.RESOURCE_PACK, "particles");
+    protected ParticleDescriptionProvider(PackOutput output, ExistingFileHelper fileHelper) {
+        this.particlesPath = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "particles");
         this.fileHelper = fileHelper;
+        this.descriptions = new HashMap<>();
     }
 
     protected abstract void addDescriptions();
 
-    @Override
-    public void run(CachedOutput cache) {
-        addDescriptions();
-                descriptions.forEach((k, v) -> {
-                    var textures = new JsonArray();
-                    v.forEach(textures::add);
-                    try {
-                        DataProvider.saveStable(cache, Util.make(new JsonObject(), obj -> obj.add("textures", textures)), particlesPath.json(k));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-    }
-
-    @Override
-    public String getName() {
-        return "Particle Descriptions";
-    }
-
     protected void sprite(ParticleType<?> type, ResourceLocation texture) {
-        spriteSet(type, texture);
+        this.spriteSet(type, texture);
     }
 
     protected void spriteSet(ParticleType<?> type, ResourceLocation baseName, int numOfTextures, boolean reverse) {
         Preconditions.checkArgument(numOfTextures > 0, "The number of textures to generate must be positive");
-        spriteSet(type, () -> new Iterator<>() {
+        this.spriteSet(type, () -> new Iterator<>() {
+
             private int counter = 0;
 
             @Override
             public boolean hasNext() {
-                return counter < numOfTextures;
+                return this.counter < numOfTextures;
             }
 
             @Override
             public ResourceLocation next() {
-                ResourceLocation texture = new ResourceLocation(baseName + "_" + (reverse ? numOfTextures - counter - 1 : counter));
-                counter++;
+                var texture = baseName.withSuffix("_" + (reverse ? numOfTextures - this.counter - 1 : this.counter));
+                this.counter++;
                 return texture;
             }
         });
     }
 
     protected void spriteSet(ParticleType<?> type, ResourceLocation texture, ResourceLocation... textures) {
-        spriteSet(type, Stream.concat(Stream.of(texture), Arrays.stream(textures))::iterator);
+        this.spriteSet(type, Stream.concat(Stream.of(texture), Arrays.stream(textures))::iterator);
     }
 
     protected void spriteSet(ParticleType<?> type, Iterable<ResourceLocation> textures) {
-        ResourceLocation particle = Preconditions.checkNotNull(ForgeRegistries.PARTICLE_TYPES.getKey(type), "The particle type is not registered");
+        // Make sure particle type is registered
+        var particle = Preconditions.checkNotNull(BuiltInRegistries.PARTICLE_TYPE.getKey(type), "The particle type is not registered");
+
+        // Validate textures
         List<String> desc = new ArrayList<>();
-        for (ResourceLocation texture : textures) {
-            Preconditions.checkArgument(fileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures/particle"), "Texture '%s' does not exist in any known resource pack", texture);
+        for (var texture : textures) {
+            Preconditions.checkArgument(this.fileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures/particle"),
+                    "Texture '%s' does not exist in any known resource pack", texture);
             desc.add(texture.toString());
         }
         Preconditions.checkArgument(desc.size() > 0, "The particle type '%s' must have one texture", particle);
-        if (descriptions.putIfAbsent(particle, desc) != null)
+
+        // Insert into map
+        if (this.descriptions.putIfAbsent(particle, desc) != null)
             throw new IllegalArgumentException(String.format("The particle type '%s' already has a description associated with it", particle));
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        this.addDescriptions();
+
+        return CompletableFuture.allOf(
+                this.descriptions.entrySet().stream().map(entry -> {
+                    // Map entries to the description format
+                    var textures = new JsonArray();
+                    entry.getValue().forEach(textures::add);
+                    return DataProvider.saveStable(cache,
+                            Util.make(new JsonObject(), obj -> obj.add("textures", textures)),
+                            this.particlesPath.json(entry.getKey()));
+                }).toArray(CompletableFuture[]::new));
+    }
+
+    @Override
+    public String getName() {
+        return "Particle Descriptions";
     }
 }

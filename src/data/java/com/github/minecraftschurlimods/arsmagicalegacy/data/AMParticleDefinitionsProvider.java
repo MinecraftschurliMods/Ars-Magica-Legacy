@@ -3,15 +3,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
 
 public class AMParticleDefinitionsProvider extends ParticleDescriptionProvider {
-    protected AMParticleDefinitionsProvider(DataGenerator generator, ExistingFileHelper fileHelper) {
-        super(generator, fileHelper);
+    protected AMParticleDefinitionsProvider(PackOutput output, ExistingFileHelper fileHelper) {
+        super(output, fileHelper);
     }
 
     @Override

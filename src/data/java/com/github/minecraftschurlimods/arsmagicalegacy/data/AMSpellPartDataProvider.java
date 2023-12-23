@@ -20,6 +20,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 
+import java.util.EnumSet;
+
 class AMSpellPartDataProvider extends SpellPartDataProvider {
     AMSpellPartDataProvider(PackOutput output) {
         super(ArsMagicaAPI.MOD_ID, output);
