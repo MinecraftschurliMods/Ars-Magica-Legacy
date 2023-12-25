@@ -5,12 +5,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SkillIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
@@ -55,9 +54,9 @@ public class SkillIngredient {
 
     public static class Renderer implements IIngredientRenderer<Skill> {
         @Override
-        public void render(PoseStack stack, Skill ingredient) {
+        public void render(GuiGraphics graphics, Skill ingredient) {
             RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
-            GuiComponent.blit(stack, 0, 0, 0, 16, 16, SkillIconAtlas.instance().getSprite(ingredient.getId(ClientHelper.getRegistryAccess())));
+            graphics.blit(0, 0, 0, 16, 16, SkillIconAtlas.instance().getSprite(ingredient.getId(ClientHelper.getRegistryAccess())));
         }
 
         @Override

@@ -68,7 +68,7 @@ public class FallingStar extends AbstractSpellEntity {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
             if (!level().isClientSide() && tickCount > 0) {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+                ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
             }
             HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level(), 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
@@ -82,7 +82,7 @@ public class FallingStar extends AbstractSpellEntity {
         }
         timeSinceImpact++;
         if (!level().isClientSide() && timeSinceImpact < 2) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
         }
         for (Entity e : level().getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;

@@ -24,6 +24,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -128,26 +129,26 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
     }
 
     @Override
-    public void draw(Recipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(Recipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         Font font = Minecraft.getInstance().font;
-        drawCentered(stack, font, recipe.skill().getDisplayName(ClientHelper.getRegistryAccess()), 0);
+        drawCentered(graphics, font, recipe.skill().getDisplayName(ClientHelper.getRegistryAccess()), 0);
         int y = SLOT_SIZE * 2 + TEXT_BOTTOM_PADDING;
-        drawCentered(stack, font, Component.translatable(TranslationConstants.SKILL_INGREDIENTS), y);
+        drawCentered(graphics, font, Component.translatable(TranslationConstants.SKILL_INGREDIENTS), y);
         y += (recipe.recipe.size() / INGREDIENT_COLUMNS + 1) * SLOT_SIZE + font.lineHeight + TEXT_BOTTOM_PADDING;
         if (!recipe.affinityShifts.isEmpty()) {
             y += SLOT_SIZE - font.lineHeight;
-            drawCentered(stack, font, Component.translatable(TranslationConstants.SKILL_AFFINITY_BREAKDOWN), y);
+            drawCentered(graphics, font, Component.translatable(TranslationConstants.SKILL_AFFINITY_BREAKDOWN), y);
             y += font.lineHeight + font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
             int x = getAffinityValueAnchor(font, recipe.affinityShifts) + 9;
             for (Affinity affinity : recipe.affinityShifts.keySet().stream().sorted().toList()) {
-                font.draw(stack, String.valueOf(recipe.affinityShifts.get(affinity)), x, y, affinity.color());
+                graphics.drawString(font, String.valueOf(recipe.affinityShifts.get(affinity)), x, y, affinity.color());
                 y += SLOT_SIZE - 2;
             }
             y += 2 - font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
         }
         if (!recipe.modifiers.isEmpty()) {
             y += SLOT_SIZE - font.lineHeight;
-            drawCentered(stack, font, Component.translatable(TranslationConstants.SKILL_MODIFIED_BY), y);
+            drawCentered(graphics, font, Component.translatable(TranslationConstants.SKILL_MODIFIED_BY), y);
         }
     }
 
@@ -161,8 +162,8 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
         }
     }
 
-    private static void drawCentered(PoseStack stack, Font font, Component component, int y) {
-        font.draw(stack, component, (WIDTH - font.getSplitter().stringWidth(component.getString())) / 2, y, 0x404040);
+    private static void drawCentered(GuiGraphics graphics, Font font, Component component, int y) {
+        graphics.drawString(font, component, (int) ((WIDTH - font.getSplitter().stringWidth(component.getString())) / 2), y, 0x404040);
     }
 
     private static int getAffinityValueAnchor(Font font, Map<Affinity, Float> affinityShifts) {
