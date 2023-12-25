@@ -68,7 +68,7 @@ public class Wall extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide() || tickCount % 5 != 0) return;
+        if (level().isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
@@ -91,11 +91,11 @@ public class Wall extends AbstractSpellEntity {
             Vec3 closest = AMUtil.closestPointOnLine(e.position(), a, b);
             closest = new Vec3(closest.x, getY(), closest.z);
             if (tryReflect(e) && closest.distanceTo(e.position()) < 0.75 && Math.abs(getY() - e.getY()) < 2) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level(), new EntityHitResult(e), tickCount, index, true);
             }
         }
         if (tickCount > 0) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
         }
     }
 

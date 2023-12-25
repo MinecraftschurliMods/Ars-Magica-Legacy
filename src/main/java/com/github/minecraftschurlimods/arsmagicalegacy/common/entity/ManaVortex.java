@@ -1,8 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
-import net.minecraft.core.particles.DustParticleOptions;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 public class ManaVortex extends Entity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ManaVortex.class, EntityDataSerializers.INT);
@@ -52,11 +52,6 @@ public class ManaVortex extends Entity {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
@@ -65,38 +60,35 @@ public class ManaVortex extends Entity {
     public void tick() {
         super.tick();
         tickCount++;
-        Level level = level();
-        if (entityData.get(DURATION) - this.tickCount > 30) {
-            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
+        if (level().isClientSide()) return;
+        int duration = getDuration();
+        if (duration - tickCount > 30) {
+            for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
                 if (e.getAttribute(AMAttributes.MAX_MANA.get()) == null) continue;
-                if (!level.isClientSide()) {
-                    var helper = ArsMagicaAPI.get().getManaHelper();
-                    float stolen = Math.min(helper.getMana(e), helper.getMaxMana(e) / 100f);
-                    entityData.set(MANA, entityData.get(MANA) + stolen);
-                    helper.setMana(e, helper.getMana(e) - stolen);
-                    Vec3 movement = e.position().subtract(position()).normalize();
-                    setDeltaMovement(movement.x * 0.075f, movement.y * 0.075f, movement.z * 0.075f);
-                } else {
-                    level.addParticle(new DustParticleOptions(new Vector3f(0.24f, 0.24f, 0.8f), 1), position().x(), position().y(), position().z(), 0, 0, 0);
-                }
+                var helper = ArsMagicaAPI.get().getManaHelper();
+                float stolen = Math.min(helper.getMana(e), helper.getMaxMana(e) / 100f);
+                entityData.set(MANA, entityData.get(MANA) + stolen);
+                helper.setMana(e, helper.getMana(e) - stolen);
+                Vec3 movement = e.position().subtract(position()).normalize();
+                setDeltaMovement(movement.x * 0.075f, movement.y * 0.075f, movement.z * 0.075f);
             }
             moveTo(position().add(getDeltaMovement()));
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
         }
-        if (entityData.get(DURATION) - tickCount <= 20) {
+        if (duration - tickCount <= 20) {
             this.setBoundingBox(getBoundingBox().inflate(-0.05f));
         }
-        if (entityData.get(DURATION) - tickCount <= 5) {
-            if (!level.isClientSide()) {
-                float damage = Math.min(100, entityData.get(MANA) / 100f);
-                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
-                    e.hurt(damageSources().magic(), damage);
-                }
-            } else {
-                for (int i = 0; i < 72; i++) {
-                    level.addParticle(new DustParticleOptions(new Vector3f(0.24f, 0.24f, 0.8f), 1), position().x(), position().y(), position().z(), 0, 0, 0);
-                }
+        if (duration - tickCount <= 5) {
+            float damage = Math.min(100, entityData.get(MANA) / 100f);
+            for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
+                e.hurt(damageSources().magic(), damage);
             }
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
             setRemoved(RemovalReason.KILLED);
         }
+    }
+
+    public int getDuration() {
+        return entityData.get(DURATION);
     }
 }

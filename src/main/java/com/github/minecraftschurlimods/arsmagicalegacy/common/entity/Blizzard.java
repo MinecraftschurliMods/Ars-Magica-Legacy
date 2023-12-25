@@ -65,7 +65,7 @@ public class Blizzard extends AbstractSpellEntity {
             e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
         });
         if (tickCount > 0) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
         }
     }
 
