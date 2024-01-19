@@ -159,7 +159,7 @@ public final class EventHandler {
     }
 
     private static void registerCreativeTabs(CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB, List.of(), List.of(CreativeModeTabs.SPAWN_EGGS, CreativeModeTabs.OP_BLOCKS), EventHandler::buildMainCreativeTab);
+        event.registerCreativeModeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB, List.of(), List.of(CreativeModeTabs.SPAWN_EGGS), EventHandler::buildMainCreativeTab);
         event.registerCreativeModeTab(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB, List.of(), List.of(ArsMagicaAPI.MAIN_CREATIVE_TAB), EventHandler::buildPrefabSpellsCreativeTab);
     }
 

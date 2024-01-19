@@ -299,8 +299,8 @@ dependencies {
     runtimeMod(fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") { (this as ModuleDependency).setTransitive(false) })
 
     // jade for integration
-    modAPI(fg.deobf("maven.modrinth:jade:${jade_version}"))
-    runtimeMod(fg.deobf("maven.modrinth:jade:${jade_version}"))
+    modAPI(fg.deobf("maven.modrinth:jade:${jade_version}-forge"))
+    runtimeMod(fg.deobf("maven.modrinth:jade:${jade_version}-forge"))
 
     if (System.getenv("GITHUB_ACTIONS") == null || System.getenv("GITHUB_ACTIONS").isEmpty()) {
         if (project.hasProperty("github_packages_user") && project.hasProperty("github_packages_token")) {
