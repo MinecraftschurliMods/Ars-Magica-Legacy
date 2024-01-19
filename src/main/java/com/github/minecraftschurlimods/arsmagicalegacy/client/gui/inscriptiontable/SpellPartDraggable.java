@@ -40,7 +40,7 @@ public class SpellPartDraggable extends Draggable<ISpellPart> {
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         pGuiGraphics.pose().pushPose();
-        pGuiGraphics.blit(0, 0, 10, width, height, sprite);
+        pGuiGraphics.blit(pMouseX, pMouseY, 10, width, height, sprite);
         pGuiGraphics.pose().popPose();
     }
 
