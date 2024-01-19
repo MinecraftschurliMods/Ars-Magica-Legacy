@@ -19,7 +19,7 @@ import snownee.jade.api.config.IPluginConfig;
 import java.util.Arrays;
 import java.util.List;
 
-class AltarComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
+class AltarComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
     private static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "altar");
     private static final String POWER = "power";
     private static final String POSITIONS = "positions";
@@ -51,8 +51,8 @@ class AltarComponentProvider implements IBlockComponentProvider, IServerDataProv
     }
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-        if (blockEntity instanceof AltarCoreBlockEntity altar) {
+    public void appendServerData(CompoundTag compoundTag, BlockAccessor accessor) {
+        if (accessor.getBlockEntity() instanceof AltarCoreBlockEntity altar) {
             compoundTag.putLongArray(POSITIONS, altar.getBoundPositions().stream().map(BlockPos::asLong).toList());
             compoundTag.putInt(POWER, altar.getPowerLevel());
         }
