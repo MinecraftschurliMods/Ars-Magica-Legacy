@@ -89,7 +89,7 @@ public class SpellRecipeScreen extends Screen {
         Font font = Minecraft.getInstance().font;
         SpellRecipePage page = pages.get(currentPage);
         String title = page.getTitle().getString();
-        graphics.drawString(font, title, xPos + 93 - font.width(title) / 2, 18, 0);
+        graphics.drawString(font, title, xPos + 93 - font.width(title) / 2, 18, 0, false);
         page.render(graphics, xPos + 36, 32);
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
