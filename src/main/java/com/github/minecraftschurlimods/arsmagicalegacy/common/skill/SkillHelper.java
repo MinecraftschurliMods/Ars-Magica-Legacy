@@ -46,21 +46,17 @@ public final class SkillHelper implements ISkillHelper {
     private SkillHelper() {}
 
     /**
-     * @return The only instance of this class.
-     */
-    public static SkillHelper instance() {
-        return INSTANCE.get();
-    }
-
-    /**
      * @return The knowledge capability.
      */
     public static Capability<KnowledgeHolder> getCapability() {
         return KNOWLEDGE;
     }
 
-    private static void handleSync(KnowledgeHolder holder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(cap -> cap.onSync(holder)));
+    /**
+     * @return The only instance of this class.
+     */
+    public static SkillHelper instance() {
+        return INSTANCE.get();
     }
 
     @Override
@@ -269,6 +265,10 @@ public final class SkillHelper implements ISkillHelper {
         runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(holder), player));
     }
 
+    private static void handleSync(KnowledgeHolder holder, NetworkEvent.Context context) {
+        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(cap -> cap.onSync(holder)));
+    }
+
     private void runIfPresent(Player player, Consumer<KnowledgeHolder> consumer) {
         getKnowledgeHolder(player).ifPresent(consumer::accept);
     }
@@ -310,11 +310,11 @@ public final class SkillHelper implements ISkillHelper {
         //@formatter:off
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 CodecHelper.setOf(ResourceLocation.CODEC)
-                           .xmap(HashSet::new, Function.identity())
-                           .fieldOf("skills")
-                           .forGetter(KnowledgeHolder::skills),
+                     .<Set<ResourceLocation>>xmap(HashSet::new, Function.identity())
+                     .fieldOf("skills")
+                     .forGetter(KnowledgeHolder::skills),
                 Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT)
-                     .<Map<ResourceLocation,Integer>>xmap(HashMap::new, Function.identity())
+                     .<Map<ResourceLocation, Integer>>xmap(HashMap::new, Function.identity())
                      .fieldOf("skill_points")
                      .forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
