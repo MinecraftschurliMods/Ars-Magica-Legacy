@@ -71,6 +71,7 @@ import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -167,6 +168,7 @@ public final class EventHandler {
     private static CreativeModeTab buildMainCreativeTab() {
         return CreativeModeTab
                 .builder()
+                .withTabsBefore(CreativeModeTabs.SPAWN_EGGS, CreativeModeTabs.OP_BLOCKS)
                 .withTabsAfter(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB)
                 .icon(() -> ArsMagicaAPI.get().getBookStack())
                 .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
@@ -205,7 +207,6 @@ public final class EventHandler {
                 .withTabsBefore(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
                 .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
-                .withSearchBar()
                 .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept))
                 .build();
     }
