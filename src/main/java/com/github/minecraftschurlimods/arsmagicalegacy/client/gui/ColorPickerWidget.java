@@ -1,11 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.client.AMShaders;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.AMRenderTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.databinding.Listenable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gui.GuiGraphics;
@@ -89,15 +88,8 @@ public class ColorPickerWidget extends AbstractWidget {
         float cX = getX() + radius;
         float cY = getY() + radius;
         graphics.pose().pushPose();
-        RenderSystem.enableDepthTest();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(AMShaders::getColorWheelShader);
-        AMShaders.setUniform("center", cX, cY);
-        AMShaders.setUniform("radius", radius);
-        AMShaders.setUniform("brightness", _brightness);
-        graphics.fillGradient(getX(), getY(), getX() + width, getY() + height, 0, 0xFFFFFFFF, 0xFFFFFFFF);
-        RenderSystem.disableBlend();
+        AMRenderTypes.setColorWheel(cX, cY, radius, _brightness);
+        graphics.fillGradient(AMRenderTypes.COLOR_WHEEL, getX(), getY(), getX() + width, getY() + height, 0xFFFFFFFF, 0xFFFFFFFF, 0);
         graphics.pose().popPose();
     }
 
