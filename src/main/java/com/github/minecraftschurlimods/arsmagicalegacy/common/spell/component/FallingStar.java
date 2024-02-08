@@ -38,6 +38,7 @@ public class FallingStar extends AbstractComponent {
             var fallingStar = Objects.requireNonNull(AMEntities.FALLING_STAR.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             fallingStar.setPos(new Vec3(target.getLocation().x(), target.getLocation().y() + 64, target.getLocation().z()));
+            fallingStar.setColor(helper.getColor(modifiers, spell, caster, index, -1));
             fallingStar.setOwner(caster);
             fallingStar.setDamage(helper.getModifiedStat(6, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
             fallingStar.setRadius(helper.getModifiedStat(6, SpellPartStats.RANGE, modifiers, spell, caster, target, index));

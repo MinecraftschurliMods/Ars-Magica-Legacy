@@ -33,6 +33,7 @@ public class Wave extends AbstractShape {
             if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0) {
                 wave.setTargetNonSolid();
             }
+            wave.setColor(helper.getColor(modifiers, spell, caster, index, -1));
             wave.setDuration((int) helper.getModifiedStat(80, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
             wave.setIndex(index);
             wave.setOwner(caster);

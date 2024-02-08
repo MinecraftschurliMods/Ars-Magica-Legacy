@@ -30,6 +30,7 @@ public class Projectile extends AbstractShape {
             projectile.setTargetNonSolid();
         }
         projectile.setBounces((int) helper.getModifiedStat(0, SpellPartStats.BOUNCE, modifiers, spell, caster, hit, index));
+        projectile.setColor(helper.getColor(modifiers, spell, caster, index, -1));
         projectile.setDuration((int) helper.getModifiedStat(30, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
         projectile.setIndex(index);
         projectile.setOwner(caster);

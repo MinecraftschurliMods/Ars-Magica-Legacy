@@ -32,6 +32,7 @@ public class Zone extends AbstractShape {
             if (helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, caster, hit, index) > 0) {
                 zone.setTargetNonSolid();
             }
+            zone.setColor(helper.getColor(modifiers, spell, caster, index, -1));
             zone.setDuration(200 + (int) helper.getModifiedStat(100, SpellPartStats.DURATION, modifiers, spell, caster, hit, index));
             zone.setIndex(index);
             zone.setOwner(caster);
