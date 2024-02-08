@@ -118,7 +118,7 @@ public class Wave extends AbstractSpellEntity {
 
     @Override
     public int getColor() {
-        return 0;
+        return entityData.get(COLOR);
     }
 
     public void setColor(int color) {

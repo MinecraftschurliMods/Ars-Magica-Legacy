@@ -37,6 +37,7 @@ public class FireRain extends AbstractComponent {
             var fireRain = Objects.requireNonNull(AMEntities.FIRE_RAIN.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             fireRain.setPos(target.getLocation());
+            fireRain.setColor(helper.getColor(modifiers, spell, caster, index, -1));
             fireRain.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target, index));
             fireRain.setOwner(caster);
             fireRain.setDamage(helper.getModifiedStat(2, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
