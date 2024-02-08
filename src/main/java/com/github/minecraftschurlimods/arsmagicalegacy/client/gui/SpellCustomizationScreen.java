@@ -139,9 +139,9 @@ public class SpellCustomizationScreen extends Screen {
                 y += relativeY * ICON_MARGIN;
                 if (y > 0 && y < bottom) {
                     if (icon.equals(selected)) {
-                        graphics.fillGradient(1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
+                        graphics.fillGradient(x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
                     } else if (icon.equals(hovered)) {
-                        graphics.fillGradient(1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
+                        graphics.fillGradient(x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
                     }
                     graphics.blit(x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
                 }
