@@ -10,6 +10,8 @@ jobs:
   build:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
     with:
+      maven-url: ${{ vars.MAVEN_URL }}
+      maven-user: ${{ vars.MAVEN_USER }}
       upload-artifacts: true
       artifact-retention: 1
       publish-to-maven: true
@@ -36,7 +38,7 @@ jobs:
     secrets:
       GH_TOKEN: ${{ matrix.platform == 'GitHub' && secrets.GITHUB_TOKEN || null }}
       CF_API_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.CF_API_TOKEN || null }}
-      MODRINTH_TOKEN: ${{ matrix.platform == 'CurseForge' && secrets.MODRINTH_TOKEN || null }}
+      MODRINTH_TOKEN: ${{ matrix.platform == 'Modrinth' && secrets.MODRINTH_TOKEN || null }}
 
   notify-discord:
     uses: MinecraftschurliMods/.github/.github/workflows/notify_discord.yml@main
