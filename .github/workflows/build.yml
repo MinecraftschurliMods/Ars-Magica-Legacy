@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - "*.md"
       - "LICENSE.md"
-      - ".github/**"
     tags-ignore:
       - "[0-9]+.[0-9]+.[0-9]+-[0-9]+.[0-9]+.[0-9]+"
       - "[0-9]+.[0-9]+-[0-9]+.[0-9]+.[0-9]+"
@@ -15,8 +14,10 @@ on:
 jobs:
   build:
     uses: MinecraftschurliMods/.github/.github/workflows/build.yml@main
-    secrets:
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
     with:
+      maven-url: ${{ vars.MAVEN_URL }}
+      maven-user: ${{ vars.MAVEN_USER }}
       publish-to-maven: true
       datagen-folder: src/main/generated/
+    secrets:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
