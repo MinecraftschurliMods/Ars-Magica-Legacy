@@ -37,6 +37,7 @@ public class Blizzard extends AbstractComponent {
             var blizzard = Objects.requireNonNull(AMEntities.BLIZZARD.get().create(level));
             var helper = ArsMagicaAPI.get().getSpellHelper();
             blizzard.setPos(target.getLocation());
+            blizzard.setColor(helper.getColor(modifiers, spell, caster, index, -1));
             blizzard.setDuration((int) helper.getModifiedStat(200, SpellPartStats.DURATION, modifiers, spell, caster, target, index));
             blizzard.setOwner(caster);
             blizzard.setDamage(helper.getModifiedStat(2, SpellPartStats.DAMAGE, modifiers, spell, caster, target, index));
