@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:pink_dye_from_aum"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
