@@ -66,9 +66,9 @@ public class ExecuteSpellGoal<T extends Mob & ISpellCasterEntity> extends Goal {
             if (ticks >= duration) {
                 SoundEvent sound = getAttackSound();
                 if (sound != null) {
-                    caster.getLevel().playSound(null, caster, sound, SoundSource.HOSTILE, 1f, 0.5f + caster.getLevel().getRandom().nextFloat());
+                    caster.level().playSound(null, caster, sound, SoundSource.HOSTILE, 1f, 0.5f + caster.level().getRandom().nextFloat());
                 }
-                Objects.requireNonNull(getSpell(caster)).cast(caster, caster.getLevel(), 0, false, false);
+                Objects.requireNonNull(getSpell(caster)).cast(caster, caster.level(), 0, false, false);
                 ticks = 0;
                 stop();
             }

@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:vinteum_torch"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:vinteum_dust_from_smelting_vinteum_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

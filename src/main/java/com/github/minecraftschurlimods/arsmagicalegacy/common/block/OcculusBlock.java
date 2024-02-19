@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -81,7 +80,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
     );
 
     public OcculusBlock() {
-        super(Properties.of(Material.STONE).explosionResistance(5).destroyTime(3));
+        super(Properties.of().explosionResistance(5).destroyTime(3));
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 

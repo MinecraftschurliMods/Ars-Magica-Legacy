@@ -1,9 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120BlockTagsProvider;
-import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120LootTableProvider;
-import com.github.minecraftschurlimods.arsmagicalegacy.data.update120.Update120RecipeProvider;
 import com.github.minecraftschurlimods.easydatagenlib.api.DatapackRegistryGenerator;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.datafixers.util.Function5;
@@ -66,10 +63,6 @@ public class AMDatagen {
         client.addProvider(wrapWith(AMParticleDefinitionsProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMSoundDefinitionsProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMEnglishLanguageProvider::new, lang));
-        DataGenerator.PackGenerator update120 = generator.getBuiltinDatapack(includeServer, "update_1_20");
-        update120.addProvider(Update120RecipeProvider::new);
-        update120.addProvider(wrapWith(Update120BlockTagsProvider::new, lookupProvider, existingFileHelper));
-        update120.addProvider(Update120LootTableProvider::new);
         new AMCompatDataProvider(evt);
     }
 

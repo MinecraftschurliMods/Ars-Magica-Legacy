@@ -3,8 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.advancement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -23,8 +23,8 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
     }
 
     @Override
-    protected PlayerLevelUpTrigger.TriggerInstance createInstance(JsonObject pJson, EntityPredicate.Composite pPlayer, DeserializationContext pContext) {
-        return new PlayerLevelUpTrigger.TriggerInstance(pPlayer, MinMaxBounds.Ints.fromJson(pJson.get("level")));
+    protected PlayerLevelUpTrigger.TriggerInstance createInstance(JsonObject pJson, ContextAwarePredicate pPredicate, DeserializationContext pContext) {
+        return new PlayerLevelUpTrigger.TriggerInstance(pPredicate, MinMaxBounds.Ints.fromJson(pJson.get("level")));
     }
 
     /**
@@ -39,8 +39,8 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final MinMaxBounds.Ints level;
 
-        public TriggerInstance(EntityPredicate.Composite pPlayer, MinMaxBounds.Ints level) {
-            super(PlayerLevelUpTrigger.ID, pPlayer);
+        public TriggerInstance(ContextAwarePredicate pPredicate, MinMaxBounds.Ints level) {
+            super(PlayerLevelUpTrigger.ID, pPredicate);
             this.level = level;
         }
 

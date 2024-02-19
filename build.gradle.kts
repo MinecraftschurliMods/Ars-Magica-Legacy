@@ -279,8 +279,8 @@ dependencies {
     annotationProcessor(group = "org.spongepowered", name = "mixin", version = mixin_version, classifier = "processor")
 
     // jei for integration
-    modAPI(fg.deobf("mezz.jei:jei-1.19.4-common-api:${jei_version}"))
-    runtimeMod(fg.deobf("mezz.jei:jei-1.19.4-forge:${jei_version}"))
+    modAPI(fg.deobf("mezz.jei:jei-1.20.1-common-api:${jei_version}"))
+    runtimeMod(fg.deobf("mezz.jei:jei-1.20.1-forge:${jei_version}"))
 
     // curios for additional inventory slots
     modAPI(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
@@ -291,8 +291,8 @@ dependencies {
     runtimeMod(fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}"))
 
     // geckolib for animations
-    modAPI(fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}"))
-    runtimeMod(fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}"))
+    modAPI(fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_major_version}:${geckolib_version}"))
+    runtimeMod(fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_major_version}:${geckolib_version}"))
 
     // theoneprobe for integration
     modAPI(fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}:api") { (this as ModuleDependency).setTransitive(false) })
@@ -312,17 +312,17 @@ dependencies {
     }
 
     // add internal libraries
-    include(fg.deobf("com.github.minecraftschurlimods:simplenetlib:1.19.4-1.0-SNAPSHOT") {
-        jarJar.ranged(this, "[1.19.4-1.0-SNAPSHOT,)")
+    include(fg.deobf("com.github.minecraftschurlimods:simplenetlib:1.20.1-1.0-SNAPSHOT") {
+        jarJar.ranged(this, "[1.20.1-1.0-SNAPSHOT,)")
     })
-    include(fg.deobf("com.github.minecraftschurlimods:codeclib:1.19-1.0-SNAPSHOT") {
-        jarJar.ranged(this, "[1.19-1.0-SNAPSHOT,)")
+    include(fg.deobf("com.github.minecraftschurlimods:codeclib:1.20.1-1.0-SNAPSHOT") {
+        jarJar.ranged(this, "[1.20.1-1.0-SNAPSHOT,)")
     })
     include(fg.deobf("com.github.minecraftschurlimods:betterkeybindlib:1.19-1.1-SNAPSHOT") {
         jarJar.ranged(this, "[1.19-1.1-SNAPSHOT,)")
     })
-    include(fg.deobf("com.github.minecraftschurlimods:betterhudlib:1.19.4-1.0-SNAPSHOT") {
-        jarJar.ranged(this, "[1.19-1.0-SNAPSHOT,)")
+    include(fg.deobf("com.github.minecraftschurlimods:betterhudlib:1.20.1-1.0-SNAPSHOT") {
+        jarJar.ranged(this, "[1.20.1-1.0-SNAPSHOT,)")
     })
     modAPI(fg.deobf("com.github.minecraftschurlimods:easydatagenlib:1.19.3-1.1.1-SNAPSHOT"))
     datagenLibrary(fg.deobf("com.github.minecraftschurlimods:easydatagenlib:1.19.3-1.1.1-SNAPSHOT"))

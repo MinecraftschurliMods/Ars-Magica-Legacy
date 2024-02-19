@@ -54,7 +54,7 @@ public class LightningGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new LightningRodGoal(this));
         goalSelector.addGoal(1, new StaticGoal(this));
-        Registry<PrefabSpell> prefabSpells = level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
+        Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "lightning_bolt")).spell(), 10));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_lightning_bolt")).spell(), 10));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "area_lightning")).spell(), 10));
@@ -64,7 +64,7 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             // Particles
         }
         super.aiStep();

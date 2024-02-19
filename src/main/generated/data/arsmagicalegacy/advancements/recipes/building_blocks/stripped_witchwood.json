@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:stripped_witchwood"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

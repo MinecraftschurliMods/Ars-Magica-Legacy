@@ -4,9 +4,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.databinding.Listenable;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -85,7 +84,7 @@ public class ColorPickerScreen extends Screen {
         int cY = height / 2 - 5;
         top = cY - textureHeight / 2 + 7;
         left = cX - textureWidth / 2 - 17;
-        addRenderableOnly((pPoseStack, pMouseX, pMouseY, pPartialTick) -> drawString(pPoseStack, font, title, left + 6, top + 6, 0xFFFFFFFF));
+        addRenderableOnly((graphics, pMouseX, pMouseY, pPartialTick) -> graphics.drawString(font, title, left + 6, top + 6, 0xFFFFFFFF));
         colorPicker = addRenderableWidget(new ColorPickerWidget(cX, cY, 50, getTitle(), colorPicker));
         addRenderableWidget(colorPicker.brightnessSlider(cX + 55, cY - 50, 10, 100, getTitle(), ColorPickerWidget.BrightnessSlider.Orientation.BOTTOM_TO_TOP));
         final int len = presetColors.size();
@@ -121,13 +120,12 @@ public class ColorPickerScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
-        pPoseStack.pushPose();
-        RenderSystem.setShaderTexture(0, BACKGROUND);
-        blit(pPoseStack, left, top, 0, 0, textureWidth, textureHeight);
-        pPoseStack.popPose();
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(graphics);
+        graphics.pose().pushPose();
+        graphics.blit(BACKGROUND, left, top, 0, 0, textureWidth, textureHeight);
+        graphics.pose().popPose();
+        super.render(graphics, pMouseX, pMouseY, pPartialTick);
     }
 
     public record PresetColor(int color, Component name) {

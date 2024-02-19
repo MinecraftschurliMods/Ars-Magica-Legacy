@@ -2,9 +2,9 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
@@ -14,7 +14,7 @@ public final class XpHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, PoseStack poseStack, float v) {
+    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float v) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;
@@ -27,15 +27,15 @@ public final class XpHUD extends AbstractHUD {
             xp = helper.getXp(player);
             xpForNextLevel = helper.getXpForNextLevel(level);
         }
-        renderBar(poseStack, 0, 0, getWidth(), getHeight(), xp, xpForNextLevel, 0x7777FF);
+        renderBar(graphics, 0, 0, getWidth(), getHeight(), xp, xpForNextLevel, 0x7777FF);
         String s = String.valueOf(level);
         Font font = Minecraft.getInstance().font;
         int i1 = 40 - font.width(s) / 2;
         int j1 = -10;
-        font.draw(poseStack, s, (float) (i1 + 1), (float) j1, 0);
-        font.draw(poseStack, s, (float) (i1 - 1), (float) j1, 0);
-        font.draw(poseStack, s, (float) i1, (float) (j1 + 1), 0);
-        font.draw(poseStack, s, (float) i1, (float) (j1 - 1), 0);
-        font.draw(poseStack, s, (float) i1, (float) j1, 0x7777FF);
+        graphics.drawString(font, s, (i1 + 1), j1, 0);
+        graphics.drawString(font, s, (i1 - 1), j1, 0);
+        graphics.drawString(font, s, i1, (j1 + 1), 0);
+        graphics.drawString(font, s, i1, (j1 - 1), 0);
+        graphics.drawString(font, s, i1, j1, 0x7777FF);
     }
 }

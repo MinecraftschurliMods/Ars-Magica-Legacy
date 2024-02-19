@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureScythe;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
@@ -19,14 +20,15 @@ public class ThrowScytheGoal extends AbstractBossGoal<NatureGuardian> {
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            NatureScythe entity = Objects.requireNonNull(AMEntities.NATURE_SCYTHE.get().create(boss.getLevel()));
+        Level level = boss.level();
+        if (!level.isClientSide()) {
+            NatureScythe entity = Objects.requireNonNull(AMEntities.NATURE_SCYTHE.get().create(level));
             entity.moveTo(boss.position().add(0, 3, 0).add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
             entity.setXRot(boss.getXRot());
             entity.setYRot(boss.getYRot());
             entity.setOwner(boss);
-            boss.getLevel().addFreshEntity(entity);
+            level.addFreshEntity(entity);
             boss.setHasScythe(false);
         }
     }

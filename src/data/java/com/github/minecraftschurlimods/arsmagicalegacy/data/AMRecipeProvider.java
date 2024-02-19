@@ -46,6 +46,7 @@ class AMRecipeProvider extends RecipeProvider {
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         generateRecipes(consumer, AMBlockFamilies.WITCHWOOD_PLANKS.get());
+        hangingSign(consumer, AMItems.WITCHWOOD_HANGING_SIGN.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get());
         planksFromLogs(consumer, AMBlocks.WITCHWOOD_PLANKS.get(), AMTags.Items.WITCHWOOD_LOGS, 4);
         woodFromLogs(consumer, AMBlocks.WITCHWOOD.get(), AMBlocks.WITCHWOOD_LOG.get());
         woodFromLogs(consumer, AMBlocks.STRIPPED_WITCHWOOD.get(), AMBlocks.STRIPPED_WITCHWOOD_LOG.get());

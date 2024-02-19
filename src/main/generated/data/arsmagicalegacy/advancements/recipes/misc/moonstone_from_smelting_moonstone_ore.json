@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:moonstone_from_smelting_moonstone_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Mob;
 
 public class DispelGoal<T extends Mob & ISpellCasterEntity> extends ExecuteSpellGoal<T> {
     public DispelGoal(T caster) {
-        super(caster, caster.level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 0);
+        super(caster, caster.level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "dispel")).spell(), 0);
     }
 
     @Override

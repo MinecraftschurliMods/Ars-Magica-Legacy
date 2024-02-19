@@ -28,5 +28,6 @@
     "recipes": [
       "minecraft:rune_bag_from_bundle"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

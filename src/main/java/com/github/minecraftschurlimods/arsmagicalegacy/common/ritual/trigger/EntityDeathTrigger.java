@@ -24,7 +24,7 @@ public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTri
     @Override
     public void register(Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((LivingDeathEvent event) -> {
-            if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
+            if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
             if (event.getSource().getEntity() instanceof Player player) {
                 ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", event.getEntity())));
             } else {

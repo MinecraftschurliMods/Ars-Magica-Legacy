@@ -74,14 +74,14 @@ public class LifeGuardian extends AbstractBoss {
             entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_AXE));
             return entity;
         }, EntityType.WITCH::create)));
-        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 30));
+        goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "nausea")).spell(), 30));
         goalSelector.addGoal(1, new HealGoal<>(this));
     }
 
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             minions.removeIf(Objects::isNull);
             Set<LivingEntity> toRemove = new HashSet<>();
             for (LivingEntity e : minions) {
@@ -90,7 +90,7 @@ public class LifeGuardian extends AbstractBoss {
                     toRemove.add(e);
                 }
                 if (e.isDeadOrDying() && !toRemove.contains(e)) {
-                    hurt(damageSources().outOfWorld(), e.getMaxHealth());
+                    hurt(damageSources().fellOutOfWorld(), e.getMaxHealth());
                     toRemove.add(e);
                 }
             }
@@ -105,7 +105,7 @@ public class LifeGuardian extends AbstractBoss {
                 e.setLastHurtByMob((LivingEntity) pSource.getEntity());
             }
         }
-        return pSource.is(DamageTypes.OUT_OF_WORLD) && super.hurt(pSource, pAmount);
+        return pSource.is(DamageTypes.FELL_OUT_OF_WORLD) && super.hurt(pSource, pAmount);
     }
 
     @Override

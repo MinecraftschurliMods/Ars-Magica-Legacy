@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
@@ -44,24 +45,25 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
         super.tick();
         LivingEntity target = boss.getTarget();
         if (target == null) return;
-        if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
-            boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+        Level level = boss.level();
+        if (!level.isClientSide() && ticks % 20 == 0) {
+            level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
         }
         if (ticks <= 10) {
             startPos = new Vec3((float) target.getX(), (float) target.getY(), (float) target.getZ());
         } else if (ticks <= 40) {
             target.moveTo(startPos.x(), startPos.y() + (ticks - 10) * 0.2, startPos.z());
             target.fallDistance = 0;
-            if (!boss.getLevel().isClientSide() && ticks == 30) {
-                boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+            if (!level.isClientSide() && ticks == 30) {
+                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
         } else if (ticks <= 80) {
             target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
             if (ticks > 50) {
                 target.hurt(target.damageSources().lightningBolt(), 20);
             }
-            if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
-                boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+            if (!level.isClientSide() && ticks % 20 == 0) {
+                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
         } else if (ticks <= 90 && !hasThrown) {
             hasThrown = true;
@@ -69,9 +71,9 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
             target.fallDistance = 8;
         } else if (ticks <= 100 && !hasBolted) {
             hasBolted = true;
-            LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, boss.getLevel());
+            LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
             bolt.setPos(target.getX(), target.getY(), target.getZ());
-            boss.getLevel().addFreshEntity(bolt);
+            level.addFreshEntity(bolt);
         }
     }
 

@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:arcane_compound"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

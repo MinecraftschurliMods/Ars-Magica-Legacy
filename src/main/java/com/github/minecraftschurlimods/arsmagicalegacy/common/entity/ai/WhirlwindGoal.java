@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Whirlwind;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
@@ -19,11 +20,12 @@ public class WhirlwindGoal extends AbstractBossGoal<AirGuardian> {
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            Whirlwind entity = Objects.requireNonNull(AMEntities.WHIRLWIND.get().create(boss.getLevel()));
+        Level level = boss.level();
+        if (!level.isClientSide()) {
+            Whirlwind entity = Objects.requireNonNull(AMEntities.WHIRLWIND.get().create(level));
             entity.moveTo(boss.getX(), boss.getY() + boss.getEyeHeight(), boss.getZ());
             entity.setDeltaMovement(boss.getLookAngle());
-            boss.getLevel().addFreshEntity(entity);
+            level.addFreshEntity(entity);
         }
     }
 }

@@ -21,7 +21,7 @@ public class LifeDrain extends AbstractComponent {
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
         if (target.getEntity() instanceof LivingEntity living) {
             float damage = ArsMagicaAPI.get().getSpellHelper().getModifiedStat(2, living.isInvertedHealAndHarm() ? SpellPartStats.HEALING : SpellPartStats.DAMAGE, modifiers, spell, caster, target, index) * 2;
-            if (living.hurt(level.damageSources().outOfWorld(), damage)) {
+            if (living.hurt(level.damageSources().fellOutOfWorld(), damage)) {
                 caster.heal(damage);
             }
             return SpellCastResult.SUCCESS;

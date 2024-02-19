@@ -53,6 +53,7 @@ public class Shockwave extends Entity {
     @Override
     public void tick() {
         super.tick();
+        Level level = level();
         if (!level.isClientSide() && tickCount > 60) {
             kill();
         }

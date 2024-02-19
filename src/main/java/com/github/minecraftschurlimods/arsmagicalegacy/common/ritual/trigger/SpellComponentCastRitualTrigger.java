@@ -41,7 +41,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
     @Override
     public void register(Ritual ritual) {
         MinecraftForge.EVENT_BUS.addListener((SpellEvent.Cast.Component evt) -> {
-            if (evt.getEntity() instanceof Player player && player.getLevel() instanceof ServerLevel level && components.contains(evt.getComponent())) {
+            if (evt.getEntity() instanceof Player player && player.level() instanceof ServerLevel level && components.contains(evt.getComponent())) {
                 HitResult target = evt.getTarget();
                 if (target == null) return;
                 BlockPos pos = switch (target.getType()) {

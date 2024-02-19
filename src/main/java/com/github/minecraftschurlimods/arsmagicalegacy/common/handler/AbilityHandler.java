@@ -51,7 +51,7 @@ final class AbilityHandler {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;
             var helper = api.getAffinityHelper();
-            Ability ability = player.getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.NAUSEA);
+            Ability ability = player.level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.NAUSEA);
             if (ability != null && ability.test(player)) {
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int) (600 * helper.getAffinityDepthOrElse(player, ability.affinity(), 0))));
             }
@@ -62,7 +62,7 @@ final class AbilityHandler {
         LivingEntity entity = event.getEntity();
         var api = ArsMagicaAPI.get();
         var helper = api.getAffinityHelper();
-        var abilityRegistry = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
+        var abilityRegistry = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         if (event.getSource().getEntity() instanceof Player player) {
             Ability ability = abilityRegistry.get(AMAbilities.FIRE_PUNCH);
             if (ability != null && ability.test(player) && !entity.fireImmune()) {
@@ -108,7 +108,7 @@ final class AbilityHandler {
         if (entity instanceof Player player) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;
-            var abilityRegistry = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
+            var abilityRegistry = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
             var helper = api.getAffinityHelper();
             Ability ability = abilityRegistry.get(AMAbilities.JUMP_BOOST);
             if (ability != null && ability.test(player)) {
@@ -123,7 +123,7 @@ final class AbilityHandler {
         if (entity instanceof Player player) {
             var api = ArsMagicaAPI.get();
             if (!api.getMagicHelper().knowsMagic(player)) return;
-            var abilityRegistry = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
+            var abilityRegistry = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
             var helper = api.getAffinityHelper();
             Ability ability = abilityRegistry.get(AMAbilities.FEATHER_FALLING);
             if (ability != null && ability.test(player)) {
@@ -140,14 +140,14 @@ final class AbilityHandler {
         Player player = event.getPlayer();
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(player)) return;
-        Ability ability = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.ENDERMAN_PUMPKIN);
+        Ability ability = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.ENDERMAN_PUMPKIN);
         if (ability != null && ability.test(player)) {
             event.setCanceled(true);
         }
     }
 
     private static void potionApplicable(MobEffectEvent.Applicable event) {
-        Ability ability = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.POISON_RESISTANCE);
+        Ability ability = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.POISON_RESISTANCE);
         if (ability != null && event.getEntity() instanceof Player player && event.getEffectInstance().getEffect() == MobEffects.POISON && ability.test(player)) {
             event.setResult(Event.Result.DENY);
         }
@@ -157,7 +157,7 @@ final class AbilityHandler {
         LivingEntity caster = event.getEntity();
         if (caster instanceof Player player) {
             var api = ArsMagicaAPI.get();
-            Ability ability = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.MANA_REDUCTION);
+            Ability ability = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.MANA_REDUCTION);
             if (ability != null && ability.test(player)) {
                 event.setBase(event.getBase() * (float) (1 - (api.getAffinityHelper().getAffinityDepthOrElse(player, ability.affinity(), 0)) * 0.5f));
             }
@@ -167,7 +167,7 @@ final class AbilityHandler {
     @SuppressWarnings("DataFlowIssue")
     private static void affinityChangingPost(AffinityChangingEvent.Post event) {
         var api = ArsMagicaAPI.get();
-        var abilityRegistry = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
+        var abilityRegistry = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         var helper = api.getAffinityHelper();
         Affinity affinity = event.affinity;
         Player player = event.getEntity();
@@ -221,8 +221,8 @@ final class AbilityHandler {
 
     private static void spellCastPost(SpellEvent.Cast.Post event) {
         if (event.getEntity() instanceof Player player) {
-            Ability ability = event.getEntity().getLevel().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.CLARITY);
-            if (ability != null && ability.test(player) && player.getLevel().getRandom().nextBoolean()) {
+            Ability ability = event.getEntity().level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY).get(AMAbilities.CLARITY);
+            if (ability != null && ability.test(player) && player.level().getRandom().nextBoolean()) {
                 player.addEffect(new MobEffectInstance(AMMobEffects.CLARITY.get(), 1200));
             }
         }

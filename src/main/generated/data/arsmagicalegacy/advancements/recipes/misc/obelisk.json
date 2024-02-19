@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:obelisk"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

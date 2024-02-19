@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:yellow_rune"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

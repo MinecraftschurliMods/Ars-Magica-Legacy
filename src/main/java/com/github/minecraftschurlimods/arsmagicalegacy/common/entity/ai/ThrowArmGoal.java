@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WintersGras
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
@@ -26,14 +27,15 @@ public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            WintersGrasp entity = Objects.requireNonNull(AMEntities.WINTERS_GRASP.get().create(boss.getLevel()));
+        Level level = boss.level();
+        if (!level.isClientSide()) {
+            WintersGrasp entity = Objects.requireNonNull(AMEntities.WINTERS_GRASP.get().create(level));
             entity.moveTo(boss.position().add(0, 1, 0).add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
             entity.setXRot(boss.getXRot());
             entity.setYRot(boss.getYRot());
             entity.setOwner(boss);
-            boss.getLevel().addFreshEntity(entity);
+            level.addFreshEntity(entity);
             boss.launchArm();
         }
     }

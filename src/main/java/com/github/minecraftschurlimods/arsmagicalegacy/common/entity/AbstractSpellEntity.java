@@ -70,7 +70,7 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
 
     protected void forAllInRange(float radius, boolean skipOwner, Consumer<LivingEntity> consumer) {
         double x = getX(), y = getY(), z = getZ();
-        for (Entity e : level.getEntities(this, new AABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius))) {
+        for (Entity e : level().getEntities(this, new AABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius))) {
             if (e == this) continue;
             if (e instanceof PartEntity<?> part) {
                 e = part.getParent();

@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:crystal_wrench"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

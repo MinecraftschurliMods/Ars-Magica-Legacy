@@ -44,7 +44,7 @@ public class AddPoolToTableModifier extends LootModifier {
     @NotNull
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         if (tables.contains(context.getQueriedLootTableId())) {
-            context.getLootTable(source).getRandomItemsRaw(context, generatedLoot::add);
+            context.getResolver().getLootTable(source).getRandomItemsRaw(context, generatedLoot::add);
         }
         return generatedLoot;
     }

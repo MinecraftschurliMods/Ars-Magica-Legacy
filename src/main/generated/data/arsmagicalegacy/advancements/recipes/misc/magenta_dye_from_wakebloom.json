@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:magenta_dye_from_wakebloom"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

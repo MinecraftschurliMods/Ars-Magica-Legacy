@@ -12,13 +12,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
 public class AltarCoreBlock extends Block implements EntityBlock {
     public static final BooleanProperty FORMED = BooleanProperty.create("formed");
 
     public AltarCoreBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).strength(3));
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3));
         registerDefaultState(getStateDefinition().any().setValue(FORMED, false));
     }
 

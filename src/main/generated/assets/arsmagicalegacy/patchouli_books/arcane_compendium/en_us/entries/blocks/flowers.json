@@ -39,17 +39,17 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "arsmagicalegacy:pink_dye",
-      "recipe2": "arsmagicalegacy:blue_dye"
+      "recipe": "arsmagicalegacy:pink_dye_from_aum",
+      "recipe2": "arsmagicalegacy:blue_dye_from_cerublossom"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "arsmagicalegacy:red_dye",
-      "recipe2": "arsmagicalegacy:brown_dye"
+      "recipe": "arsmagicalegacy:red_dye_from_desert_nova",
+      "recipe2": "arsmagicalegacy:brown_dye_from_tarma_root"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "arsmagicalegacy:magenta_dye"
+      "recipe": "arsmagicalegacy:magenta_dye_from_wakebloom"
     }
   ]
 }

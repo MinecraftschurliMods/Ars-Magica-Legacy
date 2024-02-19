@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:red_dye_from_desert_nova"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

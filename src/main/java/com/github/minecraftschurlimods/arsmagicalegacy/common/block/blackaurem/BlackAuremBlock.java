@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -29,7 +28,7 @@ public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlo
     private static final BiPredicate<Level, BlockPos> PILLAR4 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR4);
 
     public BlackAuremBlock() {
-        super(BlockBehaviour.Properties.of(Material.AIR).color(MaterialColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
     }
 
     @Override

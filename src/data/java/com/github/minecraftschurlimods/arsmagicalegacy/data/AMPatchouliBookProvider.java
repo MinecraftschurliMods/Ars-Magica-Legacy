@@ -25,7 +25,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -134,9 +133,9 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSpotlightPage(new ItemStack(AMItems.DESERT_NOVA.get())).setText("Desert Novas grow in dry conditions. The Nova has extraordinary magical properties for a desert plant, and is highly sought after. It is one of the two plants used in the $(l:items/purified_vinteum_dust)purification process of Vinteum Dust$().").setAnchor("desert_nova").build()
                 .addSpotlightPage(new ItemStack(AMItems.TARMA_ROOT.get())).setText("Lighter than it looks, Tarma Root grows in mountain biomes. It is an ingredient in spells and air essences.").setAnchor("tarma_root").build()
                 .addSpotlightPage(new ItemStack(AMItems.WAKEBLOOM.get())).setText("Growing on the surface of water in warm climates, Wakebloom is used in water-based spells frequently, as well as being a component in water affinity essences.").setAnchor("wakebloom").build()
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.PINK_DYE).getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.BLUE_DYE).getPath()))
-                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.RED_DYE).getPath()), new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.BROWN_DYE).getPath()))
-                .addSimpleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, key(Items.MAGENTA_DYE).getPath()))
+                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, "pink_dye_from_aum"), new ResourceLocation(ArsMagicaAPI.MOD_ID, "blue_dye_from_cerublossom"))
+                .addSimpleDoubleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, "red_dye_from_desert_nova"), new ResourceLocation(ArsMagicaAPI.MOD_ID, "brown_dye_from_tarma_root"))
+                .addSimpleRecipePage("crafting", new ResourceLocation(ArsMagicaAPI.MOD_ID, "magenta_dye_from_wakebloom"))
                 .build()
                 .addEntry("inlays", "Inlays", new ItemStack(AMItems.IRON_INLAY.get()))
                 .addSimpleTextPage("Inlays are special, magically-enhanced rail variants. While their true purpose is currently unknown, they have already made themselves very useful for summoning bosses.")

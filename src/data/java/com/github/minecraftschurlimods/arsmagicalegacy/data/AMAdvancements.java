@@ -4,7 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.advancement.PlayerLearnedSkillTrigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -35,7 +35,7 @@ class AMAdvancements extends ForgeAdvancementProvider {
             registries.lookupOrThrow(Skill.REGISTRY_KEY).listElementIds().forEach(skill -> Advancement.Builder
                     .advancement()
                     .parent(root)
-                    .addCriterion("knows", new PlayerLearnedSkillTrigger.TriggerInstance(EntityPredicate.Composite.ANY, skill.location()))
+                    .addCriterion("knows", new PlayerLearnedSkillTrigger.TriggerInstance(ContextAwarePredicate.ANY, skill.location()))
                     .save(saver, ArsMagicaAPI.MOD_ID + ":book/" + skill.location().getPath()));
         }
     }

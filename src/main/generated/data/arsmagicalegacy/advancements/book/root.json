@@ -17,5 +17,6 @@
     [
       "arcane_compendium"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

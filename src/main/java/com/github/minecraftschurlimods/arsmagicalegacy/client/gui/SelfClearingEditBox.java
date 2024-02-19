@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringUtil;
@@ -17,7 +17,7 @@ public class SelfClearingEditBox extends EditBox {
     }
 
     @Override
-    public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (isFocused()) {
             if (getValue().equals(getMessage().getString())) {
                 setValue("");
@@ -27,6 +27,6 @@ public class SelfClearingEditBox extends EditBox {
             setValue(getMessage().getString());
             setTextColor(0x555555);
         }
-        super.renderWidget(matrixStack, mouseX, mouseY, partialTicks);
+        super.renderWidget(graphics, mouseX, mouseY, partialTicks);
     }
 }

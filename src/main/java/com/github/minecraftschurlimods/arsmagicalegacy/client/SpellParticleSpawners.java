@@ -707,7 +707,7 @@ public final class SpellParticleSpawners {
 
     private static void blizzard(Blizzard blizzard) {
         float radius = blizzard.getRadius();
-        RandomSource random = blizzard.getLevel().getRandom();
+        RandomSource random = blizzard.level().getRandom();
         int color = blizzard.getColor();
         AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), blizzard.getX(), blizzard.getY() + 10, blizzard.getZ(), ParticleTypes.SNOWFLAKE).forEach(particle -> {
             particle.setAlpha(0.6f);
@@ -760,7 +760,7 @@ public final class SpellParticleSpawners {
 
     private static void fireRain(FireRain fireRain) {
         float radius = fireRain.getRadius();
-        RandomSource random = fireRain.getLevel().getRandom();
+        RandomSource random = fireRain.level().getRandom();
         int color = fireRain.getColor();
         AMParticle.bulkCreate(100, (ClientLevel) Objects.requireNonNull(ClientHelper.getLocalLevel()), fireRain.getX(), fireRain.getY() + 10, fireRain.getZ(), AMParticleTypes.EXPLOSION.get()).forEach(particle -> {
             particle.setSpeed(random.nextDouble() * 0.2 - 0.1, random.nextDouble() * 0.1 - 0.05, random.nextDouble() * 0.2 - 0.1);
@@ -775,9 +775,9 @@ public final class SpellParticleSpawners {
 
     private static void manaVortex(ManaVortex manaVortex) {
         int duration = manaVortex.getDuration();
-        RandomSource random = manaVortex.getLevel().getRandom();
+        RandomSource random = manaVortex.level().getRandom();
         if (duration - manaVortex.tickCount > 30) {
-            AMParticle particle = particle(new EntityHitResult(manaVortex), AMParticleTypes.EMBER.get(), 0x3d3dcc, 10 + manaVortex.getLevel().getRandom().nextInt(10));
+            AMParticle particle = particle(new EntityHitResult(manaVortex), AMParticleTypes.EMBER.get(), 0x3d3dcc, 10 + manaVortex.level().getRandom().nextInt(10));
             particle.addRandomOffset(0.2, 0.2, 0.2);
         }
         if (duration - manaVortex.tickCount <= 10) {
@@ -840,11 +840,11 @@ public final class SpellParticleSpawners {
     }
 
     private static void wall(Wall wall) {
-        wallOrWave(wall.getSpell(), wall.level.getRandom(), wall.position(), wall.getRadius(), wall.getYRot(), wall.getColor());
+        wallOrWave(wall.getSpell(), wall.level().getRandom(), wall.position(), wall.getRadius(), wall.getYRot(), wall.getColor());
     }
 
     private static void wave(Wave wave) {
-        wallOrWave(wave.getSpell(), wave.level.getRandom(), wave.position(), wave.getRadius(), wave.getYRot(), wave.getColor());
+        wallOrWave(wave.getSpell(), wave.level().getRandom(), wave.position(), wave.getRadius(), wave.getYRot(), wave.getColor());
     }
 
     private static void zone(Zone zone) {

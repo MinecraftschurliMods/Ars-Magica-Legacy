@@ -59,7 +59,7 @@ public class FireGuardian extends AbstractBoss {
         super.registerGoals();
         goalSelector.addGoal(1, new FireRainGoal(this));
         goalSelector.addGoal(1, new FlamethrowerGoal(this));
-        Registry<PrefabSpell> prefabSpells = level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
+        Registry<PrefabSpell> prefabSpells = level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY);
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "fire_bolt")).spell(), 20));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "strong_fire_bolt")).spell(), 20));
         goalSelector.addGoal(1, new ExecuteBossSpellGoal<>(this, prefabSpells.get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "melt_armor")).spell(), 20));
@@ -68,13 +68,13 @@ public class FireGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (tickCount % 30 == 0) {
-            if (level.getRandom().nextInt(10) == 0) {
-                level.playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.get(), SoundSource.HOSTILE, 0.1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
+            if (level().getRandom().nextInt(10) == 0) {
+                level().playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.get(), SoundSource.HOSTILE, 0.1f, 0.5f + level().getRandom().nextFloat() * 0.5f);
             }
-            if (level.isClientSide()) {
+            if (level().isClientSide()) {
                 // Particles
             } else {
-                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
+                for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
                     e.hurt(damageSources().onFire(), 5);
                 }
             }
@@ -83,10 +83,10 @@ public class FireGuardian extends AbstractBoss {
             if (getTarget() != null) {
                 lookAt(getTarget(), 10, 10);
             }
-            level.playSound(null, this, AMSounds.FIRE_GUARDIAN_FLAMETHROWER.get(), SoundSource.HOSTILE, 1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
+            level().playSound(null, this, AMSounds.FIRE_GUARDIAN_FLAMETHROWER.get(), SoundSource.HOSTILE, 1f, 0.5f + level().getRandom().nextFloat() * 0.5f);
             flamethrower();
         }
-        for (Player p : level.players()) {
+        for (Player p : level().players()) {
             if (distanceToSqr(p) < 9) {
                 p.hurt(damageSources().onFire(), 8);
             }
@@ -120,12 +120,12 @@ public class FireGuardian extends AbstractBoss {
 
     public void flamethrower() {
         Vec3 look = getLookAngle();
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             for (int i = 0; i < 20; i++) {
-                level.addParticle(ParticleTypes.FLAME, getRandomX(1), getRandomY() + 1.5, getRandomZ(1), look.x, look.y, look.z);
+                level().addParticle(ParticleTypes.FLAME, getRandomX(1), getRandomY() + 1.5, getRandomZ(1), look.x, look.y, look.z);
             }
         } else {
-            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3), e -> !(e instanceof AbstractBoss))) {
+            for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(look.x * 3, 0, look.z * 3), e -> !(e instanceof AbstractBoss))) {
                 e.hurt(damageSources().onFire(), 8);
             }
         }

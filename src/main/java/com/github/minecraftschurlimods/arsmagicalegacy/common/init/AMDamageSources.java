@@ -23,22 +23,22 @@ public interface AMDamageSources {
     }
 
     static DamageSource natureScythe(Entity directSource, @Nullable Entity indirectSource) {
-        return new DamageSource(type(directSource.level.registryAccess(), NATURE_SCYTHE), directSource, indirectSource);
+        return new DamageSource(type(directSource.level().registryAccess(), NATURE_SCYTHE), directSource, indirectSource);
     }
 
     static DamageSource shockwave(Entity source) {
-        return new DamageSource(type(source.level.registryAccess(), SHOCKWAVE), source);
+        return new DamageSource(type(source.level().registryAccess(), SHOCKWAVE), source);
     }
 
     static DamageSource fallingStar(Entity source) {
-        return new DamageSource(type(source.level.registryAccess(), FALLING_STAR), source);
+        return new DamageSource(type(source.level().registryAccess(), FALLING_STAR), source);
     }
 
     static DamageSource thrownRock(Entity directSource, @Nullable Entity indirectSource) {
-        return new DamageSource(type(directSource.level.registryAccess(), THROWN_ROCK), directSource, indirectSource);
+        return new DamageSource(type(directSource.level().registryAccess(), THROWN_ROCK), directSource, indirectSource);
     }
 
     static DamageSource wind(Entity directSource) {
-        return new DamageSource(type(directSource.level.registryAccess(), WIND), directSource);
+        return new DamageSource(type(directSource.level().registryAccess(), WIND), directSource);
     }
 }

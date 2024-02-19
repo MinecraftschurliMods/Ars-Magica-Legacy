@@ -17,7 +17,7 @@ public final class NatureGuardianSpawnHandler {
     private static final Map<UUID, Integer> dryadKills = new HashMap<>();
 
     static void dryadDeath(LivingDeathEvent event) {
-        if (!(event.getEntity().getLevel() instanceof ServerLevel serverLevel)) return;
+        if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
         long cooldown = Config.SERVER.DRYAD_KILL_COOLDOWN.get();
         if (cooldown == 0) return;
         if (event.getEntity().getType() != AMEntities.DRYAD.get()) return;

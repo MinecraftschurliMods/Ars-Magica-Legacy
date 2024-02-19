@@ -2,8 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.SpellBookMenu;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -24,26 +23,25 @@ public class SpellBookScreen extends AbstractContainerScreen<SpellBookMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
-        renderBackground(poseStack);
-        RenderSystem.setShaderTexture(0, GUI);
-        blit(poseStack, (width - imageWidth) >> 1, (height - imageHeight) >> 1, 0, 0, imageWidth, imageHeight);
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+        renderBackground(graphics);
+        graphics.blit(GUI, (width - imageWidth) >> 1, (height - imageHeight) >> 1, 0, 0, imageWidth, imageHeight);
     }
 
     @Override
-    public void render(final PoseStack pPoseStack, final int pMouseX, final int pMouseY, final float pPartialTick) {
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(graphics, pMouseX, pMouseY, pPartialTick);
+        this.renderTooltip(graphics, pMouseX, pMouseY);
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    protected void renderLabels(GuiGraphics graphics, int pMouseX, int pMouseY) {
         for (int i = 0; i < 8; i++) {
             Slot slot = menu.slots.get(i);
             ItemStack item = slot.getItem();
             if (item.isEmpty()) continue;
             Component name = item.getHoverName();
-            font.draw(pPoseStack, name, 37, 5 + i * 18, Optional.ofNullable(name.getStyle().getColor()).orElse(TextColor.fromRgb(0x000000)).getValue());
+            graphics.drawString(font, name, 37, 5 + i * 18, Optional.ofNullable(name.getStyle().getColor()).orElse(TextColor.fromRgb(0x000000)).getValue(), false);
         }
     }
 }

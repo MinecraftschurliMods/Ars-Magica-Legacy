@@ -20,10 +20,10 @@ public class CloneGoal extends AbstractBossGoal<WaterGuardian> {
     }
 
     private WaterGuardian spawnClone() {
-        WaterGuardian clone = new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), boss.getLevel());
+        WaterGuardian clone = new WaterGuardian(AMEntities.WATER_GUARDIAN.get(), boss.level());
         clone.setMaster(boss);
         clone.setPos(boss.getX(), boss.getY(), boss.getZ());
-        boss.getLevel().addFreshEntity(clone);
+        boss.level().addFreshEntity(clone);
         return clone;
     }
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:affinity_essence_air"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

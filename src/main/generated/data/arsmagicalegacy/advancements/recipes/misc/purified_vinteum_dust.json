@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:purified_vinteum_dust"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

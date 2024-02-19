@@ -25,7 +25,7 @@ public class Repel extends AbstractComponent {
 
     private static SpellCastResult performRepel(@Nullable Entity targetEntity, AABB aabb, LivingEntity caster, Vec3 targetPos, List<ISpellModifier> modifiers, ISpell spell, HitResult target, final int index) {
         boolean success = false;
-        for (Entity e : caster.level.getEntities(targetEntity, aabb)) {
+        for (Entity e : caster.level().getEntities(targetEntity, aabb)) {
             if (e == caster) continue;
             if (e instanceof AbstractSpellEntity effect && effect.getOwner() != null && effect.getOwner().is(e)) continue;
             success = true;

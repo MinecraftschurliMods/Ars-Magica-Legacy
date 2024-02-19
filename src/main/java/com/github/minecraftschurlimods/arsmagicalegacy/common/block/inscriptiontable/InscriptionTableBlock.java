@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -49,7 +48,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     private static final String TIER_KEY = "tier";
 
     public InscriptionTableBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD).strength(2).lightLevel(state -> 1).noOcclusion());
+        super(BlockBehaviour.Properties.of().strength(2).lightLevel(state -> 1).noOcclusion());
     }
 
     @Override

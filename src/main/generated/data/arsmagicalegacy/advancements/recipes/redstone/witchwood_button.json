@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:witchwood_button"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

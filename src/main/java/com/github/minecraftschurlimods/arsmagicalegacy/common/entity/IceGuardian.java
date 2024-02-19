@@ -58,7 +58,7 @@ public class IceGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (this.tickCount % 100 == 0) {
-            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
+            for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
                 e.hurt(damageSources().freeze(), 4);
             }
         }
@@ -101,12 +101,12 @@ public class IceGuardian extends AbstractBoss {
 
     public void launchArm() {
         arms--;
-        level.broadcastEntityEvent(this, (byte) (arms - 8));
+        level().broadcastEntityEvent(this, (byte) (arms - 8));
     }
 
     public void returnArm() {
         arms++;
-        level.broadcastEntityEvent(this, (byte) (arms - 8));
+        level().broadcastEntityEvent(this, (byte) (arms - 8));
     }
 
     public boolean canLaunchArm() {

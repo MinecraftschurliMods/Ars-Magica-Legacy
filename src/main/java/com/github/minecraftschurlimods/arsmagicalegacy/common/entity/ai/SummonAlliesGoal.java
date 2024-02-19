@@ -29,20 +29,21 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
     @Override
     public void perform() {
         if (boss.minions.size() > 1) return;
+        Level level = boss.level();
         for (int i = 0; i < 3; i++) {
-            Mob entity = list.get(boss.getLevel().getRandom().nextInt(list.size())).apply(boss.getLevel());
+            Mob entity = list.get(level.getRandom().nextInt(list.size())).apply(level);
             if (entity == null) continue;
-            BlockPos pos = BlockPos.containing(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
-            for (int j = 0; j <= 100 && !boss.getLevel().getBlockState(pos).isValidSpawn(boss.getLevel(), pos, entity.getType()); j++) {
-                pos = BlockPos.containing(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
+            BlockPos pos = BlockPos.containing(boss.getX() + level.getRandom().nextDouble() * 4 - 2, boss.getY() + level.getRandom().nextDouble() * 4 - 2, boss.getZ() + level.getRandom().nextDouble() * 4 - 2);
+            for (int j = 0; j <= 100 && !level.getBlockState(pos).isValidSpawn(level, pos, entity.getType()); j++) {
+                pos = BlockPos.containing(boss.getX() + level.getRandom().nextDouble() * 4 - 2, boss.getY() + level.getRandom().nextDouble() * 4 - 2, boss.getZ() + level.getRandom().nextDouble() * 4 - 2);
             }
-            entity.moveTo(boss.getX() + boss.getLevel().getRandom().nextDouble() * 2 - 1, boss.getY(), boss.getZ() + boss.getLevel().getRandom().nextDouble() * 2 - 1);
+            entity.moveTo(boss.getX() + level.getRandom().nextDouble() * 2 - 1, boss.getY(), boss.getZ() + level.getRandom().nextDouble() * 2 - 1);
             int amplifier = (int) Math.abs(2 * boss.getHealth() / boss.getMaxHealth() - 2);
             entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10000, amplifier));
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10000, amplifier));
             entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10000, amplifier));
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 10000, amplifier));
-            boss.getLevel().addFreshEntity(entity);
+            level.addFreshEntity(entity);
             boss.minions.add(entity);
         }
     }

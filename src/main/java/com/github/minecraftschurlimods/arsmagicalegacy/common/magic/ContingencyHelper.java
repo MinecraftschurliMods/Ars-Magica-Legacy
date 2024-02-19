@@ -56,7 +56,7 @@ public final class ContingencyHelper implements IContingencyHelper {
         entity.getCapability(CONTINGENCY).ifPresent(contingency -> {
             IForgeRegistry<ContingencyType> registry = ArsMagicaAPI.get().getContingencyTypeRegistry();
             if (!registry.containsKey(type) || !Objects.equals(contingency.type, type)) return;
-            contingency.execute(entity.level, entity);
+            contingency.execute(entity.level(), entity);
             contingency.clear();
         });
     }

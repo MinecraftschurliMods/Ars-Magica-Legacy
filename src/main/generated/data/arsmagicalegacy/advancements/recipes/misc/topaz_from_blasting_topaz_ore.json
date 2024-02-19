@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:topaz_from_blasting_topaz_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -70,7 +70,7 @@ final class EffectHandler {
 
     private static void livingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!event.getSource().is(DamageTypes.OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
+        if (!event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
         }
         if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
@@ -105,19 +105,19 @@ final class EffectHandler {
     }
 
     private static void potionAdded(MobEffectEvent.Added event) {
-        if (!event.getEntity().level.isClientSide() && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
             effect.startEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
     private static void potionExpiry(MobEffectEvent.Expired event) {
-        if (!event.getEntity().level.isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }
 
     private static void potionRemove(MobEffectEvent.Remove event) {
-        if (!event.getEntity().level.isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
+        if (!event.getEntity().level().isClientSide() && !(event.getEffectInstance() == null) && event.getEffectInstance().getEffect() instanceof AMMobEffect effect) {
             effect.stopEffect(event.getEntity(), event.getEffectInstance());
         }
     }

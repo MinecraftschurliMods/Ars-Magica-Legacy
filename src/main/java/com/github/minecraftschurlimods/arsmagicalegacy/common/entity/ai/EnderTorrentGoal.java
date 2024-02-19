@@ -10,7 +10,7 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class EnderTorrentGoal extends ExecuteBossSpellGoal<EnderGuardian> {
     public EnderTorrentGoal(EnderGuardian caster) {
-        super(caster, caster.level.registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10);
+        super(caster, caster.level().registryAccess().registryOrThrow(PrefabSpell.REGISTRY_KEY).get(new ResourceLocation(ArsMagicaAPI.MOD_ID, "ender_bolt")).spell(), 10);
     }
 
     @Override
@@ -19,9 +19,9 @@ public class EnderTorrentGoal extends ExecuteBossSpellGoal<EnderGuardian> {
         if (caster.getTarget() != null) {
             caster.getLookControl().setLookAt(caster.getTarget(), 30, 30);
             if (caster.getTicksInAction() % 2 == 0) {
-                ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, caster.getLevel(), new EntityHitResult(caster), caster.getTicksInAction(), 0, false);
+                ArsMagicaAPI.get().getSpellHelper().invoke(spell, caster, caster.level(), new EntityHitResult(caster), caster.getTicksInAction(), 0, false);
             } else if (caster.getTicksInAction() == 10) {
-                caster.getLevel().playSound(null, caster, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + caster.getRandom().nextDouble() * 0.5f));
+                caster.level().playSound(null, caster, AMSounds.ENDER_GUARDIAN_ATTACK.get(), SoundSource.HOSTILE, 1.0f, (float) (0.5 + caster.getRandom().nextDouble() * 0.5f));
             }
         }
     }
