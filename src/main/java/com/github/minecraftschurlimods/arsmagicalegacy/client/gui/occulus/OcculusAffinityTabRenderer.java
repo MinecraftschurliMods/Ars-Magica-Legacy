@@ -8,14 +8,15 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.RenderUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -31,13 +32,13 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
     }
 
     @Override
-    protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderBg(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.background(getMinecraft().getConnection().registryAccess()));
-        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, 0, 0, 0, 1, 1);
+        RenderUtil.drawBox(graphics, 0, 0, width, height, 0, 0, 0, 1, 1);
     }
 
     @Override
-    protected void renderFg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+    protected void renderFg(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
         var api = ArsMagicaAPI.get();
         var helper = api.getAffinityHelper();
         var registry = api.getAffinityRegistry();
@@ -71,61 +72,62 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             currentID++;
             int displace = (int) ((Math.max(affStartX1, affStartX2) - Math.min(affStartX1, affStartX2) + Math.max(affStartY1, affStartY2) - Math.min(affStartY1, affStartY2)) / 2);
             if (depth > 0.01F) {
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(graphics, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(graphics, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(graphics, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(graphics, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
             } else {
-                RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
-                RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
+                RenderUtil.line2d(graphics, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
+                RenderUtil.line2d(graphics, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
             }
-            drawString(pMatrixStack, getFont(), "%.2f".formatted(depth), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
+            graphics.drawString(getFont(), "%.2f".formatted(depth), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
             xMovement = affDrawTextX == 0 ? 0 : xMovement;
             int yMovement = affDrawTextY > 0 ? 5 : -5;
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            getItemRenderer().renderAndDecorateFakeItem(pMatrixStack, helper.getEssenceForAffinity(aff), drawX, drawY);
-            if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
-                drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
-                abilityRegistry.stream()
-                               .filter(ability -> aff.getId().equals(ability.affinity().getId()))
-                               .sorted((o1, o2) -> (int) ((Objects.requireNonNullElse(o1.bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(o2.bounds().getMin(), 0D) * 100)))
-                               .forEach(ability -> {
-                    boolean test = ability.test(player);
-                    MutableComponent component = ability.getDisplayName(registryAccess).copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
-                    if (Screen.hasShiftDown()) {
-                        MinMaxBounds.Doubles range = ability.bounds();
-                        Double lower = range.getMin();
-                        Double upper = range.getMax();
-                        if (lower != null || upper != null) {
-                            MutableComponent cmp = Component.literal(" (");
-                            if (lower != null) {
-                                cmp.append(Component.translatable(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
-                                if (upper != null) {
-                                    cmp.append(", ");
+            ItemStack essenceForAffinity = helper.getEssenceForAffinity(aff);
+            graphics.renderFakeItem(essenceForAffinity, drawX, drawY);
+            graphics.renderItemDecorations(getFont(), essenceForAffinity, drawX, drawY);
+            if (pMouseX <= drawX || pMouseX >= drawX + 16 || pMouseY <= drawY || pMouseY >= drawY + 16) continue;
+            drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
+            abilityRegistry.stream()
+                    .filter(ability -> aff.getId().equals(ability.affinity().getId()))
+                    .sorted((o1, o2) -> (int) ((Objects.requireNonNullElse(o1.bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(o2.bounds().getMin(), 0D) * 100)))
+                    .forEach(ability -> {
+                        boolean test = ability.test(player);
+                        MutableComponent component = ability.getDisplayName(registryAccess).copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
+                        if (Screen.hasShiftDown()) {
+                            MinMaxBounds.Doubles range = ability.bounds();
+                            Double lower = range.getMin();
+                            Double upper = range.getMax();
+                            if (lower != null || upper != null) {
+                                MutableComponent cmp = Component.literal(" (");
+                                if (lower != null) {
+                                    cmp.append(Component.translatable(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
+                                    if (upper != null) {
+                                        cmp.append(", ");
+                                    }
                                 }
+                                if (upper != null) {
+                                    cmp.append(Component.translatable(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
+                                }
+                                cmp.append(")");
+                                component.append(cmp);
                             }
-                            if (upper != null) {
-                                cmp.append(Component.translatable(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
-                            }
-                            cmp.append(")");
-                            component.append(cmp);
                         }
-                    }
-                    drawString.add(component);
-                });
-            }
+                        drawString.add(component);
+                    });
         }
         if (!drawString.isEmpty()) {
             if (!Screen.hasShiftDown()) {
                 drawString.add(Component.translatable(TranslationConstants.HOLD_SHIFT_FOR_DETAILS).withStyle(ChatFormatting.GRAY));
             }
-            pMatrixStack.pushPose();
-            pMatrixStack.translate(-posX, -posY, 0);
-            parent.renderTooltip(pMatrixStack, drawString, Optional.empty(), pMouseX + posX, pMouseY + posY, getFont());
-            pMatrixStack.popPose();
+            graphics.pose().pushPose();
+            graphics.pose().translate(-posX, -posY, 0);
+            graphics.renderTooltip(getFont(), drawString, Optional.empty(), pMouseX + posX, pMouseY + posY);
+            graphics.pose().popPose();
         }
         RenderSystem.setShaderFogColor(1, 1, 1);
     }

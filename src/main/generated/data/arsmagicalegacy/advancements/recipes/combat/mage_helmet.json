@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:mage_helmet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

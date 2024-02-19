@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:occulus"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

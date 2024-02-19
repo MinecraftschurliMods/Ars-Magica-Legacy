@@ -20,10 +20,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -104,7 +104,7 @@ public final class AMUtil {
      * @return A dummy item stack, enchanted with the given levels of fortune and silk touch.
      */
     public static ItemStack createDummyStack(int fortune, int silkTouch) {
-        ItemStack stack = new ItemStack((ItemLike) null);
+        ItemStack stack = new ItemStack(Items.NETHERITE_PICKAXE);
         stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
         stack.enchant(Enchantments.SILK_TOUCH, silkTouch);
         return stack;
@@ -129,11 +129,11 @@ public final class AMUtil {
      * @return The hit result (ray trace result).
      */
     public static HitResult getHitResult(Vec3 from, Vec3 to, Entity entity, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
-        HitResult hitResult = entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
+        HitResult hitResult = entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
         if (hitResult.getType() != HitResult.Type.MISS) {
             to = hitResult.getLocation();
         }
-        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level, entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1), e -> true);
+        HitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level(), entity, from, to, entity.getBoundingBox().expandTowards(entity.getDeltaMovement()).inflate(1), e -> true);
         if (entityHitResult != null) {
             hitResult = entityHitResult;
         }

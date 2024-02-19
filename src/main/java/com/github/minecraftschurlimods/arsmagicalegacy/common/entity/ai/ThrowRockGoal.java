@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EarthGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ThrownRock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
+import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
@@ -20,17 +21,18 @@ public class ThrowRockGoal extends AbstractBossGoal<EarthGuardian> {
     @Override
     public void performTick() {
         super.performTick();
-        boss.getLevel().broadcastEntityEvent(boss, ticks > 2 && ticks < 16 ? (byte) -8 : (byte) -9);
+        boss.level().broadcastEntityEvent(boss, ticks > 2 && ticks < 16 ? (byte) -8 : (byte) -9);
     }
 
     @Override
     public void perform() {
-        if (!boss.getLevel().isClientSide()) {
-            ThrownRock entity = Objects.requireNonNull(AMEntities.THROWN_ROCK.get().create(boss.getLevel()));
+        Level level = boss.level();
+        if (!level.isClientSide()) {
+            ThrownRock entity = Objects.requireNonNull(AMEntities.THROWN_ROCK.get().create(level));
             entity.moveTo(boss.getEyePosition().add(boss.getLookAngle()));
             entity.setDeltaMovement(boss.getLookAngle());
             entity.setOwner(boss);
-            boss.getLevel().addFreshEntity(entity);
+            level.addFreshEntity(entity);
         }
     }
 }

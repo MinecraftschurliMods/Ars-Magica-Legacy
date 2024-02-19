@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:chimerite"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

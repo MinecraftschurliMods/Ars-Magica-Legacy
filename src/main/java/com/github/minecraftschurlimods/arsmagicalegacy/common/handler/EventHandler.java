@@ -56,6 +56,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -89,7 +90,6 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -103,6 +103,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -158,47 +159,56 @@ public final class EventHandler {
         CompatManager.init(event);
     }
 
-    private static void registerCreativeTabs(CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB, List.of(), List.of(CreativeModeTabs.SPAWN_EGGS), EventHandler::buildMainCreativeTab);
-        event.registerCreativeModeTab(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB, List.of(), List.of(ArsMagicaAPI.MAIN_CREATIVE_TAB), EventHandler::buildPrefabSpellsCreativeTab);
+    private static void registerCreativeTabs(RegisterEvent event) {
+        if (!event.getRegistryKey().equals(Registries.CREATIVE_MODE_TAB)) return;
+        event.register(Registries.CREATIVE_MODE_TAB, ArsMagicaAPI.MAIN_CREATIVE_TAB, EventHandler::buildMainCreativeTab);
+        event.register(Registries.CREATIVE_MODE_TAB, ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB, EventHandler::buildPrefabSpellsCreativeTab);
     }
 
-    private static void buildMainCreativeTab(CreativeModeTab.Builder builder) {
-        builder.icon(() -> ArsMagicaAPI.get().getBookStack())
-               .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
-               .displayItems((params, output) -> {
-                   List<ItemStack> list = new ArrayList<>();
-                   var api = ArsMagicaAPI.get();
-                   for (RegistryObject<? extends Item> o : AMRegistries.ITEMS.getEntries()) {
-                       if (!o.isPresent()) continue;
-                       Item item = o.get();
-                       if (item instanceof ISkillPointItem skillPointItem) {
-                           for (SkillPoint point : api.getSkillPointRegistry().getValues()) {
-                               if (point != AMSkillPoints.NONE.get()) {
+    private static CreativeModeTab buildMainCreativeTab() {
+        return CreativeModeTab
+                .builder()
+                .withTabsBefore(CreativeModeTabs.SPAWN_EGGS, CreativeModeTabs.OP_BLOCKS)
+                .withTabsAfter(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB)
+                .icon(() -> ArsMagicaAPI.get().getBookStack())
+                .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
+                .displayItems((params, output) -> {
+                    List<ItemStack> list = new ArrayList<>();
+                    var api = ArsMagicaAPI.get();
+                    for (RegistryObject<? extends Item> o : AMRegistries.ITEMS.getEntries()) {
+                        if (!o.isPresent()) continue;
+                        Item item = o.get();
+                        if (item instanceof ISkillPointItem skillPointItem) {
+                        for (SkillPoint point : api.getSkillPointRegistry().getValues()) {
+                            if (point != AMSkillPoints.NONE.get()) {
                                    list.add(skillPointItem.setSkillPoint(new ItemStack(item), point));
                                }
-                           }
-                           continue;
-                       }
-                       if (item instanceof IAffinityItem affinityItem) {
-                           for (Affinity affinity : api.getAffinityRegistry()) {
-                               if (Affinity.NONE.equals(affinity.getId())) continue;
-                               list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
-                           }
-                           continue;
-                       }
-                       if (!AMItems.HIDDEN_ITEMS.contains(o)) {
-                           list.add(new ItemStack(item));
-                       }
-                   }
+                        }
+                        continue;
+                        }
+                        if (item instanceof IAffinityItem affinityItem) {
+                            for (Affinity affinity : api.getAffinityRegistry()) {
+                                if (Affinity.NONE.equals(affinity.getId())) continue;
+                                list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
+                            }
+                            continue;
+                        }
+                        if (!AMItems.HIDDEN_ITEMS.contains(o)) {
+                            list.add(new ItemStack(item));
+                        }
+                    }
                    output.acceptAll(list);
-               });
+                }).build();
     }
 
-    private static void buildPrefabSpellsCreativeTab(CreativeModeTab.Builder builder) {
-        builder.icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
-               .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
-               .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
+    private static CreativeModeTab buildPrefabSpellsCreativeTab() {
+        return CreativeModeTab
+                .builder()
+                .withTabsBefore(ArsMagicaAPI.MAIN_CREATIVE_TAB)
+                .icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
+                .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
+                .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept))
+                .build();
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {
@@ -409,7 +419,7 @@ public final class EventHandler {
             if (minEarnLevel < 0 || levelsForPoint < 0) continue;
             if (level >= minEarnLevel && (level - minEarnLevel) % levelsForPoint == 0) {
                 api.getSkillHelper().addSkillPoint(player, skillPoint);
-                event.getEntity().getLevel().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
+                event.getEntity().level().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
             }
         }
         float newMaxMana = Config.SERVER.MANA_BASE.get().floatValue() + Config.SERVER.MANA_MULTIPLIER.get().floatValue() * (level - 1);
@@ -434,6 +444,6 @@ public final class EventHandler {
         if (burnoutRegenAttr != null) {
             burnoutRegenAttr.setBaseValue(newMaxMana * Config.SERVER.BURNOUT_REGEN_MULTIPLIER.get() );
         }
-        event.getEntity().getLevel().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
+        event.getEntity().level().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), AMSounds.MAGIC_LEVEL_UP.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 }

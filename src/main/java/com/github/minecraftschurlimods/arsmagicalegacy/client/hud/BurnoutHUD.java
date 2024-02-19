@@ -2,8 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
@@ -13,7 +13,7 @@ public final class BurnoutHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, PoseStack poseStack, float partialTick) {
+    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float partialTick) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;
@@ -25,7 +25,7 @@ public final class BurnoutHUD extends AbstractHUD {
             maxBurnout = burnoutHelper.getMaxBurnout(player);
         }
         if (maxBurnout > 0) {
-            renderBar(poseStack, 0, 0, getWidth(), getHeight(), burnout, maxBurnout, 0x880000);
+            renderBar(graphics, 0, 0, getWidth(), getHeight(), burnout, maxBurnout, 0x880000);
         }
     }
 }

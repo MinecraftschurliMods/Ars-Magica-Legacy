@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.client;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -41,18 +41,18 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     }
 
     /**
-     * Don't call this method, use {@link OcculusTabRenderer#renderBg(PoseStack, int, int, float)} and {@link OcculusTabRenderer#renderFg(PoseStack, int, int, float)} instead.
+     * Don't call this method, use {@link OcculusTabRenderer#renderBg(GuiGraphics, int, int, float)} and {@link OcculusTabRenderer#renderFg(GuiGraphics, int, int, float)} instead.
      */
     @Internal
     @Override
-    public final void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        pMatrixStack.pushPose();
-        pMatrixStack.translate(7, 7, 0);
+    public final void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(7, 7, 0);
         pMouseX -= posX;
         pMouseY -= posY;
-        renderBg(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        renderFg(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        pMatrixStack.popPose();
+        renderBg(graphics, pMouseX, pMouseY, pPartialTicks);
+        renderFg(graphics, pMouseX, pMouseY, pPartialTicks);
+        graphics.pose().popPose();
     }
 
     /**
@@ -72,12 +72,12 @@ public abstract class OcculusTabRenderer extends AbstractContainerEventHandler i
     /**
      * Render the background in this method.
      */
-    protected abstract void renderBg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
+    protected abstract void renderBg(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks);
 
     /**
      * Render the foreground in this method.
      */
-    protected abstract void renderFg(PoseStack stack, int mouseX, int mouseY, float partialTicks);
+    protected abstract void renderFg(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks);
 
     @Override
     public List<? extends GuiEventListener> children() {

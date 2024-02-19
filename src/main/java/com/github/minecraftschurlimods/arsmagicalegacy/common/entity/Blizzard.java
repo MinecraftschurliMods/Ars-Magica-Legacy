@@ -58,14 +58,14 @@ public class Blizzard extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide() || tickCount % 5 != 0) return;
+        if (level().isClientSide() || tickCount % 5 != 0) return;
         float damage = getDamage();
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(damageSources().freeze(), damage);
             e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
         });
         if (tickCount > 0) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
         }
     }
 
@@ -81,7 +81,7 @@ public class Blizzard extends AbstractSpellEntity {
     @Override
     @Nullable
     public LivingEntity getOwner() {
-        Entity entity = level.getEntity(entityData.get(OWNER));
+        Entity entity = level().getEntity(entityData.get(OWNER));
         return entity instanceof LivingEntity living ? living : null;
     }
 

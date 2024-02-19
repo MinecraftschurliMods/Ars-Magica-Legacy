@@ -2,8 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag.RuneBagMenu;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,15 +22,14 @@ public class RuneBagScreen extends AbstractContainerScreen<RuneBagMenu> {
     }
 
     @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(pMatrixStack);
-        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        renderTooltip(pMatrixStack, pMouseX, pMouseY);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(graphics);
+        super.render(graphics, pMouseX, pMouseY, pPartialTicks);
+        renderTooltip(graphics, pMouseX, pMouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
-        RenderSystem.setShaderTexture(0, GUI);
-        blit(pPoseStack, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight);
+    protected void renderBg(GuiGraphics graphics, float pPartialTicks, int pMouseX, int pMouseY) {
+        graphics.blit(GUI, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight);
     }
 }

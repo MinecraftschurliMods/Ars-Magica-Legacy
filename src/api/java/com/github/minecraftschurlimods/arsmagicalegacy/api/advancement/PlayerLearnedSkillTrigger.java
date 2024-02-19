@@ -3,8 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.advancement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -23,9 +23,9 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
     }
 
     @Override
-    protected TriggerInstance createInstance(JsonObject pJson, EntityPredicate.Composite pPlayer, DeserializationContext pContext) {
+    protected TriggerInstance createInstance(JsonObject pJson, ContextAwarePredicate pPredicate, DeserializationContext pDeserializationContext) {
         ResourceLocation skill = pJson.has("skill") ? new ResourceLocation(GsonHelper.getAsString(pJson, "skill")) : null;
-        return new TriggerInstance(pPlayer, skill);
+        return new TriggerInstance(pPredicate, skill);
     }
 
     /**
@@ -40,8 +40,8 @@ public class PlayerLearnedSkillTrigger extends SimpleCriterionTrigger<PlayerLear
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final ResourceLocation skill;
 
-        public TriggerInstance(EntityPredicate.Composite pPlayer, ResourceLocation skill) {
-            super(PlayerLearnedSkillTrigger.ID, pPlayer);
+        public TriggerInstance(ContextAwarePredicate pPredicate, ResourceLocation skill) {
+            super(PlayerLearnedSkillTrigger.ID, pPredicate);
             this.skill = skill;
         }
 

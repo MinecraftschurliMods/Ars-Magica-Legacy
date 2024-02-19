@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:chimerite_from_blasting_chimerite_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

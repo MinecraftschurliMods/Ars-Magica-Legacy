@@ -28,5 +28,6 @@
     "recipes": [
       "arsmagicalegacy:witchwood_planks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

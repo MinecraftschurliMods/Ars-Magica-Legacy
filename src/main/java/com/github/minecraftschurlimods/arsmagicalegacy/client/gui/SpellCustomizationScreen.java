@@ -6,9 +6,9 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -17,7 +17,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.ScreenUtils;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,11 +57,10 @@ public class SpellCustomizationScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
-        blit(pPoseStack, xStart, yStart, 0, 0, imageWidth, imageHeight);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(graphics);
+        graphics.blit(BACKGROUND, xStart, yStart, 0, 0, imageWidth, imageHeight);
+        super.render(graphics, pMouseX, pMouseY, pPartialTick);
     }
 
     @Override
@@ -94,9 +92,9 @@ public class SpellCustomizationScreen extends Screen {
         }
 
         @Override
-        public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-            drawGradientRect(matrix, left, top, right, bottom, 0x80000000, 0x80000000);
-            super.render(matrix, mouseX, mouseY, partialTicks);
+        public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+            drawGradientRect(graphics, left, top, right, bottom, 0x80000000, 0x80000000);
+            super.render(graphics, mouseX, mouseY, partialTicks);
         }
 
         @Nullable
@@ -128,7 +126,7 @@ public class SpellCustomizationScreen extends Screen {
         }
 
         @Override
-        protected void drawPanel(PoseStack mStack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+        protected void drawPanel(GuiGraphics graphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
             int i = 0;
             ResourceLocation hovered = getHovered(mouseX - left - 2 * ICON_MARGIN, mouseY - top + (int) scrollDistance - 2 * ICON_MARGIN);
             RenderSystem.setShaderTexture(0, SpellIconAtlas.SPELL_ICON_ATLAS);
@@ -141,11 +139,11 @@ public class SpellCustomizationScreen extends Screen {
                 y += relativeY * ICON_MARGIN;
                 if (y > 0 && y < bottom) {
                     if (icon.equals(selected)) {
-                        ScreenUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
+                        graphics.fillGradient(x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffff00, 0xffffff00);
                     } else if (icon.equals(hovered)) {
-                        ScreenUtils.drawGradientRect(mStack.last().pose(), 1, x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
+                        graphics.fillGradient(x - ICON_MARGIN, y - ICON_MARGIN, x + ICON_SIZE + ICON_MARGIN, y + ICON_SIZE + ICON_MARGIN, 0xffffffff, 0xffffffff);
                     }
-                    blit(mStack, x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
+                    graphics.blit(x, y, 2, ICON_SIZE, ICON_SIZE, SpellIconAtlas.instance().getSprite(icon));
                 }
                 i++;
             }

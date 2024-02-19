@@ -5,9 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop.DragTargetArea;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,20 +67,19 @@ public class ShapeGroupArea extends DragTargetArea<SpellPartDraggable> {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShaderTexture(0, GUI);
-        GuiComponent.blit(pPoseStack, x, y, 5, 220, 18, WIDTH, HEIGHT, 256, 256);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        guiGraphics.blit(GUI, x, y, 5, 220, 18, WIDTH, HEIGHT, 256, 256);
         if (lockState == LockState.ALL) {
-            pPoseStack.pushPose();
-            pPoseStack.translate(0, 0, 10);
-            GuiComponent.fill(pPoseStack, x, y, x + WIDTH, y + HEIGHT, 0x7f000000);
-            pPoseStack.popPose();
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0, 0, 10);
+            guiGraphics.fill(x, y, x + WIDTH, y + HEIGHT, 0x7f000000);
+            guiGraphics.pose().popPose();
         }
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 int index = i * COLUMNS + j;
                 if (index >= contents.size()) return;
-                contents.get(index).render(pPoseStack, x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE + Y_PADDING, pPartialTick);
+                contents.get(index).render(guiGraphics, x + j * SpellPartDraggable.SIZE + X_PADDING, y + i * SpellPartDraggable.SIZE + Y_PADDING, pPartialTick);
             }
         }
     }

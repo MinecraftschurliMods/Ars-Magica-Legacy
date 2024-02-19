@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:inscription_table_tier_3"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "arsmagicalegacy:redstone_inlay"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
