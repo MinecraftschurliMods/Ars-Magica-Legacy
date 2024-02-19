@@ -9,12 +9,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiont
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk.ObeliskBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.spellrune.SpellRuneBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -42,12 +44,71 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.ALTAR_CORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.ALTAR_VIEW;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.AUM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.BLACK_AUREM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CELESTIAL_PRISM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CERUBLOSSOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CHIMERITE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CHIMERITE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_CHIMERITE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_MOONSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_TOPAZ_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_VINTEUM_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DESERT_NOVA;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.GOLD_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.INSCRIPTION_TABLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.IRON_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.LIQUID_ESSENCE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MAGIC_WALL;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MOONSTONE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MOONSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.OBELISK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.OCCULUS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_AUM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_CERUBLOSSOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_DESERT_NOVA;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_TARMA_ROOT;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_WAKEBLOOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_WITCHWOOD_SAPLING;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.REDSTONE_INLAY;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SPELL_RUNE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.STRIPPED_WITCHWOOD;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.STRIPPED_WITCHWOOD_LOG;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SUNSTONE_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SUNSTONE_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TARMA_ROOT;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TOPAZ_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TOPAZ_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_BLOCK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_ORE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_TORCH;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_WALL_TORCH;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WAKEBLOOM;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_BUTTON;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_DOOR;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_FENCE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_FENCE_GATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_HANGING_SIGN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_LEAVES;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_LOG;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_PLANKS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_PRESSURE_PLATE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SAPLING;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SIGN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SLAB;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_STAIRS;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_TRAPDOOR;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_WALL_HANGING_SIGN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_WALL_SIGN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WIZARDS_CHALK;
 
 @SuppressWarnings({"SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
-    AMBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, ArsMagicaAPI.MOD_ID, existingFileHelper);
+    AMBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -92,6 +153,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         buttonBlock(WITCHWOOD_BUTTON, WITCHWOOD_PLANKS);
         pressurePlateBlock(WITCHWOOD_PRESSURE_PLATE, WITCHWOOD_PLANKS);
         signBlock(WITCHWOOD_SIGN, WITCHWOOD_WALL_SIGN, WITCHWOOD_PLANKS);
+        hangingSignBlock(WITCHWOOD_HANGING_SIGN, WITCHWOOD_WALL_HANGING_SIGN, STRIPPED_WITCHWOOD_LOG);
         crossBlock(AUM);
         crossBlock(CERUBLOSSOM);
         crossBlock(DESERT_NOVA);
@@ -261,6 +323,12 @@ class AMBlockStateProvider extends BlockStateProvider {
 
     private void signBlock(Supplier<? extends StandingSignBlock> sign, Supplier<? extends WallSignBlock> wallSign, Supplier<? extends Block> block) {
         signBlock(sign.get(), wallSign.get(), blockTexture(block.get()));
+    }
+
+    private void hangingSignBlock(RegistryObject<? extends CeilingHangingSignBlock> sign, Supplier<? extends WallHangingSignBlock> wallSign, Supplier<? extends Block> block) {
+        ModelFile signModel = models().sign(sign.getId().getPath(), blockTexture(block.get()));
+        simpleBlock(sign.get(), signModel);
+        simpleBlock(wallSign.get(), signModel);
     }
 
     /**

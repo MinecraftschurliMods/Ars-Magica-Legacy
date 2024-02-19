@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,7 +58,7 @@ public class FireRain extends AbstractSpellEntity {
         super.tick();
         if (level.isClientSide() || tickCount % 5 != 0) return;
         forAllInRange(getRadius(), true,  e -> {
-            e.hurt(DamageSource.IN_FIRE, getDamage());
+            e.hurt(damageSources().inFire(), getDamage());
             e.setRemainingFireTicks(50);
         });
         if (tickCount > 0) {
@@ -78,8 +77,9 @@ public class FireRain extends AbstractSpellEntity {
 
     @Override
     @Nullable
-    public Entity getOwner() {
-        return level.getEntity(entityData.get(OWNER));
+    public LivingEntity getOwner() {
+        Entity entity = level.getEntity(entityData.get(OWNER));
+        return entity instanceof LivingEntity living ? living : null;
     }
 
     @Override

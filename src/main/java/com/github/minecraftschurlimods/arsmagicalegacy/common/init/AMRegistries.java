@@ -19,8 +19,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransformation;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -40,6 +40,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -52,22 +53,22 @@ import java.util.function.Supplier;
 @NonExtendable
 public interface AMRegistries {
     // Deferred Registers for vanilla registries
-    DeferredRegister<Block>                   BLOCKS              = DeferredRegister.create(ForgeRegistries.BLOCKS,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Fluid>                   FLUIDS              = DeferredRegister.create(ForgeRegistries.FLUIDS,             ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Item>                    ITEMS               = DeferredRegister.create(ForgeRegistries.ITEMS,              ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MobEffect>               MOB_EFFECTS         = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,        ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Attribute>               ATTRIBUTES          = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<SoundEvent>              SOUND_EVENTS        = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Potion>                  POTIONS             = DeferredRegister.create(ForgeRegistries.POTIONS,            ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Enchantment>             ENCHANTMENTS        = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<EntityType<?>>           ENTITY_TYPES        = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,       ArsMagicaAPI.MOD_ID);
-    DeferredRegister<BlockEntityType<?>>      BLOCK_ENTITY_TYPES  = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ParticleType<?>>         PARTICLE_TYPES      = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,     ArsMagicaAPI.MOD_ID);
-    DeferredRegister<MenuType<?>>             MENU_TYPES          = DeferredRegister.create(ForgeRegistries.MENU_TYPES,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<RecipeSerializer<?>>     RECIPE_SERIALIZERS  = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
-    DeferredRegister<StatType<?>>             STAT_TYPES          = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
-    DeferredRegister<ResourceLocation>        CUSTOM_STATS        = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY,      ArsMagicaAPI.MOD_ID);
-    DeferredRegister<Feature<?>>              FEATURES            = DeferredRegister.create(ForgeRegistries.FEATURES,           ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Block>               BLOCKS             = DeferredRegister.create(ForgeRegistries.BLOCKS,             ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Fluid>               FLUIDS             = DeferredRegister.create(ForgeRegistries.FLUIDS,             ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Item>                ITEMS              = DeferredRegister.create(ForgeRegistries.ITEMS,              ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MobEffect>           MOB_EFFECTS        = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,        ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Attribute>           ATTRIBUTES         = DeferredRegister.create(ForgeRegistries.ATTRIBUTES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<SoundEvent>          SOUND_EVENTS       = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Potion>              POTIONS            = DeferredRegister.create(ForgeRegistries.POTIONS,            ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Enchantment>         ENCHANTMENTS       = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<EntityType<?>>       ENTITY_TYPES       = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,       ArsMagicaAPI.MOD_ID);
+    DeferredRegister<BlockEntityType<?>>  BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ParticleType<?>>     PARTICLE_TYPES     = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES,     ArsMagicaAPI.MOD_ID);
+    DeferredRegister<MenuType<?>>         MENU_TYPES         = DeferredRegister.create(ForgeRegistries.MENU_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsMagicaAPI.MOD_ID);
+    DeferredRegister<StatType<?>>         STAT_TYPES         = DeferredRegister.create(ForgeRegistries.STAT_TYPES,         ArsMagicaAPI.MOD_ID);
+    DeferredRegister<ResourceLocation>    CUSTOM_STATS       = DeferredRegister.create(Registries.CUSTOM_STAT,             ArsMagicaAPI.MOD_ID);
+    DeferredRegister<Feature<?>>          FEATURES           = DeferredRegister.create(ForgeRegistries.FEATURES,           ArsMagicaAPI.MOD_ID);
 
     // Deferred Registers for forge registries
     DeferredRegister<FluidType>                            FLUID_TYPES             = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES,                      ArsMagicaAPI.MOD_ID);
@@ -152,38 +153,18 @@ public interface AMRegistries {
         RITUAL_EFFECT_TYPES.register(bus);
         SPELL_INGREDIENT_TYPES.register(bus);
 
-        // region Deferred Registries for custom datapack registries (do not use to register, use a data generator instead)
-        DeferredRegister<Ability>                ABILITIES                 = DeferredRegister.create(Ability.REGISTRY_KEY,                ArsMagicaAPI.MOD_ID);
-        DeferredRegister<Skill>                  SKILLS                    = DeferredRegister.create(Skill.REGISTRY_KEY,                  ArsMagicaAPI.MOD_ID);
-        DeferredRegister<Ritual>                 RITUALS                   = DeferredRegister.create(Ritual.REGISTRY_KEY,                 ArsMagicaAPI.MOD_ID);
-        DeferredRegister<OcculusTab>             OCCULUS_TABS              = DeferredRegister.create(OcculusTab.REGISTRY_KEY,             ArsMagicaAPI.MOD_ID);
-        DeferredRegister<SpellTransformation>    SPELL_TRANSFORMATIONS     = DeferredRegister.create(SpellTransformation.REGISTRY_KEY,    ArsMagicaAPI.MOD_ID);
-        DeferredRegister<AltarStructureMaterial> ALTAR_STRUCTURE_MATERIALS = DeferredRegister.create(AltarStructureMaterial.REGISTRY_KEY, ArsMagicaAPI.MOD_ID);
-        DeferredRegister<AltarCapMaterial>       ALTAR_CAP_MATERIALS       = DeferredRegister.create(AltarCapMaterial.REGISTRY_KEY,       ArsMagicaAPI.MOD_ID);
-        DeferredRegister<PrefabSpell>            PREFAB_SPELLS             = DeferredRegister.create(PrefabSpell.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
-        DeferredRegister<ObeliskFuel>            OBELISK_FUELS             = DeferredRegister.create(ObeliskFuel.REGISTRY_KEY,            ArsMagicaAPI.MOD_ID);
-        // endregion
+        bus.addListener(AMRegistries::registerDatapackRegistries);
+    }
 
-        // region Custom datapack registries get via RegistryAccess
-        ABILITIES.makeRegistry(() -> new RegistryBuilder<Ability>().dataPackRegistry(Ability.DIRECT_CODEC, Ability.DIRECT_CODEC));
-        SKILLS.makeRegistry(() -> new RegistryBuilder<Skill>().dataPackRegistry(Skill.DIRECT_CODEC, Skill.DIRECT_CODEC));
-        RITUALS.makeRegistry(() -> new RegistryBuilder<Ritual>().dataPackRegistry(Ritual.DIRECT_CODEC));
-        OCCULUS_TABS.makeRegistry(() -> new RegistryBuilder<OcculusTab>().dataPackRegistry(OcculusTab.CODEC, OcculusTab.CODEC));
-        SPELL_TRANSFORMATIONS.makeRegistry(() -> new RegistryBuilder<SpellTransformation>().dataPackRegistry(SpellTransformation.DIRECT_CODEC));
-        ALTAR_STRUCTURE_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarStructureMaterial>().dataPackRegistry(AltarStructureMaterial.CODEC, AltarStructureMaterial.CODEC));
-        ALTAR_CAP_MATERIALS.makeRegistry(() -> new RegistryBuilder<AltarCapMaterial>().dataPackRegistry(AltarCapMaterial.CODEC, AltarCapMaterial.CODEC));
-        PREFAB_SPELLS.makeRegistry(() -> new RegistryBuilder<PrefabSpell>().dataPackRegistry(PrefabSpell.DIRECT_CODEC, PrefabSpell.DIRECT_CODEC));
-        OBELISK_FUELS.makeRegistry(() -> new RegistryBuilder<ObeliskFuel>().dataPackRegistry(ObeliskFuel.DIRECT_CODEC, ObeliskFuel.NETWORK_CODEC));
-        // endregion
-
-        ABILITIES.register(bus);
-        SKILLS.register(bus);
-        RITUALS.register(bus);
-        OCCULUS_TABS.register(bus);
-        SPELL_TRANSFORMATIONS.register(bus);
-        ALTAR_STRUCTURE_MATERIALS.register(bus);
-        ALTAR_CAP_MATERIALS.register(bus);
-        PREFAB_SPELLS.register(bus);
-        OBELISK_FUELS.register(bus);
+    private static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
+        event.dataPackRegistry(Ability.REGISTRY_KEY, Ability.DIRECT_CODEC, Ability.DIRECT_CODEC);
+        event.dataPackRegistry(Skill.REGISTRY_KEY, Skill.DIRECT_CODEC, Skill.DIRECT_CODEC);
+        event.dataPackRegistry(Ritual.REGISTRY_KEY, Ritual.DIRECT_CODEC);
+        event.dataPackRegistry(OcculusTab.REGISTRY_KEY, OcculusTab.CODEC, OcculusTab.CODEC);
+        event.dataPackRegistry(SpellTransformation.REGISTRY_KEY, SpellTransformation.DIRECT_CODEC);
+        event.dataPackRegistry(AltarStructureMaterial.REGISTRY_KEY, AltarStructureMaterial.CODEC, AltarStructureMaterial.CODEC);
+        event.dataPackRegistry(AltarCapMaterial.REGISTRY_KEY, AltarCapMaterial.CODEC, AltarCapMaterial.CODEC);
+        event.dataPackRegistry(PrefabSpell.REGISTRY_KEY, PrefabSpell.DIRECT_CODEC, PrefabSpell.DIRECT_CODEC);
+        event.dataPackRegistry(ObeliskFuel.REGISTRY_KEY, ObeliskFuel.CODEC, ObeliskFuel.NETWORK_CODEC);
     }
 }

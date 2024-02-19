@@ -51,10 +51,10 @@ public class SpellCustomizationScreen extends Screen {
         yStart = (height - imageHeight) / 2;
         editBox = addRenderableWidget(new EditBox(font, xStart + 7, yStart + 7, 100, 16, editBox, Component.translatable(TranslationConstants.SPELL_CUSTOMIZATION_TITLE)));
         spellIconSelector = addRenderableWidget(new SpellIconSelector(xStart + 7, yStart + 30, imageWidth - 15, imageHeight - 38, spellIconSelector));
-        addRenderableWidget(new Button(xStart + 112, yStart + 5, 57, 20, CommonComponents.GUI_DONE, e -> {
+        addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, e -> {
             close();
             minecraft.setScreen(null);
-        }));
+        }).bounds(xStart + 112, yStart + 5, 57, 20).build());
     }
 
     @Override

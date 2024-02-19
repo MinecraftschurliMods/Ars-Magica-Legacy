@@ -7,11 +7,11 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import org.joml.Matrix4f;
 
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ public final class RenderUtil {
         Matrix4f pose = stack.last().pose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableTexture();
+        //RenderSystem.disableTexture(); // fixme
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
@@ -55,7 +55,7 @@ public final class RenderUtil {
         RenderSystem.lineWidth(1);
         RenderSystem.enableCull();
         RenderSystem.depthMask(true);
-        RenderSystem.enableTexture();
+        //RenderSystem.enableTexture(); // fixme
         RenderSystem.disableBlend();
         stack.popPose();
     }

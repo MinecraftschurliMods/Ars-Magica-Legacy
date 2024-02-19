@@ -31,17 +31,16 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         var api = ArsMagicaAPI.get();
         List<Pair<MutableComponent, Integer>> skillPoints = api.getSkillPointRegistry().getValues().stream().filter(e -> e != AMSkillPoints.NONE.get()).map(point -> Pair.of(point.getDisplayName().copy().append(Component.literal(" : " + api.getSkillHelper().getSkillPoint(player, point))), point.color())).toList();
         int maxSize = skillPoints.stream().map(Pair::getFirst).mapToInt(font::width).max().orElse(0) + 6;
-        setBlitOffset(-1);
         RenderSystem.setShaderTexture(0, SKILL_POINT_BG);
-        blit(stack, maxSize, 0, 252, 0, 4, 4);
-        blit(stack, maxSize, height - 4, 252, 252, 4, 4);
+        blit(stack, maxSize, 0, -1, 252, 0, 4, 4, 256, 256);
+        blit(stack, maxSize, height - 4, -1, 252, 252, 4, 4, 256, 256);
         int w = maxSize;
         int h = height - 8;
         while (w > 0) {
             int x = Math.min(w, 252);
             while (h > 0) {
                 int y = Math.min(h, 248);
-                blit(stack, w - x, 4 + h - y, 4, 4, x, y);
+                blit(stack, w - x, 4 + h - y, -1, 4, 4, x, y, 256, 256);
                 h -= y;
             }
             w -= x;
@@ -50,20 +49,23 @@ public class SkillPointPanel extends Screen implements NarratableEntry {
         h = height - 8;
         while (w > 0) {
             int x = Math.min(w, 252);
-            blit(stack, w - x, 0, 4, 0, x, 4);
-            blit(stack, w - x, height - 4, 4, 252, x, 4);
+            blit(stack, w - x, 0, -1, 4, 0, x, 4, 256, 256);
+            blit(stack, w - x, height - 4, -1, 4, 252, x, 4, 256, 256);
             w -= x;
         }
         while (h > 0) {
             int y = Math.min(h, 248);
-            blit(stack, maxSize, 4 + h - y, 252, 4, 4, y);
+            blit(stack, maxSize, 4 + h - y, -1, 252, 4, 4, y, 256, 256);
             h -= y;
         }
         int pointOffsetY = 5;
+        stack.pushPose();
+        stack.translate(0, 0, 1);
         for (Pair<MutableComponent, Integer> point : skillPoints) {
-            drawString(stack, font, point.getFirst(), 4, pointOffsetY, point.getSecond());
-            pointOffsetY += 10;
+            font.draw(stack, point.getFirst(), 4, pointOffsetY, point.getSecond() | 0xFF000000);
+            pointOffsetY += 12;
         }
+        stack.popPose();
         stack.popPose();
     }
 

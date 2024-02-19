@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class SpellRecipeItem extends Item {
     public SpellRecipeItem() {
-        super(AMItems.HIDDEN_ITEM_1);
+        super(AMItems.ITEM_1);
     }
 
     public static boolean placeInLectern(ItemStack stack, Player player, Level level, BlockPos pos) {
@@ -37,7 +37,7 @@ public class SpellRecipeItem extends Item {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof LecternBlockEntity lectern && state.getValue(LecternBlock.HAS_BOOK)) {
             ItemStack stack = lectern.getBook();
             lectern.setBook(ItemStack.EMPTY);
-            LecternBlock.resetBookState(level, pos, state, false);
+            LecternBlock.resetBookState(player, level, pos, state, false);
             if (!player.getInventory().add(stack)) {
                 player.drop(stack, false);
             }

@@ -6,13 +6,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowScy
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class NatureGuardian extends AbstractBoss {
     private boolean hasScythe = true;
@@ -60,9 +61,9 @@ public class NatureGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isFire() || pSource == DamageSource.FREEZE) {
+        if (pSource.is(DamageTypeTags.IS_FIRE) || pSource.is(DamageTypeTags.IS_FREEZING)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.DROWN) {
+        } else if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             heal(pAmount);
             return false;
         }
@@ -70,12 +71,14 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("nature_guardian"));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "spin", Action.SPIN));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "strike", Action.STRIKE));
-        data.addAnimationController(createActionAnimationController("nature_guardian", "throw", Action.THROW));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("nature_guardian"),
+                createActionAnimationController("nature_guardian", "idle", Action.IDLE),
+                createActionAnimationController("nature_guardian", "spin", Action.SPIN),
+                createActionAnimationController("nature_guardian", "strike", Action.STRIKE),
+                createActionAnimationController("nature_guardian", "throw", Action.THROW)
+        );
     }
 
     @Override

@@ -5,10 +5,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -35,10 +33,10 @@ public class Storm extends AbstractComponent {
                     double posX = caster.getX() + level.getRandom().nextDouble() * 100 - 50;
                     double posZ = caster.getZ() + level.getRandom().nextDouble() * 100 - 50;
                     double posY = caster.getY();
-                    while (!level.canSeeSky(new BlockPos(posX, posY, posZ))) {
+                    while (!level.canSeeSky(BlockPos.containing(posX, posY, posZ))) {
                         posY++;
                     }
-                    while (level.getBlockState(new BlockPos(posX, posY - 1, posZ)).getBlock().equals(Blocks.AIR)) {
+                    while (level.getBlockState(BlockPos.containing(posX, posY - 1, posZ)).getBlock().equals(Blocks.AIR)) {
                         posY--;
                     }
                     LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
@@ -47,11 +45,11 @@ public class Storm extends AbstractComponent {
                     level.addFreshEntity(bolt);
                 } else if (random < 80) {
                     List<Entity> entities = level.getEntities(caster, caster.getBoundingBox().inflate(50, 10, 50));
-                    if (entities.size() <= 0) return SpellCastResult.EFFECT_FAILED;
+                    if (entities.isEmpty()) return SpellCastResult.EFFECT_FAILED;
                     Entity entity = entities.get(level.random.nextInt(entities.size()));
                     if (entity != null && level.canSeeSky(entity.blockPosition())) {
                         if (caster instanceof Player) {
-                            entity.hurt(DamageSource.playerAttack((Player) caster), 1);
+                            entity.hurt(level.damageSources().playerAttack((Player) caster), 1);
                         }
                         LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                         bolt.setPos(entity.position());

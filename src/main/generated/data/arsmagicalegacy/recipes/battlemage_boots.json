@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "E": {
       "type": "forge:partial_nbt",
@@ -22,5 +23,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:battlemage_boots"
-  }
+  },
+  "show_notification": true
 }

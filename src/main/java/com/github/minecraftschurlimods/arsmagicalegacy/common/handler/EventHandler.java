@@ -4,15 +4,18 @@ import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.AffinityChangingEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.ContingencyType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IBurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.PrefabSpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AirGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ArcaneGuardian;
@@ -32,6 +35,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTri
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
@@ -46,10 +50,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -62,6 +69,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -79,6 +89,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -92,8 +103,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -119,6 +133,7 @@ public final class EventHandler {
         modBus.addListener(EventHandler::entityAttributeModification);
         modBus.addListener(EventHandler::enqueueIMC);
         modBus.addListener(EventHandler::registerSpawnPlacements);
+        modBus.addListener(EventHandler::registerCreativeTabs);
         forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
         forgeBus.addListener(EventHandler::addReloadListener);
         forgeBus.addListener(EventHandler::entityJoinWorld);
@@ -141,6 +156,49 @@ public final class EventHandler {
             AMCriteriaTriggers.register();
         });
         CompatManager.init(event);
+    }
+
+    private static void registerCreativeTabs(CreativeModeTabEvent.Register event) {
+        event.registerCreativeModeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB, List.of(), List.of(CreativeModeTabs.SPAWN_EGGS), EventHandler::buildMainCreativeTab);
+        event.registerCreativeModeTab(ArsMagicaAPI.PREFAB_SPELLS_CREATIVE_TAB, List.of(), List.of(ArsMagicaAPI.MAIN_CREATIVE_TAB), EventHandler::buildPrefabSpellsCreativeTab);
+    }
+
+    private static void buildMainCreativeTab(CreativeModeTab.Builder builder) {
+        builder.icon(() -> ArsMagicaAPI.get().getBookStack())
+               .title(Component.translatable(TranslationConstants.MAIN_CREATIVE_TAB))
+               .displayItems((params, output) -> {
+                   List<ItemStack> list = new ArrayList<>();
+                   var api = ArsMagicaAPI.get();
+                   for (RegistryObject<? extends Item> o : AMRegistries.ITEMS.getEntries()) {
+                       if (!o.isPresent()) continue;
+                       Item item = o.get();
+                       if (item instanceof ISkillPointItem skillPointItem) {
+                           for (SkillPoint point : api.getSkillPointRegistry().getValues()) {
+                               if (point != AMSkillPoints.NONE.get()) {
+                                   list.add(skillPointItem.setSkillPoint(new ItemStack(item), point));
+                               }
+                           }
+                           continue;
+                       }
+                       if (item instanceof IAffinityItem affinityItem) {
+                           for (Affinity affinity : api.getAffinityRegistry()) {
+                               if (Affinity.NONE.equals(affinity.getId())) continue;
+                               list.add(affinityItem.setAffinity(new ItemStack(item), affinity));
+                           }
+                           continue;
+                       }
+                       if (!AMItems.HIDDEN_ITEMS.contains(o)) {
+                           list.add(new ItemStack(item));
+                       }
+                   }
+                   output.acceptAll(list);
+               });
+    }
+
+    private static void buildPrefabSpellsCreativeTab(CreativeModeTab.Builder builder) {
+        builder.icon(() -> AMItems.SPELL_PARCHMENT.map(ItemStack::new).orElse(ItemStack.EMPTY))
+               .title(Component.translatable(TranslationConstants.PREFAB_SPELL_CREATIVE_TAB))
+               .displayItems((params, output) -> AMUtil.getRegistry(PrefabSpell.REGISTRY_KEY).stream().map(PrefabSpell::makeSpell).forEach(output::accept));
     }
 
     private static void registerSpawnPlacements(SpawnPlacementRegisterEvent evt) {

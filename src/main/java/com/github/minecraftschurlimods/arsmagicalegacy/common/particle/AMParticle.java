@@ -1,8 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,6 +17,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -328,14 +329,13 @@ public class AMParticle extends SimpleAnimatedParticle {
     @Override
     public void render(VertexConsumer vc, Camera camera, float partialTicks) {
         Vector3f[] vec = new Vector3f[]{new Vector3f(-1, -1, 0), new Vector3f(-1, 1, 0), new Vector3f(1, 1, 0), new Vector3f(1, -1, 0)};
-        Quaternion quaternion;
+        Quaternionf quaternion;
         if (roll == 0) {
             quaternion = camera.rotation();
         } else {
-            quaternion = new Quaternion(camera.rotation());
-            quaternion.mul(Vector3f.ZP.rotation(Mth.lerp(partialTicks, getOldRoll(), getRoll())));
+            quaternion = new Quaternionf(camera.rotation());
+            quaternion.mul(Axis.ZP.rotation(Mth.lerp(partialTicks, getOldRoll(), getRoll())));
         }
-        new Vector3f(-1, -1, 0).transform(quaternion);
         Vec3 position = camera.getPosition();
         float lerpedX = (float) (Mth.lerp(partialTicks, getXOld(), getX()) - position.x());
         float lerpedY = (float) (Mth.lerp(partialTicks, getYOld(), getY()) - position.y());
@@ -343,7 +343,7 @@ public class AMParticle extends SimpleAnimatedParticle {
         float quadSize = getQuadSize(partialTicks);
         for(int i = 0; i < 4; ++i) {
             Vector3f v = vec[i];
-            v.transform(quaternion);
+            v.rotate(quaternion);
             v.mul(quadSize);
             v.add(lerpedX, lerpedY, lerpedZ);
         }

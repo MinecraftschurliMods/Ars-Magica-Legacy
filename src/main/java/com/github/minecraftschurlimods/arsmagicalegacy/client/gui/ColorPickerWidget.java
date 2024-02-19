@@ -8,9 +8,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -18,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class ColorPickerWidget extends AbstractWidget {
@@ -63,7 +63,7 @@ public class ColorPickerWidget extends AbstractWidget {
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
         Vec2 mouseRel = getMouseRel(mouseX, mouseY);
         float dist = mouseRel.length();
         double angle = (float) Math.atan2(mouseRel.y, mouseRel.x);
@@ -79,17 +79,16 @@ public class ColorPickerWidget extends AbstractWidget {
         }
         renderColorWheel(poseStack);
         double v = hue.get() * TAU;
-        int x = this.x + (int) radius + (int) (radius * saturation.get() * Math.cos(v));
-        int y = this.y + (int) radius + (int) (radius * saturation.get() * Math.sin(v));
+        int x = getX() + (int) radius + (int) (radius * saturation.get() * Math.cos(v));
+        int y = getY() + (int) radius + (int) (radius * saturation.get() * Math.sin(v));
         fill(poseStack, x - 1, y - 1, x + 1, y + 1, ColorUtil.chooseBW(ColorUtil.hsbToRgb(hue.get(), saturation.get(), _brightness)) | 0xFF000000);
     }
 
     private void renderColorWheel(PoseStack poseStack) {
-        float cY = y + radius;
-        float cX = x + radius;
+        float cX = getX() + radius;
+        float cY = getY() + radius;
         poseStack.pushPose();
         RenderSystem.enableDepthTest();
-        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(AMShaders::getColorWheelShader);
@@ -99,10 +98,9 @@ public class ColorPickerWidget extends AbstractWidget {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.getBuilder();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(poseStack.last().pose(), builder, x, y, x + width, y + height, getBlitOffset(), 0xFFFFFFFF, 0xFFFFFFFF);
+        fillGradient(poseStack.last().pose(), builder, getX(), getY(), getX() + width, getY() + height, 0, 0xFFFFFFFF, 0xFFFFFFFF);
         tesselator.end();
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
         poseStack.popPose();
     }
 
@@ -151,14 +149,14 @@ public class ColorPickerWidget extends AbstractWidget {
     @NotNull
     private Vec2 getMouseRel(float mouseX, float mouseY) {
         Vec2 mouse = new Vec2(mouseX, mouseY);
-        float cY = y + radius;
-        float cX = x + radius;
+        float cX = getX() + radius;
+        float cY = getY() + radius;
         Vec2 center = new Vec2(-cX, -cY);
         return mouse.add(center);
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
     }
 
     public BrightnessSlider brightnessSlider(int x, int y, int width, int height, Component message, BrightnessSlider.Orientation orientation) {
@@ -168,11 +166,11 @@ public class ColorPickerWidget extends AbstractWidget {
         return brightnessSlider = new BrightnessSlider(x, y, width, height, message, orientation);
     }
 
-    public Widget hoverPreview(int x, int y, int width, int height) {
+    public Renderable hoverPreview(int x, int y, int width, int height) {
         return (poseStack, mouseX, mouseY, partialTick) -> fill(poseStack, x, y, x + width, y + height, getHoveredColorRGB());
     }
 
-    public Widget selectionPreview(int x, int y, int width, int height) {
+    public Renderable selectionPreview(int x, int y, int width, int height) {
         return (poseStack, mouseX, mouseY, partialTick) -> fill(poseStack, x, y, x + width, y + height, color.get());
     }
 
@@ -189,7 +187,9 @@ public class ColorPickerWidget extends AbstractWidget {
         }
 
         @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        public void renderWidget(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            int x = getX();
+            int y = getY();
             if (isHoveredOrFocused()) {
                 fill(pPoseStack, x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
                 float[] hsb = ColorUtil.rgbToHsb(color);
@@ -208,7 +208,7 @@ public class ColorPickerWidget extends AbstractWidget {
         }
 
         @Override
-        public void updateNarration(NarrationElementOutput narrationElementOutput) {
+        public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
             narrationElementOutput.add(NarratedElementType.TITLE, getMessage());
         }
     }
@@ -223,39 +223,36 @@ public class ColorPickerWidget extends AbstractWidget {
 
         @SuppressWarnings("DuplicatedCode")
         @Override
-        public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
             poseStack.pushPose();
             int c1 = ColorUtil.hsbToRgb(_hue, _saturation, 0);
             int c2 = ColorUtil.hsbToRgb(_hue, _saturation, 1);
-            float x1 = x;
-            float x2 = x + width;
-            float y1 = y;
-            float y2 = y + height;
-            renderBar(poseStack, mouseX, mouseY, x1, y1, x2, y2, c1, c2);
+            int x = getX();
+            int y = getY();
+            renderBar(poseStack, mouseX, mouseY, x, y, x + width, y + height, c1, c2);
             int color = ColorUtil.chooseBW(ColorUtil.hsbToRgb(_hue, _saturation, brightness.get())) | 0xFF000000;
             switch (orientation) {
                 case BOTTOM_TO_TOP -> {
-                    int y = (int) (this.y + brightness.get() * height);
-                    fill(poseStack, x, y, x + width, y + 1, color);
+                    int yTemp = (int) (y + brightness.get() * height);
+                    fill(poseStack, x, yTemp, x + width, yTemp + 1, color);
                 }
                 case TOP_TO_BOTTOM -> {
-                    int y = (int) (this.y + (1 - brightness.get()) * height);
-                    fill(poseStack, x, y, x + width, y + 1, color);
+                    int yTemp = (int) (y + (1 - brightness.get()) * height);
+                    fill(poseStack, x, yTemp, x + width, yTemp + 1, color);
                 }
                 case LEFT_TO_RIGHT -> {
-                    int x = (int) (this.x + brightness.get() * width);
-                    fill(poseStack, x, y, x + 1, y + height, color);
+                    int xTemp = (int) (x + brightness.get() * width);
+                    fill(poseStack, xTemp, y, xTemp + 1, y + height, color);
                 }
                 case RIGHT_TO_LEFT -> {
-                    int x = (int) (this.x + (1 - brightness.get()) * width);
-                    fill(poseStack, x, y, x + 1, y + height, color);
+                    int xTemp = (int) (x + (1 - brightness.get()) * width);
+                    fill(poseStack, xTemp, y, xTemp + 1, y + height, color);
                 }
             }
             poseStack.popPose();
         }
 
-        private void renderBar(PoseStack poseStack, int mouseX, int mouseY, float x1, float y1, float x2, float y2, int c1, int c2) {
-            RenderSystem.disableTexture();
+        private void renderBar(PoseStack poseStack, int mouseX, int mouseY, int x1, int y1, int x2, int y2, int c1, int c2) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -264,28 +261,27 @@ public class ColorPickerWidget extends AbstractWidget {
             bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             switch (orientation) {
                 case BOTTOM_TO_TOP -> {
-                    _brightness = isHovered ? (mouseY - y) / (float) height : brightness.get();
+                    _brightness = isHovered ? (mouseY - getY()) / (float) height : brightness.get();
                     fillGradient(poseStack, bufferbuilder, x1, y1, x2, y2, c1, c1, c2, c2);
                 }
                 case TOP_TO_BOTTOM -> {
-                    _brightness = isHovered ? 1 - (mouseY - y) / (float) height : brightness.get();
+                    _brightness = isHovered ? 1 - (mouseY - getY()) / (float) height : brightness.get();
                     fillGradient(poseStack, bufferbuilder, x1, y1, x2, y2, c2, c2, c1, c1);
                 }
                 case LEFT_TO_RIGHT -> {
-                    _brightness = isHovered ? 1 - (mouseX - x) / (float) width : brightness.get();
+                    _brightness = isHovered ? 1 - (mouseX - getX()) / (float) width : brightness.get();
                     fillGradient(poseStack, bufferbuilder, x1, y1, x2, y2, c1, c2, c2, c1);
                 }
                 case RIGHT_TO_LEFT -> {
-                    _brightness = isHovered ? (mouseX - x) / (float) width : brightness.get();
+                    _brightness = isHovered ? (mouseX - getX()) / (float) width : brightness.get();
                     fillGradient(poseStack, bufferbuilder, x1, y1, x2, y2, c2, c1, c1, c2);
                 }
             }
             tesselator.end();
             RenderSystem.disableBlend();
-            RenderSystem.enableTexture();
         }
 
-        private void fillGradient(PoseStack poseStack, BufferBuilder buffer, float x1, float y1, float x2, float y2, int c1, int c2, int c3, int c4) {
+        private void fillGradient(PoseStack poseStack, BufferBuilder buffer, int x1, int y1, int x2, int y2, int c1, int c2, int c3, int c4) {
             Matrix4f pose = poseStack.last().pose();
             float a1 = (c1 >> 24 & 255) / 255.0F;
             float r1 = (c1 >> 16 & 255) / 255.0F;
@@ -303,10 +299,10 @@ public class ColorPickerWidget extends AbstractWidget {
             float r4 = (c4 >> 16 & 255) / 255.0F;
             float g4 = (c4 >> 8 & 255) / 255.0F;
             float b4 = (c4 & 255) / 255.0F;
-            buffer.vertex(pose, x2, y1, (float) getBlitOffset()).color(r1, g1, b1, a1).endVertex();
-            buffer.vertex(pose, x1, y1, (float) getBlitOffset()).color(r2, g2, b2, a2).endVertex();
-            buffer.vertex(pose, x1, y2, (float) getBlitOffset()).color(r3, g3, b3, a3).endVertex();
-            buffer.vertex(pose, x2, y2, (float) getBlitOffset()).color(r4, g4, b4, a4).endVertex();
+            buffer.vertex(pose, x2, y1, 0).color(r1, g1, b1, a1).endVertex();
+            buffer.vertex(pose, x1, y1, 0).color(r2, g2, b2, a2).endVertex();
+            buffer.vertex(pose, x1, y2, 0).color(r3, g3, b3, a3).endVertex();
+            buffer.vertex(pose, x2, y2, 0).color(r4, g4, b4, a4).endVertex();
         }
 
         @Override
@@ -369,7 +365,7 @@ public class ColorPickerWidget extends AbstractWidget {
         }
 
         @Override
-        public void updateNarration(NarrationElementOutput narrationElementOutput) {
+        public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
         }
 
         public enum Orientation {

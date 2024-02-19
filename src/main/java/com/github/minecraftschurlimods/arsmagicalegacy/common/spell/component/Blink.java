@@ -30,7 +30,7 @@ public class Blink extends AbstractComponent {
             double x = oldX + entity.getLookAngle().x() * range;
             double y = oldY + entity.getLookAngle().y() * range;
             double z = oldZ + entity.getLookAngle().z() * range;
-            if (y >= level.getMinBuildHeight() && y <= level.getMaxBuildHeight() - 1 && level.getBlockState(new BlockPos(x, y, z)).isAir() && level.getBlockState(new BlockPos(x, y + 1, z)).isAir()) {
+            if (y >= level.getMinBuildHeight() && y <= level.getMaxBuildHeight() - 1 && level.getBlockState(BlockPos.containing(x, y, z)).isAir() && level.getBlockState(BlockPos.containing(x, y + 1, z)).isAir()) {
                 target.getEntity().moveTo(x, y, z);
                 return SpellCastResult.SUCCESS;
             }

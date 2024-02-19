@@ -8,6 +8,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.event.SpellEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AbilityUUIDs;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAbilities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,11 +92,11 @@ final class AbilityHandler {
                 event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
             ability = abilityRegistry.get(AMAbilities.FIRE_RESISTANCE);
-            if (ability != null && ability.test(player) && event.getSource().isFire()) {
+            if (ability != null && ability.test(player) && event.getSource().is(DamageTypeTags.IS_FIRE)) {
                 event.setAmount((float) (event.getAmount() * (1 - helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
             ability = abilityRegistry.get(AMAbilities.MAGIC_DAMAGE);
-            if (ability != null && ability.test(player) && event.getSource().isMagic()) {
+            if (ability != null && ability.test(player) && event.getSource().is(DamageTypes.MAGIC)) {
                 event.setAmount((float) (event.getAmount() * (1 + helper.getAffinityDepthOrElse(player, ability.affinity(), 0) / 2)));
             }
         }

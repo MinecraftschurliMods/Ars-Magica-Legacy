@@ -59,7 +59,7 @@ public class SpellPartPage implements ICustomComponent {
         TextureAtlasSprite sprite = SkillIconAtlas.instance().getSprite(Objects.requireNonNull(skill).getId(registryAccess));
         RenderSystem.setShaderTexture(0, SkillIconAtlas.SKILL_ICON_ATLAS);
         RenderSystem.setShaderFogColor(1, 1, 1, 1);
-        GuiComponent.blit(poseStack, cx - 2, cy - 2, context.getGui().getBlitOffset(), 20, 20, sprite);
+        GuiComponent.blit(poseStack, cx - 2, cy - 2, 0, 20, 20, sprite);
         if (context.isAreaHovered(mouseX, mouseY, cx - 2, cy - 2, 20, 20)) {
             context.setHoverTooltipComponents(List.of(skill.getDisplayName(registryAccess), skill.getDescription(registryAccess)));
         }
@@ -94,7 +94,7 @@ public class SpellPartPage implements ICustomComponent {
                 yOffset += 16;
             }
             RenderSystem.enableBlend();
-            Screen.blit(stack, posX + startX, posY + yOffset, context.getGui().getBlitOffset(), 16, 16, SkillIconAtlas.instance().getSprite(registryName));
+            Screen.blit(stack, posX + startX, posY + yOffset, 0, 16, 16, SkillIconAtlas.instance().getSprite(registryName));
             RenderSystem.disableBlend();
             if (context.isAreaHovered(mouseX, mouseY, posX + startX, posY + yOffset, 16, 16)) {
                 context.setHoverTooltipComponents(List.of(skill.getDisplayName(registryAccess), skill.getDescription(registryAccess)));
@@ -118,8 +118,8 @@ public class SpellPartPage implements ICustomComponent {
             float angle = (lastAngle + angleStep) % 360f;
             float x = (float) (cx - (Math.cos(Math.toRadians(angle)) * dist));
             float y = (float) (cy - (Math.sin(Math.toRadians(angle)) * dist));
-            RenderUtil.line2d(poseStack, x + 8, y + 8, cx + 8, cy + 8, context.getGui().getBlitOffset(), 0x0000DD, 2f);
-            RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, context.getGui().getBlitOffset(), 0x0000DD, 0xDD00DD, 2f);
+            RenderUtil.line2d(poseStack, x + 8, y + 8, cx + 8, cy + 8, 0, 0x0000DD, 2f);
+            RenderUtil.gradientLine2d(poseStack, lastX + 8, lastY + 8, x + 8, y + 8, 0, 0x0000DD, 0xDD00DD, 2f);
             if (i < recipe.size()) {
                 poseStack.pushPose();
                 poseStack.translate(x - (int) x, y - (int) y, 0);

@@ -3,7 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.handler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.effect.AMMobEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,7 +70,7 @@ final class EffectHandler {
 
     private static void livingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (event.getSource() != DamageSource.OUT_OF_WORLD && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
+        if (!event.getSource().is(DamageTypes.OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
             event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
         }
         if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {

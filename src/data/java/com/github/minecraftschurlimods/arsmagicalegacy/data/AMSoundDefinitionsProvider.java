@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -19,8 +19,8 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSoun
 class AMSoundDefinitionsProvider extends SoundDefinitionsProvider {
     private final Set<ResourceLocation> sounds = new HashSet<>();
 
-    AMSoundDefinitionsProvider(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, ArsMagicaAPI.MOD_ID, helper);
+    AMSoundDefinitionsProvider(PackOutput output, ExistingFileHelper helper) {
+        super(output, ArsMagicaAPI.MOD_ID, helper);
     }
 
     @Override

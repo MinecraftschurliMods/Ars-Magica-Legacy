@@ -25,7 +25,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +44,8 @@ import java.util.ServiceLoader;
 @NonExtendable
 public interface ArsMagicaAPI {
     String MOD_ID = "arsmagicalegacy";
+    ResourceLocation PREFAB_SPELLS_CREATIVE_TAB = new ResourceLocation(MOD_ID, "prefab_spells");
+    ResourceLocation MAIN_CREATIVE_TAB = new ResourceLocation(MOD_ID, "main");
 
     @Internal
     final class InstanceHolder {
@@ -72,11 +73,6 @@ public interface ArsMagicaAPI {
     static ArsMagicaAPI get() {
         return InstanceHolder.LAZY_INSTANCE.get();
     }
-
-    /**
-     * @return The creative mode tab of the mod.
-     */
-    CreativeModeTab getCreativeModeTab();
 
     /**
      * @return The arcane compendium item stack.

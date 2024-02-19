@@ -5,10 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -17,24 +17,24 @@ import net.minecraft.world.level.dimension.DimensionType;
 
 public record DimensionTypeRequirement(HolderSet<DimensionType> dimensionType) implements RitualRequirement {
     public static final Codec<DimensionTypeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            RegistryCodecs.homogeneousList(Registry.DIMENSION_TYPE_REGISTRY).fieldOf("dimension_type").forGetter(DimensionTypeRequirement::dimensionType)
+            RegistryCodecs.homogeneousList(Registries.DIMENSION_TYPE).fieldOf("dimension_type").forGetter(DimensionTypeRequirement::dimensionType)
     ).apply(inst, DimensionTypeRequirement::new));
 
-    public DimensionTypeRequirement(TagKey<DimensionType> dimensionTypeTag) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateTag(dimensionTypeTag));
+    public static DimensionTypeRequirement tag(HolderGetter<DimensionType> holderGetter, TagKey<DimensionType> dimensionTypeTag) {
+        return new DimensionTypeRequirement(holderGetter.getOrThrow(dimensionTypeTag));
     }
 
-    public DimensionTypeRequirement(ResourceKey<DimensionType> dimensionType) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolder(dimensionType).getOrThrow(false, s -> {}));
+    public static DimensionTypeRequirement simple(HolderGetter<DimensionType> holderGetter, ResourceKey<DimensionType> dimensionType) {
+        return any(holderGetter.getOrThrow(dimensionType));
     }
 
     @SafeVarargs
-    public DimensionTypeRequirement(Holder<DimensionType>... holders) {
-        this(HolderSet.direct(holders));
+    public static DimensionTypeRequirement any(Holder<DimensionType>... holders) {
+        return new DimensionTypeRequirement(HolderSet.direct(holders));
     }
 
     @Override
-    public boolean test(final Player player, final ServerLevel level, final BlockPos pos) {
+    public boolean test(Player player, ServerLevel level, BlockPos pos) {
         return dimensionType().contains(level.dimensionTypeRegistration());
     }
 

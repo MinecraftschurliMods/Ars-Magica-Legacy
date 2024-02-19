@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "forge:dusts/vinteum"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:vinteum_block"
-  }
+  },
+  "show_notification": true
 }

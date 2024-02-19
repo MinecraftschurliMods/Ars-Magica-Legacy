@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -21,7 +22,7 @@ import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.HashSet;
 import java.util.List;
@@ -89,7 +90,7 @@ public class LifeGuardian extends AbstractBoss {
                     toRemove.add(e);
                 }
                 if (e.isDeadOrDying() && !toRemove.contains(e)) {
-                    hurt(DamageSource.OUT_OF_WORLD, e.getMaxHealth());
+                    hurt(damageSources().outOfWorld(), e.getMaxHealth());
                     toRemove.add(e);
                 }
             }
@@ -104,11 +105,11 @@ public class LifeGuardian extends AbstractBoss {
                 e.setLastHurtByMob((LivingEntity) pSource.getEntity());
             }
         }
-        return pSource == DamageSource.OUT_OF_WORLD && super.hurt(pSource, pAmount);
+        return pSource.is(DamageTypes.OUT_OF_WORLD) && super.hurt(pSource, pAmount);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("life_guardian"));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(createBaseAnimationController("life_guardian"));
     }
 }

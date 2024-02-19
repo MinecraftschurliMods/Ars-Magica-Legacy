@@ -16,9 +16,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -64,14 +66,14 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         super.init();
         dragAreas.clear();
         if (Objects.requireNonNull(getMinecraft().player).isCreative()) {
-            addRenderableWidget(new Button(leftPos + 72, topPos + 72, 100, 20, Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
+            addRenderableWidget(Button.builder(Component.translatable(TranslationConstants.INSCRIPTION_TABLE_CREATE_SPELL), button -> {
                 sync();
                 menu.getSpellRecipe().ifPresent(e -> {
                     if (ArsMagicaAPI.get().getSpellHelper().isValidSpell(e)) {
                         menu.createSpell();
                     }
                 });
-            }));
+            }).bounds(leftPos + 72, topPos + 72, 100, 20).build());
         }
         sourceArea = new SpellPartSourceArea(leftPos + 42, topPos + 6, 136, 48);
         spellGrammarArea = new SpellGrammarArea(leftPos + 42, topPos + 144, 136, 16, (part, i) -> onPartDropped(part));
@@ -166,8 +168,10 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
             return true;
         } else if (keyCode == InputConstants.KEY_TAB) {
             boolean flag = !hasShiftDown();
-            if (!changeFocus(flag)) {
-                changeFocus(flag);
+            FocusNavigationEvent event = new FocusNavigationEvent.TabNavigation(flag);
+            ComponentPath componentPath = nextFocusPath(event);
+            if (componentPath != null) {
+                changeFocus(componentPath);
             }
             return false;
         } else {
@@ -178,11 +182,11 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
     @Override
     public void setFocused(@Nullable GuiEventListener listener) {
         if (getFocused() instanceof EditBox editBox) {
-            editBox.setFocus(false);
+            editBox.setFocused(false);
         }
         super.setFocused(listener);
         if (listener instanceof EditBox editBox) {
-            editBox.setFocus(true);
+            editBox.setFocused(true);
         }
     }
 

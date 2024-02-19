@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "forge:gems/chimerite"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:chimerite_block"
-  }
+  },
+  "show_notification": true
 }
