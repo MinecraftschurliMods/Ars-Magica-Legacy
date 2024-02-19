@@ -13,7 +13,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.EtheriumSpel
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.IngredientSpellIngredient;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
