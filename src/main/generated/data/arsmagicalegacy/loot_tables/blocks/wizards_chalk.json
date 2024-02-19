@@ -1,4 +1,3 @@
 {
-  "type": "minecraft:block",
-  "random_sequence": "arsmagicalegacy:blocks/wizards_chalk"
+  "type": "minecraft:block"
 }

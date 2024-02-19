@@ -118,6 +118,9 @@ key_key.hotbar.6:key.keyboard.6
 key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
+key_key.toggleVisible:key.keyboard.unknown
+key_key.toggleLiquids:key.keyboard.unknown
+key_key.curios.open.desc:key.keyboard.g
 key_hud_manager.open:key.keyboard.m:ALT
 key_key.arsmagicalegacy.prev_shape_group:key.keyboard.comma
 key_key.arsmagicalegacy.next_shape_group:key.keyboard.period

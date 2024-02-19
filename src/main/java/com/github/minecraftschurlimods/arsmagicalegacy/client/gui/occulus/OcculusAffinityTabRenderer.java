@@ -90,37 +90,35 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             ItemStack essenceForAffinity = helper.getEssenceForAffinity(aff);
             graphics.renderFakeItem(essenceForAffinity, drawX, drawY);
             graphics.renderItemDecorations(getFont(), essenceForAffinity, drawX, drawY);
-            if (pMouseX <= drawX || pMouseX >= drawX + 16 || pMouseY <= drawY || pMouseY >= drawY + 16) {
-                continue;
-            }
+            if (pMouseX <= drawX || pMouseX >= drawX + 16 || pMouseY <= drawY || pMouseY >= drawY + 16) continue;
             drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
             abilityRegistry.stream()
-                           .filter(ability -> aff.getId().equals(ability.affinity().getId()))
-                           .sorted((o1, o2) -> (int) ((Objects.requireNonNullElse(o1.bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(o2.bounds().getMin(), 0D) * 100)))
-                           .forEach(ability -> {
-                boolean test = ability.test(player);
-                MutableComponent component = ability.getDisplayName(registryAccess).copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
-                if (Screen.hasShiftDown()) {
-                    MinMaxBounds.Doubles range = ability.bounds();
-                    Double lower = range.getMin();
-                    Double upper = range.getMax();
-                    if (lower != null || upper != null) {
-                        MutableComponent cmp = Component.literal(" (");
-                        if (lower != null) {
-                            cmp.append(Component.translatable(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
-                            if (upper != null) {
-                                cmp.append(", ");
+                    .filter(ability -> aff.getId().equals(ability.affinity().getId()))
+                    .sorted((o1, o2) -> (int) ((Objects.requireNonNullElse(o1.bounds().getMin(), 0D) * 100) - (Objects.requireNonNullElse(o2.bounds().getMin(), 0D) * 100)))
+                    .forEach(ability -> {
+                        boolean test = ability.test(player);
+                        MutableComponent component = ability.getDisplayName(registryAccess).copy().withStyle(test ? ChatFormatting.GREEN : ChatFormatting.DARK_RED);
+                        if (Screen.hasShiftDown()) {
+                            MinMaxBounds.Doubles range = ability.bounds();
+                            Double lower = range.getMin();
+                            Double upper = range.getMax();
+                            if (lower != null || upper != null) {
+                                MutableComponent cmp = Component.literal(" (");
+                                if (lower != null) {
+                                    cmp.append(Component.translatable(TranslationConstants.RANGE_LOWER, RANGE_FORMAT.format(lower).replace("\u00A0", "")));
+                                    if (upper != null) {
+                                        cmp.append(", ");
+                                    }
+                                }
+                                if (upper != null) {
+                                    cmp.append(Component.translatable(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
+                                }
+                                cmp.append(")");
+                                component.append(cmp);
                             }
                         }
-                        if (upper != null) {
-                            cmp.append(Component.translatable(TranslationConstants.RANGE_UPPER, RANGE_FORMAT.format(upper).replace("\u00A0", "")));
-                        }
-                        cmp.append(")");
-                        component.append(cmp);
-                    }
-                }
-                drawString.add(component);
-            });
+                        drawString.add(component);
+                    });
         }
         if (!drawString.isEmpty()) {
             if (!Screen.hasShiftDown()) {

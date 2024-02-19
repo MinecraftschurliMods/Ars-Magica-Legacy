@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_desert_nova": {
+    "has_stripped_logs": {
       "conditions": {
         "items": [
           {
             "items": [
-              "arsmagicalegacy:desert_nova"
+              "arsmagicalegacy:stripped_witchwood_log"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arsmagicalegacy:red_dye_from_desert_nova"
+        "recipe": "arsmagicalegacy:witchwood_hanging_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_desert_nova",
+      "has_stripped_logs",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "arsmagicalegacy:red_dye_from_desert_nova"
+      "arsmagicalegacy:witchwood_hanging_sign"
     ]
   }
 }
