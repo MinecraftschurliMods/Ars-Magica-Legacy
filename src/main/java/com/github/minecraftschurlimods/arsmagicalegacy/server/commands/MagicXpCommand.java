@@ -11,23 +11,14 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_ADD_LEVELS_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_ADD_LEVELS_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_ADD_POINTS_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_ADD_POINTS_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_GET_LEVELS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_GET_POINTS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_SET_LEVELS_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_SET_LEVELS_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_SET_POINTS_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.MAGIC_XP_SET_POINTS_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
 public class MagicXpCommand {
     /**

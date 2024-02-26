@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class ClientPacketListenerMixin {
     @Inject(method = "handleUpdateAttributes", at = @At(value = "RETURN"))
     private void afterHandleUpdateAttributes(ClientboundUpdateAttributesPacket packet, CallbackInfo ci) {
-        if (packet.getValues().stream().noneMatch(a -> a.getAttribute() == AMAttributes.SCALE.get())) return;
+        if (packet.getValues().stream().noneMatch(a -> a.getAttribute() == AMAttributes.SCALE.value())) return;
         Level localLevel = ClientHelper.getLocalLevel();
         if (localLevel == null) return;
         Entity entity = localLevel.getEntity(packet.getEntityId());

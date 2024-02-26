@@ -1,6 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.skill;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -113,6 +115,24 @@ public interface ISkillHelper {
      * Adds skill points of a given type to a given player.
      *
      * @param player     The player to add the skill points to.
+     * @param skillPoint The id of the skill point type to add.
+     * @param amount     The amount of skill points to add.
+     */
+    void addSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint, int amount);
+
+    /**
+     * Adds skill points of a given type to a given player.
+     *
+     * @param player     The player to add the skill points to.
+     * @param skillPoint The id of the skill point type to add.
+     * @param amount     The amount of skill points to add.
+     */
+    void addSkillPoint(Player player, Holder<SkillPoint> skillPoint, int amount);
+
+    /**
+     * Adds skill points of a given type to a given player.
+     *
+     * @param player     The player to add the skill points to.
      * @param skillPoint The skill point type to add.
      * @param amount     The amount of skill points to add.
      */
@@ -130,6 +150,22 @@ public interface ISkillHelper {
      * Adds a skill point of a given type to a given player.
      *
      * @param player     The player to add the skill point to.
+     * @param skillPoint The id of the skill point type to add.
+     */
+    void addSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint);
+
+    /**
+     * Adds a skill point of a given type to a given player.
+     *
+     * @param player     The player to add the skill point to.
+     * @param skillPoint The id of the skill point type to add.
+     */
+    void addSkillPoint(Player player, Holder<SkillPoint> skillPoint);
+
+    /**
+     * Adds a skill point of a given type to a given player.
+     *
+     * @param player     The player to add the skill point to.
      * @param skillPoint The skill point type to add.
      */
     void addSkillPoint(Player player, SkillPoint skillPoint);
@@ -142,8 +178,27 @@ public interface ISkillHelper {
      * @param amount     The amount of skill points to consume.
      * @return Whether the consumption was successful or not.
      */
-    //TODO convert to void
     boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount);
+
+    /**
+     * Consumes skill points of a given type for a given player.
+     *
+     * @param player     The player to consume the skill points of.
+     * @param skillPoint The id of the skill point type to consume.
+     * @param amount     The amount of skill points to consume.
+     * @return Whether the consumption was successful or not.
+     */
+    boolean consumeSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint, int amount);
+
+    /**
+     * Consumes skill points of a given type for a given player.
+     *
+     * @param player     The player to consume the skill points of.
+     * @param skillPoint The id of the skill point type to consume.
+     * @param amount     The amount of skill points to consume.
+     * @return Whether the consumption was successful or not.
+     */
+    boolean consumeSkillPoint(Player player, Holder<SkillPoint> skillPoint, int amount);
 
     /**
      * Consumes skill points of a given type for a given player.
@@ -153,7 +208,6 @@ public interface ISkillHelper {
      * @param amount     The amount of skill points to consume.
      * @return Whether the consumption was successful or not.
      */
-    //TODO convert to void
     boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount);
 
     /**
@@ -163,8 +217,25 @@ public interface ISkillHelper {
      * @param skillPoint The id of the skill point type to consume.
      * @return Whether the consumption was successful or not.
      */
-    //TODO convert to void
     boolean consumeSkillPoint(Player player, ResourceLocation skillPoint);
+
+    /**
+     * Consumes one skill point of a given type for a given player.
+     *
+     * @param player     The player to consume the skill point of.
+     * @param skillPoint The id of the skill point type to consume.
+     * @return Whether the consumption was successful or not.
+     */
+    boolean consumeSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint);
+
+    /**
+     * Consumes one skill point of a given type for a given player.
+     *
+     * @param player     The player to consume the skill point of.
+     * @param skillPoint The id of the skill point type to consume.
+     * @return Whether the consumption was successful or not.
+     */
+    boolean consumeSkillPoint(Player player, Holder<SkillPoint> skillPoint);
 
     /**
      * Consumes one skill point of a given type for a given player.
@@ -173,7 +244,6 @@ public interface ISkillHelper {
      * @param skillPoint The skill point type to consume.
      * @return Whether the consumption was successful or not.
      */
-    //TODO convert to void
     boolean consumeSkillPoint(Player player, SkillPoint skillPoint);
 
     /**

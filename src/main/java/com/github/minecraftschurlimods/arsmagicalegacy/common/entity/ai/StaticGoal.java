@@ -13,7 +13,7 @@ public class StaticGoal extends AbstractBossGoal<LightningGuardian> {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.LIGHTNING_GUARDIAN_STATIC.get();
+        return AMSounds.LIGHTNING_GUARDIAN_STATIC.value();
     }
 
     @Override

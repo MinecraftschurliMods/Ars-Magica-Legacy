@@ -121,7 +121,7 @@ public class ColorPickerScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         graphics.pose().pushPose();
         graphics.blit(BACKGROUND, left, top, 0, 0, textureWidth, textureHeight);
         graphics.pose().popPose();

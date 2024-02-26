@@ -6,27 +6,26 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.util.Lazy;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class Effect extends AbstractComponent {
-    private final Lazy<? extends MobEffect> effect;
+    private final Holder<? extends MobEffect> effect;
 
-    public Effect(Supplier<? extends MobEffect> effect) {
+    public Effect(Holder<? extends MobEffect> effect) {
         super(SpellPartStats.DURATION, SpellPartStats.POWER);
-        this.effect = Lazy.concurrentOf(effect);
+        this.effect = effect;
     }
 
     public Effect(MobEffect effect) {
-        this(() -> effect);
+        this(effect.builtInRegistryHolder());
     }
 
     @Override
@@ -34,11 +33,11 @@ public class Effect extends AbstractComponent {
         if (!(target.getEntity() instanceof LivingEntity living)) return SpellCastResult.EFFECT_FAILED;
         var helper = ArsMagicaAPI.get().getSpellHelper();
         int amplifier = (int) helper.getModifiedStat(0, SpellPartStats.POWER, modifiers, spell, caster, target, index);
-        if (effect.get().isInstantenous()) {
-            effect.get().applyInstantenousEffect(caster, caster, living, amplifier, 1);
+        if (effect.value().isInstantenous()) {
+            effect.value().applyInstantenousEffect(caster, caster, living, amplifier, 1);
             return SpellCastResult.SUCCESS;
         }
-        MobEffectInstance instance = new MobEffectInstance(effect.get(), (int) helper.getModifiedStat(Config.SERVER.DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target, index), amplifier);
+        MobEffectInstance instance = new MobEffectInstance(effect.value(), (int) helper.getModifiedStat(Config.SERVER.DURATION.get(), SpellPartStats.DURATION, modifiers, spell, caster, target, index), amplifier);
         return living.addEffect(instance) ? SpellCastResult.SUCCESS : SpellCastResult.EFFECT_FAILED;
     }
 

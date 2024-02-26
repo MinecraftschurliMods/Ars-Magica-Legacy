@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
@@ -20,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
     }
 
     private static int getColorForSkill(Skill skill) {
-        return skill.cost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::getValue).filter(Objects::nonNull).findFirst().map(SkillPoint::color).orElse(ColorUtil.GRAY);
+        return skill.cost().keySet().stream().map(ArsMagicaAPI.get().getSkillPointRegistry()::get).filter(Objects::nonNull).findFirst().map(SkillPoint::color).orElse(ColorUtil.GRAY);
     }
 
     private static int getColorForLine(Skill parent, Skill child) {
@@ -184,7 +184,7 @@ public class OcculusSkillTreeTabRenderer extends OcculusTabRenderer {
         var registryAccess = getMinecraft().getConnection().registryAccess();
         if (player != null && hoverItem != null && !helper.knows(player, hoverItem, registryAccess)) {
             if (helper.canLearn(player, hoverItem) || player.isCreative()) {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
+                PacketDistributor.SERVER.noArg().send(new LearnSkillPacket(hoverItem.getId(getMinecraft().getConnection().registryAccess())));
             }
         } else {
             setDragging(true);

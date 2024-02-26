@@ -7,8 +7,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.PrimitiveIterator;

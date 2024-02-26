@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class AffinityTomeItem extends Item implements IAffinityItem {
     public AffinityTomeItem(Properties properties) {
@@ -41,17 +41,18 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
         Affinity affinity = helper.getAffinityForStack(stack);
         float shift = Config.SERVER.AFFINITY_TOME_SHIFT.get().floatValue();
         for (Affinity a : api.getAffinityRegistry()) {
-            if (affinity == a && a.getId() != Affinity.NONE) {
-                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a) + shift, false);
-                if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    helper.increaseAffinityDepth(pPlayer, a, shift);
-                    MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a), false));
+            if (a.getId() == Affinity.NONE) continue;
+            if (affinity == a) {
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, shift, false);
+                if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
+                    helper.increaseAffinityDepth(pPlayer, event.affinity, event.shift);
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
                 }
             } else {
-                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a) - shift, false);
-                if (!MinecraftForge.EVENT_BUS.post(event)) {
-                    helper.decreaseAffinityDepth(pPlayer, a, shift);
-                    MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, a), false));
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, -shift, false);
+                if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
+                    helper.decreaseAffinityDepth(pPlayer, event.affinity, -event.shift);
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
                 }
             }
         }

@@ -20,7 +20,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,17 +28,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_ALREADY_KNOWN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_ALL_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_ALL_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_ALL_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_ALL_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_NOT_YET_KNOWN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_UNKNOWN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
 public class SkillCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_chimerite_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_chimerite_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:chimerite_from_smelting_chimerite_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
@@ -84,7 +83,10 @@ import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -97,24 +99,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
@@ -126,10 +126,9 @@ public final class ClientInit {
      * Registers the client event handlers.
      */
     @Internal
-    public static void init() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public static void init(IEventBus modEventBus) {
         Keybinds.init(modEventBus);
-        HUDManager.enableKeybind();
+        HUDManager.enableKeybind(modEventBus);
         modEventBus.addListener(ClientInit::clientSetup);
         modEventBus.addListener(ClientInit::registerClientReloadListeners);
         modEventBus.addListener(ClientInit::registerParticleProviders);
@@ -140,7 +139,7 @@ public final class ClientInit {
         modEventBus.addListener(ClientInit::itemColors);
         modEventBus.addListener(ClientInit::registerHUDs);
         modEventBus.addListener(AMShaders::init);
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        IEventBus forgeBus = NeoForge.EVENT_BUS;
         forgeBus.addListener(ClientInit::movementInputUpdate);
         forgeBus.addListener(ClientInit::mouseScroll);
         forgeBus.addListener(ClientInit::entityRenderPre);
@@ -206,16 +205,16 @@ public final class ClientInit {
         event.registerSpriteSet(AMParticleTypes.STARDUST.get(), AMVanillaParticle.Provider::new);
         event.registerSpriteSet(AMParticleTypes.WATER_BALL.get(), AMVanillaParticle.Provider::new);
         event.registerSpriteSet(AMParticleTypes.WIND.get(), AMVanillaParticle.Provider::new);
-        for (Map.Entry<Integer, RegistryObject<SimpleParticleType>> symbol : AMParticleTypes.SYMBOLS.values().entrySet()) {
+        for (Map.Entry<Integer, DeferredHolder<ParticleType<?>, SimpleParticleType>> symbol : AMParticleTypes.SYMBOLS.values().entrySet()) {
             event.registerSpriteSet(symbol.getValue().get(), AMVanillaParticle.Provider::new);
         }
     }
 
     private static void modelRegister(ModelEvent.RegisterAdditional event) {
         var api = ArsMagicaAPI.get();
-        IForgeRegistry<Affinity> affinities = api.getAffinityRegistry();
-        for (Item item : ForgeRegistries.ITEMS) {
-            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
+        Registry<Affinity> affinities = api.getAffinityRegistry();
+        for (Item item : BuiltInRegistries.ITEM) {
+            ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
             if (itemId == null) continue;
             if (item instanceof IAffinityItem affinityItem) {
                 for (Affinity affinity : affinities) {
@@ -241,8 +240,8 @@ public final class ClientInit {
 
     private static void modelBake(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
-        for (Item item : ForgeRegistries.ITEMS) {
-            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
+        for (Item item : BuiltInRegistries.ITEM) {
+            ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
             if (itemId == null) continue;
             if (item instanceof IAffinityItem) {
                 modelRegistry.computeIfPresent(new ModelResourceLocation(itemId, "inventory"), ($, model) -> new AffinityOverrideModel(model));
@@ -299,8 +298,8 @@ public final class ClientInit {
 
     private static void entityRenderPre(RenderLivingEvent.Pre<?, ?> pre) {
         pre.getPoseStack().pushPose();
-        if (pre.getEntity().getAttribute(AMAttributes.SCALE.get()) == null) return;
-        float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.get());
+        if (pre.getEntity().getAttribute(AMAttributes.SCALE.value()) == null) return;
+        float factor = (float) pre.getEntity().getAttributeValue(AMAttributes.SCALE.value());
         if (factor == 1) return;
         pre.getPoseStack().scale(factor, factor, factor);
     }
@@ -333,9 +332,9 @@ public final class ClientInit {
             item = player.getOffhandItem();
         }
         if (item.isEmpty() || !(item.getItem() instanceof SpellBookItem)) return;
-        double delta = event.getScrollDelta();
+        double delta = event.getScrollDeltaY();
         if (delta == 0) return;
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellBookNextSpellPacket(delta > 0));
+        PacketDistributor.SERVER.noArg().send(new SpellBookNextSpellPacket(delta > 0));
         event.setCanceled(true);
     }
 
@@ -354,7 +353,7 @@ public final class ClientInit {
         int armMultiplier = isRightHand ? 1 : -1;
         PoseStack stack = event.getPoseStack();
         stack.pushPose();
-        RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
+        RenderSystem.setShaderTexture(0, player.getSkin().texture());
         stack.translate(armMultiplier * (-0.3 * Mth.sin((float) (swingSqrt * Math.PI)) + 0.64), 0.4 * Mth.sin((float) (swingSqrt * (Math.PI * 2))) - 0.6 + event.getEquipProgress() * -0.6, -0.4 * Mth.sin((float) (swing * Math.PI)) - 0.72);
         stack.mulPose(Axis.YP.rotationDegrees(armMultiplier * 45));
         stack.mulPose(Axis.YP.rotationDegrees(armMultiplier * Mth.sin((float) (swingSqrt * Math.PI)) * 70));

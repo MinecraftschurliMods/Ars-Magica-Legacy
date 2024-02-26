@@ -14,6 +14,6 @@ public class OtherworldlyRoarGoal extends ExecuteBossSpellGoal<EnderGuardian> {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.ENDER_GUARDIAN_ROAR.get();
+        return AMSounds.ENDER_GUARDIAN_ROAR.value();
     }
 }

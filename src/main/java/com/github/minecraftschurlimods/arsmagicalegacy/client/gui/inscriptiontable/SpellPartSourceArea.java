@@ -95,7 +95,7 @@ public class SpellPartSourceArea extends DragSourceArea<SpellPartDraggable> {
     }
 
     private List<ISpellPart> getParts() {
-        return ArsMagicaAPI.get().getSpellPartRegistry().getValues().stream()
+        return ArsMagicaAPI.get().getSpellPartRegistry().stream()
                 .filter(e -> ArsMagicaAPI.get().getSkillHelper().knows(Objects.requireNonNull(Minecraft.getInstance().player), e.getId()))
                 .toList();
     }

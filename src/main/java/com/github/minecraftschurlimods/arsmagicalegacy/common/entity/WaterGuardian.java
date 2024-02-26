@@ -41,12 +41,12 @@ public class WaterGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 80).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 500).add(AMAttributes.MAX_BURNOUT.get(), 500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 80).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 500).add(AMAttributes.MAX_BURNOUT.value(), 500);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.WATER_GUARDIAN_AMBIENT.get();
+        return AMSounds.WATER_GUARDIAN_AMBIENT.value();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class WaterGuardian extends AbstractBoss {
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.WATER_GUARDIAN_DEATH.get();
+        return AMSounds.WATER_GUARDIAN_DEATH.value();
     }
 
     @Override

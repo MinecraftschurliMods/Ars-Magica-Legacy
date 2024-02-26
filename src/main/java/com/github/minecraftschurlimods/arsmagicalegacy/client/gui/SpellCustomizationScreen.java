@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.SpellIconAtlas;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -17,7 +16,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class SpellCustomizationScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         graphics.blit(BACKGROUND, xStart, yStart, 0, 0, imageWidth, imageHeight);
         super.render(graphics, pMouseX, pMouseY, pPartialTick);
     }
@@ -73,7 +73,7 @@ public class SpellCustomizationScreen extends Screen {
         String name = editBox.getValue();
         ResourceLocation icon = spellIconSelector.getSelected();
         if (!name.isBlank() && icon != null) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SpellIconSelectPacket(name, icon));
+            PacketDistributor.SERVER.noArg().send(new SpellIconSelectPacket(name, icon));
         }
     }
 

@@ -9,13 +9,13 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
-import com.github.minecraftschurlimods.patchouli_datagen.AbstractPageBuilder;
-import com.github.minecraftschurlimods.patchouli_datagen.BookBuilder;
-import com.github.minecraftschurlimods.patchouli_datagen.EntryBuilder;
-import com.github.minecraftschurlimods.patchouli_datagen.PatchouliBookProvider;
-import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedBookBuilder;
-import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedCategoryBuilder;
-import com.github.minecraftschurlimods.patchouli_datagen.translated.TranslatedEntryBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.AbstractPageBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.BookBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.EntryBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.PatchouliBookProvider;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.translated.TranslatedBookBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.translated.TranslatedCategoryBuilder;
+import com.github.minecraftschurlimods.easydatagenlib.mods.patchouli.translated.TranslatedEntryBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
@@ -23,15 +23,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -53,7 +50,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .setBookTexture(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/arcane_compendium.png"))
                 .setCreativeTab(ArsMagicaAPI.MAIN_CREATIVE_TAB)
                 .setModel(new ResourceLocation(ArsMagicaAPI.MOD_ID, "arcane_compendium"))
-                .setUseResourcepack()
                 .setVersion("1");
         builder.addCategory("mechanics", "Mechanics", "", new ItemStack(AMItems.ALTAR_CORE.get()))
                 .setSortnum(0)
@@ -325,29 +321,34 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("To summon the Ender Guardian, build the structure seen on the previous page anywhere in the end. Then, drop an ender eye into the Black Aurem.$(br2)A being of dark Ender magic, $(l:components/magic_damage)light Arcane magic$() will hurt it double. As an inhabitant of the End, the same is true for $(l:components/drowning_damage)water$().")
                 .build()
                 .build();
-        TranslatedCategoryBuilder shapes = builder.addCategory("shapes", "Shapes", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/touch.png")
+        TranslatedCategoryBuilder shapes = builder
+                .addCategory("shapes", "Shapes", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/touch.png")
                 .setSortnum(4);
-        TranslatedCategoryBuilder components = builder.addCategory("components", "Components", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/dig.png")
+        TranslatedCategoryBuilder components = builder
+                .addCategory("components", "Components", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/dig.png")
                 .setSortnum(5);
-        TranslatedCategoryBuilder modifiers = builder.addCategory("modifiers", "Modifiers", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/target_non_solid.png")
+        TranslatedCategoryBuilder modifiers = builder
+                .addCategory("modifiers", "Modifiers", "", ArsMagicaAPI.MOD_ID + ":textures/icon/skill/target_non_solid.png")
                 .setSortnum(6);
         for (ISpellPart spellPart : api.getSpellPartRegistry()) {
-            if (spellPart != AMSpellParts.MELT_ARMOR.get() && spellPart != AMSpellParts.NAUSEA.get() && spellPart != AMSpellParts.SCRAMBLE_SYNAPSES.get()) {
-                TranslatedCategoryBuilder b = switch (spellPart.getType()) {
-                    case COMPONENT -> components;
-                    case MODIFIER -> modifiers;
-                    case SHAPE -> shapes;
-                };
-                ResourceLocation registryName = spellPart.getId();
-                TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
-                        .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
-                entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
-                if (spellPart == AMSpellParts.CHAIN.get() || spellPart == AMSpellParts.SUMMON.get()) {
-                    entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
-                }
-                entry.addPage(new SpellPartPageBuilder(registryName, entry)).build();
-                entry.build();
+            if (spellPart == AMSpellParts.MELT_ARMOR.get()) continue;
+            if (spellPart == AMSpellParts.NAUSEA.get()) continue;
+            if (spellPart == AMSpellParts.SCRAMBLE_SYNAPSES.get()) continue;
+            TranslatedCategoryBuilder b = switch (spellPart.getType()) {
+                case COMPONENT -> components;
+                case MODIFIER -> modifiers;
+                case SHAPE -> shapes;
+            };
+            ResourceLocation registryName = spellPart.getId();
+            TranslatedEntryBuilder entry = b.addEntry(registryName.getPath(), Util.makeDescriptionId("skill", registryName) + ".name", registryName.getNamespace() + ":textures/icon/skill/" + registryName.getPath() + ".png")
+                                            .setAdvancement(new ResourceLocation(ArsMagicaAPI.MOD_ID, "book/" + registryName.getPath()));
+            entry.addSimpleTextPage(entry.getLangKey(0) + ".text");
+            if (spellPart == AMSpellParts.CHAIN.get() || spellPart == AMSpellParts.SUMMON.get()) {
+                entry.addSimpleTextPage(entry.getLangKey(1) + ".text");
             }
+            entry.addPage(new SpellPartPageBuilder(registryName, entry)).build();
+            entry.build();
+            continue;
         }
         shapes.build();
         components.build();
@@ -369,11 +370,12 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
                 .addSimpleTextPage("If you fully shift into an affinity, your affinities become locked. This means that your current affinity shifts are permanent and cannot be changed.$(br2)The only way to unlock them again is by using an $(l:items/affinity_tome)Affinity Tome$().")
                 .addSimpleTextPage("There is also an affinity essence for each affinity, which is used in intermediate crafting for spell parts associated with that affinity. Affinity essences must be obtained from bosses, but can be duplicated through crafting later.")
                 .build();
-        Map<Affinity, List<Holder.Reference<Ability>>> abilitiesByAffinity = provider.lookupOrThrow(Ability.REGISTRY_KEY)
-                                                                                     .listElements()
-                                                                                     .sorted(Comparator.comparing(o -> o.key().location(), ResourceLocation::compareNamespaced))
-                                                                                     .sorted(Comparator.comparing(o -> o.get().bounds().getMin(), ObjectUtils::compare))
-                                                                                     .collect(Collectors.groupingBy(abilityReference -> abilityReference.get().affinity()));
+        Map<Affinity, List<Holder.Reference<Ability>>> abilitiesByAffinity = provider
+                .lookupOrThrow(Ability.REGISTRY_KEY)
+                .listElements()
+                .sorted(Comparator.comparing(o -> o.key().location(), ResourceLocation::compareNamespaced))
+                .sorted(Comparator.comparing(o -> o.value().bounds().min().orElse(0D), ObjectUtils::compare))
+                .collect(Collectors.groupingBy(abilityReference -> abilityReference.value().affinity()));
         for (Affinity affinity : api.getAffinityRegistry()) {
             ResourceLocation id = affinity.getId();
             if (!id.getNamespace().equals(builder.getId().getNamespace()) || id.equals(Affinity.NONE)) continue;
@@ -388,10 +390,6 @@ class AMPatchouliBookProvider extends PatchouliBookProvider {
         }
         affinities.build();
         builder.build(consumer);
-    }
-
-    private ResourceLocation key(Item item) {
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
     }
 
     private static class SpellPartPageBuilder extends AbstractPageBuilder<SpellPartPageBuilder> {

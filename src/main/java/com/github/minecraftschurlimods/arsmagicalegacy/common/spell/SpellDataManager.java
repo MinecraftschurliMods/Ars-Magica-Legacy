@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.spell;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
@@ -10,10 +9,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartData;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import com.github.minecraftschurlimods.codeclib.CodecDataManager;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraftforge.common.util.Lazy;
+import net.minecraft.util.ExtraCodecs;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -26,8 +25,7 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private static final Lazy<SpellDataManager> INSTANCE = Lazy.concurrentOf(SpellDataManager::new);
 
     private SpellDataManager() {
-        super(ArsMagicaAPI.MOD_ID, "spell_parts", SpellPartData.CODEC, SpellPartData.NETWORK_CODEC, LoggerFactory.getLogger(SpellDataManager.class));
-        subscribeAsSyncable(ArsMagicaLegacy.NETWORK_HANDLER);
+        super(ArsMagicaAPI.MOD_ID, "spell_parts", SpellPartData.CODEC, LoggerFactory.getLogger(SpellDataManager.class));
     }
 
     /**
@@ -45,17 +43,10 @@ public final class SpellDataManager extends CodecDataManager<ISpellPartData> imp
     private record SpellPartData(List<ISpellIngredient> recipe, Map<Affinity, Float> affinityShifts, List<ItemFilter> reagents, float manaCost, Supplier<Float> burnout) implements ISpellPartData {
         public static final Codec<ISpellPartData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
                 ISpellIngredient.CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
-                Codec.unboundedMap(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
+                Codec.unboundedMap(ArsMagicaAPI.get().getAffinityRegistry().byNameCodec(), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
                 ItemFilter.CODEC.listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
                 Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
-                Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.getBurnout()))
-        ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.<Supplier<Float>>map(v -> (() -> v)).orElse(() -> (float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
-        public static final Codec<ISpellPartData> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ISpellIngredient.NETWORK_CODEC.listOf().fieldOf("recipe").forGetter(ISpellPartData::recipe),
-                Codec.unboundedMap(CodecHelper.forRegistry(ArsMagicaAPI.get()::getAffinityRegistry), Codec.FLOAT).fieldOf("affinities").forGetter(ISpellPartData::affinityShifts),
-                ItemFilter.CODEC.listOf().fieldOf("reagents").forGetter(ISpellPartData::reagents),
-                Codec.FLOAT.fieldOf("manaCost").forGetter(ISpellPartData::manaCost),
-                Codec.FLOAT.optionalFieldOf("burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.getBurnout()))
+                ExtraCodecs.strictOptionalField(Codec.FLOAT, "burnout").forGetter(iSpellPartData -> Optional.of(iSpellPartData.getBurnout()))
         ).apply(inst, (recipe, affinities, reagents, manaCost, burnout) -> new SpellPartData(recipe, affinities, reagents, manaCost, burnout.<Supplier<Float>>map(v -> (() -> v)).orElse(() -> (float) (manaCost * Config.SERVER.BURNOUT_RATIO.get())))));
 
         @Override

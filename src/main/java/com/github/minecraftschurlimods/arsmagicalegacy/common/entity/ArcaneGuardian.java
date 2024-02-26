@@ -26,27 +26,27 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 2000).add(AMAttributes.MAX_BURNOUT.get(), 2000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 2000).add(AMAttributes.MAX_BURNOUT.value(), 2000);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.ARCANE_GUARDIAN_AMBIENT.get();
+        return AMSounds.ARCANE_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.ARCANE_GUARDIAN_HURT.get();
+        return AMSounds.ARCANE_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.ARCANE_GUARDIAN_DEATH.get();
+        return AMSounds.ARCANE_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.ARCANE_GUARDIAN_ATTACK.get();
+        return AMSounds.ARCANE_GUARDIAN_ATTACK.value();
     }
 
     @SuppressWarnings("DataFlowIssue")

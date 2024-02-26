@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_vinteum_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_vinteum_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:vinteum_dust"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

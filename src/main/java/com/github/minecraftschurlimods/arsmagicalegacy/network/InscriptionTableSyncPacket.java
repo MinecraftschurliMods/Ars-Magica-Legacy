@@ -3,18 +3,25 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;
-import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements IPacket {
+public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpell spell) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync");
 
-    public InscriptionTableSyncPacket(FriendlyByteBuf buf) {
+    InscriptionTableSyncPacket(FriendlyByteBuf buf) {
         this(buf.readBlockPos(), buf.readComponent(), buf.readJsonWithCodec(ISpell.CODEC));
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBlockPos(blockPos);
+        buf.writeComponent(name != null ? name : Component.empty());
+        buf.writeJsonWithCodec(ISpell.CODEC, spell);
     }
 
     @Override
@@ -22,15 +29,7 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpe
         return ID;
     }
 
-    @Override
-    public void serialize(FriendlyByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-        buf.writeComponent(name != null ? name : Component.empty());
-        buf.writeJsonWithCodec(ISpell.CODEC, spell);
-    }
-
-    @Override
-    public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().level().getBlockEntity(blockPos)).onSync(name.getString().length() == 0 ? null : name, spell));
+    void handle(PlayPayloadContext context) {
+        context.workHandler().execute(() -> ((InscriptionTableBlockEntity) context.player().orElseThrow().level().getBlockEntity(blockPos())).onSync(name() == null || name().getString().isEmpty() ? null : name(), spell()));
     }
 }

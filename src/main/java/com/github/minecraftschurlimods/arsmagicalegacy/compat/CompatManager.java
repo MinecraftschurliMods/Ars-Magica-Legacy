@@ -1,23 +1,23 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.forgespi.language.ModFileScanData;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 import org.slf4j.Logger;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,27 +26,6 @@ import java.util.function.Supplier;
 public final class CompatManager {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<String, Lazy<ICompatHandler>> compatHandlers = new HashMap<>();
-
-    /**
-     * Registers a compat handler.
-     *
-     * @param clazz The compat handler class to register.
-     */
-    public static void register(Class<? extends ICompatHandler> clazz) {
-        if (!clazz.isAnnotationPresent(ModCompat.class))
-            throw new IllegalArgumentException("Tried to register an invalid mod compatibility handler!");
-        register(clazz.getAnnotation(ModCompat.class).value(), clazz);
-    }
-
-    /**
-     * Registers a compat handler.
-     *
-     * @param modid The compat mod id to register.
-     * @param clazz The compat handler class to register.
-     */
-    public static void register(String modid, Class<? extends ICompatHandler> clazz) {
-        register(modid, supplierFromClass(clazz));
-    }
 
     /**
      * Registers a compat handler.
@@ -65,9 +44,9 @@ public final class CompatManager {
     /**
      * Discovers and pre-initializes mod compats.
      */
-    public static void preInit() {
+    public static void preInit(IEventBus bus) {
         discoverModCompats();
-        forEachLoaded(ICompatHandler::preInit);
+        forEachLoaded(wrap(ICompatHandler::preInit).apply(bus));
     }
 
     /**
@@ -91,40 +70,32 @@ public final class CompatManager {
         forEachLoaded(wrap(ICompatHandler::imcEnqueue).apply(event));
     }
 
-    /**
-     * @param modid The mod id to get the compat handler for.
-     * @param <T>   The type of the compat handler.
-     * @return The compat handler for the given id, if present.
-     */
-    public static <T extends ICompatHandler> LazyOptional<T> getHandler(String modid) {
-        if (!ModList.get().isLoaded(modid) || !compatHandlers.containsKey(modid)) return LazyOptional.empty();
-        return LazyOptional.of(compatHandlers.get(modid)::get).cast();
-    }
-
     private static void discoverModCompats() {
-        getClasses(ModCompat.class, ICompatHandler.class).forEach(CompatManager::register);
-    }
-
-    private static <T> List<Class<? extends T>> getClasses(Class<?> annotationClass, Class<T> instanceClass) {
-        Type annotationType = Type.getType(annotationClass);
-        return ModList.get().getAllScanData()
-                .stream()
-                .map(ModFileScanData::getAnnotations)
-                .flatMap(Collection::stream)
-                .filter(annotationData -> Objects.equals(annotationData.annotationType(), annotationType))
-                .map(ModFileScanData.AnnotationData::memberName)
-                .<Class<? extends T>>map(memberName -> {
-                    try {
-                        return Class.forName(memberName).asSubclass(instanceClass);
-                    } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {
-                        LOGGER.error("Failed to load: {}", memberName, e);
-                    }
-                    return null;
-                }).filter(Objects::nonNull).toList();
-    }
-
-    private static Supplier<ICompatHandler> supplierFromClass(Class<? extends ICompatHandler> clazz) {
-        return Lazy.of(ThrowingSupplier.wrap(() -> clazz.getConstructor().newInstance()));
+        Type annotationType = Type.getType(ModCompat.class);
+        for (ModFileScanData modFileScanData : ModList.get().getAllScanData()) {
+            Set<ModFileScanData.AnnotationData> annotations = modFileScanData.getAnnotations();
+            for (ModFileScanData.AnnotationData annotationData : annotations) {
+                if (Objects.equals(annotationData.annotationType(), annotationType)) {
+                    String memberName = annotationData.memberName();
+                    String modid = annotationData.annotationData().get("value").toString();
+                    register(modid, Lazy.of(() -> {
+                        Class<? extends ICompatHandler> clazz; 
+                        try {
+                            clazz = Class.forName(memberName).asSubclass(ICompatHandler.class);
+                        } catch (ReflectiveOperationException | LinkageError | ClassCastException e) {
+                            LOGGER.error("Failed to load compat manager for modid {}: {}", modid, memberName, e);
+                            return null;
+                        }
+                        try {
+                            return clazz.getConstructor().newInstance();
+                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                            LOGGER.error("Failed to instantiate compat manager for modid {}: {}", modid, memberName, e);
+                            return null;
+                        }
+                    }));
+                }
+            }
+        }
     }
 
     private static <T> Function<T, Consumer<ICompatHandler>> wrap(BiConsumer<ICompatHandler, T> consumer) {
@@ -133,33 +104,17 @@ public final class CompatManager {
 
     private static void forEachLoaded(Consumer<ICompatHandler> consumer) {
         ModList modList = ModList.get();
-        compatHandlers.entrySet()
+        compatHandlers
+                .entrySet()
                 .stream()
                 .filter(entry -> modList.isLoaded(entry.getKey()))
                 .map(Map.Entry::getValue)
-                .map(Lazy::get)
+                .map(Supplier::get)
                 .forEach(consumer);
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface ModCompat {
         String value();
-    }
-
-    private interface ThrowingSupplier<T> extends Supplier<T> {
-        static <T> Supplier<T> wrap(ThrowingSupplier<T> throwing) {
-            return throwing;
-        }
-
-        @Override
-        default T get() {
-            try {
-                return getThrowing();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        T getThrowing() throws Exception;
     }
 }

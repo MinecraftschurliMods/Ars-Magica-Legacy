@@ -2,18 +2,19 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
-import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.Map;
 
-public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
+public record LearnSkillPacket(ResourceLocation skill) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "learn_skill");
 
-    public LearnSkillPacket(FriendlyByteBuf buf) {
+    LearnSkillPacket(FriendlyByteBuf buf) {
         this(buf.readResourceLocation());
     }
 
@@ -23,17 +24,16 @@ public record LearnSkillPacket(ResourceLocation skill) implements IPacket {
     }
 
     @Override
-    public void serialize(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeResourceLocation(skill());
     }
 
-    @Override
-    public void handle(NetworkEvent.Context ctx) {
-        ctx.enqueueWork(() -> {
+    void handle(PlayPayloadContext ctx) {
+        ctx.workHandler().execute(() -> {
             var api = ArsMagicaAPI.get();
             var skillHelper = api.getSkillHelper();
-            ServerPlayer sender = ctx.getSender();
-            assert sender != null;
+            Player player = ctx.player().orElse(null);
+            if (!(player instanceof ServerPlayer sender)) return;
             if (!sender.isCreative()) {
                 Skill skill = sender.level().registryAccess().registryOrThrow(Skill.REGISTRY_KEY).get(skill());
                 assert skill != null;

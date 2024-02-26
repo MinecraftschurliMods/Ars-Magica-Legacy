@@ -1,7 +1,7 @@
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   "biomes": {
-    "type": "forge:and",
+    "type": "neoforge:and",
     "values": [
       "#minecraft:is_overworld",
       "#minecraft:is_forest"

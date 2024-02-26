@@ -18,8 +18,8 @@ public interface ISkillPointItem {
      */
     default SkillPoint getSkillPoint(ItemStack stack) {
         var registry = ArsMagicaAPI.get().getSkillPointRegistry();
-        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.getRegistryName().toString()));
-        return Objects.requireNonNull(registry.getValue(key));
+        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.key().location().toString()));
+        return Objects.requireNonNull(registry.get(key));
     }
 
     /**
@@ -30,7 +30,7 @@ public interface ISkillPointItem {
      * @return the {@link ItemStack} with the {@link SkillPoint} stored in it
      */
     default ItemStack setSkillPoint(ItemStack stack, SkillPoint skillPoint) {
-        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getSkillPointRegistry().getRegistryName().toString(), skillPoint.getId().toString());
+        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getSkillPointRegistry().key().location().toString(), skillPoint.getId().toString());
         return stack;
     }
 }

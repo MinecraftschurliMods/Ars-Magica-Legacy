@@ -24,12 +24,12 @@ public class IceGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3000).add(AMAttributes.MAX_BURNOUT.get(), 3000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 300).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 3000).add(AMAttributes.MAX_BURNOUT.value(), 3000);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.ICE_GUARDIAN_AMBIENT.get();
+        return AMSounds.ICE_GUARDIAN_AMBIENT.value();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.ICE_GUARDIAN_DEATH.get();
+        return AMSounds.ICE_GUARDIAN_DEATH.value();
     }
 
     @Override

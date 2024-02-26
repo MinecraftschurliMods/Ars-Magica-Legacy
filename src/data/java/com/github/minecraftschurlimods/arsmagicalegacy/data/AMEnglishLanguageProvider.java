@@ -24,6 +24,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMTalents;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -34,9 +35,10 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -123,12 +125,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.REDSTONE_INLAY);
         blockIdTranslation(AMBlocks.GOLD_INLAY);
         fluidIdTranslation(AMFluids.LIQUID_ESSENCE_TYPE, true);
-        for (RegistryObject<Affinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
+        for (Holder<Affinity> affinity : AMRegistries.AFFINITIES.getEntries()) {
             affinityIdTranslation(affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_ESSENCE, affinity);
             affinityItemIdTranslation(AMItems.AFFINITY_TOME, affinity);
         }
-        for (RegistryObject<SkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
+        for (Holder<SkillPoint> skillPoint : AMRegistries.SKILL_POINTS.getEntries()) {
             skillPointIdTranslation(skillPoint);
             skillPointItemIdTranslation(AMItems.INFINITY_ORB, skillPoint);
         }
@@ -472,11 +474,11 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         subtitleTranslation(AMSounds.INSCRIPTION_TABLE_TAKE_BOOK, "Book is taken");
         subtitleTranslation(AMSounds.GET_KNOWLEDGE_POINT, "Magic jingle");
         subtitleTranslation(AMSounds.MAGIC_LEVEL_UP, "Magic jingle");
-        statTranslation(AMStats.INTERACT_WITH_INSCRIPTION_TABLE.get(), "Interactions with Inscription Table");
-        statTranslation(AMStats.INTERACT_WITH_OBELISK.get(), "Interactions with Obelisk");
-        statTranslation(AMStats.INTERACT_WITH_OCCULUS.get(), "Interactions with Occulus");
-        statTranslation(AMStats.RITUALS_TRIGGERED.get(), "Rituals triggered");
-        statTranslation(AMStats.SPELL_CAST.get(), "Spells cast");
+        statTranslation(AMStats.INTERACT_WITH_INSCRIPTION_TABLE.value(), "Interactions with Inscription Table");
+        statTranslation(AMStats.INTERACT_WITH_OBELISK.value(), "Interactions with Obelisk");
+        statTranslation(AMStats.INTERACT_WITH_OCCULUS.value(), "Interactions with Occulus");
+        statTranslation(AMStats.RITUALS_TRIGGERED.value(), "Rituals triggered");
+        statTranslation(AMStats.SPELL_CAST.value(), "Spells cast");
         arcaneCompendiumTranslation("affinities.fire.page0.text", "The fire affinity is associated with lava, explosions and the Nether. Fire components are usually offensive ones, like $(l:components/fire_damage)Fire Damage$(), $(l:components/ignition)Ignition$() or $(l:components/explosion)Explosion$().");
         arcaneCompendiumTranslation("affinities.water.page0.text", "The water affinity is associated with swimming, drowning and potions. Its components therefore often use effects, such as $(l:components/water_breathing)Water Breathing$(), $(l:components/swift_swim)Swift Swim$() or $(l:components/watery_grave)Watery Grave$().");
         arcaneCompendiumTranslation("affinities.earth.page0.text", "The earth affinity is associated with mining, protection and physical attacks. Earth components usually have some kind of physical interaction, like $(l:components/physical_damage)Physical Damage$(), $(l:components/dig)Dig$() or $(l:components/shield)Shield$().");
@@ -616,7 +618,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param block The block to generate the translation for.
      */
-    private void blockIdTranslation(RegistryObject<? extends Block> block) {
+    private void blockIdTranslation(DeferredBlock<? extends Block> block) {
         addBlock(block, idToTranslation(block.getId().getPath()));
     }
 
@@ -625,7 +627,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param fluid The block to generate the translation for.
      */
-    private void fluidIdTranslation(RegistryObject<? extends FluidType> fluid, boolean hasBucket) {
+    private void fluidIdTranslation(DeferredHolder<FluidType, ? extends FluidType> fluid, boolean hasBucket) {
         ResourceLocation id = fluid.getId();
         add("fluid_type." + id.getNamespace() + "." + id.getPath(), idToTranslation(id.getPath()));
         add("block." + id.getNamespace() + "." + id.getPath(), idToTranslation(id.getPath()));
@@ -639,7 +641,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param item The item to generate the translation for.
      */
-    private void itemIdTranslation(RegistryObject<? extends Item> item) {
+    private void itemIdTranslation(DeferredHolder<Item, ? extends Item> item) {
         addItem(item, idToTranslation(item.getId().getPath()));
     }
 
@@ -648,8 +650,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param effect The effect to generate the translation for.
      */
-    private void effectIdTranslation(RegistryObject<? extends MobEffect> effect) {
-        addEffect(effect, idToTranslation(effect.getId().getPath()));
+    private void effectIdTranslation(Holder<MobEffect> effect) {
+        add(effect.value(), idToTranslation(effect.unwrapKey().get().location().getPath()));
     }
 
     /**
@@ -658,11 +660,12 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param potion The potion to generate the translation for.
      */
-    private void potionIdTranslation(RegistryObject<? extends Potion> potion) {
-        add("item.minecraft.potion.effect." + potion.getId().getPath(), "Potion of " + idToTranslation(potion.getId().getPath()));
-        add("item.minecraft.splash_potion.effect." + potion.getId().getPath(), "Splash Potion of " + idToTranslation(potion.getId().getPath()));
-        add("item.minecraft.lingering_potion.effect." + potion.getId().getPath(), "Lingering Potion of " + idToTranslation(potion.getId().getPath()));
-        add("item.minecraft.tipped_arrow.effect." + potion.getId().getPath(), "Arrow of " + idToTranslation(potion.getId().getPath()));
+    private void potionIdTranslation(Holder<Potion> potion) {
+        String path = potion.unwrapKey().get().location().getPath();
+        add("item.minecraft.potion.effect." + path, "Potion of " + idToTranslation(path));
+        add("item.minecraft.splash_potion.effect." + path, "Splash Potion of " + idToTranslation(path));
+        add("item.minecraft.lingering_potion.effect." + path, "Lingering Potion of " + idToTranslation(path));
+        add("item.minecraft.tipped_arrow.effect." + path, "Arrow of " + idToTranslation(path));
     }
 
     /**
@@ -670,8 +673,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param attribute The attribute to generate the translation for.
      */
-    private void attributeIdTranslation(RegistryObject<? extends Attribute> attribute) {
-        add(attribute.get().getDescriptionId(), idToTranslation(attribute.getId().getPath()));
+    private void attributeIdTranslation(Holder<Attribute> attribute) {
+        add(attribute.value().getDescriptionId(), idToTranslation(attribute.unwrapKey().get().location().getPath()));
     }
 
     /**
@@ -679,8 +682,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param entity The entity to generate the translation for.
      */
-    private void entityIdTranslation(RegistryObject<? extends EntityType<?>> entity) {
-        addEntityType(entity, idToTranslation(entity.getId().getPath()));
+    private void entityIdTranslation(Holder<EntityType<?>> entity) {
+        add(entity.value(), idToTranslation(entity.unwrapKey().get().location().getPath()));
     }
 
     /**
@@ -688,8 +691,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param skillPoint The skillPoint to generate the translation for.
      */
-    private void skillPointIdTranslation(RegistryObject<? extends SkillPoint> skillPoint) {
-        addSkillPoint(skillPoint, idToTranslation(skillPoint.getId().getPath()));
+    private void skillPointIdTranslation(Holder<SkillPoint> skillPoint) {
+        add(skillPoint.value(), idToTranslation(skillPoint.unwrapKey().get().location().getPath()));
     }
 
     /**
@@ -697,8 +700,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      *
      * @param affinity The affinity to generate the translation for.
      */
-    private void affinityIdTranslation(RegistryObject<? extends Affinity> affinity) {
-        addAffinity(affinity, idToTranslation(affinity.getId().getPath()));
+    private void affinityIdTranslation(Holder<Affinity> affinity) {
+        addAffinity(affinity, idToTranslation(affinity.unwrapKey().get().location().getPath()));
     }
 
     /**
@@ -756,8 +759,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param attribute   The attribute to add the translation for.
      * @param translation The translation for the attribute.
      */
-    private void addAttribute(Supplier<? extends Attribute> attribute, String translation) {
-        add(attribute.get().getDescriptionId(), translation);
+    private void addAttribute(Holder<Attribute> attribute, String translation) {
+        add(attribute.value().getDescriptionId(), translation);
     }
 
     /**
@@ -766,8 +769,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinity    The affinity to add the translation for.
      * @param translation The translation for the affinity.
      */
-    private void addAffinity(Supplier<? extends Affinity> affinity, String translation) {
-        add(affinity.get(), translation);
+    private void addAffinity(Holder<Affinity> affinity, String translation) {
+        add(affinity.value(), translation);
     }
 
     /**
@@ -776,8 +779,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinityItem The affinity item to add the translation for.
      * @param affinity     The affinity to generate the translation from.
      */
-    private void affinityItemIdTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends Affinity> affinity) {
-        affinityItemIdTranslation(affinityItem.getId(), affinity.getId());
+    private void affinityItemIdTranslation(DeferredItem<? extends IAffinityItem> affinityItem, Holder<Affinity> affinity) {
+        affinityItemIdTranslation(affinityItem.getId(), affinity.unwrapKey().get().location());
     }
 
     /**
@@ -798,8 +801,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param affinity     The affinity to generate the translation from.
      * @param translation  The custom translation to use.
      */
-    private void affinityItemTranslation(RegistryObject<? extends IAffinityItem> affinityItem, RegistryObject<? extends Affinity> affinity, String translation) {
-        affinityItemTranslation(affinityItem.getId(), affinity.getId(), translation);
+    private void affinityItemTranslation(DeferredItem<? extends IAffinityItem> affinityItem, Holder<Affinity> affinity, String translation) {
+        affinityItemTranslation(affinityItem.getId(), affinity.unwrapKey().get().location(), translation);
     }
 
     /**
@@ -829,8 +832,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPointItem The skill point item to add the translation for.
      * @param skillPoint     The skill point to generate the translation from.
      */
-    private void skillPointItemIdTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends SkillPoint> skillPoint) {
-        skillPointItemIdTranslation(skillPointItem.getId(), skillPoint.getId());
+    private void skillPointItemIdTranslation(DeferredItem<? extends ISkillPointItem> skillPointItem, Holder<SkillPoint> skillPoint) {
+        skillPointItemIdTranslation(skillPointItem.getId(), skillPoint.unwrapKey().get().location());
     }
 
     /**
@@ -851,8 +854,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param skillPoint     The skill point to generate the translation from.
      * @param translation    The custom translation to use.
      */
-    private void skillPointItemTranslation(RegistryObject<? extends ISkillPointItem> skillPointItem, RegistryObject<? extends SkillPoint> skillPoint, String translation) {
-        skillPointItemTranslation(skillPointItem.getId(), skillPoint.getId(), translation);
+    private void skillPointItemTranslation(DeferredItem<? extends ISkillPointItem> skillPointItem, Holder<SkillPoint> skillPoint, String translation) {
+        skillPointItemTranslation(skillPointItem.getId(), skillPoint.unwrapKey().get().location(), translation);
     }
 
     /**
@@ -892,8 +895,8 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
      * @param soundId     The sound to add the translation for.
      * @param translation The translation to use.
      */
-    private void subtitleTranslation(Supplier<SoundEvent> soundId, String translation) {
-        add(Util.makeDescriptionId("subtitle", ForgeRegistries.SOUND_EVENTS.getKey(soundId.get())), translation);
+    private void subtitleTranslation(Holder<SoundEvent> sound, String translation) {
+        add(Util.makeDescriptionId("subtitle", sound.unwrapKey().get().location()), translation);
     }
 
     /**

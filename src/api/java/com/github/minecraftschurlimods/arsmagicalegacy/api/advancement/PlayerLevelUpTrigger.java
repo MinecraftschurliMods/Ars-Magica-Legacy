@@ -1,31 +1,23 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.advancement;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
+
+import java.util.Optional;
 
 /**
  * Advancement trigger for when a player levels up in magic.
  */
 public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTrigger.TriggerInstance> {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "player_level_up");
-
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
-
-    @Override
-    protected PlayerLevelUpTrigger.TriggerInstance createInstance(JsonObject pJson, ContextAwarePredicate pPredicate, DeserializationContext pContext) {
-        return new PlayerLevelUpTrigger.TriggerInstance(pPredicate, MinMaxBounds.Ints.fromJson(pJson.get("level")));
-    }
 
     /**
      * Triggers the advancement trigger.
@@ -36,27 +28,23 @@ public class PlayerLevelUpTrigger extends SimpleCriterionTrigger<PlayerLevelUpTr
         trigger(pPlayer, t -> t.matches(level));
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final MinMaxBounds.Ints level;
+    @Override
+    public Codec<TriggerInstance> codec() {
+        return TriggerInstance.CODEC;
+    }
 
-        public TriggerInstance(ContextAwarePredicate pPredicate, MinMaxBounds.Ints level) {
-            super(PlayerLevelUpTrigger.ID, pPredicate);
-            this.level = level;
-        }
-
-        @Override
-        public JsonObject serializeToJson(SerializationContext pConditions) {
-            JsonObject jsonobject = super.serializeToJson(pConditions);
-            jsonobject.add("level", this.level.serializeToJson());
-            return jsonobject;
-        }
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<MinMaxBounds.Ints> level) implements SimpleCriterionTrigger.SimpleInstance {
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(TriggerInstance::player),
+                ExtraCodecs.strictOptionalField(MinMaxBounds.Ints.CODEC, "level").forGetter(TriggerInstance::level)
+        ).apply(inst, TriggerInstance::new));
 
         /**
          * @param level The level to check.
          * @return Whether the given level matches this instance's level or not.
          */
         public boolean matches(int level) {
-            return this.level.matches(level);
+            return this.level().map(l -> l.matches(level)).orElse(true);
         }
     }
 }

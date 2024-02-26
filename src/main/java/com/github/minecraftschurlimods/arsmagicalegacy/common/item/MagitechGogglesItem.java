@@ -3,11 +3,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.compat.curios.CurioCompat;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,8 +14,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -75,12 +70,7 @@ public class MagitechGogglesItem extends ArmorItem {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot != EquipmentSlot.HEAD) return ImmutableMultimap.of();
-        return ImmutableMultimap.of(AMAttributes.MAGIC_VISION.get(), new AttributeModifier(UUID, "magic_vision", 1, AttributeModifier.Operation.ADDITION));
-    }
-
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return CompatManager.<CurioCompat>getHandler("curios").lazyMap(curioCompat -> curioCompat.makeCurioCap(stack, (s, stack1) -> getAttributeModifiers(EquipmentSlot.HEAD, stack1))).orElse(super.initCapabilities(stack, nbt));
+        return ImmutableMultimap.of(AMAttributes.MAGIC_VISION.value(), new AttributeModifier(UUID, "magic_vision", 1, AttributeModifier.Operation.ADDITION));
     }
 
     @Override

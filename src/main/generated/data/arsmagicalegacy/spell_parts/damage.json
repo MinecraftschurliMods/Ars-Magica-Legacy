@@ -7,10 +7,10 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
+        "strict": true,
+        "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
       }
     },
     {
@@ -24,10 +24,10 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "minecraft:potion",
-        "nbt": "{Potion:\"minecraft:harming\"}"
+        "strict": true,
+        "tag": "{Potion:\"minecraft:harming\"}"
       }
     }
   ]

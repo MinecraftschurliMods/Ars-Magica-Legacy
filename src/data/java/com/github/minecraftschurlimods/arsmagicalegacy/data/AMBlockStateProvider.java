@@ -32,81 +32,24 @@ import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.ALTAR_CORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.ALTAR_VIEW;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.AUM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.BLACK_AUREM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CELESTIAL_PRISM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CERUBLOSSOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CHIMERITE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.CHIMERITE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_CHIMERITE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_MOONSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_TOPAZ_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DEEPSLATE_VINTEUM_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.DESERT_NOVA;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.GOLD_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.INSCRIPTION_TABLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.IRON_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.LIQUID_ESSENCE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MAGIC_WALL;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MOONSTONE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.MOONSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.OBELISK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.OCCULUS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_AUM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_CERUBLOSSOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_DESERT_NOVA;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_TARMA_ROOT;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_WAKEBLOOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.POTTED_WITCHWOOD_SAPLING;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.REDSTONE_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SPELL_RUNE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.STRIPPED_WITCHWOOD;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.STRIPPED_WITCHWOOD_LOG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SUNSTONE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.SUNSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TARMA_ROOT;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TOPAZ_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.TOPAZ_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_TORCH;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.VINTEUM_WALL_TORCH;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WAKEBLOOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_BUTTON;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_DOOR;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_FENCE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_FENCE_GATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_HANGING_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_LEAVES;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_LOG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_PLANKS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_PRESSURE_PLATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SAPLING;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_SLAB;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_STAIRS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_TRAPDOOR;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_WALL_HANGING_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WITCHWOOD_WALL_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.WIZARDS_CHALK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks.*;
 
 @SuppressWarnings({"SameParameterValue"})
 class AMBlockStateProvider extends BlockStateProvider {
+    private static final ResourceLocation ITEM_DEFAULT = new ResourceLocation("neoforge", "item/default");
+
     AMBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, ArsMagicaAPI.MOD_ID, existingFileHelper);
     }
@@ -215,7 +158,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param block The block to generate the model for.
      * @param log   The corresponding log block.
      */
-    private void woodBlock(RegistryObject<? extends RotatedPillarBlock> block, Supplier<? extends Block> log) {
+    private void woodBlock(DeferredBlock<? extends RotatedPillarBlock> block, Supplier<? extends Block> log) {
         axisBlock(block.get(),
                 models().cubeColumn(block.getId().getPath(), blockTexture(log.get()), blockTexture(log.get())),
                 models().cubeColumnHorizontal(block.getId().getPath(), blockTexture(log.get()), blockTexture(log.get())));
@@ -226,7 +169,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void crossBlock(RegistryObject<? extends Block> block) {
+    private void crossBlock(DeferredBlock<? extends Block> block) {
         simpleBlock(block.get(), models().cross(block.getId().getPath(), blockTexture(block.get())).renderType("cutout"));
     }
 
@@ -236,7 +179,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param pot   The flower pot block to generate the model for.
      * @param plant The plant to place inside the flower pot.
      */
-    private void flowerPotBlock(RegistryObject<? extends Block> pot, Supplier<? extends Block> plant) {
+    private void flowerPotBlock(DeferredBlock<? extends Block> pot, Supplier<? extends Block> plant) {
         simpleBlock(pot.get(), models().withExistingParent(pot.getId().getPath(), "block/flower_pot_cross").texture("plant", blockTexture(plant.get())).renderType("cutout"));
     }
 
@@ -266,7 +209,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param fence The block to generate the model for.
      * @param block The block to take the texture from.
      */
-    private void fenceBlock(RegistryObject<? extends FenceBlock> fence, Supplier<? extends Block> block) {
+    private void fenceBlock(DeferredBlock<? extends FenceBlock> fence, Supplier<? extends Block> block) {
         fenceBlock(fence.get(), blockTexture(block.get()));
         models().fenceInventory(fence.getId().getPath() + "_inventory", blockTexture(block.get()));
     }
@@ -286,7 +229,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void doorBlock(RegistryObject<? extends DoorBlock> block) {
+    private void doorBlock(DeferredBlock<? extends DoorBlock> block) {
         doorBlockWithRenderType(block.get(), block.getId().getPath().replace("_door", ""), modLoc("block/" + block.getId().getPath() + "_bottom"), modLoc("block/" + block.getId().getPath() + "_top"), "cutout");
     }
 
@@ -305,7 +248,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param button The block to generate the model for.
      * @param block  The block to take the texture from.
      */
-    private void buttonBlock(RegistryObject<? extends ButtonBlock> button, Supplier<? extends Block> block) {
+    private void buttonBlock(DeferredBlock<? extends ButtonBlock> button, Supplier<? extends Block> block) {
         ResourceLocation texture = blockTexture(block.get());
         buttonBlock(button.get(), texture);
         models().withExistingParent(button.getId().getPath() + "_inventory", "block/button_inventory").texture("texture", texture);
@@ -325,7 +268,7 @@ class AMBlockStateProvider extends BlockStateProvider {
         signBlock(sign.get(), wallSign.get(), blockTexture(block.get()));
     }
 
-    private void hangingSignBlock(RegistryObject<? extends CeilingHangingSignBlock> sign, Supplier<? extends WallHangingSignBlock> wallSign, Supplier<? extends Block> block) {
+    private void hangingSignBlock(DeferredBlock<? extends CeilingHangingSignBlock> sign, Supplier<? extends WallHangingSignBlock> wallSign, Supplier<? extends Block> block) {
         ModelFile signModel = models().sign(sign.getId().getPath(), blockTexture(block.get()));
         simpleBlock(sign.get(), signModel);
         simpleBlock(wallSign.get(), signModel);
@@ -337,7 +280,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * @param torch     The TorchBlock to generate the model for.
      * @param wallTorch The WallTorchBlock to generate the model for.
      */
-    private void torchBlock(RegistryObject<? extends TorchBlock> torch, RegistryObject<? extends WallTorchBlock> wallTorch) {
+    private void torchBlock(DeferredBlock<? extends TorchBlock> torch, DeferredBlock<? extends WallTorchBlock> wallTorch) {
         ModelFile file = models().withExistingParent(torch.getId().getPath(), "block/template_torch").texture("torch", modLoc("block/" + torch.getId().getPath())).renderType("cutout");
         ModelFile wallFile = models().withExistingParent(wallTorch.getId().getPath(), "block/template_torch_wall").texture("torch", modLoc("block/" + torch.getId().getPath())).renderType("cutout");
         getVariantBuilder(torch.get()).partialState().setModels(ConfiguredModel.builder().modelFile(file).build());
@@ -355,7 +298,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void railBlock(RegistryObject<? extends BaseRailBlock> block) {
+    private void railBlock(DeferredBlock<? extends BaseRailBlock> block) {
         ResourceLocation texture = blockTexture(block.get());
         ModelFile straight = models().withExistingParent(block.getId().getPath(), mcLoc("block/rail")).texture("rail", texture).renderType("cutout");
         ModelFile curved = models().withExistingParent(block.getId().getPath() + "_corner", mcLoc("block/rail_curved")).texture("rail", new ResourceLocation(texture.getNamespace(), texture.getPath() + "_corner")).renderType("cutout");
@@ -384,7 +327,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void altarCoreBlock(RegistryObject<? extends AltarCoreBlock> block) {
+    private void altarCoreBlock(DeferredBlock<? extends AltarCoreBlock> block) {
         String texture = block.getId().getPath();
         getVariantBuilder(block.get())
                 .partialState().with(AltarCoreBlock.FORMED, false).modelForState().modelFile(((BlockModelBuilder) cubeAll(block.get())).renderType("translucent")).addModel()
@@ -402,12 +345,12 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void obeliskBlock(RegistryObject<? extends ObeliskBlock> block) {
+    private void obeliskBlock(DeferredBlock<? extends ObeliskBlock> block) {
         String texture = block.getId().getPath();
         getVariantBuilder(block.get()).forAllStates(state -> {
             if (state.getValue(ObeliskBlock.PART) == ObeliskBlock.Part.LOWER) {
                 return ConfiguredModel.builder().modelFile(models().getBuilder(texture + (state.getValue(AbstractFurnaceBlock.LIT) ? "_lit" : ""))
-                        .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                        .parent(models().getExistingFile(ITEM_DEFAULT))
                         .customLoader(ObjModelBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
                         .emissiveAmbient(false)
@@ -428,12 +371,12 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void celestialPrismBlock(RegistryObject<? extends CelestialPrismBlock> block) {
+    private void celestialPrismBlock(DeferredBlock<? extends CelestialPrismBlock> block) {
         String texture = block.getId().getPath();
         getVariantBuilder(block.get()).forAllStates(state -> {
             if (state.getValue(CelestialPrismBlock.HALF) == DoubleBlockHalf.LOWER) {
                 return ConfiguredModel.builder().modelFile(models().getBuilder(texture)
-                        .parent(models().getExistingFile(new ResourceLocation("forge", "item/default")))
+                        .parent(models().getExistingFile(ITEM_DEFAULT))
                         .customLoader(ObjModelBuilder::begin)
                         .modelLocation(modLoc("models/block/obj/" + texture + ".obj"))
                         .end()
@@ -451,7 +394,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void blackAuremBlock(RegistryObject<? extends BlackAuremBlock> block) {
+    private void blackAuremBlock(DeferredBlock<? extends BlackAuremBlock> block) {
         getVariantBuilder(block.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().getBuilder(block.getId().getPath()).texture("particle", blockTexture(block.get()))).build());
     }
 
@@ -460,7 +403,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void wizardsChalkBlock(RegistryObject<? extends WizardsChalkBlock> block) {
+    private void wizardsChalkBlock(DeferredBlock<? extends WizardsChalkBlock> block) {
         ModelFile[] models = new ModelFile[16];
         for (int i = 0; i < models.length; i++) {
             models[i] = models().withExistingParent(block.getId().getPath() + "_" + i, "block/rail_flat").texture("rail", new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_" + i)).renderType("translucent");
@@ -482,7 +425,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      *
      * @param block The block to generate the model for.
      */
-    private void spellRuneBlock(RegistryObject<? extends SpellRuneBlock> block) {
+    private void spellRuneBlock(DeferredBlock<? extends SpellRuneBlock> block) {
         String texture = block.getId().getPath();
         getVariantBuilder(block.get()).forAllStates(state -> {
             Direction face = state.getValue(SpellRuneBlock.FACE);
@@ -505,7 +448,7 @@ class AMBlockStateProvider extends BlockStateProvider {
      * Adds an inscription table block state definition.
      * @param block The block to generate the block state definition for.
      */
-    private void inscriptionTableBlock(RegistryObject<? extends InscriptionTableBlock> block) {
+    private void inscriptionTableBlock(DeferredBlock<? extends InscriptionTableBlock> block) {
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
         for (Direction facing : InscriptionTableBlock.FACING.getPossibleValues()) {
             for (InscriptionTableBlock.Half half : InscriptionTableBlock.HALF.getPossibleValues()) {

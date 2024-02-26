@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
     },
     "I": {
       "tag": "forge:dusts/redstone"
@@ -26,6 +26,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:lightning\"}"
-  },
-  "show_notification": true
+  }
 }

@@ -87,7 +87,6 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(guiGraphics);
         super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         for (DragArea<SpellPartDraggable> area : dragAreas) {
             area.render(guiGraphics, pMouseX, pMouseY, pPartialTick);

@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_rune",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_rune"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:rune_bag_from_bundle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

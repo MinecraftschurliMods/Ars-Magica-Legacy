@@ -24,7 +24,7 @@ public class SpellBookScreen extends AbstractContainerScreen<SpellBookMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         graphics.blit(GUI, (width - imageWidth) >> 1, (height - imageHeight) >> 1, 0, 0, imageWidth, imageHeight);
     }
 

@@ -140,7 +140,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
             y += font.lineHeight + font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
             int x = getAffinityValueAnchor(font, recipe.affinityShifts) + 9;
             for (Affinity affinity : recipe.affinityShifts.keySet().stream().sorted().toList()) {
-                graphics.drawString(font, String.valueOf(recipe.affinityShifts.get(affinity)), x, y, affinity.color());
+                graphics.drawString(font, String.valueOf(recipe.affinityShifts.get(affinity)), x, y, affinity.color(), false);
                 y += SLOT_SIZE - 2;
             }
             y += 2 - font.lineHeight / 2 + TEXT_BOTTOM_PADDING;
@@ -155,14 +155,14 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
         @SuppressWarnings("ConstantConditions")
         public static Recipe of(Skill skill) {
             ArsMagicaAPI api = ArsMagicaAPI.get();
-            ISpellPart part = api.getSpellPartRegistry().getValue(skill.getId(ClientHelper.getRegistryAccess()));
+            ISpellPart part = api.getSpellPartRegistry().get(skill.getId(ClientHelper.getRegistryAccess()));
             ISpellPartData data = api.getSpellDataManager().getDataForPart(part);
             return new Recipe(skill, data.recipe(), data.affinityShifts(), AMUtil.getModifiersForPart(part));
         }
     }
 
     private static void drawCentered(GuiGraphics graphics, Font font, Component component, int y) {
-        graphics.drawString(font, component, (int) ((WIDTH - font.getSplitter().stringWidth(component.getString())) / 2), y, 0x404040);
+        graphics.drawString(font, component, (int) ((WIDTH - font.getSplitter().stringWidth(component.getString())) / 2), y, 0x404040, false);
     }
 
     private static int getAffinityValueAnchor(Font font, Map<Affinity, Float> affinityShifts) {

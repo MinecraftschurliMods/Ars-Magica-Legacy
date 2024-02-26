@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMDamageSources;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -64,27 +64,28 @@ public class FallingStar extends AbstractSpellEntity {
     @Override
     public void tick() {
         super.tick();
+        Level level = level();
         if (timeSinceImpact == -1) {
             setDeltaMovement(getDeltaMovement().x(), getDeltaMovement().y() > -1f ? -1f : getDeltaMovement().y() - 0.1f, getDeltaMovement().z());
             moveTo(position().add(getDeltaMovement()));
-            if (!level().isClientSide() && tickCount > 0) {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
+            if (!level.isClientSide() && tickCount > 0) {
+                PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
             }
-            HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level(), 0.01, true, false);
+            HitResult result = ArsMagicaAPI.get().getSpellHelper().trace(this, level, 0.01, true, false);
             if (result.getType() == HitResult.Type.MISS) return;
             Vec3 vec = result.getLocation();
             if (result.getType() == HitResult.Type.BLOCK) {
-                while (level().getBlockState(BlockPos.containing(vec)).isSolid()) {
+                while (level.getBlockState(BlockPos.containing(vec)).isSolid()) {
                     vec = vec.add(0, 1, 0);
                 }
                 moveTo(vec);
             }
         }
         timeSinceImpact++;
-        if (!level().isClientSide() && timeSinceImpact < 2) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
+        if (!level.isClientSide() && timeSinceImpact < 2) {
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
         }
-        for (Entity e : level().getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
+        for (Entity e : level.getEntities(this, getBoundingBox().inflate(timeSinceImpact, 1, timeSinceImpact), e -> e instanceof LivingEntity living && !damaged.contains(living))) {
             if (e instanceof Player player && player.isCreative()) continue;
             e.hurt(damageSource, getDamage());
             damaged.add((LivingEntity) e);

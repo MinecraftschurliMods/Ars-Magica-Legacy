@@ -2,17 +2,17 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record OpenSpellRecipeGuiInLecternPacket(ItemStack stack, BlockPos pos, int page) implements IPacket {
+public record OpenSpellRecipeGuiInLecternPacket(ItemStack stack, BlockPos pos, int page) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "open_spell_recipe_gui_in_lectern");
 
-    public OpenSpellRecipeGuiInLecternPacket(FriendlyByteBuf buf) {
+    OpenSpellRecipeGuiInLecternPacket(FriendlyByteBuf buf) {
         this(buf.readItem(), buf.readBlockPos(), buf.readInt());
     }
 
@@ -22,14 +22,13 @@ public record OpenSpellRecipeGuiInLecternPacket(ItemStack stack, BlockPos pos, i
     }
 
     @Override
-    public void serialize(FriendlyByteBuf friendlyByteBuf) {
+    public void write(FriendlyByteBuf friendlyByteBuf) {
         friendlyByteBuf.writeItem(stack);
         friendlyByteBuf.writeBlockPos(pos);
         friendlyByteBuf.writeInt(page);
     }
 
-    @Override
-    public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ClientHelper.openSpellRecipeGui(stack, false, page, pos));
+    void handle(PlayPayloadContext context) {
+        context.workHandler().execute(() -> ClientHelper.openSpellRecipeGui(stack, false, page, pos));
     }
 }

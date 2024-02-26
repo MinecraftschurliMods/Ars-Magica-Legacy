@@ -14,17 +14,18 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forgespi.language.IModInfo;
+import net.minecraft.util.InclusiveRange;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforgespi.language.IModInfo;
 import org.apache.commons.lang3.function.TriFunction;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -44,7 +45,7 @@ public class AMDatagen {
         Map<String, String> lang = new HashMap<>();
         BiConsumer<String, String> langConsumer = lang::put;
         common.addProvider(wrapWith(AMDatagen::createMetaGenerator, evt.getModContainer().getModInfo()));
-        CompletableFuture<HolderLookup.Provider> lookupProvider = server.addProvider(wrapWith(AMDatagen::createDatapackGenerator, evt.getLookupProvider(), langConsumer)).getHolderLookupProvider();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = server.addProvider(wrapWith(AMDatagen::createDatapackGenerator, evt.getLookupProvider(), langConsumer)).getRegistryProvider();
         common.addProvider(wrapWith(AMPatchouliBookProvider::new, lookupProvider, langConsumer, includeClient, includeServer));
         server.addProvider(wrapWith(AMAdvancements::new, lookupProvider, existingFileHelper));
         server.addProvider(AMLootTableProvider::new);
@@ -57,7 +58,8 @@ public class AMDatagen {
         server.addProvider(wrapWith(AMTagsProvider.Biomes::new, lookupProvider, existingFileHelper));
         server.addProvider(wrapWith(AMTagsProvider.DamageTypes::new, lookupProvider, existingFileHelper));
         server.addProvider(AMSpellPartDataProvider::new);
-        client.addProvider(wrapWith(AMSpriteSourceProvider::new, existingFileHelper));
+        server.addProvider(wrapWith(AMCuriosDataProvider::new, existingFileHelper, lookupProvider));
+        client.addProvider(wrapWith(AMSpriteSourceProvider::new, existingFileHelper, lookupProvider));
         client.addProvider(wrapWith(AMBlockStateProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMItemModelProvider::new, existingFileHelper));
         client.addProvider(wrapWith(AMParticleDefinitionsProvider::new, existingFileHelper));
@@ -68,13 +70,14 @@ public class AMDatagen {
 
     private static PackMetadataGenerator createMetaGenerator(PackOutput output, IModInfo modInfo) {
         WorldVersion version = DetectedVersion.BUILT_IN;
-        Map<PackType, Integer> versions = new EnumMap<>(PackType.class);
+        int minVersion = 0;
         int maxVersion = 0;
         for (PackType packType : PackType.values()) {
-            versions.put(packType, version.getPackVersion(packType));
-            maxVersion = Math.max(maxVersion, version.getPackVersion(packType));
+            int packVersion = version.getPackVersion(packType);
+            minVersion = minVersion == 0 ? packVersion : Math.min(minVersion, packVersion);
+            maxVersion = Math.max(maxVersion, packVersion);
         }
-        PackMetadataSection metadataSection = new PackMetadataSection(Component.literal(modInfo.getDisplayName()), maxVersion, versions);
+        PackMetadataSection metadataSection = new PackMetadataSection(Component.literal(modInfo.getDisplayName()), maxVersion, Optional.of(new InclusiveRange<>(minVersion, maxVersion)));
         return new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, metadataSection);
     }
 

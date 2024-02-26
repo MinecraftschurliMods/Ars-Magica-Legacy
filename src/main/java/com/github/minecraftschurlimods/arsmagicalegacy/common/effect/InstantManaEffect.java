@@ -17,7 +17,7 @@ public class InstantManaEffect extends InstantenousMobEffect {
     @Override
     public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
         IManaHelper manaHelper = ArsMagicaAPI.get().getManaHelper();
-        if (pLivingEntity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.get())) {
+        if (pLivingEntity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.value())) {
             manaHelper.increaseMana(pLivingEntity, manaHelper.getMaxMana(pLivingEntity) / 5 * pAmplifier);
         }
     }

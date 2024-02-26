@@ -38,16 +38,15 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_liquid_essence_bucket",
       "in_liquid_essence",
-      "filled_liquid_essence_bucket",
-      "has_the_recipe"
+      "filled_liquid_essence_bucket"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:arcane_compendium"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -31,6 +31,7 @@ public class OcculusScreen extends Screen {
     private Button nextPage;
     private OcculusTabRenderer activeTab;
     private int activeTabIndex;
+    public SkillPointPanel skillPointPanel;
 
     public OcculusScreen() {
         super(TITLE);
@@ -54,7 +55,7 @@ public class OcculusScreen extends Screen {
         prevPage = addRenderableWidget(Button.builder(Component.literal("<"), this::prevPage).pos(-15, -21).size(20, 20).build());
         nextPage.active = page < maxPage;
         prevPage.active = false;
-        addRenderableWidget(new SkillPointPanel(getMinecraft().player, font, GUI_WIDTH, 0, 0, GUI_HEIGHT));
+        skillPointPanel = addRenderableWidget(new SkillPointPanel(getMinecraft().player, font, GUI_WIDTH, 0, 0, GUI_HEIGHT));
         if (activeTab == null) {
             setActiveTab(activeTabIndex);
         }
@@ -63,12 +64,14 @@ public class OcculusScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(graphics);
+        super.renderBackground(graphics, pMouseX, pMouseY, pPartialTicks);
         graphics.pose().pushPose();
         graphics.pose().translate(posX, posY, 0);
         graphics.blit(OVERLAY, 0, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT, 256, 256);
         graphics.blit(OVERLAY, 7 + activeTabIndex % 8 * 24, -15, 0, 0, GUI_HEIGHT, 22, 22, 256, 256);
-        super.render(graphics, pMouseX, pMouseY, pPartialTicks);
+        for(Renderable renderable : this.renderables) {
+            renderable.render(graphics, pMouseX, pMouseY, pPartialTicks);
+        }
         for (OcculusTabButton button : buttons) {
             if (button.isHovered()) {
                 graphics.renderTooltip(getMinecraft().font, button.getDisplayName(minecraft.level.registryAccess()), pMouseX - posX, pMouseY - posY);

@@ -17,7 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
     private final BlockRenderDispatcher dispatcher;
@@ -32,7 +32,7 @@ public class SpellRuneBER implements BlockEntityRenderer<SpellRuneBlockEntity> {
         if (level == null) return;
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
-        if (!player.isCreative() && !player.hasEffect(AMMobEffects.TRUE_SIGHT.get())) return;
+        if (!player.isCreative() && !player.hasEffect(AMMobEffects.TRUE_SIGHT.value())) return;
         BlockState blockState = blockEntity.getBlockState();
         BlockPos blockPos = blockEntity.getBlockPos();
         ModelData modelData = blockEntity.getModelData();
