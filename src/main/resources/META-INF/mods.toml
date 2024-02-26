@@ -54,9 +54,6 @@ Continuation of Ars Magica 2 by Mithion
     versionRange = "${ geckolib_version_range }"
     ordering = "BEFORE"
     side = "BOTH"
-    [dependencies.${ mod_id }.mc-publish]
-        modrinth = "geckolib"
-        curseforge = "geckolib"
 
 [[dependencies.${ mod_id }]]
     modId = "curios"
