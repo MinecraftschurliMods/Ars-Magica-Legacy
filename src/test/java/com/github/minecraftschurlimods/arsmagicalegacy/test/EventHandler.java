@@ -7,9 +7,9 @@ import net.minecraft.gametest.framework.GlobalTestReporter;
 import net.minecraft.gametest.framework.JUnitLikeTestReporter;
 import net.minecraft.gametest.framework.LogTestReporter;
 import net.minecraft.gametest.framework.TestReporter;
-import net.minecraftforge.event.RegisterGameTestsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -23,7 +23,7 @@ public class EventHandler {
 
     @SubscribeEvent
     static void gametest(RegisterGameTestsEvent event) throws ParserConfigurationException {
-        if (Stream.of(System.getProperty("forge.enabledGameTestNamespaces")).flatMap(s -> Arrays.stream(s.split(","))).anyMatch(s -> s.equals(ArsMagicaAPI.MOD_ID))) {
+        if (Stream.of(System.getProperty("neoforge.enabledGameTestNamespaces")).flatMap(s -> Arrays.stream(s.split(","))).anyMatch(s -> s.equals(ArsMagicaAPI.MOD_ID))) {
             GlobalTestReporter.replaceWith(new CompoundTestReporter(RUNNING_IN_GH_ACTIONS ? new GHActionsTestReporter() : new LogTestReporter(), new JUnitLikeTestReporter(new File("./logs/report-%s.xml".formatted(Instant.now().toString().replace( "-" , "" ).replace( ":" , "" ))))));
         }
     }
