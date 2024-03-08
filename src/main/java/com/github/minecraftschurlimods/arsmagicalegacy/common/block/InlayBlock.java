@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -16,11 +17,17 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import java.util.function.Predicate;
 
 public class InlayBlock extends BaseRailBlock {
+    private static final MapCodec<InlayBlock> CODEC = simpleCodec(InlayBlock::new);
     public static final EnumProperty<RailShape> SHAPE = EnumProperty.create("shape", RailShape.class, ((Predicate<RailShape>) RailShape::isAscending).negate());
 
     public InlayBlock(Properties pProperties) {
         super(false, pProperties);
         registerDefaultState(stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseRailBlock> codec() {
+        return CODEC;
     }
 
     @Override

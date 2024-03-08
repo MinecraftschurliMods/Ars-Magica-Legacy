@@ -28,7 +28,7 @@ public class ManaMartiniItem extends Item {
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
         if (!pLevel.isClientSide) {
-            pLivingEntity.addEffect(new MobEffectInstance(AMMobEffects.BURNOUT_REDUCTION.get(), 300));
+            pLivingEntity.addEffect(new MobEffectInstance(AMMobEffects.BURNOUT_REDUCTION.value(), 300));
         }
         if (!(pLivingEntity instanceof Player) || !((Player) pLivingEntity).isCreative()) {
             pStack.shrink(1);

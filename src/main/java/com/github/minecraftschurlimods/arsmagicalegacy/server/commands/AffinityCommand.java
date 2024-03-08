@@ -21,21 +21,14 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_ADD_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_ADD_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_GET;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_RESET_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_RESET_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_SET_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_SET_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.AFFINITY_UNKNOWN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
 public class AffinityCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_AFFINITIES = AffinityCommand::suggestAffinities;
@@ -96,10 +89,10 @@ public class AffinityCommand {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
-            if (!MinecraftForge.EVENT_BUS.post(event)) {
+            if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 helper.setAffinityDepth(player, affinity, (float) (helper.getAffinityDepthOrElse(player, affinity, 0) + amount));
                 helper.updateLock(player);
-                MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
+                NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
         }
         if (players.size() == 1) {
@@ -123,10 +116,10 @@ public class AffinityCommand {
         var helper = ArsMagicaAPI.get().getAffinityHelper();
         for (ServerPlayer player : players) {
             AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, (float) amount, true);
-            if (!MinecraftForge.EVENT_BUS.post(event)) {
+            if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 helper.setAffinityDepth(player, affinity, (float) amount);
                 helper.updateLock(player);
-                MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
+                NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, (float) amount, true));
             }
         }
         if (players.size() == 1) {
@@ -177,12 +170,12 @@ public class AffinityCommand {
 
     private static Affinity getAffinityFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "affinity");
-        Affinity affinity = ArsMagicaAPI.get().getAffinityRegistry().getValue(rl);
+        Affinity affinity = ArsMagicaAPI.get().getAffinityRegistry().get(rl);
         if (affinity == null) throw ERROR_UNKNOWN_AFFINITY.create(rl);
         return affinity;
     }
 
     private static CompletableFuture<Suggestions> suggestAffinities(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getAffinityRegistry().getKeys(), builder);
+        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getAffinityRegistry().keySet(), builder);
     }
 }

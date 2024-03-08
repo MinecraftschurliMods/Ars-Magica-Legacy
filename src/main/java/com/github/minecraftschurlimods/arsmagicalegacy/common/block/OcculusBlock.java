@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class OcculusBlock extends HorizontalDirectionalBlock {
+    private static final MapCodec<OcculusBlock> CODEC = MapCodec.unit(OcculusBlock::new);
     private static final VoxelShape SOCKET = AMUtil.joinShapes(
             box(0, 0, 0, 16, 1, 16),
             box(1.5, 1, 1.5, 14.5, 2, 14.5),
@@ -95,6 +97,11 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
     public BlockState rotate(BlockState pState, Rotation pRotation) {
         return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
@@ -126,7 +133,7 @@ public class OcculusBlock extends HorizontalDirectionalBlock {
             }
             return InteractionResult.SUCCESS;
         } else {
-            pPlayer.awardStat(AMStats.INTERACT_WITH_OCCULUS.get());
+            pPlayer.awardStat(AMStats.INTERACT_WITH_OCCULUS.value());
             return InteractionResult.CONSUME;
         }
     }

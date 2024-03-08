@@ -24,9 +24,8 @@ public class SkillPointPanel extends AbstractWidget {
         this.font = font;
         ArsMagicaAPI api = ArsMagicaAPI.get();
         this.skillPointText = api.getSkillPointRegistry()
-                                 .getValues()
                                  .stream()
-                                 .filter(e -> e != AMSkillPoints.NONE.get())
+                                 .filter(e -> e != AMSkillPoints.NONE.value())
                                  .map(point -> {
                                      int skillPoint = api.getSkillHelper().getSkillPoint(player, point);
                                      return point.getDisplayName().copy().append(" : " + skillPoint).withStyle(Style.EMPTY.withColor(point.color()));

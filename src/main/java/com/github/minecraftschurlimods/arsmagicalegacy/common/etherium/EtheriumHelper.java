@@ -7,23 +7,21 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.common.util.Lazy;
+import org.jetbrains.annotations.Nullable;
 
 public final class EtheriumHelper implements IEtheriumHelper {
+    public static final BlockCapability<IEtheriumProvider, Void> ETHERIUM_PROVIDER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_provider"), IEtheriumProvider.class);
+    public static final BlockCapability<IEtheriumConsumer, Void> ETHERIUM_CONSUMER = BlockCapability.createVoid(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium_consumer"), IEtheriumConsumer.class);
     private static final Lazy<EtheriumHelper> INSTANCE = Lazy.concurrentOf(EtheriumHelper::new);
-    private static final Capability<IEtheriumProvider> ETHERIUM_PROVIDER = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final Capability<IEtheriumConsumer> ETHERIUM_CONSUMER = CapabilityManager.get(new CapabilityToken<>() {});
     private static final String KEY = "etherium_type";
 
-    private EtheriumHelper() {
-    }
+    private EtheriumHelper() {}
 
     /**
      * @return The only instance of this class.
@@ -32,60 +30,52 @@ public final class EtheriumHelper implements IEtheriumHelper {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The etherium provider capability.
-     */
-    public Capability<IEtheriumProvider> getEtheriumProviderCapability() {
-        return ETHERIUM_PROVIDER;
-    }
-
-    /**
-     * @return The etherium consumer capability.
-     */
-    public Capability<IEtheriumConsumer> getEtheriumConsumerCapability() {
-        return ETHERIUM_CONSUMER;
-    }
-
     @Override
     public boolean hasEtheriumProvider(BlockEntity blockEntity) {
-        return getEtheriumProvider(blockEntity).isPresent();
+        return getEtheriumProvider(blockEntity) != null;
     }
 
     @Override
     public boolean hasEtheriumConsumer(BlockEntity blockEntity) {
-        return getEtheriumConsumer(blockEntity).isPresent();
+        return getEtheriumConsumer(blockEntity) != null;
     }
 
     @Override
     public boolean hasEtheriumProvider(Level level, BlockPos pos) {
-        return getEtheriumProvider(level, pos).isPresent();
+        return getEtheriumProvider(level, pos) != null;
     }
 
     @Override
     public boolean hasEtheriumConsumer(Level level, BlockPos pos) {
-        return getEtheriumConsumer(level, pos).isPresent();
+        return getEtheriumConsumer(level, pos) != null;
     }
 
+    @Nullable
     @Override
-    public LazyOptional<IEtheriumProvider> getEtheriumProvider(BlockEntity blockEntity) {
-        return blockEntity.getCapability(getEtheriumProviderCapability());
+    public IEtheriumProvider getEtheriumProvider(BlockEntity blockEntity) {
+        Level level = blockEntity.getLevel();
+        if (level == null) return null;
+        return level.getCapability(ETHERIUM_PROVIDER, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
     }
 
+    @Nullable
     @Override
-    public LazyOptional<IEtheriumConsumer> getEtheriumConsumer(BlockEntity blockEntity) {
-        return blockEntity.getCapability(getEtheriumConsumerCapability());
+    public IEtheriumConsumer getEtheriumConsumer(BlockEntity blockEntity) {
+        Level level = blockEntity.getLevel();
+        if (level == null) return null;
+        return level.getCapability(ETHERIUM_CONSUMER, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
     }
 
+    @Nullable
     @Override
-    public LazyOptional<IEtheriumProvider> getEtheriumProvider(Level level, BlockPos pos) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        return blockEntity == null ? LazyOptional.empty() : getEtheriumProvider(blockEntity);
+    public IEtheriumProvider getEtheriumProvider(Level level, BlockPos pos) {
+        return level.getCapability(ETHERIUM_PROVIDER, pos, null);
     }
 
+    @Nullable
     @Override
-    public LazyOptional<IEtheriumConsumer> getEtheriumConsumer(Level level, BlockPos pos) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        return blockEntity == null ? LazyOptional.empty() : getEtheriumConsumer(blockEntity);
+    public IEtheriumConsumer getEtheriumConsumer(Level level, BlockPos pos) {
+        return level.getCapability(ETHERIUM_CONSUMER, pos, null);
     }
 
     @Override

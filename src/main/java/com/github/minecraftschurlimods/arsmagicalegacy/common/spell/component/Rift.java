@@ -15,8 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 
 import java.util.List;
 
@@ -27,9 +26,9 @@ public class Rift extends AbstractComponent {
 
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (target.getEntity() instanceof ServerPlayer sp && ArsMagicaAPI.get().getRiftHelper().getRift(sp).isPresent()) {
+        if (target.getEntity() instanceof ServerPlayer sp && ArsMagicaAPI.get().getRiftHelper().getRift(sp) != null) {
             int size = Math.min(Math.round(Math.max(1, ArsMagicaAPI.get().getSpellHelper().getModifiedStat(1, SpellPartStats.POWER, modifiers, spell, caster, target, index))), PermissionAPI.getPermission(sp, AMPermissions.MAX_RIFT_SIZE));
-            NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, inv, player) -> RiftMenu.rift(id, inv, sp, size), Component.translatable(TranslationConstants.RIFT_TITLE)), buf -> {
+            sp.openMenu(new SimpleMenuProvider((id, inv, player) -> RiftMenu.rift(id, inv, sp, size), Component.translatable(TranslationConstants.RIFT_TITLE)), buf -> {
                 buf.writeUUID(sp.getUUID());
                 buf.writeInt(size);
             });

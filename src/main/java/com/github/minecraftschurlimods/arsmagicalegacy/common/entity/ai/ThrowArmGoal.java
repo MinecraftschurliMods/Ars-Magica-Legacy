@@ -22,7 +22,7 @@ public class ThrowArmGoal extends AbstractBossGoal<IceGuardian> {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.ICE_GUARDIAN_LAUNCH_ARM.get();
+        return AMSounds.ICE_GUARDIAN_LAUNCH_ARM.value();
     }
 
     @Override

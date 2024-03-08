@@ -1,7 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.item.runebag;
 
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -11,15 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 /**
  * Mostly taken from McJty's tutorials and the Botania mod.
@@ -30,31 +21,16 @@ public class RuneBagItem extends Item {
         super(pProperties);
     }
 
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new InvProvider(stack);
+    public static IItemHandler getItemCapability(ItemStack stack, Void v) {
+        return new InvWrapper(new RuneBagContainer(stack));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide()) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         if (pPlayer instanceof ServerPlayer sp) {
-            NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), Component.empty()), buf -> buf.writeEnum(pUsedHand));
+            sp.openMenu(new SimpleMenuProvider((id, inv, player) -> new RuneBagMenu(id, inv, player.getItemInHand(pUsedHand)), Component.empty()), buf -> buf.writeEnum(pUsedHand));
         }
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
-    }
-
-    private static class InvProvider implements ICapabilityProvider {
-        private final LazyOptional<IItemHandler> lazy;
-
-        public InvProvider(ItemStack stack) {
-            lazy = LazyOptional.of(() -> new InvWrapper(new RuneBagContainer(stack)));
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazy);
-        }
     }
 }

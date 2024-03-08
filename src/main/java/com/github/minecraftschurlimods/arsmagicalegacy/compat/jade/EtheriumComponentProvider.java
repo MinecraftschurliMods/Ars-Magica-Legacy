@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat.jade;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
@@ -43,9 +44,10 @@ class EtheriumComponentProvider implements IBlockComponentProvider, IServerDataP
         BlockPos pos = accessor.getPosition();
         int tier = accessor.getBlockState().getBlock() instanceof ITierCheckingBlock tierBlock ? tierBlock.getTier(accessor.getLevel(), pos) : -1;
         compoundTag.putInt(TIER, tier);
-        ArsMagicaAPI.get().getEtheriumHelper().getEtheriumProvider(accessor.getLevel(), pos).ifPresent(provider -> {
+        IEtheriumProvider provider = ArsMagicaAPI.get().getEtheriumHelper().getEtheriumProvider(accessor.getLevel(), pos);
+        if (provider != null) {
             compoundTag.putInt(ETHERIUM, provider.getAmount());
             compoundTag.putInt(MAX_ETHERIUM, provider.getMax());
-        });
+        }
     }
 }

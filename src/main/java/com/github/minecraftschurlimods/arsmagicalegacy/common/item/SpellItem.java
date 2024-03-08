@@ -14,6 +14,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.Spe
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -29,8 +30,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
+import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -111,14 +112,14 @@ public class SpellItem extends Item implements ISpellItem {
         var helper = ArsMagicaAPI.get().getSpellHelper();
         ISpell spell = helper.getSpell(stack);
         if (!spell.isContinuous()) return;
-        SpellCastResult result = spell.cast(entity, entity.level(), remainingUseDuration - 1, true, true);
-        SoundEvent sound = spell.primaryAffinity().getLoopSound();
+        SpellCastResult result = spell.cast(entity, level, remainingUseDuration - 1, true, true);
+        Holder<SoundEvent> sound = spell.primaryAffinity().loopSound();
         if (sound != null) {
-            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+            level.playSeededSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f, level.random.nextLong());
         }
         if (entity instanceof Player player) {
             if (result.isConsume()) {
-                player.awardStat(AMStats.SPELL_CAST.get());
+                player.awardStat(AMStats.SPELL_CAST.value());
             }
             if (result.isFail()) {
                 player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);
@@ -192,13 +193,13 @@ public class SpellItem extends Item implements ISpellItem {
             ArsMagicaLegacy.LOGGER.trace("{} is casting instantaneous spell {}", entity, name);
             SpellCastResult result = spell.cast(entity, level, 0, true, true);
             ArsMagicaLegacy.LOGGER.trace("{} casted instantaneous spell {} with result {}", entity, name, result);
-            SoundEvent sound = spell.primaryAffinity().getCastSound();
+            Holder<SoundEvent> sound = spell.primaryAffinity().castSound();
             if (sound != null) {
-                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f);
+                level.playSeededSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, SoundSource.PLAYERS, 0.1f, 1f, level.random.nextLong());
             }
             if (entity instanceof Player player) {
                 if (result.isConsume()) {
-                    player.awardStat(AMStats.SPELL_CAST.get());
+                    player.awardStat(AMStats.SPELL_CAST.value());
                 }
                 if (result.isFail()) {
                     player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_CAST + result.name().toLowerCase(), stack.getDisplayName()), true);

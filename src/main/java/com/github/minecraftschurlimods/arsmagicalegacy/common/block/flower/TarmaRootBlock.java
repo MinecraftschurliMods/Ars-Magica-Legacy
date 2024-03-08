@@ -8,12 +8,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.PlantType;
+import net.neoforged.neoforge.common.Tags;
 
 public class TarmaRootBlock extends FlowerBlock {
     public TarmaRootBlock() {
-        super(() -> MobEffects.DIG_SLOWDOWN, 7, Properties.copy(Blocks.POPPY));
+        super(() -> MobEffects.DIG_SLOWDOWN, 7, Properties.ofLegacyCopy(Blocks.POPPY));
     }
 
     @Override

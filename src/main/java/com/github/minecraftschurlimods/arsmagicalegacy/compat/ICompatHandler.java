@@ -1,14 +1,15 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.compat;
 
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 
 public interface ICompatHandler {
     /**
      * Pre-initializes the compat handler.
      */
-    default void preInit() {
+    default void preInit(IEventBus modBus) {
     }
 
     /**

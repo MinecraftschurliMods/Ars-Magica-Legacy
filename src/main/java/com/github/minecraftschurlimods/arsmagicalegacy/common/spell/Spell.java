@@ -28,9 +28,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -123,8 +123,8 @@ public final class Spell implements ISpell {
     public SpellCastResult cast(LivingEntity caster, Level level, int castingTicks, boolean consume, boolean awardXp) {
         if (caster instanceof ServerPlayer player && !PermissionAPI.getPermission(player, AMPermissions.CAN_CAST_SPELL))
             return SpellCastResult.NO_PERMISSION;
-        if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, this))) return SpellCastResult.CANCELLED;
-        if (caster.hasEffect(AMMobEffects.SILENCE.get())) return SpellCastResult.SILENCED;
+        if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Pre(caster, this)).isCanceled()) return SpellCastResult.CANCELLED;
+        if (caster.hasEffect(AMMobEffects.SILENCE.value())) return SpellCastResult.SILENCED;
         float mana = mana(caster);
         float burnout = burnout(caster);
         Collection<ItemFilter> reagents = reagents(caster);
@@ -140,7 +140,7 @@ public final class Spell implements ISpell {
         }
         SpellCastResult result = spellHelper.invoke(this, caster, level, null, castingTicks, 0, awardXp);
         if (level.isClientSide()) {
-            MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
+            NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
             return result;
         }
         if (caster instanceof Player p && p.isCreative()) return result;
@@ -149,7 +149,7 @@ public final class Spell implements ISpell {
             burnoutHelper.increaseBurnout(caster, burnout);
             spellHelper.consumeReagents(caster, reagents);
         }
-        MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
+        NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Post(caster, this));
         if (awardXp && result.isSuccess() && caster instanceof Player player) {
             boolean affinityGains = api.getSkillHelper().knows(player, AFFINITY_GAINS) && level.registryAccess().registryOrThrow(Skill.REGISTRY_KEY).containsKey(AFFINITY_GAINS);
             boolean continuous = isContinuous();
@@ -164,11 +164,11 @@ public final class Spell implements ISpell {
                     shift *= 1.1;
                 }
                 AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(player, affinity, shift.floatValue(), false);
-                if (!MinecraftForge.EVENT_BUS.post(event)) {
+                if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                     var helper = ArsMagicaAPI.get().getAffinityHelper();
                     helper.applyAffinityShift(player, event.affinity, event.shift);
                     helper.updateLock(player);
-                    MinecraftForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, affinity, shift.floatValue(), false));
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(player, event.affinity, (float) helper.getAffinityDepth(player, event.affinity), false));
                 }
             }
             float xp = 0.05f * affinityShifts.size();
@@ -211,7 +211,7 @@ public final class Spell implements ISpell {
             }
         }
         SpellEvent.ManaCost.Pre pre = new SpellEvent.ManaCost.Pre(caster, this, cost, multiplier);
-        MinecraftForge.EVENT_BUS.post(pre);
+        NeoForge.EVENT_BUS.post(pre);
         cost = pre.getModifiedBase();
         multiplier = pre.getModifiedMultiplier();
         if (multiplier == 0) {
@@ -219,7 +219,7 @@ public final class Spell implements ISpell {
         }
         cost *= multiplier;
         SpellEvent.ManaCost.Post post = new SpellEvent.ManaCost.Post(caster, this, cost);
-        MinecraftForge.EVENT_BUS.post(post);
+        NeoForge.EVENT_BUS.post(post);
         return post.getModifiedMana();
     }
 
@@ -233,7 +233,7 @@ public final class Spell implements ISpell {
             }
         }
         SpellEvent.BurnoutCost event = new SpellEvent.BurnoutCost(caster, this, cost);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         return event.getModifiedBurnout();
     }
 
@@ -248,7 +248,7 @@ public final class Spell implements ISpell {
             reagents.addAll(dataForPart.reagents());
         }
         SpellEvent.ReagentCost event = new SpellEvent.ReagentCost(caster, this, reagents);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         return event.reagents;
     }
 
@@ -310,7 +310,7 @@ public final class Spell implements ISpell {
                 .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
-                .orElseGet(AMAffinities.NONE);
+                .orElseGet(AMAffinities.NONE::value);
     }
 
     @Override

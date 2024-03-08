@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -85,12 +86,13 @@ public class Wave extends AbstractSpellEntity {
         super.tick();
         float speed = getSpeed();
         setPos(getX() + getDeltaMovement().x() * speed / 10f, getY() + getDeltaMovement().y() * speed / 10f, getZ() + getDeltaMovement().z() * speed / 10f);
-        if (level().isClientSide() || tickCount % 5 != 0) return;
+        Level level = level();
+        if (level.isClientSide() || tickCount % 5 != 0) return;
         LivingEntity owner = getOwner();
         int index = getIndex();
         float radius = getRadius();
         ISpell spell = getSpell();
-        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level(), new EntityHitResult(e), tickCount, index, true));
+        forAllInRange(radius, false, e -> ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, new EntityHitResult(e), tickCount, index, true));
         List<Vec3> list = new ArrayList<>();
         for (int x = (int) Math.rint(-radius); x <= (int) Math.rint(radius); x++) {
             for (int y = (int) Math.rint(-radius); y <= (int) Math.rint(radius); y++) {
@@ -101,10 +103,10 @@ public class Wave extends AbstractSpellEntity {
         }
         for (Vec3 vec : list) {
             HitResult result = AMUtil.getHitResult(vec, vec.add(getDeltaMovement()), this, getTargetNonSolid() ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER, getTargetNonSolid() ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE);
-            ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level(), result, tickCount, index, true);
+            ArsMagicaAPI.get().getSpellHelper().invoke(spell, owner, level, result, tickCount, index, true);
         }
         if (tickCount > 0) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
         }
     }
 

@@ -38,6 +38,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataMan
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,8 +46,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Unmodifiable;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -64,43 +65,43 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
     }
 
     @Override
-    public IForgeRegistry<SkillPoint> getSkillPointRegistry() {
-        return AMRegistries.SKILL_POINT_REGISTRY.get();
+    public Registry<SkillPoint> getSkillPointRegistry() {
+        return AMRegistries.SKILL_POINT_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<Affinity> getAffinityRegistry() {
-        return AMRegistries.AFFINITY_REGISTRY.get();
+    public Registry<Affinity> getAffinityRegistry() {
+        return AMRegistries.AFFINITY_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<ISpellPart> getSpellPartRegistry() {
-        return AMRegistries.SPELL_PART_REGISTRY.get();
+    public Registry<ISpellPart> getSpellPartRegistry() {
+        return AMRegistries.SPELL_PART_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<ContingencyType> getContingencyTypeRegistry() {
-        return AMRegistries.CONTINGENCY_TYPE_REGISTRY.get();
+    public Registry<ContingencyType> getContingencyTypeRegistry() {
+        return AMRegistries.CONTINGENCY_TYPE_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
-        return AMRegistries.RITUAL_TRIGGER_TYPE_REGISTRY.get();
+    public Registry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry() {
+        return AMRegistries.RITUAL_TRIGGER_TYPE_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry() {
-        return AMRegistries.RITUAL_REQUIREMENT_TYPE_REGISTRY.get();
+    public Registry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry() {
+        return AMRegistries.RITUAL_REQUIREMENT_TYPE_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
-        return AMRegistries.RITUAL_EFFECT_TYPE_REGISTRY.get();
+    public Registry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry() {
+        return AMRegistries.RITUAL_EFFECT_TYPE_REGISTRY;
     }
 
     @Override
-    public IForgeRegistry<SpellIngredientType<?>> getSpellIngredientTypeRegistry() {
-        return AMRegistries.SPELL_INGREDIENT_TYPE_REGISTRY.get();
+    public Registry<SpellIngredientType<?>> getSpellIngredientTypeRegistry() {
+        return AMRegistries.SPELL_INGREDIENT_TYPE_REGISTRY;
     }
 
     @Override
@@ -164,8 +165,8 @@ public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
 
     @Override
     public void openOcculusGui(Player player) {
-        if (player instanceof ServerPlayer) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new OpenOcculusGuiPacket(), player);
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.PLAYER.with(serverPlayer).send(new OpenOcculusGuiPacket());
         } else if (player.isLocalPlayer()) {
             ClientHelper.openOcculusGui();
         }

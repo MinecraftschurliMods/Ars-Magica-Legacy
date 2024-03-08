@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ManaVortex extends Entity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ManaVortex.class, EntityDataSerializers.INT);
@@ -65,7 +65,7 @@ public class ManaVortex extends Entity {
         int duration = getDuration();
         if (duration - tickCount > 30) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
-                if (e.getAttribute(AMAttributes.MAX_MANA.get()) == null) continue;
+                if (e.getAttribute(AMAttributes.MAX_MANA.value()) == null) continue;
                 var helper = ArsMagicaAPI.get().getManaHelper();
                 float stolen = Math.min(helper.getMana(e), helper.getMaxMana(e) / 100f);
                 entityData.set(MANA, entityData.get(MANA) + stolen);
@@ -74,7 +74,7 @@ public class ManaVortex extends Entity {
                 setDeltaMovement(movement.x * 0.075f, movement.y * 0.075f, movement.z * 0.075f);
             }
             moveTo(position().add(getDeltaMovement()));
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
         }
         if (duration - tickCount <= 20) {
             this.setBoundingBox(getBoundingBox().inflate(-0.05f));
@@ -84,7 +84,7 @@ public class ManaVortex extends Entity {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 4, 4))) {
                 e.hurt(damageSources().magic(), damage);
             }
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
             setRemoved(RemovalReason.KILLED);
         }
     }

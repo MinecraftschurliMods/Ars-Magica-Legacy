@@ -3,17 +3,17 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.IntFunction;
 
-public class NumberedRegistryObject<B, T extends B> {
-    private final Map<Integer, RegistryObject<T>> map = new Int2ObjectOpenHashMap<>();
+public class NumberedDeferredHolder<B, T extends B> {
+    private final Map<Integer, DeferredHolder<B, T>> map = new Int2ObjectOpenHashMap<>();
 
-    public NumberedRegistryObject(DeferredRegister<B> register, int count, String prefix, IntFunction<? extends T> creator) {
+    public NumberedDeferredHolder(DeferredRegister<B> register, int count, String prefix, IntFunction<? extends T> creator) {
         for (int i = 0; i < count; i++) {
             final int j = i; // I hate Java sometimes; it cries about effectively final in the lambda so this is needed
             map.put(i, register.register(prefix + "_" + i, () -> creator.apply(j)));
@@ -24,7 +24,7 @@ public class NumberedRegistryObject<B, T extends B> {
      * @param i The index of the registry object to get.
      * @return The i-th registry object.
      */
-    public RegistryObject<T> registryObject(int i) {
+    public DeferredHolder<B, T> registryObject(int i) {
         return map.get(i);
     }
 
@@ -48,7 +48,7 @@ public class NumberedRegistryObject<B, T extends B> {
      * @param random The random source to use.
      * @return A random registry object.
      */
-    public RegistryObject<T> randomRegistryObject(RandomSource random) {
+    public DeferredHolder<B, T> randomRegistryObject(RandomSource random) {
         return map.get(random.nextInt(map.size()));
     }
 
@@ -71,7 +71,7 @@ public class NumberedRegistryObject<B, T extends B> {
     /**
      * @return An unmodifiable view of all values this registry object wraps.
      */
-    public Map<Integer, RegistryObject<T>> values() {
+    public Map<Integer, DeferredHolder<B, T>> values() {
         return Collections.unmodifiableMap(map);
     }
 }

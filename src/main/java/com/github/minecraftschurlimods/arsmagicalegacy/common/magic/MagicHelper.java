@@ -1,34 +1,32 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.event.PlayerLevelUpEvent;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IMagicHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
-import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
+import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class MagicHelper implements IMagicHelper {
     private static final Lazy<MagicHelper> INSTANCE = Lazy.concurrentOf(MagicHelper::new);
-    private static final Capability<MagicHolder> MAGIC = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final MagicHolder EMPTY = new MagicHolder();
+    private static final Supplier<AttachmentType<MagicHolder>> MAGIC = ATTACHMENT_TYPES.register("magic", () -> AttachmentType.builder(MagicHolder::new).serialize(MagicHolder.CODEC).copyOnDeath().copyHandler(MagicHolder::copy).build());
 
     private MagicHelper() {
     }
@@ -40,25 +38,14 @@ public final class MagicHelper implements IMagicHelper {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The magic capability.
-     */
-    public static Capability<MagicHolder> getMagicCapability() {
-        return MAGIC;
-    }
-
-    private static void handleMagicSync(MagicHolder holder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MAGIC).ifPresent(cap -> cap.onSync(holder)));
-    }
-
     @Override
     public int getLevel(Player player) {
-        return getMagicHolder(player).orElse(EMPTY).getLevel();
+        return player.getData(MAGIC).getLevel();
     }
 
     @Override
     public float getXp(Player player) {
-        return getMagicHolder(player).orElse(EMPTY).getXp();
+        return player.getData(MAGIC).getXp();
     }
 
     @Override
@@ -73,23 +60,22 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public void setXp(Player player, float amount) {
-        runIfPresent(player, holder -> {
-            int level = holder.getLevel();
-            float xp = Math.max(0, amount);
-            float xpForNextLevel = getXpForNextLevel(level);
-            while (xp >= xpForNextLevel) {
-                xp -= xpForNextLevel;
-                level++;
-                MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
-                if (player instanceof ServerPlayer serverPlayer) {
-                    AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
-                }
-                xpForNextLevel = getXpForNextLevel(level);
+        MagicHolder holder = player.getData(MAGIC);
+        int level = holder.getLevel();
+        float xp = Math.max(0, amount);
+        float xpForNextLevel = getXpForNextLevel(level);
+        while (xp >= xpForNextLevel) {
+            xp -= xpForNextLevel;
+            level++;
+            NeoForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, level));
+            if (player instanceof ServerPlayer serverPlayer) {
+                AMCriteriaTriggers.PLAYER_LEVEL_UP.get().trigger(serverPlayer, level);
             }
-            holder.setXp(xp);
-            holder.setLevel(level);
-            syncMagic(player);
-        });
+            xpForNextLevel = getXpForNextLevel(level);
+        }
+        holder.setXp(xp);
+        holder.setLevel(level);
+        syncToPlayer(player);
     }
 
     @Override
@@ -99,19 +85,18 @@ public final class MagicHelper implements IMagicHelper {
 
     @Override
     public void setLevel(Player player, int level) {
-        runIfPresent(player, holder -> {
-            int oldLevel = holder.getLevel();
-            holder.setLevel(level);
-            if (level > oldLevel && level > 0) {
-                for (int i = oldLevel + 1; i <= level; i++) {
-                    MinecraftForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, i));
-                    if (player instanceof ServerPlayer serverPlayer) {
-                        AMCriteriaTriggers.PLAYER_LEVEL_UP.trigger(serverPlayer, level);
-                    }
+        MagicHolder holder = player.getData(MAGIC);
+        int oldLevel = holder.getLevel();
+        holder.setLevel(level);
+        if (level > oldLevel && level > 0) {
+            for (int i = oldLevel + 1; i <= level; i++) {
+                NeoForge.EVENT_BUS.post(new PlayerLevelUpEvent(player, i));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    AMCriteriaTriggers.PLAYER_LEVEL_UP.get().trigger(serverPlayer, level);
                 }
             }
-            syncMagic(player);
-        });
+        }
+        syncToPlayer(player);
     }
 
     @Override
@@ -120,61 +105,42 @@ public final class MagicHelper implements IMagicHelper {
     }
 
     /**
-     * Called on player death, syncs the capability.
-     *
-     * @param original The now-dead player.
-     * @param player   The respawning player.
-     */
-    public void syncOnDeath(Player original, Player player) {
-        player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
-        player.getAttribute(AMAttributes.MANA_REGEN.get()).setBaseValue(original.getAttribute(AMAttributes.MANA_REGEN.get()).getBaseValue());
-        original.getCapability(MAGIC).ifPresent(magicHolder -> player.getCapability(MAGIC).ifPresent(holder -> holder.onSync(magicHolder)));
-        syncMagic(player);
-    }
-
-    /**
-     * Syncs the capability to the client.
+     * Syncs the attachment to the client.
      *
      * @param player The player to sync to.
      */
-    public void syncMagic(Player player) {
-        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new MagicSyncPacket(holder), player));
+    public void syncToPlayer(Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+        PacketDistributor.PLAYER.with(serverPlayer).send(new MagicSyncPacket(player.getData(MAGIC)));
     }
 
-    private void runIfPresent(Player player, Consumer<MagicHolder> consumer) {
-        getMagicHolder(player).ifPresent(consumer::accept);
+    public static void registerSyncPacket(IPayloadRegistrar registrar) {
+        registrar.play(MagicSyncPacket.ID, MagicSyncPacket::new, builder -> builder.client(MagicSyncPacket::handle));
     }
 
-    private LazyOptional<MagicHolder> getMagicHolder(Player player) {
-        if (player.isDeadOrDying()) {
-            player.reviveCaps();
-        }
-        LazyOptional<MagicHolder> magicHolder = player.getCapability(MAGIC);
-        if (player.isDeadOrDying()) {
-            player.invalidateCaps();
-        }
-        return magicHolder;
-    }
-
-    public static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
+    private static final class MagicSyncPacket extends CodecPacket<MagicHolder> {
         public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "magic_sync");
 
         public MagicSyncPacket(MagicHolder data) {
-            super(ID, data);
+            super(data);
         }
 
         public MagicSyncPacket(FriendlyByteBuf buf) {
-            super(ID, buf);
-        }
-
-        @Override
-        public void handle(NetworkEvent.Context context) {
-            MagicHelper.handleMagicSync(data, context);
+            super(buf);
         }
 
         @Override
         protected Codec<MagicHolder> codec() {
             return MagicHolder.CODEC;
+        }
+
+        @Override
+        public ResourceLocation id() {
+            return ID;
+        }
+
+        private void handle(PlayPayloadContext context) {
+            context.workHandler().submitAsync(() -> context.player().orElseThrow().setData(MAGIC, this.data));
         }
     }
 
@@ -204,14 +170,11 @@ public final class MagicHelper implements IMagicHelper {
             this.level = level;
         }
 
-        /**
-         * Syncs the values with the given data object.
-         *
-         * @param data The data object to sync with.
-         */
-        public void onSync(MagicHolder data) {
-            xp = data.xp;
-            level = data.level;
+        public static MagicHolder copy(IAttachmentHolder owner, MagicHolder magicHolder) {
+            MagicHolder newInst = new MagicHolder();
+            newInst.setXp(magicHolder.getXp());
+            newInst.setLevel(magicHolder.getLevel());
+            return newInst;
         }
     }
 }

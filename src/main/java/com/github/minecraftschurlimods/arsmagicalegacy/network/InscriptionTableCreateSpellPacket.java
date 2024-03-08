@@ -2,16 +2,18 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable.InscriptionTableBlockEntity;
-import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record InscriptionTableCreateSpellPacket(BlockPos pos) implements IPacket {
+public record InscriptionTableCreateSpellPacket(BlockPos pos) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_create_spell");
 
-    public InscriptionTableCreateSpellPacket(FriendlyByteBuf buf) {
+    InscriptionTableCreateSpellPacket(FriendlyByteBuf buf) {
         this(buf.readBlockPos());
     }
 
@@ -21,12 +23,15 @@ public record InscriptionTableCreateSpellPacket(BlockPos pos) implements IPacket
     }
 
     @Override
-    public void serialize(FriendlyByteBuf friendlyByteBuf) {
+    public void write(FriendlyByteBuf friendlyByteBuf) {
         friendlyByteBuf.writeBlockPos(pos);
     }
 
-    @Override
-    public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ((InscriptionTableBlockEntity) context.getSender().level().getBlockEntity(pos)).createSpell(context.getSender()));
+    void handle(PlayPayloadContext context) {
+        context.workHandler().execute(() -> {
+            Player player = context.player().orElseThrow();
+            if (!(player instanceof ServerPlayer serverPlayer)) return;
+            ((InscriptionTableBlockEntity) player.level().getBlockEntity(pos)).createSpell(serverPlayer);
+        });
     }
 }

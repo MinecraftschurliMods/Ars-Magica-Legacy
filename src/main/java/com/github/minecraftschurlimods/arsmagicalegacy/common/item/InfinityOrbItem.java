@@ -28,7 +28,7 @@ public class InfinityOrbItem extends Item implements ISkillPointItem {
         if (level.isClientSide()) return InteractionResultHolder.fail(stack);
         ArsMagicaAPI.get().getSkillHelper().addSkillPoint(player, getSkillPoint(stack));
         stack.shrink(1);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), AMSounds.GET_KNOWLEDGE_POINT.get(), SoundSource.PLAYERS, 1f, 1f);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), AMSounds.GET_KNOWLEDGE_POINT.value(), SoundSource.PLAYERS, 1f, 1f);
         return InteractionResultHolder.success(stack);
     }
 

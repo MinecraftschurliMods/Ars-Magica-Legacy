@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.skill;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
@@ -10,47 +9,42 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTri
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
-import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
+import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class SkillHelper implements ISkillHelper {
     private static final Lazy<SkillHelper> INSTANCE = Lazy.concurrentOf(SkillHelper::new);
-    private static final Capability<KnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final KnowledgeHolder EMPTY = new KnowledgeHolder(Set.of(), Map.of());
+    private static final Supplier<AttachmentType<KnowledgeHolder>> KNOWLEDGE = ATTACHMENT_TYPES.register("knowledge", () -> AttachmentType.builder(KnowledgeHolder::empty).serialize(KnowledgeHolder.CODEC).copyOnDeath().copyHandler(KnowledgeHolder::copy).build());
 
     private SkillHelper() {}
-
-    /**
-     * @return The knowledge capability.
-     */
-    public static Capability<KnowledgeHolder> getCapability() {
-        return KNOWLEDGE;
-    }
 
     /**
      * @return The only instance of this class.
@@ -61,154 +55,163 @@ public final class SkillHelper implements ISkillHelper {
 
     @Override
     public boolean knows(Player player, ResourceLocation skill) {
-        return getKnowledgeHolder(player).orElse(EMPTY).knows(skill);
+        return player.getData(KNOWLEDGE).knows(skill);
     }
 
     @Override
     public boolean knows(Player player, Skill skill, RegistryAccess registryAccess) {
-        return getKnowledgeHolder(player).orElse(EMPTY).knows(skill, registryAccess);
+        return knows(player, skill.getId(registryAccess));
     }
 
     @Override
     public boolean canLearn(Player player, ResourceLocation skill, RegistryAccess registryAccess) {
-        return getKnowledgeHolder(player).orElse(EMPTY).canLearn(registryAccess.registryOrThrow(Skill.REGISTRY_KEY).getOptional(skill).orElseThrow());
+        return canLearn(player, registryAccess.registryOrThrow(Skill.REGISTRY_KEY).getOptional(skill).orElseThrow());
     }
 
     @Override
     public boolean canLearn(Player player, Skill skill) {
-        return getKnowledgeHolder(player).orElse(EMPTY).canLearn(skill);
+        return player.getData(KNOWLEDGE).canLearn(skill);
     }
 
     @Override
     public void learn(Player player, ResourceLocation skill) {
-        runIfPresent(player, holder -> {
-            holder.learn(skill);
-            if (player instanceof ServerPlayer serverPlayer) {
-                AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill);
-            }
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.learn(skill);
+        if (player instanceof ServerPlayer serverPlayer) {
+            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.get().trigger(serverPlayer, skill);
+        }
+        syncToPlayer(player);
     }
 
     @Override
     public void learn(Player player, Skill skill, RegistryAccess registryAccess) {
-        runIfPresent(player, holder -> {
-            holder.learn(skill, registryAccess);
-            if (player instanceof ServerPlayer serverPlayer) {
-                AMCriteriaTriggers.PLAYER_LEARNED_SKILL.trigger(serverPlayer, skill.getId(registryAccess));
-            }
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.learn(skill.getId(registryAccess));
+        if (player instanceof ServerPlayer serverPlayer) {
+            AMCriteriaTriggers.PLAYER_LEARNED_SKILL.get().trigger(serverPlayer, skill.getId(registryAccess));
+        }
+        syncToPlayer(player);
     }
 
     @Override
     public void forget(Player player, ResourceLocation skill) {
-        runIfPresent(player, holder -> {
-            holder.forget(skill);
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.forget(skill);
+        syncToPlayer(player);
     }
 
     @Override
     public void forget(Player player, Skill skill, RegistryAccess registryAccess) {
-        runIfPresent(player, holder -> {
-            holder.forget(skill, registryAccess);
-            syncToPlayer(player);
-        });
+        forget(player, skill.getId(registryAccess));
     }
 
     @Override
     public void learnAll(Player player, RegistryAccess registryAccess) {
-        runIfPresent(player, holder -> {
-            holder.learnAll(registryAccess);
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.learnAll(registryAccess);
+        syncToPlayer(player);
     }
 
     @Override
     public void forgetAll(Player player) {
-        runIfPresent(player, holder -> {
-            holder.forgetAll();
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.forgetAll();
+        syncToPlayer(player);
     }
 
     @Override
     public int getSkillPoint(Player player, ResourceLocation point) {
-        return getKnowledgeHolder(player).orElse(EMPTY).getSkillPoint(point);
+        return player.getData(KNOWLEDGE).getSkillPoint(point);
     }
 
     @Override
     public int getSkillPoint(Player player, SkillPoint point) {
-        return getKnowledgeHolder(player).orElse(EMPTY).getSkillPoint(point);
+        return getSkillPoint(player, point.getId());
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        runIfPresent(player, holder -> {
-            holder.addSkillPoint(skillPoint, amount);
-            syncToPlayer(player);
-        });
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        holder.addSkillPoint(skillPoint, amount);
+        syncToPlayer(player);
+    }
+
+    @Override
+    public void addSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint, int amount) {
+        addSkillPoint(player, skillPoint.location(), amount);
+    }
+
+    @Override
+    public void addSkillPoint(Player player, Holder<SkillPoint> skillPoint, int amount) {
+        addSkillPoint(player, skillPoint.unwrapKey().orElseThrow(), amount);
     }
 
     @Override
     public void addSkillPoint(Player player, SkillPoint skillPoint, int amount) {
-        runIfPresent(player, holder -> {
-            holder.addSkillPoint(skillPoint, amount);
-            syncToPlayer(player);
-        });
+        addSkillPoint(player, skillPoint.getId(), amount);
     }
 
     @Override
     public void addSkillPoint(Player player, ResourceLocation skillPoint) {
-        runIfPresent(player, holder -> {
-            holder.addSkillPoint(skillPoint);
-            syncToPlayer(player);
-        });
+        addSkillPoint(player, skillPoint, 1);
+    }
+
+    @Override
+    public void addSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint) {
+        addSkillPoint(player, skillPoint, 1);
+    }
+
+    @Override
+    public void addSkillPoint(Player player, Holder<SkillPoint> skillPoint) {
+        addSkillPoint(player, skillPoint, 1);
     }
 
     @Override
     public void addSkillPoint(Player player, SkillPoint skillPoint) {
-        runIfPresent(player, holder -> {
-            holder.addSkillPoint(skillPoint);
-            syncToPlayer(player);
-        });
+        addSkillPoint(player, skillPoint.getId(), 1);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint, int amount) {
-        runIfPresent(player, holder -> {
-            holder.consumeSkillPoint(skillPoint, amount);
-            syncToPlayer(player);
-        });
-        return true;
+        KnowledgeHolder holder = player.getData(KNOWLEDGE);
+        boolean val = holder.consumeSkillPoint(skillPoint, amount);
+        syncToPlayer(player);
+        return val;
+    }
+
+    @Override
+    public boolean consumeSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint, int amount) {
+        return consumeSkillPoint(player, skillPoint.location(), amount);
+    }
+
+    @Override
+    public boolean consumeSkillPoint(Player player, Holder<SkillPoint> skillPoint, int amount) {
+        return consumeSkillPoint(player, skillPoint.unwrapKey().orElseThrow(), amount);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, SkillPoint skillPoint, int amount) {
-        runIfPresent(player, holder -> {
-            holder.consumeSkillPoint(skillPoint, amount);
-            syncToPlayer(player);
-        });
-        return true;
+        return consumeSkillPoint(player, skillPoint.getId(), amount);
+    }
+
+    @Override
+    public boolean consumeSkillPoint(Player player, ResourceKey<SkillPoint> skillPoint) {
+        return consumeSkillPoint(player, skillPoint, 1);
+    }
+
+    @Override
+    public boolean consumeSkillPoint(Player player, Holder<SkillPoint> skillPoint) {
+        return consumeSkillPoint(player, skillPoint, 1);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, ResourceLocation skillPoint) {
-        runIfPresent(player, holder -> {
-            holder.consumeSkillPoint(skillPoint);
-            syncToPlayer(player);
-        });
-        return true;
+        return consumeSkillPoint(player, skillPoint, 1);
     }
 
     @Override
     public boolean consumeSkillPoint(Player player, SkillPoint skillPoint) {
-        runIfPresent(player, holder -> {
-            holder.consumeSkillPoint(skillPoint);
-            syncToPlayer(player);
-        });
-        return true;
+        return consumeSkillPoint(player, skillPoint.getId(), 1);
     }
 
     @Override
@@ -224,7 +227,7 @@ public final class SkillHelper implements ISkillHelper {
     @Override
     public <T extends Item & ISkillPointItem> ItemStack getStackForSkillPoint(T item, ResourceLocation skillPoint) {
         ItemStack stack = new ItemStack(item);
-        Optional.ofNullable(ArsMagicaAPI.get().getSkillPointRegistry().getValue(skillPoint)).ifPresent(skill -> item.setSkillPoint(stack, skill));
+        Optional.ofNullable(ArsMagicaAPI.get().getSkillPointRegistry().get(skillPoint)).ifPresent(skill -> item.setSkillPoint(stack, skill));
         return stack;
     }
 
@@ -236,23 +239,12 @@ public final class SkillHelper implements ISkillHelper {
     @Override
     public SkillPoint getSkillPointForStack(ItemStack stack) {
         if (stack.getItem() instanceof ISkillPointItem item) return item.getSkillPoint(stack);
-        return AMSkillPoints.NONE.get();
+        return AMSkillPoints.NONE.value();
     }
 
     @Override
     public Collection<ResourceLocation> getKnownSkills(Player player) {
-        return getKnowledgeHolder(player).orElse(EMPTY).skills();
-    }
-
-    /**
-     * Called on player death, syncs the capability.
-     *
-     * @param original The now-dead player.
-     * @param player   The respawning player.
-     */
-    public void syncOnDeath(Player original, Player player) {
-        original.getCapability(KNOWLEDGE).ifPresent(knowledgeHolder -> player.getCapability(KNOWLEDGE).ifPresent(holder -> holder.onSync(knowledgeHolder)));
-        syncToPlayer(player);
+        return player.getData(KNOWLEDGE).skills();
     }
 
     /**
@@ -261,77 +253,58 @@ public final class SkillHelper implements ISkillHelper {
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        if (player.getGameProfile().getName().equals("test-mock-player")) return;
-        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new SkillSyncPacket(holder), player));
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+        PacketDistributor.PLAYER.with(serverPlayer).send(new SkillSyncPacket(player.getData(KNOWLEDGE)));
     }
 
-    private static void handleSync(KnowledgeHolder holder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(KNOWLEDGE).ifPresent(cap -> cap.onSync(holder)));
+    public static void registerSyncPacket(IPayloadRegistrar registrar) {
+        registrar.play(SkillSyncPacket.ID, SkillSyncPacket::new, builder -> builder.client(SkillSyncPacket::handle));
     }
 
-    private void runIfPresent(Player player, Consumer<KnowledgeHolder> consumer) {
-        getKnowledgeHolder(player).ifPresent(consumer::accept);
-    }
-
-    private LazyOptional<KnowledgeHolder> getKnowledgeHolder(Player player) {
-        if (player.isDeadOrDying()) {
-            player.reviveCaps();
-        }
-        LazyOptional<KnowledgeHolder> knowledgeHolder = player.getCapability(KNOWLEDGE);
-        if (player.isDeadOrDying()) {
-            player.invalidateCaps();
-        }
-        return knowledgeHolder;
-    }
-
-    public static final class SkillSyncPacket extends CodecPacket<KnowledgeHolder> {
+    private static class SkillSyncPacket extends CodecPacket<KnowledgeHolder> {
         public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "knowledge_sync");
 
-        public SkillSyncPacket(KnowledgeHolder data) {
-            super(ID, data);
+        public SkillSyncPacket(KnowledgeHolder knowledge) {
+            super(knowledge);
         }
 
         public SkillSyncPacket(FriendlyByteBuf buf) {
-            super(ID, buf);
-        }
-
-        @Override
-        public void handle(NetworkEvent.Context context) {
-            SkillHelper.handleSync(data, context);
+            super(buf);
         }
 
         @Override
         protected Codec<KnowledgeHolder> codec() {
             return KnowledgeHolder.CODEC;
         }
+
+        @Override
+        public ResourceLocation id() {
+            return ID;
+        }
+
+        private void handle(PlayPayloadContext context) {
+            context.workHandler().submitAsync(() -> context.player().orElseThrow().setData(KNOWLEDGE, this.data));
+        }
     }
 
     public record KnowledgeHolder(Set<ResourceLocation> skills, Map<ResourceLocation, Integer> skillPoints) {
         //@formatter:off
+        private static final MapCodec<Set<ResourceLocation>> SKILLS_CODEC = CodecHelper
+                .setOf(ResourceLocation.CODEC)
+                .<Set<ResourceLocation>>xmap(HashSet::new, Function.identity())
+                .fieldOf("skills");
+        private static final MapCodec<Map<ResourceLocation, Integer>> SKILL_POINTS_CODEC = Codec
+                .unboundedMap(ResourceLocation.CODEC, Codec.INT)
+                .<Map<ResourceLocation, Integer>>xmap(HashMap::new, Function.identity())
+                .fieldOf("skill_points");
         public static final Codec<KnowledgeHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                CodecHelper.setOf(ResourceLocation.CODEC)
-                     .<Set<ResourceLocation>>xmap(HashSet::new, Function.identity())
-                     .fieldOf("skills")
-                     .forGetter(KnowledgeHolder::skills),
-                Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT)
-                     .<Map<ResourceLocation, Integer>>xmap(HashMap::new, Function.identity())
-                     .fieldOf("skill_points")
-                     .forGetter(KnowledgeHolder::skillPoints)
+                SKILLS_CODEC.forGetter(KnowledgeHolder::skills),
+                SKILL_POINTS_CODEC.forGetter(KnowledgeHolder::skillPoints)
         ).apply(inst, KnowledgeHolder::new));
         //@formatter:on
 
         public static KnowledgeHolder empty() {
             return new KnowledgeHolder(new HashSet<>(), new HashMap<>());
-        }
-
-        @Override
-        public synchronized Set<ResourceLocation> skills() {
-            return Collections.unmodifiableSet(skills);
-        }
-
-        @Override
-        public synchronized Map<ResourceLocation, Integer> skillPoints() {
-            return Collections.unmodifiableMap(skillPoints);
         }
 
         /**
@@ -341,15 +314,6 @@ public final class SkillHelper implements ISkillHelper {
          */
         public synchronized void learn(ResourceLocation skill) {
             skills.add(skill);
-        }
-
-        /**
-         * Adds the given skill to the list of known skills.
-         *
-         * @param skill The skill to add.
-         */
-        public void learn(Skill skill, RegistryAccess registryAccess) {
-            learn(skill.getId(registryAccess));
         }
 
         /**
@@ -368,15 +332,6 @@ public final class SkillHelper implements ISkillHelper {
          */
         public synchronized void forget(ResourceLocation skill) {
             skills.remove(skill);
-        }
-
-        /**
-         * Removes the given skill from the list of known skills.
-         *
-         * @param skill The skill to remove.
-         */
-        public void forget(Skill skill, RegistryAccess registryAccess) {
-            forget(skill.getId(registryAccess));
         }
 
         /**
@@ -405,15 +360,7 @@ public final class SkillHelper implements ISkillHelper {
          * @return Whether the given skill is in the known skills list or not.
          */
         public synchronized boolean knows(ResourceLocation skill) {
-            return skills().contains(skill);
-        }
-
-        /**
-         * @param skill The skill to check.
-         * @return Whether the given skill is in the known skills list or not.
-         */
-        public boolean knows(Skill skill, RegistryAccess registryAccess) {
-            return knows(skill.getId(registryAccess));
+            return skills.contains(skill);
         }
 
         /**
@@ -426,34 +373,6 @@ public final class SkillHelper implements ISkillHelper {
             skillPoints.putIfAbsent(skillPoint, 0);
             int amt = skillPoints.get(skillPoint);
             skillPoints.put(skillPoint, amt + amount);
-        }
-
-        /**
-         * Adds the given amount of the given skill point to the list of skill points.
-         *
-         * @param skillPoint The skill point to add.
-         * @param amount     The amount to add.
-         */
-        public void addSkillPoint(SkillPoint skillPoint, int amount) {
-            addSkillPoint(skillPoint.getId(), amount);
-        }
-
-        /**
-         * Adds one of the given skill point to the list of skill points.
-         *
-         * @param skillPoint The id of the skill point to add.
-         */
-        public void addSkillPoint(ResourceLocation skillPoint) {
-            addSkillPoint(skillPoint, 1);
-        }
-
-        /**
-         * Adds one of the given skill point to the list of skill points.
-         *
-         * @param skillPoint The skill point to add.
-         */
-        public void addSkillPoint(SkillPoint skillPoint) {
-            addSkillPoint(skillPoint, 1);
         }
 
         /**
@@ -472,62 +391,15 @@ public final class SkillHelper implements ISkillHelper {
         }
 
         /**
-         * Removes the given amount of the given skill point from the list of skill points.
-         *
-         * @param skillPoint The skill point to remove.
-         * @param amount     The amount to remove.
-         * @return True if the operation succeeded, false otherwise.
-         */
-        public boolean consumeSkillPoint(SkillPoint skillPoint, int amount) {
-            return consumeSkillPoint(skillPoint.getId(), amount);
-        }
-
-        /**
-         * Removes the given amount of the given skill point from the list of skill points.
-         *
-         * @param skillPoint The id of the skill point to remove.
-         * @return True if the operation succeeded, false otherwise.
-         */
-        public boolean consumeSkillPoint(ResourceLocation skillPoint) {
-            return consumeSkillPoint(skillPoint, 1);
-        }
-
-        /**
-         * Removes the given amount of the given skill point from the list of skill points.
-         *
-         * @param skillPoint The skill point to remove.
-         * @return True if the operation succeeded, false otherwise.
-         */
-        public boolean consumeSkillPoint(SkillPoint skillPoint) {
-            return consumeSkillPoint(skillPoint, 1);
-        }
-
-        /**
          * @param skillPoint The id of the skill point type to check.
          * @return The amount of skill points of the given type that are present in this holder.
          */
         public int getSkillPoint(ResourceLocation skillPoint) {
-            return skillPoints().getOrDefault(skillPoint, 0);
+            return skillPoints.getOrDefault(skillPoint, 0);
         }
 
-        /**
-         * @param skillPoint The skill point type to check.
-         * @return The amount of skill points of the given type that are present in this holder.
-         */
-        public int getSkillPoint(SkillPoint skillPoint) {
-            return getSkillPoint(skillPoint.getId());
-        }
-
-        /**
-         * Syncs the values with the given data object.
-         *
-         * @param data The data object to sync with.
-         */
-        public void onSync(KnowledgeHolder data) {
-            skills.clear();
-            skills.addAll(data.skills());
-            skillPoints.clear();
-            skillPoints.putAll(data.skillPoints());
+        public static KnowledgeHolder copy(IAttachmentHolder owner, KnowledgeHolder knowledgeHolder) {
+            return new KnowledgeHolder(new HashSet<>(knowledgeHolder.skills()), new HashMap<>(knowledgeHolder.skillPoints()));
         }
     }
 }

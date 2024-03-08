@@ -1,14 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.server;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public final class ServerInit {
     /**
      * Registers the server event handlers.
      */
     public static void init() {
-        MinecraftForge.EVENT_BUS.addListener(AMPermissions::registerPermissionNodes);
-        MinecraftForge.EVENT_BUS.addListener(AMCommands::registerCommands);
-        MinecraftForge.EVENT_BUS.addListener(NatureGuardianSpawnHandler::dryadDeath);
+        NeoForge.EVENT_BUS.addListener(AMPermissions::registerPermissionNodes);
+        NeoForge.EVENT_BUS.addListener(AMCommands::registerCommands);
+        NeoForge.EVENT_BUS.addListener(NatureGuardianSpawnHandler::dryadDeath);
     }
 }

@@ -29,7 +29,7 @@ public class Grow extends AbstractComponent {
             pos = pos.above();
             state = level.getBlockState(pos);
         }
-        if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, pos, state, false) && block.isBonemealSuccess(level, level.random, pos, state) && level instanceof ServerLevel) {
+        if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, pos, state) && block.isBonemealSuccess(level, level.random, pos, state) && level instanceof ServerLevel) {
             block.performBonemeal((ServerLevel) level, level.getRandom(), pos, state);
             return SpellCastResult.SUCCESS;
         }

@@ -13,15 +13,15 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 public final class ClientHelper {
     /**
      * Draws the given item stack at the specified position.
      *
-     * @param poseStack The pose stack to use.
+     * @param graphics  The graphics environment to use.
      * @param itemStack The item stack to draw.
      * @param x         The x coordinate to draw the part at.
      * @param y         The y coordinate to draw the part at.
@@ -37,7 +37,7 @@ public final class ClientHelper {
     /**
      * Draws the given spell part's icon at the specified position with the specified dimensions.
      *
-     * @param poseStack The pose stack to use.
+     * @param graphics  The graphics environment to use.
      * @param spellPart The spell part to draw the icon of.
      * @param x         The x coordinate to draw the part at.
      * @param y         The y coordinate to draw the part at.

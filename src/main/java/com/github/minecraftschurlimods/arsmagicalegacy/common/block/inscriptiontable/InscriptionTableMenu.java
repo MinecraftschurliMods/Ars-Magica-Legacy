@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.inscriptiontable;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.AMTags;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
@@ -8,11 +7,12 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.InscriptionTableScreen;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMenuTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -23,8 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -116,10 +115,10 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
      */
     public void sendDataToServer(@Nullable Component name, List<ResourceLocation> spellStack, List<List<ResourceLocation>> shapeGroups, CompoundTag additionalData) {
         var api = ArsMagicaAPI.get();
-        Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::getValue;
+        Function<ResourceLocation, ISpellPart> registryAccess = api.getSpellPartRegistry()::get;
         ISpell spell = api.makeSpell(shapeGroups.stream().map(resourceLocations -> ShapeGroup.of(resourceLocations.stream().map(registryAccess).toList())).toList(), SpellStack.of(spellStack.stream().map(registryAccess).toList()), additionalData);
         table.onSync(name, spell);
-        ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
+        PacketDistributor.SERVER.noArg().send(new InscriptionTableSyncPacket(table.getBlockPos(), name, spell));
     }
 
     /**
@@ -131,8 +130,10 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
 
     public void createSpell() {
         Optional<ISpell> recipe = getSpellRecipe();
-        if (recipe.isPresent() && !recipe.get().isEmpty() && recipe.get().isValid()) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
+        if (recipe.isEmpty()) return;
+        if (recipe.get().isEmpty()) return;
+        if (recipe.get().isValid() || SharedConstants.IS_RUNNING_WITH_JDWP) {
+            PacketDistributor.SERVER.noArg().send(new InscriptionTableCreateSpellPacket(table.getBlockPos()));
         }
     }
 
@@ -157,7 +158,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         @Override
         public Optional<ItemStack> tryRemove(int p_150642_, int p_150643_, Player player) {
             if (table.getSpellRecipe() != null && !ArsMagicaAPI.get().getSpellHelper().isValidSpell(table.getSpellRecipe())) return super.tryRemove(p_150642_, p_150643_, player);
-            player.level().playSound(null, table.getBlockPos().getX(), table.getBlockPos().getY(), table.getBlockPos().getZ(), AMSounds.INSCRIPTION_TABLE_TAKE_BOOK.get(), SoundSource.BLOCKS, 1f, 1f);
+            player.level().playSound(null, table.getBlockPos().getX(), table.getBlockPos().getY(), table.getBlockPos().getZ(), AMSounds.INSCRIPTION_TABLE_TAKE_BOOK.value(), SoundSource.BLOCKS, 1f, 1f);
             return super.tryRemove(p_150642_, p_150643_, player).flatMap(stack -> stack.getItem() instanceof ISpellItem ? Optional.of(stack) : table.saveRecipe(stack));
         }
 
@@ -165,7 +166,7 @@ public class InscriptionTableMenu extends AbstractContainerMenu {
         public void setChanged() {
             super.setChanged();
             if (table.getLevel().isClientSide()) {
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InscriptionTableScreen::onSlotChanged);
+                DistProxy.onInscriptionTableSlotChanged();
             }
         }
 

@@ -16,8 +16,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTr
 
     @Override
     public void register(Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> { // TODO change to LivingSpawnEvent.SpecialSpawn in 1.20.2
+        NeoForge.EVENT_BUS.addListener((EntityJoinLevelEvent event) -> { // TODO change to LivingSpawnEvent.SpecialSpawn in 1.20.2
             if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
             Entity entity = event.getEntity();
             if (!predicate.matches(serverLevel, Vec3.atCenterOf(entity.blockPosition()), entity)) return;

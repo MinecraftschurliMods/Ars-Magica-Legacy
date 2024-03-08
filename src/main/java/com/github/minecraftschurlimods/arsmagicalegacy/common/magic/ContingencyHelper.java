@@ -6,97 +6,75 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IContingencyHel
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 
 import java.util.Objects;
+import java.util.function.Supplier;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class ContingencyHelper implements IContingencyHelper {
     private static final Lazy<ContingencyHelper> INSTANCE = Lazy.concurrentOf(ContingencyHelper::new);
-    private static final Capability<Contingency> CONTINGENCY = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Supplier<AttachmentType<Contingency>> CONTINGENCY = ATTACHMENT_TYPES.register("contingency", () -> AttachmentType.builder(Contingency::new).serialize(Contingency.CODEC).build());
 
     private ContingencyHelper() {
-        MinecraftForge.EVENT_BUS.addListener((LivingDeathEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DEATH));
-        MinecraftForge.EVENT_BUS.addListener((LivingFallEvent event) -> triggerContingency(event.getEntity(), ContingencyType.FALL));
-        MinecraftForge.EVENT_BUS.addListener((LivingDamageEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DAMAGE));
+        NeoForge.EVENT_BUS.addListener((LivingDeathEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DEATH));
+        NeoForge.EVENT_BUS.addListener((LivingFallEvent event) -> triggerContingency(event.getEntity(), ContingencyType.FALL));
+        NeoForge.EVENT_BUS.addListener((LivingDamageEvent event) -> triggerContingency(event.getEntity(), ContingencyType.DAMAGE));
     }
 
     public static ContingencyHelper instance() {
         return INSTANCE.get();
     }
 
-    public static Capability<Contingency> getCapability() {
-        return CONTINGENCY;
-    }
-
     @Override
     public void setContingency(LivingEntity target, ResourceLocation type, ISpell spell) {
-        IForgeRegistry<ContingencyType> registry = ArsMagicaAPI.get().getContingencyTypeRegistry();
+        Registry<ContingencyType> registry = ArsMagicaAPI.get().getContingencyTypeRegistry();
         if (!registry.containsKey(type)) return;
-        target.getCapability(CONTINGENCY).ifPresent(contingency -> {
-            contingency.type = type;
-            contingency.spell = spell;
-            contingency.index = 1;
-        });
+        target.setData(CONTINGENCY, new Contingency(type, spell, 1));
     }
 
     @Override
     public void triggerContingency(LivingEntity entity, ResourceLocation type) {
-        entity.getCapability(CONTINGENCY).ifPresent(contingency -> {
-            IForgeRegistry<ContingencyType> registry = ArsMagicaAPI.get().getContingencyTypeRegistry();
-            if (!registry.containsKey(type) || !Objects.equals(contingency.type, type)) return;
-            contingency.execute(entity.level(), entity);
-            contingency.clear();
-        });
+        if (!entity.hasData(CONTINGENCY)) return;
+        Contingency contingency = entity.getData(CONTINGENCY);
+        if (contingency.type.equals(ContingencyType.NONE)) return;
+        Registry<ContingencyType> registry = ArsMagicaAPI.get().getContingencyTypeRegistry();
+        if (!registry.containsKey(type) || !Objects.equals(contingency.type, type)) return;
+        contingency.execute(entity.level(), entity);
+        clearContingency(entity);
     }
 
     @Override
     public void clearContingency(LivingEntity target) {
-        target.getCapability(CONTINGENCY).ifPresent(Contingency::clear);
+        target.setData(CONTINGENCY, new Contingency());
     }
 
     @Override
     public ResourceLocation getContingencyType(LivingEntity entity) {
-        return entity.getCapability(CONTINGENCY)
-                .map(contingency -> contingency.type)
-                .orElse(ContingencyType.NONE);
+        if (!entity.hasData(CONTINGENCY)) return ContingencyType.NONE;
+        return entity.getData(CONTINGENCY).type;
     }
 
-    public static class Contingency {
+    public record Contingency(ResourceLocation type, ISpell spell, int index) {
         public static final Codec<Contingency> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                ContingencyType.CODEC.xmap(t -> ArsMagicaAPI.get().getContingencyTypeRegistry().getKey(t), rl -> ArsMagicaAPI.get().getContingencyTypeRegistry().getValue(rl)).fieldOf("type").forGetter(o -> o.type),
-                ISpell.CODEC.fieldOf("spell").forGetter(o -> o.spell),
-                Codec.INT.fieldOf("index").forGetter(o -> o.index)
+                ContingencyType.CODEC.xmap(t -> ArsMagicaAPI.get().getContingencyTypeRegistry().getKey(t), rl -> ArsMagicaAPI.get().getContingencyTypeRegistry().get(rl)).fieldOf("type").forGetter(Contingency::type),
+                ISpell.CODEC.fieldOf("spell").forGetter(Contingency::spell),
+                Codec.INT.fieldOf("index").forGetter(Contingency::index)
         ).apply(inst, Contingency::new));
-        private ResourceLocation type;
-        private ISpell spell;
-        private int index;
-
-        private Contingency(ResourceLocation type, ISpell spell, int index) {
-            this.type = type;
-            this.spell = spell;
-            this.index = index;
-        }
 
         public Contingency() {
             this(ContingencyType.NONE, ISpell.EMPTY, 0);
-        }
-
-        private void clear() {
-            this.type = ContingencyType.NONE;
-            this.spell = ISpell.EMPTY;
-            this.index = 0;
         }
 
         private void execute(Level level, LivingEntity target) {

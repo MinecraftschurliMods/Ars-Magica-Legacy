@@ -155,7 +155,7 @@ public class SkillCategory implements IRecipeCategory<SkillCategory.Recipe> {
         @SuppressWarnings("ConstantConditions")
         public static Recipe of(Skill skill) {
             ArsMagicaAPI api = ArsMagicaAPI.get();
-            ISpellPart part = api.getSpellPartRegistry().getValue(skill.getId(ClientHelper.getRegistryAccess()));
+            ISpellPart part = api.getSpellPartRegistry().get(skill.getId(ClientHelper.getRegistryAccess()));
             ISpellPartData data = api.getSpellDataManager().getDataForPart(part);
             return new Recipe(skill, data.recipe(), data.affinityShifts(), AMUtil.getModifiersForPart(part));
         }

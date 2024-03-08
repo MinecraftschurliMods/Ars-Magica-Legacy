@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckin
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -24,12 +25,13 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 
 public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingBlock {
+    private static final MapCodec<ObeliskBlock> CODEC = MapCodec.unit(ObeliskBlock::new);
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     private final BiPredicate<Level, BlockPos> OBELISK_CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_CHALK);
     private final BiPredicate<Level, BlockPos> OBELISK_PILLARS = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.OBELISK_PILLARS);
 
     public ObeliskBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.STONE).noOcclusion().lightLevel(state -> state.getValue(PART) == Part.LOWER && state.getValue(LIT) ? 11 : 1));
         registerDefaultState(defaultBlockState().setValue(PART, Part.LOWER));
     }
 
@@ -50,11 +52,16 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
     }
 
     @Override
+    protected MapCodec<? extends AbstractFurnaceBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
     protected void openContainer(Level level, BlockPos pos, Player player) {
         BlockEntity blockentity = level.getBlockEntity(pos.below(level.getBlockState(pos).getValue(PART).ordinal()));
         if (blockentity instanceof ObeliskBlockEntity obeliskBlockEntity) {
             player.openMenu(obeliskBlockEntity);
-            player.awardStat(AMStats.INTERACT_WITH_OBELISK.get());
+            player.awardStat(AMStats.INTERACT_WITH_OBELISK.value());
         }
     }
 
@@ -116,7 +123,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (state.getBlock() == this) {
             Part part = state.getValue(PART);
             BlockPos pos1;
@@ -141,7 +148,7 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
             level.levelEvent(player, 2001, pos1, Block.getId(level.getBlockState(pos1)));
             level.levelEvent(player, 2001, pos2, Block.getId(level.getBlockState(pos2)));
         }
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     /**

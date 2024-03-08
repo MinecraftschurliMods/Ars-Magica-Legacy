@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumCon
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellIngredient;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlocks;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
@@ -16,7 +15,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
 import com.github.minecraftschurlimods.codeclib.CodecHelper;
-import com.mojang.datafixers.util.Either;
+import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -44,10 +43,9 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,13 +55,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsumer {
     public static final Codec<Set<BlockPos>> SET_OF_POSITIONS_CODEC = CodecHelper.setOf(BlockPos.CODEC);
@@ -73,7 +70,6 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public static final String CAMO_KEY = ArsMagicaAPI.MOD_ID + ":camo";
     public static final String ALTAR_POWER_KEY = ArsMagicaAPI.MOD_ID + ":altar_power_key";
     public static final String REQUIRED_POWER_KEY = ArsMagicaAPI.MOD_ID + ":required_power_key";
-    private final LazyOptional<IEtheriumConsumer> capHolder = LazyOptional.of(() -> this);
     private BlockState camoState;
     public int checkCounter;
     @Nullable
@@ -245,14 +241,14 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAltar(tag, true);
+        saveAltar(tag);
         return tag;
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        saveAltar(tag, false);
+        saveAltar(tag);
     }
 
     @Override
@@ -264,8 +260,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
                 .ifRight(ArsMagicaLegacy.LOGGER::warn)
                 .left()
                 .orElse(Set.of());
-        recipe = Codec.either(ISpellIngredient.NETWORK_CODEC, ISpellIngredient.CODEC)
-                .xmap(i -> i.map(Function.identity(), Function.identity()), Either::right)
+        recipe = ISpellIngredient.CODEC
                 .listOf()
                 .decode(NbtOps.INSTANCE, pTag.get(RECIPE_KEY))
                 .map(Pair::getFirst)
@@ -294,11 +289,10 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
      * Saves the altar to the given tag.
      *
      * @param tag        The tag to save to.
-     * @param forNetwork Whether the tag is meant for network transfer or not.
      */
-    public void saveAltar(CompoundTag tag, boolean forNetwork) {
+    public void saveAltar(CompoundTag tag) {
         tag.put(PROVIDERS_KEY, SET_OF_POSITIONS_CODEC.encodeStart(NbtOps.INSTANCE, boundPositions).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
-        tag.put(RECIPE_KEY, (forNetwork ? ISpellIngredient.NETWORK_CODEC : ISpellIngredient.CODEC).listOf().encodeStart(NbtOps.INSTANCE, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
+        tag.put(RECIPE_KEY, ISpellIngredient.CODEC.listOf().encodeStart(NbtOps.INSTANCE, recipe != null ? new ArrayList<>(recipe) : new ArrayList<>(0)).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (camoState != null) {
             tag.put(CAMO_KEY, BlockState.CODEC.encodeStart(NbtOps.INSTANCE, camoState).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         }
@@ -329,7 +323,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
 
     private void sync() {
         if (getLevel() != null && !getLevel().isClientSide()) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllTracking(new BEClientSyncPacket(this), getLevel(), getBlockPos());
+            PacketDistributor.TRACKING_CHUNK.with(getLevel().getChunkAt(getBlockPos())).send(new BEClientSyncPacket(this));
         }
     }
 
@@ -341,7 +335,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         entityitem.setPickUpDelay(40);
         entityitem.setExtendedLifetime();
         level.addFreshEntity(entityitem);
-        level.playSound(null, blockPos.getX(), blockPos.getY() - 2, blockPos.getZ(), AMSounds.CRAFTING_ALTAR_FINISH.get(), SoundSource.BLOCKS, 1f, 1f);
+        level.playSound(null, blockPos.getX(), blockPos.getY() - 2, blockPos.getZ(), AMSounds.CRAFTING_ALTAR_FINISH.value(), SoundSource.BLOCKS, 1f, 1f);
     }
 
     private ItemStack makeSpell() {
@@ -356,16 +350,17 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     public List<IEtheriumProvider> getBoundProviders() {
         var helper = ArsMagicaAPI.get().getEtheriumHelper();
         Level level = getLevel();
-        if (level != null) {
-            boundPositions.removeIf(blockPos -> !helper.hasEtheriumProvider(level, blockPos));
-            return boundPositions
-                    .stream()
-                    .map(level::getBlockEntity)
-                    .map(helper::getEtheriumProvider)
-                    .map(opt -> opt.orElseThrow(() -> new RuntimeException("IEtheriumProvider not present!")))
-                    .collect(Collectors.toList());
+        if (level == null) return List.of();
+        ImmutableList.Builder<IEtheriumProvider> list = ImmutableList.builder();
+        for (Iterator<BlockPos> iterator = boundPositions.iterator(); iterator.hasNext(); ) {
+            IEtheriumProvider provider = helper.getEtheriumProvider(level, iterator.next());
+            if (provider == null) {
+                iterator.remove();
+            } else {
+                list.add(provider);
+            }
         }
-        return List.of();
+        return list.build();
     }
 
     @Override
@@ -385,10 +380,8 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
         return ModelData.builder().with(CAMO_STATE, camoState).build();
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap) {
-        return EtheriumHelper.instance().getEtheriumConsumerCapability().orEmpty(cap, capHolder);
+    public IEtheriumConsumer getEtheriumCapability(Void v) {
+        return this;
     }
 
     /**

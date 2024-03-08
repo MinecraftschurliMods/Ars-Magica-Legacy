@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -18,10 +17,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.LogicalSide;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.crafting.NBTIngredient;
+import net.neoforged.neoforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements RitualTrigger {
-    public static final Codec<ItemDropRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INGREDIENT.listOf().fieldOf("ingredients").forGetter(ItemDropRitualTrigger::ingredients)).apply(inst, ItemDropRitualTrigger::new));
+    public static final Codec<ItemDropRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").forGetter(ItemDropRitualTrigger::ingredients)).apply(inst, ItemDropRitualTrigger::new));
 
     public static ItemDropRitualTrigger ingredients(Ingredient... ingredients) {
         return new ItemDropRitualTrigger(Arrays.asList(ingredients));
@@ -67,16 +66,16 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements Rit
     }
 
     public static ItemDropRitualTrigger stacksExact(ItemStack... itemsStacks) {
-        return new ItemDropRitualTrigger(Arrays.stream(itemsStacks).<Ingredient>map(StrictNBTIngredient::of).toList());
+        return new ItemDropRitualTrigger(Arrays.stream(itemsStacks).<Ingredient>map(pStacks -> NBTIngredient.of(true, pStacks)).toList());
     }
 
     public static ItemDropRitualTrigger stackExact(ItemStack itemsStack) {
-        return ItemDropRitualTrigger.ingredient(StrictNBTIngredient.of(itemsStack));
+        return ItemDropRitualTrigger.ingredient(NBTIngredient.of(true, itemsStack));
     }
 
     @Override
     public void register(final Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.PlayerTickEvent t) -> {
+        NeoForge.EVENT_BUS.addListener((TickEvent.PlayerTickEvent t) -> {
             if ((t.side != LogicalSide.SERVER && !t.player.getGameProfile().getName().equals("test-mock-player")) || t.phase != TickEvent.Phase.START)
                 return;
             if (!(t.player.level() instanceof ServerLevel serverLevel)) return;
