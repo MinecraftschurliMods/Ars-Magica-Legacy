@@ -1,4 +1,8 @@
+import com.github.minecraftschurlimods.helperplugin.api
+import com.github.minecraftschurlimods.helperplugin.localGradleProperty
 import com.github.minecraftschurlimods.helperplugin.moddependencies.ModDependency
+import com.github.minecraftschurlimods.helperplugin.sourceSets
+import com.github.minecraftschurlimods.helperplugin.version
 
 plugins {
     idea
@@ -6,6 +10,10 @@ plugins {
 }
 
 helper.license.url = helper.gitHub.url.zip(helper.license.file) { url, file -> "$url/blob/version/1.20.x/$file" }
+
+helper.withApiSourceSet()
+helper.withDataGenSourceSet()
+helper.withTestSourceSet()
 
 val include: Configuration by configurations.creating {
     isTransitive = false
@@ -16,14 +24,10 @@ val include: Configuration by configurations.creating {
         }
     }
 }
-sourceSets.forEach { sourceSet ->
-    configurations.getByName(sourceSet.implementationConfigurationName).extendsFrom(include)
+sourceSets.configureEach {
+    configurations.getByName(implementationConfigurationName).extendsFrom(include)
 }
 configurations.jarJar.get().extendsFrom(include)
-
-helper.withApiSourceSet()
-helper.withDataGenSourceSet()
-helper.withTestSourceSet()
 
 repositories {
     mavenLocal()
@@ -78,8 +82,6 @@ repositories {
     }
 }
 
-val NamedDomainObjectProvider<ModDependency>.version: Provider<String> get() = flatMap { it.version }
-
 val jei = helper.dependencies.jei()
 val jade = helper.dependencies.jade()
 val theoneprobe = helper.dependencies.theoneprobe()
@@ -90,27 +92,38 @@ val potionbundles = helper.dependencies.optional("potionbundles") {
     curseforgeId = "potion-bundles"
     modrinthId = "potion-bundles"
 }
-val geckolib = helper.dependencies.required("geckolib")
-val patchouli = helper.dependencies.required("patchouli")
+val geckolib = helper.dependencies.required("geckolib") {
+    ordering = ModDependency.Ordering.BEFORE
+    side = ModDependency.Side.BOTH
+}
+val patchouli = helper.dependencies.required("patchouli") {
+    ordering = ModDependency.Ordering.BEFORE
+    side = ModDependency.Side.BOTH
+}
 val embeddium = helper.dependencies.optional("embeddium")
 
 dependencies {
     implementation(helper.neoforge())
 
     // jei for integration
-    compileOnly(jei.version.map { "mezz.jei:jei-1.20.4-common-api:${it}" })
-    runtimeOnly(jei.version.map { "mezz.jei:jei-1.20.4-forge:${it}" })
+    val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
+    val jeiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-neoforge:${version}" }
+    compileOnly(jeiApiDep)
 
     // curios for additional inventory slots
-    compileOnly(curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}:api" })
-    runtimeOnly(curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}" })
+    val curiosApiDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}:api" }
+    val curiosDep = curios.version.map { "top.theillusivec4.curios:curios-neoforge:${it}" }
+    compileOnly(curiosApiDep)
+    "dataCompileOnly"(curiosApiDep)
+    "dataRuntimeOnly"(curiosDep)
 
     // patchouli for the guide book (arcane compendium)
-    compileOnly(patchouli.version.map { "vazkii.patchouli:Patchouli:${it}:api" })
-    val patchouliRuntimeDep = patchouli.version.map { "vazkii.patchouli:Patchouli:${it}" }
-    runtimeOnly(patchouliRuntimeDep)
-    testRuntimeOnly(patchouliRuntimeDep)
-    "dataRuntimeOnly"(patchouliRuntimeDep)
+    val patchouliApiDep = patchouli.version.map { "vazkii.patchouli:Patchouli:${it}:api" }
+    val patchouliDep = patchouli.version.map { "vazkii.patchouli:Patchouli:${it}" }
+    compileOnly(patchouliApiDep)
+    runtimeOnly(patchouliDep)
+    testRuntimeOnly(patchouliDep)
+    "dataRuntimeOnly"(patchouliDep)
 
     // geckolib for animations
     val geckolibDep = helper.minecraftVersion.zip(geckolib.version) { mc, version -> "software.bernie.geckolib:geckolib-neoforge-${mc}:${version}" }
@@ -120,46 +133,45 @@ dependencies {
     "dataRuntimeOnly"(geckolibDep)
 
     // theoneprobe for integration
-    compileOnly(theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}:api" }) { (this as ModuleDependency).isTransitive = false }
-    runtimeOnly(theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}" }) { (this as ModuleDependency).isTransitive = false }
+    val theoneprobeApiDep = theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}:api" }
+    val theoneprobeDep = theoneprobe.version.map { "mcjty.theoneprobe:theoneprobe:${it}" }
+    compileOnly(theoneprobeApiDep) { (this as ModuleDependency).isTransitive = false }
 
     // jade for integration
     val jadeDep = jade.version.map { "maven.modrinth:jade:${it}-neoforge" }
     compileOnly(jadeDep)
-    runtimeOnly(jadeDep)
 
-    if (System.getenv("GITHUB_ACTIONS") == null || System.getenv("GITHUB_ACTIONS").isEmpty()) {
-        runtimeOnly(potionbundles.version.map { "com.github.minecraftschurlimods:potionbundles:${it}" })
-        //runtimeOnly(controlling.version.map { "com.blamejared.controlling:Controlling-neoforge-1.20.4:${it}" })
-        //runtimeOnly(embeddium.version.map { "maven.modrinth:embeddium:${it}" })
+    if (!helper.runningInCI.getOrElse(false)) {
+        val potionbundlesDep = potionbundles.version.map { "com.github.minecraftschurlimods:potionbundles:${it}" }
+        runtimeOnly(potionbundlesDep)
+        runtimeOnly(theoneprobeDep) { (this as ModuleDependency).isTransitive = false }
+        runtimeOnly(jeiDep)
+        runtimeOnly(jadeDep)
+        runtimeOnly(curiosDep)
     }
 
     // add internal libraries
-    include("com.github.minecraftschurlimods:codeclib") {
-        version {
-            strictly("[1.20.4-1.0-SNAPSHOT,)")
-            prefer("1.20.4-1.0-SNAPSHOT")
-        }
-    }
-    include("com.github.minecraftschurlimods:betterkeybindlib") {
-        version {
-            strictly("[1.20.4-1.1-SNAPSHOT,)")
-            prefer("1.20.4-1.1-SNAPSHOT")
-        }
-    }
-    include("com.github.minecraftschurlimods:betterhudlib") {
-        version {
-            strictly("[1.20.4-1.0-SNAPSHOT,)")
-            prefer("1.20.4-1.0-SNAPSHOT")
-        }
-    }
-    "apiCompileOnly"("com.github.minecraftschurlimods:easydatagenlib:1.20.4-1.1.2-SNAPSHOT:api")
-    "dataImplementation"("com.github.minecraftschurlimods:easydatagenlib:1.20.4-1.1.2-SNAPSHOT")
+    val codecLibVersion = project.localGradleProperty("dependency.codeclib.version")
+    val codecLibDep = codecLibVersion.map { "com.github.minecraftschurlimods:codeclib:$it" }
+    include(codecLibDep)
+    val betterKeybindLibVersion = project.localGradleProperty("dependency.betterkeybindlib.version")
+    val betterKeybindLibDep = betterKeybindLibVersion.map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
+    include(betterKeybindLibDep)
+    val betterHudLibVersion = project.localGradleProperty("dependency.betterhudlib.version")
+    val betterHudLibDep = betterHudLibVersion.map { "com.github.minecraftschurlimods:betterhudlib:$it" }
+    include(betterHudLibDep)
 
-    compileOnly("org.jetbrains:annotations:23.0.0")
-    "apiCompileOnly"("org.jetbrains:annotations:23.0.0")
-    testCompileOnly("org.jetbrains:annotations:23.0.0")
-    "dataCompileOnly"("org.jetbrains:annotations:23.0.0")
+    val easyDatagenLibVersion = project.localGradleProperty("dependency.easydatagenlib.version")
+    val easyDatagenLibApiDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}:api" }
+    val easyDatagenLibDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}" }
+    "apiCompileOnly"(easyDatagenLibApiDep)
+    "dataImplementation"(easyDatagenLibDep)
+
+    val jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
+    compileOnly(jetbrainsAnnotations)
+    "apiCompileOnly"(jetbrainsAnnotations)
+    testCompileOnly(jetbrainsAnnotations)
+    "dataCompileOnly"(jetbrainsAnnotations)
 }
 
 helper.withCommonRuns()
@@ -168,11 +180,17 @@ helper.withDataGenRuns {
     programArguments.add("--mixin.config")
     programArguments.add(helper.projectId.map { "${it}_data.mixins.json" })
 }
-helper.modproperties.put(
-    "catalogueItemIcon", helper.projectId.map { "$it:occulus" }
-)
+
+helper.modproperties.put("catalogueItemIcon", helper.projectId.map { "$it:occulus" })
+
+helper.mixinConfigs.add(helper.projectId.map { "${it}.mixins.json" })
 
 minecraft.accessTransformers.file("src/main/resources/META-INF/accesstransformer.cfg")
+
+tasks.javadoc {
+    classpath = sourceSets.api.get().compileClasspath
+    source = sourceSets.api.get().allJava
+}
 
 helper.publication.pom {
     organization {
