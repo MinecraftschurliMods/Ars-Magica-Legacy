@@ -1,16 +1,16 @@
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   "biomes": {
-    "type": "forge:and",
+    "type": "neoforge:and",
     "values": [
       {
-        "type": "forge:or",
+        "type": "neoforge:or",
         "values": [
           "#minecraft:is_overworld"
         ]
       },
       {
-        "type": "forge:or",
+        "type": "neoforge:or",
         "values": [
           "#minecraft:is_jungle",
           "#forge:is_swamp"
@@ -18,6 +18,6 @@
       }
     ]
   },
-  "features": "arsmagicalegacy:wakebloom",
+  "features": "arsmagicalegacy:cerublossom",
   "step": "vegetal_decoration"
 }

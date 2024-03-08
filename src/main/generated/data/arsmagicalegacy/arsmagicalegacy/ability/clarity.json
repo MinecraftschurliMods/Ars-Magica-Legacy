@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:arcane",
   "bounds": {
-    "min": 1
+    "min": 1.0
   }
 }

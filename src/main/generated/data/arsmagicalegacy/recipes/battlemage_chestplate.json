@@ -3,9 +3,9 @@
   "category": "equipment",
   "key": {
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:earth\"}"
     },
     "G": {
       "tag": "forge:ingots/gold"
@@ -24,6 +24,5 @@
   ],
   "result": {
     "item": "arsmagicalegacy:battlemage_chestplate"
-  },
-  "show_notification": true
+  }
 }

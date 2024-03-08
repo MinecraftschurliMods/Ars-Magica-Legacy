@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
     },
     "I": {
       "tag": "forge:eggs"
@@ -26,6 +26,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:life\"}"
-  },
-  "show_notification": true
+  }
 }

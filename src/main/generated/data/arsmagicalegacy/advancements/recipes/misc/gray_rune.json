@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_blank_rune",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_blank_rune"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:gray_rune"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

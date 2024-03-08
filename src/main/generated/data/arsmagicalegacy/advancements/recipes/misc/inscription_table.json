@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_spell_parchment",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_spell_parchment"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:inscription_table"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

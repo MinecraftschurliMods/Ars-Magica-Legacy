@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_book",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_book"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:inscription_table_upgrade_tier_1"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

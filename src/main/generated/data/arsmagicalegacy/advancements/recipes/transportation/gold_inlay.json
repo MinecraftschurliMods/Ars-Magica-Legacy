@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_purified_vinteum_dust",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_purified_vinteum_dust"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:gold_inlay"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_topaz_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_topaz_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:topaz"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

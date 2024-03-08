@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
     },
     "I": {
       "item": "minecraft:snow_block"
@@ -26,6 +26,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ice\"}"
-  },
-  "show_notification": true
+  }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_moonstone_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_moonstone_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:moonstone_from_blasting_moonstone_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
