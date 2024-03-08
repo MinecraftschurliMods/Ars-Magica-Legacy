@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ITranslatable;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @param loopSound      The sound to play when casting a continuous spell with this affinity.
  * @param particle       The particle type associated with this affinity.
  */
-public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, Supplier<SoundEvent> castSound, Supplier<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
+public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<ResourceLocation> majorOpposites, ResourceLocation directOpposite, @Nullable Holder<SoundEvent> castSound, @Nullable Holder<SoundEvent> loopSound, Supplier<? extends ParticleOptions> particle) implements Comparable<Affinity>, ITranslatable {
     public static final String AFFINITY = "affinity";
     public static final ResourceKey<Registry<Affinity>> REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(ArsMagicaAPI.MOD_ID, AFFINITY));
 
@@ -73,23 +74,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
      * @return The adjacent affinities for this affinity.
      */
     public Set<ResourceLocation> getAdjacentAffinities() {
-        return ArsMagicaAPI.get().getAffinityRegistry().getValues().stream().filter(iAffinity -> !minorOpposites().contains(iAffinity.getId()) && !majorOpposites().contains(iAffinity.getId()) && !directOpposite().equals(iAffinity.getId())).map(Affinity::getId).collect(Collectors.toSet());
-    }
-
-    /**
-     * @return The sound that should be played when casting a spell with this affinity.
-     */
-    @Nullable
-    public SoundEvent getCastSound() {
-        return castSound().get();
-    }
-
-    /**
-     * @return The sound that should be played when casting a continuous spell with this affinity.
-     */
-    @Nullable
-    public SoundEvent getLoopSound() {
-        return loopSound().get();
+        return ArsMagicaAPI.get().getAffinityRegistry().stream().filter(iAffinity -> !minorOpposites().contains(iAffinity.getId()) && !majorOpposites().contains(iAffinity.getId()) && !directOpposite().equals(iAffinity.getId())).map(Affinity::getId).collect(Collectors.toSet());
     }
 
     /**
@@ -120,8 +105,10 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
         private final Set<ResourceLocation> majorOpposites = new HashSet<>();
         private Integer color;
         private ResourceLocation directOpposite;
-        private Supplier<SoundEvent> castSound;
-        private Supplier<SoundEvent> loopSound;
+        @Nullable
+        private Holder<SoundEvent> castSound;
+        @Nullable
+        private Holder<SoundEvent> loopSound;
         private Supplier<? extends ParticleOptions> particle;
 
         /**
@@ -182,7 +169,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param castSound The cast sound to set.
          * @return This builder, for chaining.
          */
-        public Builder setCastSound(Supplier<SoundEvent> castSound) {
+        public Builder setCastSound(Holder<SoundEvent> castSound) {
             this.castSound = castSound;
             return this;
         }
@@ -191,7 +178,7 @@ public record Affinity(int color, Set<ResourceLocation> minorOpposites, Set<Reso
          * @param loopSound The loop sound to set.
          * @return This builder, for chaining.
          */
-        public Builder setLoopSound(Supplier<SoundEvent> loopSound) {
+        public Builder setLoopSound(Holder<SoundEvent> loopSound) {
             this.loopSound = loopSound;
             return this;
         }

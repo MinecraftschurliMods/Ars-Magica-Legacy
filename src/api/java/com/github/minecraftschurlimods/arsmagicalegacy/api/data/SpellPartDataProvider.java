@@ -9,12 +9,13 @@ import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDataProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.core.Holder;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,6 +52,14 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param spellPart The id of the new spell part.
      * @param manaCost  The mana cost for the new spell part.
      */
+    public Builder builder(ResourceKey<? extends ISpellPart> spellPart, float manaCost) {
+        return builder(spellPart.location(), manaCost);
+    }
+
+    /**
+     * @param spellPart The id of the new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     */
     public Builder builder(ResourceLocation spellPart, float manaCost) {
         return new Builder(spellPart, this, manaCost);
     }
@@ -59,8 +68,17 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param spellPart The new spell part.
      * @param manaCost  The mana cost for the new spell part.
      */
-    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost) {
-        return builder(spellPart.getId(), manaCost);
+    public Builder builder(Holder<? extends ISpellPart> spellPart, float manaCost) {
+        return builder(spellPart.unwrapKey().orElseThrow(), manaCost);
+    }
+
+    /**
+     * @param spellPart The id of the new spell part.
+     * @param manaCost  The mana cost for the new spell part.
+     * @param burnout   The burnout for the new spell part.
+     */
+    public Builder builder(ResourceKey<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+        return builder(spellPart.location(), manaCost, burnout);
     }
 
     /**
@@ -77,8 +95,8 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
      * @param manaCost  The mana cost for the new spell part.
      * @param burnout   The burnout for the new spell part.
      */
-    public Builder builder(RegistryObject<? extends ISpellPart> spellPart, float manaCost, float burnout) {
-        return builder(spellPart.getId(), manaCost, burnout);
+    public Builder builder(Holder<? extends ISpellPart> spellPart, float manaCost, float burnout) {
+        return builder(spellPart.unwrapKey().orElseThrow(), manaCost, burnout);
     }
 
     public static class Builder extends AbstractDataBuilder<Builder> {
@@ -158,6 +176,15 @@ public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPa
          */
         public Builder addAffinity(Supplier<Affinity> affinity, float shift) {
             return addAffinity(affinity.get(), shift);
+        }
+
+        /**
+         * Adds an affinity.
+         *
+         * @param affinity The affinity to add.
+         */
+        public Builder addAffinity(Holder<Affinity> affinity, float shift) {
+            return addAffinity(affinity.unwrapKey().get().location(), shift);
         }
 
         /**

@@ -4,11 +4,12 @@
  */
 package com.github.minecraftschurlimods.arsmagicalegacy.api.util;
 
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.EitherCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
@@ -17,15 +18,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
@@ -137,16 +136,8 @@ public interface ItemFilter extends Predicate<ItemStack> {
                 ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(e -> e instanceof ItemStack s && s.amount == s.itemStack.getCount() ? 1 : e.amount),
                 net.minecraft.world.item.ItemStack.CODEC.optionalFieldOf("stack").forGetter(e -> e instanceof ItemStack s ? Optional.of(s.itemStack) : Optional.empty()),
                 net.minecraft.tags.TagKey.codec(Registries.ITEM).optionalFieldOf("tag").forGetter(e -> e instanceof TagKey s ? Optional.of(s.tagKey) : Optional.empty()),
-                CodecHelper.INGREDIENT.optionalFieldOf("ingredient").forGetter(e -> e instanceof Simple.Ingredient s ? Optional.of(s.ingredient) : Optional.empty()),
-                ForgeRegistries.ITEMS.getCodec().optionalFieldOf("item").forGetter(e -> e instanceof ItemLike s ? Optional.of(s.itemLike.asItem()) : Optional.empty())
-        ).apply(inst, Simple::create));
-        public static final Codec<Simple> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                AmountMatchMode.CODEC.fieldOf("mode").forGetter(e -> e.mode),
-                ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(e -> e instanceof ItemStack s && s.amount == s.itemStack.getCount() ? 1 : e.amount),
-                net.minecraft.world.item.ItemStack.CODEC.optionalFieldOf("stack").forGetter(e -> e instanceof ItemStack s ? Optional.of(s.itemStack) : Optional.empty()),
-                net.minecraft.tags.TagKey.codec(Registries.ITEM).optionalFieldOf("tag").forGetter(e -> e instanceof TagKey s ? Optional.of(s.tagKey) : Optional.empty()),
-                CodecHelper.NETWORK_INGREDIENT.optionalFieldOf("ingredient").forGetter(e -> e instanceof Simple.Ingredient s ? Optional.of(s.ingredient) : Optional.empty()),
-                ForgeRegistries.ITEMS.getCodec().optionalFieldOf("item").forGetter(e -> e instanceof ItemLike s ? Optional.of(s.itemLike.asItem()) : Optional.empty())
+                net.minecraft.world.item.crafting.Ingredient.CODEC_NONEMPTY.optionalFieldOf("ingredient").forGetter(e -> e instanceof Simple.Ingredient s ? Optional.of(s.ingredient) : Optional.empty()),
+                BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("item").forGetter(e -> e instanceof ItemLike s ? Optional.of(s.itemLike.asItem()) : Optional.empty())
         ).apply(inst, Simple::create));
         public final int minAmount;
         public final int maxAmount;
@@ -205,7 +196,7 @@ public interface ItemFilter extends Predicate<ItemStack> {
 
             @Override
             public net.minecraft.world.item.ItemStack[] getMatchedStacks() {
-                return Objects.requireNonNull(ForgeRegistries.ITEMS.tags()).getTag(tagKey).stream().map(pItem -> new net.minecraft.world.item.ItemStack(pItem, amount)).toArray(net.minecraft.world.item.ItemStack[]::new);
+                return BuiltInRegistries.ITEM.getTag(tagKey).stream().flatMap(HolderSet::stream).map(pItem -> new net.minecraft.world.item.ItemStack(pItem, amount)).toArray(net.minecraft.world.item.ItemStack[]::new);
             }
         }
 
