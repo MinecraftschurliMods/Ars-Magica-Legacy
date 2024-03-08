@@ -23,7 +23,7 @@ public class RuneBagScreen extends AbstractContainerScreen<RuneBagMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         super.render(graphics, pMouseX, pMouseY, pPartialTicks);
         renderTooltip(graphics, pMouseX, pMouseY);
     }

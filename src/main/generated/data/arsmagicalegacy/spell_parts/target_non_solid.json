@@ -7,10 +7,10 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "arsmagicalegacy:affinity_essence",
-        "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}"
+        "strict": true,
+        "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:water\"}"
       }
     },
     {
@@ -31,10 +31,10 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "minecraft:potion",
-        "nbt": "{Potion:\"minecraft:water\"}"
+        "strict": true,
+        "tag": "{Potion:\"minecraft:water\"}"
       }
     }
   ]

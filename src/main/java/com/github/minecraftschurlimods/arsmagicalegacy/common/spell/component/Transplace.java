@@ -15,7 +15,7 @@ import java.util.List;
 public class Transplace extends AbstractComponent {
     @Override
     public SpellCastResult invoke(ISpell spell, LivingEntity caster, Level level, List<ISpellModifier> modifiers, EntityHitResult target, int index, int ticksUsed) {
-        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.get()))
+        if (caster.hasEffect(AMMobEffects.ASTRAL_DISTORTION.value()) || target.getEntity() instanceof LivingEntity living && living.hasEffect(AMMobEffects.ASTRAL_DISTORTION.value()))
             return SpellCastResult.EFFECT_FAILED;
         Vec3 targetPos = target.getEntity().position();
         Vec3 casterPos = caster.position();

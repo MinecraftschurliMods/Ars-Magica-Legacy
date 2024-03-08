@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -37,12 +38,12 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.holdersets.AndHolderSet;
-import net.minecraftforge.registries.holdersets.NotHolderSet;
-import net.minecraftforge.registries.holdersets.OrHolderSet;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
+import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
+import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,15 +214,15 @@ public abstract sealed class WorldgenProvider<T> extends AbstractDatapackRegistr
     public non-sealed abstract static class BiomeModifierProvider extends WorldgenProvider<BiomeModifier> {
 
         protected BiomeModifierProvider(String namespace) {
-            super(namespace, ForgeRegistries.Keys.BIOME_MODIFIERS);
+            super(namespace, NeoForgeRegistries.Keys.BIOME_MODIFIERS);
         }
 
         protected void addSpawn(EntityType<?> type, int weight, int minCount, int maxCount, HolderSet<Biome> biomes) {
-            addSpawn(ForgeRegistries.ENTITY_TYPES.getKey(type).getPath(), biomes, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount));
+            addSpawn(BuiltInRegistries.ENTITY_TYPE.getKey(type).getPath(), biomes, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount));
         }
 
         protected void addSpawn(EntityType<?> type, Weight weight, int minCount, int maxCount, HolderSet<Biome> biomes) {
-            addSpawn(ForgeRegistries.ENTITY_TYPES.getKey(type).getPath(), biomes, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount));
+            addSpawn(BuiltInRegistries.ENTITY_TYPE.getKey(type).getPath(), biomes, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount));
         }
 
         protected void addSpawn(String name, HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData spawnerData) {
@@ -229,7 +230,7 @@ public abstract sealed class WorldgenProvider<T> extends AbstractDatapackRegistr
         }
 
         private BiomeModifier addSpawn(HolderSet<Biome> biomes, MobSpawnSettings.SpawnerData spawnerData) {
-            return ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(biomes, spawnerData);
+            return BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(biomes, spawnerData);
         }
 
         protected void addVegetation(String name, HolderSet<Biome> biomes) {
@@ -253,7 +254,7 @@ public abstract sealed class WorldgenProvider<T> extends AbstractDatapackRegistr
         }
 
         private BiomeModifier addFeatures(HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step) {
-            return new ForgeBiomeModifiers.AddFeaturesBiomeModifier(biomes, features, step);
+            return new BiomeModifiers.AddFeaturesBiomeModifier(biomes, features, step);
         }
 
         protected HolderSet<Biome> b(ResourceKey<Biome> key) {

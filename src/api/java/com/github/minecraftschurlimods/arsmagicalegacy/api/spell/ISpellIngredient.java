@@ -1,10 +1,10 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,8 +14,7 @@ import java.util.List;
  * Interface representing an ingredient for spell crafting.
  */
 public interface ISpellIngredient {
-    Codec<ISpellIngredient> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellIngredientTypeRegistry).dispatch(ISpellIngredient::getType, SpellIngredientType::codec);
-    Codec<ISpellIngredient> NETWORK_CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellIngredientTypeRegistry).dispatch(ISpellIngredient::getType, SpellIngredientType::networkCodec);
+    Codec<ISpellIngredient> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getSpellIngredientTypeRegistry().byNameCodec()).dispatch(ISpellIngredient::getType, SpellIngredientType::codec);
 
     /**
      * @return The id of this type.

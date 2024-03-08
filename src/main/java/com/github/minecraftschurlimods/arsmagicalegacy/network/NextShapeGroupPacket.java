@@ -1,17 +1,17 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.network;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record NextShapeGroupPacket(InteractionHand hand, boolean reverse) implements IPacket {
+public record NextShapeGroupPacket(InteractionHand hand, boolean reverse) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "next_shape_group");
 
-    public NextShapeGroupPacket(FriendlyByteBuf buf) {
+    NextShapeGroupPacket(FriendlyByteBuf buf) {
         this(buf.readEnum(InteractionHand.class), buf.readBoolean());
     }
 
@@ -20,16 +20,14 @@ public record NextShapeGroupPacket(InteractionHand hand, boolean reverse) implem
         return ID;
     }
 
-    @Override
-    public void serialize(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeEnum(hand);
         buf.writeBoolean(reverse);
     }
 
-    @Override
-    public void handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> {
-            ServerPlayer player = context.getSender();
+    void handle(PlayPayloadContext context) {
+        context.workHandler().execute(() -> {
+            Player player = context.player().orElse(null);
             if (player == null) return;
             if (reverse) {
                 ArsMagicaAPI.get().getSpellHelper().prevShapeGroup(player.getItemInHand(hand));

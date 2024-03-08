@@ -2,6 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumConsumer;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.mojang.datafixers.util.Pair;
@@ -44,7 +45,10 @@ public class CrystalWrenchItem extends Item {
                 }
                 return InteractionResult.FAIL;
             }
-            helper.getEtheriumConsumer(context.getLevel(), context.getClickedPos()).ifPresent(consumer -> consumer.bindProvider(savedPos));
+            IEtheriumConsumer consumer = helper.getEtheriumConsumer(context.getLevel(), context.getClickedPos());
+            if (consumer != null) {
+                consumer.bindProvider(savedPos);
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

@@ -1,31 +1,28 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.magic;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
-import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class ManaHelper implements IManaHelper {
     private static final Lazy<ManaHelper> INSTANCE = Lazy.concurrentOf(ManaHelper::new);
-    private static final Capability<ManaHolder> MANA = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final ManaHolder EMPTY = new ManaHolder();
+    private static final Supplier<AttachmentType<Float>> MANA = ATTACHMENT_TYPES.register("mana", () -> AttachmentType.builder(() -> 0f).serialize(Codec.FLOAT).copyOnDeath().copyHandler((owner, inst) -> inst).build());
 
     private ManaHelper() {
     }
@@ -37,162 +34,93 @@ public final class ManaHelper implements IManaHelper {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The mana capability.
-     */
-    public static Capability<ManaHolder> getManaCapability() {
-        return MANA;
-    }
-
-    private static void handleManaSync(ManaHolder holder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(MANA).ifPresent(cap -> cap.onSync(holder)));
-    }
-
     @Override
     public boolean decreaseMana(LivingEntity entity, float mana, boolean force) {
         if (!force) return decreaseMana(entity, mana);
-        LazyOptional<ManaHolder> holder = getManaHolder(entity);
-        if (!holder.isPresent()) return false;
-        float newMana = holder.orElse(EMPTY).getMana() - mana;
-        float clamped = Mth.clamp(newMana, 0, getMaxMana(entity));
-        holder.orElse(EMPTY).setMana(clamped);
-        if (entity instanceof Player player) {
-            syncMana(player);
-        }
+        float max = getMaxMana(entity);
+        if (max == 0) return false;
+        float holder = entity.getData(MANA);
+        float newMana = holder - mana;
+        float clamped = Mth.clamp(newMana, 0, max);
+        entity.setData(MANA, clamped);
+        syncToPlayer(entity);
         return clamped == newMana;
     }
 
     @Override
     public float getMana(LivingEntity entity) {
-        return getManaHolder(entity).orElse(EMPTY).getMana();
+        return entity.getData(MANA);
     }
 
     @Override
     public float getMaxMana(LivingEntity entity) {
-        return entity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.get()) ? (float) entity.getAttributeValue(AMAttributes.MAX_MANA.get()) : 0f;
+        return entity.getAttributes().hasAttribute(AMAttributes.MAX_MANA.value()) ? (float) entity.getAttributeValue(AMAttributes.MAX_MANA.value()) : 0f;
     }
 
     @Override
     public boolean increaseMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        runIfPresent(entity, holder -> {
-            float max = getMaxMana(entity);
-            float current = holder.getMana();
-            holder.setMana(Math.min(current + amount, max));
-            if (entity instanceof Player player) {
-                syncMana(player);
-            }
-        });
+        float max = getMaxMana(entity);
+        if (max == 0) return false;
+        entity.setData(MANA, Math.min(entity.getData(MANA) + amount, max));
+        syncToPlayer(entity);
         return true;
     }
 
     @Override
     public boolean decreaseMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        runIfPresent(entity, holder -> {
-            float current = holder.getMana();
-            holder.setMana(Math.max(current - amount, 0));
-            if (entity instanceof Player player) {
-                syncMana(player);
-            }
-        });
+        float max = getMaxMana(entity);
+        if (max == 0) return false;
+        float current = entity.getData(MANA);
+        entity.setData(MANA, Math.max(current - amount, 0));
+        syncToPlayer(entity);
         return true;
     }
 
     @Override
     public boolean setMana(LivingEntity entity, float amount) {
         if (amount < 0) return false;
-        runIfPresent(entity, holder -> {
-            float max = getMaxMana(entity);
-            holder.setMana(Math.min(amount, max));
-            if (entity instanceof Player player) {
-                syncMana(player);
-            }
-        });
+        float max = getMaxMana(entity);
+        if (max == 0) return false;
+        entity.setData(MANA, Math.min(amount, max));
+        syncToPlayer(entity);
         return true;
     }
 
     /**
-     * Called on player death, syncs the capability.
+     * Syncs the attachment to the client.
      *
-     * @param original The now-dead player.
-     * @param player   The respawning player.
+     * @param entity The player to sync to.
      */
-    public void syncOnDeath(Player original, Player player) {
-        player.getAttribute(AMAttributes.MAX_MANA.get()).setBaseValue(original.getAttribute(AMAttributes.MAX_MANA.get()).getBaseValue());
-        original.getCapability(MANA).ifPresent(manaHolder -> player.getCapability(MANA).ifPresent(holder -> holder.onSync(manaHolder)));
-        syncMana(player);
+    public void syncToPlayer(LivingEntity entity) {
+        if (!(entity instanceof ServerPlayer serverPlayer)) return;
+        PacketDistributor.PLAYER.with(serverPlayer).send(new ManaSyncPacket(entity.getData(MANA)));
     }
 
-    /**
-     * Syncs the capability to the client.
-     *
-     * @param player The player to sync to.
-     */
-    public void syncMana(Player player) {
-        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new ManaSyncPacket(holder), player));
+    public static void registerSyncPacket(IPayloadRegistrar registrar) {
+        registrar.play(ManaSyncPacket.ID, ManaSyncPacket::new, builder -> builder.client(ManaSyncPacket::handle));
     }
 
-    private void runIfPresent(LivingEntity entity, Consumer<ManaHolder> consumer) {
-        getManaHolder(entity).ifPresent(consumer::accept);
-    }
-
-    private LazyOptional<ManaHolder> getManaHolder(LivingEntity entity) {
-        if (entity instanceof Player && entity.isDeadOrDying()) {
-            entity.reviveCaps();
-        }
-        LazyOptional<ManaHolder> manaHolder = entity.getCapability(MANA);
-        if (entity instanceof Player && entity.isDeadOrDying()) {
-            entity.invalidateCaps();
-        }
-        return manaHolder;
-    }
-
-    public static final class ManaSyncPacket extends CodecPacket<ManaHolder> {
+    private record ManaSyncPacket(float mana) implements CustomPacketPayload {
         public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "mana_sync");
 
-        public ManaSyncPacket(ManaHolder data) {
-            super(ID, data);
-        }
-
         public ManaSyncPacket(FriendlyByteBuf buf) {
-            super(ID, buf);
+            this(buf.readFloat());
         }
 
         @Override
-        public void handle(NetworkEvent.Context context) {
-            handleManaSync(data, context);
+        public void write(FriendlyByteBuf buf) {
+            buf.writeFloat(this.mana());
         }
 
         @Override
-        protected Codec<ManaHolder> codec() {
-            return ManaHolder.CODEC;
-        }
-    }
-
-    public static final class ManaHolder {
-        public static final Codec<ManaHolder> CODEC = RecordCodecBuilder.create(inst -> inst.group(Codec.FLOAT.fieldOf("mana").forGetter(ManaHolder::getMana)).apply(inst, mana -> {
-            ManaHolder manaHolder = new ManaHolder();
-            manaHolder.setMana(mana);
-            return manaHolder;
-        }));
-        private float mana;
-
-        public float getMana() {
-            return mana;
+        public ResourceLocation id() {
+            return ID;
         }
 
-        public void setMana(float amount) {
-            mana = amount;
-        }
-
-        /**
-         * Syncs the values with the given data object.
-         *
-         * @param data The data object to sync with.
-         */
-        public void onSync(ManaHolder data) {
-            mana = data.mana;
+        public void handle(PlayPayloadContext context) {
+            context.workHandler().submitAsync(() -> context.player().orElseThrow().setData(MANA, this.mana()));
         }
     }
 }

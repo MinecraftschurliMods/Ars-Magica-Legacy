@@ -21,6 +21,6 @@ public class HealGoal<T extends AbstractBoss> extends ExecuteBossSpellGoal<T> {
     @Override
     @Nullable
     protected SoundEvent getAttackSound() {
-        return AMSounds.LIFE_GUARDIAN_HEAL.get();
+        return AMSounds.LIFE_GUARDIAN_HEAL.value();
     }
 }

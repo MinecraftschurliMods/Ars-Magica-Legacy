@@ -63,7 +63,7 @@ public class OcculusScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTicks) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         graphics.pose().pushPose();
         graphics.pose().translate(posX, posY, 0);
         graphics.blit(OVERLAY, 0, 0, 0, 0, 0, GUI_WIDTH, GUI_HEIGHT, 256, 256);

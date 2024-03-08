@@ -38,7 +38,7 @@ public class SpellPartPage implements ICustomComponent {
     public void build(int x, int y, int page) {
         this.x = x;
         this.y = y;
-        this._part = ArsMagicaAPI.get().getSpellPartRegistry().getValue(ResourceLocation.tryParse(part));
+        this._part = ArsMagicaAPI.get().getSpellPartRegistry().get(ResourceLocation.tryParse(part));
     }
 
     @Override

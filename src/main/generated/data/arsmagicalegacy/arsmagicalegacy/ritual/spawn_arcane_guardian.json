@@ -13,10 +13,10 @@
     "type": "arsmagicalegacy:item_drop",
     "ingredients": [
       {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "patchouli:guide_book",
-        "nbt": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
+        "strict": true,
+        "tag": "{\"patchouli:book\":\"arsmagicalegacy:arcane_compendium\"}"
       }
     ]
   }

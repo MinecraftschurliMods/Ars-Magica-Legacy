@@ -12,7 +12,7 @@ public class FlamethrowerGoal extends AbstractBossGoal<FireGuardian> {
 
     @Override
     protected SoundEvent getAttackSound() {
-        return AMSounds.FIRE_GUARDIAN_FLAMETHROWER.get();
+        return AMSounds.FIRE_GUARDIAN_FLAMETHROWER.value();
     }
 
     @Override

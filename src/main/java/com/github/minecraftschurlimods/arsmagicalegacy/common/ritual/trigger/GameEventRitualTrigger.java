@@ -19,8 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.VanillaGameEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.VanillaGameEvent;
 
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public record GameEventRitualTrigger(HolderSet<GameEvent> event) implements Ritu
 
     @Override
     public void register(final Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((VanillaGameEvent evt) -> {
+        NeoForge.EVENT_BUS.addListener((VanillaGameEvent evt) -> {
             Vec3 pos = evt.getEventPosition();
             Level level = evt.getLevel();
             if (event().contains(evt.getVanillaEvent().builtInRegistryHolder()) && level instanceof ServerLevel serverLevel) {

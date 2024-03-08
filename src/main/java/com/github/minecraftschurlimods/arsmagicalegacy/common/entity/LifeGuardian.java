@@ -37,27 +37,27 @@ public class LifeGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 400).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 2500).add(AMAttributes.MAX_BURNOUT.get(), 2500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 400).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 2500).add(AMAttributes.MAX_BURNOUT.value(), 2500);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.LIFE_GUARDIAN_AMBIENT.get();
+        return AMSounds.LIFE_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.LIFE_GUARDIAN_HURT.get();
+        return AMSounds.LIFE_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.LIFE_GUARDIAN_DEATH.get();
+        return AMSounds.LIFE_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.LIFE_GUARDIAN_ATTACK.get();
+        return AMSounds.LIFE_GUARDIAN_ATTACK.value();
     }
 
     @SuppressWarnings("DataFlowIssue")

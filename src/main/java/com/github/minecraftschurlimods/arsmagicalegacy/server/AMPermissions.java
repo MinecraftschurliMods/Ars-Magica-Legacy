@@ -2,14 +2,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.server;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.server.ServerLifecycleHooks;
-import net.minecraftforge.server.permission.events.PermissionGatherEvent;
-import net.minecraftforge.server.permission.nodes.PermissionDynamicContextKey;
-import net.minecraftforge.server.permission.nodes.PermissionNode;
-import net.minecraftforge.server.permission.nodes.PermissionType;
-import net.minecraftforge.server.permission.nodes.PermissionTypes;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
+import net.neoforged.neoforge.server.permission.nodes.PermissionDynamicContextKey;
+import net.neoforged.neoforge.server.permission.nodes.PermissionNode;
+import net.neoforged.neoforge.server.permission.nodes.PermissionType;
+import net.neoforged.neoforge.server.permission.nodes.PermissionTypes;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,7 +51,9 @@ public final class AMPermissions {
                     return player.createCommandSourceStack().hasPermission(level);
                 }
                 MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-                GameProfile gameProfile = server.getSessionService().fillProfileProperties(new GameProfile(playerUUID, null), true);
+                ProfileResult result = server.getSessionService().fetchProfile(playerUUID, true);
+                if (result == null) return false;
+                GameProfile gameProfile = result.profile();
                 return server.getProfilePermissions(gameProfile) >= level;
             };
         }
@@ -62,7 +65,9 @@ public final class AMPermissions {
                 if (player != null) {
                     return player.createCommandSourceStack().hasPermission(level);
                 }
-                GameProfile gameProfile = server.getSessionService().fillProfileProperties(new GameProfile(playerUUID, null), true);
+                ProfileResult result = server.getSessionService().fetchProfile(playerUUID, true);
+                if (result == null) return false;
+                GameProfile gameProfile = result.profile();
                 return server.getProfilePermissions(gameProfile) >= level;
             };
         }

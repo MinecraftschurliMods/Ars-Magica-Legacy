@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
     public static final Codec<Holder<Ritual>> REFERENCE_CODEC = RegistryFileCodec.create(REGISTRY_KEY, DIRECT_CODEC);
     public static final Codec<HolderSet<Ritual>> LIST_CODEC = RegistryCodecs.homogeneousList(REGISTRY_KEY, DIRECT_CODEC);
 
-    private static final RegistryObject<ResourceLocation> STAT = RegistryObject.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"), Registries.CUSTOM_STAT, ArsMagicaAPI.MOD_ID);
+    private static final Holder<ResourceLocation> STAT = DeferredHolder.create(Registries.CUSTOM_STAT, new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"));
 
     public Ritual {
         trigger.register(this);
@@ -42,7 +42,7 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
         }
         if (!this.trigger.trigger(player, level, pos, ctx)) return false;
         if (!this.effect.performEffect(player, level, pos)) return false;
-        player.awardStat(STAT.get());
+        player.awardStat(STAT.value());
         return true;
     }
 }

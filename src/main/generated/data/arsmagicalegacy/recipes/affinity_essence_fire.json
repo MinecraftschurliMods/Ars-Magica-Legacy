@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
     },
     "I": {
       "tag": "minecraft:coals"
@@ -26,6 +26,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
-  },
-  "show_notification": true
+  }
 }

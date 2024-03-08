@@ -1,6 +1,6 @@
 {
   "affinity": "arsmagicalegacy:life",
   "bounds": {
-    "min": 1
+    "min": 1.0
   }
 }

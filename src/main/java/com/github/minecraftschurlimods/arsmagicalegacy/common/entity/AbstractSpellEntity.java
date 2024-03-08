@@ -13,7 +13,7 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -56,13 +56,13 @@ public abstract class AbstractSpellEntity extends Entity implements OwnableEntit
 
     protected static boolean tryReflect(Entity e) {
         if (!(e instanceof LivingEntity living)) return true;
-        if (!living.hasEffect(AMMobEffects.REFLECT.get())) return true;
-        MobEffectInstance reflect = living.getEffect(AMMobEffects.REFLECT.get());
+        if (!living.hasEffect(AMMobEffects.REFLECT.value())) return true;
+        MobEffectInstance reflect = living.getEffect(AMMobEffects.REFLECT.value());
         if (reflect.getAmplifier() == 0) {
-            living.removeEffect(AMMobEffects.REFLECT.get());
+            living.removeEffect(AMMobEffects.REFLECT.value());
         } else {
             MobEffectInstance effect = new MobEffectInstance(reflect.getEffect(), reflect.getDuration(), reflect.getAmplifier(), reflect.isAmbient(), reflect.isVisible(), reflect.showIcon());
-            living.removeEffect(AMMobEffects.REFLECT.get());
+            living.removeEffect(AMMobEffects.REFLECT.value());
             living.addEffect(effect);
         }
         return false;

@@ -1,15 +1,14 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.affinity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.IAffinityItem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.simplenetlib.CodecPacket;
+import com.github.minecraftschurlimods.codeclib.CodecPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,26 +16,27 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries.ATTACHMENT_TYPES;
 
 public final class AffinityHelper implements IAffinityHelper {
     public static final float MAX_DEPTH = 1F;
     private static final Lazy<AffinityHelper> INSTANCE = Lazy.concurrentOf(AffinityHelper::new);
-    private static final Capability<AffinityHolder> AFFINITY = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final AffinityHolder EMPTY = new AffinityHolder(Map.of(), true);
+    private static final Supplier<AttachmentType<AffinityHolder>> AFFINITY = ATTACHMENT_TYPES.register("affinity", () -> AttachmentType.builder(AffinityHolder::empty).serialize(AffinityHolder.CODEC).copyOnDeath().copyHandler(AffinityHolder::copy).build());
     private static final float ADJACENT_FACTOR = 0.25f;
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
@@ -51,25 +51,6 @@ public final class AffinityHelper implements IAffinityHelper {
         return INSTANCE.get();
     }
 
-    /**
-     * @return The affinity capability.
-     */
-    public static Capability<AffinityHolder> getCapability() {
-        return AFFINITY;
-    }
-
-    private static void handleSync(AffinityHolder holder, NetworkEvent.Context context) {
-        context.enqueueWork(() -> Minecraft.getInstance().player.getCapability(AFFINITY).ifPresent(cap -> cap.onSync(holder)));
-    }
-
-    /**
-     * @param player The player to get the affinity holder for.
-     * @return The affinity holder for the given player.
-     */
-    public LazyOptional<AffinityHolder> getAffinityHolder(Player player) {
-        return player.getCapability(AFFINITY);
-    }
-
     @Override
     public ItemStack getEssenceForAffinity(ResourceLocation affinity) {
         return getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), affinity);
@@ -78,6 +59,11 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public ItemStack getEssenceForAffinity(Affinity affinity) {
         return getEssenceForAffinity(affinity.getId());
+    }
+
+    @Override
+    public ItemStack getEssenceForAffinity(Holder<Affinity> affinity) {
+        return getEssenceForAffinity(affinity.unwrapKey().get().location());
     }
 
     @Override
@@ -91,9 +77,14 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public ItemStack getTomeForAffinity(Holder<Affinity> affinity) {
+        return getTomeForAffinity(affinity.unwrapKey().get().location());
+    }
+
+    @Override
     public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, ResourceLocation aff) {
         ItemStack stack = new ItemStack(item);
-        Optional.ofNullable(ArsMagicaAPI.get().getAffinityRegistry().getValue(aff)).ifPresent(affinity -> item.setAffinity(stack, affinity));
+        Optional.ofNullable(ArsMagicaAPI.get().getAffinityRegistry().get(aff)).ifPresent(affinity -> item.setAffinity(stack, affinity));
         return stack;
     }
 
@@ -103,14 +94,19 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Holder<Affinity> affinity) {
+        return getStackForAffinity(item, affinity.unwrapKey().get().location());
+    }
+
+    @Override
     public Affinity getAffinityForStack(ItemStack stack) {
         if (stack.getItem() instanceof IAffinityItem item) return item.getAffinity(stack);
-        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(Affinity.NONE));
+        return Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().get(Affinity.NONE));
     }
 
     @Override
     public double getAffinityDepth(Player player, ResourceLocation affinity) {
-        return getAffinityHolder(player).orElse(EMPTY).getAffinityDepth(affinity);
+        return player.getData(AFFINITY).getAffinityDepth(affinity);
     }
 
     @Override
@@ -130,12 +126,9 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void setAffinityDepth(Player player, ResourceLocation affinity, float amount) {
-        runIfPresent(player, holder -> {
-            holder.setAffinity(affinity, amount);
-            if (player instanceof ServerPlayer sp) {
-                syncToPlayer(sp);
-            }
-        });
+        AffinityHolder holder = player.getData(AFFINITY);
+        holder.setAffinity(affinity, amount);
+        syncToPlayer(player);
     }
 
     @Override
@@ -145,12 +138,9 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
-        runIfPresent(player, holder -> {
-            holder.addToAffinity(affinity, amount);
-            if (player instanceof ServerPlayer sp) {
-                syncToPlayer(sp);
-            }
-        });
+        AffinityHolder holder = player.getData(AFFINITY);
+        holder.addToAffinity(affinity, amount);
+        syncToPlayer(player);
     }
 
     @Override
@@ -160,12 +150,9 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
-        runIfPresent(player, holder -> {
-            holder.subtractFromAffinity(affinity, amount);
-            if (player instanceof ServerPlayer sp) {
-                syncToPlayer(sp);
-            }
-        });
+        AffinityHolder holder = player.getData(AFFINITY);
+        holder.subtractFromAffinity(affinity, amount);
+        syncToPlayer(player);
     }
 
     @Override
@@ -175,108 +162,98 @@ public final class AffinityHelper implements IAffinityHelper {
 
     @Override
     public void applyAffinityShift(Player player, ResourceLocation affinity, float shift) {
-        applyAffinityShift(player, Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().getValue(affinity)), shift);
+        applyAffinityShift(player, Objects.requireNonNull(ArsMagicaAPI.get().getAffinityRegistry().get(affinity)), shift);
     }
 
     @Override
     public void applyAffinityShift(Player player, Affinity affinity, float shift) {
         if (affinity.getId() == Affinity.NONE) return;
-        runIfPresent(player, holder -> {
-            if (holder.locked()) return;
-            float adjacentDecrement = shift * ADJACENT_FACTOR;
-            float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
-            float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
-            holder.addToAffinity(affinity.getId(), shift);
-            if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
-                holder.setLocked(true);
-            }
-            for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
-                holder.subtractFromAffinity(adjacent, adjacentDecrement);
-            }
-            for (ResourceLocation minorOpposite : affinity.minorOpposites()) {
-                holder.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
-            }
-            for (ResourceLocation majorOpposite : affinity.majorOpposites()) {
-                holder.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
-            }
-            ResourceLocation directOpposite = affinity.directOpposite();
-            holder.subtractFromAffinity(directOpposite, shift);
-            if (player instanceof ServerPlayer sp) {
-                syncToPlayer(sp);
-            }
-        });
+        AffinityHolder holder = player.getData(AFFINITY);
+        if (holder.locked()) return;
+        float adjacentDecrement = shift * ADJACENT_FACTOR;
+        float minorOppositeDecrement = shift * MINOR_OPPOSING_FACTOR;
+        float majorOppositeDecrement = shift * MAJOR_OPPOSING_FACTOR;
+        holder.addToAffinity(affinity.getId(), shift);
+        if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
+            holder.setLocked(true);
+        }
+        for (ResourceLocation adjacent : affinity.getAdjacentAffinities()) {
+            holder.subtractFromAffinity(adjacent, adjacentDecrement);
+        }
+        for (ResourceLocation minorOpposite : affinity.minorOpposites()) {
+            holder.subtractFromAffinity(minorOpposite, minorOppositeDecrement);
+        }
+        for (ResourceLocation majorOpposite : affinity.majorOpposites()) {
+            holder.subtractFromAffinity(majorOpposite, majorOppositeDecrement);
+        }
+        ResourceLocation directOpposite = affinity.directOpposite();
+        holder.subtractFromAffinity(directOpposite, shift);
+        syncToPlayer(player);
     }
 
     @Override
     public void lock(Player player) {
-        runIfPresent(player, holder -> holder.setLocked(true));
+        AffinityHolder holder = player.getData(AFFINITY);
+        holder.setLocked(true);
     }
 
     @Override
     public void unlock(Player player) {
-        runIfPresent(player, holder -> holder.setLocked(false));
+        AffinityHolder holder = player.getData(AFFINITY);
+        holder.setLocked(false);
     }
 
     @Override
     public void updateLock(Player player) {
-        runIfPresent(player, holder -> {
-            for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
-                if (affinity.getId().equals(Affinity.NONE)) continue;
-                if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
-                    lock(player);
-                    return;
-                }
+        AffinityHolder holder = player.getData(AFFINITY);
+        for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
+            if (affinity.getId().equals(Affinity.NONE)) continue;
+            if (holder.getAffinityDepth(affinity) == MAX_DEPTH) {
+                lock(player);
+                return;
             }
-            unlock(player);
-            if (player instanceof ServerPlayer sp) {
-                syncToPlayer(sp);
-            }
-        });
-    }
-
-    /**
-     * Called on player death, syncs the capability.
-     *
-     * @param original The now-dead player.
-     * @param player   The respawning player.
-     */
-    public void syncOnDeath(Player original, Player player) {
-        original.getCapability(AFFINITY).ifPresent(affinityHolder -> player.getCapability(AFFINITY).ifPresent(holder -> holder.onSync(affinityHolder)));
+        }
+        unlock(player);
         syncToPlayer(player);
     }
 
     /**
-     * Syncs the capability to the client.
+     * Syncs the attachment to the client.
      *
      * @param player The player to sync to.
      */
     public void syncToPlayer(Player player) {
-        runIfPresent(player, holder -> ArsMagicaLegacy.NETWORK_HANDLER.sendToPlayer(new AffinitySyncPacket(holder), player));
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+        PacketDistributor.PLAYER.with(serverPlayer).send(new AffinitySyncPacket(player.getData(AFFINITY)));
     }
 
-    private void runIfPresent(Player player, Consumer<AffinityHolder> consumer) {
-        getAffinityHolder(player).ifPresent(consumer::accept);
+    public static void registerSyncPacket(IPayloadRegistrar registrar) {
+        registrar.play(AffinitySyncPacket.ID, AffinitySyncPacket::new, builder -> builder.client(AffinitySyncPacket::handle));
     }
 
-    public static final class AffinitySyncPacket extends CodecPacket<AffinityHolder> {
+    private static final class AffinitySyncPacket extends CodecPacket<AffinityHolder> {
         public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "affinity_sync");
 
         public AffinitySyncPacket(AffinityHolder data) {
-            super(ID, data);
+            super(data);
         }
 
         public AffinitySyncPacket(FriendlyByteBuf buf) {
-            super(ID, buf);
-        }
-
-        @Override
-        public void handle(NetworkEvent.Context context) {
-            AffinityHelper.handleSync(data, context);
+            super(buf);
         }
 
         @Override
         protected Codec<AffinityHolder> codec() {
             return AffinityHolder.CODEC;
+        }
+
+        @Override
+        public ResourceLocation id() {
+            return ID;
+        }
+
+        private void handle(PlayPayloadContext context) {
+            context.workHandler().submitAsync(() -> context.player().orElseThrow().setData(AFFINITY, this.data));
         }
     }
 
@@ -312,16 +289,6 @@ public final class AffinityHelper implements IAffinityHelper {
          */
         public boolean locked() {
             return locked;
-        }
-
-        /**
-         * Synchronizes the affinity holder.
-         *
-         * @param affinityHolder The affinity holder to synchronize.
-         */
-        public void onSync(AffinityHolder affinityHolder) {
-            depths.clear();
-            depths.putAll(affinityHolder.depths());
         }
 
         /**
@@ -390,6 +357,10 @@ public final class AffinityHelper implements IAffinityHelper {
         @Override
         public String toString() {
             return "AffinityHolder[" + "depths=" + depths + ",locked=" + locked + ']';
+        }
+
+        public static AffinityHolder copy(IAttachmentHolder owner, AffinityHolder affinityHolder) {
+            return new AffinityHolder(new HashMap<>(affinityHolder.depths()), affinityHolder.locked());
         }
     }
 }

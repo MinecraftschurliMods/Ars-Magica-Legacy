@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.entity;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMMobEffects;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
@@ -13,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class Blizzard extends AbstractSpellEntity {
@@ -62,10 +62,10 @@ public class Blizzard extends AbstractSpellEntity {
         float damage = getDamage();
         forAllInRange(getRadius(), true,  e -> {
             e.hurt(damageSources().freeze(), damage);
-            e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
+            e.addEffect(new MobEffectInstance(AMMobEffects.FROST.value(), 50));
         });
         if (tickCount > 0) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level(), blockPosition(), 128);
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(blockPosition().getX(), blockPosition().getY(), blockPosition().getZ(), 128, level().dimension())).send(new SpawnAMParticlesPacket(this));
         }
     }
 

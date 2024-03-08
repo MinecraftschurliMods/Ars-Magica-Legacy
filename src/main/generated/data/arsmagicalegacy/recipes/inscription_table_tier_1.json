@@ -11,6 +11,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:inscription_table",
-    "nbt": "{\"BlockStateTag\":{\"tier\":\"1\"}}"
+    "nbt": "{BlockStateTag:{tier:\"1\"}}"
   }
 }

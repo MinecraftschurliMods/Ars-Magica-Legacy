@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -41,27 +40,31 @@ public interface IEtheriumHelper {
      * @param blockEntity The block entity to use.
      * @return The etherium provider of the given block entity.
      */
-    LazyOptional<IEtheriumProvider> getEtheriumProvider(BlockEntity blockEntity);
+    @Nullable
+    IEtheriumProvider getEtheriumProvider(BlockEntity blockEntity);
 
     /**
      * @param blockEntity The block entity to use.
      * @return The etherium consumer of the given block entity.
      */
-    LazyOptional<IEtheriumConsumer> getEtheriumConsumer(BlockEntity blockEntity);
+    @Nullable
+    IEtheriumConsumer getEtheriumConsumer(BlockEntity blockEntity);
 
     /**
      * @param level The level to use.
      * @param pos   The position to use.
      * @return The etherium provider of the block entity at the given position in the given level.
      */
-    LazyOptional<IEtheriumProvider> getEtheriumProvider(Level level, BlockPos pos);
+    @Nullable
+    IEtheriumProvider getEtheriumProvider(Level level, BlockPos pos);
 
     /**
      * @param level The level to use.
      * @param pos   The position to use.
      * @return The etherium consumer of the block entity at the given position in the given level.
      */
-    LazyOptional<IEtheriumConsumer> getEtheriumConsumer(Level level, BlockPos pos);
+    @Nullable
+    IEtheriumConsumer getEtheriumConsumer(Level level, BlockPos pos);
 
     /**
      * @param stack The item stack to get the etherium type from.

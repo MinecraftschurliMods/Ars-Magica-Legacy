@@ -23,11 +23,11 @@ public interface IAffinityItem {
      */
     default Affinity getAffinity(ItemStack stack) {
         var registry = ArsMagicaAPI.get().getAffinityRegistry();
-        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.getRegistryName().toString()));
+        ResourceLocation key = ResourceLocation.tryParse(stack.getOrCreateTag().getString(registry.key().location().toString()));
         if (key == null) {
             key = Affinity.NONE;
         }
-        return Objects.requireNonNull(registry.getValue(key));
+        return Objects.requireNonNull(registry.get(key));
     }
 
     /**
@@ -36,7 +36,7 @@ public interface IAffinityItem {
      * @return The stack, now with the given affinity set on it.
      */
     default ItemStack setAffinity(ItemStack stack, Affinity affinity) {
-        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().getRegistryName().toString(), affinity.getId().toString());
+        stack.getOrCreateTag().putString(ArsMagicaAPI.get().getAffinityRegistry().key().location().toString(), affinity.getId().toString());
         return stack;
     }
 }

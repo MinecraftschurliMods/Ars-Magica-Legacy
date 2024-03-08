@@ -20,7 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.entity.PartEntity;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class Projectile extends AbstractSpellEntity {
@@ -125,7 +126,7 @@ public class Projectile extends AbstractSpellEntity {
         setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - getGravity(), getDeltaMovement().z);
         setPos(position().add(getDeltaMovement()));
         if (tickCount > 0 && !level.isClientSide()) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnAMParticlesPacket(this), level, blockPosition(), 128);
+            PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(getX(), getY(), getZ(), 128, level.dimension())).send(new SpawnAMParticlesPacket(this));
         }
     }
 

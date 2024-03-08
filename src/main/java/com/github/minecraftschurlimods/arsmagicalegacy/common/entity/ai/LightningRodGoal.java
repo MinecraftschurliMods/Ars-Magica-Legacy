@@ -47,7 +47,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
         if (target == null) return;
         Level level = boss.level();
         if (!level.isClientSide() && ticks % 20 == 0) {
-            level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+            level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.value(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
         }
         if (ticks <= 10) {
             startPos = new Vec3((float) target.getX(), (float) target.getY(), (float) target.getZ());
@@ -55,7 +55,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
             target.moveTo(startPos.x(), startPos.y() + (ticks - 10) * 0.2, startPos.z());
             target.fallDistance = 0;
             if (!level.isClientSide() && ticks == 30) {
-                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_LIGHTNING_ROD.value(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
         } else if (ticks <= 80) {
             target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
@@ -63,7 +63,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
                 target.hurt(target.damageSources().lightningBolt(), 20);
             }
             if (!level.isClientSide() && ticks % 20 == 0) {
-                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
+                level.playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.value(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
             }
         } else if (ticks <= 90 && !hasThrown) {
             hasThrown = true;

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_tarma_root",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_tarma_root"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:brown_dye_from_tarma_root"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

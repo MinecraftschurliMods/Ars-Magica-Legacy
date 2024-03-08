@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_vinteum_dust",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_vinteum_dust"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:vinteum_torch"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

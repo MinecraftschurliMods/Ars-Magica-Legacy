@@ -25,27 +25,27 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 4000).add(AMAttributes.MAX_BURNOUT.get(), 4000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 4000).add(AMAttributes.MAX_BURNOUT.value(), 4000);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get();
+        return AMSounds.LIGHTNING_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.LIGHTNING_GUARDIAN_HURT.get();
+        return AMSounds.LIGHTNING_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.LIGHTNING_GUARDIAN_DEATH.get();
+        return AMSounds.LIGHTNING_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.LIGHTNING_GUARDIAN_ATTACK.get();
+        return AMSounds.LIGHTNING_GUARDIAN_ATTACK.value();
     }
 
     @SuppressWarnings("DataFlowIssue")

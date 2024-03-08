@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.ObeliskFuel;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
@@ -22,20 +21,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class ObeliskBlockEntity extends BaseContainerBlockEntity {
     private final SimpleEtheriumProvider etheriumProvider = new SimpleEtheriumProvider(EtheriumType.NEUTRAL, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(ObeliskBlockEntity::onConsume);
-    private final LazyOptional<IEtheriumProvider> etheriumProviderHolder = LazyOptional.of(() -> etheriumProvider);
-    private final LazyOptional<IItemHandler> inventoryHolder = LazyOptional.of(() -> new InvWrapper(this));
+    private final IItemHandler inventoryHolder = new InvWrapper(this);
     private ItemStack slot = ItemStack.EMPTY;
     private int maxBurnTime = 0;
     private int burnTimeRemaining = 0;
@@ -161,16 +155,12 @@ public class ObeliskBlockEntity extends BaseContainerBlockEntity {
         return new ObeliskMenu(containerId, inventory, this, data);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return inventoryHolder.cast();
-        }
-        if (cap == EtheriumHelper.instance().getEtheriumProviderCapability()) {
-            return etheriumProviderHolder.cast();
-        }
-        return super.getCapability(cap, side);
+    public IEtheriumProvider getEtheriumCapability(Void v) {
+        return etheriumProvider;
+    }
+
+    public IItemHandler getItemCapability(@Nullable Direction side) {
+        return inventoryHolder;
     }
 
     @Override

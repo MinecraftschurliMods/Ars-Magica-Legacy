@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.Skill;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDatapackRegistryProvider;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -80,6 +81,16 @@ public abstract class SkillProvider extends AbstractDatapackRegistryProvider<Ski
         /**
          * Adds a learning cost to this skill.
          *
+         * @param point  The skill point the skill should cost.
+         * @param amount The amount of skill points the skill should cost.
+         */
+        public Builder addCost(Holder<SkillPoint> point, int amount) {
+            return addCost(point.unwrapKey().get().location(), amount);
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
          * @param point The skill point the skill should cost.
          */
         public Builder addCost(ResourceLocation point) {
@@ -92,6 +103,15 @@ public abstract class SkillProvider extends AbstractDatapackRegistryProvider<Ski
          * @param point The skill point the skill should cost.
          */
         public Builder addCost(SkillPoint point) {
+            return addCost(point, 1);
+        }
+
+        /**
+         * Adds a learning cost to this skill.
+         *
+         * @param point The skill point the skill should cost.
+         */
+        public Builder addCost(Holder<SkillPoint> point) {
             return addCost(point, 1);
         }
 

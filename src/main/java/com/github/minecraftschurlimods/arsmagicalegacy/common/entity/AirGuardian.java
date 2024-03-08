@@ -19,7 +19,7 @@ public class AirGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 1500).add(AMAttributes.MAX_BURNOUT.get(), 1500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 1500).add(AMAttributes.MAX_BURNOUT.value(), 1500);
     }
 
     @Override

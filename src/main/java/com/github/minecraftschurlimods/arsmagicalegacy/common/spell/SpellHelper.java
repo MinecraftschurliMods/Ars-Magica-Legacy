@@ -21,7 +21,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentPar
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -40,9 +39,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.items.wrapper.PlayerMainInvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -213,7 +213,7 @@ public final class SpellHelper implements ISpellHelper {
             }
         }
         SpellEvent.ModifyStats event = new SpellEvent.ModifyStats(caster, spell, stat, baseValue, modified);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         return event.modified;
     }
 
@@ -228,18 +228,22 @@ public final class SpellHelper implements ISpellHelper {
                 if (level.isClientSide()) return SpellCastResult.SUCCESS;
                 ISpellComponent component = (ISpellComponent) part;
                 SpellCastResult result = SpellCastResult.EFFECT_FAILED;
-                if (MinecraftForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, modifiers, target)))
+                if (NeoForge.EVENT_BUS.post(new SpellEvent.Cast.Component(caster, spell, component, modifiers, target)).isCanceled())
                     return SpellCastResult.CANCELLED;
                 if (target instanceof EntityHitResult entityHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, entityHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index + 1, -1)), level, BlockPos.containing(target.getLocation()), 64);
+                        Vec3 location = target.getLocation();
+                        PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
+                        PacketDistributor.NEAR.with(targetPoint).send(new SpawnComponentParticlesPacket(component, caster, Either.right(entityHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
                     }
                 }
                 if (target instanceof BlockHitResult blockHitResult) {
                     result = component.invoke(spell, caster, level, modifiers, blockHitResult, index + 1, castingTicks);
                     if (result.isSuccess()) {
-                        ArsMagicaLegacy.NETWORK_HANDLER.sendToAllAround(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)), level, BlockPos.containing(target.getLocation()), 64);
+                        Vec3 location = target.getLocation();
+                        PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(location.x, location.y, location.z, 64, level.dimension());
+                        PacketDistributor.NEAR.with(targetPoint).send(new SpawnComponentParticlesPacket(component, caster, Either.left(blockHitResult), getColor(modifiers, spell, caster, index + 1, -1)));
                     }
                 }
                 return result.isFail() || index + 1 == pwm.size() ? result : invoke(spell, caster, level, target, castingTicks, index + 1, awardXp);

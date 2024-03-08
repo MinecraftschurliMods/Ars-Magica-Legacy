@@ -12,8 +12,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -30,8 +30,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -236,7 +236,7 @@ public final class AMUtil {
      */
     public static Collector<MutableComponent, MutableComponent, MutableComponent> joiningComponents(String delimiter) {
         MutableComponent del = Component.literal(delimiter);
-        return Collector.of(Component.empty()::copy, (c1, c2) -> (c1.getContents() == ComponentContents.EMPTY ? c1 : c1.append(del)).append(c2), (c1, c2) -> c1.append(del).append(c2));
+        return Collector.of(Component.empty()::copy, (c1, c2) -> (c1.getContents() == CommonComponents.EMPTY ? c1 : c1.append(del)).append(c2), (c1, c2) -> c1.append(del).append(c2));
     }
 
     /**

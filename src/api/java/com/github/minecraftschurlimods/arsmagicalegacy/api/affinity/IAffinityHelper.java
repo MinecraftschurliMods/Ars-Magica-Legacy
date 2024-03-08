@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,6 +23,12 @@ public interface IAffinityHelper {
     ItemStack getEssenceForAffinity(Affinity affinity);
 
     /**
+     * @param affinity The affinity to get the essence stack for.
+     * @return An item stack containing the affinity essence.
+     */
+    ItemStack getEssenceForAffinity(Holder<Affinity> affinity);
+
+    /**
      * @param affinity The id of the affinity to get the tome stack for.
      * @return An item stack containing the affinity tome.
      */
@@ -32,6 +39,12 @@ public interface IAffinityHelper {
      * @return An item stack containing the affinity tome.
      */
     ItemStack getTomeForAffinity(Affinity affinity);
+
+    /**
+     * @param affinity The affinity to get the tome stack for.
+     * @return An item stack containing the affinity tome.
+     */
+    ItemStack getTomeForAffinity(Holder<Affinity> affinity);
 
     /**
      * @param item     The item to make the item stack from.
@@ -48,6 +61,14 @@ public interface IAffinityHelper {
      * @return An item stack of the given item with the given affinity stored in it.
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity);
+
+    /**
+     * @param item     The item to make the item stack from.
+     * @param affinity The affinity to set on the item stack.
+     * @param <T>      The item implementing AffinityItem.
+     * @return An item stack of the given item with the given affinity stored in it.
+     */
+    <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Holder<Affinity> affinity);
 
     /**
      * @param stack The stack to get the affinity from.

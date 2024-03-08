@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
@@ -42,9 +43,9 @@ public class Forge extends AbstractComponent {
         BlockPos pos = target.getBlockPos();
         Block block = level.getBlockState(pos).getBlock();
         if (level.getBlockState(pos).isAir()) return SpellCastResult.EFFECT_FAILED;
-        Optional<SmeltingRecipe> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), level);
+        Optional<RecipeHolder<SmeltingRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(block)), level);
         if (recipe.isEmpty()) return SpellCastResult.EFFECT_FAILED;
-        ItemStack smelted = recipe.get().getResultItem(level.registryAccess());
+        ItemStack smelted = recipe.get().value().getResultItem(level.registryAccess());
         if (!level.isClientSide()) {
             if (smelted.getItem() instanceof BlockItem) {
                 level.setBlock(pos, ((BlockItem) smelted.getItem()).getBlock().defaultBlockState(), Block.UPDATE_ALL);

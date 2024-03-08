@@ -2,8 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.item.SpellItemRenderProperties;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,14 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -90,10 +83,8 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
         selectedSpell.getItem().appendHoverText(selectedSpell, level, tooltipComponents, isAdvanced);
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new InvProvider(stack);
+    public static IItemHandler getItemCapability(ItemStack stack, Void v) {
+        return new InvWrapper(getContainer(stack));
     }
 
     @Override
@@ -138,19 +129,5 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
         SpellBookContainer container = getContainer(stack);
         if (slot > container.getContainerSize()) return ItemStack.EMPTY;
         return container.getItem(slot);
-    }
-
-    private static class InvProvider implements ICapabilityProvider {
-        private final LazyOptional<IItemHandler> lazy;
-
-        public InvProvider(ItemStack stack) {
-            lazy = LazyOptional.of(() -> new InvWrapper(getContainer(stack)));
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazy);
-        }
     }
 }

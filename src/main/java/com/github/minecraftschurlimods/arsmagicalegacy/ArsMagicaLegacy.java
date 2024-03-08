@@ -7,34 +7,21 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumH
 import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.MagicHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ManaHelper;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.RiftHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenOcculusGuiPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.SetLecternPagePacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnAMParticlesPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.SpawnComponentParticlesPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellBookNextSpellPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.SpellIconSelectPacket;
-import com.github.minecraftschurlimods.arsmagicalegacy.network.TakeSpellRecipeFromLecternPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.NetworkInit;
 import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
-import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forgespi.language.IModInfo;
-import net.minecraftforge.network.NetworkDirection;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforgespi.language.IModInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
@@ -42,11 +29,10 @@ import software.bernie.geckolib.GeckoLib;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 5);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
-    public ArsMagicaLegacy() {
+    public ArsMagicaLegacy(ModContainer container, IEventBus bus) {
         if (INSTANCE != null) {
             IllegalStateException exception = new IllegalStateException("Tried to create mod " + ArsMagicaAPI.MOD_ID + " more than once!");
             LOGGER.error(exception.getMessage(), exception);
@@ -58,18 +44,26 @@ public final class ArsMagicaLegacy {
             throw exception;
         }
         INSTANCE = this;
-        modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
-        GeckoLib.initialize();
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        modInfo = container.getModInfo();
+        GeckoLib.initialize(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
         ServerInit.init();
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> DistProxy::init);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            DistProxy.init(bus);
+        }
         Config.init();
-        registerNetworkPackets();
+        NetworkInit.init(bus);
         EtheriumHelper.instance();
+        MagicHelper.instance();
+        BurnoutHelper.instance();
+        ManaHelper.instance();
+        SkillHelper.instance();
+        AffinityHelper.instance();
+        RiftHelper.instance();
+        ContingencyHelper.instance();
         SpellDataManager.instance();
-        CompatManager.preInit();
+        CompatManager.preInit(bus);
     }
 
     /**
@@ -77,26 +71,5 @@ public final class ArsMagicaLegacy {
      */
     public static String getModName() {
         return INSTANCE.modInfo.getDisplayName();
-    }
-
-    private void registerNetworkPackets() {
-        NETWORK_HANDLER.register(InscriptionTableSyncPacket.ID, InscriptionTableSyncPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(LearnSkillPacket.ID, LearnSkillPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(NextShapeGroupPacket.ID, NextShapeGroupPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SetLecternPagePacket.ID, SetLecternPagePacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SpellBookNextSpellPacket.ID, SpellBookNextSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SpellIconSelectPacket.ID, SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.ID, TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(BEClientSyncPacket.ID, BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(OpenOcculusGuiPacket.ID, OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.ID, OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(SkillHelper.SkillSyncPacket.ID, SkillHelper.SkillSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(AffinityHelper.AffinitySyncPacket.ID, AffinityHelper.AffinitySyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(BurnoutHelper.BurnoutSyncPacket.ID, BurnoutHelper.BurnoutSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(MagicHelper.MagicSyncPacket.ID, MagicHelper.MagicSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(ManaHelper.ManaSyncPacket.ID, ManaHelper.ManaSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(InscriptionTableCreateSpellPacket.ID, InscriptionTableCreateSpellPacket.class, NetworkDirection.PLAY_TO_SERVER);
-        NETWORK_HANDLER.register(SpawnAMParticlesPacket.ID, SpawnAMParticlesPacket.class, NetworkDirection.PLAY_TO_CLIENT);
-        NETWORK_HANDLER.register(SpawnComponentParticlesPacket.ID, SpawnComponentParticlesPacket.class, NetworkDirection.PLAY_TO_CLIENT);
     }
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
+import net.neoforged.fml.util.thread.EffectiveSide;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

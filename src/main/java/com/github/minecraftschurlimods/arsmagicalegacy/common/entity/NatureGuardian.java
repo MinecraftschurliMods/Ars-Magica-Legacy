@@ -23,27 +23,27 @@ public class NatureGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 3500).add(AMAttributes.MAX_BURNOUT.get(), 3500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 3500).add(AMAttributes.MAX_BURNOUT.value(), 3500);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.NATURE_GUARDIAN_AMBIENT.get();
+        return AMSounds.NATURE_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.NATURE_GUARDIAN_HURT.get();
+        return AMSounds.NATURE_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.NATURE_GUARDIAN_DEATH.get();
+        return AMSounds.NATURE_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.NATURE_GUARDIAN_ATTACK.get();
+        return AMSounds.NATURE_GUARDIAN_ATTACK.value();
     }
 
     @Override

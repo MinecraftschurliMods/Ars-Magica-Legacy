@@ -16,10 +16,10 @@
       "type": "arsmagicalegacy:ingredient",
       "count": 1,
       "ingredient": {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "neoforge:nbt",
         "item": "minecraft:shears",
-        "nbt": "{Damage:0}"
+        "strict": true,
+        "tag": "{Damage:0}"
       }
     }
   ]

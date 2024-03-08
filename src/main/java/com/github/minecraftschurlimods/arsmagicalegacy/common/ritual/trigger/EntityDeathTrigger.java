@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public record EntityDeathTrigger(EntityPredicate predicate) implements RitualTri
 
     @Override
     public void register(Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((LivingDeathEvent event) -> {
+        NeoForge.EVENT_BUS.addListener((LivingDeathEvent event) -> {
             if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
             if (event.getSource().getEntity() instanceof Player player) {
                 ritual.perform(player, serverLevel, event.getEntity().blockPosition(), new Context.MapContext(Map.of("entity", event.getEntity())));

@@ -1,23 +1,13 @@
 pluginManagement {
     plugins {
-        id("net.minecraftforge.gradle") version "[6.0,6.2)"
-        id("org.spongepowered.mixin") version "0.7-SNAPSHOT"
-        id("org.parchmentmc.librarian.forgegradle") version "1.2+"
+        id("net.neoforged.gradle.userdev") version "7.0.80"
+        id("com.github.minecraftschurlimods.helperplugin") version "1.7"
     }
     repositories {
+        mavenLocal()
         gradlePluginPortal()
-        maven {
-            name = "MinecraftForge"
-            url = uri("https://maven.minecraftforge.net/")
-        }
-        maven {
-            name = "ParchmentMC"
-            url = uri("https://maven.parchmentmc.org")
-        }
-        maven {
-            name = "SpongeGradle"
-            url = uri("https://repo.spongepowered.org/repository/maven-public/")
-        }
+        maven { url = uri("https://maven.neoforged.net/releases") }
+        maven { url = uri("https://minecraftschurli.ddns.net/repository/maven-public") }
     }
 }
 

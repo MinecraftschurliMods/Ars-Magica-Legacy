@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_arcane_ash",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_arcane_ash"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:affinity_essence_air"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

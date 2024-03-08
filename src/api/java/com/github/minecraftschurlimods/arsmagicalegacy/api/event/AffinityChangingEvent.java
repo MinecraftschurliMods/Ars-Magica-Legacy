@@ -2,8 +2,8 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.event;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public abstract class AffinityChangingEvent extends PlayerEvent {
     /**
@@ -24,8 +24,7 @@ public abstract class AffinityChangingEvent extends PlayerEvent {
     /**
      * Event fired before applying an affinity shift.
      */
-    @Cancelable
-    public static final class Pre extends AffinityChangingEvent {
+    public static final class Pre extends AffinityChangingEvent implements ICancellableEvent {
         /**
          * The amount by which the affinity is shifted. Can be modified.
          */
@@ -40,16 +39,15 @@ public abstract class AffinityChangingEvent extends PlayerEvent {
     /**
      * Event fired after applying an affinity shift.
      */
-    @Cancelable
     public static final class Post extends AffinityChangingEvent {
         /**
-         * The amount by which the affinity has been shifted.
+         * The new amount after the affinity has been shifted.
          */
-        public final float shift;
+        public final float amount;
 
-        public Post(Player player, Affinity affinity, float shift, boolean commandSource) {
+        public Post(Player player, Affinity affinity, float amount, boolean commandSource) {
             super(player, affinity, commandSource);
-            this.shift = shift;
+            this.amount = amount;
         }
     }
 }
