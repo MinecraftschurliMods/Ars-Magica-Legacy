@@ -5,7 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMParticleTyp
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.function.Supplier;
 

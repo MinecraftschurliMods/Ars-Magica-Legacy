@@ -17,8 +17,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.NBTIngredient;
 
 import java.util.EnumSet;
 
@@ -52,35 +52,35 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
                 .build();
         builder(AMSpellParts.CONTINGENCY_DAMAGE, 10f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.LIGHTNING)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .addIngredient(new EtheriumSpellIngredient(EtheriumType.ANY, 5000))
                 .build();
         builder(AMSpellParts.CONTINGENCY_DEATH, 10f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ENDER)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .addIngredient(new EtheriumSpellIngredient(EtheriumType.DARK, 5000))
                 .build();
         builder(AMSpellParts.CONTINGENCY_FALL, 10f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.AIR)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .addIngredient(new EtheriumSpellIngredient(EtheriumType.ANY, 5000))
                 .build();
         builder(AMSpellParts.CONTINGENCY_FIRE, 10f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.FIRE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.FIRE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
                 .addIngredient(new EtheriumSpellIngredient(EtheriumType.ANY, 5000))
                 .build();
         builder(AMSpellParts.CONTINGENCY_HEALTH, 10f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIFE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.LIFE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.TARMA_ROOT.get()), 1))
@@ -138,7 +138,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.ORANGE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.RED)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_VINTEUM), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.FLINT_AND_STEEL)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.FLINT_AND_STEEL)), 1))
                 .build();
         builder(AMSpellParts.FROST_DAMAGE, 25f)
                 .addAffinity(AMAffinities.ICE, 0.001f)
@@ -172,13 +172,13 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addAffinity(AMAffinities.LIFE, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.YELLOW)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.GOLDEN_APPLE), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.SHIELD)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.SHIELD)), 1))
                 .build();
         builder(AMSpellParts.BLINDNESS, 40f)
                 .addAffinity(AMAffinities.ENDER, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLACK)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.NIGHT_VISION)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WEAKNESS)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.NIGHT_VISION)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WEAKNESS)), 1))
                 .build();
         builder(AMSpellParts.HASTE, 30f)
                 .addAffinity(AMAffinities.LIGHTNING, 0.001f)
@@ -188,7 +188,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         builder(AMSpellParts.HEALTH_BOOST, 50f)
                 .addAffinity(AMAffinities.LIFE, 0.001f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIFE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.LIFE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.LIGHT_BLUE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ENCHANTED_GOLDEN_APPLE), 1))
                 .build();
@@ -196,7 +196,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addAffinity(AMAffinities.ARCANE, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY)), 1))
                 .build();
         builder(AMSpellParts.JUMP_BOOST, 30f)
                 .addAffinity(AMAffinities.AIR, 0.001f)
@@ -288,7 +288,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         builder(AMSpellParts.SHIELD, 50f)
                 .addAffinity(AMAffinities.EARTH, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BROWN)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.SHIELD)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.SHIELD)), 1))
                 .build();
         builder(AMSpellParts.SHRINK, 30f)
                 .addAffinity(AMAffinities.ARCANE, 0.001f)
@@ -307,7 +307,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addAffinity(AMAffinities.WATER, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.FISHES), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.FISHING_ROD)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.FISHING_ROD)), 1))
                 .build();
         builder(AMSpellParts.TEMPORAL_ANCHOR, 50f)
                 .addAffinity(AMAffinities.ARCANE, 0.001f)
@@ -325,7 +325,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addAffinity(AMAffinities.WATER, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLUE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.STONE), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.LEATHER_BOOTS)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.LEATHER_BOOTS)), 1))
                 .build();
         builder(AMSpellParts.ATTRACT, 5f)
                 .addAffinity(AMAffinities.NATURE, 0.001f)
@@ -344,7 +344,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         builder(AMSpellParts.BLIZZARD, 1000f)
                 .addAffinity(AMAffinities.ICE, 0.01f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ICE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_TOPAZ), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ICE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.PACKED_ICE), 1))
@@ -366,14 +366,14 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         builder(AMSpellParts.DIG, 5f)
                 .addAffinity(AMAffinities.EARTH, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BROWN)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.IRON_AXE)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.IRON_PICKAXE)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.IRON_SHOVEL)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.IRON_AXE)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.IRON_PICKAXE)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.IRON_SHOVEL)), 1))
                 .build();
         builder(AMSpellParts.DISARM, 60f)
                 .addAffinity(AMAffinities.ARCANE, 0.002f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.PURPLE)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.IRON_SWORD)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.IRON_SWORD)), 1))
                 .build();
         builder(AMSpellParts.DISPEL, 60f)
                 .addAffinity(AMAffinities.ARCANE, 0.002f)
@@ -405,14 +405,14 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         builder(AMSpellParts.FALLING_STAR, 1000f)
                 .addAffinity(AMAffinities.ARCANE, 0.01f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ARCANE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ARCANE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_ARCANE_ASH), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.END_STONES), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.LAVA_BUCKET), 1))
                 .build();
         builder(AMSpellParts.FIRE_RAIN, 1000f)
                 .addAffinity(AMAffinities.FIRE, 0.01f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.FIRE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.FIRE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.DUSTS_ARCANE_ASH), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.NETHERRACK), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.LAVA_BUCKET), 1))
@@ -436,7 +436,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         builder(AMSpellParts.HARVEST, 5f)
                 .addAffinity(AMAffinities.NATURE, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.SHEARS)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.SHEARS)), 1))
                 .build();
         builder(AMSpellParts.HEAL, 60f)
                 .addAffinity(AMAffinities.LIFE, 0.002f)
@@ -446,7 +446,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         builder(AMSpellParts.IGNITION, 80f)
                 .addAffinity(AMAffinities.FIRE, 0.002f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.ORANGE)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.FLINT_AND_STEEL)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.FLINT_AND_STEEL)), 1))
                 .build();
         builder(AMSpellParts.KNOCKBACK, 80f)
                 .addAffinity(AMAffinities.WATER, 0.002f)
@@ -473,7 +473,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .build();
         builder(AMSpellParts.MANA_BLAST, 0f)
                 .addAffinity(AMAffinities.ENDER, 0.001f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ENDER.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ENDER)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .build();
         builder(AMSpellParts.MANA_DRAIN, 5f)
@@ -503,7 +503,7 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
         builder(AMSpellParts.PLOW, 5f)
                 .addAffinity(AMAffinities.EARTH, 0.001f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.GREEN)), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(new ItemStack(Items.IRON_HOE)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, new ItemStack(Items.IRON_HOE)), 1))
                 .build();
         builder(AMSpellParts.RANDOM_TELEPORT, 80f)
                 .addAffinity(AMAffinities.ENDER, 0.002f)
@@ -555,25 +555,25 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.WITCHWOOD_SAPLING.get()), 1))
                 .build();
         builder(AMSpellParts.BOUNCE, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.WATER.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.WATER)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.SLIMEBALLS), 1))
                 .build();
         builder(AMSpellParts.DAMAGE, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.FIRE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.FIRE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.COPPER_INGOT), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING)), 1))
                 .build();
         builder(AMSpellParts.DISMEMBERING, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ICE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.BONES), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.WITHER_SKELETON_SKULL), 1))
                 .build();
         builder(AMSpellParts.DURATION, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.AIR)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.SLIMEBALLS), 1))
                 .build();
         builder(AMSpellParts.EFFECT_POWER, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ARCANE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ARCANE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.CROPS_NETHER_WART), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_GLOWSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1))
@@ -582,66 +582,66 @@ class AMSpellPartDataProvider extends SpellPartDataProvider {
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.SPIDER_EYE), 1))
                 .build();
         builder(AMSpellParts.GRAVITY, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.EARTH)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.COMPASS), 1))
                 .build();
         builder(AMSpellParts.HEALING, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIFE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.LIFE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.EGG), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING)), 1))
                 .build();
         builder(AMSpellParts.LUNAR, 1f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.NATURE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.NATURE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_MOONSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .build();
         builder(AMSpellParts.MINING_POWER, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.EARTH)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.GEMS_DIAMOND), 1))
                 .build();
         builder(AMSpellParts.PIERCING, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.WATER.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.WATER)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.SNOWBALL), 1))
                 .build();
         builder(AMSpellParts.PROSPERITY, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ICE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ICE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.INGOTS_GOLD), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.GEMS_EMERALD), 1))
                 .build();
         builder(AMSpellParts.RANGE, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.AIR.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.AIR)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.ARROW), 1))
                 .build();
         builder(AMSpellParts.RUNE_PROCS, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.ARCANE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.ARCANE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.BLACK)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.MAGENTA)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.PINK)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.COLORED_RUNE.get(DyeColor.WHITE)), 1))
                 .build();
         builder(AMSpellParts.SILK_TOUCH, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.EARTH.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.EARTH)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_CHIMERITE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.FEATHERS), 1))
                 .build();
         builder(AMSpellParts.SOLAR, 1f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.NATURE.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.NATURE)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMTags.Items.GEMS_SUNSTONE), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.CLOCK), 1))
                 .build();
         builder(AMSpellParts.TARGET_NON_SOLID, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.WATER.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.WATER)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CERUBLOSSOM.get()), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Items.POPPY), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER)), 1))
                 .build();
         builder(AMSpellParts.VELOCITY, 1.25f)
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(helper.getStackForAffinity(AMItems.AFFINITY_ESSENCE.get(), AMAffinities.LIGHTNING.get())), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, helper.getEssenceForAffinity(AMAffinities.LIGHTNING)), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(Tags.Items.FEATHERS), 1))
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(ItemTags.BOATS), 1))
-                .addIngredient(new IngredientSpellIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS)), 1))
+                .addIngredient(new IngredientSpellIngredient(NBTIngredient.of(true, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS)), 1))
                 .build();
         builder(AMSpellParts.COLOR, 1.0f)
                 .addIngredient(new IngredientSpellIngredient(Ingredient.of(AMItems.CHIMERITE.get()), 1))

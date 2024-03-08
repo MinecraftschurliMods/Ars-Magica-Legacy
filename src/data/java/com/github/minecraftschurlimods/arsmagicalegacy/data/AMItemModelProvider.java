@@ -4,6 +4,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMFluids;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -11,110 +12,16 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Objects;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AFFINITY_ESSENCE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AFFINITY_TOME;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AIR_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ALTAR_CORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ARCANE_ASH;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ARCANE_COMPOUND;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ARCANE_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.AUM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_BOOTS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_CHESTPLATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_HELMET;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BATTLEMAGE_LEGGINGS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BLACK_AUREM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.BLANK_RUNE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CELESTIAL_PRISM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CERUBLOSSOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CHIMERITE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.COLORED_RUNE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.CRYSTAL_WRENCH;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_CHIMERITE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_MOONSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_TOPAZ_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DEEPSLATE_VINTEUM_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DESERT_NOVA;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.DRYAD_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.EARTH_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ENDER_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ETHERIUM_PLACEHOLDER;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.FIRE_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.GOLD_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.ICE_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.INFINITY_ORB;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_1;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_2;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.INSCRIPTION_TABLE_UPGRADE_TIER_3;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.IRON_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.LIFE_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.LIGHTNING_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.LIQUID_ESSENCE_BUCKET;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_BOOTS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_CHESTPLATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_HELMET;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_LEGGINGS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGE_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGIC_WALL;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MAGITECH_GOGGLES;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MANA_CAKE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MANA_CREEPER_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MANA_MARTINI;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.MOONSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.NATURE_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.OBELISK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.OCCULUS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.PURIFIED_VINTEUM_DUST;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.REDSTONE_INLAY;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.RUNE_BAG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL_BOOK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL_PARCHMENT;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SPELL_RECIPE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.STRIPPED_WITCHWOOD;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.STRIPPED_WITCHWOOD_LOG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.SUNSTONE_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TARMA_ROOT;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.TOPAZ_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_BLOCK;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_DUST;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_ORE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.VINTEUM_TORCH;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WAKEBLOOM;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WATER_GUARDIAN_SPAWN_EGG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_BUTTON;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_DOOR;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_FENCE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_FENCE_GATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_HANGING_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_LEAVES;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_LOG;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_PLANKS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_PRESSURE_PLATE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_SAPLING;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_SIGN;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_SLAB;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_STAIRS;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WITCHWOOD_TRAPDOOR;
-import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.WIZARDS_CHALK;
+import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems.*;
 
 @SuppressWarnings({"SameParameterValue", "unused"})
 class AMItemModelProvider extends ItemModelProvider {
@@ -227,7 +134,7 @@ class AMItemModelProvider extends ItemModelProvider {
         spawnEggItem(LIFE_GUARDIAN_SPAWN_EGG);
         spawnEggItem(ARCANE_GUARDIAN_SPAWN_EGG);
         spawnEggItem(ENDER_GUARDIAN_SPAWN_EGG);
-        withExistingParent(LIQUID_ESSENCE_BUCKET, new ResourceLocation("forge", "item/bucket")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(AMFluids.LIQUID_ESSENCE.get()).end();
+        withExistingParent(LIQUID_ESSENCE_BUCKET, new ResourceLocation("neoforge", "item/bucket")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(AMFluids.LIQUID_ESSENCE.get()).end();
     }
 
     /**
@@ -235,7 +142,7 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private void itemGenerated(RegistryObject<? extends Item> item) {
+    private void itemGenerated(DeferredHolder<Item, ? extends Item> item) {
         itemGenerated(item, "item/" + item.getId().getPath());
     }
 
@@ -245,7 +152,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      * @param name The texture id to use.
      */
-    private void itemGenerated(RegistryObject<? extends Item> item, String name) {
+    private void itemGenerated(DeferredHolder<Item, ? extends Item> item, String name) {
         singleTexture(item.getId().getPath(), new ResourceLocation("item/generated"), "layer0", modLoc(name));
     }
 
@@ -254,7 +161,7 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private void itemHandheld(RegistryObject<? extends Item> item) {
+    private void itemHandheld(DeferredHolder<Item, ? extends Item> item) {
         itemHandheld(item, "item/" + item.getId().getPath());
     }
 
@@ -264,7 +171,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The item to generate the model for.
      * @param name The texture id to use.
      */
-    private void itemHandheld(RegistryObject<? extends Item> item, String name) {
+    private void itemHandheld(DeferredHolder<Item, ? extends Item> item, String name) {
         singleTexture(item.getId().getPath(), new ResourceLocation("item/handheld"), "layer0", modLoc(name));
     }
 
@@ -274,7 +181,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item   The item to generate the model for.
      * @param parent The parent model to use.
      */
-    private ItemModelBuilder withExistingParent(RegistryObject<? extends Item> item, ResourceLocation parent) {
+    private ItemModelBuilder withExistingParent(DeferredHolder<Item, ? extends Item> item, ResourceLocation parent) {
         return withExistingParent(item.getId().getPath(), parent);
     }
 
@@ -283,8 +190,8 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private ItemModelBuilder blockItem(RegistryObject<? extends BlockItem> item) {
-        return withExistingParent(item, new ResourceLocation(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(item.get().getBlock())).getNamespace(), "block/" + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(item.get().getBlock())).getPath()));
+    private ItemModelBuilder blockItem(DeferredHolder<Item, ? extends BlockItem> item) {
+        return withExistingParent(item, Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(item.get().getBlock())).withPrefix("block/"));
     }
 
     /**
@@ -292,7 +199,7 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private void spawnEggItem(RegistryObject<? extends SpawnEggItem> item) {
+    private void spawnEggItem(DeferredItem<? extends SpawnEggItem> item) {
         withExistingParent(item, new ResourceLocation("item/template_spawn_egg"));
     }
 
@@ -302,7 +209,7 @@ class AMItemModelProvider extends ItemModelProvider {
      * @param item The affinity item to add this for.
      * @param skipNone Whether to skip the model generation for {@link Affinity#NONE} or not.
      */
-    private void affinityItem(RegistryObject<? extends Item> item, boolean skipNone) {
+    private void affinityItem(DeferredHolder<Item, ? extends Item> item, boolean skipNone) {
         getBuilder(item.getId().toString());
         for (Affinity affinity : ArsMagicaAPI.get().getAffinityRegistry()) {
             if (affinity.getId().equals(Affinity.NONE) && skipNone) continue;
@@ -316,7 +223,7 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The skill point item to add this for.
      */
-    private void skillPointItem(RegistryObject<? extends Item> item) {
+    private void skillPointItem(DeferredHolder<Item, ? extends Item> item) {
         getBuilder(item.getId().toString());
         for (SkillPoint skillPoint : ArsMagicaAPI.get().getSkillPointRegistry()) {
             ResourceLocation rl = new ResourceLocation(skillPoint.getId().getNamespace(), item.getId().getPath() + "_" + skillPoint.getId().getPath());
@@ -329,7 +236,7 @@ class AMItemModelProvider extends ItemModelProvider {
      *
      * @param item The item to generate the model for.
      */
-    private void spellBookItem(RegistryObject<? extends Item> item) {
+    private void spellBookItem(DeferredHolder<Item, ? extends Item> item) {
         getBuilder(item.getId().toString());
         withExistingParent(item.getId().getPath() + "_handheld", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + item.getId().getPath() + "_cover"))
