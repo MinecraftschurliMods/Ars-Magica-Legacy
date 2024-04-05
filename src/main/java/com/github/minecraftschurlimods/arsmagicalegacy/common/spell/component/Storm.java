@@ -60,6 +60,7 @@ public class Storm extends AbstractComponent {
             } else {
                 ((ServerLevel) level).setWeatherParameters(0, (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target, index), true, true);
             }
+            return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
     }

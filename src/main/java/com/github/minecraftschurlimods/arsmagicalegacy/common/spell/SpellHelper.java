@@ -80,32 +80,6 @@ public final class SpellHelper implements ISpellHelper {
     }
 
     @Override
-    public boolean isValidSpell(ISpell spell) {
-        //check spell stack
-        if (spell.spellStack().isEmpty()) return false;
-        if (spell.spellStack().parts().get(0).getType() != ISpellPart.SpellPartType.COMPONENT) return false;
-        //find last non-empty shape group
-        List<ShapeGroup> groups = spell.shapeGroups();
-        if (groups.stream().allMatch(ShapeGroup::isEmpty)) return false;
-        int last = -1;
-        for (int i = 0; i < groups.size(); i++) {
-            ShapeGroup group = groups.get(i);
-            if (!group.isEmpty()) {
-                last = i;
-            }
-        }
-        //check for empty shape groups between other non-empty shape groups
-        if (last == -1) return false;
-        groups = groups.stream().filter(e -> !e.isEmpty()).toList();
-        if (last != groups.size() - 1) return false;
-        //check shape groups themselves
-        for (ShapeGroup group : groups) {
-            if (group.parts().get(0).getType() != ISpellPart.SpellPartType.SHAPE) return false;
-        }
-        return true;
-    }
-
-    @Override
     public ItemStack getSpellItemStackFromEntity(LivingEntity entity) {
         ItemStack stack = getSpellItemStackInHand(entity, InteractionHand.MAIN_HAND);
         var helper = ArsMagicaAPI.get().getSpellHelper();

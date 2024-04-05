@@ -68,7 +68,9 @@ public class FireGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (tickCount % 30 == 0) {
-            level.playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.get(), SoundSource.HOSTILE, 1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
+            if (level.getRandom().nextInt(10) == 0) {
+                level.playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.get(), SoundSource.HOSTILE, 0.1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
+            }
             if (level.isClientSide()) {
                 // Particles
             } else {

@@ -32,14 +32,6 @@ public interface ISpellHelper {
     void setSpell(ItemStack stack, ISpell spell);
 
     /**
-     * Validates the given spell. This checks for non-emptiness of the spell stack, the shape groups being correct, and correct location of modifiers (if present).
-     *
-     * @param spell The spell to validate.
-     * @return Whether the given spell is valid or not.
-     */
-    boolean isValidSpell(ISpell spell);
-
-    /**
      * Returns the item stack containing the spell the given entity is currently using, taking spell books into consideration.
      * Returns empty if the entity is not currently holding anything that can be interpreted as a spell.
      * This is needed e.g. when using a spell's shift-right click action.

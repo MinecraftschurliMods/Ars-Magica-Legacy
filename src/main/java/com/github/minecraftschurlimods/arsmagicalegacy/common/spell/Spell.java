@@ -53,6 +53,7 @@ public final class Spell implements ISpell {
     private final CompoundTag additionalData;
     private final Lazy<Boolean> continuous;
     private final Lazy<Boolean> empty;
+    private final Lazy<Boolean> nonNull;
     private final Lazy<Boolean> valid;
 
     public Spell(List<ShapeGroup> shapeGroups, SpellStack spellStack, CompoundTag additionalData) {
@@ -61,9 +62,10 @@ public final class Spell implements ISpell {
         this.additionalData = additionalData;
         continuous = Lazy.concurrentOf(() -> firstShape(currentShapeGroupIndex()).filter(ISpellShape::isContinuous).isPresent());
         empty = Lazy.concurrentOf(() -> (shapeGroups().isEmpty() || shapeGroups().stream().allMatch(ShapeGroup::isEmpty)) && spellStack().isEmpty());
-        valid = Lazy.concurrentOf(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
+        nonNull = Lazy.concurrentOf(() -> Stream.concat(shapeGroups().stream().map(ShapeGroup::parts).flatMap(Collection::stream), spellStack().parts().stream())
                 .map(ArsMagicaAPI.get().getSpellDataManager()::getDataForPart)
                 .allMatch(Objects::nonNull));
+        valid = Lazy.concurrentOf(this::validate);
     }
 
     public static Spell of(SpellStack spellStack, ShapeGroup... shapeGroups) {
@@ -78,6 +80,11 @@ public final class Spell implements ISpell {
     @Override
     public boolean isEmpty() {
         return empty.get();
+    }
+
+    @Override
+    public boolean isNonNull() {
+        return nonNull.get();
     }
 
     @Override
@@ -336,5 +343,30 @@ public final class Spell implements ISpell {
     @Override
     public String toString() {
         return "Spell[shapeGroups=" + shapeGroups + ", spellStack=" + spellStack + ", additionalData=" + additionalData + ']';
+    }
+
+    private boolean validate() {
+        if (isEmpty() || !isNonNull()) return false;
+        //check spell stack
+        if (spellStack().isEmpty()) return false;
+        if (spellStack().parts().get(0).getType() != ISpellPart.SpellPartType.COMPONENT) return false;
+        //find last non-empty shape group
+        List<ShapeGroup> groups = shapeGroups();
+        if (groups.stream().allMatch(ShapeGroup::isEmpty)) return false;
+        int last = -1;
+        for (int i = 0; i < groups.size(); i++) {
+            if (!groups.get(i).isEmpty()) {
+                last = i;
+            }
+        }
+        //check for empty shape groups between other non-empty shape groups
+        if (last == -1) return false;
+        groups = groups.stream().filter(e -> !e.isEmpty()).toList();
+        if (last != groups.size() - 1) return false;
+        //check shape groups themselves
+        for (ShapeGroup group : groups) {
+            if (group.parts().get(0).getType() != ISpellPart.SpellPartType.SHAPE) return false;
+        }
+        return true;
     }
 }

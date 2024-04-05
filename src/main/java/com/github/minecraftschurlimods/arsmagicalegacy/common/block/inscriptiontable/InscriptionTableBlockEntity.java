@@ -98,7 +98,7 @@ public class InscriptionTableBlockEntity extends BlockEntity implements Containe
     public void createSpell(ServerPlayer player) {
         ItemStack spell = new ItemStack(AMItems.SPELL.get());
         ArsMagicaAPI.get().getSpellHelper().setSpell(spell, Objects.requireNonNull(getSpellRecipe()));
-        ArsMagicaAPI.get().getSpellHelper().setSpellName(spell, spellName);
+        ArsMagicaAPI.get().getSpellHelper().setSpellName(spell, spellName != null ? spellName : Component.translatable(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME));
         player.addItem(spell);
     }
 

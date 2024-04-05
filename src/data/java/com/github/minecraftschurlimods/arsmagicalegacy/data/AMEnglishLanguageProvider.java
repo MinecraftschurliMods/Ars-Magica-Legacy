@@ -66,6 +66,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         blockIdTranslation(AMBlocks.CELESTIAL_PRISM);
         blockIdTranslation(AMBlocks.BLACK_AUREM);
         addBlock(AMBlocks.WIZARDS_CHALK, "Wizard's Chalk");
+        blockIdTranslation(AMBlocks.SPELL_RUNE);
         itemIdTranslation(AMItems.MAGITECH_GOGGLES);
         itemIdTranslation(AMItems.CRYSTAL_WRENCH);
         blockIdTranslation(AMBlocks.CHIMERITE_ORE);
@@ -506,6 +507,7 @@ class AMEnglishLanguageProvider extends AMLanguageProvider {
         add(TranslationConstants.SPELL_RECIPE_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNKNOWN, "Unknown Item");
         add(TranslationConstants.SPELL_UNNAMED, "Unnamed Spell");
+        add(TranslationConstants.INSCRIPTION_TABLE_DEFAULT_NAME, "Spell");
         add(TranslationConstants.INSCRIPTION_TABLE_NAME, "Name");
         add(TranslationConstants.INSCRIPTION_TABLE_SEARCH, "Search");
         add(TranslationConstants.INSCRIPTION_TABLE_TITLE, "Inscription Table");

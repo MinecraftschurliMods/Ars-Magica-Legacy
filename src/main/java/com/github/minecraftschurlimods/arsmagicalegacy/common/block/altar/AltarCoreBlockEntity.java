@@ -431,7 +431,7 @@ public class AltarCoreBlockEntity extends BlockEntity implements IEtheriumConsum
     @Nullable
     public Queue<ISpellIngredient> getRecipe() {
         if (recipe == null || recipe.isEmpty()) {
-            getSpell().filter(ISpell::isValid).filter(((Predicate<ISpell>) ISpell::isEmpty).negate()).ifPresentOrElse(spell -> {
+            getSpell().filter(ISpell::isValid).ifPresentOrElse(spell -> {
                 this.recipe = new ArrayDeque<>(spell.recipe());
                 requiredPower = this.recipe.size();
             }, () -> {
