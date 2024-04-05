@@ -5,7 +5,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -62,6 +61,7 @@ public class Storm extends AbstractComponent {
             } else {
                 ((ServerLevel) level).setWeatherParameters(0, (int) ArsMagicaAPI.get().getSpellHelper().getModifiedStat(200000, SpellPartStats.DURATION, modifiers, spell, caster, target, index), true, true);
             }
+            return SpellCastResult.SUCCESS;
         }
         return SpellCastResult.EFFECT_FAILED;
     }

@@ -7,7 +7,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -31,14 +30,6 @@ public interface ISpellHelper {
      * @param spell The spell to set.
      */
     void setSpell(ItemStack stack, ISpell spell);
-
-    /**
-     * Validates the given spell. This checks for non-emptiness of the spell stack, the shape groups being correct, and correct location of modifiers (if present).
-     *
-     * @param spell The spell to validate.
-     * @return Whether the given spell is valid or not.
-     */
-    boolean isValidSpell(ISpell spell);
 
     /**
      * Returns the item stack containing the spell the given entity is currently using, taking spell books into consideration.

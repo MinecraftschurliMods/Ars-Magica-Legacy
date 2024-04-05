@@ -19,8 +19,8 @@ public class Transplace extends AbstractComponent {
             return SpellCastResult.EFFECT_FAILED;
         Vec3 targetPos = target.getEntity().position();
         Vec3 casterPos = caster.position();
-        target.getEntity().moveTo(casterPos);
-        caster.moveTo(targetPos);
+        target.getEntity().teleportTo(casterPos.x(), casterPos.y(), casterPos.z());
+        caster.teleportTo(targetPos.x(), targetPos.y(), targetPos.z());
         return SpellCastResult.SUCCESS;
     }
 

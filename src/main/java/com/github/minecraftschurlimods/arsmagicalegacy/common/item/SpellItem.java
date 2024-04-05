@@ -67,7 +67,7 @@ public class SpellItem extends Item implements ISpellItem {
             return;
         }
         ISpell spell = api.getSpellHelper().getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) {
+        if (!spell.isValid()) {
             pTooltipComponents.add(Component.translatable(TranslationConstants.SPELL_INVALID_DESCRIPTION));
             return;
         }
@@ -97,7 +97,7 @@ public class SpellItem extends Item implements ISpellItem {
         }
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
+        if (!spell.isValid()) return Component.translatable(TranslationConstants.SPELL_INVALID);
         return helper.getSpellName(pStack).orElseGet(() -> pStack.hasCustomHoverName() ? pStack.getHoverName() : Component.translatable(TranslationConstants.SPELL_UNNAMED));
     }
 

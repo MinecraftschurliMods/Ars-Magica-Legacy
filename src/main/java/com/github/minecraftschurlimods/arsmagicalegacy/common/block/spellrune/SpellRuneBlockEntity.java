@@ -23,9 +23,11 @@ import net.minecraft.world.phys.EntityHitResult;
 public class SpellRuneBlockEntity extends BlockEntity {
     public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
     public static final String INDEX_KEY = ArsMagicaAPI.MOD_ID + ":index";
+    public static final String CASTER_KEY = ArsMagicaAPI.MOD_ID + ":caster";
     public static final String AWARD_XP_KEY = ArsMagicaAPI.MOD_ID + ":award_xp";
     private ISpell spell;
     private Integer index;
+    private Integer casterId;
     private LivingEntity caster;
     private Boolean awardXp;
 
@@ -38,6 +40,9 @@ public class SpellRuneBlockEntity extends BlockEntity {
         pTag.put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (index != null) {
             pTag.putInt(INDEX_KEY, index);
+        }
+        if (casterId != null) {
+            pTag.putInt(CASTER_KEY, casterId);
         }
         if (awardXp != null) {
             pTag.putBoolean(AWARD_XP_KEY, awardXp);
@@ -52,6 +57,9 @@ public class SpellRuneBlockEntity extends BlockEntity {
         }
         if (pTag.contains(INDEX_KEY)) {
             index = pTag.getInt(INDEX_KEY);
+        }
+        if (pTag.contains(CASTER_KEY)) {
+            casterId = pTag.getInt(CASTER_KEY);
         }
         if (pTag.contains(AWARD_XP_KEY)) {
             awardXp = pTag.getBoolean(AWARD_XP_KEY);
@@ -69,7 +77,10 @@ public class SpellRuneBlockEntity extends BlockEntity {
      */
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        if (spell == null) return;
+        if (caster == null && casterId != null && level.getEntity(casterId) instanceof LivingEntity living) {
+            caster = living;
+        }
+        if (spell == null || caster == null) return;
         SpellCastResult r1 = helper.invoke(spell, caster, level, new EntityHitResult(entity), 0, index, awardXp);
         SpellCastResult r2 = helper.invoke(spell, caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
@@ -88,6 +99,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
         this.spell = spell;
         this.index = index;
+        this.casterId = caster.getId();
         this.caster = caster;
         this.awardXp = awardXp;
     }
