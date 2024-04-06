@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -20,12 +21,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
+import java.util.UUID;
+
 public class SpellRuneBlockEntity extends BlockEntity {
     public static final String SPELL_KEY = ArsMagicaAPI.MOD_ID + ":spell";
     public static final String INDEX_KEY = ArsMagicaAPI.MOD_ID + ":index";
+    public static final String CASTER_KEY = ArsMagicaAPI.MOD_ID + ":caster";
     public static final String AWARD_XP_KEY = ArsMagicaAPI.MOD_ID + ":award_xp";
     private ISpell spell;
     private Integer index;
+    private UUID casterId;
     private LivingEntity caster;
     private Boolean awardXp;
 
@@ -38,6 +43,9 @@ public class SpellRuneBlockEntity extends BlockEntity {
         pTag.put(SPELL_KEY, ISpell.CODEC.encodeStart(NbtOps.INSTANCE, spell).getOrThrow(false, ArsMagicaLegacy.LOGGER::warn));
         if (index != null) {
             pTag.putInt(INDEX_KEY, index);
+        }
+        if (casterId != null) {
+            pTag.putUUID(CASTER_KEY, casterId);
         }
         if (awardXp != null) {
             pTag.putBoolean(AWARD_XP_KEY, awardXp);
@@ -52,6 +60,9 @@ public class SpellRuneBlockEntity extends BlockEntity {
         }
         if (pTag.contains(INDEX_KEY)) {
             index = pTag.getInt(INDEX_KEY);
+        }
+        if (pTag.contains(CASTER_KEY)) {
+            casterId = pTag.getUUID(CASTER_KEY);
         }
         if (pTag.contains(AWARD_XP_KEY)) {
             awardXp = pTag.getBoolean(AWARD_XP_KEY);
@@ -69,7 +80,10 @@ public class SpellRuneBlockEntity extends BlockEntity {
      */
     public void collide(Level level, BlockPos pos, Entity entity, Direction direction) {
         var helper = ArsMagicaAPI.get().getSpellHelper();
-        if (spell == null) return;
+        if (caster == null && casterId != null && level instanceof ServerLevel server && server.getEntity(casterId) instanceof LivingEntity living) {
+            caster = living;
+        }
+        if (spell == null || caster == null) return;
         SpellCastResult r1 = helper.invoke(spell, caster, level, new EntityHitResult(entity), 0, index, awardXp);
         SpellCastResult r2 = helper.invoke(spell, caster, level, new BlockHitResult(entity.position(), direction, pos, false), 0, index, awardXp);
         if (r1.isSuccess() || r2.isSuccess()) {
@@ -88,6 +102,7 @@ public class SpellRuneBlockEntity extends BlockEntity {
     public void setSpell(ISpell spell, LivingEntity caster, int index, boolean awardXp) {
         this.spell = spell;
         this.index = index;
+        this.casterId = caster.getUUID();
         this.caster = caster;
         this.awardXp = awardXp;
     }

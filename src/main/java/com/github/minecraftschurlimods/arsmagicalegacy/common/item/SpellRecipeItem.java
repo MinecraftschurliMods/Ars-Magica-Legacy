@@ -65,7 +65,7 @@ public class SpellRecipeItem extends Item {
         }
         var helper = api.getSpellHelper();
         ISpell spell = helper.getSpell(pStack);
-        if (spell.isEmpty() || !spell.isValid()) return Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID);
+        if (!spell.isValid()) return Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID);
         return helper.getSpellName(pStack).orElse(super.getName(pStack));
     }
 
@@ -85,7 +85,7 @@ public class SpellRecipeItem extends Item {
             return InteractionResultHolder.fail(stack);
         }
         ISpell spell = api.getSpellHelper().getSpell(stack);
-        if (!spell.isValid() || spell.isEmpty()) {
+        if (!spell.isValid()) {
             player.displayClientMessage(Component.translatable(TranslationConstants.SPELL_RECIPE_INVALID_DESCRIPTION), true);
             return InteractionResultHolder.fail(stack);
         }
