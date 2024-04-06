@@ -16,18 +16,18 @@ import net.minecraft.world.level.Level;
 public class MageArmorItem extends ArmorItem {
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     public static final ArmorMaterial MAGE_ARMOR_MATERIAL = new ArmorMaterial() {
+
         @Override
-        public int getDurabilityForSlot(EquipmentSlot pSlot) {
-            return 8 * HEALTH_PER_SLOT[pSlot.getIndex()];
+        public int getDurabilityForType(Type slot) {
+            return 8 * HEALTH_PER_SLOT[slot.ordinal()];
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlot pSlot) {
-            return switch (pSlot) {
-                case MAINHAND, OFFHAND -> 0;
-                case HEAD, FEET -> 2;
-                case LEGS -> 4;
-                case CHEST -> 6;
+        public int getDefenseForType(Type slot) {
+            return switch (slot) {
+                case HELMET, BOOTS -> 2;
+                case LEGGINGS -> 4;
+                case CHESTPLATE -> 6;
             };
         }
 
@@ -63,17 +63,16 @@ public class MageArmorItem extends ArmorItem {
     };
     public static final ArmorMaterial BATTLEMAGE_ARMOR_MATERIAL = new ArmorMaterial() {
         @Override
-        public int getDurabilityForSlot(EquipmentSlot pSlot) {
-            return 12 * HEALTH_PER_SLOT[pSlot.getIndex()];
+        public int getDurabilityForType(Type pSlot) {
+            return 12 * HEALTH_PER_SLOT[pSlot.ordinal()];
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlot pSlot) {
+        public int getDefenseForType(Type pSlot) {
             return switch (pSlot) {
-                case MAINHAND, OFFHAND -> 0;
-                case HEAD, FEET -> 3;
-                case LEGS -> 6;
-                case CHEST -> 8;
+                case HELMET, BOOTS -> 3;
+                case LEGGINGS -> 6;
+                case CHESTPLATE -> 8;
             };
         }
 
@@ -109,7 +108,7 @@ public class MageArmorItem extends ArmorItem {
     };
     private final float mana;
 
-    public MageArmorItem(ArmorMaterial pMaterial, EquipmentSlot pSlot, float mana) {
+    public MageArmorItem(ArmorMaterial pMaterial, Type pSlot, float mana) {
         super(pMaterial, pSlot, AMItems.ITEM_1);
         this.mana = mana;
     }

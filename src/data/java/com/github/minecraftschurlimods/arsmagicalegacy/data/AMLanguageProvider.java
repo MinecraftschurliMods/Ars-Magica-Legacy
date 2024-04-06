@@ -1,11 +1,11 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 abstract class AMLanguageProvider extends LanguageProvider {
-    AMLanguageProvider(DataGenerator generator, String locale) {
-        super(generator, ArsMagicaAPI.MOD_ID, locale);
+    AMLanguageProvider(PackOutput output, String locale) {
+        super(output, ArsMagicaAPI.MOD_ID, locale);
     }
 }

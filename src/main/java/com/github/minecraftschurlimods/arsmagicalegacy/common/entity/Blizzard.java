@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -62,7 +61,7 @@ public class Blizzard extends AbstractSpellEntity {
         if (level.isClientSide() || tickCount % 5 != 0) return;
         float damage = getDamage();
         forAllInRange(getRadius(), true,  e -> {
-            e.hurt(DamageSource.FREEZE, damage);
+            e.hurt(damageSources().freeze(), damage);
             e.addEffect(new MobEffectInstance(AMMobEffects.FROST.get(), 50));
         });
         if (tickCount > 0) {
@@ -81,8 +80,9 @@ public class Blizzard extends AbstractSpellEntity {
 
     @Override
     @Nullable
-    public Entity getOwner() {
-        return level.getEntity(entityData.get(OWNER));
+    public LivingEntity getOwner() {
+        Entity entity = level.getEntity(entityData.get(OWNER));
+        return entity instanceof LivingEntity living ? living : null;
     }
 
     @Override

@@ -10,13 +10,14 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class LightningGuardian extends AbstractBoss {
     public LightningGuardian(EntityType<? extends LightningGuardian> type, Level level) {
@@ -71,9 +72,9 @@ public class LightningGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource == DamageSource.DROWN) {
+        if (pSource.is(DamageTypeTags.IS_DROWNING)) {
             pAmount *= 2;
-        } else if (pSource == DamageSource.LIGHTNING_BOLT) {
+        } else if (pSource.is(DamageTypeTags.IS_LIGHTNING)) {
             heal(pAmount);
             return false;
         }
@@ -81,11 +82,13 @@ public class LightningGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createActionAnimationController("lightning_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("lightning_guardian", "cast", Action.CAST));
-        data.addAnimationController(createActionAnimationController("lightning_guardian", "cast", Action.LONG_CAST));
-        data.addAnimationController(createActionAnimationController("lightning_guardian", "spin", Action.SPIN));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createActionAnimationController("lightning_guardian", "idle", Action.IDLE),
+                createActionAnimationController("lightning_guardian", "cast", Action.CAST),
+                createActionAnimationController("lightning_guardian", "cast", Action.LONG_CAST),
+                createActionAnimationController("lightning_guardian", "spin", Action.SPIN)
+        );
     }
 
     @Override

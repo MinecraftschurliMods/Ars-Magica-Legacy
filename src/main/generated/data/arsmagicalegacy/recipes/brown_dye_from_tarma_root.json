@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "brown_dye",
+  "ingredients": [
+    {
+      "item": "arsmagicalegacy:tarma_root"
+    }
+  ],
+  "result": {
+    "item": "minecraft:brown_dye"
+  }
+}

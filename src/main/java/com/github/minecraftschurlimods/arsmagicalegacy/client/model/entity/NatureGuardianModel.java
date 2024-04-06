@@ -1,8 +1,8 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
 
 public class NatureGuardianModel extends AMGeckolibHeadModel<NatureGuardian> {
     public NatureGuardianModel() {
@@ -10,9 +10,9 @@ public class NatureGuardianModel extends AMGeckolibHeadModel<NatureGuardian> {
     }
 
     @Override
-    public void setCustomAnimations(NatureGuardian animatable, int instanceId, AnimationEvent animationEvent) {
-        super.setCustomAnimations(animatable, instanceId, animationEvent);
-        IBone scythe = getAnimationProcessor().getBone("scythe");
+    public void setCustomAnimations(NatureGuardian animatable, long instanceId, AnimationState<NatureGuardian> animationState) {
+        super.setCustomAnimations(animatable, instanceId, animationState);
+        CoreGeoBone scythe = getAnimationProcessor().getBone("scythe");
         scythe.setHidden(!animatable.hasScythe());
     }
 }

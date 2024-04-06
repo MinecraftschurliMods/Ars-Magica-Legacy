@@ -56,24 +56,18 @@ public final class SpellBookHUD extends HUDElement {
             mStack.scale(0.75f, 0.75f, 0.75f);
             mStack.pushPose();
             RenderSystem.setShaderTexture(0, TEXTURE);
-            blit(mStack, 0, 0, gui.getBlitOffset(), 0, 0, 148, 22, 256, 256);
+            blit(mStack, 0, 0, 0, 0, 0, 148, 22, 256, 256);
             mStack.popPose();
             for (int i = 0; i < active.getContainerSize(); i++) {
                 ItemStack spell = active.getItem(i);
                 mStack.pushPose();
                 mStack.translate(i * 18f, 2f, 0);
-                PoseStack modelViewStack = RenderSystem.getModelViewStack();
-                modelViewStack.pushPose();
-                modelViewStack.mulPoseMatrix(mStack.last().pose());
-                RenderSystem.applyModelViewMatrix();
-                Minecraft.getInstance().getItemRenderer().renderGuiItem(spell, 3, 1);
-                modelViewStack.popPose();
-                RenderSystem.applyModelViewMatrix();
+                Minecraft.getInstance().getItemRenderer().renderGuiItem(mStack, spell, 3, 1);
                 mStack.popPose();
             }
             mStack.pushPose();
             RenderSystem.setShaderTexture(0, TEXTURE);
-            blit(mStack, selected * 18 + 1, 1, gui.getBlitOffset(), 148, 0, 20, 20, 256, 256);
+            blit(mStack, selected * 18 + 1, 1, 0, 148, 0, 20, 20, 256, 256);
             mStack.popPose();
             mStack.popPose();
         }

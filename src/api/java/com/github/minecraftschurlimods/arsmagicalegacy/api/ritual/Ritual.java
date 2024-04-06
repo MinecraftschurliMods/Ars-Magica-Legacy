@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ public record Ritual(RitualTrigger trigger, List<RitualRequirement> requirements
     public static final Codec<Holder<Ritual>> REFERENCE_CODEC = RegistryFileCodec.create(REGISTRY_KEY, DIRECT_CODEC);
     public static final Codec<HolderSet<Ritual>> LIST_CODEC = RegistryCodecs.homogeneousList(REGISTRY_KEY, DIRECT_CODEC);
 
-    private static final RegistryObject<ResourceLocation> STAT = RegistryObject.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"), Registry.CUSTOM_STAT_REGISTRY, ArsMagicaAPI.MOD_ID);
+    private static final RegistryObject<ResourceLocation> STAT = RegistryObject.create(new ResourceLocation(ArsMagicaAPI.MOD_ID, "rituals_triggered"), Registries.CUSTOM_STAT, ArsMagicaAPI.MOD_ID);
 
     public Ritual {
         trigger.register(this);

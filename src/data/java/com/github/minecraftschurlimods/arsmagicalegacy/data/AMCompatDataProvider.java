@@ -9,13 +9,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.data.event.GatherDataEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 class AMCompatDataProvider extends CompatDataProvider {
     AMCompatDataProvider(GatherDataEvent event) {
         super(ArsMagicaAPI.MOD_ID, event);
     }
 
     @Override
-    protected void generate() {
+    protected CompletableFuture<?> generate() {
         addGemOreProcessing(AMItems.CHIMERITE_ORE.get(), AMItems.DEEPSLATE_CHIMERITE_ORE.get(), AMTags.Items.ORES_CHIMERITE, AMItems.CHIMERITE.get(), AMItems.CHIMERITE_BLOCK.get());
         addGemOreProcessing(AMItems.TOPAZ_ORE.get(), AMItems.DEEPSLATE_TOPAZ_ORE.get(), AMTags.Items.ORES_TOPAZ, AMItems.TOPAZ.get(), AMItems.TOPAZ_BLOCK.get());
         addGemOreProcessing(AMItems.VINTEUM_ORE.get(), AMItems.DEEPSLATE_VINTEUM_ORE.get(), AMTags.Items.ORES_VINTEUM, AMItems.VINTEUM_DUST.get(), AMItems.VINTEUM_BLOCK.get());
@@ -32,5 +34,11 @@ class AMCompatDataProvider extends CompatDataProvider {
         addFlowerProcessing(AMItems.WAKEBLOOM.get(), Items.MAGENTA_DYE, 2, itemId(Items.PINK_DYE), 0.5f);
         addLogsProcessing(AMItems.WITCHWOOD_LOG.get(), AMItems.WITCHWOOD.get(), AMItems.STRIPPED_WITCHWOOD_LOG.get(), AMItems.STRIPPED_WITCHWOOD.get(), AMItems.WITCHWOOD_PLANKS.getId(), AMItems.WITCHWOOD_LEAVES.get(), AMItems.WITCHWOOD_SAPLING.get());
         addWoodenProcessing(AMBlockFamilies.WITCHWOOD_PLANKS.get(), AMTags.Items.WITCHWOOD_LOGS);
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public String getName() {
+        return "AMLCompat";
     }
 }

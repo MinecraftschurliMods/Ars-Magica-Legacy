@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.enderman_thorns.description",
-      "title": "ability.arsmagicalegacy.enderman_thorns.name"
+      "text": "ability.arsmagicalegacy.swim_speed.description",
+      "title": "ability.arsmagicalegacy.swim_speed.name"
     },
     {
       "type": "patchouli:text",
@@ -23,8 +23,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.swim_speed.description",
-      "title": "ability.arsmagicalegacy.swim_speed.name"
+      "text": "ability.arsmagicalegacy.enderman_thorns.description",
+      "title": "ability.arsmagicalegacy.enderman_thorns.name"
     }
   ]
 }

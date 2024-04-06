@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop;
 
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarratableEntry;
 
-public abstract class Draggable<T> implements Widget, NarratableEntry {
+public abstract class Draggable<T> implements Renderable, NarratableEntry {
     protected final int width;
     protected final int height;
     protected final T content;

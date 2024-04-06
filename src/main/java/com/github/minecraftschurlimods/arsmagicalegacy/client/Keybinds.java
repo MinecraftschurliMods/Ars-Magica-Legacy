@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.betterkeybindlib.ItemInHandKeyConflictCon
 import com.github.minecraftschurlimods.betterkeybindlib.Keybind;
 import com.github.minecraftschurlimods.betterkeybindlib.KeybindManager;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.IEventBus;

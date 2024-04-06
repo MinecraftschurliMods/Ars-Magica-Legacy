@@ -18,17 +18,18 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +39,10 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
             CodecHelper.setOf(CodecHelper.forStringEnum(EtheriumType.class)).fieldOf("types").forGetter(EtheriumSpellIngredient::types),
             Codec.INT.fieldOf("amount").forGetter(EtheriumSpellIngredient::amount)
     ).apply(inst, EtheriumSpellIngredient::new));
+
+    public EtheriumSpellIngredient(EtheriumType type, int amount) {
+        this(EnumSet.of(type), amount);
+    }
 
     @Override
     public SpellIngredientType<EtheriumSpellIngredient> getType() {
@@ -98,7 +103,7 @@ public record EtheriumSpellIngredient(Set<EtheriumType> types, int amount) imple
             ArsMagicaAPI.get().getEtheriumHelper().setEtheriumType(stack, type);
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
             BakedModel model = itemRenderer.getModel(stack, null, null, 0);
-            itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay, model);
+            itemRenderer.render(stack, ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay, model);
         }
 
         @Override

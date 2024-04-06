@@ -12,8 +12,24 @@ import net.minecraft.world.entity.player.Player;
 public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualRequirement {
     public static final Codec<MoonPhaseRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.INT_MIN_MAX_BOUNDS.fieldOf("phase").forGetter(MoonPhaseRequirement::phase)).apply(inst, MoonPhaseRequirement::new));
 
-    public MoonPhaseRequirement(int phase) {
-        this(MinMaxBounds.Ints.exactly(phase));
+    public static MoonPhaseRequirement any() {
+        return new MoonPhaseRequirement(MinMaxBounds.Ints.ANY);
+    }
+
+    public static MoonPhaseRequirement exactly(int phase) {
+        return new MoonPhaseRequirement(MinMaxBounds.Ints.exactly(phase));
+    }
+
+    public static MoonPhaseRequirement between(int min, int max) {
+        return new MoonPhaseRequirement(MinMaxBounds.Ints.between(min, max));
+    }
+
+    public static MoonPhaseRequirement atLeast(int min) {
+        return new MoonPhaseRequirement(MinMaxBounds.Ints.atLeast(min));
+    }
+
+    public static MoonPhaseRequirement atMost(int max) {
+        return new MoonPhaseRequirement(MinMaxBounds.Ints.atMost(max));
     }
 
     @Override
@@ -22,7 +38,7 @@ public record MoonPhaseRequirement(MinMaxBounds.Ints phase) implements RitualReq
     }
 
     @Override
-    public boolean test(final Player player, final ServerLevel serverLevel, final BlockPos pos) {
+    public boolean test(Player player, ServerLevel serverLevel, BlockPos pos) {
         return phase.matches(serverLevel.getMoonPhase());
     }
 }

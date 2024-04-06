@@ -6,6 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai.ThrowArm
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class IceGuardian extends AbstractBoss {
     private int arms = 2;
@@ -58,7 +59,7 @@ public class IceGuardian extends AbstractBoss {
     public void aiStep() {
         if (this.tickCount % 100 == 0) {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, -3, 0), e -> !(e instanceof AbstractBoss))) {
-                e.hurt(DamageSource.FREEZE, 4);
+                e.hurt(damageSources().freeze(), 4);
             }
         }
         super.aiStep();
@@ -66,21 +67,23 @@ public class IceGuardian extends AbstractBoss {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource.isFire()) {
+        if (pSource.is(DamageTypeTags.IS_FIRE)) {
             pAmount *= 2f;
-        } else if (pSource == DamageSource.FREEZE) {
+        } else if (pSource.is(DamageTypeTags.IS_FREEZING)) {
             return false;
         }
         return super.hurt(pSource, pAmount);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("ice_guardian"));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "smash", Action.SMASH));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "strike", Action.STRIKE));
-        data.addAnimationController(createActionAnimationController("ice_guardian", "throw", Action.THROW));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("ice_guardian"),
+                createActionAnimationController("ice_guardian", "idle", Action.IDLE),
+                createActionAnimationController("ice_guardian", "smash", Action.SMASH),
+                createActionAnimationController("ice_guardian", "strike", Action.STRIKE),
+                createActionAnimationController("ice_guardian", "throw", Action.THROW)
+        );
     }
 
     @Override

@@ -21,7 +21,7 @@ public interface ITranslatable {
      * @return The id of this object.
      */
     default ResourceLocation getId() {
-        return getId(RegistryAccess.BUILTIN.get());
+        throw new UnsupportedOperationException();
     }
 
     /**

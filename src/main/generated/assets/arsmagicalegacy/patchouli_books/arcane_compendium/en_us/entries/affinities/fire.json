@@ -13,8 +13,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.fire_punch.description",
-      "title": "ability.arsmagicalegacy.fire_punch.name"
+      "text": "ability.arsmagicalegacy.fire_resistance.description",
+      "title": "ability.arsmagicalegacy.fire_resistance.name"
     },
     {
       "type": "patchouli:text",
@@ -23,8 +23,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.fire_resistance.description",
-      "title": "ability.arsmagicalegacy.fire_resistance.name"
+      "text": "ability.arsmagicalegacy.fire_punch.description",
+      "title": "ability.arsmagicalegacy.fire_punch.name"
     }
   ]
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "L": {
       "tag": "forge:leather"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:spell_book"
-  }
+  },
+  "show_notification": true
 }

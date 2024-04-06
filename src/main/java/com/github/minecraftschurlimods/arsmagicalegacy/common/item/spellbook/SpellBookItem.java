@@ -42,8 +42,8 @@ public class SpellBookItem extends Item implements DyeableLeatherItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        getSelectedSpell(stack).onUsingTick(player, count);
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+        getSelectedSpell(stack).onUseTick(level, entity, remainingUseDuration);
     }
 
     @Override

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "H": {
       "item": "minecraft:rabbit_hide"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:rune_bag"
-  }
+  },
+  "show_notification": true
 }

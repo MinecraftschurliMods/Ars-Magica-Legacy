@@ -1,23 +1,22 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.model.entity;
 
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class AMGeckolibHeadModel<T extends IAnimatable> extends AMGeckolibModel<T> {
+public class AMGeckolibHeadModel<T extends GeoEntity> extends AMGeckolibModel<T> {
     public AMGeckolibHeadModel(String name) {
         super(name);
     }
 
     @Override
-    public void setCustomAnimations(T animatable, int instanceId, AnimationEvent animationEvent) {
-        super.setCustomAnimations(animatable, instanceId, animationEvent);
-        if (animationEvent != null) {
-            IBone head = getAnimationProcessor().getBone("head");
-            EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
-            head.setRotationX((float) (extraData.headPitch * Math.PI / 180D));
-            head.setRotationY((float) (extraData.netHeadYaw * Math.PI / 180D));
-        }
+    public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
+        super.setCustomAnimations(animatable, instanceId, animationState);
+        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        EntityModelData extraData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+        head.setRotX((float) (extraData.headPitch() * Math.PI / 180D));
+        head.setRotY((float) (extraData.netHeadYaw() * Math.PI / 180D));
     }
 }

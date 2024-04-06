@@ -9,7 +9,8 @@ import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDataProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,13 +22,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 //This can't be an AbstractRegistryDataProvider because SpellPartData isn't accessible from here
 public abstract class SpellPartDataProvider extends AbstractDataProvider<SpellPartDataProvider.Builder> {
-    protected SpellPartDataProvider(String namespace, DataGenerator generator) {
-        super("spell_parts", namespace, generator);
+    protected SpellPartDataProvider(String namespace, PackOutput output) {
+        super(namespace, "spell_parts", PackOutput.Target.DATA_PACK, output);
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput output) {
         generate();
+        return super.run(output);
     }
 
     @Override

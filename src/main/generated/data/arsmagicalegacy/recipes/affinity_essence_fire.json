@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "A": {
       "item": "arsmagicalegacy:arcane_ash"
@@ -25,5 +26,6 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:fire\"}"
-  }
+  },
+  "show_notification": true
 }

@@ -42,7 +42,7 @@ public class AoE extends AbstractShape {
             }
         }
         if (appliedToAtLeastOneEntity) return SpellCastResult.SUCCESS;
-        BlockPos pos = new BlockPos(hit.getLocation());
+        BlockPos pos = BlockPos.containing(hit.getLocation());
         int rad = Math.round(radius);
         for (int x = -rad; x <= radius; x++) {
             for (int y = -rad; y <= radius; y++) {

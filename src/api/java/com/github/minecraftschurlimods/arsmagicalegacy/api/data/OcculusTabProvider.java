@@ -2,32 +2,23 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.OcculusTabRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.OcculusTab;
-import com.google.gson.JsonElement;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.RegistryOps;
+import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDatapackRegistryProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
-public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<OcculusTab, OcculusTabProvider.Builder> {
-    protected OcculusTabProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
-        super(OcculusTab.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
-    }
-
-    @Override
-    public String getName() {
-        return "Occulus Tabs[" + namespace + "]";
+public abstract class OcculusTabProvider extends AbstractDatapackRegistryProvider<OcculusTab> {
+    protected OcculusTabProvider(String namespace) {
+        super(OcculusTab.REGISTRY_KEY, namespace);
     }
 
     /**
-     * @param name  The occulus tab name.
      * @param index The index of the occulus tab.
      * @return A new occulus tab.
      */
-    protected Builder builder(String name, int index) {
-        return new Builder(new ResourceLocation(namespace, name), this, index);
+    protected Builder builder(int index) {
+        return new Builder(index);
     }
 
-    public static class Builder extends AbstractRegistryDataProvider.Builder<OcculusTab, Builder> {
+    public static class Builder {
         private Integer index;
         private ResourceLocation background;
         private ResourceLocation icon;
@@ -37,8 +28,7 @@ public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<Oc
         private int width = OcculusTab.TEXTURE_WIDTH;
         private int height = OcculusTab.TEXTURE_HEIGHT;
 
-        public Builder(ResourceLocation id, OcculusTabProvider provider, int index) {
-            super(id, provider, OcculusTab.CODEC);
+        public Builder(int index) {
             this.index = index;
         }
 
@@ -131,8 +121,7 @@ public abstract class OcculusTabProvider extends AbstractRegistryDataProvider<Oc
             return this;
         }
 
-        @Override
-        protected OcculusTab get() {
+        public OcculusTab build() {
             return new OcculusTab(renderer, background, icon, width, height, startX, startY, index, null);
         }
     }

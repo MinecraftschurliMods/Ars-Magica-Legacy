@@ -1,6 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -64,11 +64,11 @@ public final class AMTags {
         public static final TagKey<Item> SPELLCRAFTING_END = tag("spellcrafting_end");
 
         private static TagKey<Item> forgeTag(String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(FORGE, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(FORGE, name));
         }
 
         private static TagKey<Item> tag(String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 
@@ -89,11 +89,11 @@ public final class AMTags {
         public static final TagKey<Block> STORAGE_BLOCKS_SUNSTONE = forgeTag("storage_blocks/sunstone");
 
         private static TagKey<Block> forgeTag(String name) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(FORGE, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(FORGE, name));
         }
 
         private static TagKey<Block> tag(String name) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 
@@ -102,11 +102,11 @@ public final class AMTags {
      */
     public static final class Fluids {
         private static TagKey<Fluid> forgeTag(String name) {
-            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(FORGE, name));
+            return TagKey.create(Registries.FLUID, new ResourceLocation(FORGE, name));
         }
 
         private static TagKey<Fluid> tag(String name) {
-            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.FLUID, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 
@@ -115,11 +115,11 @@ public final class AMTags {
      */
     public static final class EntityTypes {
         private static TagKey<EntityType<?>> forgeTag(String name) {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(FORGE, name));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(FORGE, name));
         }
 
         private static TagKey<EntityType<?>> tag(String name) {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 
@@ -130,11 +130,11 @@ public final class AMTags {
         public static final TagKey<Biome> CAN_SPAWN_WATER_GUARDIAN = tag("can_spawn_water_guardian");
 
         private static TagKey<Biome> forgeTag(String name) {
-            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(FORGE, name));
+            return TagKey.create(Registries.BIOME, new ResourceLocation(FORGE, name));
         }
 
         private static TagKey<Biome> tag(String name) {
-            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, new ResourceLocation(ArsMagicaAPI.MOD_ID, name));
         }
     }
 }

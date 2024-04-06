@@ -14,7 +14,7 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpe
     public static final ResourceLocation ID = new ResourceLocation(ArsMagicaAPI.MOD_ID, "inscription_table_sync");
 
     public InscriptionTableSyncPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readComponent(), buf.readWithCodec(ISpell.CODEC));
+        this(buf.readBlockPos(), buf.readComponent(), buf.readJsonWithCodec(ISpell.CODEC));
     }
 
     @Override
@@ -26,7 +26,7 @@ public record InscriptionTableSyncPacket(BlockPos blockPos, Component name, ISpe
     public void serialize(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         buf.writeComponent(name != null ? name : Component.empty());
-        buf.writeWithCodec(ISpell.CODEC, spell);
+        buf.writeJsonWithCodec(ISpell.CODEC, spell);
     }
 
     @Override

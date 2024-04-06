@@ -85,7 +85,7 @@ public final class AMShaders {
 
     static void init(RegisterShadersEvent evt) {
         try {
-            evt.registerShader(new ShaderInstance(evt.getResourceManager(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "color_wheel"), DefaultVertexFormat.POSITION), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
+            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "color_wheel"), DefaultVertexFormat.POSITION), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

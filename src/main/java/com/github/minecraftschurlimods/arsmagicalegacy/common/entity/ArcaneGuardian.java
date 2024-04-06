@@ -16,7 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.List;
 
@@ -76,9 +76,11 @@ public class ArcaneGuardian extends AbstractBoss {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(createBaseAnimationController("arcane_guardian"));
-        data.addAnimationController(createActionAnimationController("arcane_guardian", "idle", Action.IDLE));
-        data.addAnimationController(createActionAnimationController("arcane_guardian", "cast", Action.CAST));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                createBaseAnimationController("arcane_guardian"),
+                createActionAnimationController("arcane_guardian", "idle", Action.IDLE),
+                createActionAnimationController("arcane_guardian", "cast", Action.CAST)
+        );
     }
 }

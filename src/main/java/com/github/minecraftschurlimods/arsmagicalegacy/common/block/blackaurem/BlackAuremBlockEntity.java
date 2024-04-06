@@ -9,7 +9,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntiti
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -46,7 +45,7 @@ public class BlackAuremBlockEntity extends BlockEntity {
             entities.sort(Comparator.comparingDouble(value -> value.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())));
             int c = Math.max(1, tier / 2);
             for (LivingEntity entity : entities) {
-                if (entity.isAlive() && entity.attackable() && !entity.isInvertedHealAndHarm() && entity.hurt(DamageSource.MAGIC, 1)) {
+                if (entity.isAlive() && entity.attackable() && !entity.isInvertedHealAndHarm() && entity.hurt(level.damageSources().magic(), 1)) {
                     provider.add(c);
                     break;
                 }

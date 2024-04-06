@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
-
 import org.jetbrains.annotations.Nullable;
 
 /**

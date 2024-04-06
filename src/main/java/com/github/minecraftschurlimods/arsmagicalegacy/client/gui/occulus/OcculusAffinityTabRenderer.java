@@ -33,7 +33,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
     @Override
     protected void renderBg(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         RenderSystem.setShaderTexture(0, occulusTab.background(getMinecraft().getConnection().registryAccess()));
-        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, getBlitOffset(), 0, 0, 1, 1);
+        RenderUtil.drawBox(pMatrixStack, 0, 0, width, height, 0, 0, 0, 1, 1);
     }
 
     @Override
@@ -71,13 +71,13 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             currentID++;
             int displace = (int) ((Math.max(affStartX1, affStartX2) - Math.min(affStartX1, affStartX2) + Math.max(affStartY1, affStartY2) - Math.min(affStartY1, affStartY2)) / 2);
             if (depth > 0.01F) {
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 0.8F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 1.1F);
-                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, getBlitOffset(), aff.color(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 0.8F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX1 + cX, affStartY1 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
+                RenderUtil.fractalLine2dd(pMatrixStack, affStartX2 + cX, affStartY2 + cY, affEndX + cX, affEndY + cY, 0, aff.color(), displace, 1.1F);
             } else {
-                RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
-                RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, getBlitOffset(), aff.color());
+                RenderUtil.line2d(pMatrixStack, (float) affStartX1 + cX, (float) affStartY1 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
+                RenderUtil.line2d(pMatrixStack, (float) affStartX2 + cX, (float) affStartY2 + cY, (float) affEndX + cX, (float) affEndY + cY, 0, aff.color());
             }
             drawString(pMatrixStack, getFont(), "%.2f".formatted(depth), (int) ((affDrawTextX * 0.9) + cX), (int) ((affDrawTextY * 0.9) + cY), aff.color());
             int xMovement = affDrawTextX > 0 ? 5 : -5;
@@ -86,7 +86,7 @@ public class OcculusAffinityTabRenderer extends OcculusTabRenderer {
             yMovement = affDrawTextY == 0 ? 0 : yMovement;
             int drawX = (int) ((affDrawTextX * 1.1) + cX + xMovement);
             int drawY = (int) ((affDrawTextY * 1.1) + cY + yMovement);
-            getItemRenderer().renderAndDecorateFakeItem(helper.getEssenceForAffinity(aff), drawX + posX, drawY + posY);
+            getItemRenderer().renderAndDecorateFakeItem(pMatrixStack, helper.getEssenceForAffinity(aff), drawX, drawY);
             if (pMouseX > drawX && pMouseX < drawX + 16 && pMouseY > drawY && pMouseY < drawY + 16) {
                 drawString.add(aff.getDisplayName().copy().withStyle(style -> style.withColor(aff.color())));
                 abilityRegistry.stream()

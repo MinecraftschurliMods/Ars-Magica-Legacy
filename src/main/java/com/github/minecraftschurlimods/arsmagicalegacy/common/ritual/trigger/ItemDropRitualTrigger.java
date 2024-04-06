@@ -9,6 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -97,6 +98,7 @@ public record ItemDropRitualTrigger(List<Ingredient> ingredients) implements Rit
                     iterator.remove();
                 }
             }
+            return AbortableIterationConsumer.Continuation.CONTINUE;
         });
         if (!ingredients.isEmpty()) {
             return false;

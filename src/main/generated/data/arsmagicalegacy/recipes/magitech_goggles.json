@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "C": {
       "tag": "forge:gems/chimerite"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:magitech_goggles"
-  }
+  },
+  "show_notification": true
 }

@@ -1,12 +1,12 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.dragndrop;
 
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DragArea<T extends Draggable<?>> implements Widget {
+public abstract class DragArea<T extends Draggable<?>> implements Renderable {
     protected final int x;
     protected final int y;
     protected final int width;

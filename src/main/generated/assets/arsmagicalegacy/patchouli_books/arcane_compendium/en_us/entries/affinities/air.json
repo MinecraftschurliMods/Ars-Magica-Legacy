@@ -18,13 +18,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.gravity.description",
-      "title": "ability.arsmagicalegacy.gravity.name"
+      "text": "ability.arsmagicalegacy.jump_boost.description",
+      "title": "ability.arsmagicalegacy.jump_boost.name"
     },
     {
       "type": "patchouli:text",
-      "text": "ability.arsmagicalegacy.jump_boost.description",
-      "title": "ability.arsmagicalegacy.jump_boost.name"
+      "text": "ability.arsmagicalegacy.gravity.description",
+      "title": "ability.arsmagicalegacy.gravity.name"
     }
   ]
 }

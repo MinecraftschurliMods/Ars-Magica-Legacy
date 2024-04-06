@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cerublossom": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "arsmagicalegacy:cerublossom"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arsmagicalegacy:blue_dye_from_cerublossom"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_cerublossom",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arsmagicalegacy:blue_dye_from_cerublossom"
+    ]
+  }
+}

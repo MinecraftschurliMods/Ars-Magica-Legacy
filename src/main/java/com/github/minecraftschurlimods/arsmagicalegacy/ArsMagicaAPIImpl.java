@@ -26,7 +26,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellTransforma
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.BurnoutHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.magic.ContingencyHelper;
@@ -43,7 +42,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -56,10 +54,6 @@ import java.util.List;
 import java.util.Optional;
 
 public final class ArsMagicaAPIImpl implements ArsMagicaAPI {
-    @Override
-    public CreativeModeTab getCreativeModeTab() {
-        return AMItems.TAB;
-    }
 
     @Override
     public ItemStack getBookStack() {

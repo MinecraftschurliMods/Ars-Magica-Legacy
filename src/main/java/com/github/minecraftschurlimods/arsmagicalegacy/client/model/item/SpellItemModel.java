@@ -9,12 +9,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -40,8 +40,8 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         super(originalModel);
     }
 
-    static boolean isHand(ItemTransforms.TransformType cameraTransformType) {
-        return cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType.firstPerson();
+    static boolean isHand(ItemDisplayContext cameraTransformType) {
+        return cameraTransformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || cameraTransformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || cameraTransformType.firstPerson();
     }
 
     static BakedModel getModel(ResourceLocation modelLocation) {
@@ -64,7 +64,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+    public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         Player player = ClientHelper.getLocalPlayer();
         if (player == null || !ArsMagicaAPI.get().getMagicHelper().knowsMagic(player)) {
             return getModel(SPELL_PARCHMENT).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
@@ -72,7 +72,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         if (isHand(cameraTransformType) && affinity != null) {
             return new SpellItemHandModel(getModel(new ResourceLocation(affinity.getId().getNamespace(), "item/spell_" + affinity.getId().getPath()))).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
-        if (icon.isEmpty() || cameraTransformType != ItemTransforms.TransformType.GUI) {
+        if (icon.isEmpty() || cameraTransformType != ItemDisplayContext.GUI) {
             return getModel(SPELL_PARCHMENT).applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
         super.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);

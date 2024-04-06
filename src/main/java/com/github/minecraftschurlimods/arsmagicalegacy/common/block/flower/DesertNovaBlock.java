@@ -11,7 +11,7 @@ import net.minecraftforge.common.Tags;
 
 public class DesertNovaBlock extends FlowerBlock {
     public DesertNovaBlock() {
-        super(MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
+        super(() -> MobEffects.FIRE_RESISTANCE, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Shockwave;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -22,7 +21,7 @@ public class SmashGoal<T extends AbstractBoss> extends AbstractBossGoal<T> {
     @Override
     public void perform() {
         for (LivingEntity e : boss.getLevel().getEntitiesOfClass(LivingEntity.class, boss.getBoundingBox().inflate(4, 2, 4), e -> !(e instanceof AbstractBoss))) {
-            e.hurt(DamageSource.mobAttack(boss), 4);
+            e.hurt(boss.damageSources().mobAttack(boss), 4);
         }
         if (!boss.getLevel().isClientSide()) {
             for (int i = -20; i <= 20; i++) {

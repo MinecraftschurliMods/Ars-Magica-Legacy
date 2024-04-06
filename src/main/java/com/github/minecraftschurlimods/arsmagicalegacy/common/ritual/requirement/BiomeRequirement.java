@@ -5,10 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -17,20 +17,20 @@ import net.minecraft.world.level.biome.Biome;
 
 public record BiomeRequirement(HolderSet<Biome> biome) implements RitualRequirement {
     public static final Codec<BiomeRequirement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).fieldOf("biome").forGetter(BiomeRequirement::biome)
+            RegistryCodecs.homogeneousList(Registries.BIOME).fieldOf("biome").forGetter(BiomeRequirement::biome)
     ).apply(inst, BiomeRequirement::new));
 
-    public BiomeRequirement(TagKey<Biome> biomeTag) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.BIOME_REGISTRY).getOrCreateTag(biomeTag));
+    public static BiomeRequirement tag(HolderGetter<Biome> holderGetter, TagKey<Biome> biomeTag) {
+        return new BiomeRequirement(holderGetter.getOrThrow(biomeTag));
     }
 
-    public BiomeRequirement(ResourceKey<Biome> biome) {
-        this(RegistryAccess.BUILTIN.get().registryOrThrow(Registry.BIOME_REGISTRY).getOrCreateHolder(biome).getOrThrow(false, s -> {}));
+    public static BiomeRequirement single(HolderGetter<Biome> holderGetter, ResourceKey<Biome> biome) {
+        return any(holderGetter.getOrThrow(biome));
     }
 
     @SafeVarargs
-    public BiomeRequirement(Holder<Biome>... holders) {
-        this(HolderSet.direct(holders));
+    public static BiomeRequirement any(Holder<Biome>... holders) {
+        return new BiomeRequirement(HolderSet.direct(holders));
     }
 
     @Override

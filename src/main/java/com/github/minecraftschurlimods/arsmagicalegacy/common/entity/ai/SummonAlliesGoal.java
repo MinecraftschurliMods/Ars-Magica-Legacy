@@ -32,9 +32,9 @@ public class SummonAlliesGoal extends AbstractBossGoal<LifeGuardian> {
         for (int i = 0; i < 3; i++) {
             Mob entity = list.get(boss.getLevel().getRandom().nextInt(list.size())).apply(boss.getLevel());
             if (entity == null) continue;
-            BlockPos pos = new BlockPos(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
+            BlockPos pos = BlockPos.containing(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
             for (int j = 0; j <= 100 && !boss.getLevel().getBlockState(pos).isValidSpawn(boss.getLevel(), pos, entity.getType()); j++) {
-                pos = new BlockPos(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
+                pos = BlockPos.containing(boss.getX() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getY() + boss.getLevel().getRandom().nextDouble() * 4 - 2, boss.getZ() + boss.getLevel().getRandom().nextDouble() * 4 - 2);
             }
             entity.moveTo(boss.getX() + boss.getLevel().getRandom().nextDouble() * 2 - 1, boss.getY(), boss.getZ() + boss.getLevel().getRandom().nextDouble() * 2 - 1);
             int amplifier = (int) Math.abs(2 * boss.getHealth() / boss.getMaxHealth() - 2);

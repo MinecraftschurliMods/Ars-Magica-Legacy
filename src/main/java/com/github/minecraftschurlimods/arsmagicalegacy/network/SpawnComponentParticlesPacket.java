@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.network;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.simplenetlib.IPacket;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.network.FriendlyByteBuf;

@@ -7,10 +7,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
 public record UltrawarmDimensionRequirement() implements RitualRequirement {
-    public static final Codec<UltrawarmDimensionRequirement> CODEC = Codec.unit(UltrawarmDimensionRequirement::new);
+    public static final UltrawarmDimensionRequirement INSTANCE = new UltrawarmDimensionRequirement();
+    public static final Codec<UltrawarmDimensionRequirement> CODEC = Codec.unit(INSTANCE);
 
     @Override
-    public boolean test(final Player player, final ServerLevel level, final BlockPos pos) {
+    public boolean test(Player player, ServerLevel level, BlockPos pos) {
         return level.dimensionType().ultraWarm();
     }
 

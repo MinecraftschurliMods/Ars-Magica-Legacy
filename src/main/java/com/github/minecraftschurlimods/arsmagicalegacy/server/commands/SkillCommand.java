@@ -28,7 +28,17 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_ALREADY_KNOWN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_ALL_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_ALL_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_FORGET_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_ALL_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_ALL_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_LEARN_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_NOT_YET_KNOWN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_UNKNOWN;
 
 public class SkillCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILLS = SkillCommand::suggestSkills;

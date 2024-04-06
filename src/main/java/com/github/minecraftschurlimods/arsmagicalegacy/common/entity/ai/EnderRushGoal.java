@@ -2,7 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ai;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBoss;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.EnderGuardian;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.Vec3;
 
 public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
@@ -24,7 +23,7 @@ public class EnderRushGoal extends AbstractBossGoal<EnderGuardian> {
             Vec3 movement = boss.position().add(a.subtract(b).normalize().scale(-5));
             boss.moveTo(movement.x(), movement.y(), movement.z());
         } else {
-            if (boss.getTarget().hurt(DamageSource.mobAttack(boss), 8)) {
+            if (boss.getTarget().hurt(boss.damageSources().mobAttack(boss), 8)) {
                 boss.heal(4);
             }
         }

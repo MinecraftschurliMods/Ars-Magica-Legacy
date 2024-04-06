@@ -2,19 +2,15 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.item;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.ISkillPointItem;
-import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.Util;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,17 +20,6 @@ import java.util.Objects;
 public class InfinityOrbItem extends Item implements ISkillPointItem {
     public InfinityOrbItem() {
         super(AMItems.ITEM_1);
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        if (allowedIn(tab)) {
-            for (SkillPoint point : ArsMagicaAPI.get().getSkillPointRegistry().getValues()) {
-                if (point != AMSkillPoints.NONE.get()) {
-                    list.add(setSkillPoint(new ItemStack(this), point));
-                }
-            }
-        }
     }
 
     @Override

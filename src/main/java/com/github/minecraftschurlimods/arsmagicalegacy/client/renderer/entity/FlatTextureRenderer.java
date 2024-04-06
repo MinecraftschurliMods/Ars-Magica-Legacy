@@ -2,9 +2,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,6 +12,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public abstract class FlatTextureRenderer<T extends Entity> extends EntityRenderer<T> {
     protected FlatTextureRenderer(EntityRendererProvider.Context context) {
@@ -25,13 +25,13 @@ public abstract class FlatTextureRenderer<T extends Entity> extends EntityRender
         if (pEntity.tickCount < 2 && entityRenderDispatcher.camera.getEntity().distanceToSqr(pEntity) < 12.25D) return;
         ResourceLocation texture = getTextureLocation(pEntity);
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Quaternion quaternion = camera.rotation();
+        Quaternionf quaternion = camera.rotation();
         Vec3 vec3 = camera.getPosition();
         Vector3f[] array = new Vector3f[]{new Vector3f(-1F, -1F, 0F), new Vector3f(-1F, 1F, 0F), new Vector3f(1F, 1F, 0F), new Vector3f(1F, -1F, 0F)};
         for (Vector3f vector : array) {
-            vector.transform(quaternion);
-            Vector4f toTransform = new Vector4f(vector);
-            toTransform.transform(pMatrixStack.last().pose());
+            vector.rotate(quaternion);
+            Vector4f toTransform = new Vector4f(vector, 0f);
+            toTransform.mul(pMatrixStack.last().pose());
             vector.set(toTransform.x(), toTransform.y() + 1, toTransform.z());
         }
         pMatrixStack.pushPose();

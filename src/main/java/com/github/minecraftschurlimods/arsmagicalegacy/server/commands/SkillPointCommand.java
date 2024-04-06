@@ -25,7 +25,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_ADD_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_ADD_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_CONSUME_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_CONSUME_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_GET;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_RESET_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_RESET_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_SET_MULTIPLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_SET_SINGLE;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_UNKNOWN;
 
 public class SkillPointCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILL_POINTS = SkillPointCommand::suggestSkillPoints;

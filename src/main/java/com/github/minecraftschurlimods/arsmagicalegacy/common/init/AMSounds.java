@@ -83,7 +83,7 @@ public interface AMSounds {
     RegistryObject<SoundEvent> MAGIC_LEVEL_UP                   = register("misc.magic_level_up");
 
     private static RegistryObject<SoundEvent> register(String id) {
-        return SOUND_EVENTS.register(id, () -> new SoundEvent(new ResourceLocation(ArsMagicaAPI.MOD_ID, id)));
+        return SOUND_EVENTS.register(id, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ArsMagicaAPI.MOD_ID, id)));
     }
 
     /**

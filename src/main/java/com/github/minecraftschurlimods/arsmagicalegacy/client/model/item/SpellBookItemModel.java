@@ -7,11 +7,11 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.item.spellbook.Spe
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +46,7 @@ public class SpellBookItemModel extends BakedModelWrapper<BakedModel> {
     }
 
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+    public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         var api = ArsMagicaAPI.get();
         Player player = ClientHelper.getLocalPlayer();
         if (player != null && api.getMagicHelper().knowsMagic(player) && !stack.isEmpty() && SpellItemModel.isHand(cameraTransformType)) {

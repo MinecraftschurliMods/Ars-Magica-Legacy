@@ -4,44 +4,33 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualEffect;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualRequirement;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.google.gson.JsonElement;
+import com.github.minecraftschurlimods.easydatagenlib.api.AbstractDatapackRegistryProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class RitualProvider extends AbstractRegistryDataProvider<Ritual, RitualProvider.Builder> {
-    protected RitualProvider(String namespace, DataGenerator generator, ExistingFileHelper existingFileHelper, RegistryOps<JsonElement> registryOps) {
-        super(Ritual.REGISTRY_KEY, namespace, generator, existingFileHelper, registryOps);
-    }
-
-    @Override
-    public String getName() {
-        return "AMRituals[" + namespace + "]";
+public abstract class RitualProvider extends AbstractDatapackRegistryProvider<Ritual> {
+    protected RitualProvider(String namespace) {
+        super(Ritual.REGISTRY_KEY, namespace);
     }
 
     /**
-     * @param id      The id of the ritual.
      * @param effect  The effect of the ritual.
      * @param trigger The trigger of the trigger.
      */
-    public Builder builder(String id, RitualEffect effect, RitualTrigger trigger) {
-        return new Builder(new ResourceLocation(namespace, id), this, effect, trigger);
+    public Builder builder(RitualEffect effect, RitualTrigger trigger) {
+        return new Builder(effect, trigger);
     }
 
-    protected static class Builder extends AbstractRegistryDataProvider.Builder<Ritual, Builder> {
+    public static class Builder {
         private final List<RitualRequirement> requirements = new ArrayList<>();
         private final RitualEffect effect;
         private final RitualTrigger trigger;
         private BlockPos offset = BlockPos.ZERO;
 
-        private Builder(ResourceLocation id, RitualProvider provider, RitualEffect effect, RitualTrigger trigger) {
-            super(id, provider, Ritual.DIRECT_CODEC);
+        private Builder(RitualEffect effect, RitualTrigger trigger) {
             this.effect = effect;
             this.trigger = trigger;
         }
@@ -65,8 +54,7 @@ public abstract class RitualProvider extends AbstractRegistryDataProvider<Ritual
             return this;
         }
 
-        @Override
-        protected Ritual get() {
+        public Ritual build() {
             return new Ritual(trigger, requirements, effect, offset);
         }
     }

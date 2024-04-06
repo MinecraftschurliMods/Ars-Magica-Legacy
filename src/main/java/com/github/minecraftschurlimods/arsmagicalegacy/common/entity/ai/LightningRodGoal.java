@@ -4,7 +4,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.AbstractBos
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.LightningGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,7 +58,7 @@ public class LightningRodGoal extends AbstractBossGoal<LightningGuardian> {
         } else if (ticks <= 80) {
             target.moveTo(startPos.x(), startPos.y() + 6, startPos.z());
             if (ticks > 50) {
-                target.hurt(DamageSource.LIGHTNING_BOLT, 20);
+                target.hurt(target.damageSources().lightningBolt(), 20);
             }
             if (!boss.getLevel().isClientSide() && ticks % 20 == 0) {
                 boss.getLevel().playSound(null, boss, AMSounds.LIGHTNING_GUARDIAN_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, boss.getRandom().nextFloat() * 0.5f + 0.5f);
