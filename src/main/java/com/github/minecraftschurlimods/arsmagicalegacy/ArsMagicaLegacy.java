@@ -21,7 +21,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforgespi.language.IModInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
@@ -30,7 +29,8 @@ import software.bernie.geckolib.GeckoLib;
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
     private static ArsMagicaLegacy INSTANCE;
-    private final IModInfo modInfo;
+
+    private final ModContainer modContainer;
 
     public ArsMagicaLegacy(ModContainer container, IEventBus bus) {
         if (INSTANCE != null) {
@@ -44,7 +44,7 @@ public final class ArsMagicaLegacy {
             throw exception;
         }
         INSTANCE = this;
-        modInfo = container.getModInfo();
+        modContainer = container;
         GeckoLib.initialize(bus);
         AMRegistries.init(bus);
         EventHandler.register(bus);
@@ -66,10 +66,14 @@ public final class ArsMagicaLegacy {
         CompatManager.preInit(bus);
     }
 
+    public static ModContainer getModContainer() {
+        return INSTANCE.modContainer;
+    }
+
     /**
      * @return The mod display name.
      */
     public static String getModName() {
-        return INSTANCE.modInfo.getDisplayName();
+        return getModContainer().getModInfo().getDisplayName();
     }
 }

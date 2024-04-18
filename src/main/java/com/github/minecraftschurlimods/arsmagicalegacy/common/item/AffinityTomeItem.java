@@ -31,7 +31,6 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
-        //if (pLevel.isClientSide()) return InteractionResultHolder.fail(stack);
         var api = ArsMagicaAPI.get();
         if (!api.getMagicHelper().knowsMagic(pPlayer)) {
             pPlayer.displayClientMessage(Component.translatable(TranslationConstants.PREVENT_ITEM), true);
@@ -43,16 +42,16 @@ public class AffinityTomeItem extends Item implements IAffinityItem {
         for (Affinity a : api.getAffinityRegistry()) {
             if (a.getId() == Affinity.NONE) continue;
             if (affinity == a) {
-                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, shift, false);
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, a, shift, false);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                     helper.increaseAffinityDepth(pPlayer, event.affinity, event.shift);
-                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, a, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
                 }
             } else {
-                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, affinity, -shift, false);
+                AffinityChangingEvent.Pre event = new AffinityChangingEvent.Pre(pPlayer, a, -shift, false);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                     helper.decreaseAffinityDepth(pPlayer, event.affinity, -event.shift);
-                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, affinity, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
+                    NeoForge.EVENT_BUS.post(new AffinityChangingEvent.Post(pPlayer, event.affinity, (float) helper.getAffinityDepth(pPlayer, event.affinity), false));
                 }
             }
         }

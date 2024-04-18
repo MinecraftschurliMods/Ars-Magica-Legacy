@@ -42,8 +42,7 @@ public final class AffinityHelper implements IAffinityHelper {
     private static final float MINOR_OPPOSING_FACTOR = 0.5f;
     private static final float MAJOR_OPPOSING_FACTOR = 0.75f;
 
-    private AffinityHelper() {
-    }
+    private AffinityHelper() {}
 
     /**
      * @return The only instance of this class.
@@ -116,6 +115,11 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public double getAffinityDepth(Player player, Holder<Affinity> affinity) {
+        return getAffinityDepth(player, affinity.unwrapKey().get().location());
+    }
+
+    @Override
     public double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue) {
         return player.isDeadOrDying() ? defaultValue : getAffinityDepth(player, affinity);
     }
@@ -123,6 +127,11 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public double getAffinityDepthOrElse(Player player, Affinity affinity, double defaultValue) {
         return getAffinityDepthOrElse(player, affinity.getId(), defaultValue);
+    }
+
+    @Override
+    public double getAffinityDepthOrElse(Player player, Holder<Affinity> affinity, double defaultValue) {
+        return getAffinityDepthOrElse(player, affinity.unwrapKey().get().location(), defaultValue);
     }
 
     @Override
@@ -138,6 +147,11 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public void setAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
+        setAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
+    }
+
+    @Override
     public void increaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
         AffinityHolder holder = player.getData(AFFINITY);
         holder.addToAffinity(affinity, amount);
@@ -150,6 +164,11 @@ public final class AffinityHelper implements IAffinityHelper {
     }
 
     @Override
+    public void increaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
+        increaseAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
+    }
+
+    @Override
     public void decreaseAffinityDepth(Player player, ResourceLocation affinity, float amount) {
         AffinityHolder holder = player.getData(AFFINITY);
         holder.subtractFromAffinity(affinity, amount);
@@ -159,6 +178,11 @@ public final class AffinityHelper implements IAffinityHelper {
     @Override
     public void decreaseAffinityDepth(Player player, Affinity affinity, float amount) {
         decreaseAffinityDepth(player, affinity.getId(), amount);
+    }
+
+    @Override
+    public void decreaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount) {
+        decreaseAffinityDepth(player, affinity.unwrapKey().get().location(), amount);
     }
 
     @Override
@@ -190,6 +214,11 @@ public final class AffinityHelper implements IAffinityHelper {
         ResourceLocation directOpposite = affinity.directOpposite();
         holder.subtractFromAffinity(directOpposite, shift);
         syncToPlayer(player);
+    }
+
+    @Override
+    public void applyAffinityShift(Player player, Holder<Affinity> affinity, float shift) {
+        applyAffinityShift(player, affinity.value(), shift);
     }
 
     @Override
@@ -325,7 +354,7 @@ public final class AffinityHelper implements IAffinityHelper {
          * @param shift    The shift to add.
          */
         public void addToAffinity(ResourceLocation affinity, float shift) {
-            depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) + shift, 0, MAX_DEPTH));
+            depths.compute(affinity, (rl, curr) -> Mth.clamp(curr != null ? curr + shift : shift, 0, MAX_DEPTH));
         }
 
         /**
@@ -335,7 +364,7 @@ public final class AffinityHelper implements IAffinityHelper {
          * @param shift    The shift to subtract.
          */
         public void subtractFromAffinity(ResourceLocation affinity, float shift) {
-            depths.compute(affinity, (rl, curr) -> Mth.clamp((curr != null ? curr : 0) - shift, 0, MAX_DEPTH));
+            depths.compute(affinity, (rl, curr) -> Mth.clamp(curr != null ? curr - shift : shift, 0, MAX_DEPTH));
         }
 
         public void setLocked(boolean locked) {

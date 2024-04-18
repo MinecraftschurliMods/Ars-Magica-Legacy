@@ -3,19 +3,18 @@ package com.github.minecraftschurlimods.arsmagicalegacy.test;
 import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaAPIImpl;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.gametest.framework.GameTest;
-import net.minecraft.gametest.framework.GameTestHelper;
-import net.neoforged.neoforge.gametest.GameTestHolder;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.testframework.annotation.ForEachTest;
+import net.neoforged.testframework.annotation.TestHolder;
+import net.neoforged.testframework.gametest.EmptyTemplate;
+import net.neoforged.testframework.gametest.ExtendedGameTestHelper;
 
-@PrefixGameTestTemplate(false)
-@GameTestHolder(ArsMagicaAPI.MOD_ID)
+@ForEachTest(groups = ArsMagicaAPI.MOD_ID + ".api")
 public class ArsMagicaAPITest {
-    @GameTest(template = "empty")
-    public void testApiNotDummy(GameTestHelper helper) {
-        if (ArsMagicaAPI.get() instanceof ArsMagicaAPIImpl) {
-            helper.succeed();
-        } else {
-            helper.fail("Wrong Implementation of ArsMagicaAPI.IArsMagicaAPI!");
-        }
+    @GameTest
+    @EmptyTemplate
+    @TestHolder(description = "Test that the implementation of the ArsMagicaAPI is available and of the correct class")
+    public static void testApiNotDummy(ExtendedGameTestHelper helper) {
+        helper.assertTrue(ArsMagicaAPI.get().getClass() == ArsMagicaAPIImpl.class, "Wrong Implementation of ArsMagicaAPI!");
+        helper.succeed();
     }
 }

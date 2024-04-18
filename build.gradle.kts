@@ -101,6 +101,7 @@ val patchouli = helper.dependencies.required("patchouli") {
 }
 val embeddium = helper.dependencies.optional("embeddium")
 
+
 dependencies {
     implementation(helper.neoforge())
 
@@ -165,6 +166,8 @@ dependencies {
     val easyDatagenLibDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}" }
     "apiCompileOnly"(easyDatagenLibApiDep)
     "dataImplementation"(easyDatagenLibDep)
+
+    testImplementation("net.neoforged:testframework:${helper.neoVersion.get()}")
 
     val jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
     compileOnly(jetbrainsAnnotations)

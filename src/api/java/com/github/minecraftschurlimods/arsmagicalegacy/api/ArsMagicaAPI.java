@@ -47,26 +47,6 @@ public interface ArsMagicaAPI {
     ResourceLocation PREFAB_SPELLS_CREATIVE_TAB = new ResourceLocation(MOD_ID, "prefab_spells");
     ResourceLocation MAIN_CREATIVE_TAB = new ResourceLocation(MOD_ID, "main");
 
-    @Internal
-    final class InstanceHolder {
-        private InstanceHolder() {}
-
-        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
-            Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
-            if (!FMLEnvironment.production) {
-                return impl.orElseThrow(() -> {
-                    IllegalStateException exception = new IllegalStateException("Unable to find implementation for IArsMagicaAPI!");
-                    LoggerFactory.getLogger(MOD_ID).error(exception.getMessage(), exception);
-                    return exception;
-                });
-            }
-            return impl.orElseGet(() -> {
-                LoggerFactory.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
-                return null;
-            });
-        });
-    }
-
     /**
      * @return The API instance.
      */
@@ -211,4 +191,24 @@ public interface ArsMagicaAPI {
      * @return The transitioned block state for the given block and spell part or empty.
      */
     Optional<BlockState> getSpellTransformationFor(BlockState block, Level level, ResourceLocation spellPart);
+
+    @Internal
+    final class InstanceHolder {
+        private InstanceHolder() {}
+
+        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
+            Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
+            if (!FMLEnvironment.production) {
+                return impl.orElseThrow(() -> {
+                    IllegalStateException exception = new IllegalStateException("Unable to find implementation for IArsMagicaAPI!");
+                    LoggerFactory.getLogger(MOD_ID).error(exception.getMessage(), exception);
+                    return exception;
+                });
+            }
+            return impl.orElseGet(() -> {
+                LoggerFactory.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
+                return null;
+            });
+        });
+    }
 }
