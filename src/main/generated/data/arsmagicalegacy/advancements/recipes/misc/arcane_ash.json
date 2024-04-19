@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_arcane_compound",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_arcane_compound"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:arcane_ash"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.function.BiPredicate;
 
 public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlock {
+    private static final MapCodec<BlackAuremBlock> CODEC = MapCodec.unit(BlackAuremBlock::new);
     private static final VoxelShape BOX = Block.box(6, 6, 6, 10, 10, 10);
     private static final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_CHALK);
     private static final BiPredicate<Level, BlockPos> PILLAR1 = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.BLACK_AUREM_PILLAR1);
@@ -70,5 +72,10 @@ public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlo
             }
         }
         return tier;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 }

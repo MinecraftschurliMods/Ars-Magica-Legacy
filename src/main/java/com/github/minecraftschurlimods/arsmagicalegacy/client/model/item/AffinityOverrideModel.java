@@ -7,11 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
 
 public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
@@ -32,7 +32,7 @@ public class AffinityOverrideModel extends BakedModelWrapper<BakedModel> {
             Affinity affinity = ArsMagicaAPI.get().getAffinityHelper().getAffinityForStack(stack);
             if (!(stack.getItem() instanceof IAffinityItem)) return model;
             if (affinity.getId().equals(Affinity.NONE) && !((IAffinityItem) stack.getItem()).hasNoneVariant()) return model;
-            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_" + affinity.getId().getPath());
+            ResourceLocation rl = new ResourceLocation(affinity.getId().getNamespace(), "item/" + BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + "_" + affinity.getId().getPath());
             return Minecraft.getInstance().getModelManager().getModel(rl);
         }
     }

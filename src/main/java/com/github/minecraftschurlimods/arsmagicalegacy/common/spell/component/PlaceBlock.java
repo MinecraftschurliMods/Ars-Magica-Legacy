@@ -5,6 +5,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellCastResult;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -37,13 +37,13 @@ public class PlaceBlock extends AbstractComponent {
         if (player.isShiftKeyDown()) {
             BlockState state = level.getBlockState(target.getBlockPos());
             if (!state.isAir() && state.getBlock().asItem() != Items.AIR) {
-                stack.getOrCreateTag().putString(KEY, ForgeRegistries.BLOCKS.getKey(state.getBlock()).toString());
+                stack.getOrCreateTag().putString(KEY, BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
                 return SpellCastResult.SUCCESS;
             }
         } else {
             String id = stack.getOrCreateTag().getString(KEY);
             if (id.isEmpty()) return SpellCastResult.EFFECT_FAILED;
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
+            Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(id));
             if (block == null) return SpellCastResult.EFFECT_FAILED;
             BlockPos pos = target.getBlockPos();
             if (!level.getBlockState(pos).canBeReplaced(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, stack, target))) {

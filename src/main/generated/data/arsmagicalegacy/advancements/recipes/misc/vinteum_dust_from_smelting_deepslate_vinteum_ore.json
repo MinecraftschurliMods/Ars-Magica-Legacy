@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_vinteum_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_vinteum_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:vinteum_dust_from_smelting_deepslate_vinteum_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -19,13 +19,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.LightLayer;
-import net.minecraftforge.common.capabilities.CapabilityProvider;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 /**
@@ -37,11 +34,9 @@ final class TickHandler {
         forgeBus.addListener(TickHandler::playerTick);
     }
 
-    private static final Field CAP_PROVIDER_VALID = ObfuscationReflectionHelper.findField(CapabilityProvider.class, "valid");
-
     private static void livingUpdate(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.get()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
+        if (entity.hasEffect(AMMobEffects.WATERY_GRAVE.value()) && (entity.isInWaterOrBubble() || entity.getPose() == Pose.SWIMMING)) {
             entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getPose() == Pose.SWIMMING ? 0 : Math.min(0, entity.getDeltaMovement().y()), entity.getDeltaMovement().z());
         }
         if (event.getEntity().isOnFire()) {
@@ -97,8 +92,8 @@ final class TickHandler {
         } else if (skillHelper.knows(player, AMTalents.MANA_REGEN_BOOST_1)) {
             factor = 1.05f;
         }
-        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.get()) * factor);
-        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.get()) * factor);
+        api.getManaHelper().increaseMana(player, (float) player.getAttributeValue(AMAttributes.MANA_REGEN.value()) * factor);
+        api.getBurnoutHelper().decreaseBurnout(player, (float) player.getAttributeValue(AMAttributes.BURNOUT_REGEN.value()) * factor);
     }
 
     private static void handleAbilities(final Player player) {
@@ -106,11 +101,6 @@ final class TickHandler {
         var api = ArsMagicaAPI.get();
         var manager = player.level().registryAccess().registryOrThrow(Ability.REGISTRY_KEY);
         var helper = api.getAffinityHelper();
-        try {
-            if (!(boolean) CAP_PROVIDER_VALID.get(player)) return;
-        } catch (IllegalAccessException ignored) {
-            return;
-        }
         Ability ability;
         if (!player.isCreative()) {
             // todo use custom damage types

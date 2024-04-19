@@ -35,6 +35,6 @@ public class RiftMenu extends ChestMenu {
      * @return A rift menu.
      */
     public static RiftMenu rift(int windowId, Inventory inv, Player player, int size) {
-        return new RiftMenu(windowId, inv, new RiftContainer(ArsMagicaAPI.get().getRiftHelper().getRift(player).orElseThrow(() -> new RuntimeException("Could not retrieve rift capability for LivingEntity %s{%s}".formatted(player.getGameProfile().getName(), player.getGameProfile().getId())))), size);
+        return new RiftMenu(windowId, inv, new RiftContainer(ArsMagicaAPI.get().getRiftHelper().getRift(player)), size);
     }
 }

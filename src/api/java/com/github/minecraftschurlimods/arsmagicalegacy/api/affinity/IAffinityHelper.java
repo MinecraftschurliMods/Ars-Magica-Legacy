@@ -1,5 +1,6 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.affinity;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,6 +23,12 @@ public interface IAffinityHelper {
     ItemStack getEssenceForAffinity(Affinity affinity);
 
     /**
+     * @param affinity The affinity to get the essence stack for.
+     * @return An item stack containing the affinity essence.
+     */
+    ItemStack getEssenceForAffinity(Holder<Affinity> affinity);
+
+    /**
      * @param affinity The id of the affinity to get the tome stack for.
      * @return An item stack containing the affinity tome.
      */
@@ -32,6 +39,12 @@ public interface IAffinityHelper {
      * @return An item stack containing the affinity tome.
      */
     ItemStack getTomeForAffinity(Affinity affinity);
+
+    /**
+     * @param affinity The affinity to get the tome stack for.
+     * @return An item stack containing the affinity tome.
+     */
+    ItemStack getTomeForAffinity(Holder<Affinity> affinity);
 
     /**
      * @param item     The item to make the item stack from.
@@ -48,6 +61,14 @@ public interface IAffinityHelper {
      * @return An item stack of the given item with the given affinity stored in it.
      */
     <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Affinity affinity);
+
+    /**
+     * @param item     The item to make the item stack from.
+     * @param affinity The affinity to set on the item stack.
+     * @param <T>      The item implementing AffinityItem.
+     * @return An item stack of the given item with the given affinity stored in it.
+     */
+    <T extends Item & IAffinityItem> ItemStack getStackForAffinity(T item, Holder<Affinity> affinity);
 
     /**
      * @param stack The stack to get the affinity from.
@@ -70,6 +91,21 @@ public interface IAffinityHelper {
     double getAffinityDepth(Player player, Affinity affinity);
 
     /**
+     * @param player   The player to get the affinity depth for.
+     * @param affinity The affinity to get the depth for.
+     * @return The depth of the given player in the given affinity.
+     */
+    double getAffinityDepth(Player player, Holder<Affinity> affinity);
+
+    /**
+     * @param player       The player to get the affinity depth for.
+     * @param affinity     The id of the affinity to get the depth for.
+     * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
+     * @return The depth of the given player in the given affinity, or {@code defaultValue} if the affinity depth cannot be determined.
+     */
+    double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue);
+
+    /**
      * @param player       The player to get the affinity depth for.
      * @param affinity     The affinity to get the depth for.
      * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
@@ -79,11 +115,11 @@ public interface IAffinityHelper {
 
     /**
      * @param player       The player to get the affinity depth for.
-     * @param affinity     The id of the affinity to get the depth for.
+     * @param affinity     The affinity to get the depth for.
      * @param defaultValue The default value that will be returned if the affinity depth cannot be retrieved.
      * @return The depth of the given player in the given affinity, or {@code defaultValue} if the affinity depth cannot be determined.
      */
-    double getAffinityDepthOrElse(Player player, ResourceLocation affinity, double defaultValue);
+    double getAffinityDepthOrElse(Player player, Holder<Affinity> affinity, double defaultValue);
 
     /**
      * @param player   The player to set the affinity depth for.
@@ -100,6 +136,13 @@ public interface IAffinityHelper {
     void setAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
+     * @param player   The player to set the affinity depth for.
+     * @param affinity The affinity to set the depth for.
+     * @param amount   The amount the affinity should have.
+     */
+    void setAffinityDepth(Player player, Holder<Affinity> affinity, float amount);
+
+    /**
      * @param player   The player to add the affinity depth for.
      * @param affinity The id of the affinity to add the depth for.
      * @param amount   The amount to add.
@@ -114,6 +157,13 @@ public interface IAffinityHelper {
     void increaseAffinityDepth(Player player, Affinity affinity, float amount);
 
     /**
+     * @param player   The player to add the affinity depth for.
+     * @param affinity The affinity to add the depth for.
+     * @param amount   The amount to add.
+     */
+    void increaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount);
+
+    /**
      * @param player   The player to subtract the affinity depth for.
      * @param affinity The id of the affinity to subtract the depth for.
      * @param amount   The amount to subtract.
@@ -126,6 +176,13 @@ public interface IAffinityHelper {
      * @param amount   The amount to subtract.
      */
     void decreaseAffinityDepth(Player player, Affinity affinity, float amount);
+
+    /**
+     * @param player   The player to subtract the affinity depth for.
+     * @param affinity The affinity to subtract the depth for.
+     * @param amount   The amount to subtract.
+     */
+    void decreaseAffinityDepth(Player player, Holder<Affinity> affinity, float amount);
 
     /**
      * Applies the affinity shift for the given player and affinity.
@@ -144,6 +201,15 @@ public interface IAffinityHelper {
      * @param shift    The amount to shift.
      */
     void applyAffinityShift(Player player, Affinity affinity, float shift);
+
+    /**
+     * Applies the affinity shift for the given player and affinity.
+     *
+     * @param player   The player to shift the affinity for.
+     * @param affinity The affinity to shift.
+     * @param shift    The amount to shift.
+     */
+    void applyAffinityShift(Player player, Holder<Affinity> affinity, float shift);
 
     /**
      * Locks the player's affinities.

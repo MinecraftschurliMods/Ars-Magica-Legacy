@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_topaz_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_topaz_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:topaz_from_blasting_topaz_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

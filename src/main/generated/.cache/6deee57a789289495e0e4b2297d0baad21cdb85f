@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-06T00:51:49.2292185	vanilla/Block States: arsmagicalegacy
+// 1.20.4	2024-03-07T11:37:55.0293577	vanilla/Block States: arsmagicalegacy
 9ff96b56b738b4ea85e1140167a077e69db0178f assets/arsmagicalegacy/blockstates/altar_core.json
 3dff9e1ec59415779195d2abfa9f07bc17b428a1 assets/arsmagicalegacy/blockstates/altar_view.json
 beb7ab7de7f6ae890282ef38e36400685d083d78 assets/arsmagicalegacy/blockstates/aum.json
@@ -63,7 +63,7 @@ bbb195b12c389533eeab1fd35c616bd51c4d9215 assets/arsmagicalegacy/blockstates/wiza
 dede1a5e7c82ee7d2761a303d884419943ea96b7 assets/arsmagicalegacy/models/block/altar_core_overlay.json
 a92a86fd0961228b76c96d8d27427847da7fcb9d assets/arsmagicalegacy/models/block/aum.json
 8bac0cbdf24600f7bea0a472136d4a050dc677b5 assets/arsmagicalegacy/models/block/black_aurem.json
-4d4e071a46d30789b28008828a7085a490690b91 assets/arsmagicalegacy/models/block/celestial_prism.json
+eb09be2453206b4114bfce1bc7a758db4fd62767 assets/arsmagicalegacy/models/block/celestial_prism.json
 d8121fbca06f74f2c4cdbe8d829c32172201c1ab assets/arsmagicalegacy/models/block/celestial_prism_upper.json
 73320da5fccf4478a4a612157a9c174477193eb6 assets/arsmagicalegacy/models/block/cerublossom.json
 a418d19b121a13b5c8477b854a93c748e442d0b3 assets/arsmagicalegacy/models/block/chimerite_block.json
@@ -85,8 +85,8 @@ e3a8dc0483c6edd6321063b2fb1c0c90ccd5c521 assets/arsmagicalegacy/models/block/gol
 473f1e7e192c4cb45e6bf4de44f822d82cfd8978 assets/arsmagicalegacy/models/block/magic_wall.json
 c9879977d87892fecdebebd013240ac3e2e053c6 assets/arsmagicalegacy/models/block/moonstone_block.json
 778c9d6a21bf9053f451dc0252597b7722870cfd assets/arsmagicalegacy/models/block/moonstone_ore.json
-2aa4a5b73a0cb68a51f7bfcd510e5d629f1c1445 assets/arsmagicalegacy/models/block/obelisk.json
-f9d0ef98ee61c1800c372631e8f74eb347e21533 assets/arsmagicalegacy/models/block/obelisk_lit.json
+20cc63a58c0e04c845863fc3fc70943605b2b189 assets/arsmagicalegacy/models/block/obelisk.json
+b326e445229d0b55bc7239f92e02f89aedec2e7d assets/arsmagicalegacy/models/block/obelisk_lit.json
 ac2673de6b61ecf954ef76f6983deafa781feb56 assets/arsmagicalegacy/models/block/obelisk_upper.json
 22b596a34fcf733f63e07051bc3016f96785789b assets/arsmagicalegacy/models/block/potted_aum.json
 ecee8b6bdfadc7c1e016d3eb27094c4756e79c1c assets/arsmagicalegacy/models/block/potted_cerublossom.json

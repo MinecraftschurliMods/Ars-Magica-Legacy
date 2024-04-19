@@ -7,8 +7,8 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPartStat;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.util.ItemFilter;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -44,8 +44,7 @@ public abstract class SpellEvent extends LivingEvent {
         /**
          * Event that fires before a spell is cast.
          */
-        @Cancelable
-        public static final class Pre extends Cast {
+        public static final class Pre extends Cast implements ICancellableEvent {
             public Pre(LivingEntity entity, ISpell spell) {
                 super(entity, spell);
             }
@@ -63,8 +62,7 @@ public abstract class SpellEvent extends LivingEvent {
         /**
          * Event that fires for each spell component before it gets invoked.
          */
-        @Cancelable
-        public static final class Component extends Cast {
+        public static final class Component extends Cast implements ICancellableEvent {
             private final ISpellComponent component;
             private final List<ISpellModifier> modifiers;
             private final @Nullable HitResult target;

@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class WakebloomBlock extends FlowerBlock {
     public WakebloomBlock() {
-        super(AMMobEffects.BURNOUT_REDUCTION, 7, BlockBehaviour.Properties.copy(Blocks.POPPY));
+        super(AMMobEffects.BURNOUT_REDUCTION::value, 7, BlockBehaviour.Properties.ofLegacyCopy(Blocks.POPPY));
     }
 
     @Override

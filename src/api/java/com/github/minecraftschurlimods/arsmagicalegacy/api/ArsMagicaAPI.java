@@ -22,16 +22,16 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ShapeGroup;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellIngredientType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.SpellStack;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
@@ -46,26 +46,6 @@ public interface ArsMagicaAPI {
     String MOD_ID = "arsmagicalegacy";
     ResourceLocation PREFAB_SPELLS_CREATIVE_TAB = new ResourceLocation(MOD_ID, "prefab_spells");
     ResourceLocation MAIN_CREATIVE_TAB = new ResourceLocation(MOD_ID, "main");
-
-    @Internal
-    final class InstanceHolder {
-        private InstanceHolder() {}
-
-        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
-            Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
-            if (!FMLEnvironment.production) {
-                return impl.orElseThrow(() -> {
-                    IllegalStateException exception = new IllegalStateException("Unable to find implementation for IArsMagicaAPI!");
-                    LoggerFactory.getLogger(MOD_ID).error(exception.getMessage(), exception);
-                    return exception;
-                });
-            }
-            return impl.orElseGet(() -> {
-                LoggerFactory.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
-                return null;
-            });
-        });
-    }
 
     /**
      * @return The API instance.
@@ -82,33 +62,33 @@ public interface ArsMagicaAPI {
     /**
      * @return The registry for skill points.
      */
-    IForgeRegistry<SkillPoint> getSkillPointRegistry();
+    Registry<SkillPoint> getSkillPointRegistry();
 
     /**
      * @return The registry for affinities.
      */
-    IForgeRegistry<Affinity> getAffinityRegistry();
+    Registry<Affinity> getAffinityRegistry();
 
     /**
      * @return The registry for spell parts.
      */
-    IForgeRegistry<ISpellPart> getSpellPartRegistry();
+    Registry<ISpellPart> getSpellPartRegistry();
 
     /**
      * @return The registry for contingency types.
      */
-    IForgeRegistry<ContingencyType> getContingencyTypeRegistry();
+    Registry<ContingencyType> getContingencyTypeRegistry();
 
     @Experimental
-    IForgeRegistry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
+    Registry<Codec<? extends RitualTrigger>> getRitualTriggerTypeRegistry();
 
     @Experimental
-    IForgeRegistry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry();
+    Registry<Codec<? extends RitualRequirement>> getRitualRequirementTypeRegistry();
 
     @Experimental
-    IForgeRegistry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
+    Registry<Codec<? extends RitualEffect>> getRitualEffectTypeRegistry();
 
-    IForgeRegistry<SpellIngredientType<?>> getSpellIngredientTypeRegistry();
+    Registry<SpellIngredientType<?>> getSpellIngredientTypeRegistry();
 
     /**
      * @return The spell data manager instance.
@@ -211,4 +191,24 @@ public interface ArsMagicaAPI {
      * @return The transitioned block state for the given block and spell part or empty.
      */
     Optional<BlockState> getSpellTransformationFor(BlockState block, Level level, ResourceLocation spellPart);
+
+    @Internal
+    final class InstanceHolder {
+        private InstanceHolder() {}
+
+        private static final Lazy<ArsMagicaAPI> LAZY_INSTANCE = Lazy.concurrentOf(() -> {
+            Optional<ArsMagicaAPI> impl = ServiceLoader.load(FMLLoader.getGameLayer(), ArsMagicaAPI.class).findFirst();
+            if (!FMLEnvironment.production) {
+                return impl.orElseThrow(() -> {
+                    IllegalStateException exception = new IllegalStateException("Unable to find implementation for IArsMagicaAPI!");
+                    LoggerFactory.getLogger(MOD_ID).error(exception.getMessage(), exception);
+                    return exception;
+                });
+            }
+            return impl.orElseGet(() -> {
+                LoggerFactory.getLogger(MOD_ID).error("Unable to find implementation for IArsMagicaAPI!");
+                return null;
+            });
+        });
+    }
 }

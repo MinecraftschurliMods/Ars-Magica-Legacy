@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_moonstone_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_moonstone_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:moonstone_from_blasting_deepslate_moonstone_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

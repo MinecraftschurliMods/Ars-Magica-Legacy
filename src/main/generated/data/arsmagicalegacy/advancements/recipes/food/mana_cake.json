@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_cerublossom",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_cerublossom"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:mana_cake"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

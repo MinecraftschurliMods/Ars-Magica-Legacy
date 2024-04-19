@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.affinity.Affinity;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.client.ISpellIngredientRenderer;
@@ -20,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.GameRenderer;
@@ -33,6 +33,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -82,7 +83,7 @@ public class SpellRecipeScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(graphics);
+        renderBackground(graphics, pMouseX, pMouseY, pPartialTick);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         graphics.setColor(1f, 1f, 1f, 1f);
         graphics.blit(BACKGROUND, xPos, 2, 0, 0, WIDTH, HEIGHT);
@@ -94,7 +95,9 @@ public class SpellRecipeScreen extends Screen {
         if (cachedPage != currentPage) {
             cachedPage = currentPage;
         }
-        super.render(graphics, pMouseX, pMouseY, pPartialTick);
+        for (Renderable renderable : renderables) {
+            renderable.render(graphics, pMouseX, pMouseY, pPartialTick);
+        }
         List<Component> tooltip = page.getTooltip(pMouseX - xPos - 36, pMouseY - 32);
         if (!tooltip.isEmpty()) {
             graphics.renderTooltip(font, tooltip, Optional.empty(), pMouseX, pMouseY);
@@ -137,7 +140,7 @@ public class SpellRecipeScreen extends Screen {
         addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, e -> minecraft.setScreen(null)).pos(width / 2 - 100, 196).size(lecternPos == null ? 200 : 98, 20).build());
         if (lecternPos != null) {
             addRenderableWidget(Button.builder(Component.translatable("lectern.take_book"), e -> {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new TakeSpellRecipeFromLecternPacket(lecternPos));
+                PacketDistributor.SERVER.noArg().send(new TakeSpellRecipeFromLecternPacket(lecternPos));
                 minecraft.setScreen(null);
             }).pos(this.width / 2 + 2, 196).size(98, 20).build());
         }
@@ -159,7 +162,7 @@ public class SpellRecipeScreen extends Screen {
         forwardButton.visible = currentPage < pages.size() - 1;
         backButton.visible = currentPage > 0;
         if (lecternPos != null) {
-            ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new SetLecternPagePacket(lecternPos, currentPage));
+            PacketDistributor.SERVER.noArg().send(new SetLecternPagePacket(lecternPos, currentPage));
         }
         return true;
     }

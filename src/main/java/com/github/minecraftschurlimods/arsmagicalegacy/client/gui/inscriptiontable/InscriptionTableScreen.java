@@ -87,7 +87,6 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
 
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(guiGraphics);
         super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         for (DragArea<SpellPartDraggable> area : dragAreas) {
             area.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
@@ -162,7 +161,8 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
         if (keyCode == InputConstants.KEY_ESCAPE && shouldCloseOnEsc()) {
             onClose();
             return true;
-        } else if (keyCode == InputConstants.KEY_TAB) {
+        }
+        if (keyCode == InputConstants.KEY_TAB) {
             boolean flag = !hasShiftDown();
             FocusNavigationEvent event = new FocusNavigationEvent.TabNavigation(flag);
             ComponentPath componentPath = nextFocusPath(event);
@@ -170,9 +170,12 @@ public class InscriptionTableScreen extends AbstractContainerScreen<InscriptionT
                 changeFocus(componentPath);
             }
             return false;
-        } else {
-            return getFocused() != null && getFocused().keyPressed(keyCode, scanCode, modifiers);
         }
+        if (getFocused() instanceof EditBox editBox) {
+            editBox.keyPressed(keyCode, scanCode, modifiers);
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override

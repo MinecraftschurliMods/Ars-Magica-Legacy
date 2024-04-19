@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.gui.occulus;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.skill.SkillPoint;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSkillPoints;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,8 +12,8 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SkillPointPanel extends AbstractWidget {
     private static final ResourceLocation SKILL_POINT_BG = new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/gui/occulus/skill_points.png");
@@ -22,16 +23,19 @@ public class SkillPointPanel extends AbstractWidget {
     protected SkillPointPanel(Player player, Font font, int x, int y, int width, int height) {
         super(x, y, width, height, Component.empty());
         this.font = font;
+        this.skillPointText = new ArrayList<>();
+        this.updateContent(player);
+    }
+
+    public void updateContent(Player player) {
         ArsMagicaAPI api = ArsMagicaAPI.get();
-        this.skillPointText = api.getSkillPointRegistry()
-                                 .getValues()
-                                 .stream()
-                                 .filter(e -> e != AMSkillPoints.NONE.get())
-                                 .map(point -> {
-                                     int skillPoint = api.getSkillHelper().getSkillPoint(player, point);
-                                     return point.getDisplayName().copy().append(" : " + skillPoint).withStyle(Style.EMPTY.withColor(point.color()));
-                                 }).collect(Collectors.toList());
-        this.setWidth(skillPointText.stream().mapToInt(font::width).max().orElse(0) + 6);
+        this.skillPointText.clear();
+        for (SkillPoint point : api.getSkillPointRegistry()) {
+            if (point == AMSkillPoints.NONE.value()) continue;
+            int skillPoint = api.getSkillHelper().getSkillPoint(player, point);
+            this.skillPointText.add(point.getDisplayName().copy().append(" : " + skillPoint).withStyle(Style.EMPTY.withColor(point.color())));
+        }
+        this.setWidth(this.skillPointText.stream().mapToInt(this.font::width).max().orElse(0) + 6);
     }
 
     @Override

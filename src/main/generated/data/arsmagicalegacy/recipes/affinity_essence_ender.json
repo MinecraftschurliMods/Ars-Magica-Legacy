@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
     },
     "I": {
       "tag": "forge:ender_pearls"
@@ -26,6 +26,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:ender\"}"
-  },
-  "show_notification": true
+  }
 }

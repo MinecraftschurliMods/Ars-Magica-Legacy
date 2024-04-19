@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_sunstone_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sunstone_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:sunstone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

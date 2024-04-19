@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_glowstone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_glowstone"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:arcane_compound"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -8,7 +8,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellComponent
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegistries;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -20,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,8 +29,8 @@ import java.util.function.Function;
 
 public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, List<ISpellModifier> modifiers) implements RitualTrigger {
     public static final Codec<SpellComponentCastRitualTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error(() -> "Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
-            CodecHelper.forRegistry(AMRegistries.SPELL_PART_REGISTRY).comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error(() -> "Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
+            AMRegistries.SPELL_PART_REGISTRY.byNameCodec().comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.COMPONENT ? DataResult.success(((ISpellComponent) part)) : DataResult.error(() -> "Not a spell component"), Function.identity()).listOf().fieldOf("components").forGetter(SpellComponentCastRitualTrigger::components),
+            AMRegistries.SPELL_PART_REGISTRY.byNameCodec().comapFlatMap(part -> part.getType() == ISpellPart.SpellPartType.MODIFIER ? DataResult.success(((ISpellModifier) part)) : DataResult.error(() -> "Not a spell modifier"), Function.identity()).listOf().fieldOf("modifiers").forGetter(SpellComponentCastRitualTrigger::modifiers)
     ).apply(inst, SpellComponentCastRitualTrigger::new));
 
     public SpellComponentCastRitualTrigger(List<ISpellComponent> components) {
@@ -40,7 +39,7 @@ public record SpellComponentCastRitualTrigger(List<ISpellComponent> components, 
 
     @Override
     public void register(Ritual ritual) {
-        MinecraftForge.EVENT_BUS.addListener((SpellEvent.Cast.Component evt) -> {
+        NeoForge.EVENT_BUS.addListener((SpellEvent.Cast.Component evt) -> {
             if (evt.getEntity() instanceof Player player && player.level() instanceof ServerLevel level && components.contains(evt.getComponent())) {
                 HitResult target = evt.getTarget();
                 if (target == null) return;

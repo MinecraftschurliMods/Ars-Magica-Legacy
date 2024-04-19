@@ -30,27 +30,27 @@ public class EnderGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 5000).add(AMAttributes.MAX_BURNOUT.get(), 5000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 5000).add(AMAttributes.MAX_BURNOUT.value(), 5000);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.ENDER_GUARDIAN_AMBIENT.get();
+        return AMSounds.ENDER_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.ENDER_GUARDIAN_HURT.get();
+        return AMSounds.ENDER_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.ENDER_GUARDIAN_DEATH.get();
+        return AMSounds.ENDER_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.ENDER_GUARDIAN_ATTACK.get();
+        return AMSounds.ENDER_GUARDIAN_ATTACK.value();
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -69,11 +69,11 @@ public class EnderGuardian extends AbstractBoss {
     @Override
     public void aiStep() {
         if (tickCount % 10 == 0) {
-            level().playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.get(), SoundSource.HOSTILE, 1f, 1f);
+            level().playSound(null, this, AMSounds.ENDER_GUARDIAN_FLAP.value(), SoundSource.HOSTILE, 1f, 1f);
         }
         if (getAction() == Action.LONG_CAST) {
             if (getTicksInAction() == 20) {
-                level().playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.get(), SoundSource.HOSTILE, 1f, 1f);
+                level().playSound(null, this, AMSounds.ENDER_GUARDIAN_ROAR.value(), SoundSource.HOSTILE, 1f, 1f);
             }
         }
         super.aiStep();

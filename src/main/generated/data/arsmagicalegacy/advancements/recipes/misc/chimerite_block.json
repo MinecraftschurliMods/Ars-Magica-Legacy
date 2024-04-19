@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_chimerite",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_chimerite"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:chimerite_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

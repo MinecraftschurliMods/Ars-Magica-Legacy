@@ -7,16 +7,16 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.entity.EntityEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
 import java.util.Objects;
 
@@ -50,56 +50,56 @@ final class EffectHandler {
 
     private static void livingJump(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
-            entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1), 0));
+        if (entity.hasEffect(AMMobEffects.AGILITY.value())) {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.value())).getAmplifier() + 1), 0));
         }
     }
 
     private static void livingFall(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(AMMobEffects.AGILITY.get())) {
-            event.setDistance(event.getDistance() / (1.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.get())).getAmplifier() + 1)));
+        if (entity.hasEffect(AMMobEffects.AGILITY.value())) {
+            event.setDistance(event.getDistance() / (1.1f * (Objects.requireNonNull(entity.getEffect(AMMobEffects.AGILITY.value())).getAmplifier() + 1)));
         }
-        if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.get())) {
-            event.setDistance(event.getDistance() * (Objects.requireNonNull(entity.getEffect(AMMobEffects.GRAVITY_WELL.get())).getAmplifier() + 1));
+        if (entity.hasEffect(AMMobEffects.GRAVITY_WELL.value())) {
+            event.setDistance(event.getDistance() * (Objects.requireNonNull(entity.getEffect(AMMobEffects.GRAVITY_WELL.value())).getAmplifier() + 1));
         }
-        if (entity.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
-            event.setDistance(event.getDistance() * ((float) Objects.requireNonNull(entity.getAttribute(AMAttributes.SCALE.get())).getValue()));
+        if (entity.getAttributes().hasAttribute(AMAttributes.SCALE.value())) {
+            event.setDistance(event.getDistance() * ((float) Objects.requireNonNull(entity.getAttribute(AMAttributes.SCALE.value())).getValue()));
         }
     }
 
     private static void livingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.get())) {
-            event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.get())).getAmplifier());
+        if (!event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD) && entity.hasEffect(AMMobEffects.MAGIC_SHIELD.value())) {
+            event.setAmount(event.getAmount() / (float) Objects.requireNonNull(entity.getEffect(AMMobEffects.MAGIC_SHIELD.value())).getAmplifier());
         }
-        if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.get())) {
-            event.setAmount(event.getAmount() * ((float) Objects.requireNonNull(living.getAttribute(AMAttributes.SCALE.get())).getValue()));
+        if (event.getSource().getEntity() instanceof LivingEntity living && living.getAttributes().hasAttribute(AMAttributes.SCALE.value())) {
+            event.setAmount(event.getAmount() * ((float) Objects.requireNonNull(living.getAttribute(AMAttributes.SCALE.value())).getValue()));
         }
     }
 
     private static void livingDeath(LivingDeathEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(AMMobEffects.TEMPORAL_ANCHOR.get())) {
-            entity.removeEffect(AMMobEffects.TEMPORAL_ANCHOR.get());
+        if (entity.hasEffect(AMMobEffects.TEMPORAL_ANCHOR.value())) {
+            entity.removeEffect(AMMobEffects.TEMPORAL_ANCHOR.value());
             event.setCanceled(true);
         }
     }
 
     private static void enderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
-        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.value())) {
             event.setCanceled(true);
         }
     }
 
     private static void enderPearlTeleport(EntityTeleportEvent.EnderPearl event) {
-        if (event.getPlayer().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+        if (event.getPlayer().hasEffect(AMMobEffects.ASTRAL_DISTORTION.value())) {
             event.setCanceled(true);
         }
     }
 
     private static void chorusFruitTeleport(EntityTeleportEvent.ChorusFruit event) {
-        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.get())) {
+        if (event.getEntityLiving().hasEffect(AMMobEffects.ASTRAL_DISTORTION.value())) {
             event.setCanceled(true);
         }
     }
@@ -124,8 +124,8 @@ final class EffectHandler {
 
     private static void entitySize(EntityEvent.Size event) {
         if (!(event.getEntity() instanceof LivingEntity living) || !living.isAddedToWorld()) return;
-        if (living.getAttribute(AMAttributes.SCALE.get()) == null) return;
-        float factor = (float) living.getAttributeValue(AMAttributes.SCALE.get());
+        if (living.getAttribute(AMAttributes.SCALE.value()) == null) return;
+        float factor = (float) living.getAttributeValue(AMAttributes.SCALE.value());
         if (factor == 1) return;
         EntityDimensions newSize = event.getNewSize();
         EntityDimensions scaledSize = newSize.scale(factor);

@@ -2,10 +2,10 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -13,19 +13,19 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMAttributes {
-    RegistryObject<Attribute> MAX_MANA      = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
-    RegistryObject<Attribute> MAX_BURNOUT   = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
-    RegistryObject<Attribute> MANA_REGEN    = registerRanged("mana_regen", 0.1d, 0d, Short.MAX_VALUE, false);
-    RegistryObject<Attribute> BURNOUT_REGEN = registerRanged("burnout_regen", 0.2d, 0d, Short.MAX_VALUE, false);
-    RegistryObject<Attribute> MAGIC_VISION  = registerBool("magic_vision", false, true);
-    RegistryObject<Attribute> SCALE         = registerRanged("scale", 1d, 0.01d, 100d, true);
+    Holder<Attribute> MAX_MANA      = registerRanged("max_mana", 0d, 0d, Short.MAX_VALUE, true);
+    Holder<Attribute> MAX_BURNOUT   = registerRanged("max_burnout", 0d, 0d, Short.MAX_VALUE, true);
+    Holder<Attribute> MANA_REGEN    = registerRanged("mana_regen", 0.1d, 0d, Short.MAX_VALUE, false);
+    Holder<Attribute> BURNOUT_REGEN = registerRanged("burnout_regen", 0.2d, 0d, Short.MAX_VALUE, false);
+    Holder<Attribute> MAGIC_VISION  = registerBool("magic_vision", false, true);
+    Holder<Attribute> SCALE         = registerRanged("scale", 1d, 0.01d, 100d, true);
 
-    private static RegistryObject<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
+    private static Holder<Attribute> registerRanged(String id, double defaultValue, double minValue, double maxValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
         return ATTRIBUTES.register(id, () -> new RangedAttribute(key, defaultValue, minValue, maxValue).setSyncable(syncable));
     }
 
-    private static RegistryObject<Attribute> registerBool(String id, boolean defaultValue, boolean syncable) {
+    private static Holder<Attribute> registerBool(String id, boolean defaultValue, boolean syncable) {
         String key = Util.makeDescriptionId("attribute", new ResourceLocation(ArsMagicaAPI.MOD_ID, id));
         return ATTRIBUTES.register(id, () -> new BooleanAttribute(key, defaultValue).setSyncable(syncable));
     }

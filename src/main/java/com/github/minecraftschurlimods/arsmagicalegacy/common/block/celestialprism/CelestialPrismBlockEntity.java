@@ -3,23 +3,16 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialpr
 import com.github.minecraftschurlimods.arsmagicalegacy.Config;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.EtheriumType;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.etherium.IEtheriumProvider;
-import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.SimpleEtheriumProvider;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CelestialPrismBlockEntity extends BlockEntity {
     private final SimpleEtheriumProvider provider = new SimpleEtheriumProvider(EtheriumType.LIGHT, Config.SERVER.MAX_ETHERIUM_STORAGE.get()).setCallback(CelestialPrismBlockEntity::onConsume);
-    private final LazyOptional<IEtheriumProvider> etheriumHolder = LazyOptional.of(() -> provider);
     private int time;
 
     public CelestialPrismBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -54,9 +47,7 @@ public class CelestialPrismBlockEntity extends BlockEntity {
         provider.set(tag.getInt("etheriumValue"));
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        return EtheriumHelper.instance().getEtheriumProviderCapability().orEmpty(cap, etheriumHolder);
+    public IEtheriumProvider getEtheriumCapability(Void v) {
+        return provider;
     }
 }

@@ -24,33 +24,35 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
+import java.util.Objects;
+
 public class FireGuardian extends AbstractBoss {
     public FireGuardian(EntityType<? extends FireGuardian> type, Level level) {
         super(type, level, BossEvent.BossBarColor.RED);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.get(), 4500).add(AMAttributes.MAX_BURNOUT.get(), 4500);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 250).add(Attributes.ARMOR, 20).add(AMAttributes.MAX_MANA.value(), 4500).add(AMAttributes.MAX_BURNOUT.value(), 4500);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.FIRE_GUARDIAN_AMBIENT.get();
+        return AMSounds.FIRE_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.FIRE_GUARDIAN_HURT.get();
+        return AMSounds.FIRE_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.FIRE_GUARDIAN_DEATH.get();
+        return AMSounds.FIRE_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.FIRE_GUARDIAN_ATTACK.get();
+        return AMSounds.FIRE_GUARDIAN_ATTACK.value();
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -67,14 +69,15 @@ public class FireGuardian extends AbstractBoss {
 
     @Override
     public void aiStep() {
+        Level level = Objects.requireNonNull(level());
         if (tickCount % 30 == 0) {
-            if (level().getRandom().nextInt(10) == 0) {
-                level().playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.get(), SoundSource.HOSTILE, 0.1f, 0.5f + level().getRandom().nextFloat() * 0.5f);
+            if (level.getRandom().nextInt(10) == 0) {
+                level.playSound(null, this, AMSounds.FIRE_GUARDIAN_NOVA.value(), SoundSource.HOSTILE, 0.1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
             }
-            if (level().isClientSide()) {
+            if (level.isClientSide()) {
                 // Particles
             } else {
-                for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
+                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2.5, 2.5, 2.5).expandTowards(0, 3, 0), e -> !(e instanceof AbstractBoss))) {
                     e.hurt(damageSources().onFire(), 5);
                 }
             }
@@ -83,10 +86,10 @@ public class FireGuardian extends AbstractBoss {
             if (getTarget() != null) {
                 lookAt(getTarget(), 10, 10);
             }
-            level().playSound(null, this, AMSounds.FIRE_GUARDIAN_FLAMETHROWER.get(), SoundSource.HOSTILE, 1f, 0.5f + level().getRandom().nextFloat() * 0.5f);
+            level.playSound(null, this, AMSounds.FIRE_GUARDIAN_FLAMETHROWER.value(), SoundSource.HOSTILE, 1f, 0.5f + level.getRandom().nextFloat() * 0.5f);
             flamethrower();
         }
-        for (Player p : level().players()) {
+        for (Player p : level.players()) {
             if (distanceToSqr(p) < 9) {
                 p.hurt(damageSources().onFire(), 8);
             }

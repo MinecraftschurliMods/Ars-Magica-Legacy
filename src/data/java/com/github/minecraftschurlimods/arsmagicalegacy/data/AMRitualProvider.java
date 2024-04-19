@@ -34,7 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
 
@@ -75,7 +75,7 @@ public class AMRitualProvider extends RitualProvider {
                 .with(new BlockPos(0, -2, 0))
                 .build());
         add("spawn_life_guardian", builder(EntitySpawnRitualEffect.simple(AMEntities.LIFE_GUARDIAN.get()),
-                new EntityDeathTrigger(EntityPredicate.Builder.entity().of(EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true).build()).build()))
+                new EntityDeathTrigger(EntityPredicate.Builder.entity().of(EntityType.VILLAGER).flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true)).build()))
                 .with(new RitualStructureRequirement(PatchouliCompat.LIFE_GUARDIAN_SPAWN_RITUAL))
                 .with(MoonPhaseRequirement.exactly(0))
                 .build());

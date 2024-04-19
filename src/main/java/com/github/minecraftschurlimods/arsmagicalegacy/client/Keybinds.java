@@ -1,6 +1,5 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
-import com.github.minecraftschurlimods.arsmagicalegacy.ArsMagicaLegacy;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMItems;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.NextShapeGroupPacket;
@@ -8,9 +7,10 @@ import com.github.minecraftschurlimods.betterkeybindlib.ItemInHandKeyConflictCon
 import com.github.minecraftschurlimods.betterkeybindlib.Keybind;
 import com.github.minecraftschurlimods.betterkeybindlib.KeybindManager;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.client.settings.KeyModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import net.neoforged.neoforge.client.settings.KeyModifier;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class Keybinds {
     public static final KeybindManager KEYBIND_MANAGER = KeybindManager.get(ArsMagicaAPI.MOD_ID);
@@ -26,14 +26,14 @@ public final class Keybinds {
             .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
             .withContext(KeyConflictContext.IN_GAME)
             .withCallback(ctx -> {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), false));
+                PacketDistributor.SERVER.noArg().send(new NextShapeGroupPacket(ctx.get("hand"), false));
                 return true;
             }).build();
     public static final Keybind PREV_SHAPE_GROUP = KEYBIND_MANAGER.keybind("prev_shape_group", InputConstants.KEY_COMMA)
             .withContext(ItemInHandKeyConflictContext.from(AMItems.SPELL.getId()))
             .withContext(KeyConflictContext.IN_GAME)
             .withCallback(ctx -> {
-                ArsMagicaLegacy.NETWORK_HANDLER.sendToServer(new NextShapeGroupPacket(ctx.get("hand"), true));
+                PacketDistributor.SERVER.noArg().send(new NextShapeGroupPacket(ctx.get("hand"), true));
                 return true;
             }).build();
 

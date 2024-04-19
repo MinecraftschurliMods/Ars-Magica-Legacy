@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.model.BakedModelWrapper;
+import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class SpellItemModel extends BakedModelWrapper<BakedModel> {
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
             var helper = ArsMagicaAPI.get().getSpellHelper();
             icon = helper.getSpellIcon(stack);
-            affinity = stack.isEmpty() ? AMAffinities.NONE.get() : helper.getSpell(stack).primaryAffinity();
+            affinity = stack.isEmpty() ? AMAffinities.NONE.value() : helper.getSpell(stack).primaryAffinity();
             return SpellItemModel.this;
         }
     };

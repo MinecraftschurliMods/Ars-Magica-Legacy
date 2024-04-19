@@ -1,8 +1,8 @@
 {
-  "parent": "forge:item/default",
+  "parent": "neoforge:item/default",
   "automatic_culling": false,
   "emissive_ambient": false,
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "model": "arsmagicalegacy:models/block/obj/obelisk.obj",
   "shade_quads": false,
   "textures": {

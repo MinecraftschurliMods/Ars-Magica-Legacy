@@ -3,11 +3,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.api.data;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarCapMaterial;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.altar.AltarStructureMaterial;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract sealed class AltarMaterialProvider<T> extends AbstractRegistryDataProvider<T> {
 
@@ -82,6 +82,6 @@ public abstract sealed class AltarMaterialProvider<T> extends AbstractRegistryDa
     }
 
     String getNameFor(Block baseBlock) {
-        return ForgeRegistries.BLOCKS.getKey(baseBlock).getPath();
+        return BuiltInRegistries.BLOCK.getKey(baseBlock).getPath();
     }
 }

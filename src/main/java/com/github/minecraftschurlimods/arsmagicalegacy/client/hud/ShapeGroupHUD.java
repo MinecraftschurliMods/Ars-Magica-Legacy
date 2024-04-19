@@ -2,7 +2,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.client.hud;
 
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public final class ShapeGroupHUD extends HUDElement {
     public ShapeGroupHUD() {
@@ -10,7 +10,7 @@ public final class ShapeGroupHUD extends HUDElement {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float partialTicks) {
+    public void draw(ExtendedGui forgeGui, GuiGraphics graphics, float partialTicks) {
         // TODO
     }
 }

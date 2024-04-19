@@ -3,9 +3,9 @@
   "category": "misc",
   "ingredients": [
     {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:inscription_table",
-      "nbt": "{BlockStateTag:{tier:\"1\"}}"
+      "tag": "{BlockStateTag:{tier:\"1\"}}"
     },
     {
       "item": "arsmagicalegacy:inscription_table_upgrade_tier_2"
@@ -13,6 +13,6 @@
   ],
   "result": {
     "item": "arsmagicalegacy:inscription_table",
-    "nbt": "{\"BlockStateTag\":{\"tier\":\"2\"}}"
+    "nbt": "{BlockStateTag:{tier:\"2\"}}"
   }
 }

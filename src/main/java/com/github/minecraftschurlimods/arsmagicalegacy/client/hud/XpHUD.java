@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public final class XpHUD extends AbstractHUD {
     public XpHUD() {
@@ -14,7 +14,7 @@ public final class XpHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float v) {
+    public void draw(ExtendedGui forgeGui, GuiGraphics graphics, float v) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;
@@ -32,10 +32,10 @@ public final class XpHUD extends AbstractHUD {
         Font font = Minecraft.getInstance().font;
         int i1 = 40 - font.width(s) / 2;
         int j1 = -10;
-        graphics.drawString(font, s, (i1 + 1), j1, 0);
-        graphics.drawString(font, s, (i1 - 1), j1, 0);
-        graphics.drawString(font, s, i1, (j1 + 1), 0);
-        graphics.drawString(font, s, i1, (j1 - 1), 0);
-        graphics.drawString(font, s, i1, j1, 0x7777FF);
+        graphics.drawString(font, s, (i1 + 1), j1, 0, false);
+        graphics.drawString(font, s, (i1 - 1), j1, 0, false);
+        graphics.drawString(font, s, i1, (j1 + 1), 0, false);
+        graphics.drawString(font, s, i1, (j1 - 1), 0, false);
+        graphics.drawString(font, s, i1, j1, 0x7777FF, false);
     }
 }

@@ -23,7 +23,7 @@ public class RiftScreen extends AbstractContainerScreen<RiftMenu> implements Men
 
     @Override
     public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(graphics);
+        renderTransparentBackground(graphics);
         super.render(graphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(graphics, pMouseX, pMouseY);
     }

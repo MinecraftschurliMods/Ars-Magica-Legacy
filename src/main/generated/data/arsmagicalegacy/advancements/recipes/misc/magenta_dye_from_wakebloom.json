@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_wakebloom",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_wakebloom"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:magenta_dye_from_wakebloom"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

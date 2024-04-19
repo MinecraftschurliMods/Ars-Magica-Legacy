@@ -23,27 +23,27 @@ public class EarthGuardian extends AbstractBoss {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.get(), 1000).add(AMAttributes.MAX_BURNOUT.get(), 1000);
+        return createMonsterAttributes().add(Attributes.MAX_HEALTH, 120).add(Attributes.ARMOR, 10).add(AMAttributes.MAX_MANA.value(), 1000).add(AMAttributes.MAX_BURNOUT.value(), 1000);
     }
 
     @Override
     public SoundEvent getAmbientSound() {
-        return AMSounds.EARTH_GUARDIAN_AMBIENT.get();
+        return AMSounds.EARTH_GUARDIAN_AMBIENT.value();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return AMSounds.EARTH_GUARDIAN_HURT.get();
+        return AMSounds.EARTH_GUARDIAN_HURT.value();
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return AMSounds.EARTH_GUARDIAN_DEATH.get();
+        return AMSounds.EARTH_GUARDIAN_DEATH.value();
     }
 
     @Override
     public SoundEvent getAttackSound() {
-        return AMSounds.EARTH_GUARDIAN_ATTACK.get();
+        return AMSounds.EARTH_GUARDIAN_ATTACK.value();
     }
 
     @Override

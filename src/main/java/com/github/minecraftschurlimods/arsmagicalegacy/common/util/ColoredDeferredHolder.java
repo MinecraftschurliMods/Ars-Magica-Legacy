@@ -2,17 +2,17 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.util;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ColoredRegistryObject<B, T extends B> {
-    private final Map<DyeColor, RegistryObject<T>> map = new EnumMap<>(DyeColor.class);
+public class ColoredDeferredHolder<B, T extends B> {
+    private final Map<DyeColor, DeferredHolder<B, T>> map = new EnumMap<>(DyeColor.class);
 
-    public ColoredRegistryObject(DeferredRegister<B> register, String suffix, Function<DyeColor, ? extends T> creator) {
+    public ColoredDeferredHolder(DeferredRegister<B> register, String suffix, Function<DyeColor, ? extends T> creator) {
         for (DyeColor color : DyeColor.values()) {
             map.put(color, register.register(color.getName() + "_" + suffix, () -> creator.apply(color)));
         }
@@ -22,7 +22,7 @@ public class ColoredRegistryObject<B, T extends B> {
      * @param color The color to get the rune item's registry object for.
      * @return The registry object of the rune item of the given color.
      */
-    public RegistryObject<T> registryObject(DyeColor color) {
+    public DeferredHolder<B, T> registryObject(DyeColor color) {
         return map.get(color);
     }
 

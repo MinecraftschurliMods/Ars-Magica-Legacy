@@ -2,10 +2,11 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.init;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -16,7 +17,7 @@ import static com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMRegi
 
 @NonExtendable
 public interface AMFluids {
-    RegistryObject<FluidType> LIQUID_ESSENCE_TYPE = FLUID_TYPES.register("liquid_essence", () -> new FluidType(FluidType.Properties.create().fallDistanceModifier(0F)) {
+    DeferredHolder<FluidType, FluidType> LIQUID_ESSENCE_TYPE = FLUID_TYPES.register("liquid_essence", () -> new FluidType(FluidType.Properties.create().fallDistanceModifier(0F)) {
         @Override
         public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
             consumer.accept(new IClientFluidTypeExtensions() {
@@ -32,9 +33,9 @@ public interface AMFluids {
             });
         }
     });
-    RegistryObject<ForgeFlowingFluid> LIQUID_ESSENCE = FLUIDS.register("liquid_essence", () -> new ForgeFlowingFluid.Source(AMFluids.LIQUID_ESSENCE_PROPERTIES));
-    RegistryObject<ForgeFlowingFluid> FLOWING_LIQUID_ESSENCE = FLUIDS.register("flowing_liquid_essence", () -> new ForgeFlowingFluid.Flowing(AMFluids.LIQUID_ESSENCE_PROPERTIES));
-    ForgeFlowingFluid.Properties LIQUID_ESSENCE_PROPERTIES = new ForgeFlowingFluid.Properties(LIQUID_ESSENCE_TYPE, LIQUID_ESSENCE, FLOWING_LIQUID_ESSENCE).bucket(AMItems.LIQUID_ESSENCE_BUCKET).block(AMBlocks.LIQUID_ESSENCE);
+    DeferredHolder<Fluid, BaseFlowingFluid> LIQUID_ESSENCE = FLUIDS.register("liquid_essence", () -> new BaseFlowingFluid.Source(AMFluids.LIQUID_ESSENCE_PROPERTIES));
+    DeferredHolder<Fluid, BaseFlowingFluid> FLOWING_LIQUID_ESSENCE = FLUIDS.register("flowing_liquid_essence", () -> new BaseFlowingFluid.Flowing(AMFluids.LIQUID_ESSENCE_PROPERTIES));
+    BaseFlowingFluid.Properties LIQUID_ESSENCE_PROPERTIES = new BaseFlowingFluid.Properties(LIQUID_ESSENCE_TYPE, LIQUID_ESSENCE, FLOWING_LIQUID_ESSENCE).bucket(AMItems.LIQUID_ESSENCE_BUCKET).block(AMBlocks.LIQUID_ESSENCE);
 
     /**
      * Empty method that is required for classloading

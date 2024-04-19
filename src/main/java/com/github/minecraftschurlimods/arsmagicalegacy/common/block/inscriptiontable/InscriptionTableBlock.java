@@ -6,7 +6,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -98,7 +96,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         boolean right = pState.getValue(HALF) == Half.RIGHT;
         BlockPos pos = right ? pPos.relative(pState.getValue(FACING).getCounterClockWise()) : pPos.relative(pState.getValue(FACING).getClockWise());
         BlockState state = pLevel.getBlockState(pos);
@@ -111,7 +109,7 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
                 Block.dropResources(state, pLevel, pos, null, pPlayer, stack);
             }
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override
@@ -126,8 +124,8 @@ public class InscriptionTableBlock extends Block implements EntityBlock {
         if (pState.getValue(InscriptionTableBlock.HALF) == Half.LEFT) {
             pPos = pPos.relative(pState.getValue(InscriptionTableBlock.FACING).getClockWise());
         }
-        NetworkHooks.openScreen((ServerPlayer) pPlayer, ((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos)), pPos);
-        pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE.get());
+        pPlayer.openMenu((InscriptionTableBlockEntity) pLevel.getBlockEntity(pPos), pPos);
+        pPlayer.awardStat(AMStats.INTERACT_WITH_INSCRIPTION_TABLE.value());
         return InteractionResult.CONSUME;
     }
 

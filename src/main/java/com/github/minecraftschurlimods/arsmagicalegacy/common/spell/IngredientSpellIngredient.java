@@ -7,7 +7,6 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSounds;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellIngredientTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,11 +34,7 @@ import java.util.Objects;
 
 public record IngredientSpellIngredient(Ingredient ingredient, int count) implements ISpellIngredient {
     public static final Codec<IngredientSpellIngredient> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
-            Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
-    ).apply(inst, IngredientSpellIngredient::new));
-    public static final Codec<IngredientSpellIngredient> NETWORK_CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            CodecHelper.NETWORK_INGREDIENT.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
+            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(IngredientSpellIngredient::ingredient),
             Codec.INT.fieldOf("count").forGetter(IngredientSpellIngredient::count)
     ).apply(inst, IngredientSpellIngredient::new));
 
@@ -83,7 +78,7 @@ public record IngredientSpellIngredient(Ingredient ingredient, int count) implem
             item.shrink(min);
             count = count - min;
             if (count <= 0) {
-                level.playSound(null, pos.getX(), pos.getY() - 2, pos.getZ(), AMSounds.CRAFTING_ALTAR_ADD_INGREDIENT.get(), SoundSource.BLOCKS, 1f, 1f);
+                level.playSound(null, pos.getX(), pos.getY() - 2, pos.getZ(), AMSounds.CRAFTING_ALTAR_ADD_INGREDIENT.value(), SoundSource.BLOCKS, 1f, 1f);
                 return null;
             }
         }

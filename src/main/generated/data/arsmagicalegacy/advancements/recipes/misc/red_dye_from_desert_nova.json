@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_desert_nova",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_desert_nova"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:red_dye_from_desert_nova"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -15,9 +15,9 @@
       "item": "minecraft:sugar"
     },
     {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "minecraft:potion",
-      "nbt": "{Potion:\"minecraft:water\"}"
+      "tag": "{Potion:\"minecraft:water\"}"
     }
   ],
   "result": {

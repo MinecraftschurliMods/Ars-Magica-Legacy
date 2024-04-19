@@ -3,6 +3,7 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialpr
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,6 +29,7 @@ import java.util.function.BiPredicate;
 
 @SuppressWarnings("deprecation")
 public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckingBlock {
+    private static final MapCodec<CelestialPrismBlock> CODEC = MapCodec.unit(CelestialPrismBlock::new);
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     private static final VoxelShape BOX = Block.box(2, 0, 2, 14, 16, 14);
     public final BiPredicate<Level, BlockPos> CHALK = PatchouliCompat.getMultiblockMatcher(PatchouliCompat.CELESTIAL_PRISM_CHALK);
@@ -44,6 +46,11 @@ public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckin
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BOX;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -106,7 +113,7 @@ public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckin
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         DoubleBlockHalf doubleblockhalf = state.getValue(HALF);
         BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
         BlockState blockstate = level.getBlockState(blockpos);
@@ -114,7 +121,7 @@ public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckin
             level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), UPDATE_SUPPRESS_DROPS | UPDATE_ALL);
             level.levelEvent(player, 2001, blockpos, Block.getId(level.getBlockState(blockpos)));
         }
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     /**

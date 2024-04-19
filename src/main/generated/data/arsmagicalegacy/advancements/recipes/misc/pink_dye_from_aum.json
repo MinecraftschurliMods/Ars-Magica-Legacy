@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_aum",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_aum"
     ]
   ],
   "rewards": {
     "recipes": [
       "arsmagicalegacy:pink_dye_from_aum"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

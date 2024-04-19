@@ -2,24 +2,24 @@ package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.betterhudlib.HUDElement;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class Config {
     public static final Client CLIENT;
     public static final Server SERVER;
-    private static final ForgeConfigSpec clientSpec;
-    private static final ForgeConfigSpec serverSpec;
+    private static final ModConfigSpec clientSpec;
+    private static final ModConfigSpec serverSpec;
     private static boolean init;
 
     static {
-        final Pair<Client, ForgeConfigSpec> clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
+        final Pair<Client, ModConfigSpec> clientPair = new ModConfigSpec.Builder().configure(Client::new);
         clientSpec = clientPair.getRight();
         CLIENT = clientPair.getLeft();
-        final Pair<Server, ForgeConfigSpec> serverPair = new ForgeConfigSpec.Builder().configure(Server::new);
+        final Pair<Server, ModConfigSpec> serverPair = new ModConfigSpec.Builder().configure(Server::new);
         serverSpec = serverPair.getRight();
         SERVER = serverPair.getLeft();
     }
@@ -40,24 +40,24 @@ public final class Config {
      * Class holding the client config values.
      */
     public static final class Client {
-        public final ForgeConfigSpec.IntValue MANA_X;
-        public final ForgeConfigSpec.IntValue MANA_Y;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> MANA_ANCHOR_X;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> MANA_ANCHOR_Y;
-        public final ForgeConfigSpec.IntValue BURNOUT_X;
-        public final ForgeConfigSpec.IntValue BURNOUT_Y;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> BURNOUT_ANCHOR_X;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> BURNOUT_ANCHOR_Y;
-        public final ForgeConfigSpec.IntValue XP_X;
-        public final ForgeConfigSpec.IntValue XP_Y;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> XP_ANCHOR_X;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> XP_ANCHOR_Y;
-        public final ForgeConfigSpec.IntValue SPELL_BOOK_X;
-        public final ForgeConfigSpec.IntValue SPELL_BOOK_Y;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorX> SPELL_BOOK_ANCHOR_X;
-        public final ForgeConfigSpec.EnumValue<HUDElement.AnchorY> SPELL_BOOK_ANCHOR_Y;
+        public final ModConfigSpec.IntValue MANA_X;
+        public final ModConfigSpec.IntValue MANA_Y;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorX> MANA_ANCHOR_X;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorY> MANA_ANCHOR_Y;
+        public final ModConfigSpec.IntValue BURNOUT_X;
+        public final ModConfigSpec.IntValue BURNOUT_Y;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorX> BURNOUT_ANCHOR_X;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorY> BURNOUT_ANCHOR_Y;
+        public final ModConfigSpec.IntValue XP_X;
+        public final ModConfigSpec.IntValue XP_Y;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorX> XP_ANCHOR_X;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorY> XP_ANCHOR_Y;
+        public final ModConfigSpec.IntValue SPELL_BOOK_X;
+        public final ModConfigSpec.IntValue SPELL_BOOK_Y;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorX> SPELL_BOOK_ANCHOR_X;
+        public final ModConfigSpec.EnumValue<HUDElement.AnchorY> SPELL_BOOK_ANCHOR_Y;
 
-        private Client(ForgeConfigSpec.Builder builder) {
+        private Client(ModConfigSpec.Builder builder) {
             builder.comment("HUD Elements").push("hud_elements");
             builder.push("mana");
             MANA_X = builder
@@ -143,30 +143,30 @@ public final class Config {
      * Class holding the server config values.
      */
     public static final class Server {
-        public final ForgeConfigSpec.BooleanValue REQUIRE_COMPENDIUM_CRAFTING;
-        public final ForgeConfigSpec.DoubleValue BURNOUT_RATIO;
-        public final ForgeConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
-        public final ForgeConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
-        public final ForgeConfigSpec.DoubleValue AFFINITY_TOME_SHIFT;
-        public final ForgeConfigSpec.BooleanValue ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING;
-        public final ForgeConfigSpec.DoubleValue MANA_BASE;
-        public final ForgeConfigSpec.DoubleValue MANA_MULTIPLIER;
-        public final ForgeConfigSpec.DoubleValue MANA_REGEN_MULTIPLIER;
-        public final ForgeConfigSpec.DoubleValue BURNOUT_BASE;
-        public final ForgeConfigSpec.DoubleValue BURNOUT_MULTIPLIER;
-        public final ForgeConfigSpec.DoubleValue BURNOUT_REGEN_MULTIPLIER;
-        public final ForgeConfigSpec.DoubleValue LEVELING_BASE;
-        public final ForgeConfigSpec.DoubleValue LEVELING_MULTIPLIER;
-        public final ForgeConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
-        public final ForgeConfigSpec.DoubleValue DAMAGE;
-        public final ForgeConfigSpec.IntValue DURATION;
-        public final ForgeConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
-        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
-        public final ForgeConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
-        public final ForgeConfigSpec.LongValue DRYAD_KILL_COOLDOWN;
-        public final ForgeConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
+        public final ModConfigSpec.BooleanValue REQUIRE_COMPENDIUM_CRAFTING;
+        public final ModConfigSpec.DoubleValue BURNOUT_RATIO;
+        public final ModConfigSpec.IntValue CRAFTING_ALTAR_CHECK_TIME;
+        public final ModConfigSpec.IntValue MAX_ETHERIUM_STORAGE;
+        public final ModConfigSpec.DoubleValue AFFINITY_TOME_SHIFT;
+        public final ModConfigSpec.BooleanValue ENABLE_INSCRIPTION_TABLE_IN_WORLD_UPGRADING;
+        public final ModConfigSpec.DoubleValue MANA_BASE;
+        public final ModConfigSpec.DoubleValue MANA_MULTIPLIER;
+        public final ModConfigSpec.DoubleValue MANA_REGEN_MULTIPLIER;
+        public final ModConfigSpec.DoubleValue BURNOUT_BASE;
+        public final ModConfigSpec.DoubleValue BURNOUT_MULTIPLIER;
+        public final ModConfigSpec.DoubleValue BURNOUT_REGEN_MULTIPLIER;
+        public final ModConfigSpec.DoubleValue LEVELING_BASE;
+        public final ModConfigSpec.DoubleValue LEVELING_MULTIPLIER;
+        public final ModConfigSpec.IntValue EXTRA_BLUE_SKILL_POINTS;
+        public final ModConfigSpec.DoubleValue DAMAGE;
+        public final ModConfigSpec.IntValue DURATION;
+        public final ModConfigSpec.DoubleValue DRYAD_BONEMEAL_CHANCE;
+        public final ModConfigSpec.IntValue DRYAD_BONEMEAL_TIMER;
+        public final ModConfigSpec.IntValue DRYAD_BONEMEAL_RADIUS;
+        public final ModConfigSpec.LongValue DRYAD_KILL_COOLDOWN;
+        public final ModConfigSpec.IntValue DRYAD_KILLS_TO_NATURE_GUARDIAN_SPAWN;
 
-        private Server(ForgeConfigSpec.Builder builder) {
+        private Server(ModConfigSpec.Builder builder) {
             REQUIRE_COMPENDIUM_CRAFTING = builder
                     .comment("Whether the player needs to craft the compendium before being able to use magic. If disabled, the player can use magic from the beginning.")
                     .translation(TranslationConstants.CONFIG + "require_compendium_crafting")

@@ -19,22 +19,13 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.server.permission.PermissionAPI;
+import net.neoforged.neoforge.server.permission.PermissionAPI;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_ADD_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_ADD_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_CONSUME_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_CONSUME_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_GET;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_RESET_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_RESET_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_SET_MULTIPLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_SET_SINGLE;
-import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.SKILL_POINT_UNKNOWN;
+import static com.github.minecraftschurlimods.arsmagicalegacy.server.commands.CommandTranslations.*;
 
 public class SkillPointCommand {
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_SKILL_POINTS = SkillPointCommand::suggestSkillPoints;
@@ -221,12 +212,12 @@ public class SkillPointCommand {
 
     private static SkillPoint getSkillPointFromRegistry(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ResourceLocation rl = ResourceLocationArgument.getId(context, "skill_point");
-        SkillPoint skillPoint = ArsMagicaAPI.get().getSkillPointRegistry().getValue(rl);
+        SkillPoint skillPoint = ArsMagicaAPI.get().getSkillPointRegistry().get(rl);
         if (skillPoint == null) throw ERROR_UNKNOWN_SKILL_POINT.create(rl);
         return skillPoint;
     }
 
     private static CompletableFuture<Suggestions> suggestSkillPoints(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillPointRegistry().getKeys(), builder);
+        return SharedSuggestionProvider.suggestResource(ArsMagicaAPI.get().getSkillPointRegistry().keySet(), builder);
     }
 }

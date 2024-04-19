@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
     },
     "I": {
       "tag": "minecraft:leaves"
@@ -32,6 +32,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:nature\"}"
-  },
-  "show_notification": true
+  }
 }

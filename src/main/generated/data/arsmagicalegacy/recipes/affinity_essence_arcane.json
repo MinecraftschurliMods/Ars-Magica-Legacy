@@ -6,9 +6,9 @@
       "item": "arsmagicalegacy:arcane_ash"
     },
     "E": {
-      "type": "forge:partial_nbt",
+      "type": "neoforge:nbt",
       "item": "arsmagicalegacy:affinity_essence",
-      "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
+      "tag": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
     }
   },
   "pattern": [
@@ -20,6 +20,5 @@
     "count": 2,
     "item": "arsmagicalegacy:affinity_essence",
     "nbt": "{\"arsmagicalegacy:affinity\":\"arsmagicalegacy:arcane\"}"
-  },
-  "show_notification": true
+  }
 }

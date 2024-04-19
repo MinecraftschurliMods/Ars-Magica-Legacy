@@ -6,7 +6,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.api.magic.IManaHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public final class ManaHUD extends AbstractHUD {
     public ManaHUD() {
@@ -14,7 +14,7 @@ public final class ManaHUD extends AbstractHUD {
     }
 
     @Override
-    public void draw(ForgeGui forgeGui, GuiGraphics graphics, float partialTick) {
+    public void draw(ExtendedGui forgeGui, GuiGraphics graphics, float partialTick) {
         Player player = Minecraft.getInstance().player;
         var api = ArsMagicaAPI.get();
         if (player == null || !api.getMagicHelper().knowsMagic(player)) return;
