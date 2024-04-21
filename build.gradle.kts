@@ -2,6 +2,7 @@ import com.github.minecraftschurlimods.helperplugin.api
 import com.github.minecraftschurlimods.helperplugin.localGradleProperty
 import com.github.minecraftschurlimods.helperplugin.version
 import com.github.minecraftschurlimods.helperplugin.moddependencies.ModDependency
+import com.github.minecraftschurlimods.helperplugin.sourceSets
 
 plugins {
     idea
@@ -16,12 +17,6 @@ helper.withTestSourceSet()
 
 val include: Configuration by configurations.creating {
     isTransitive = false
-    dependencies.configureEach {
-        if (this is ExternalDependency) {
-            val strictVersion = this.versionConstraint.strictVersion
-            project.jarJar.ranged(this, strictVersion)
-        }
-    }
 }
 sourceSets.configureEach {
     configurations.getByName(implementationConfigurationName).extendsFrom(include)
@@ -104,6 +99,7 @@ val embeddium = helper.dependencies.optional("embeddium")
 
 dependencies {
     implementation(helper.neoforge())
+    testImplementation(helper.testframework())
 
     // jei for integration
     val jeiApiDep = helper.minecraftVersion.zip(jei.version) { mc, version -> "mezz.jei:jei-${mc}-common-api:${version}" }
@@ -127,8 +123,7 @@ dependencies {
 
     // geckolib for animations
     val geckolibDep = helper.minecraftVersion.zip(geckolib.version) { mc, version -> "software.bernie.geckolib:geckolib-neoforge-${mc}:${version}" }
-    compileOnly(geckolibDep)
-    runtimeOnly(geckolibDep)
+    implementation(geckolibDep)
     testRuntimeOnly(geckolibDep)
     "dataRuntimeOnly"(geckolibDep)
 
@@ -151,15 +146,19 @@ dependencies {
     }
 
     // add internal libraries
-    val codecLibVersion = project.localGradleProperty("dependency.codeclib.version")
-    val codecLibDep = codecLibVersion.map { "com.github.minecraftschurlimods:codeclib:$it" }
-    include(codecLibDep)
-    val betterKeybindLibVersion = project.localGradleProperty("dependency.betterkeybindlib.version")
-    val betterKeybindLibDep = betterKeybindLibVersion.map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
-    include(betterKeybindLibDep)
-    val betterHudLibVersion = project.localGradleProperty("dependency.betterhudlib.version")
-    val betterHudLibDep = betterHudLibVersion.map { "com.github.minecraftschurlimods:betterhudlib:$it" }
-    include(betterHudLibDep)
+    val codeclib = project.localGradleProperty("dependency.codeclib.version").map { "com.github.minecraftschurlimods:codeclib:$it" }
+    jarJar(codeclib)
+    "apiCompileOnly"(codeclib)
+    implementation(codeclib)
+    testImplementation(codeclib)
+
+    val betterkeybindlib = project.localGradleProperty("dependency.betterkeybindlib.version").map { "com.github.minecraftschurlimods:betterkeybindlib:$it" }
+    jarJar(betterkeybindlib)
+    implementation(betterkeybindlib)
+
+    val betterhudlib = project.localGradleProperty("dependency.betterhudlib.version").map { "com.github.minecraftschurlimods:betterhudlib:$it" }
+    jarJar(betterhudlib)
+    implementation(betterhudlib)
 
     val easyDatagenLibVersion = project.localGradleProperty("dependency.easydatagenlib.version")
     val easyDatagenLibApiDep = easyDatagenLibVersion.map { "com.github.minecraftschurlimods:easydatagenlib:${it}:api" }
@@ -167,13 +166,9 @@ dependencies {
     "apiCompileOnly"(easyDatagenLibApiDep)
     "dataImplementation"(easyDatagenLibDep)
 
-    testImplementation("net.neoforged:testframework:${helper.neoVersion.get()}")
-
-    val jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
-    compileOnly(jetbrainsAnnotations)
-    "apiCompileOnly"(jetbrainsAnnotations)
-    testCompileOnly(jetbrainsAnnotations)
-    "dataCompileOnly"(jetbrainsAnnotations)
+    sourceSets.forEach {
+        it.compileOnlyConfigurationName("org.jetbrains:annotations:23.0.0")
+    }
 }
 
 helper.withCommonRuns()
@@ -194,6 +189,10 @@ helper.withJarJar()
 tasks.javadoc {
     classpath = sourceSets.api.get().compileClasspath
     source = sourceSets.api.get().allJava
+}
+
+tasks.jar {
+    exclude("com/github/minecraftschurlimods/arsmagicalegacy/api/data")
 }
 
 helper.publication.pom {
