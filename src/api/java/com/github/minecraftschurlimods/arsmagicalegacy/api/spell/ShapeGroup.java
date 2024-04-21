@@ -1,9 +1,9 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.api.spell;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.ExtraCodecs;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * A shape group is a part of a spell, which can be exchanged to change the casting, but not the effect of a spell.
  */
 public record ShapeGroup(List<ISpellPart> parts, List<Pair<ISpellShape, List<ISpellModifier>>> shapesWithModifiers) {
-    public static final Codec<ShapeGroup> CODEC = CodecHelper.forRegistry(ArsMagicaAPI.get()::getSpellPartRegistry).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
+    public static final Codec<ShapeGroup> CODEC = ExtraCodecs.lazyInitializedCodec(() -> ArsMagicaAPI.get().getSpellPartRegistry().byNameCodec()).listOf().xmap(ShapeGroup::of, ShapeGroup::parts);
     public static final ShapeGroup EMPTY = of(List.of());
 
     /**
