@@ -3,7 +3,6 @@ package com.github.minecraftschurlimods.arsmagicalegacy.common.ritual.trigger;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Context;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.Ritual;
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ritual.RitualTrigger;
-import com.github.minecraftschurlimods.codeclib.CodecHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -22,7 +21,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import java.util.Map;
 
 public record EntitySummonTrigger(EntityPredicate predicate) implements RitualTrigger {
-    public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(CodecHelper.ENTITY_PREDICATE.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
+    public static final Codec<EntitySummonTrigger> CODEC = RecordCodecBuilder.create(inst -> inst.group(EntityPredicate.CODEC.fieldOf("entity").forGetter(EntitySummonTrigger::predicate)).apply(inst, EntitySummonTrigger::new));
 
     public static EntitySummonTrigger simple(EntityType<?> entityType) {
         return new EntitySummonTrigger(EntityPredicate.Builder.entity().of(entityType).build());
