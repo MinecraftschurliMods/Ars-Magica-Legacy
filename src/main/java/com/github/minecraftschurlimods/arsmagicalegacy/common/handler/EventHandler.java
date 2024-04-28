@@ -266,6 +266,7 @@ public final class EventHandler {
         event.add(EntityType.PLAYER, AMAttributes.MAX_BURNOUT.get());
         event.add(EntityType.PLAYER, AMAttributes.MANA_REGEN.get());
         event.add(EntityType.PLAYER, AMAttributes.BURNOUT_REGEN.get());
+        event.add(EntityType.PLAYER, AMAttributes.MAGIC_VISION.get());
         for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
             event.add(entity, AMAttributes.SCALE.get());
         }

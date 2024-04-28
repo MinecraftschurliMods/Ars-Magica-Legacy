@@ -1,22 +1,34 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.spell;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpell;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellItem;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellModifier;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellPart;
+import com.github.minecraftschurlimods.arsmagicalegacy.api.spell.ISpellShape;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.AMRenderTypes;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.ColorUtil;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMSpellParts;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellPartStats;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.shape.Chain;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
@@ -24,11 +36,48 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import java.util.List;
+
 /**
  * Taken and adapted from <a href="https://github.com/Direwolf20-MC/MiningGadgets/blob/mc/1.18/src/main/java/com/direwolf20/mininggadgets/client/renderer/RenderMiningLaser.java">Direwolf20's Mining Gadgets mod</a>.
  */
 public final class BeamRenderer {
     private BeamRenderer() {}
+
+    public static void drawBeams(Player player, Level level, PoseStack poseStack, float ticks) {
+        var helper = ArsMagicaAPI.get().getSpellHelper();
+        int dist = Minecraft.getInstance().options.getEffectiveRenderDistance() * 8;
+        for (Player p : level.players()) {
+            if (player.distanceTo(p) > dist || !p.isUsingItem()) continue;
+            InteractionHand hand = InteractionHand.MAIN_HAND;
+            ItemStack stack = helper.getSpellItemStackInHand(p, hand);
+            if (!(stack.getItem() instanceof ISpellItem)) {
+                hand = InteractionHand.OFF_HAND;
+                stack = helper.getSpellItemStackInHand(p, hand);
+                if (!(stack.getItem() instanceof ISpellItem)) continue;
+            }
+            ISpell spell = helper.getSpell(stack);
+            Pair<ISpellShape, List<ISpellModifier>> pair = spell.currentShapeGroup().shapesWithModifiers().get(0);
+            ISpellPart part = pair.getFirst();
+            List<ISpellModifier> modifiers = pair.getSecond();
+            int color = helper.getColor(modifiers, spell, p, 1, spell.primaryAffinity().color());
+            if (part == AMSpellParts.BEAM.get()) {
+                HitResult hitResult = helper.trace(p, level, 64, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+            } else if (part == AMSpellParts.CHAIN.get()) {
+                HitResult hitResult = helper.trace(p, level, 16, true, helper.getModifiedStat(0, SpellPartStats.TARGET_NON_SOLID, modifiers, spell, p, null, 1) > 0);
+                if (hitResult.getType() == HitResult.Type.MISS) continue;
+                BeamRenderer.drawBeam(poseStack, p, hitResult.getLocation(), hand, color, ticks);
+                if (hitResult instanceof EntityHitResult ehr) {
+                    List<Entity> list = Chain.getEntities(ehr.getEntity(), helper.getModifiedStat(4, SpellPartStats.RANGE, modifiers, spell, p, ehr, 1), p);
+                    for (int i = 0; i < list.size() - 1; i++) {
+                        BeamRenderer.drawBeam(poseStack, list.get(i), list.get(i + 1).getPosition(ticks).add(0, list.get(i + 1).getBbHeight() / 2f, 0), hand, color, ticks);
+                    }
+                }
+            }
+        }
+    }
 
     public static void drawBeam(PoseStack stack, Entity entity, Vec3 target, InteractionHand hand, int color, float ticks) {
         Minecraft mc = Minecraft.getInstance();
