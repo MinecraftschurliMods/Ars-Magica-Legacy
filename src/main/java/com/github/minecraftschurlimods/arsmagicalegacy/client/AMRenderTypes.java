@@ -1,21 +1,18 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.client;
 
+import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.gui.inscriptiontable.colorpicker.ColorPickerState;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
-public class AMRenderTypes {
-    public static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
-    public static float colorWheelCenterX, colorWheelCenterY, colorWheelRadius, colorWheelBrightness; // TODO: This is incredibly hacky, find a better way
-
-    public static void setColorWheel(float cX, float cY, float radius, float brightness) {
-        colorWheelCenterX = cX;
-        colorWheelCenterY = cY;
-        colorWheelRadius = radius;
-        colorWheelBrightness = brightness;
-    }
-
+public final class AMRenderTypes {
+    private static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
+    private static final RenderStateShard.TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png"), false, false);
     public static final RenderType COLOR_WHEEL = RenderType.create(
             "color_wheel",
             DefaultVertexFormat.POSITION_COLOR,
@@ -23,16 +20,66 @@ public class AMRenderTypes {
             256,
             false,
             false,
-            RenderType.CompositeState
-                    .builder()
+            RenderType.CompositeState.builder()
                     .setShaderState(COLOR_WHEEL_SHADER)
                     .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                     .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
                     .setLayeringState(new RenderStateShard.LayeringStateShard("set_uniforms", () -> {
-                        AMShaders.setUniform("center", colorWheelCenterX, colorWheelCenterY);
-                        AMShaders.setUniform("radius", colorWheelRadius);
-                        AMShaders.setUniform("brightness", colorWheelBrightness);
+                        ColorPickerState state = ColorPickerState.get();
+                        AMShaders.setUniform("center", state.getCenterX(), state.getCenterY());
+                        AMShaders.setUniform("radius", state.getRadius());
+                        AMShaders.setUniform("brightness", state.getBrightness());
                     }, () -> {}))
                     .createCompositeState(false)
     );
+    public static final RenderType BEAM_CORE = RenderType.create(
+            "beam_core",
+            DefaultVertexFormat.POSITION_COLOR_TEX,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            false,
+            RenderType.CompositeState.builder()
+                    .setTextureState(BEAM_CORE_TEXTURE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .createCompositeState(false));
+    public static final RenderType BEAM_MAIN = RenderType.create(
+            "beam_main",
+            DefaultVertexFormat.POSITION_COLOR_TEX,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            false,
+            RenderType.CompositeState.builder()
+                    .setTextureState(BEAM_MAIN_TEXTURE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .createCompositeState(false));
+    public static final RenderType BEAM_GLOW = RenderType.create("beam_glow",
+            DefaultVertexFormat.POSITION_COLOR_TEX,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            false,
+            RenderType.CompositeState.builder()
+                    .setTextureState(BEAM_GLOW_TEXTURE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .createCompositeState(false));
 }
