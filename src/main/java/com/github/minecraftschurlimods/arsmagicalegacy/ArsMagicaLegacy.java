@@ -1,7 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.api.ArsMagicaAPI;
-import com.github.minecraftschurlimods.arsmagicalegacy.client.DistProxy;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.ClientInit;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.affinity.AffinityHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.handler.EventHandler;
@@ -29,10 +29,10 @@ import com.github.minecraftschurlimods.arsmagicalegacy.server.ServerInit;
 import com.github.minecraftschurlimods.simplenetlib.NetworkHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkDirection;
 import org.slf4j.Logger;
@@ -64,7 +64,9 @@ public final class ArsMagicaLegacy {
         AMRegistries.init(bus);
         EventHandler.register(bus);
         ServerInit.init();
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> DistProxy::init);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientInit.init();
+        }
         Config.init();
         registerNetworkPackets();
         EtheriumHelper.instance();
