@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public final class AMRenderTypes extends RenderType {
+public final class AMRenderTypes {
     private static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
-    private static final TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png"), false, false);
-    private static final TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png"), false, false);
-    private static final TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png"), false, false);
+    private static final RenderStateShard.TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png"), false, false);
     public static final RenderType COLOR_WHEEL = RenderType.create(
             "color_wheel",
             DefaultVertexFormat.POSITION_COLOR,
@@ -41,15 +41,15 @@ public final class AMRenderTypes extends RenderType {
             false,
             RenderType.CompositeState.builder()
                     .setTextureState(BEAM_CORE_TEXTURE)
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
                     .createCompositeState(false));
-    public static final RenderType BEAM_MAIN = create(
+    public static final RenderType BEAM_MAIN = RenderType.create(
             "beam_main",
             DefaultVertexFormat.POSITION_COLOR_TEX,
             VertexFormat.Mode.QUADS,
@@ -58,15 +58,15 @@ public final class AMRenderTypes extends RenderType {
             false,
             RenderType.CompositeState.builder()
                     .setTextureState(BEAM_MAIN_TEXTURE)
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
                     .createCompositeState(false));
-    public static final RenderType BEAM_GLOW = create("beam_glow",
+    public static final RenderType BEAM_GLOW = RenderType.create("beam_glow",
             DefaultVertexFormat.POSITION_COLOR_TEX,
             VertexFormat.Mode.QUADS,
             256,
@@ -74,17 +74,12 @@ public final class AMRenderTypes extends RenderType {
             false,
             RenderType.CompositeState.builder()
                     .setTextureState(BEAM_GLOW_TEXTURE)
-                    .setShaderState(RenderStateShard.ShaderStateShard.POSITION_COLOR_TEX_SHADER)
-                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(NO_DEPTH_TEST)
-                    .setCullState(NO_CULL)
-                    .setLightmapState(NO_LIGHTMAP)
-                    .setWriteMaskState(COLOR_WRITE)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
                     .createCompositeState(false));
-
-    // We need to extend RenderType for access to the protected fields, but we should never actually instantiate this class.
-    private AMRenderTypes(String pName, VertexFormat pFormat, VertexFormat.Mode pMode, int pBufferSize, boolean pAffectsCrumbling, boolean pSortOnUpload, Runnable pSetupState, Runnable pClearState) {
-        super(pName, pFormat, pMode, pBufferSize, pAffectsCrumbling, pSortOnUpload, pSetupState, pClearState);
-    }
 }
