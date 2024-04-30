@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.obelisk;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumChunkCapability;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMStats;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
@@ -75,41 +76,53 @@ public class ObeliskBlock extends AbstractFurnaceBlock implements ITierCheckingB
         if (state.getValue(PART) == Part.LOWER) {
             level.setBlock(pos.above(), defaultBlockState().setValue(PART, Part.MIDDLE).setValue(FACING, state.getValue(FACING)), UPDATE_ALL);
             level.setBlock(pos.above(2), defaultBlockState().setValue(PART, Part.UPPER).setValue(FACING, state.getValue(FACING)), UPDATE_ALL);
+            if (!level.isClientSide()) {
+                level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.addPositions(pos, pos.above(), pos.above(2)));
+            }
         }
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        Block block = pState.getBlock();
-        if (block == pNewState.getBlock() && pState.getValue(PART) == pNewState.getValue(PART)) return;
-        BlockPos above1 = pPos.above();
-        BlockPos above2 = pPos.above(2);
-        BlockPos below1 = pPos.below();
-        BlockPos below2 = pPos.below(2);
-        switch (pState.getValue(PART)) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, level, pos, newState, isMoving);
+        Block block = state.getBlock();
+        if (block == newState.getBlock() && state.getValue(PART) == newState.getValue(PART)) return;
+        BlockPos above1 = pos.above();
+        BlockPos above2 = pos.above(2);
+        BlockPos below1 = pos.below();
+        BlockPos below2 = pos.below(2);
+        switch (state.getValue(PART)) {
             case LOWER -> {
-                if (pLevel.getBlockState(above1).getBlock() == block) {
-                    pLevel.removeBlock(above1, false);
+                if (level.getBlockState(above1).getBlock() == block) {
+                    level.removeBlock(above1, false);
                 }
-                if (pLevel.getBlockState(above2).getBlock() == block) {
-                    pLevel.removeBlock(above2, false);
+                if (level.getBlockState(above2).getBlock() == block) {
+                    level.removeBlock(above2, false);
+                }
+                if (!level.isClientSide()) {
+                    level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePositions(pos, above1, above2));
                 }
             }
             case MIDDLE -> {
-                if (pLevel.getBlockState(below1).getBlock() == block) {
-                    pLevel.removeBlock(below1, false);
+                if (level.getBlockState(below1).getBlock() == block) {
+                    level.removeBlock(below1, false);
                 }
-                if (pLevel.getBlockState(above1).getBlock() == block) {
-                    pLevel.removeBlock(above1, false);
+                if (level.getBlockState(above1).getBlock() == block) {
+                    level.removeBlock(above1, false);
+                }
+                if (!level.isClientSide()) {
+                    level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePositions(below1, pos, above1));
                 }
             }
             case UPPER -> {
-                if (pLevel.getBlockState(below1).getBlock() == block) {
-                    pLevel.removeBlock(below1, false);
+                if (level.getBlockState(below1).getBlock() == block) {
+                    level.removeBlock(below1, false);
                 }
-                if (pLevel.getBlockState(below2).getBlock() == block) {
-                    pLevel.removeBlock(below2, false);
+                if (level.getBlockState(below2).getBlock() == block) {
+                    level.removeBlock(below2, false);
+                }
+                if (!level.isClientSide()) {
+                    level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePositions(below2, below1, pos));
                 }
             }
         }

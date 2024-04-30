@@ -30,6 +30,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.Mage;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.ManaCreeper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.NatureGuardian;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.entity.WaterGuardian;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumChunkCapability;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMAttributes;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMCriteriaTriggers;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMEntities;
@@ -53,6 +54,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.TierMapping;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.AMUtil;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.util.TranslationConstants;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.EtheriumPositionsSyncPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.OpenSpellRecipeGuiInLecternPacket;
 import com.github.minecraftschurlimods.codeclib.CodecCapabilityProvider;
 import net.minecraft.core.BlockPos;
@@ -83,6 +85,7 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -98,6 +101,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
@@ -135,8 +139,10 @@ public final class EventHandler {
         modBus.addListener(EventHandler::enqueueIMC);
         modBus.addListener(EventHandler::registerSpawnPlacements);
         modBus.addListener(EventHandler::registerCreativeTabs);
-        forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilities);
+        forgeBus.addGenericListener(Entity.class, EventHandler::attachCapabilitiesEntity);
+        forgeBus.addGenericListener(LevelChunk.class, EventHandler::attachCapabilitiesLevelChunk);
         forgeBus.addListener(EventHandler::addReloadListener);
+        forgeBus.addListener(EventHandler::chunkWatch);
         forgeBus.addListener(EventHandler::entityJoinWorld);
         forgeBus.addListener(EventHandler::playerClone);
         forgeBus.addListener(EventHandler::playerItemCrafted);
@@ -243,6 +249,7 @@ public final class EventHandler {
         event.register(MagicHelper.MagicHolder.class);
         event.register(ManaHelper.ManaHolder.class);
         event.register(BurnoutHelper.BurnoutHolder.class);
+        event.register(EtheriumChunkCapability.class);
     }
 
     private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
@@ -277,7 +284,7 @@ public final class EventHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    private static void attachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof LivingEntity livingEntity) {
             AttributeSupplier attributes = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) livingEntity.getType());
             if (attributes.hasAttribute(AMAttributes.MAX_MANA.get())) {
@@ -296,9 +303,20 @@ public final class EventHandler {
         }
     }
 
+    private static void attachCapabilitiesLevelChunk(AttachCapabilitiesEvent<LevelChunk> event) {
+        EtheriumChunkCapability cap = new EtheriumChunkCapability(event.getObject());
+        event.addCapability(new ResourceLocation(ArsMagicaAPI.MOD_ID, "etherium"), cap);
+        event.addListener(cap::invalidate);
+    }
+
     private static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(SpellDataManager.instance());
         event.addListener(TierMapping.instance());
+    }
+
+    private static void chunkWatch(ChunkWatchEvent.Watch event) {
+        LevelChunk chunk = event.getChunk();
+        chunk.getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> ArsMagicaLegacy.NETWORK_HANDLER.sendToAllTracking(new EtheriumPositionsSyncPacket(event.getPos(), cap.getPositions().stream().toList()), chunk));
     }
 
     private static void entityJoinWorld(EntityJoinLevelEvent event) {

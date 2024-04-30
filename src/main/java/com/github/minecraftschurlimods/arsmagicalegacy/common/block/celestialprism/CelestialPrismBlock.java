@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.celestialprism;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumChunkCapability;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
@@ -76,21 +77,30 @@ public class CelestialPrismBlock extends BaseEntityBlock implements ITierCheckin
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             level.setBlock(pos.above(), defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER), UPDATE_ALL);
+            if (!level.isClientSide()) {
+                level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.addPositions(pos, pos.above()));
+            }
         }
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        switch (pState.getValue(HALF)) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, level, pos, newState, isMoving);
+        switch (state.getValue(HALF)) {
             case UPPER -> {
-                if (pNewState.getBlock() != this) {
-                    pLevel.removeBlock(pPos.below(), false);
+                if (newState.getBlock() != this) {
+                    level.removeBlock(pos.below(), false);
+                    if (!level.isClientSide()) {
+                        level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePositions(pos.below(), pos));
+                    }
                 }
             }
             case LOWER -> {
-                if (pNewState.getBlock() != this) {
-                    pLevel.removeBlock(pPos.above(), false);
+                if (newState.getBlock() != this) {
+                    level.removeBlock(pos.above(), false);
+                    if (!level.isClientSide()) {
+                        level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePositions(pos, pos.above()));
+                    }
                 }
             }
         }

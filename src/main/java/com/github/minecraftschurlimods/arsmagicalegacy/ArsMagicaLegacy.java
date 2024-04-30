@@ -13,6 +13,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.common.skill.SkillHelper;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.spell.SpellDataManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.CompatManager;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.BEClientSyncPacket;
+import com.github.minecraftschurlimods.arsmagicalegacy.network.EtheriumPositionsSyncPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableCreateSpellPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.InscriptionTableSyncPacket;
 import com.github.minecraftschurlimods.arsmagicalegacy.network.LearnSkillPacket;
@@ -42,7 +43,7 @@ import software.bernie.geckolib.GeckoLib;
 @Mod(ArsMagicaAPI.MOD_ID)
 public final class ArsMagicaLegacy {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArsMagicaAPI.MOD_ID);
-    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 5);
+    public static final NetworkHandler NETWORK_HANDLER = NetworkHandler.create(ArsMagicaAPI.MOD_ID, "main", 6);
     private static ArsMagicaLegacy INSTANCE;
     private final IModInfo modInfo;
 
@@ -90,6 +91,7 @@ public final class ArsMagicaLegacy {
         NETWORK_HANDLER.register(SpellIconSelectPacket.ID, SpellIconSelectPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(TakeSpellRecipeFromLecternPacket.ID, TakeSpellRecipeFromLecternPacket.class, NetworkDirection.PLAY_TO_SERVER);
         NETWORK_HANDLER.register(BEClientSyncPacket.ID, BEClientSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
+        NETWORK_HANDLER.register(EtheriumPositionsSyncPacket.ID, EtheriumPositionsSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenOcculusGuiPacket.ID, OpenOcculusGuiPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(OpenSpellRecipeGuiInLecternPacket.ID, OpenSpellRecipeGuiInLecternPacket.class, NetworkDirection.PLAY_TO_CLIENT);
         NETWORK_HANDLER.register(SkillHelper.SkillSyncPacket.ID, SkillHelper.SkillSyncPacket.class, NetworkDirection.PLAY_TO_CLIENT);

@@ -1,6 +1,7 @@
 package com.github.minecraftschurlimods.arsmagicalegacy.common.block.blackaurem;
 
 import com.github.minecraftschurlimods.arsmagicalegacy.common.block.ITierCheckingBlock;
+import com.github.minecraftschurlimods.arsmagicalegacy.common.etherium.EtheriumChunkCapability;
 import com.github.minecraftschurlimods.arsmagicalegacy.common.init.AMBlockEntities;
 import com.github.minecraftschurlimods.arsmagicalegacy.compat.patchouli.PatchouliCompat;
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,24 @@ public class BlackAuremBlock extends BaseEntityBlock implements ITierCheckingBlo
 
     public BlackAuremBlock() {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).lightLevel(value -> 2).noOcclusion().noCollission());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (!level.isClientSide()) {
+            level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.addPosition(pos));
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, level, pos, newState, isMoving);
+        if (!level.isClientSide()) {
+            level.getChunkAt(pos).getCapability(EtheriumChunkCapability.CAPABILITY).ifPresent(cap -> cap.removePosition(pos));
+        }
     }
 
     @Override
