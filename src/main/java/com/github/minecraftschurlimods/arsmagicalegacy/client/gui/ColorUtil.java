@@ -54,38 +54,6 @@ public final class ColorUtil {
     }
 
     /**
-     * @param color The color to get the blue value for.
-     * @return The blue value of the given color.
-     */
-    public static int getBlueI(int color) {
-        return 0xFF & color;
-    }
-
-    /**
-     * @param color The color to get the green value for.
-     * @return The green value of the given color.
-     */
-    public static int getGreenI(int color) {
-        return 0xFF & color >> 8;
-    }
-
-    /**
-     * @param color The color to get the red value for.
-     * @return The red value of the given color.
-     */
-    public static int getRedI(int color) {
-        return 0xFF & color >> 16;
-    }
-
-    /**
-     * @param color The color to get the alpha value for.
-     * @return The alpha value of the given color.
-     */
-    public static int getAlphaI(int color) {
-        return 0xFF & color >> 24;
-    }
-
-    /**
      * @param rgbColor The rgb color to be converted.
      * @return A float array representing the hue, saturation and brightness of the given rgb color.
      */

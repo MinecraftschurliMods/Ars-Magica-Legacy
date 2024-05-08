@@ -14,9 +14,14 @@ public final class AMShaders {
     private AMShaders() {}
 
     private static ShaderInstance COLOR_WHEEL_SHADER;
+    private static ShaderInstance SINGLE_COLOR_SHADER;
 
     public static ShaderInstance getColorWheelShader() {
         return COLOR_WHEEL_SHADER;
+    }
+
+    public static ShaderInstance getSingleColorShader() {
+        return SINGLE_COLOR_SHADER;
     }
 
     public static void setUniform(String name, float value) {
@@ -85,7 +90,8 @@ public final class AMShaders {
 
     static void init(RegisterShadersEvent evt) {
         try {
-            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "color_wheel"), DefaultVertexFormat.POSITION), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
+            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "color_wheel"), DefaultVertexFormat.POSITION_COLOR), shaderInstance -> AMShaders.COLOR_WHEEL_SHADER = shaderInstance);
+            evt.registerShader(new ShaderInstance(evt.getResourceProvider(), new ResourceLocation(ArsMagicaAPI.MOD_ID, "single_color"), DefaultVertexFormat.BLOCK), shaderInstance -> AMShaders.SINGLE_COLOR_SHADER = shaderInstance);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

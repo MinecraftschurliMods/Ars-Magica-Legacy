@@ -9,7 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public final class AMRenderTypes {
-    private static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
+    private static final RenderStateShard.ShaderStateShard COLOR_WHEEL_SHADER  = new RenderStateShard.ShaderStateShard(AMShaders::getColorWheelShader);
+    private static final RenderStateShard.ShaderStateShard SINGLE_COLOR_SHADER = new RenderStateShard.ShaderStateShard(AMShaders::getSingleColorShader);
     private static final RenderStateShard.TextureStateShard BEAM_CORE_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_core.png"), false, false);
     private static final RenderStateShard.TextureStateShard BEAM_MAIN_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_main.png"), false, false);
     private static final RenderStateShard.TextureStateShard BEAM_GLOW_TEXTURE = new RenderStateShard.TextureStateShard(new ResourceLocation(ArsMagicaAPI.MOD_ID, "textures/misc/beam_glow.png"), false, false);
@@ -30,8 +31,19 @@ public final class AMRenderTypes {
                         AMShaders.setUniform("radius", state.getRadius());
                         AMShaders.setUniform("brightness", state.getBrightness());
                     }, () -> {}))
-                    .createCompositeState(false)
-    );
+                    .createCompositeState(false));
+    public static final RenderType SINGLE_COLOR = RenderType.create(
+            "single_color",
+            DefaultVertexFormat.BLOCK,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(SINGLE_COLOR_SHADER)
+                    .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+                    .setOutputState(RenderStateShard.OUTLINE_TARGET)
+                    .createCompositeState(false));
     public static final RenderType BEAM_CORE = RenderType.create(
             "beam_core",
             DefaultVertexFormat.POSITION_COLOR_TEX,

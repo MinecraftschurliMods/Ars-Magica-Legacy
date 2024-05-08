@@ -33,6 +33,7 @@ import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.Affinit
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SkillPointOverrideModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellBookItemModel;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.model.item.SpellItemModel;
+import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.EtheriumOutlineRenderer;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.AltarViewBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.BlackAuremBER;
 import com.github.minecraftschurlimods.arsmagicalegacy.client.renderer.block.SpellRuneBER;
@@ -362,12 +363,13 @@ public final class ClientInit {
     }
 
     private static void renderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
-            Level level = Objects.requireNonNull(Minecraft.getInstance().level);
-            PoseStack poseStack = event.getPoseStack();
-            float ticks = event.getPartialTick();
-            BeamRenderer.drawBeams(player, level, poseStack, ticks);
+        Player player = Objects.requireNonNull(ClientHelper.getLocalPlayer());
+        PoseStack poseStack = event.getPoseStack();
+        Level level = Objects.requireNonNull(Minecraft.getInstance().level);
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+            EtheriumOutlineRenderer.render(player, level, poseStack);
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            BeamRenderer.drawBeams(player, level, poseStack, event.getPartialTick());
         }
     }
 }
