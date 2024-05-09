@@ -37,7 +37,7 @@ public class AoE extends AbstractShape {
             if (e instanceof PartEntity && ((PartEntity<?>) e).getParent() != null) {
                 e = ((PartEntity<?>) e).getParent();
             }
-            if (helper.invoke(spell, caster, level, new EntityHitResult(e), ticksUsed, index, awardXp) == SpellCastResult.SUCCESS) {
+            if (helper.invoke(spell, caster, null, level, new EntityHitResult(e), ticksUsed, index, awardXp) == SpellCastResult.SUCCESS) {
                 appliedToAtLeastOneEntity = true;
             }
         }
@@ -55,7 +55,7 @@ public class AoE extends AbstractShape {
                             case Z -> pos.offset(x, y, offset);
                         };
                         if (!level.getBlockState(lookPos).isAir()) {
-                            helper.invoke(spell, caster, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
+                            helper.invoke(spell, caster, null, level, new BlockHitResult(hit.getLocation(), ((BlockHitResult) hit).getDirection(), lookPos, ((BlockHitResult) hit).isInside()), ticksUsed, index, awardXp);
                         }
                     }
                 }
